@@ -1,0 +1,37 @@
+{
+  "name": "motion-ai",
+  "version": "14.0.0",
+  "description": "Install the Motion AI Kit — installs Motion skills into your AI coding agents and configures Motion's hosted MCP servers.",
+  "author": {
+    "name": "Matt Perry",
+    "url": "https://motion.dev"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/motiondivision/ai-kit",
+  "type": "module",
+  "bin": "./dist/cli.js",
+  "files": [
+    "dist",
+    "content"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "sync-content": "node scripts/sync-content.mjs",
+    "build": "npm run sync-content && tsc -p .",
+    "dev": "tsc -p . --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "add-mcp": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "typescript": "^5.0.0"
+  }
+}

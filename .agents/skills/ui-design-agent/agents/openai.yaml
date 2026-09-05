@@ -1,0 +1,6 @@
+interface:
+  display_name: "UI Design Agent"
+  short_description: "Distinctive UI, spring physics, and verified MCP workflows"
+  default_prompt: "Use $ui-design-agent to implement this interface with a coherent visual system, physical spring motion, verified MCP tools, and mobile/desktop acceptance checks."
+policy:
+  allow_implicit_invocation: true

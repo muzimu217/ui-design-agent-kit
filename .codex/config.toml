@@ -1,0 +1,35 @@
+# Project-scoped only. Codex must trust this repository to load this file.
+# No model, approval, sandbox, global hooks, or credential settings are changed.
+
+[mcp_servers.motion]
+url = "https://mcp.motion.dev"
+startup_timeout_sec = 30
+tool_timeout_sec = 60
+
+[mcp_servers.context7]
+url = "https://mcp.context7.com/mcp"
+startup_timeout_sec = 30
+tool_timeout_sec = 60
+
+[mcp_servers.shadcn]
+command = "npx"
+args = ["-y", "shadcn@4.21.0", "mcp"]
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+
+# Same name as a common global installation: one effective server, not a duplicate.
+# Isolated browsing does not attach to the user's personal signed-in browser.
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp@0.0.80", "--headless", "--isolated"]
+startup_timeout_sec = 90
+tool_timeout_sec = 90
+
+# Optional account-backed extensions. Disabled until the user chooses to sign in.
+[mcp_servers.motion_plus]
+url = "https://mcp.motion.dev/plus"
+enabled = false
+
+[mcp_servers.figma]
+url = "https://mcp.figma.com/mcp"
+enabled = false

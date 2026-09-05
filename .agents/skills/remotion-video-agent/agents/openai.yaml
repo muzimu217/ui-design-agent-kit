@@ -1,0 +1,6 @@
+interface:
+  display_name: "Remotion Video Agent"
+  short_description: "Frame-accurate React video, timing, and transitions"
+  default_prompt: "Use $remotion-video-agent to plan and build this Remotion composition with frame-accurate timing, purposeful transitions, and verified Studio output."
+policy:
+  allow_implicit_invocation: true

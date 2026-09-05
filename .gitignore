@@ -1,0 +1,14 @@
+node_modules/
+.DS_Store
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+output/
+.playwright-cli/
+.playwright-mcp/
+.impeccable/
+.playwright-mcp/
+showcase/node_modules/
+showcase/dist/

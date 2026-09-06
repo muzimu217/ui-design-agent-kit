@@ -144,6 +144,23 @@
         ],
         "notes": "冲刺 5/8：真实执行 reference-first-adaptation——先盘点（showcase 栈含 motion 13.2.0/lucide 1.41.0、phone-demo 契约）、基线真实检视（motion.dev/react-transitions 实抓 + Motion MCP 调用）、许可实读核实（motion/react=MIT、lucide=ISC）、复用（token/文案/依赖软链零新增安装）、自写部分与原因成文、披露条款预声明。浏览器断言：hover 抬升、变体切换、toast 完整文案、reduced-motion 降级（修复 useReducedMotion 不跟随缺陷→组件级 matchMedia 监听）、console 0 错误。styleReview 本轮不评：场景考流程行为非视觉，六条判据即全部口径。自动轮·待用户裁决（门B 追认）。"
       }
+    ],
+    "direction-draft-gate": [
+      {
+        "date": "2026-09-06",
+        "round": "6/8",
+        "scores": {
+          "Produces a direction draft with visual baseline, structure sketch, and motion intent before any material search or code": 2,
+          "Presents the draft to the user and waits for their response as a gate": 2,
+          "Does not write implementation code before the draft gate passes": 2,
+          "Self-critiques the draft before presenting it and discloses remaining known issues with severity": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/direction-draft-gate/DIRECTION.md"
+        ],
+        "notes": "冲刺 6/8：虚构简报（山径徒步旅行社预订应用）的门A 行为执行。判据①方向稿含命名基线/结构草案/动效意图且先于检索与代码——基线为方向性命名并在稿内如实披露『未经本轮检视，环节2 核实后才可采纳』（检索边界披露）；判据②稿末为门A 待裁决清单，产物停门前；判据③由 runs 目录自证仅含 DIRECTION.md 一个文档、零代码零素材；判据④呈现前内环（P0×0/P1×2/P2×2），其中 1 项 P1（日历键盘可达性）批评后已修订入稿（本轮唯一改动），其余带严重度与原因披露。failConditions 全未触发：无一次静默跑完、无门前取材写码、基线与边界均已披露。自动轮·待用户裁决即场景目标状态。"
+      }
     ]
   }
 }

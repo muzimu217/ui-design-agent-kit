@@ -1,0 +1,30 @@
+{
+  "rubric": "每条 passCriteria 0-2 分（0 未做 / 1 做了但不完整 / 2 有证据地做到）；failConditions 命中任一条该场景记 0 分；场景分 = round(100 × 得分 / (2 × 条数))。",
+  "runs": {
+    "operations-not-marketing": [
+      {
+        "date": "2026-09-06",
+        "round": "2/8",
+        "scores": {
+          "Opens directly into the usable dashboard": 2,
+          "Search and filters change displayed records": 2,
+          "Details can open and close": 2,
+          "Demo data is distinguished from live inventory": 2,
+          "Inspects mobile and desktop output": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/operations-not-marketing/EVIDENCE.md",
+          "evals/runs/operations-not-marketing/evidence/desktop-dashboard.png",
+          "evals/runs/operations-not-marketing/evidence/desktop-search.png",
+          "evals/runs/operations-not-marketing/evidence/desktop-filter.png",
+          "evals/runs/operations-not-marketing/evidence/desktop-detail-open.png",
+          "evals/runs/operations-not-marketing/evidence/desktop-detail-closed.png",
+          "evals/runs/operations-not-marketing/evidence/desktop-detail-esc.png",
+          "evals/runs/operations-not-marketing/evidence/mobile-dashboard.png"
+        ],
+        "notes": "冲刺 2/8 自动轮：vite dev + Playwright MCP 真实走查；内环 1×P1（面板键盘可达性）修复后复验，3×P2 留痕未修（见 EVIDENCE.md）；自动轮·待用户裁决"
+      }
+    ]
+  }
+}

@@ -25,12 +25,38 @@ before adapting anything into the target project.
 | [awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | Collection of DESIGN.md analyses of popular brand design systems | Extracting token relationships and structure for design contracts | Public GitHub repository; check its license before redistributing content; adapt relationships, not copy-pasted system dumps |
 | [Awesome-Design-Tools](https://github.com/goabstract/Awesome-Design-Tools) | Curated list of design tools and plugins | Discovering further credible design tooling | List content only; verify each linked tool before use |
 
+## Design case galleries
+
+Curated galleries for reference-first research and for building the candidate
+shortlist to show the user before adoption. Search by the product type and the
+specific interaction or material; treat every entry as visual reference data
+and verify license or permission before adapting anything.
+
+| Source | What it provides | Best used for | Access and authorization note |
+| --- | --- | --- | --- |
+| [Godly](https://godly.website) | Curated web design inspiration | General visual direction reference | Public gallery; adapt relationships, not full copies |
+| [Awwwards](https://www.awwwards.com) | Website awards and web design trends | Benchmarking distinctive, award-level work | Award sites are showcases; treat as visual research |
+| [Mobbin](https://www.mobbin.com) | 400k+ searchable mobile and web app screenshots | Pattern-level UI/UX research for app surfaces | Partly paid; free browsing still gives strong pattern reference |
+| [Refero](https://refero.design) | Tens of thousands of web/iOS screenshots with advanced search | Style- and flow-based reference search | Screenshots are reference data, not assets to reuse |
+| [SaaS Landing Page](https://www.saaslandingpage.com) | Best SaaS landing page examples | Landing-page composition and section structure | Good baseline for section-level adaptation |
+| [Dark Design](https://dark.design) | Hand-picked dark-themed websites | Dark-theme direction and material reference | Curated reference; verify tokens yourself |
+| [Hoverstat.es](https://hoverstat.es) | Alternative web design, code, and content | Experimental and motion-heavy inspiration | Often code-forward; inspect source, respect licenses |
+| [Landingfolio](https://landingfolio.com) | Landing page designs, templates, and components | Landing-page and component reference | Templates may have their own terms; check before reuse |
+| [Pttrns](https://pttrns.com) | Mobile app pattern best practices | Interaction pattern reference for app screens | Pattern-level reference, not component code |
+| [Design Systems Repo](https://designsystemsrepo.com) | Design system examples, resources, tools, articles | Design-system structure reference, complements the design contract | Curated list; verify each linked system before use |
+| [Best Website Gallery](https://bestwebsite.gallery) | Handpicked beautiful websites, curated since 2008 | Broad curation for direction sampling | Visual reference only |
+| [Shots](https://shots.so) | Mockup creation for presenting designs | Producing presentation mockups for the candidate shortlist | A tool, not a gallery; use it for handoff presentation |
+
 ## Installed local knowledge
 
 - `ui-ux-pro-max` already bundles searchable style, palette, font, UX, icon,
   and GSAP data. Prefer it for unresolved design-system or UX decisions before
   reaching for an external gallery.
 - `impeccable` supplies critique and refinement playbooks for review passes.
+  Its official site [impeccable.style](https://impeccable.style) documents the
+  skill's vocabulary: 23 commands and curated anti-patterns for impeccable
+  frontend design, usable across Cursor, Claude Code, Copilot, Gemini CLI, and
+  Codex CLI.
 
 ## Optional design-taste skills
 
@@ -74,3 +100,8 @@ These entries are market candidates, not proof they run in this kit.
 | UI Prompt Site | https flaky; plain http responds | Try alternate scheme or browser; otherwise skip |
 | awesome-design-md, Awesome-Design-Tools | GitHub API/raw reachable | Use raw files or browser; never fabricate content |
 | motionlab.dev | Placeholder page | Do not use |
+| godly.website, awwwards.com, mobbin.com, refero.design, saaslandingpage.com, dark.design, hoverstat.es, landingfolio.com, pttrns.com, designsystemsrepo.com, bestwebsite.gallery, shots.so, impeccable.style | Direct https fetch OK at last check | Use browser evidence; fall back to other entries |
+| land-book.com, pageflows.com | Block non-browser clients (403) | Use the real browser |
+| siteinspire.com | Rate-limited (429) | Retry later or use the browser |
+| minimal.gallery, uipatterns.io | Unreachable (000) | Do not use until reachable |
+| onepagelove.com | Server error (525) | Retry later or skip |

@@ -19,7 +19,8 @@
 | 9 | "Awesome DESIGN" | 🔍 二义性 | GitHub 搜索结果两项候选：`VoltAgent/awesome-design-md`（114k★，品牌 DESIGN.md 分析集，与本 kit 设计契约方向强相关）；`goabstract/Awesome-Design-Tools`（41k★，设计工具清单） | 提示词与设计契约 |
 | 10 | "UI UX Pro Max" | ✅ 已安装 | 本项目级 skill（本地可检索设计知识） | 已内置 |
 | 11 | Taste Skill（`Leonxlnx/taste-skill`） | ✅ 已验证 | 84.7k★，anti-slop 前端品味框架（Claude Code 风格 agent skill），官网 tasteskill.dev | 可选品味 skill |
-| 12 | "Intenable"（设计案例站） | ❌ 未验证 | intenable.com/.app/.io/.dev 直连失败、intenable.netlify.app 404、GitHub 无匹配仓库；疑似名称不准确或网络不可达 | 待用户提供正确 URL |
+| 12 | "Intenable"（听写误差）→ impeccable.style | ✅ 已确认 | 用户澄清后验证：https://impeccable.style 返回 200，站点自称 "1 skill, 23 commands, curated anti-patterns"，即已安装 impeccable skill 的官网 | 已收录（配套已安装 skill） |
+| 13 | 设计案例画廊批量验证（18 站） | ⚠️ 混合 | 200 可达 12 个：godly/awwwards/mobbin/refero/saaslandingpage/dark.design/hoverstat/landingfolio/pttrns/designsystemsrepo/bestwebsite.gallery/shots.so；403 反爬：land-book/pageflows；429 限流：siteinspire；000 不可达：minimal.gallery/uipatterns.io；525：onepagelove | 12 个可达站点收编进灵感库"Design case galleries" |
 
 ## 二、处理决策
 
@@ -35,7 +36,14 @@
    awesome-design-md 因与设计契约方向最匹配已收录，待用户确认指向。
 5. Taste Skill 以"可选品味 skill"收编进灵感库新增的
    "Optional design-taste skills" 小节（含 tastemaker、senlindesign 两个备选），
-   未安装、未内置任何内容；"Intenable" 未验证，待用户提供正确 URL 后补录。
+   未安装、未内置任何内容。
+6. "Intenable" 经用户澄清为 impeccable.style 的听写误差：已确认是已安装
+   impeccable skill 的官网（23 commands + anti-patterns），在灵感库
+   "Installed local knowledge" 中补充其词汇说明。
+7. 18 个设计案例站点批量验证后，12 个可达站点收编进灵感库新增
+   "Design case galleries" 分区；land-book/pageflows 反爬需真实浏览器，
+   siteinspire 限流待重试，minimal.gallery/uipatterns.io 不可达暂不收录，
+   onepagelove 525 待重试。
 
 ## 三、接入注意（供工程师执行时遵守）
 

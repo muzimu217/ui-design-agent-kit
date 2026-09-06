@@ -171,6 +171,30 @@ If a supporting skill is missing, say so once and continue with the available
 guidance. Do not install a new global stack or enable a paid integration as a
 side effect of a UI task. This skill remains useful without any MCP server.
 
+## Orchestrate agents, do not impersonate them
+
+For a substantial new UI, run the chain through isolated subagents with an
+explicit division of labor. The main agent classifies, routes, dispatches,
+reviews, and merges; it does not silently absorb an implementation phase it
+delegated.
+
+| Phase | Owner | Deliverable | Isolation rule |
+| --- | --- | --- | --- |
+| Classification, routing, dispatch, review, merge | Main agent | Plan, handoff, final review | Main agent never writes implementation code it delegated |
+| Material research | Subagent A | Research notes with named sources | Writes only its declared scope |
+| Design contract | Subagent B | Design contract document | Writes only its declared scope |
+| Implementation | Subagent C | Runnable code per the contract | Writes only its declared scope; no runtime deps added to the kit |
+| Verification evidence | Main agent or subagent | Screenshots, keyboard walk, reduced-motion captures | Evidence commands may run under the main agent; the acceptance record names the executor per phase |
+
+- Give each subagent non-overlapping file scopes and a tight, contract-grounded
+  prompt. Review every subagent diff before merging; the main agent owns the
+  result.
+- A phase is delegated or not: do not perform a delegated implementation
+  yourself and then claim a subagent did it. If a subagent cannot complete a
+  phase, report the gap and either re-dispatch or degrade explicitly.
+- The acceptance record must name the executor of each phase; a record that
+  claims subagent work without a dispatch trace is not evidence.
+
 ## Implement the whole interaction
 
 Build a coherent vertical slice before adding ornamental details. Match component

@@ -15,3 +15,6 @@ showcase/dist/
 demo/product-demo/node_modules/
 demo/product-demo/dist/
 demo/product-demo/evidence/
+demo/phone-demo/node_modules/
+demo/phone-demo/dist/
+demo/phone-demo/evidence/

@@ -1,18 +1,72 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
-import { CATEGORIES, DEMO_ITEMS, stockStatus, type Item, type StockStatus } from "./data";
+import { CATEGORIES, DEMO_ITEMS, recentMovements, stockStatus, type Item, type StockStatus } from "./data";
 
 type CategoryFilter = "全部" | (typeof CATEGORIES)[number];
 type StatusFilter = "全部" | StockStatus;
+type SortMode = "none" | "asc" | "desc";
 
 const STATUS_FILTERS: StatusFilter[] = ["全部", "有库存", "低库存", "缺货"];
 const pillClass: Record<StockStatus, string> = { 有库存: "pill--ok", 低库存: "pill--low", 缺货: "pill--out" };
 
 function StatusPill({ item }: { item: Item }) {
   const status = stockStatus(item);
-  return <span className={`pill ${pillClass[status]}`}>{status}</span>;
+  return (
+    <span className={`pill ${pillClass[status]}`}>
+      <i className="pill__dot" aria-hidden="true" />
+      {status}
+    </span>
+  );
 }
 
-function ItemDetail({ item, onClose }: { item: Item; onClose: () => void }) {
+function SearchIcon() {
+  return (
+    <svg className="icon" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true">
+      <circle cx="9" cy="9" r="5.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <path d="m13.5 13.5 3.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true">
+      <path d="m5.5 5.5 9 9m0-9-9 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function BoxIcon() {
+  return (
+    <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true">
+      <rect x="8" y="14" width="32" height="24" rx="4" fill="none" stroke="currentColor" strokeWidth="2.4" />
+      <path d="M8 22h32M24 14v-5m-7 0h14" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function StockBar({ item }: { item: Item }) {
+  const scale = Math.max(item.threshold * 2, item.stock, 1);
+  const status = stockStatus(item);
+  return (
+    <div className="stock-bar" role="img" aria-label={`当前库存 ${item.stock}，低库存阈值 ${item.threshold}`}>
+      <i
+        className={`stock-bar__fill stock-bar__fill--${status === "有库存" ? "ok" : status === "低库存" ? "low" : "out"}`}
+        style={{ width: `${Math.round((item.stock / scale) * 100)}%` }}
+      />
+      <i className="stock-bar__tick" style={{ left: `${Math.round((item.threshold / scale) * 100)}%` }} aria-hidden="true" />
+    </div>
+  );
+}
+
+function ItemDetail({
+  item,
+  onClose,
+  onDemoAction,
+}: {
+  item: Item;
+  onClose: () => void;
+  onDemoAction: (label: string) => void;
+}) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -28,36 +82,49 @@ function ItemDetail({ item, onClose }: { item: Item; onClose: () => void }) {
       }}
     >
       <div className="panel__head">
-        <h2>{item.name}</h2>
-        <button ref={closeRef} type="button" className="panel__close" onClick={onClose}>
-          关闭
+        <div className="panel__title">
+          <StatusPill item={item} />
+          <h2>{item.name}</h2>
+          <p className="panel__sku">{item.sku} · {item.category}</p>
+        </div>
+        <button ref={closeRef} type="button" className="icon-btn" aria-label="关闭详情" onClick={onClose}>
+          <CloseIcon />
         </button>
       </div>
-      <dl className="panel__body">
-        <div>
-          <dt>SKU</dt>
-          <dd>{item.sku}</dd>
+
+      <section className="panel__section">
+        <div className="stock-row">
+          <span>当前库存</span>
+          <b className="mono">{item.stock}</b>
         </div>
-        <div>
-          <dt>分类</dt>
-          <dd>{item.category}</dd>
-        </div>
-        <div>
-          <dt>当前库存</dt>
-          <dd>{item.stock}</dd>
-        </div>
-        <div>
-          <dt>低库存阈值</dt>
-          <dd>{item.threshold}</dd>
-        </div>
-        <div>
-          <dt>状态</dt>
-          <dd>
-            <StatusPill item={item} />
-          </dd>
-        </div>
-      </dl>
-      <p className="panel__hint">演示样本数据，不代表真实库存与动线。</p>
+        <StockBar item={item} />
+        <p className="panel__note">低库存阈值 {item.threshold} · 建议补货至 {item.threshold * 3}</p>
+      </section>
+
+      <section className="panel__section">
+        <h3>最近动线（演示）</h3>
+        <ul className="movements">
+          {recentMovements(item).map((movement) => (
+            <li key={movement.date}>
+              <span className="movements__date mono">{movement.date}</span>
+              <span className="movements__note">{movement.note}</span>
+              <b className={`mono ${movement.delta < 0 ? "delta-out" : "delta-in"}`}>
+                {movement.delta < 0 ? movement.delta : `+${movement.delta}`}
+              </b>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <div className="panel__actions">
+        <button type="button" className="btn btn--primary" onClick={() => onDemoAction("发起调拨")}>
+          发起调拨
+        </button>
+        <button type="button" className="btn" onClick={() => onDemoAction("创建盘点")}>
+          创建盘点
+        </button>
+      </div>
+      <p className="panel__hint">演示样本数据，操作不会写入任何真实系统。</p>
     </aside>
   );
 }
@@ -66,8 +133,40 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<CategoryFilter>("全部");
   const [status, setStatus] = useState<StatusFilter>("全部");
+  const [sort, setSort] = useState<SortMode>("none");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
   const detailTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const toastTimer = useRef<number | undefined>(undefined);
+
+  useEffect(() => () => window.clearTimeout(toastTimer.current), []);
+
+  const baseFiltered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return DEMO_ITEMS.filter((item) => {
+      if (category !== "全部" && item.category !== category) return false;
+      if (q && !item.name.toLowerCase().includes(q) && !item.sku.toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [query, category]);
+
+  const counts = useMemo(() => {
+    const result: Record<StatusFilter, number> = { 全部: baseFiltered.length, 有库存: 0, 低库存: 0, 缺货: 0 };
+    for (const item of baseFiltered) result[stockStatus(item)] += 1;
+    return result;
+  }, [baseFiltered]);
+
+  const sorted = useMemo(() => {
+    if (sort === "none") return baseFiltered;
+    return [...baseFiltered].sort((a, b) => (sort === "asc" ? a.stock - b.stock : b.stock - a.stock));
+  }, [baseFiltered, sort]);
+
+  const visible = useMemo(
+    () => (status === "全部" ? sorted : sorted.filter((item) => stockStatus(item) === status)),
+    [sorted, status],
+  );
+
+  const selected = DEMO_ITEMS.find((item) => item.id === selectedId) ?? null;
 
   const openDetail = (event: MouseEvent<HTMLButtonElement>, id: string) => {
     detailTriggerRef.current = event.currentTarget;
@@ -80,17 +179,20 @@ export default function App() {
     detailTriggerRef.current = null;
   };
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return DEMO_ITEMS.filter((item) => {
-      if (category !== "全部" && item.category !== category) return false;
-      if (status !== "全部" && stockStatus(item) !== status) return false;
-      if (q && !item.name.toLowerCase().includes(q) && !item.sku.toLowerCase().includes(q)) return false;
-      return true;
-    });
-  }, [query, category, status]);
+  const toggleSort = () => setSort((mode) => (mode === "none" ? "asc" : mode === "asc" ? "desc" : "none"));
 
-  const selected = DEMO_ITEMS.find((item) => item.id === selectedId) ?? null;
+  const resetFilters = () => {
+    setQuery("");
+    setCategory("全部");
+    setStatus("全部");
+    setSort("none");
+  };
+
+  const showToast = (message: string) => {
+    setToast(message);
+    window.clearTimeout(toastTimer.current);
+    toastTimer.current = window.setTimeout(() => setToast(null), 2400);
+  };
 
   return (
     <div className="shell">
@@ -104,14 +206,22 @@ export default function App() {
       </p>
 
       <section className="toolbar" aria-label="筛选">
-        <label className="field">
+        <label className="field field--search">
           <span className="field__label">搜索</span>
-          <input
-            type="search"
-            value={query}
-            placeholder="名称或 SKU"
-            onChange={(event) => setQuery(event.target.value)}
-          />
+          <span className="search-box">
+            <SearchIcon />
+            <input
+              type="search"
+              value={query}
+              placeholder="名称或 SKU"
+              onChange={(event) => setQuery(event.target.value)}
+            />
+            {query && (
+              <button type="button" className="search-box__clear" aria-label="清空搜索" onClick={() => setQuery("")}>
+                <CloseIcon />
+              </button>
+            )}
+          </span>
         </label>
 
         <label className="field">
@@ -136,13 +246,15 @@ export default function App() {
               onClick={() => setStatus(option)}
             >
               {option}
+              <small className="segmented__count">{counts[option]}</small>
             </button>
           ))}
         </div>
       </section>
 
       <p className="count" aria-live="polite">
-        共 {DEMO_ITEMS.length} 项演示数据 · 匹配 {filtered.length} 项
+        共 {DEMO_ITEMS.length} 项演示数据 · 匹配 {visible.length} 项
+        {sort !== "none" && ` · 库存${sort === "asc" ? "升" : "降"}序`}
       </p>
 
       <div className="table-wrap">
@@ -152,40 +264,54 @@ export default function App() {
               <th scope="col">商品</th>
               <th scope="col">SKU</th>
               <th scope="col">分类</th>
-              <th scope="col" className="num">
-                库存
+              <th
+                scope="col"
+                className="num"
+                aria-sort={sort === "none" ? "none" : sort === "asc" ? "ascending" : "descending"}
+              >
+                <button type="button" className="th-sort" onClick={toggleSort}>
+                  库存
+                  <span className="th-sort__arrow" aria-hidden="true">
+                    {sort === "asc" ? "↑" : sort === "desc" ? "↓" : "↕"}
+                  </span>
+                </button>
               </th>
               <th scope="col">状态</th>
             </tr>
           </thead>
           <tbody>
-            {filtered.map((item) => (
+            {visible.map((item) => (
               <tr
                 key={item.id}
                 className={selectedId === item.id ? "is-selected" : undefined}
                 onClick={() => setSelectedId(item.id)}
               >
-                <td>
+                <td className="cell-name">
                   <button
                     type="button"
                     className="row-link"
+                    title={item.name}
                     onClick={(event) => openDetail(event, item.id)}
                   >
                     {item.name}
                   </button>
                 </td>
-                <td>{item.sku}</td>
+                <td className="mono">{item.sku}</td>
                 <td>{item.category}</td>
-                <td className="num">{item.stock}</td>
+                <td className="num mono">{item.stock}</td>
                 <td>
                   <StatusPill item={item} />
                 </td>
               </tr>
             ))}
-            {filtered.length === 0 && (
+            {visible.length === 0 && (
               <tr>
                 <td colSpan={5} className="empty">
-                  没有匹配的商品，试试清空搜索或筛选。
+                  <BoxIcon />
+                  <p>没有匹配的商品</p>
+                  <button type="button" className="btn" onClick={resetFilters}>
+                    清空筛选
+                  </button>
                 </td>
               </tr>
             )}
@@ -193,7 +319,7 @@ export default function App() {
         </table>
 
         <ul className="cards">
-          {filtered.map((item) => (
+          {visible.map((item) => (
             <li key={item.id}>
               <button type="button" className="card" onClick={(event) => openDetail(event, item.id)}>
                 <span className="card__name">{item.name}</span>
@@ -204,11 +330,30 @@ export default function App() {
               </button>
             </li>
           ))}
-          {filtered.length === 0 && <li className="empty">没有匹配的商品，试试清空搜索或筛选。</li>}
+          {visible.length === 0 && (
+            <li className="empty">
+              <BoxIcon />
+              <p>没有匹配的商品</p>
+              <button type="button" className="btn" onClick={resetFilters}>
+                清空筛选
+              </button>
+            </li>
+          )}
         </ul>
       </div>
 
-      {selected && <ItemDetail item={selected} onClose={closeDetail} />}
+      {selected && (
+        <ItemDetail
+          item={selected}
+          onClose={closeDetail}
+          onDemoAction={(label) => showToast(`演示环境：「${label}」未接通真实库存`)}
+        />
+      )}
+      {toast && (
+        <div className="toast" role="status">
+          {toast}
+        </div>
+      )}
     </div>
   );
 }

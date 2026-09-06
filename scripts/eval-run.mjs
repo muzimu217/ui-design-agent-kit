@@ -11,6 +11,9 @@ import { ROOT } from "./verify.mjs";
 // Rubric: each passCriterion scores 0 (missing) / 1 (partial) / 2 (done with
 // evidence); any hit failCondition forces the scenario score to 0.
 // Scenario score = round(100 * earned / (2 * criteria)).
+// Runs may add an optional `styleReview` — the 8 detail-critique dimensions
+// (0-2 each) turned into a separate style score, so "样式是否达标" is tracked
+// next to the functional score instead of being folded into it.
 //
 // Usage:
 //   npm run eval                              overview: latest score + coverage
@@ -18,13 +21,25 @@ import { ROOT } from "./verify.mjs";
 //   npm run eval -- --record <id> --data <f>  record one real execution
 //
 // The --data file: { "round"?: string, "scores": { "<passCriteria text>": 0|1|2 },
-// "failHits"?: string[], "evidence": string[], "notes"?: string }.
+// "failHits"?: string[], "evidence": string[], "notes"?: string,
+// "styleReview"?: { "<dimension>": 0|1|2, ... } }.
 // Score keys must match the scenario's passCriteria verbatim so rubric drift
 // fails loudly instead of silently rescaling history.
 
 const RUBRIC =
   "每条 passCriteria 0-2 分（0 未做 / 1 做了但不完整 / 2 有证据地做到）；" +
   "failConditions 命中任一条该场景记 0 分；场景分 = round(100 × 得分 / (2 × 条数))。";
+
+const STYLE_DIMENSIONS = [
+  "布局节奏",
+  "排版",
+  "对比度实测",
+  "状态覆盖",
+  "动效合规",
+  "可供性",
+  "鲁棒性",
+  "一致性",
+];
 
 const scenariosPath = path.join(ROOT, "evals/scenarios.json");
 const resultsPath = path.join(ROOT, "evals/results.json");
@@ -81,6 +96,16 @@ function validateRun(run, scenario) {
     || run.evidence.some((item) => typeof item !== "string" || item.trim() === "")) {
     problems.push("evidence must be a nonempty array of paths or URLs (no score without evidence)");
   }
+  if (run?.styleReview !== undefined) {
+    const keys = Object.keys(run.styleReview);
+    const missingDims = STYLE_DIMENSIONS.filter((d) => !keys.includes(d));
+    const extraDims = keys.filter((k) => !STYLE_DIMENSIONS.includes(k));
+    if (missingDims.length > 0) problems.push(`styleReview missing ${missingDims.length} dimensions (verbatim keys required)`);
+    if (extraDims.length > 0) problems.push(`styleReview has ${extraDims.length} unknown dimensions`);
+    for (const [key, value] of Object.entries(run.styleReview)) {
+      if (![0, 1, 2].includes(value)) problems.push(`styleReview["${key}"] must be 0, 1, or 2`);
+    }
+  }
   return problems;
 }
 
@@ -88,6 +113,13 @@ function computeScore(run, scenario) {
   if (Array.isArray(run.failHits) && run.failHits.length > 0) return 0;
   const total = 2 * scenario.passCriteria.length;
   const earned = scenario.passCriteria.reduce((sum, c) => sum + run.scores[c], 0);
+  return Math.round((100 * earned) / total);
+}
+
+function computeStyleScore(styleReview) {
+  if (!styleReview) return undefined;
+  const total = 2 * STYLE_DIMENSIONS.length;
+  const earned = STYLE_DIMENSIONS.reduce((sum, d) => sum + styleReview[d], 0);
   return Math.round((100 * earned) / total);
 }
 
@@ -100,7 +132,8 @@ function printOverview(list, results) {
       continue;
     }
     const latest = runs.at(-1);
-    console.log(`${String(latest.score).padStart(3)}  ${item.id}  (${runs.length} 次记录，最近 ${latest.date}${latest.round ? ` ${latest.round}` : ""})`);
+    const style = latest.styleScore === undefined ? "" : ` · 样式 ${latest.styleScore}`;
+    console.log(`${String(latest.score).padStart(3)}  ${item.id}  (${runs.length} 次记录，最近 ${latest.date}${latest.round ? ` ${latest.round}` : ""}${style})`);
   }
   const avg = executed.length === 0 ? "-" : Math.round(
     executed.reduce((sum, item) => sum + results.runs[item.id].at(-1).score, 0) / executed.length);
@@ -124,6 +157,12 @@ async function main() {
         for (const problem of validateRun(run, scenario)) problems.push(`${id}[${index}]: ${problem}`);
         const expected = computeScore(run, scenario);
         if (run.score !== expected) problems.push(`${id}[${index}]: stored score ${run.score} != recomputed ${expected}`);
+        if (run.styleReview) {
+          const expectedStyle = computeStyleScore(run.styleReview);
+          if (run.styleScore !== expectedStyle) {
+            problems.push(`${id}[${index}]: stored styleScore ${run.styleScore} != recomputed ${expectedStyle}`);
+          }
+        }
       });
     }
     if (problems.length > 0) {
@@ -156,6 +195,7 @@ async function main() {
       scores: run.scores,
       ...(Array.isArray(run.failHits) && run.failHits.length > 0 ? { failHits: run.failHits } : {}),
       score: computeScore(run, scenario),
+      ...(run.styleReview ? { styleReview: run.styleReview, styleScore: computeStyleScore(run.styleReview) } : {}),
       evidence: run.evidence,
       ...(run.notes ? { notes: run.notes } : {}),
     };

@@ -18,6 +18,8 @@
 | 8 | motionlab.dev（Motion.Lab） | ⚠️ 200 但为 Next.js 默认占位页 | 空壳页面，无可引用内容 | 不可用 |
 | 9 | "Awesome DESIGN" | 🔍 二义性 | GitHub 搜索结果两项候选：`VoltAgent/awesome-design-md`（114k★，品牌 DESIGN.md 分析集，与本 kit 设计契约方向强相关）；`goabstract/Awesome-Design-Tools`（41k★，设计工具清单） | 提示词与设计契约 |
 | 10 | "UI UX Pro Max" | ✅ 已安装 | 本项目级 skill（本地可检索设计知识） | 已内置 |
+| 11 | Taste Skill（`Leonxlnx/taste-skill`） | ✅ 已验证 | 84.7k★，anti-slop 前端品味框架（Claude Code 风格 agent skill），官网 tasteskill.dev | 可选品味 skill |
+| 12 | "Intenable"（设计案例站） | ❌ 未验证 | intenable.com/.app/.io/.dev 直连失败、intenable.netlify.app 404、GitHub 无匹配仓库；疑似名称不准确或网络不可达 | 待用户提供正确 URL |
 
 ## 二、处理决策
 
@@ -31,6 +33,9 @@
    （uiverse.io、uiprompt.site）标注备用访问路径。
 4. "Awesome DESIGN" 与 "Motion.Lab" 名称不唯一，未武断绑定某一仓库；
    awesome-design-md 因与设计契约方向最匹配已收录，待用户确认指向。
+5. Taste Skill 以"可选品味 skill"收编进灵感库新增的
+   "Optional design-taste skills" 小节（含 tastemaker、senlindesign 两个备选），
+   未安装、未内置任何内容；"Intenable" 未验证，待用户提供正确 URL 后补录。
 
 ## 三、接入注意（供工程师执行时遵守）
 

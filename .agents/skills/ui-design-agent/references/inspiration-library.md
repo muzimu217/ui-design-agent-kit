@@ -32,6 +32,22 @@ before adapting anything into the target project.
   reaching for an external gallery.
 - `impeccable` supplies critique and refinement playbooks for review passes.
 
+## Optional design-taste skills
+
+Not installed in this kit; listed as candidate capabilities for hosts that
+support Agent Skills. Treat them as references for how taste is encoded, and
+verify platform fit and license before adopting their content. The kit's
+installed `ui-ux-pro-max` and `impeccable` remain the default taste sources.
+
+| Source | What it provides | Best used for | Note |
+| --- | --- | --- | --- |
+| [Taste Skill](https://github.com/Leonxlnx/taste-skill) | Anti-slop frontend taste framework for AI agents: opinionated design-taste guidance against generic output | Strengthening taste constraints during direction setting on hosts with Agent Skills | 80k+ stars; own site tasteskill.dev; verify current license and install path before bundling any of its content |
+| [tastemaker](https://github.com/codeswithroh/tastemaker) | Claude Code skill that grounds AI-generated UI in real reference images with a per-developer taste profile | Reference-image-anchored taste work | Claude-Code-specific alternate; smaller and newer than Taste Skill |
+| [taste-skill (senlindesign)](https://github.com/senlindesign/taste-skill) | Skill that reverse-engineers a website's design taste into concrete tokens and opinionated trade-offs | Extracting taste from a specific reference site | Alternate take that complements the design contract workflow |
+
+Stars and descriptions are time-sensitive evidence, not quality guarantees.
+These entries are market candidates, not proof they run in this kit.
+
 ## Usage rules
 
 - These sources serve the reference-first baseline: inspect the target

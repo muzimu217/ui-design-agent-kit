@@ -205,6 +205,22 @@ export default function App() {
         本页所有库存数字为<b>演示样本</b>，不连接任何真实库存系统，刷新后不保存。
       </p>
 
+      <div className="stat-row" role="group" aria-label="库存概览">
+        {STATUS_FILTERS.map((option) => (
+          <button
+            key={option}
+            type="button"
+            className={`stat-card${status === option ? " is-active" : ""}`}
+            aria-pressed={status === option}
+            onClick={() => setStatus(option)}
+          >
+            <span className="stat-card__label">{option === "全部" ? "全部商品" : option}</span>
+            <span className="stat-card__value mono">{counts[option]}</span>
+            <span className="stat-card__hint">{status === option ? "当前筛选" : "点击筛选"}</span>
+          </button>
+        ))}
+      </div>
+
       <section className="toolbar" aria-label="筛选">
         <label className="field field--search">
           <span className="field__label">搜索</span>

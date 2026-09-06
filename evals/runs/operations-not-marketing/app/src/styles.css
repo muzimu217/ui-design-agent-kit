@@ -133,6 +133,52 @@ button {
   border-radius: var(--radius-control);
 }
 
+/* ── KPI 指标卡行（项目原生兜底，见 material-confirmation-gate/MATERIAL-CANDIDATES.md） ── */
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.stat-card {
+  display: grid;
+  gap: 2px;
+  justify-items: start;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  padding: 10px 14px;
+  text-align: left;
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.stat-card:hover {
+  border-color: var(--brand-ink);
+}
+
+.stat-card.is-active {
+  border-color: var(--brand-ink);
+  background: var(--row-selected);
+}
+
+.stat-card__label {
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+.stat-card__value {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.stat-card__hint {
+  font-size: 11px;
+  color: var(--ink-2);
+}
+
 /* ── 工具条 ─────────────────────────────────────── */
 
 .toolbar {
@@ -670,6 +716,10 @@ button {
 @media (max-width: 720px) {
   .shell {
     padding: 16px 12px 120px;
+  }
+
+  .stat-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .stock-table {

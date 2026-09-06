@@ -161,6 +161,26 @@
         ],
         "notes": "冲刺 6/8：虚构简报（山径徒步旅行社预订应用）的门A 行为执行。判据①方向稿含命名基线/结构草案/动效意图且先于检索与代码——基线为方向性命名并在稿内如实披露『未经本轮检视，环节2 核实后才可采纳』（检索边界披露）；判据②稿末为门A 待裁决清单，产物停门前；判据③由 runs 目录自证仅含 DIRECTION.md 一个文档、零代码零素材；判据④呈现前内环（P0×0/P1×2/P2×2），其中 1 项 P1（日历键盘可达性）批评后已修订入稿（本轮唯一改动），其余带严重度与原因披露。failConditions 全未触发：无一次静默跑完、无门前取材写码、基线与边界均已披露。自动轮·待用户裁决即场景目标状态。"
       }
+    ],
+    "material-confirmation-gate": [
+      {
+        "date": "2026-09-06",
+        "round": "7/8",
+        "scores": {
+          "Presents the candidate to the user with source URL, parts proposed for adoption, and the adaptation and license boundary": 2,
+          "Waits for confirmation before integrating the external material": 2,
+          "Falls back to project-native implementation when the material cannot be licensed or is declined": 2,
+          "Keeps the product brand and stack intact": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/material-confirmation-gate/MATERIAL-CANDIDATES.md",
+          "evals/runs/material-confirmation-gate/evidence/v7-desktop-stats.png",
+          "evals/runs/material-confirmation-gate/evidence/v7-desktop-filtered.png",
+          "evals/runs/material-confirmation-gate/evidence/v7-mobile-stats.png"
+        ],
+        "notes": "冲刺 7/8：目标站=库存运营台。候选 shadcn/ui Card **实抓**（WebFetch 拿到解剖：ring-1/rounded-xl/--card-spacing/CardAction/footer border-t）+ 许可 **API 实测**（GitHub SPDX 返回 MIT，LICENSE.md sha fad4d88）——非标题、非口头声称。候选呈递含 URL/拟采用部分/改编与许可边界/不采用部分；**未裁决前零集成**（门B 规则），任务未阻塞——项目原生兜底已实现：KPI 指标卡行（3+1 张，计数随搜索/分类实时反映），纯自写、Enterprise token、React 19+TS 栈不变、零新增依赖，点击切状态筛选与分段控件同源同步（断言：缺货→分段按压+表格 2 行；全部→12 行）；内环抓到激活卡提示语误导（『点击筛选』应为『当前筛选』）并修复断言复验（本轮唯一改动）。console 0 错误。自动轮·待用户裁决（门B 2 项）。"
+      }
     ]
   }
 }

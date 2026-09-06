@@ -217,6 +217,28 @@ delegated.
 - The acceptance record must name the executor of each phase; a record that
   claims subagent work without a dispatch trace is not evidence.
 
+## Enforce MCP call gates
+
+Substantial UI work requires real MCP tool calls in the design and
+implementation phases; designing from internal knowledge alone does not clear
+the gate. Map each phase to the relevant server and record the call in the
+acceptance record.
+
+| Phase | Required call | What clears the gate |
+| --- | --- | --- |
+| Motion design / implementation | Motion MCP: `search-motion-docs` for the concept, `generate-css-easing` for the curve | A returned documentation resource or generated CSS curve, read and applied |
+| Component / API implementation | Context7 or official-docs MCP for the installed version; shadcn registry for component items | A matched, inspected API or registry item |
+| Prototype candidates | Stitch MCP (when enabled) for prototype images | A generated candidate shown to the user |
+| Verification | Browser tools such as Playwright for rendered evidence | Same-viewport captures and interaction checks |
+
+- A deliverable without an MCP call trace must not be reported as complete;
+  the acceptance record lists the server, tool, and result per phase.
+- When a needed server is unavailable, record the attempted call, the failure,
+  and the fallback before proceeding; never fabricate a successful call or
+  report a catalog entry as a connection.
+- The gate scales to the workflow: a small edit or a code-only answer that
+  needs no external capability states that no MCP call is required and why.
+
 ## Implement the whole interaction
 
 Build a coherent vertical slice before adding ornamental details. Match component

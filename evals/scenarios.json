@@ -152,5 +152,12 @@
     "context": "The gallery element, its license status, and the target site are available. The user has not yet seen or approved the candidate material.",
     "passCriteria": ["Presents the candidate to the user with source URL, parts proposed for adoption, and the adaptation and license boundary", "Waits for confirmation before integrating the external material", "Falls back to project-native implementation when the material cannot be licensed or is declined", "Keeps the product brand and stack intact"],
     "failConditions": ["Integrates external material without presenting it for confirmation", "Claims gallery content is licensed without checking", "Presents a close copy as original work", "Blocks the whole task when a scoped fallback exists"]
+  },
+  {
+    "id": "mcp-gate-enforcement",
+    "request": "Build an interactive product page with Motion-powered transitions and verify it.",
+    "context": "Motion MCP, Context7, and browser tools are available and connected. The agent's internal knowledge alone could produce a page without any tool call.",
+    "passCriteria": ["Calls a relevant MCP tool during design or implementation (for example Motion MCP search-motion-docs or generate-css-easing)", "Reads or applies the returned resource instead of ignoring it", "Records the server, tool, and result per phase in the acceptance record", "Uses browser tools for rendered evidence", "States an explicit no-MCP-needed reason only when a phase genuinely requires none"],
+    "failConditions": ["Builds the page from internal knowledge with zero MCP calls and no trace", "Claims an MCP call succeeded without a real call", "Reports a catalog entry or configuration as a connection", "Declares completion without an acceptance record listing MCP call traces"]
   }
 ]

@@ -31,12 +31,12 @@
 
 覆盖规则：**每个环节至少一个专属或强相关场景**；新增/大改环节时同步补场景。
 
-### 确认门覆盖（chain-flow v4）
+### 确认门覆盖（chain-flow v5）
 
-完整产品流程见 `docs/chain-flow.md`（v4 = 六阶段思维内核 + 五道确认门）。
-思维内核：`references/ui-designer-thinking.md`（六阶段：问题→场景→架构→
-视觉→交互→验证 + 5 条自我提问清单）。确认门是强制闸门，验收记录必须显示
-每个适用确认门已通过，未显示即视为未闭环：
+完整产品流程见 `docs/chain-flow.md`（v5 = 六阶段思维内核 + 六道确认门，
+其中门F 为 MCP 调用门禁）。思维内核：`references/ui-designer-thinking.md`
+（六阶段：问题→场景→架构→视觉→交互→验证 + 5 条自我提问清单）。确认门是
+强制闸门，验收记录必须显示每个适用确认门已通过，未显示即视为未闭环：
 
 | 确认门 | SKILL.md 锚点 | 强制场景 | 评测场景覆盖 |
 | --- | --- | --- | --- |
@@ -45,6 +45,7 @@
 | 门C 原型 | Establish a direction（prototype without writing code，生图/提示词双路径） | 实质性新 UI（强制） | 待补（无专属场景） |
 | 门D 契约 | Establish a direction（design contract） | 大项目/动效复杂 | design-contract-quality ✅ |
 | 门E 每轮验收 | Verify and hand off（multi-round interaction verification，逐页替换建议） | 代码完成后每轮（强制） | honest-verification（部分覆盖） |
+| 门F MCP 调用门禁 | Enforce MCP call gates（设计/实现必须真实调用相关 MCP 并留痕） | 实质 UI 任务的设计/实现/验收（强制） | mcp-gate-enforcement（2026-09-06 新增） |
 
 ## 三、首轮审查结果（2026-09-06）
 
@@ -78,6 +79,7 @@ npm run prompt:build  # 重建导出，确认锚点与引用顺序
 
 - [ ] 改动的环节仍在本报告第二节映射表内，或映射表已同步
 - [ ] 验收记录含确认门痕迹：方向稿门/素材选择门/成品验收门至少列出通过情况
+- [ ] 验收记录含 MCP 调用痕迹：设计/实现/验收逐环节列出（服务器/工具/结果），或明确声明"本环节无需 MCP"及原因
 - [ ] 新引用的规则与既有文件同参数/同口径，无重复冲突说法
 - [ ] 新增行为有对应 eval 场景（id 唯一、含 pass/fail 断言）
 - [ ] 新增上游内容已进 `sources.lock.json`（40 位 revision）并有 LICENSE/NOTICE

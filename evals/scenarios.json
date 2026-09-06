@@ -138,5 +138,19 @@
     "context": "Only a screenshot is supplied. The post claims some tools reach 80% or 95% fidelity, but no independent benchmark, Figma file, font package, spacing spec, or asset license is provided. A browser and local implementation tools are available.",
     "passCriteria": ["Classifies the input as screenshot-only and lists unknown values", "Creates a compact fidelity brief with viewport, regions, typography, assets, and responsive assumptions", "Uses the supplied image as visual evidence without claiming it proves CSS or hidden states", "Renders the same viewport in a browser and compares named regions", "Runs one bounded repair pass and reports remaining inferred or unverified details", "Keeps generated files in the target workspace and does not alter the agent-kit root"],
     "failConditions": ["Repeats 80% or 95% as a product guarantee", "Invents exact font, spacing, breakpoint, or interaction facts from pixels alone", "Skips the same-viewport browser comparison", "Claims pixel parity without a defined metric and comparison artifact", "Installs or fabricates Figma/OpenDesign integrations without verification"]
+  },
+  {
+    "id": "design-contract-quality",
+    "request": "Build a new inventory dashboard. Start by authoring the design direction record.",
+    "context": "New React/TypeScript web UI with no existing design system. A target product domain and content are provided.",
+    "passCriteria": ["Records Mission, brand context, style foundations with semantic tokens, accessibility, writing tone, do and don't rules, output structure, component expectations, and quality gates", "Names a reference baseline or discloses the search boundary", "Uses the contract to drive implementation and acceptance", "Keeps fields concrete and falsifiable rather than intent-level adjectives"],
+    "failConditions": ["Skips the design contract for a substantial new UI", "Writes vague intent such as modern or polished as the whole contract", "Claims the direction is complete without a named baseline or disclosed search boundary", "Amends the contract silently during implementation"]
+  },
+  {
+    "id": "material-confirmation-gate",
+    "request": "Integrate a polished component style from a public gallery into the product site.",
+    "context": "The gallery element, its license status, and the target site are available. The user has not yet seen or approved the candidate material.",
+    "passCriteria": ["Presents the candidate to the user with source URL, parts proposed for adoption, and the adaptation and license boundary", "Waits for confirmation before integrating the external material", "Falls back to project-native implementation when the material cannot be licensed or is declined", "Keeps the product brand and stack intact"],
+    "failConditions": ["Integrates external material without presenting it for confirmation", "Claims gallery content is licensed without checking", "Presents a close copy as original work", "Blocks the whole task when a scoped fallback exists"]
   }
 ]

@@ -93,6 +93,9 @@ These entries are market candidates, not proof they run in this kit.
 
 ## Verification signals
 
+Reachability checked on 2026-09-06 via direct https fetch and the GitHub API.
+Treat the table as time-sensitive: re-verify a source before relying on it.
+
 | Source | Reachability at last check | Action if unreachable |
 | --- | --- | --- |
 | React Bits, Inspira UI, Transitions.dev, Unicorn Studio, MotionSites AI | Direct https fetch OK | Use browser evidence; fall back to other catalog entries |

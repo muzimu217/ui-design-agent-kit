@@ -147,10 +147,10 @@ is not proof of a connection, and a connection is not proof of a successful call
   installed version. Use shadcn only if compatible with the target stack.
 - Use a supplied Figma design through an authenticated, available Figma connector.
   Use image generation or existing assets when the actual UI needs visual media.
-If image generation is available, produce example imagery; if it is not, say so
-once and proceed with placeholders or licensed assets instead of blocking the
-task. The final deliverable is driven by the design prompt and implementation
-pass, not by the image tool.
+  If image generation is available, produce example imagery; if it is not, say so
+  once and proceed with placeholders or licensed assets instead of blocking the
+  task. The final deliverable is driven by the design prompt and implementation
+  pass, not by the image tool.
 - When a Google Stitch or equivalent prototyping MCP is available and enabled,
   use it to generate UI prototype candidates for the confirmation gate; treat
   the output as a visual candidate, not a shipped implementation. Its API key

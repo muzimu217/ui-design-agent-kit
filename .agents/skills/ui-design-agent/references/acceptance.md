@@ -63,7 +63,8 @@ Automated accessibility tools complement, but do not replace, these checks.
 Review the visual result against its design contract: task clarity, hierarchy,
 useful density, coherent typography and color, domain fit, and motion restraint.
 Triage every finding as P0, P1, or P2 per detail-critique.md before reporting
-it; an unfixed P0 finding blocks a completion claim. Do not mark an arbitrary
+it; an unfixed P0 blocks implementation acceptance, not completion of a read-only
+review. In a review, report the blocker without repairing it. Do not mark an arbitrary
 aesthetic score as an objective pass. Any claimed visual
 parity must be based on the actual supplied reference and rendered implementation.
 
@@ -83,7 +84,7 @@ Try it: actual dev-server URL or artifact path
 ```
 
 Keep two loops distinct. The self-driven craft loop is bounded: one batched
-inspection, one evidence-driven repair batch, then confirm the repairs; stop
+inspection, one authorized evidence-driven repair batch, then confirm the repairs; stop
 self-initiated aesthetic iteration there unless a new user requirement or
 concrete defect justifies more work. The user-driven acceptance loop is not
 bounded: each round presents the severity-triaged issue list per

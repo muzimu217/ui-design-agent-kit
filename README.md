@@ -60,4 +60,7 @@ npm run doctor:mcp
 
 [评测场景](evals/scenarios.json) 覆盖产品类型、动效参数、不可用工具、减少动效、长列表和视频转场；它们是可重复执行的行为评测规范，单元测试只检查其结构，不代表已经逐场景运行了生成任务。
 
+`npm run eval:e3` 准备三个固定场景的决策评测输入，不调用模型或评分。
+首轮前后对比、原始答复与证据限制见 [E3 记录](evals/reports/2026-09-06-e3.md)。
+
 更多调用示例见 [使用说明](docs/usage.md)，版本和修改记录见 [来源锁定](tooling/sources.lock.json) 与 [第三方声明](THIRD_PARTY_NOTICES.md)。Remotion skills 的当前固定版本未找到独立许可证，不把整套产物宣称为可自由再分发的 MIT 项目；发布前需确认上游授权。

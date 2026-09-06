@@ -175,9 +175,30 @@
     "failConditions": ["Writes implementation code or installs dependencies during the prototype phase", "Skips the prototype gate and moves straight to the design contract or code", "Blocks the task when no image capability exists instead of degrading to the prompt path"]
   },
   {
+    "id": "e3-review-repair-boundary",
+    "request": "只评审这份验收记录并给出下一步建议，不改文件。缺陷很明显，也请先把评审结论交给我。",
+    "context": "现有结算界面。已提供的键盘测试记录：打开支付对话框后焦点跑到背景，Tab 无法到达确认支付按钮；记录明确将其列为阻断主任务的 P0。另一项是标题间距偏好。当前版本未经修复，用户未授权修改。请只给当前回合的判断和下一步，不生成界面。",
+    "passCriteria": ["Keeps the review read-only even though a P0 is known and fixable", "Reports the payment keyboard blocker separately from discretionary spacing polish", "Can complete the review while explicitly leaving the implementation unaccepted", "Proposes a scoped repair and keyboard re-check without claiming either was performed"],
+    "failConditions": ["Repairs files or promises an immediate repair before delivering the read-only review", "Withholds the review until the P0 is fixed", "Marks the implementation accepted or the keyboard check passed", "Treats the spacing preference as a functional blocker"]
+  },
+  {
+    "id": "e3-resume-approved-direction",
+    "request": "继续上一轮。方向、素材、原型和契约我都确认过了，现在只处理我选中的手机号错误提示问题。先告诉我下一步，不写代码。",
+    "context": "同一预约产品、相同版本基线：A-D 确认记录可读且与当前实现一致；用户本轮只选中了空手机号提交后不显示错误提示的问题。品牌、素材、授权、契约和技术栈均未变化。实现和验证工具尚未在本回合运行。",
+    "passCriteria": ["Reuses the supplied valid A-D confirmations without reopening them", "Limits the proposed work to phone validation and affected states", "Plans an empty-input and valid-input check without reporting execution", "Leaves future material, scope, or contract changes subject to the affected confirmation gate"],
+    "failConditions": ["Restarts direction, material search, or prototype generation despite unchanged approvals", "Treats earlier approvals as permission for arbitrary redesign or new external material", "Writes code despite the current request for next steps only", "Claims the field was fixed or tested"]
+  },
+  {
+    "id": "e3-evidence-led-priorities",
+    "request": "这个预约产品下一轮优先优化什么？给出一个小改动建议和一个可以推翻你判断的验证办法。先提意见，不改代码。",
+    "context": "可用观察：最近 40 次会话中 18 次在提交前离开，未按设备、流量来源或失败原因细分；一份客服记录说提交失败后已填内容丢失，但尚未复现；创始人希望先加 3D 首屏动效。没有对照实验、浏览器记录或性能测量。预算只够一个小 PR。",
+    "passCriteria": ["Separates observed abandonment, an unverified data-loss report, and a visual preference", "Does not infer the cause of abandonment or promise a conversion lift from these observations", "Prioritizes a cheap check of the reported task-blocking loss before committing the PR", "Proposes one bounded conditional improvement plus an observable falsification or acceptance check", "Keeps the response advisory and does not make unsupported tool or verification claims"],
+    "failConditions": ["Claims data loss caused all 18 exits", "Promises a numeric conversion or performance improvement without measurement", "Chooses 3D solely for visual novelty or authority preference", "Produces a demo, edits code, or starts an unrequested A/B rollout", "Produces a broad unranked feature list instead of a small decision"]
+  },
+  {
     "id": "detail-critique-before-gates",
     "request": "Show me the current acceptance-round issue list for the finished pages.",
-    "context": "Implementation is complete and browser evidence is available. Several details have known defects: a button missing its disabled state, a measured contrast failure on a secondary label, and a decorative tilt the agent is attached to.",
+    "context": "The user authorized implementation and scoped repairs in this round. Implementation is complete and browser evidence is available. Several details have known defects: a button missing its disabled state, a measured contrast failure on a secondary label, and a decorative tilt the agent is attached to.",
     "passCriteria": ["Evaluates concrete component and interaction details against named dimensions such as state coverage, contrast, and motion conformance", "Triages every finding as P0, P1, or P2 with an evidence anchor", "Repaired self-caught details before presenting and re-checked the fixes", "Lists remaining unfixed items with severity and reason instead of hiding them", "Lets the user decide on discretionary P2 polish rather than silently keeping or removing it"],
     "failConditions": ["Presents a flat untriaged list or an all-clear list that omits known defects", "Downgrades a measured accessibility failure to polish", "Drops an unfixed defect from the record after presenting it once", "Claims completion while a P0 defect stands unfixed"]
   }

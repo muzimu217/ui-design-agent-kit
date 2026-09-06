@@ -19,6 +19,8 @@ state changes legible. Do not mistake more effects or tool calls for better work
 
 - Distinguish planning, review, targeted refinement, redesign, and implementation.
   Planning and review do not authorize code changes. A narrow fix is not a redesign.
+  Self-critique and severity never expand that authority: a read-only review can
+  finish with an open P0, but the implementation must remain unaccepted.
 - Read the target repository's instructions, dependencies, routes, components,
   tokens, assets, and current states before choosing libraries or visual direction.
 - Preserve the user's brand, content, stack, and chosen references. Established
@@ -65,13 +67,21 @@ and consult the user at each stage's decision point; when a stage depends on a
 choice only the user can make, ask before proceeding. Do not run a substantial
 UI to completion in one pass and present it as finished.
 
+Apply the stages to the assigned workflow, not as a mandatory restart. On
+continuation, inspect existing approvals and resume at the first unresolved
+applicable gate. Reopen only gates whose scope, material, contract, or supporting
+evidence changed; explain the change. Missing approval is not assumed approval,
+and prior approval does not authorize new scope. A review or narrow repair does
+not need a new direction, material search, or prototype for unchanged design.
+
 Before presenting any gate artifact — direction draft, prototype, contract, or
 acceptance-round list — run the detail-level self-critique in
 [detail-critique.md](references/detail-critique.md): evaluate each component
 and interaction against its dimensions, triage findings as P0, P1, or P2,
-repair what you can catch yourself, and present the remaining known issues
+repair self-caught defects only within authorized edits, and present the remaining known issues
 with their severity. The user judges direction at the gates; you judge craft
-before the gates. An unfixed P0 finding blocks any completion claim.
+before the gates. An unfixed P0 blocks implementation acceptance, not delivery
+of a review or a blocker report.
 
 Identify the audience, primary job, target surface, critical states, and technical
 constraints. Choose the surface's mode, not a stereotype for the entire company:
@@ -82,6 +92,14 @@ constraints. Choose the surface's mode, not a stereotype for the entire company:
 | Store, booking, comparison | Inspectable product media, clear choices, transparent transaction states |
 | Docs, article, reading | Comprehension, navigation, legibility, comfortable reading length |
 | Portfolio, campaign, experience | Distinct art direction, real work or product visible early, purposeful expression |
+
+Prioritize decisions by primary-task impact, evidence strength, and change cost.
+Separate observed facts, unverified reports, and preferences; correlation does
+not establish the cause of a product metric. Recommend the smallest justified
+change with a check that could disprove its premise. When evidence is weak,
+verify the risky assumption before committing to a fix. Keep visible rationale
+compact: evidence, expected effect, tradeoff, next check. Do not invent benefit
+percentages or let decorative novelty outrank a credible task-blocking risk.
 
 Build the usable experience as the first screen when asked for an app or tool.
 Create a marketing landing page only when requested. For a new substantial UI,
@@ -296,7 +314,7 @@ and any remaining limitation. Separate verified behavior from proposed follow-up
 For a user-facing deliverable, run multi-round interaction verification:
 per page, list the concrete motion and interaction issues, each triaged as
 P0, P1, or P2 per [detail-critique.md](references/detail-critique.md) with an
-unfixed P0 blocking any completion claim, and propose replacements from
+unfixed P0 blocking implementation acceptance, and propose replacements from
 proven market implementations or the inspiration library; present the list to
 the user, act on their selected items in one evidence-driven repair pass,
 then re-verify; repeat until the user confirms.

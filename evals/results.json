@@ -120,6 +120,30 @@
         ],
         "notes": "冲刺 4/8：兑现对比度实测——scripts/contrast-check.mjs（npm run contrast）实测 22 对，抓到分段计数角标 @72% 不透明度双制式不达标（亮 3.74 / 暗 4.17），修复（改实色）后 20/20 全过；对比度实测维度 1→2。其余维度证据沿用 v2 截图与断言。剩余 2 项 P2（行双 onClick 冗余、移动端底部门背景可滚动）为交互取向待用户裁决，非样式缺陷。Stitch G4 复测仍 HTTP 000。自动轮·待用户裁决。"
       }
+    ],
+    "reference-first-adaptation": [
+      {
+        "date": "2026-09-06",
+        "round": "5/8",
+        "scores": {
+          "Audits the existing implementation and assets first": 2,
+          "Searches and names an inspectable reference baseline": 2,
+          "Records what is adapted and checks license or permission status": 2,
+          "Preserves the existing stack and reuses compatible local code or assets": 2,
+          "Implements project-specific code when direct reuse is not authorized": 2,
+          "Discloses when no suitable baseline was found before creating a new direction": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/reference-first-adaptation/ADAPTATION.md",
+          "evals/runs/reference-first-adaptation/evidence/v5-desktop.png",
+          "evals/runs/reference-first-adaptation/evidence/v5-variant-frost.png",
+          "evals/runs/reference-first-adaptation/evidence/v5-toast.png",
+          "evals/runs/reference-first-adaptation/evidence/v5-reduced-static.png",
+          "evals/runs/reference-first-adaptation/evidence/v5-mobile.png"
+        ],
+        "notes": "冲刺 5/8：真实执行 reference-first-adaptation——先盘点（showcase 栈含 motion 13.2.0/lucide 1.41.0、phone-demo 契约）、基线真实检视（motion.dev/react-transitions 实抓 + Motion MCP 调用）、许可实读核实（motion/react=MIT、lucide=ISC）、复用（token/文案/依赖软链零新增安装）、自写部分与原因成文、披露条款预声明。浏览器断言：hover 抬升、变体切换、toast 完整文案、reduced-motion 降级（修复 useReducedMotion 不跟随缺陷→组件级 matchMedia 监听）、console 0 错误。styleReview 本轮不评：场景考流程行为非视觉，六条判据即全部口径。自动轮·待用户裁决（门B 追认）。"
+      }
     ]
   }
 }

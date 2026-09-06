@@ -1,0 +1,301 @@
+/* 曜石 X1 交互式产品展示 —— token 体系改编自 demo/phone-demo/DESIGN.md（仓库内部，见 ADAPTATION.md）
+   交互范式来自 Motion 官方文档（已检视）：whileHover/whileTap + spring（bounce 0.25 默认值域）。 */
+
+:root {
+  color-scheme: dark;
+  --color-bg: #0d1117;
+  --color-surface: #151b23;
+  --color-surface-2: #1c232d;
+  --color-border: #2a323d;
+  --color-text: #f0f3f6;
+  --color-text-muted: #9aa7b4;
+  --color-text-faint: #6b7684;
+  --color-primary: #8ab43a;
+  --color-primary-hover: #9cc74a;
+  --color-primary-contrast: #0d1117;
+  --color-focus-ring: #e3f0c0;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-feedback: 120ms;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.3);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  color: var(--color-text);
+  background:
+    radial-gradient(1200px 500px at 80% -10%, rgba(138, 180, 58, 0.06), transparent 60%),
+    var(--color-bg);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.mono {
+  font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.shell {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 24px 20px 120px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wordmark {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.badge-demo {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 1.15fr;
+  gap: 56px;
+  align-items: center;
+  margin-top: 48px;
+}
+
+.device-col {
+  display: grid;
+  place-items: center;
+}
+
+.device {
+  position: relative;
+  width: min(280px, 78vw);
+  aspect-ratio: 9 / 19;
+  border-radius: 36px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  box-shadow: var(--shadow-card);
+  padding: 10px;
+}
+
+.device::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: 28px;
+  background: var(--screen);
+  transition: background var(--duration-feedback) var(--ease-out);
+}
+
+.device__camera {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #05070a;
+  border: 1px solid var(--color-border);
+  z-index: 1;
+}
+
+.device__clock {
+  position: absolute;
+  inset: 10px;
+  border-radius: 28px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 6px;
+  z-index: 1;
+}
+
+.device__time {
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 12px rgb(0 0 0 / 0.45);
+}
+
+.device__date {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.content h1 {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.lede {
+  margin: 12px 0 0;
+  color: var(--color-text-muted);
+  max-width: 42ch;
+}
+
+.variants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: 999px;
+  padding: 7px 14px;
+  transition: border-color var(--duration-feedback) var(--ease-out), background-color var(--duration-feedback) var(--ease-out);
+}
+
+.chip:hover {
+  border-color: var(--color-text-faint);
+}
+
+.chip.is-active {
+  border-color: var(--color-primary);
+  background: rgba(138, 180, 58, 0.1);
+}
+
+.chip__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+}
+
+.specs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 28px 0 0;
+}
+
+.spec {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: grid;
+  gap: 4px;
+}
+
+.spec dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.spec dd {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.cta {
+  margin-top: 28px;
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: var(--radius-md);
+  padding: 12px 28px;
+  transition: background-color var(--duration-feedback) var(--ease-out);
+}
+
+.cta:hover {
+  background: var(--color-primary-hover);
+}
+
+.fineprint {
+  margin: 16px 0 0;
+  font-size: 12px;
+  color: var(--color-text-faint);
+  max-width: 52ch;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  font-size: 13px;
+  box-shadow: var(--shadow-card);
+  z-index: 60;
+  max-width: min(92vw, 480px);
+}
+
+@media (max-width: 760px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    margin-top: 32px;
+    justify-items: center;
+    text-align: left;
+  }
+
+  .content h1 {
+    font-size: 32px;
+  }
+
+  .specs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .device::before,
+  .chip,
+  .cta {
+    transition: none;
+  }
+}

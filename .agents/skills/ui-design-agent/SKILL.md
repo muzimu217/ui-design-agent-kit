@@ -56,6 +56,15 @@ state changes legible. Do not mistake more effects or tool calls for better work
 
 ## Establish a direction
 
+Think in six design stages, not one silent pass: define problem and goal,
+analyze user scenarios and journey, structure information and hierarchy,
+explore visuals and system rules, refine interactions and handoff, then
+verify and iterate. Follow [ui-designer-thinking.md](references/ui-designer-thinking.md)
+for the stage model and its self-questioning checklist. Advance stage by stage
+and consult the user at each stage's decision point; when a stage depends on a
+choice only the user can make, ask before proceeding. Do not run a substantial
+UI to completion in one pass and present it as finished.
+
 Identify the audience, primary job, target surface, critical states, and technical
 constraints. Choose the surface's mode, not a stereotype for the entire company:
 

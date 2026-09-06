@@ -9,6 +9,7 @@ const references = [
   ["design-contract.md", "Design Contract"],
   ["inspiration-library.md", "Inspiration Library"],
   ["image-to-code-fidelity.md", "Image-to-Code Fidelity Loop"],
+  ["ui-designer-thinking.md", "UI Designer Thinking Model"],
   ["acceptance.md", "UI Acceptance"],
 ];
 

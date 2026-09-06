@@ -1,0 +1,23 @@
+{
+  "name": "blog-demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Isolated personal blog showcase demo generated via the kit's v5 chain-flow (six thinking stages + six confirmation gates). Not referenced by the kit root scripts or workspaces.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}

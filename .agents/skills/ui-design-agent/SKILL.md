@@ -65,6 +65,14 @@ and consult the user at each stage's decision point; when a stage depends on a
 choice only the user can make, ask before proceeding. Do not run a substantial
 UI to completion in one pass and present it as finished.
 
+Before presenting any gate artifact — direction draft, prototype, contract, or
+acceptance-round list — run the detail-level self-critique in
+[detail-critique.md](references/detail-critique.md): evaluate each component
+and interaction against its dimensions, triage findings as P0, P1, or P2,
+repair what you can catch yourself, and present the remaining known issues
+with their severity. The user judges direction at the gates; you judge craft
+before the gates. An unfixed P0 finding blocks any completion claim.
+
 Identify the audience, primary job, target surface, critical states, and technical
 constraints. Choose the surface's mode, not a stereotype for the entire company:
 
@@ -149,6 +157,8 @@ is not proof of a connection, and a connection is not proof of a successful call
   dominant intent, inspect relevance, and adapt the result to the product.
 - Use `impeccable` for requested critique, targeted visual refinement, or substantial
   new visual work. Follow only the relevant playbook; do not trigger every command.
+  The proactive pre-gate self-critique is the detail-critique pass, not an
+  impeccable run.
 - Use `emil-design-eng` for opinionated design-engineering polish: component,
   detail, and animation decisions informed by a senior designer's philosophy.
 - Use `animation-vocabulary` to turn a vague motion description into its exact
@@ -284,10 +294,12 @@ when that is the task; for a code-only request, provide self-contained modules.
 Deliver the changed files or runnable URL, what works, the checks actually run,
 and any remaining limitation. Separate verified behavior from proposed follow-up.
 For a user-facing deliverable, run multi-round interaction verification:
-per page, list the concrete motion and interaction issues and propose
-replacements from proven market implementations or the inspiration library,
-present the list to the user, act on their selected items in one
-evidence-driven repair pass, then re-verify; repeat until the user confirms.
+per page, list the concrete motion and interaction issues, each triaged as
+P0, P1, or P2 per [detail-critique.md](references/detail-critique.md) with an
+unfixed P0 blocking any completion claim, and propose replacements from
+proven market implementations or the inspiration library; present the list to
+the user, act on their selected items in one evidence-driven repair pass,
+then re-verify; repeat until the user confirms.
 Prefer adopting a proven market implementation over writing a novel one.
 Never claim accessibility compliance, visual parity, performance grades, or
 test success on the strength of generated code or a tool connection alone.

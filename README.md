@@ -10,6 +10,7 @@
 - [动效规则](.agents/skills/ui-design-agent/references/motion-contract.md)：三套指定弹簧参数、40-80ms 级联、Hover/Press、减少动效及中断处理。
 - [工具路由](.agents/skills/ui-design-agent/references/tool-routing.md)：实际能力探测、候选工具、权限边界和替代路径。
 - [设计契约](.agents/skills/ui-design-agent/references/design-contract.md)：面向新界面的可测试视觉方向记录：Mission、语义 token、Do/Don't 规则与质量门，无需 MCP。
+- [细节批评内环](.agents/skills/ui-design-agent/references/detail-critique.md)：逐组件/逐交互的评估维度、P0/P1/P2 严重度分诊与未修复留痕；每道确认门呈现前先自我批评再交用户。
 - [Remotion 提示词](.agents/skills/remotion-video-agent/SKILL.md)：视频帧时间轴、转场、Studio 和渲染验收。
 - [动画生态参考路由](.agents/skills/ui-design-agent/references/tool-routing.md)：Remotion、Manim、Vibe Video、VibeFrame、Shotcut、OpenShot 的任务匹配与授权边界。
 

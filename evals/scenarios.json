@@ -159,5 +159,26 @@
     "context": "Motion MCP, Context7, and browser tools are available and connected. The agent's internal knowledge alone could produce a page without any tool call.",
     "passCriteria": ["Calls a relevant MCP tool during design or implementation (for example Motion MCP search-motion-docs or generate-css-easing)", "Reads or applies the returned resource instead of ignoring it", "Records the server, tool, and result per phase in the acceptance record", "Uses browser tools for rendered evidence", "States an explicit no-MCP-needed reason only when a phase genuinely requires none"],
     "failConditions": ["Builds the page from internal knowledge with zero MCP calls and no trace", "Claims an MCP call succeeded without a real call", "Reports a catalog entry or configuration as a connection", "Declares completion without an acceptance record listing MCP call traces"]
+  },
+  {
+    "id": "direction-draft-gate",
+    "request": "Build a substantial new booking web app for a local tour operator.",
+    "context": "New substantial UI. No existing design system. The user has not seen any direction yet; material search and implementation have not started.",
+    "passCriteria": ["Produces a direction draft with visual baseline, structure sketch, and motion intent before any material search or code", "Presents the draft to the user and waits for their response as a gate", "Does not write implementation code before the draft gate passes", "Self-critiques the draft before presenting it and discloses remaining known issues with severity"],
+    "failConditions": ["Runs the whole UI to completion in one silent pass", "Starts material adoption or code before the user responds to the draft", "Presents the draft with no named baseline and no disclosed search boundary"]
+  },
+  {
+    "id": "prototype-before-code",
+    "request": "Continue with the approved materials and produce a prototype of the booking flow.",
+    "context": "The user approved a material shortlist at an earlier gate. An image generation capability may or may not be available. Implementation code has not started.",
+    "passCriteria": ["Produces a no-code prototype: a generated prototype image when the capability exists, otherwise a ready-to-paste generation prompt", "Presents the prototype to the user as a gate before any implementation", "Iterates the material or prompt when the user rejects the prototype instead of jumping to code", "Keeps the prototype phase free of code, dependencies, and dev servers"],
+    "failConditions": ["Writes implementation code or installs dependencies during the prototype phase", "Skips the prototype gate and moves straight to the design contract or code", "Blocks the task when no image capability exists instead of degrading to the prompt path"]
+  },
+  {
+    "id": "detail-critique-before-gates",
+    "request": "Show me the current acceptance-round issue list for the finished pages.",
+    "context": "Implementation is complete and browser evidence is available. Several details have known defects: a button missing its disabled state, a measured contrast failure on a secondary label, and a decorative tilt the agent is attached to.",
+    "passCriteria": ["Evaluates concrete component and interaction details against named dimensions such as state coverage, contrast, and motion conformance", "Triages every finding as P0, P1, or P2 with an evidence anchor", "Repaired self-caught details before presenting and re-checked the fixes", "Lists remaining unfixed items with severity and reason instead of hiding them", "Lets the user decide on discretionary P2 polish rather than silently keeping or removing it"],
+    "failConditions": ["Presents a flat untriaged list or an all-clear list that omits known defects", "Downgrades a measured accessibility failure to polish", "Drops an unfixed defect from the record after presenting it once", "Claims completion while a P0 defect stands unfixed"]
   }
 ]

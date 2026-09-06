@@ -62,7 +62,9 @@ Automated accessibility tools complement, but do not replace, these checks.
 
 Review the visual result against its design contract: task clarity, hierarchy,
 useful density, coherent typography and color, domain fit, and motion restraint.
-Do not mark an arbitrary aesthetic score as an objective pass. Any claimed visual
+Triage every finding as P0, P1, or P2 per detail-critique.md before reporting
+it; an unfixed P0 finding blocks a completion claim. Do not mark an arbitrary
+aesthetic score as an objective pass. Any claimed visual
 parity must be based on the actual supplied reference and rendered implementation.
 
 ## Handoff record
@@ -80,7 +82,12 @@ Unverified: exact gap and reason
 Try it: actual dev-server URL or artifact path
 ```
 
-Do one batched inspection, one evidence-driven repair batch, then confirm the
-repair. Stop aesthetic iteration after that unless a new user requirement or
-concrete defect justifies more work. Do not stop on an unresolved correctness
-defect while calling the task complete; report the defect if it cannot be fixed.
+Keep two loops distinct. The self-driven craft loop is bounded: one batched
+inspection, one evidence-driven repair batch, then confirm the repairs; stop
+self-initiated aesthetic iteration there unless a new user requirement or
+concrete defect justifies more work. The user-driven acceptance loop is not
+bounded: each round presents the severity-triaged issue list per
+detail-critique.md, the user selects items, one repair pass runs, and
+re-verification follows until the user confirms. In both loops, do not stop on
+an unresolved correctness defect while calling the task complete; report the
+defect if it cannot be fixed.

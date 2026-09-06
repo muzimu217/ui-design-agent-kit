@@ -239,11 +239,10 @@ button {
   font-size: 11px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  opacity: 0.72;
 }
 
 .segmented button.is-active .segmented__count {
-  opacity: 0.9;
+  opacity: 1;
 }
 
 /* ── 计数与表格 ─────────────────────────────────── */

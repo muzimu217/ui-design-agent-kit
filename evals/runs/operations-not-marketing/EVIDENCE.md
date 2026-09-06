@@ -119,3 +119,19 @@ cd evals/runs/operations-not-marketing/app
 - 字体配对（Fira Code/Fira Sans）因 CDN 不可达降级为系统栈 + ui-monospace。
 - Stitch 原型图未生成（网络不可达），路径 b 提示词待用户执行后回贴对照。
 - 3 项 P2 未修留痕 + 对比度测量待补——均记录在案，不宣称完成。
+
+---
+
+# v2.1 对比度实测兑现（冲刺 4/8，2026-09-06）
+
+- 新增 `scripts/contrast-check.mjs`（`npm run contrast`）：直接解析
+  styles.css 的 :root / 暗色块 token（量的是出货值，不是手抄副本），rgba
+  底色按浏览器行为与 --surface 合成后测量，逐对输出 WCAG 比值，<4.5:1
+  退出码 1。
+- **首跑抓到真缺陷**：分段计数角标 @72% 不透明度双制式不达标
+  （亮 3.74:1、暗 4.17:1，见 `evidence/contrast-check-before-fails.txt`）。
+- 修复：计数角标改实色（层级由 11px 小号 + tabular 数字表达，不再用透明度
+  折损），复测 **20/20 全过**（`evidence/contrast-check-after.txt`）。
+- 台账更新：对比度实测维度 1→2，v2.1 样式分 94→**100**（逐维证据：
+  before/after 实测输出 + v2 截图 + 断言）；v1 回评基线 63 留档对照。
+- 同轮 G4：Stitch 带 key 复测仍 HTTP 000（网络层超时），维持降级。

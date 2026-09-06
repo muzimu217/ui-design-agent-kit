@@ -83,6 +83,42 @@
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": ["Normalized unsupported version frontmatter for Codex skill metadata"]
+    },
+    {
+      "name": "emil-design-eng",
+      "repository": "https://github.com/emilkowalski/skills",
+      "revision": "d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7",
+      "sourcePath": "skills/emil-design-eng",
+      "license": "MIT",
+      "notice": ".agents/skills/emil-design-eng/LICENSE",
+      "adaptations": []
+    },
+    {
+      "name": "animation-vocabulary",
+      "repository": "https://github.com/emilkowalski/skills",
+      "revision": "d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7",
+      "sourcePath": "skills/animation-vocabulary",
+      "license": "MIT",
+      "notice": ".agents/skills/animation-vocabulary/LICENSE",
+      "adaptations": []
+    },
+    {
+      "name": "pick-ui-library",
+      "repository": "https://github.com/emilkowalski/skills",
+      "revision": "d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7",
+      "sourcePath": "skills/pick-ui-library",
+      "license": "MIT",
+      "notice": ".agents/skills/pick-ui-library/LICENSE",
+      "adaptations": ["Removed disable-model-invocation frontmatter key for the local skill validator; body unchanged"]
+    },
+    {
+      "name": "baoyu-design",
+      "repository": "https://github.com/JimLiu/baoyu-design",
+      "revision": "026d4ea012bdd5cada72ac8cc13f21ba4edf2245",
+      "sourcePath": "skills/baoyu-design",
+      "license": "MIT",
+      "notice": ".agents/skills/baoyu-design/LICENSE",
+      "adaptations": ["Vendored SKILL.md only; agents/ helper scripts and gen-pptx package excluded as execution helpers outside the kit's scope"]
     }
   ],
   "mcp": [

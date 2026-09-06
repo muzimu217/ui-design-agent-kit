@@ -23,6 +23,18 @@ a substitute for each upstream repository's license text.
   publish a license field in its GitHub metadata; review its current repository
   terms before redistributing beyond this local project. Source:
   https://github.com/remotion-dev/skills
+- Emil Kowalski Skills, `emilkowalski/skills`, revision
+  `d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7`: MIT. Source:
+  https://github.com/emilkowalski/skills
+  Vendored entries: `emil-design-eng`, `animation-vocabulary`,
+  `pick-ui-library`. The original LICENSE is preserved in each installed skill
+  directory.
+- Baoyu Design, `JimLiu/baoyu-design`, revision
+  `026d4ea012bdd5cada72ac8cc13f21ba4edf2245`: MIT. Source:
+  https://github.com/JimLiu/baoyu-design
+  Only the `SKILL.md` instruction is vendored; the upstream `agents/` helper
+  scripts and `gen-pptx` package are excluded. The original LICENSE is
+  preserved in `.agents/skills/baoyu-design/`.
 
 ## Local adaptations
 
@@ -34,6 +46,16 @@ a substitute for each upstream repository's license text.
   `metadata.version` rather than discarding the version. References are unchanged.
 - Impeccable: install the skill without its automatic hooks. The upstream engine
   launcher is retained; its native engine is a separate first-use download.
+- Pick UI Library: remove the upstream `disable-model-invocation` frontmatter
+  key for this kit's skill validator; invocation is governed by the kit's
+  routing. The instruction body is unchanged.
+- The three Emil Kowalski skills are vendored verbatim at a pinned revision;
+  no instruction text was modified.
+- Baoyu Design: only `SKILL.md` is vendored. The upstream `agents/` execution
+  helpers (`build-preview.mjs`, `check-design-system.mjs`,
+  `compile-design-system.mjs`, design-system checker, fork verifier) and the
+  `gen-pptx` package are excluded to keep this kit's maintenance scope; the
+  vendored instruction text is unchanged.
 
 The custom `ui-design-agent` and `remotion-video-agent` files in this repository
 are authored for this project. Remotion package usage remains subject to the

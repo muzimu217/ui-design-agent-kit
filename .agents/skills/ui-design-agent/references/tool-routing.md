@@ -92,6 +92,21 @@ When only a manual review is requested, respect the review's read-only scope.
 Do not run init, rewrite product truth, generate paid assets, or broaden a small
 repair just because an upstream workflow mentions those actions.
 
+Vendored design skills (MIT, pinned revisions in `tooling/sources.lock.json`):
+
+- `emil-design-eng` encodes Emil Kowalski's design-engineering philosophy for
+  UI polish, component design, and animation decisions; consult it for the
+  "invisible details" pass.
+- `animation-vocabulary` is a reverse-lookup glossary: map a vague motion
+  description ("the bouncy thing when a popover opens") to its exact term.
+- `pick-ui-library` recommends a curated, opinionated library for a concrete
+  frontend task (toasts, charts, drag and drop, virtualization, and so on);
+  only run it when explicitly needed.
+- `baoyu-design` produces self-contained HTML design artifacts. Only its
+  SKILL.md is vendored here, so its upstream automated preview and PPT build
+  helpers are not available; deliver the artifact without claiming those
+  helpers ran.
+
 ## Motion
 
 Read the installed `motion` skill and the relevant `best-practices/` reference.

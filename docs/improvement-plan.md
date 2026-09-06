@@ -32,6 +32,7 @@
 | `references/tool-routing.md` | ① reference-first 步骤 2 挂接灵感库、新增步骤 3"候选清单交用户确认"；② Assets 补充生图可用性探测与降级 |
 | `scripts/build-prompt.mjs` | 单文件导出数组加入 design-contract 与 inspiration-library |
 | `README.md`、`docs/usage.md` | 同步新参考文件链接 |
+| `.agents/skills/emil-design-eng`、`animation-vocabulary`、`pick-ui-library`、`baoyu-design`（新增） | 按 kit 规范固定 revision 接入（MIT），含锁文件条目、LICENSE、THIRD_PARTY_NOTICES 记录；baoyu-design 仅接入 SKILL.md |
 
 ## 三、思维链落地位置对照
 
@@ -56,6 +57,11 @@
    与"生图降级"两个行为评测场景（request/context/passCriteria/failConditions），
    保证新思维链可重复验证。
 5. **发布前检查**：确认 Remotion skills 上游授权后，再将仓库转为 public。
+6. **其余候选 skill**（已验证未接入）：`superdesign-skill`（MIT，517★）、
+   `ux-ui-agent-skills`（无许可证元数据，881★）、`nothing-design-skill`
+   （MIT，品牌专属，2775★）、`claude-design-system-prompt`（MIT，提示词而非
+   skill 包，1935★）。后续按"整合为一个或多个自有 skill"的方向统一评估，
+   避免与已接入的 ui-ux-pro-max / impeccable / emil-design-eng 重叠。
 
 ## 五、验收方式
 

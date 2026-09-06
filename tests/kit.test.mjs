@@ -11,7 +11,8 @@ test("installed skills, references, and pinned MCP config are complete", async (
   const result = await verify();
   assert.deepEqual(result.errors, []);
   assert.deepEqual(result.skills.sort(), [
-    "impeccable", "motion", "remotion-best-practices", "remotion-create",
+    "animation-vocabulary", "baoyu-design", "emil-design-eng", "impeccable",
+    "motion", "pick-ui-library", "remotion-best-practices", "remotion-create",
     "remotion-docs", "remotion-markup", "remotion-render", "remotion-studio",
     "remotion-video-agent", "ui-design-agent", "ui-ux-pro-max",
   ]);

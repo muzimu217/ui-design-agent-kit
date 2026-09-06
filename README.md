@@ -34,7 +34,7 @@ npm run prompt:build
 | Context7 文档检索 | 已配置公开 MCP |
 | shadcn 组件检索 | 固定版本本地 MCP |
 | Playwright 浏览器操作 | 固定版本、隔离无头会话 |
-| UI UX Pro Max、Impeccable | 已安装项目级 skill |
+| UI UX Pro Max、Impeccable、Emil Design Eng、Animation Vocabulary、Pick UI Library、Baoyu Design | 已安装项目级 skill |
 | Remotion | 6 个官方 skills + 本地视频编排提示词；不安装已废弃的官方 MCP |
 | Motion+、Figma | 配置已预留，默认关闭，未进行登录 |
 | mcp-copy-web-ui、inspire-mcp、ui-expert-mcp、typeui.sh、OpenDesign | 用户指定的候选能力，尚未验证或安装，不虚构调用 |

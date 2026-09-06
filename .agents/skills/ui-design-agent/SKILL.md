@@ -121,6 +121,13 @@ is not proof of a connection, and a connection is not proof of a successful call
   dominant intent, inspect relevance, and adapt the result to the product.
 - Use `impeccable` for requested critique, targeted visual refinement, or substantial
   new visual work. Follow only the relevant playbook; do not trigger every command.
+- Use `emil-design-eng` for opinionated design-engineering polish: component,
+  detail, and animation decisions informed by a senior designer's philosophy.
+- Use `animation-vocabulary` to turn a vague motion description into its exact
+  term before implementing; use `pick-ui-library` to choose a curated library
+  for a concrete component task.
+- Use `baoyu-design` for self-contained HTML design artifacts (mockups,
+  prototypes, decks, dashboards) as standalone visual deliverables.
 - Use `motion` and the public Motion MCP for non-trivial web motion. Read the
   returned documentation resources, not only search-result descriptions.
 - For a React video, Remotion composition, or code-driven motion-graphics

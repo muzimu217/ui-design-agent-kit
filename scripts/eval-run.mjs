@@ -18,6 +18,7 @@ import { ROOT } from "./verify.mjs";
 // Usage:
 //   npm run eval                              overview: latest score + coverage
 //   npm run eval -- --check                   validate ledger vs scenarios
+//   npm run eval -- --next                    next unexecuted scenario (rotation order)
 //   npm run eval -- --record <id> --data <f>  record one real execution
 //
 // The --data file: { "round"?: string, "scores": { "<passCriteria text>": 0|1|2 },
@@ -171,6 +172,18 @@ async function main() {
       return;
     }
     console.log(`Ledger OK: ${Object.keys(results.runs).length} executed scenarios validated against ${list.length} scenarios.`);
+    return;
+  }
+
+  if (args[0] === "--next") {
+    const pending = list.find((item) => (results.runs[item.id]?.length ?? 0) === 0);
+    if (!pending) {
+      console.log("全部场景已至少执行一次；可重跑低分场景或扩充电vals/scenarios.json。");
+      return;
+    }
+    console.log(`下一个待执行场景（轮转序）：${pending.id}`);
+    console.log(`  passCriteria ×${pending.passCriteria.length}，failConditions ×${pending.failConditions.length}`);
+    console.log(`  记录：npm run eval -- --record ${pending.id} --data <jsonFile>`);
     return;
   }
 

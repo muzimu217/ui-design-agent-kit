@@ -33,3 +33,14 @@ enabled = false
 [mcp_servers.figma]
 url = "https://mcp.figma.com/mcp"
 enabled = false
+
+# Optional prototyping extension. Needs the STITCH_API_KEY environment variable
+# (export STITCH_API_KEY=... before starting the host). The key is referenced,
+# never stored inline. Disabled until the user sets the variable and enables
+# the server; free-quota behavior and call results must be verified per call.
+[mcp_servers.stitch]
+url = "https://stitch.googleapis.com/mcp"
+enabled = false
+
+[mcp_servers.stitch.http_headers]
+"X-Goog-Api-Key" = "${STITCH_API_KEY}"

@@ -8,6 +8,7 @@ const references = [
   ["tool-routing.md", "Capability Routing"],
   ["design-contract.md", "Design Contract"],
   ["inspiration-library.md", "Inspiration Library"],
+  ["image-to-code-fidelity.md", "Image-to-Code Fidelity Loop"],
   ["acceptance.md", "UI Acceptance"],
 ];
 

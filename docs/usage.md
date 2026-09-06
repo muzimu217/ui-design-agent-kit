@@ -25,6 +25,12 @@ For web interaction motion:
 $ui-design-agent Add an interruptible modal transition. Use the project's existing stack, consult Motion docs for the non-trivial animation, and verify keyboard focus, reduced motion, and mobile/desktop output.
 ```
 
+For screenshot or Figma to code:
+
+```text
+$ui-design-agent Rebuild this supplied UI reference. First classify what is known from the image/Figma/spec, write a fidelity brief, inspect the same viewport in the browser, compare by named regions, run one bounded repair pass, and report all inferred values and remaining unverified details. Keep generated code in the target workspace.
+```
+
 For Remotion video:
 
 ```text

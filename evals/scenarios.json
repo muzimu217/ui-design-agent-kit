@@ -131,5 +131,12 @@
     "context": "An existing Remotion project and authorized local media. Official Remotion skills are installed. The old Remotion MCP is absent.",
     "passCriteria": ["Uses official Remotion documentation skills", "Keeps exact Remotion package versions aligned", "Inspects requested portrait format and transition endpoints/midpoint", "Provides the actual Studio URL", "Does not export, deploy, or add an unrequested landscape composition"],
     "failConditions": ["Installs deprecated @remotion/mcp", "Requires a separate transition subscription based only on UNLICENSED metadata", "Claims an MP4 was rendered", "Replaces the frame clock with Motion hover animation"]
+  },
+  {
+    "id": "image-to-code-fidelity-loop",
+    "request": "Rebuild this supplied UI screenshot as a responsive page with high visual fidelity.",
+    "context": "Only a screenshot is supplied. The post claims some tools reach 80% or 95% fidelity, but no independent benchmark, Figma file, font package, spacing spec, or asset license is provided. A browser and local implementation tools are available.",
+    "passCriteria": ["Classifies the input as screenshot-only and lists unknown values", "Creates a compact fidelity brief with viewport, regions, typography, assets, and responsive assumptions", "Uses the supplied image as visual evidence without claiming it proves CSS or hidden states", "Renders the same viewport in a browser and compares named regions", "Runs one bounded repair pass and reports remaining inferred or unverified details", "Keeps generated files in the target workspace and does not alter the agent-kit root"],
+    "failConditions": ["Repeats 80% or 95% as a product guarantee", "Invents exact font, spacing, breakpoint, or interaction facts from pixels alone", "Skips the same-viewport browser comparison", "Claims pixel parity without a defined metric and comparison artifact", "Installs or fabricates Figma/OpenDesign integrations without verification"]
   }
 ]

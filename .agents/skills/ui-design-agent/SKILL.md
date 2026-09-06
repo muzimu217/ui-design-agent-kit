@@ -33,6 +33,12 @@ state changes legible. Do not mistake more effects or tool calls for better work
   into the site, present the shortlist to the user with sources and adaptation
   boundaries and obtain confirmation first; replicating a proven example is
   preferred over inventing a new visual language or interaction pattern.
+- When the request starts from an image, screenshot, Figma handoff, or asks for
+  higher visual fidelity, follow [image-to-code-fidelity.md](references/image-to-code-fidelity.md).
+  Classify the source, write a compact fidelity brief, separate measured facts
+  from inference, and compare a same-viewport browser render by region before
+  claiming the result is accurate. A screenshot alone does not prove CSS values,
+  responsive behavior, font identity, interaction states, or asset rights.
 - Reuse existing code, tokens, content, and media whenever they fit. When a
   reference is public but its code or assets are not authorized for reuse, adapt
   the observable relationships and implement the result with the project's own
@@ -145,6 +151,10 @@ If image generation is available, produce example imagery; if it is not, say so
 once and proceed with placeholders or licensed assets instead of blocking the
 task. The final deliverable is driven by the design prompt and implementation
 pass, not by the image tool.
+- When a Google Stitch or equivalent prototyping MCP is available and enabled,
+  use it to generate UI prototype candidates for the confirmation gate; treat
+  the output as a visual candidate, not a shipped implementation. Its API key
+  comes from the environment, never from a prompt or the repository.
 - Use the available browser tools for rendered evidence. Reuse a functioning
   connection instead of installing another browser-control stack.
 

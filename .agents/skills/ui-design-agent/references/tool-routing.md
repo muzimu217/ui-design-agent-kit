@@ -39,6 +39,18 @@ a new visual direction or interaction pattern:
    create only the minimum new direction required. Explicitly requested original
    work is the other exception.
 
+## Image-to-code fidelity route
+
+When a screenshot or design image is the starting point, load
+`image-to-code-fidelity.md` before implementation. Treat the image as visual
+evidence, not a complete spec. If a Figma connector is authenticated, fetch
+the requested node structure and exported reference image; if it is not
+available, say so once and use the supplied export plus browser comparison.
+Before integrating any external asset or component, show its source,
+adaptation boundary, and license/permission status to the user. After the
+first render, compare the same viewport by named regions and repair the largest
+mismatches in one bounded batch. Never publish an invented fidelity percentage.
+
 Never claim a reference was used when only its title or search-result snippet was
 seen. Never claim originality for a close reproduction. Preserve attribution and
 license notices when adapting code, assets, fonts, or examples.
@@ -144,6 +156,7 @@ tool name, schema, permissions, and current connection before use.
 | Design system | `ui-expert-mcp` | Analyze component hierarchy and suggest semantic tokens | Local tokens, UI UX Pro Max, design contract |
 | Design handoff | Figma MCP | Read requested nodes, Auto Layout, variables, screenshot | User-provided exports; disclose missing live context |
 | Style preset | `typeui.sh pull <style>` | Inspect a selected style preset | Existing design system and local design knowledge |
+| Prototyping | Google Stitch MCP | Generate UI prototype candidates from natural language for the confirmation gate | Design contract plus implementation pass |
 | Component alignment | OpenDesign or target-project CLI | Compare intended components to implementation | Compatible registry plus source and browser checks |
 
 These strings are user-provided leads, not executable setup commands. In
@@ -151,6 +164,14 @@ particular, do not assume `typeui.sh` is an installed CLI, fetch a script with
 that name and pipe it into a shell, or fabricate an OpenDesign API. A tool found
 in a catalog still needs a successful call before it can be reported as used.
 Missing candidates do not block the task when a scoped fallback is sufficient.
+
+Google Stitch is configured as a disabled optional server in
+`.codex/config.toml`. It needs the `STITCH_API_KEY` environment variable and
+`enabled = true` before any call; the key is referenced from the environment,
+never stored inline. Use it to generate prototype candidates for the
+confirmation gate, not as a substitute for implementing the deliverable:
+verify free-quota behavior and each call result, and do not report a prototype
+as a shipped implementation.
 
 The `typeui.sh` DESIGN.md convention is an authoring format, not a dependency:
 `design-contract.md` defines this kit's adapted structure, and the agent can

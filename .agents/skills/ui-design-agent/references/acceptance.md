@@ -41,6 +41,14 @@ then rapidly repeat or reverse the action. Check the final semantic state and
 focus. For 3D/canvas, use screenshots and pixel checks across target viewports;
 verify framing, real movement, interaction, and successful asset loading.
 
+For image-to-code work, capture the implementation at the same viewport and
+state as the supplied source. Compare named regions such as navigation, hero,
+media, controls, typography, and footer. Record whether each observation is
+measured, supplied, observed, or inferred. Run one bounded repair pass based on
+the highest-impact differences, then capture a confirmation render. Do not
+claim pixel parity or a percentage without a defined metric and comparison
+artifact.
+
 ## Accessibility and quality
 
 Use the keyboard for the primary task. Inspect focus visibility, tab order,

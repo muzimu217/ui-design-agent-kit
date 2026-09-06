@@ -2,6 +2,8 @@
 
 面向现代前端的 UI/UX 智能体配置：视觉系统、物理弹簧、空间微编排，以及经过实际调用检查的 MCP 工作流。另附 Remotion 视频编排能力。这里维护提示词与工具配置，不是应用脚手架。
 
+本仓库本身是智能体架构产品。生成的产品 UI 默认放在仓库外的独立工作区；仓库内的 `showcase/` 仅用于展示架构能力，不会被 agent runtime 导入。`output/`、`.playwright-*` 等只是可重建的临时产物。详细边界见[架构说明](docs/architecture.md)。
+
 ## 提示词入口
 
 - [主提示词](.agents/skills/ui-design-agent/SKILL.md)：角色、设计原则、技术栈、工具路由、实现和交付标准。
@@ -37,6 +39,7 @@ npm run prompt:build
 | UI UX Pro Max、Impeccable、Emil Design Eng、Animation Vocabulary、Pick UI Library、Baoyu Design | 已安装项目级 skill |
 | Remotion | 6 个官方 skills + 本地视频编排提示词；不安装已废弃的官方 MCP |
 | Motion+、Figma | 配置已预留，默认关闭，未进行登录 |
+| Google Stitch（UI 原型生成） | 可选 MCP，默认关闭；API key 走环境变量 `STITCH_API_KEY`，不内联；免费额度与调用结果需逐次验证 |
 | mcp-copy-web-ui、inspire-mcp、ui-expert-mcp、typeui.sh、OpenDesign | 用户指定的候选能力，尚未验证或安装，不虚构调用 |
 
 项目配置位于 `.codex/config.toml`，skill 位于 `.agents/skills`。没有改动全局模型、权限或 MCP 配置，也没有启用自动 hooks。Codex 需要信任项目才能加载项目级配置；新增 skill 下一轮可用，MCP 未刷新时重新打开项目会话。

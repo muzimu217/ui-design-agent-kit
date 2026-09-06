@@ -62,8 +62,16 @@
    （MIT，品牌专属，2775★）、`claude-design-system-prompt`（MIT，提示词而非
    skill 包，1935★）。后续按"整合为一个或多个自有 skill"的方向统一评估，
    避免与已接入的 ui-ux-pro-max / impeccable / emil-design-eng 重叠。
+7. **Google Stitch MCP**：已配置为默认关闭的可选服务器，key 走环境变量
+   `STITCH_API_KEY`（严禁内联/提交）。待真实调用验证（设置环境变量 +
+   `enabled = true` + 一次成功调用）后，再决定是否纳入锁文件与默认路由；
+   同时注意之前对话中暴露的旧 key 已提示用户吊销轮换。
 
 ## 五、验收方式
+
+## 六、Image-to-Code Fidelity Loop
+
+新增 `references/image-to-code-fidelity.md`，把“效果图 → 代码 → 截图对照 → 修正”固化为可审计流程：输入分级（Figma/规范/可检查页面/截图/推断）、fidelity brief、同视口分区对照、一次批量修复和诚实的还原度表述。Figma MCP、OpenDesign 和 Product Design 插件仍是可选能力；未连接时走用户导出的图片、目标项目自身代码和 Playwright 对照，不虚构调用或百分比。
 
 ```bash
 npm run verify      # 期望 errors: []

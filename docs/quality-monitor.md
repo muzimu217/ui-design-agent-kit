@@ -31,6 +31,18 @@
 
 覆盖规则：**每个环节至少一个专属或强相关场景**；新增/大改环节时同步补场景。
 
+### 确认门覆盖（chain-flow v2）
+
+完整产品流程见 `docs/chain-flow.md`。确认门是强制闸门，验收记录必须显示每个
+适用确认门已通过，未显示即视为未闭环：
+
+| 确认门 | SKILL.md 锚点 | 强制场景 | 评测场景覆盖 |
+| --- | --- | --- | --- |
+| 方向稿门（初步设计稿） | Establish a direction（preliminary draft） | 实质性新 UI | 待补（无专属场景） |
+| 素材选择门 | reference-first（explicit selection，未选素材不得进入实现） | 采用外部素材 | material-confirmation-gate ✅ |
+| 契约确认门 | Establish a direction（design contract） | 大项目/动效复杂 | design-contract-quality ✅ |
+| 成品验收门 | Verify and hand off（user confirmation） | 面向用户交付 | honest-verification（部分覆盖） |
+
 ## 三、首轮审查结果（2026-09-06）
 
 **完整性**：九环节在 SKILL.md 均有指令且能映射到 references 与评测场景。✅
@@ -62,6 +74,7 @@ npm run prompt:build  # 重建导出，确认锚点与引用顺序
 **每次改动后（语义层，2 分钟）**
 
 - [ ] 改动的环节仍在本报告第二节映射表内，或映射表已同步
+- [ ] 验收记录含确认门痕迹：方向稿门/素材选择门/成品验收门至少列出通过情况
 - [ ] 新引用的规则与既有文件同参数/同口径，无重复冲突说法
 - [ ] 新增行为有对应 eval 场景（id 唯一、含 pass/fail 断言）
 - [ ] 新增上游内容已进 `sources.lock.json`（40 位 revision）并有 LICENSE/NOTICE

@@ -31,7 +31,8 @@ state changes legible. Do not mistake more effects or tool calls for better work
   baseline before designing, record its URL or local path, the parts being
   adapted, and the license or usage permission. When adopting external material
   into the site, present the shortlist to the user with sources and adaptation
-  boundaries and obtain confirmation first; replicating a proven example is
+  boundaries and obtain explicit selection first; material the user did not
+  select must not enter implementation. Replicating a proven example is
   preferred over inventing a new visual language or interaction pattern.
 - When the request starts from an image, screenshot, Figma handoff, or asks for
   higher visual fidelity, follow [image-to-code-fidelity.md](references/image-to-code-fidelity.md).
@@ -72,6 +73,11 @@ in the project's existing design document, or in a task-local note if none
 exists. When the target project already ships an interface, first extract its
 observable design system into the contract before choosing a direction. A small
 edit does not need a new document.
+
+For a substantial new UI, present a preliminary direction draft before material
+search or implementation: visual baseline, structure sketch, and motion intent
+in one short note, in the user's language. The user's response on the draft is
+a gate: do not advance to material adoption or implementation without it.
 
 Choose one coherent direction and explain the consequential tradeoff briefly.
 Offer alternatives only if requested or genuinely unresolved. Do not impose a
@@ -239,5 +245,8 @@ state/timing decisions. Implement files directly in the shared workspace
 when that is the task; for a code-only request, provide self-contained modules.
 Deliver the changed files or runnable URL, what works, the checks actually run,
 and any remaining limitation. Separate verified behavior from proposed follow-up.
+For a user-facing deliverable, present the runnable URL and acceptance record
+for the user's confirmation before declaring the task complete, then act on
+their feedback in one evidence-driven repair pass.
 Never claim accessibility compliance, visual parity, performance grades, or test
 success on the strength of generated code or a tool connection alone.

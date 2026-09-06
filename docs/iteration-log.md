@@ -5,4 +5,5 @@
 
 | 日期 | 类型 | 做了什么 | 分数 / 证据 | 下一步 |
 | --- | --- | --- | --- | --- |
-| 2026-09-06 | 基线 | 建立目标文档与迭代机制；v6 现状快照：verify 0 错误、test 13/13、场景 26（均为静态规范，无执行分数）、门F Stitch 不可达维持降级（e923a66） | docs/goal.md 第四节 | G1：建 `scripts/eval-run.mjs` 与 0-2 分 rubric，跑出前 1-2 个场景的真实分数 |
+| 2026-09-06 | 冲刺 1/8 | 迭代节奏改为每小时冲刺（全天共 8 轮，本轮主会话执行，后续每小时 :15 自动触发）；建成 G1 评分台账 `scripts/eval-run.mjs`（`npm run eval`：概览 / `--check` / `--record`；passCriteria 逐条 0-2、failConditions 一票否决、必须附证据、rubric 漂移会在 `--check` 报错），冒烟测试通过（写入/算分 50/校验，冒烟记录已删）；修正场景计数 26→29（e3 三场景入册后文档滞后） | 三连全绿：verify 0 错误、test 16/16（含未提交的 e3 WIP 测试）、prompt:build 正常；`npm run eval` 概览 0/29 已执行 | 第 2 轮（09:15 自动）：按 v6 链真实执行 1 个场景（建议 operations-not-marketing）并 `--record` 首个真实分数；提交时只 add 本轮文件（工作区有并行 WIP） |
+| 2026-09-06 | 基线 | 建立目标文档与迭代机制；v6 现状快照：verify 0 错误、test 16/16、场景 29（含 e3 决策类 3 个；均为静态规范，无执行分数）、门F Stitch 不可达维持降级（e923a66） | docs/goal.md 第四节 | 已由冲刺 1/8 接续 |

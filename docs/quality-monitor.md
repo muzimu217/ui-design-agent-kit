@@ -89,6 +89,16 @@ detail-critique.md、acceptance.md、chain-flow.md 四处一致；acceptance.md
 `detail-critique-before-gates`），门A/门C 专属场景缺口补齐，场景总数 26
 （首轮记录的 20 为滞后计数，本次按实际文件修正为 26）。✅
 
+### 第三轮：评分台账与计数修正（2026-09-06，冲刺 1/8）
+
+**可验证性**：新增执行评分台账 `scripts/eval-run.mjs`（`npm run eval`：
+概览 / `--check` / `--record`；passCriteria 逐条 0-2 分、failConditions
+一票否决、必须附证据；rubric 文本漂移会在 `--check` 报错）。当前 0/29
+真实执行，分数随 `docs/iteration-log.md` 逐轮累积。✅
+
+**新鲜度**：场景计数修正 26→29（e3 决策类三场景入册后文档未同步），
+第五节指标表同步更新。✅
+
 ## 四、可持续检查清单
 
 **每次改动后（机械层，约 30 秒）**
@@ -121,7 +131,7 @@ npm run prompt:build  # 重建导出，确认锚点与引用顺序
 
 | 指标 | 当前值 | 达标线 |
 | --- | --- | --- |
-| 评测场景数 | 26 | ≥ 每环节 1 个，共 ≥ 9 |
+| 评测场景数 | 29 | ≥ 每环节 1 个，共 ≥ 9 |
 | verify 错误数 | 0 | 0 |
 | 测试通过数 | 13/13 | 全过 |
 | 已装 skill 锁定率 | 13/15（另 2 个为本 kit 自有入口） | 上游 skill 100% 锁定 |

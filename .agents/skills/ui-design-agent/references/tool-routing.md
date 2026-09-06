@@ -21,16 +21,21 @@ a new visual direction or interaction pattern:
    components. Prefer an in-repository precedent when one exists.
 2. Search the relevant official docs/showcase, shipped product examples,
    component registries, template libraries, and asset sites using the product
-   type plus the specific interaction or material. A site such as Drei's docs is
-   a useful baseline when its examples match a React Three Fiber task; it is not a
-   license to copy unrelated code or assume the site is an available connector.
-3. Select one or more inspectable baselines. Record the source URL or local path,
+   type plus the specific interaction or material, consulting the inspiration
+   library as the concrete source catalog. A site such as Drei's docs is a
+   useful baseline when its examples match a React Three Fiber task; it is not
+   a license to copy unrelated code or assume the site is an available connector.
+3. Present the candidate shortlist to the user with source URLs, the parts
+   proposed for adoption, and the adaptation and license boundary, and obtain
+   confirmation before integrating external material. Replicating a proven
+   example is preferred over inventing a new direction.
+4. Select one or more inspectable baselines. Record the source URL or local path,
    the relationship being adapted, and the license or permission status. If a
    source cannot be inspected or licensed, treat it as visual research only.
-4. Adapt the baseline to the existing stack, brand, content, and architecture.
+5. Adapt the baseline to the existing stack, brand, content, and architecture.
    Reuse compatible primitives and licensed assets; write project-specific code
    for anything that cannot be reused lawfully or safely.
-5. If the search finds no compatible baseline, disclose the search boundary and
+6. If the search finds no compatible baseline, disclose the search boundary and
    create only the minimum new direction required. Explicitly requested original
    work is the other exception.
 
@@ -132,6 +137,12 @@ that name and pipe it into a shell, or fabricate an OpenDesign API. A tool found
 in a catalog still needs a successful call before it can be reported as used.
 Missing candidates do not block the task when a scoped fallback is sufficient.
 
+The `typeui.sh` DESIGN.md convention is an authoring format, not a dependency:
+`design-contract.md` defines this kit's adapted structure, and the agent can
+always produce it without any MCP. When the target project already ships an
+interface, extract its observable design system into the contract before
+choosing a new direction.
+
 Presets such as Bento Grid, Glassmorphic 3.0, Neo-Brutalism, or Dark Minimalist
 are visual references, not authority to replace the user's brand or framework.
 Inspect their code, license, dependencies, tokens, contrast, and runtime costs
@@ -216,6 +227,9 @@ Do not promise commercial permission or require a purchase without verifying it.
 - Assets: use the user's existing media first. Obtain real or generated images
   when the subject needs them; verify paths, rendering, licenses, and alt text.
   Do not add decorative media to a work-focused tool just to satisfy a checklist.
+  When image generation is available, use it for example imagery; when it is
+  not, state that once and proceed with placeholders or licensed assets. The
+  implementation is driven by the design prompt and code, not by the image tool.
 
 ## Browser evidence
 

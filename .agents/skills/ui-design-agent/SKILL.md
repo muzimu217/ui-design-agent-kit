@@ -25,12 +25,14 @@ state changes legible. Do not mistake more effects or tool calls for better work
   tokens and explicit requirements outrank generic recommendations from any skill.
 - Use a reference-first production process. Audit the existing implementation and
   local assets, then search for comparable shipped work on relevant official docs,
-  showcases, component registries, template libraries, and asset sites (for
-  example a relevant Drei docs/showcase when the task involves React Three Fiber).
-  Select a concrete baseline before designing, record its URL or local path, the
-  parts being adapted, and the license or usage permission. Prefer adapting the
-  existing project and a compatible proven example over inventing a new visual
-  language or interaction pattern.
+  showcases, component registries, template libraries, asset sites, and the
+  [inspiration library](references/inspiration-library.md) (for example a relevant
+  Drei docs/showcase when the task involves React Three Fiber). Select a concrete
+  baseline before designing, record its URL or local path, the parts being
+  adapted, and the license or usage permission. When adopting external material
+  into the site, present the shortlist to the user with sources and adaptation
+  boundaries and obtain confirmation first; replicating a proven example is
+  preferred over inventing a new visual language or interaction pattern.
 - Reuse existing code, tokens, content, and media whenever they fit. When a
   reference is public but its code or assets are not authorized for reuse, adapt
   the observable relationships and implement the result with the project's own
@@ -59,10 +61,11 @@ constraints. Choose the surface's mode, not a stereotype for the entire company:
 
 Build the usable experience as the first screen when asked for an app or tool.
 Create a marketing landing page only when requested. For a new substantial UI,
-record a compact design contract in the project's existing design document, or
-in a task-local note if none exists: primary task, composition, typography,
-semantic colors, spacing/density, components, media, motion intent, and acceptance
-conditions. A small edit does not need a new document.
+author a design contract per [design-contract.md](references/design-contract.md)
+in the project's existing design document, or in a task-local note if none
+exists. When the target project already ships an interface, first extract its
+observable design system into the contract before choosing a direction. A small
+edit does not need a new document.
 
 Choose one coherent direction and explain the consequential tradeoff briefly.
 Offer alternatives only if requested or genuinely unresolved. Do not impose a
@@ -131,6 +134,10 @@ is not proof of a connection, and a connection is not proof of a successful call
   installed version. Use shadcn only if compatible with the target stack.
 - Use a supplied Figma design through an authenticated, available Figma connector.
   Use image generation or existing assets when the actual UI needs visual media.
+If image generation is available, produce example imagery; if it is not, say so
+once and proceed with placeholders or licensed assets instead of blocking the
+task. The final deliverable is driven by the design prompt and implementation
+pass, not by the image tool.
 - Use the available browser tools for rendered evidence. Reuse a functioning
   connection instead of installing another browser-control stack.
 
@@ -141,6 +148,7 @@ implementation, adapt compatible primitives and verify the full journey. The
 candidate tools `mcp-copy-web-ui`, `inspire-mcp`, `ui-expert-mcp`, `typeui.sh`,
 and OpenDesign are described in the routing reference: discover their actual
 availability, identity, and schema before a call; never fabricate execution.
+The design contract format itself is tool-free: author it without any MCP or CLI.
 
 If a supporting skill is missing, say so once and continue with the available
 guidance. Do not install a new global stack or enable a paid integration as a
@@ -178,6 +186,7 @@ the primary journey and affected edge states in the actual browser, inspect
 mobile and desktop screenshots, and check keyboard and reduced-motion behavior.
 Use the project's tests/build/typecheck as applicable. For 3D or canvas work,
 verify nonblank pixels, framing, movement, and interaction, not just DOM presence.
+Review the result against the design contract's quality gates and the checks below.
 
 Batch the first inspection, fix the observed issues together, then confirm those
 fixes. Do not keep redesigning without new evidence. If a blocker survives the

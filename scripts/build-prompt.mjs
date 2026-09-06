@@ -6,6 +6,8 @@ import { ROOT, parseSkill } from "./verify.mjs";
 const references = [
   ["motion-contract.md", "Web Motion Contract"],
   ["tool-routing.md", "Capability Routing"],
+  ["design-contract.md", "Design Contract"],
+  ["inspiration-library.md", "Inspiration Library"],
   ["acceptance.md", "UI Acceptance"],
 ];
 

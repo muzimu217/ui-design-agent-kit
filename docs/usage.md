@@ -15,8 +15,9 @@ $ui-design-agent 请为这个产品实现高质感界面。新项目优先 React
 
 For a portable system prompt, run `npm run prompt:build`. It produces
 `output/ui-design-agent.system.md` by combining the maintained entrypoint and
-its motion, routing, and acceptance references. The export is generated, not a
-second source to edit. The target host still needs its own skills and MCP setup.
+its motion, routing, design-contract, and acceptance references. The export is
+generated, not a second source to edit. The target host still needs its own
+skills and MCP setup.
 
 For web interaction motion:
 

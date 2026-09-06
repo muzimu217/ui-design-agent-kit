@@ -181,6 +181,23 @@
         ],
         "notes": "冲刺 7/8：目标站=库存运营台。候选 shadcn/ui Card **实抓**（WebFetch 拿到解剖：ring-1/rounded-xl/--card-spacing/CardAction/footer border-t）+ 许可 **API 实测**（GitHub SPDX 返回 MIT，LICENSE.md sha fad4d88）——非标题、非口头声称。候选呈递含 URL/拟采用部分/改编与许可边界/不采用部分；**未裁决前零集成**（门B 规则），任务未阻塞——项目原生兜底已实现：KPI 指标卡行（3+1 张，计数随搜索/分类实时反映），纯自写、Enterprise token、React 19+TS 栈不变、零新增依赖，点击切状态筛选与分段控件同源同步（断言：缺货→分段按压+表格 2 行；全部→12 行）；内环抓到激活卡提示语误导（『点击筛选』应为『当前筛选』）并修复断言复验（本轮唯一改动）。console 0 错误。自动轮·待用户裁决（门B 2 项）。"
       }
+    ],
+    "prototype-before-code": [
+      {
+        "date": "2026-09-06",
+        "round": "8/8",
+        "scores": {
+          "Produces a no-code prototype: a generated prototype image when the capability exists, otherwise a ready-to-paste generation prompt": 2,
+          "Presents the prototype to the user as a gate before any implementation": 2,
+          "Iterates the material or prompt when the user rejects the prototype instead of jumping to code": 2,
+          "Keeps the prototype phase free of code, dependencies, and dev servers": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/prototype-before-code/PROTOTYPE.md"
+        ],
+        "notes": "冲刺 8/8：山径预订流程的门C 原型（场景前提=门B 已批；门A 稿待裁决的事实已在文档注明，不假装已过）。生图能力如实探测：环境无生图工具 + Stitch 带 key 复测 HTTP 000（第 6 次）→ 声明一次后降级路径 b：step1/step2 两段可直接粘贴的生图提示词（390x844 视口、苔绿/岩灰/米白 token、日历余位徽标语义、sticky 结算条）。判据③迭代协议预承诺（否决类型→提示词修订映射表，不跳码）。判据④由目录自证（仅 PROTOTYPE.md 一个文档，无码无依赖无 dev server）。内环：P1 视口规格缺失批评后已补（本轮唯一改动）；P2×2 如实披露（mono 字宽生图不可控、余位阈值留门D）。failConditions 全未触发。自动轮·待用户裁决（门C 2 项）。"
+      }
     ]
   }
 }

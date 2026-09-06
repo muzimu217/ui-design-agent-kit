@@ -31,17 +31,18 @@
 
 覆盖规则：**每个环节至少一个专属或强相关场景**；新增/大改环节时同步补场景。
 
-### 确认门覆盖（chain-flow v2）
+### 确认门覆盖（chain-flow v3）
 
 完整产品流程见 `docs/chain-flow.md`。确认门是强制闸门，验收记录必须显示每个
 适用确认门已通过，未显示即视为未闭环：
 
 | 确认门 | SKILL.md 锚点 | 强制场景 | 评测场景覆盖 |
 | --- | --- | --- | --- |
-| 方向稿门（初步设计稿） | Establish a direction（preliminary draft） | 实质性新 UI | 待补（无专属场景） |
-| 素材选择门 | reference-first（explicit selection，未选素材不得进入实现） | 采用外部素材 | material-confirmation-gate ✅ |
-| 契约确认门 | Establish a direction（design contract） | 大项目/动效复杂 | design-contract-quality ✅ |
-| 成品验收门 | Verify and hand off（user confirmation） | 面向用户交付 | honest-verification（部分覆盖） |
+| 门A 设计稿 | Establish a direction（preliminary draft） | 实质性新 UI（强制） | 待补（无专属场景） |
+| 门B 素材选择 | reference-first（explicit selection，未选素材不得进入实现） | 采用外部素材（强制） | material-confirmation-gate ✅ |
+| 门C 原型 | Establish a direction（prototype without writing code，生图/提示词双路径） | 实质性新 UI（强制） | 待补（无专属场景） |
+| 门D 契约 | Establish a direction（design contract） | 大项目/动效复杂 | design-contract-quality ✅ |
+| 门E 每轮验收 | Verify and hand off（multi-round interaction verification，逐页替换建议） | 代码完成后每轮（强制） | honest-verification（部分覆盖） |
 
 ## 三、首轮审查结果（2026-09-06）
 

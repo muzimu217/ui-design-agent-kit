@@ -79,6 +79,13 @@ search or implementation: visual baseline, structure sketch, and motion intent
 in one short note, in the user's language. The user's response on the draft is
 a gate: do not advance to material adoption or implementation without it.
 
+After the draft and the user's material selection, produce a prototype without
+writing code: generate a prototype image from the selected material when an
+image or Stitch capability is available, otherwise hand the user a generation
+prompt for their own image tool and iterate on the prompt until the direction
+is accepted. Implementation comes last: do not start code before the user has
+seen the prototype and the design contract is confirmed.
+
 Choose one coherent direction and explain the consequential tradeoff briefly.
 Offer alternatives only if requested or genuinely unresolved. Do not impose a
 fixed palette, unusual font, or fashionable layout on every domain. A direction
@@ -245,8 +252,11 @@ state/timing decisions. Implement files directly in the shared workspace
 when that is the task; for a code-only request, provide self-contained modules.
 Deliver the changed files or runnable URL, what works, the checks actually run,
 and any remaining limitation. Separate verified behavior from proposed follow-up.
-For a user-facing deliverable, present the runnable URL and acceptance record
-for the user's confirmation before declaring the task complete, then act on
-their feedback in one evidence-driven repair pass.
-Never claim accessibility compliance, visual parity, performance grades, or test
-success on the strength of generated code or a tool connection alone.
+For a user-facing deliverable, run multi-round interaction verification:
+per page, list the concrete motion and interaction issues and propose
+replacements from proven market implementations or the inspiration library,
+present the list to the user, act on their selected items in one
+evidence-driven repair pass, then re-verify; repeat until the user confirms.
+Prefer adopting a proven market implementation over writing a novel one.
+Never claim accessibility compliance, visual parity, performance grades, or
+test success on the strength of generated code or a tool connection alone.

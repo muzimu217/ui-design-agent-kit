@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="竹与墨——成都独立开发者「小墨」的技术博客：写代码、看番、啃竹子。" />
+    <meta name="theme-color" content="#FAF7F0" />
+    <title>竹与墨 · 小墨的技术博客</title>
+    <script>
+      // 首帧主题直出：跟随 prefers-color-scheme 或 localStorage（不等 React）。
+      (function () {
+        try {
+          var saved = localStorage.getItem('zhumu-theme');
+          var theme = saved === 'dark' || saved === 'light'
+            ? saved
+            : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.dataset.theme = theme;
+        } catch (e) {
+          document.documentElement.dataset.theme = 'light';
+        }
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" />
+    <script type="module" crossorigin src="/assets/index-B8zfL1aK.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BZMHQKWg.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

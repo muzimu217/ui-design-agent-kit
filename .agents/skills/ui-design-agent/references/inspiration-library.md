@@ -58,6 +58,40 @@ and verify license or permission before adapting anything.
   frontend design, usable across Cursor, Claude Code, Copilot, Gemini CLI, and
   Codex CLI.
 
+## Production image sources
+
+These sources are separate from UI screenshot galleries. A file is not eligible
+for production until its individual license, creator, attribution requirement,
+and download URL are recorded:
+
+| Source | Best used for | Default handling |
+| --- | --- | --- |
+| [Wikimedia Commons](https://commons.wikimedia.org) | Openly licensed photography, diagrams, and historical media | High-priority asset search; verify the file page and license per asset |
+| [Unsplash](https://unsplash.com) | Photography references and licensed stock-style imagery | Candidate source; availability and terms must be rechecked in the current browser |
+| [Pexels](https://www.pexels.com) | Photography and short stock clips | Candidate source; availability and terms must be rechecked in the current browser |
+| [Openverse](https://openverse.org) | Federated search across openly licensed media | Candidate source; follow the upstream license link for every result |
+
+Do not use a screenshot from Mobbin, Refero, or a showcase as a production
+image. If a source cannot be reached, keep it in the secondary bucket rather
+than repeatedly retrying it or inventing a replacement license.
+
+## Default priority bands
+
+These are starting points before the task-specific score from
+`material-rank.mjs`; they are not popularity ratings:
+
+| Band | Sources | Why |
+| --- | --- | --- |
+| Primary | Local `ui-ux-pro-max`, React Bits, Mobbin, Refero, Wikimedia Commons | Strong task fit, inspectable evidence, or a clear per-file rights path |
+| Secondary | Unsplash, Pexels, Openverse, Uiverse.io, UI Prompt Site, rate-limited galleries | Useful when reachable, but current isolated access or rights evidence needs another check |
+| Research-only | Awwwards, Godly, Dark Design, Best Website Gallery, Shots, MotionSites AI | Good visual direction, but normally not reusable assets or code |
+| Excluded until resolved | Placeholder, untrusted, or explicitly prohibited sources | Cannot support a production decision |
+
+The band can change for a specific task after an actual MCP/browser inspection.
+Use the candidate score and access bucket in
+[material-scouting.md](material-scouting.md), then show the primary results to
+the user before secondary exploration.
+
 ## Optional design-taste skills
 
 Not installed in this kit; listed as candidate capabilities for hosts that

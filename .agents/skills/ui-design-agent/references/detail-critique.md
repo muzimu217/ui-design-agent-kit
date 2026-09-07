@@ -19,6 +19,11 @@ Scale the pass to the artifact: critique a draft as a draft (structure,
 hierarchy, tone, motion intent), not against implementation-only dimensions.
 State a skipped dimension as skipped; it is not silently passed.
 
+This pass inherits the assignment's permissions. In a read-only review or
+planning task, evaluate and report without modifying the artifact; propose
+repairs and their re-checks as next steps. A severe defect does not grant write
+permission. The review can be delivered while the implementation remains blocked.
+
 ## Dimensions
 
 Evaluate each detail against the dimensions it touches. The governing contract
@@ -42,7 +47,7 @@ location, or contract rule — is a suspicion. Label it as one or verify it.
 
 | Level | Meaning | Handling |
 | --- | --- | --- |
-| P0 blocking | Breaks the primary task, loses input, blocks an essential keyboard or assistive path, corrupts layout, or fails a contractual accessibility target | Fix before presenting the artifact as done; an unfixed P0 blocks any completion claim |
+| P0 blocking | Breaks the primary task, loses input, blocks an essential keyboard or assistive path, corrupts layout, or fails a contractual accessibility target | Blocks implementation acceptance; repair only when authorized, otherwise report the blocker |
 | P1 should-fix | A real quality defect a user would notice: a missing state, measured contrast below target, motion off-preset, accidental token drift | Fix in the current round when feasible; otherwise a named leftover with a reason |
 | P2 polish | Discretionary improvement with no functional or contractual failure | Never blocks; needs user selection or an explicit leftover note |
 
@@ -56,9 +61,10 @@ taste preference is never P1.
    implemented UI use rendered evidence; reading the source is not a rendered
    check.
 2. Triage: assign each finding a severity and its evidence anchor.
-3. Repair what you caught: fix self-fixable P0 and P1 findings before
-   presenting, then re-check each fix once with evidence. A fix asserted
-   without a re-check is not fixed.
+3. Within authorized implementation work, repair self-fixable P0 and P1 findings
+   before presenting, then re-check each fix once with evidence. In read-only
+   work, leave findings open and recommend repairs; do not delay the report
+   pending write permission. A fix asserted without a re-check is not fixed.
 4. Present leftovers: show remaining findings with severity and reason
    alongside the artifact. The user sees known issues, not a clean facade, and
    their gate decision is made on the real state.

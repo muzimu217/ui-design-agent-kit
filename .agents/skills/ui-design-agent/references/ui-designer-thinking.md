@@ -5,6 +5,29 @@ execution. Think in stages, not one silent pass: consult the user at each
 stage's decision point. The stages are the thinking kernel; the confirmation
 gates in `chain-flow.md` are the process gateways.
 
+## Design context gate
+
+Confirm the design context before any substantial design work; the codebase
+cannot supply it. Code tells you what was built, not who it is for or how it
+should feel.
+
+- Required context: target audience and situation; use cases and primary
+  tasks; brand personality and tone.
+- Source order: an explicit context block in the request -> the project's
+  design document (such as `.impeccable.md`) -> otherwise ask the user before
+  proceeding. Do not infer audience or tone from reading the codebase alone.
+- Record the confirmed context in the design contract (Brand section) and
+  re-check it at each confirmation gate.
+
+The stages run inside the mode state machine in `plan-execute.md`: planning
+outputs may be inspected and discussed, but the first prototype waits for a
+locked plan plus an explicit execution request. A continuation resumes the
+first unresolved state instead of silently replaying the whole plan.
+
+Use the assignment and approval-reuse rules in the entrypoint to decide which
+stages apply now. These stages guide decisions; they do not authorize edits or
+invalidate an unchanged, already confirmed direction on every continuation.
+
 ## The six stages
 
 | # | Stage | Core question | Agent actions | Stage output | Related gate |
@@ -35,16 +58,18 @@ Each stage adds its own questions before its decision point:
 | 3 Information architecture | Does the first screen carry the critical information and nothing that outranks it? Is every group explainable by proximity, similarity, or closure? Does the hierarchy still work as a grayscale wireframe? |
 | 4 Visual system | Does the tone follow the product's position rather than current fashion? Can every color, size, radius, and duration trace to a token? Is contrast measured, not assumed? |
 | 5 Interaction detail | Does every interactive element have its full state set? Does every animation name its trigger, initial and final state, preset, interruption behavior, and reduced-motion result? Do touch and keyboard users get hover-equivalent feedback? |
-| 6 Verification | Which claims have rendered evidence and which are still inference? What did the user actually confirm, versus what am I assuming confirmed? What is the cheapest next check that could disprove the current result? |
+| 6 Verification | Which claims have rendered evidence and which are still inference? Does the evidence establish a cause or only an observation? What did the user actually confirm, versus what am I assuming confirmed? What is the cheapest next check that could disprove the current result? |
 
 ## Operating rules
 
 - Advance stage by stage; present each stage's decision point to the user and
-  consult before proceeding. Do not complete a substantial UI in one silent pass.
+  consult on unresolved applicable choices before proceeding. Reuse valid
+  confirmations under the entrypoint's rules. Do not complete a substantial
+  new UI in one silent pass.
 - Before presenting any gate artifact — direction draft, prototype, contract,
   or acceptance-round list — run the detail-critique pass from
-  detail-critique.md: evaluate details, triage by severity, repair what you
-  caught yourself, and present the leftovers with the artifact. The gates are
+  detail-critique.md: evaluate details, triage by severity, repair within the
+  authorized scope, and present the leftovers with the artifact. The gates are
   where the user judges direction; that pass is where you judge your own
   craft first.
 - A stage's output feeds the next: do not jump to stage 5 implementation while

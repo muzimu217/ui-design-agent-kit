@@ -19,6 +19,8 @@ state changes legible. Do not mistake more effects or tool calls for better work
 
 - Distinguish planning, review, targeted refinement, redesign, and implementation.
   Planning and review do not authorize code changes. A narrow fix is not a redesign.
+  Self-critique and severity never expand that authority: a read-only review can
+  finish with an open P0, but the implementation must remain unaccepted.
 - Read the target repository's instructions, dependencies, routes, components,
   tokens, assets, and current states before choosing libraries or visual direction.
 - Preserve the user's brand, content, stack, and chosen references. Established
@@ -34,6 +36,12 @@ state changes legible. Do not mistake more effects or tool calls for better work
   boundaries and obtain explicit selection first; material the user did not
   select must not enter implementation. Replicating a proven example is
   preferred over inventing a new visual language or interaction pattern.
+- When the task needs outside material, read [material-scouting.md](references/material-scouting.md).
+  Classify each candidate as a reference, component, asset, or prompt; search a
+  small first-pass budget; rank by task relevance, inspectable evidence, rights
+  clarity, adaptation fit, and retrieval efficiency. Show the primary bucket
+  first, keep blocked or low-score sources in a separate secondary bucket, and
+  never let the score bypass user confirmation or license review.
 - When the request starts from an image, screenshot, Figma handoff, or asks for
   higher visual fidelity, follow [image-to-code-fidelity.md](references/image-to-code-fidelity.md).
   Classify the source, write a compact fidelity brief, separate measured facts
@@ -56,6 +64,14 @@ state changes legible. Do not mistake more effects or tool calls for better work
 
 ## Establish a direction
 
+For a substantial UI, use [plan-execute.md](references/plan-execute.md) to
+separate a consultative Plan Mode from an authorized Execute Mode. Plan Mode
+freezes the mission, scope, selected materials, prototype brief, constraints,
+and acceptance checks before any prototype is generated. After the user
+explicitly locks a plan and requests execution, generate the first no-code
+prototype from that frozen plan and stop at the prototype gate. One-click
+execution starts the authorized sequence; it never passes a user gate.
+
 Think in six design stages, not one silent pass: define problem and goal,
 analyze user scenarios and journey, structure information and hierarchy,
 explore visuals and system rules, refine interactions and handoff, then
@@ -65,13 +81,25 @@ and consult the user at each stage's decision point; when a stage depends on a
 choice only the user can make, ask before proceeding. Do not run a substantial
 UI to completion in one pass and present it as finished.
 
+Confirm the design context first: target audience and situation, use cases,
+and brand personality or tone. The codebase cannot supply this; ask the user
+when the request or the project's design document does not state it.
+
+Apply the stages to the assigned workflow, not as a mandatory restart. On
+continuation, inspect existing approvals and resume at the first unresolved
+applicable gate. Reopen only gates whose scope, material, contract, or supporting
+evidence changed; explain the change. Missing approval is not assumed approval,
+and prior approval does not authorize new scope. A review or narrow repair does
+not need a new direction, material search, or prototype for unchanged design.
+
 Before presenting any gate artifact — direction draft, prototype, contract, or
 acceptance-round list — run the detail-level self-critique in
 [detail-critique.md](references/detail-critique.md): evaluate each component
 and interaction against its dimensions, triage findings as P0, P1, or P2,
-repair what you can catch yourself, and present the remaining known issues
+repair self-caught defects only within authorized edits, and present the remaining known issues
 with their severity. The user judges direction at the gates; you judge craft
-before the gates. An unfixed P0 finding blocks any completion claim.
+before the gates. An unfixed P0 blocks implementation acceptance, not delivery
+of a review or a blocker report.
 
 Identify the audience, primary job, target surface, critical states, and technical
 constraints. Choose the surface's mode, not a stereotype for the entire company:
@@ -83,6 +111,14 @@ constraints. Choose the surface's mode, not a stereotype for the entire company:
 | Docs, article, reading | Comprehension, navigation, legibility, comfortable reading length |
 | Portfolio, campaign, experience | Distinct art direction, real work or product visible early, purposeful expression |
 
+Prioritize decisions by primary-task impact, evidence strength, and change cost.
+Separate observed facts, unverified reports, and preferences; correlation does
+not establish the cause of a product metric. Recommend the smallest justified
+change with a check that could disprove its premise. When evidence is weak,
+verify the risky assumption before committing to a fix. Keep visible rationale
+compact: evidence, expected effect, tradeoff, next check. Do not invent benefit
+percentages or let decorative novelty outrank a credible task-blocking risk.
+
 Build the usable experience as the first screen when asked for an app or tool.
 Create a marketing landing page only when requested. For a new substantial UI,
 author a design contract per [design-contract.md](references/design-contract.md)
@@ -91,17 +127,18 @@ exists. When the target project already ships an interface, first extract its
 observable design system into the contract before choosing a direction. A small
 edit does not need a new document.
 
-For a substantial new UI, present a preliminary direction draft before material
-search or implementation: visual baseline, structure sketch, and motion intent
-in one short note, in the user's language. The user's response on the draft is
-a gate: do not advance to material adoption or implementation without it.
+For a substantial new UI, present a preliminary direction draft in Plan Mode
+before material search or implementation: visual baseline, structure sketch, and
+motion intent in one short note, in the user's language. Do not generate the
+first prototype until the plan record is locked and the user explicitly asks to
+execute it.
 
-After the draft and the user's material selection, produce a prototype without
-writing code: generate a prototype image from the selected material when an
-image or Stitch capability is available, otherwise hand the user a generation
-prompt for their own image tool and iterate on the prompt until the direction
-is accepted. Implementation comes last: do not start code before the user has
-seen the prototype and the design contract is confirmed.
+After plan lock and an execution request, produce a prototype without writing
+code: generate a prototype image from the selected material when an image or
+Stitch capability is available, otherwise hand the user a generation prompt for
+their own image tool. Stop at Gate C for the user's decision. Implementation
+comes later: do not start code before the prototype and, when applicable, the
+design contract are confirmed.
 
 Choose one coherent direction and explain the consequential tradeoff briefly.
 Offer alternatives only if requested or genuinely unresolved. Do not impose a
@@ -296,10 +333,13 @@ and any remaining limitation. Separate verified behavior from proposed follow-up
 For a user-facing deliverable, run multi-round interaction verification:
 per page, list the concrete motion and interaction issues, each triaged as
 P0, P1, or P2 per [detail-critique.md](references/detail-critique.md) with an
-unfixed P0 blocking any completion claim, and propose replacements from
+unfixed P0 blocking implementation acceptance, and propose replacements from
 proven market implementations or the inspiration library; present the list to
 the user, act on their selected items in one evidence-driven repair pass,
 then re-verify; repeat until the user confirms.
 Prefer adopting a proven market implementation over writing a novel one.
+Run the AI-slop test on each page: would a viewer instantly believe an AI
+made it? A distinctive page makes people ask "how was this made", not "which
+AI made this"; surface that judgment in each verification round's list.
 Never claim accessibility compliance, visual parity, performance grades, or
 test success on the strength of generated code or a tool connection alone.

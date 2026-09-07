@@ -1,0 +1,9 @@
+{
+  "id": "e3-decision-quality",
+  "mode": "decision-only",
+  "scenarioIds": [
+    "e3-review-repair-boundary",
+    "e3-resume-approved-direction",
+    "e3-evidence-led-priorities"
+  ]
+}

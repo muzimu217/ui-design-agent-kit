@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- 原创几何熊猫 logo（§9.4）：圆头、双圆耳、脸谱式弧形眼罩（±20° 外旋、不闭合） -->
+  <circle cx="16" cy="13" r="8" fill="#1F2421"/>
+  <circle cx="48" cy="13" r="8" fill="#1F2421"/>
+  <ellipse cx="32" cy="36" rx="26" ry="23.5" fill="#FDFCF7" stroke="#2F6B4F" stroke-width="2"/>
+  <path d="M -4.5 -7.8 A 9 9 0 0 1 4.5 -7.8" transform="translate(21.5 33) rotate(-20)" stroke="#2F6B4F" stroke-width="3.4" stroke-linecap="round" fill="none"/>
+  <path d="M -4.5 -7.8 A 9 9 0 0 1 4.5 -7.8" transform="translate(42.5 33) rotate(20)" stroke="#2F6B4F" stroke-width="3.4" stroke-linecap="round" fill="none"/>
+  <circle cx="21.5" cy="35" r="2.4" fill="#1F2421"/>
+  <circle cx="42.5" cy="35" r="2.4" fill="#1F2421"/>
+  <ellipse cx="32" cy="44" rx="2.6" ry="2" fill="#1F2421"/>
+  <path d="M 29 49 Q 32 51 35 49" stroke="#1F2421" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+</svg>

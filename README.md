@@ -10,6 +10,7 @@
 - [动效规则](.agents/skills/ui-design-agent/references/motion-contract.md)：三套指定弹簧参数、40-80ms 级联、Hover/Press、减少动效及中断处理。
 - [工具路由](.agents/skills/ui-design-agent/references/tool-routing.md)：实际能力探测、候选工具、权限边界和替代路径。
 - [设计契约](.agents/skills/ui-design-agent/references/design-contract.md)：面向新界面的可测试视觉方向记录：Mission、语义 token、Do/Don't 规则与质量门，无需 MCP。
+- [计划/执行模式](.agents/skills/ui-design-agent/references/plan-execute.md)：先咨询并冻结计划，用户明确确认后才一键生成第一版原型，再进入代码执行。
 - [细节批评内环](.agents/skills/ui-design-agent/references/detail-critique.md)：逐组件/逐交互的评估维度、P0/P1/P2 严重度分诊与未修复留痕；每道确认门呈现前先自我批评再交用户。
 - [Remotion 提示词](.agents/skills/remotion-video-agent/SKILL.md)：视频帧时间轴、转场、Studio 和渲染验收。
 - [动画生态参考路由](.agents/skills/ui-design-agent/references/tool-routing.md)：Remotion、Manim、Vibe Video、VibeFrame、Shotcut、OpenShot 的任务匹配与授权边界。
@@ -59,6 +60,11 @@ npm run doctor:mcp
 `doctor` 只检查本地配置；`doctor:mcp` 会访问公开服务并启动配置中的本地 MCP，进行只读调用，不登录付费服务。它不证明某个实际应用已通过视觉验收。
 
 [评测场景](evals/scenarios.json) 覆盖产品类型、动效参数、不可用工具、减少动效、长列表和视频转场；它们是可重复执行的行为评测规范，单元测试只检查其结构，不代表已经逐场景运行了生成任务。
+
+素材检索遵循[候选排序规范](.agents/skills/ui-design-agent/references/material-scouting.md)：
+先搜高优先级来源和少量候选，再把 MCP/浏览器结果交给
+`npm run material:rank -- --input <candidate-json>`；不可达、低分或未验证来源会
+保留在 secondary 区，不会因为一次失败就删除，也不会自动进入实现。
 
 长期目标、五步迭代循环与定时任务机制见[目标与迭代机制](docs/goal.md)，逐轮记录见[迭代日志](docs/iteration-log.md)，思维链质量监控见[质量监控](docs/quality-monitor.md)。
 

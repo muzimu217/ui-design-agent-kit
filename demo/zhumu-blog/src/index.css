@@ -1,0 +1,432 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   竹与墨 · 设计令牌（DESIGN.md §4 色彩 / §5 排版 / §6 间距圆角深度）
+   全部语义令牌亮暗双主题成对定义；组件只引用语义令牌。
+   ============================================================ */
+
+:root {
+  /* —— 基础色板（§4.1）—— */
+  --paper: #faf7f0;
+  --ink-full: #1f2421;
+  --bamboo-deep: #2f6b4f;
+  --bamboo-light: #52b788;
+  --cinnabar: #b5452f;
+  --tech-blue: #4e9bd8;
+
+  /* —— 语义令牌 · 亮色（§4.2）—— */
+  --z-bg: #faf7f0;
+  --z-bg-subtle: #f5f1e8;
+  --z-surface: #faf7f0;
+  --z-text: #1f2421;
+  --z-text-secondary: #5c6158;
+  --z-text-tertiary: #676c63;
+  --z-link: #2f6b4f;
+  --z-link-hover: #24523c;
+  --z-on-brand: #faf7f0;
+  --z-accent: #52b788;
+  --z-badge: #b5452f;
+  --z-focus-ring: #2f6b4f;
+  --z-border: rgba(31, 36, 33, 0.12);
+  --z-border-strong: #858a80;
+  --z-veil-rgb: 31, 36, 33;
+  --z-veil-peak: 0.1;
+  --z-code-bg: #f5f1e8;
+  --z-code-text: #3a3f3a;
+  --z-selection: rgba(47, 107, 79, 0.2);
+
+  /* —— 语法高亮子令牌（§4.2，↔ code-bg）—— */
+  --syntax-keyword: #2f6b4f;
+  --syntax-string: #2e6e9e; /* 科技蓝亮色深派生（契约注 1） */
+  --syntax-comment: #646a5f;
+
+  /* —— 背景墨色（§4.2 末 / §9）：亮=墨，暗=纸色反墨 —— */
+  --z-ink: #1f2421;
+  --z-ink-wash: #6b6f60;
+
+  /* —— 深度（§6）：仅浮层允许投影 —— */
+  --z-shadow: 0 4px 16px rgba(31, 36, 33, 0.08);
+
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --z-bg: #16201b;
+  --z-bg-subtle: #1d2a23;
+  --z-surface: #1d2a23;
+  --z-text: #e8e6dd;
+  --z-text-secondary: #aeb3a7;
+  --z-text-tertiary: #8a9188;
+  --z-link: #52b788;
+  --z-link-hover: #7fd6a8;
+  --z-on-brand: #16201b;
+  --z-accent: #52b788;
+  --z-badge: #b5452f;
+  --z-focus-ring: #52b788;
+  --z-border: rgba(232, 230, 221, 0.12);
+  --z-border-strong: #5f6b62;
+  --z-veil-rgb: 232, 230, 221;
+  --z-veil-peak: 0.06;
+  --z-code-bg: #101915;
+  --z-code-text: #d6d9ce;
+  --z-selection: rgba(82, 183, 136, 0.28);
+
+  --syntax-keyword: #52b788;
+  --syntax-string: #4e9bd8;
+  --syntax-comment: #7f887f;
+
+  --z-ink: #e8e6dd;
+  --z-ink-wash: #9aa394;
+
+  --z-shadow: 0 4px 16px rgba(0, 0, 0, 0.24);
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  /* 语义色 → Tailwind 工具类（bg、text、border 等） */
+  --color-bg: var(--z-bg);
+  --color-bg-subtle: var(--z-bg-subtle);
+  --color-surface: var(--z-surface);
+  --color-text: var(--z-text);
+  --color-text-secondary: var(--z-text-secondary);
+  --color-text-tertiary: var(--z-text-tertiary);
+  --color-link: var(--z-link);
+  --color-link-hover: var(--z-link-hover);
+  --color-on-brand: var(--z-on-brand);
+  --color-accent: var(--z-accent);
+  --color-badge: var(--z-badge);
+  --color-focus-ring: var(--z-focus-ring);
+  --color-border-ink: var(--z-border); /* hairline；命名避开 Tailwind 默认 border 色 */
+  --color-border-strong: var(--z-border-strong);
+  --color-code-bg: var(--z-code-bg);
+  --color-code-text: var(--z-code-text);
+  --color-ink: var(--z-ink);
+
+  /* 字体（§5.1，回退栈逐字） */
+  --font-kai: 'LXGW WenKai', 'Kaiti SC', KaiTi, serif;
+  --font-sans: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+  /* 字号阶梯（§5.2，全断点一致，固定 px，禁止 clamp/vw【HC-1】） */
+  --text-display: 40px;
+  --text-display--line-height: 1.35;
+  --text-h1: 32px;
+  --text-h1--line-height: 1.4;
+  --text-h2: 26px;
+  --text-h2--line-height: 1.5;
+  --text-h3: 22px;
+  --text-h3--line-height: 1.5;
+  --text-title-list: 20px;
+  --text-title-list--line-height: 1.5;
+  --text-body-article: 17px;
+  --text-body-article--line-height: 1.9;
+  --text-body: 16px;
+  --text-body--line-height: 1.75;
+  --text-meta: 14px;
+  --text-meta--line-height: 1.6;
+  --text-tab-label: 12px;
+  --text-tab-label--line-height: 1.3;
+  --text-code: 14px;
+  --text-code--line-height: 1.7;
+
+  /* 圆角（§6） */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* 浮层投影（§6，唯一允许的阴影） */
+  --shadow-overlay: var(--z-shadow);
+
+  /* 导航/标签栏几何 */
+  --spacing-nav-h: 64px;
+  --spacing-topbar-h: 56px;
+  --spacing-tabbar-h: 64px;
+
+  /* 换场薄纱（§4.2） */
+  --color-veil: rgb(var(--z-veil-rgb) / var(--z-veil-peak));
+}
+
+/* ============================================================
+   基础层
+   ============================================================ */
+
+@layer base {
+  html {
+    background-color: var(--z-bg);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 16px; /* 固定 px【HC-1】 */
+    line-height: 1.75;
+    letter-spacing: 0.01em;
+    color: var(--z-text);
+    background-color: var(--z-bg);
+    overscroll-behavior-y: contain; /* 下拉刷新容器约束（§7.10） */
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--z-selection);
+  }
+
+  /* 焦点环（§11）：2px 环 + 2px 偏移，永不裸 outline:none */
+  :focus-visible {
+    outline: 2px solid var(--z-focus-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-kai);
+    letter-spacing: 0.02em;
+  }
+
+  /* 主题切换 250ms 颜色过渡（§8.2 J）：显式列属性，禁 all。
+     仅在切换瞬间挂 .theme-switching，平时不拖慢 hover（hover ≤150ms 起效）。 */
+  html.theme-switching,
+  html.theme-switching *,
+  html.theme-switching *::before,
+  html.theme-switching *::after {
+    transition-property: background-color, color, border-color, outline-color, fill, stroke,
+      box-shadow !important;
+    transition-duration: 250ms !important;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important; /* inkEase */
+  }
+
+  /* reduced-motion：CSS 侧全局出口（MotionConfig 不覆盖 CSS/Canvas，§8.1） */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ============================================================
+   组件层工具
+   ============================================================ */
+
+@layer components {
+  /* 内容列（§3.1）：列表 720px；正文阅读列 680px */
+  .content-col {
+    max-width: 720px;
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+  @media (width >= 1280px) {
+    .content-col {
+      padding-inline: 32px;
+    }
+  }
+  .article-col {
+    max-width: 680px;
+    margin-inline: auto;
+  }
+
+  /* 移动端内容底部预留：64px 标签栏 + safe-area + 24px（§2.2 HC-1） */
+  .pb-tabbar {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom) + 24px);
+  }
+  @media (width >= 768px) {
+    .pb-tabbar {
+      padding-bottom: 0;
+    }
+  }
+
+  /* 1px hairline 分隔（列表项之间，无底色带） */
+  .hairline-t {
+    border-top: 1px solid var(--z-border);
+  }
+  .hairline-b {
+    border-bottom: 1px solid var(--z-border);
+  }
+
+  /* 语法高亮（§4.2 子令牌；仅 4 类，其余继承默认） */
+  .tok-kw {
+    color: var(--syntax-keyword);
+  }
+  .tok-str {
+    color: var(--syntax-string);
+  }
+  .tok-com {
+    color: var(--syntax-comment);
+  }
+  .code-body {
+    color: var(--z-code-text);
+  }
+
+  /* 背景墨竹层（§9.3）：fixed / pointer-events none / 不产生 CLS */
+  .bg-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  /* 跳转正文 skip link（§11） */
+  .skip-link {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 100;
+    transform: translateY(-200%);
+    background-color: var(--z-surface);
+    color: var(--z-link);
+    border: 1px solid var(--z-border-strong);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+
+  /* 暗色熊猫眼罩科技蓝微光（§9.4） */
+  .panda-glow {
+    filter: drop-shadow(0 0 6px rgba(78, 155, 216, 0.45));
+  }
+  [data-theme='light'] .panda-glow {
+    filter: none;
+  }
+
+  /* 原创几何熊猫（§9.4）：亮色竹绿描边、暗色眼罩描边科技蓝+微光 */
+  .panda-body {
+    fill: var(--z-panda-body, #fdfcf7);
+    stroke: var(--z-link);
+    stroke-width: 2;
+  }
+  [data-theme='dark'] {
+    --z-panda-body: #1d2a23;
+  }
+  :root {
+    --panda-mask: var(--z-link);
+  }
+  [data-theme='dark'] {
+    --panda-mask: #4e9bd8; /* 科技蓝眼罩（§9.4，仅暗色） */
+  }
+  .panda-dot {
+    fill: var(--z-ink);
+  }
+  .panda-line {
+    stroke: var(--z-ink);
+  }
+  .panda-zzz {
+    opacity: 0.7;
+  }
+  .panda-bamboo-fill {
+    fill: var(--z-accent);
+    opacity: 0.55;
+  }
+  .panda-bamboo-node {
+    fill: var(--z-link);
+    opacity: 0.5;
+  }
+
+  /* hero 原创几何场景（§9.4 同语言）：线稿笔电 */
+  .hero-laptop {
+    fill: var(--z-bg-subtle);
+    stroke: var(--z-ink);
+    stroke-width: 2;
+  }
+  .hero-laptop-screen {
+    fill: var(--z-bg);
+    stroke: var(--z-ink);
+    stroke-width: 1.5;
+  }
+  .hero-laptop-text {
+    stroke: var(--z-text-tertiary);
+    stroke-width: 2.4;
+    fill: none;
+  }
+
+  /* 标签胶囊横滑（§7.4）：scroll-snap + 两端 24px 渐隐 */
+  .pill-strip {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 24px,
+      black calc(100% - 24px),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 24px,
+      black calc(100% - 24px),
+      transparent 100%
+    );
+  }
+  .pill-strip::-webkit-scrollbar {
+    display: none;
+  }
+  .pill-strip > * {
+    scroll-snap-align: start;
+  }
+
+  /* 骨架屏（§7.3 loading）：0.5↔1 脉冲 1.6s（reduced-motion 静态化） */
+  .skeleton {
+    border-radius: 4px;
+    background-color: var(--z-border);
+    opacity: 0.7;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .skeleton {
+      animation: skeleton-pulse 1.6s ease-in-out infinite;
+    }
+  }
+  /* loading 线性豁免唯一场景之二：竹叶缓旋（§7.10，1.2s/圈） */
+  @media (prefers-reduced-motion: no-preference) {
+    .spin-slow {
+      animation: spin-linear 1.2s linear infinite;
+    }
+  }
+
+  /* 代码块头部条 sticky 于块顶（§7.6 长代码） */
+  .code-head {
+    position: sticky;
+    top: 0;
+  }
+
+  /* reduced-motion 专用的静态落叶（§9.3）：非 reduce 时不显示 */
+  .reduced-static {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reduced-static {
+      display: block;
+    }
+  }
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes spin-linear {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

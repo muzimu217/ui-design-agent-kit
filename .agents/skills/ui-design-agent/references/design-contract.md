@@ -21,7 +21,7 @@ search was performed and no compatible example was found.
 | Brand | Product or domain context, audience, primary job, target surface, content reality |
 | Style foundations | Semantic tokens: color, typography, spacing rhythm, depth, radius, motion presets |
 | Accessibility | Contrast target, keyboard path, focus behavior, reduced-motion result, language constraints |
-| Writing tone | Voice and language for interface copy and labels |
+| Writing tone | Voice and language for interface copy and labels; benefit-led CTA framing (attention -> interest -> desire -> action) |
 | Rules: Do | Required implementation practices for this direction |
 | Rules: Don't | Anti-patterns and prohibited treatments for this direction |
 | Output structure | Required sections, components, and media of the deliverable |
@@ -39,6 +39,33 @@ search was performed and no compatible example was found.
    task-local note if none exists.
 4. Implement against the contract. Amend it only when a requirement or a
    verified constraint changes, then state the amendment.
+
+## Anti-pattern quick reference
+
+Distinctive work fails in predictable ways. Check the contract's Rules: Don't
+against this list before confirming a direction:
+
+| Dimension | Don't (typical AI-slop signals) | Prefer |
+| --- | --- | --- |
+| Type | Inter/Roboto/Arial/Open Sans everywhere; monospace used as a "tech" signal; big icon above a heading plus rounded corners | A distinctive display face with a refined reading face; modular scale; clamp() fluid sizes |
+| Color | Pure black `#000` or pure white `#fff`; AI palettes (cyan-on-dark, purple-blue gradients, neon accents); default dark + glow | oklch/color-mix where supported; neutrals tinted toward the brand; semantic tokens |
+| Space | Cards everywhere, cards nested in cards; hero-metric template; centering everything | Varied spacing for rhythm; clamp() fluid spacing; useful density |
+| Motion | Animating layout properties; bounce/elastic easings everywhere | State-change transitions; exponential easing (ease-out-quart/expo); presets per motion-contract |
+| Interaction | Repetitive information; every button styled as primary | Progressive disclosure; instructive empty states; one primary action |
+| Responsive | Hiding critical features on mobile | Container queries; mobile-first breakpoints |
+
+## Delivery hardening
+
+The contract's Component expectations and Quality gates should cover:
+
+- Touch targets at least 44px; keyboard-visible focus; the full state set per
+  interactive element (default, hover/pressed, disabled, loading, focused,
+  selected, plus empty and error states where relevant).
+- Text scaling: the layout survives browser text scaling up to 200%.
+- Breakpoints: a stated strategy, for example base 320px, 640px, 1024px,
+  1280px, with component behavior per range.
+- QA protocol: a same-viewport parity comparison against the reference or
+  contract, plus the acceptance record from acceptance.md.
 
 ## Template
 

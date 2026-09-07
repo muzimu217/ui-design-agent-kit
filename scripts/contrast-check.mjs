@@ -22,23 +22,33 @@ const cssPath = cssArgIndex === -1 ? DEFAULT_CSS : path.resolve(process.argv[css
 
 function parseTokenBlock(css) {
   const rootMatch = css.match(/:root\s*\{([^}]*)\}/);
-  const darkMatch = css.match(/@media \(prefers-color-scheme: dark\)\s*\{\s*:root\s*\{([^}]*)\}/);
+  // 兼容手写与 minified 产物（冒号后无空格）两种 media query 写法
+  const darkMatch = css.match(/@media\s*\(\s*prefers-color-scheme:\s*dark\s*\)\s*\{\s*:root\s*\{([^}]*)\}/);
   const parse = (block) => Object.fromEntries(
     [...(block ?? "").matchAll(/--([\w-]+)\s*:\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]),
   );
-  if (!rootMatch) throw new Error("styles.css:root block not found");
-  return { light: parse(rootMatch[1]), dark: parse(darkMatch?.[1] ?? "") };
+  if (!rootMatch) throw new Error("styles.css :root block not found");
+  if (!darkMatch) throw new Error("prefers-color-scheme:dark :root block not found (检查 media query 写法)");
+  return { light: parse(rootMatch[1]), dark: parse(darkMatch[1]) };
 }
 
 function parseColor(value) {
-  const hex = value.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+  const hex = value.match(/^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i);
   if (hex) {
-    const full = hex[1].length === 3 ? [...hex[1]].map((c) => c + c).join("") : hex[1];
+    let full = hex[1].length === 3 || hex[1].length === 4
+      ? [...hex[1]].map((c) => c + c).join("")
+      : hex[1];
+    let a = 1;
+    if (full.length === 8) {
+      // 8 位 hex：minified 产物会把 rgba() 压成 #rrggbbaa
+      a = parseInt(full.slice(6, 8), 16) / 255;
+      full = full.slice(0, 6);
+    }
     return {
       r: parseInt(full.slice(0, 2), 16),
       g: parseInt(full.slice(2, 4), 16),
       b: parseInt(full.slice(4, 6), 16),
-      a: 1,
+      a,
     };
   }
   const rgb = value.match(/^rgba?\(([^)]+)\)$/i);

@@ -147,6 +147,37 @@
           "evals/runs/operations-not-marketing/evidence/contrast-check-after.txt"
         ],
         "notes": "测试官轮（用户委托：测评→意见→修复）：Playwright 真实取证复现 7 项缺陷（含此前误判为脚本污染的 D3：Esc 仅在焦点位于面板内生效）全部修复并逐项复验——焦点归还（双路径统一+detached 兜底）、document 级 Esc、移动端滚动锁（overflow hidden+恢复）、暗色 hover token 化（#2f57d6，反向变亮）、文档 3→4 张修正、contrast 参数化 --css。contrast 22/22（新增 hover 2 对，暗 6.08:1）；console 0 错误；键盘回归 Enter/Esc/Tab 通过。链路审计 5 项建议（L1 门账本/L2 自动轮门B策略/L3 软链校验/L4 e3 双轨/L5 PAIRS 约定）见 TEST-REPORT.md。"
+      },
+      {
+        "date": "2026-09-07",
+        "round": "产品化收口 v2.3",
+        "scores": {
+          "Opens directly into the usable dashboard": 2,
+          "Search and filters change displayed records": 2,
+          "Details can open and close": 2,
+          "Demo data is distinguished from live inventory": 2,
+          "Inspects mobile and desktop output": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/operations-not-marketing/RELEASE.md",
+          "evals/runs/operations-not-marketing/evidence/v23-build-dashboard.png",
+          "evals/runs/operations-not-marketing/evidence/v23-build-urlstate.png",
+          "evals/runs/operations-not-marketing/evidence/v23-build-mobile.png",
+          "evals/runs/operations-not-marketing/evidence/v23-build-dark.png"
+        ],
+        "notes": "产品化收口轮：新增 URL 状态同步（q/cat/status/sort，恢复+无痕同步+清空全清，DESIGN.md 契约先行）；首次生产构建（base=./，gzip 63.8kB）并在 minified 产物上完成 R1-R10 全量回归（判据 5 条 + 7 项修复回归 + 新功能 + 暗色/移动/console 0 条消息 + 对比度对产物 CSS 实测 22/22）；产物 zip 66kB 于 release/。过程收获：产物实测反哺工具链——修复 contrast-check 两处 minified 兼容缺陷（media query 无空格、8 位 hex alpha）。dist/zip 按仓库约定不入库（可重建，命令在 RELEASE.md）。自动轮·待用户验收（门E）。"
       }
     ],
     "reference-first-adaptation": [

@@ -133,17 +133,44 @@ function ItemDetail({
   );
 }
 
+function readInitialState() {
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get("cat");
+  const status = params.get("status");
+  const sort = params.get("sort");
+  return {
+    query: params.get("q") ?? "",
+    category: (CATEGORIES as readonly string[]).includes(cat ?? "")
+      ? (cat as CategoryFilter)
+      : "全部",
+    status: STATUS_FILTERS.includes(status as StatusFilter) ? (status as StatusFilter) : "全部",
+    sort: sort === "asc" || sort === "desc" ? sort : "none",
+  };
+}
+
 export default function App() {
-  const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<CategoryFilter>("全部");
-  const [status, setStatus] = useState<StatusFilter>("全部");
-  const [sort, setSort] = useState<SortMode>("none");
+  const initial = useMemo(readInitialState, []);
+  const [query, setQuery] = useState(initial.query);
+  const [category, setCategory] = useState<CategoryFilter>(initial.category);
+  const [status, setStatus] = useState<StatusFilter>(initial.status);
+  const [sort, setSort] = useState<SortMode>(initial.sort);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const detailTriggerRef = useRef<HTMLButtonElement | null>(null);
   const toastTimer = useRef<number | undefined>(undefined);
 
   useEffect(() => () => window.clearTimeout(toastTimer.current), []);
+
+  // URL 状态同步（v2.3）：q/cat/status/sort 进查询参数，replaceState 不产生历史
+  useEffect(() => {
+    const next = new URLSearchParams();
+    if (query.trim()) next.set("q", query.trim());
+    if (category !== "全部") next.set("cat", category);
+    if (status !== "全部") next.set("status", status);
+    if (sort !== "none") next.set("sort", sort);
+    const qs = next.toString();
+    window.history.replaceState(null, "", qs ? `?${qs}` : window.location.pathname);
+  }, [query, category, status, sort]);
 
   // 移动端底部门打开时锁定背景滚动（桌面侧栏为非模态，不锁）
   useEffect(() => {

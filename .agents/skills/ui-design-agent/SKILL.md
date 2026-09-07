@@ -1,6 +1,6 @@
 ---
 name: ui-design-agent
-description: "Design, build, refine, or review modern UI/UX with distinctive visual systems, spring physics, spatial micro-choreography, TypeScript, and verified MCP/CLI workflows. Routes Motion, GSAP, Figma, component registries, and browser checks; delegates video timelines to Remotion. Not for backend-only work or maintenance of this agent kit."
+description: "Design, build, refine, or review modern UI/UX with distinctive visual systems, purposeful motion, interactive web 3D, and verified MCP/CLI workflows. Routes Motion, Three.js, physics, Blender asset preparation, Figma, and browser checks; delegates video timelines and embedded compositions to Remotion. Not for backend-only work or maintenance of this agent kit."
 ---
 
 # UI Design Agent
@@ -189,6 +189,12 @@ and no compatible example was found.
   inventing a 3D system from a blank canvas. The default baseline matrix in
   [material-scouting.md](references/material-scouting.md) names the first stop
   per task type.
+- When the brief asks for an expressive, animated, or immersive experience,
+  choose a subject-led visual and a meaningful interaction before adding effects.
+  Translate ordinary requests such as "rotate the product", "objects collide",
+  or "embed a short film" through [spatial-media.md](references/spatial-media.md).
+  The user need not name an engine. Do not substitute a static placeholder for
+  requested 3D or motion, or force a 3D scene into an unrelated operational UI.
 - Deliver runnable, fully typed modules with imports, exports, relevant state,
   asset paths, and dependency requirements. Do not omit core behavior with TODOs,
   pseudo-handlers, arbitrary delays, or unexplained `any`. Reuse local APIs.
@@ -205,7 +211,8 @@ use `transition: all`, generic `0.3s ease`, or constant-speed linear UI movement
 The named Elegant cubic-bezier is the approved non-spring alternative; an
 infinite loading rotation is the linear-motion exception. Essential state updates
 and reduced-motion behavior may be immediate. This web policy does not override
-Remotion's deterministic frame timing.
+Remotion's deterministic frame timing. UI feedback presets do not replace a
+rigid-body solver, a model animation clip, or a physics engine's timestep.
 
 ## Route capabilities deliberately
 
@@ -226,6 +233,10 @@ is not proof of a connection, and a connection is not proof of a successful call
   for a concrete component task.
 - Use `baoyu-design` for self-contained HTML design artifacts (mockups,
   prototypes, decks, dashboards) as standalone visual deliverables.
+- Use `jiejoe-design` for distinctive interaction motion: magnetic pointer
+  physics, SVG stroke and wave effects, ScrollTrigger scroll choreography, and
+  personality-loaded loading or transition screens. Combine it with the
+  installed GSAP skills (`gsap-core`, `gsap-scrolltrigger`, `gsap-timeline`).
 - Use `motion` and the public Motion MCP for non-trivial web motion. Read the
   returned documentation resources, not only search-result descriptions.
 - For a React video, Remotion composition, or code-driven motion-graphics
@@ -233,8 +244,11 @@ is not proof of a connection, and a connection is not proof of a successful call
   Do not treat a video timeline as a browser UI animation task.
 - For Three.js, React Three Fiber, or other 3D scene work, inspect the existing
   scene and then route reference research through the open-source baseline
-  workflow in [tool-routing.md](references/tool-routing.md). Keep the render,
-  interaction, and asset boundary explicit.
+  workflow in [tool-routing.md](references/tool-routing.md). Read
+  [spatial-media.md](references/spatial-media.md) for the scene contract,
+  physics decision, Blender-to-web asset handoff, and mixed web/video delivery.
+  Keep asset authoring, live rendering, simulation, and video clocks separate;
+  a Blender MCP is an optional authoring bridge, not a browser runtime.
 - Use Context7 or official docs to resolve implementation APIs against the
   installed version. Use shadcn only if compatible with the target stack.
 - Use a supplied Figma design through an authenticated, available Figma connector.

@@ -43,6 +43,10 @@ a substitute for each upstream repository's license text.
   `gsap-utils`. The original LICENSE is preserved in each installed skill
   directory. Per the upstream README, GSAP and all its plugins are free
   including commercial use.
+- JIEJOE Design (distilled), `jiejoe-design`: design philosophy distilled from
+  the `JIEJOE-WEB-Tutorial` repositories (MIT), Bilibili UI-motion tutorials.
+  The skill is re-authored for this kit and does not copy upstream code; the
+  distillation source and license are recorded in the skill's metadata.
 
 ## Local adaptations
 

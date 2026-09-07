@@ -14,10 +14,10 @@ test("installed skills, references, and pinned MCP config are complete", async (
     "animation-vocabulary", "baoyu-design", "emil-design-eng",
     "gsap-core", "gsap-frameworks", "gsap-performance", "gsap-plugins",
     "gsap-react", "gsap-scrolltrigger", "gsap-timeline", "gsap-utils",
-    "impeccable", "motion", "pick-ui-library", "remotion-best-practices",
-    "remotion-create", "remotion-docs", "remotion-markup", "remotion-render",
-    "remotion-studio", "remotion-video-agent", "ui-design-agent",
-    "ui-ux-pro-max",
+    "impeccable", "jiejoe-design", "motion", "pick-ui-library",
+    "remotion-best-practices", "remotion-create", "remotion-docs",
+    "remotion-markup", "remotion-render", "remotion-studio",
+    "remotion-video-agent", "ui-design-agent", "ui-ux-pro-max",
   ]);
 });
 

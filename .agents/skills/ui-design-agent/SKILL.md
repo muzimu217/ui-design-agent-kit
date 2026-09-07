@@ -28,9 +28,10 @@ state changes legible. Do not mistake more effects or tool calls for better work
   direction note with a named baseline, material gate only when external
   material is adopted, a baseline screenshot or montage may stand in for a
   generated prototype), L (a new product, multi-surface work, or a
-  brand-defining direction — the full chain with gates A through F). When a
-  task sits between tiers, the user draws the boundary; a narrow repair never
-  uses tiering as a license to expand into a redesign.
+  brand-defining direction — the full chain with gates A through F). The user
+  explicitly confirms the tier and boundary **for each page** before any
+  special-case route or gate reduction is used; a narrow repair never uses
+  tiering as a license to expand into a redesign.
 - Read the target repository's instructions, dependencies, routes, components,
   tokens, assets, and current states before choosing libraries or visual direction.
 - Preserve the user's brand, content, stack, and chosen references. Established

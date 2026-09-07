@@ -11,6 +11,7 @@
   --line: #e2e8f0;
   --muted: #e9eef6;
   --brand: #1e40af;
+  --brand-hover: #16309b;
   --brand-ink: #1e40af;
   --row-hover: #f1f5f9;
   --row-selected: rgba(30, 64, 175, 0.08);
@@ -42,6 +43,7 @@
     --line: #24304a;
     --muted: #1a2740;
     --brand: #1e40af;
+    --brand-hover: #2f57d6;
     --brand-ink: #8ab0f8;
     --row-hover: #16233c;
     --row-selected: rgba(138, 176, 248, 0.14);
@@ -484,8 +486,8 @@ button {
 }
 
 .btn--primary:hover {
-  background: #16309b;
-  border-color: #16309b;
+  background: var(--brand-hover);
+  border-color: var(--brand-hover);
   color: #fff;
 }
 

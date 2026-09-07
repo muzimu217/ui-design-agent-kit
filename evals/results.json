@@ -119,6 +119,34 @@
           "evals/runs/operations-not-marketing/evidence/v2-mobile-dashboard.png"
         ],
         "notes": "冲刺 4/8：兑现对比度实测——scripts/contrast-check.mjs（npm run contrast）实测 22 对，抓到分段计数角标 @72% 不透明度双制式不达标（亮 3.74 / 暗 4.17），修复（改实色）后 20/20 全过；对比度实测维度 1→2。其余维度证据沿用 v2 截图与断言。剩余 2 项 P2（行双 onClick 冗余、移动端底部门背景可滚动）为交互取向待用户裁决，非样式缺陷。Stitch G4 复测仍 HTTP 000。自动轮·待用户裁决。"
+      },
+      {
+        "date": "2026-09-07",
+        "round": "测试官轮",
+        "scores": {
+          "Opens directly into the usable dashboard": 2,
+          "Search and filters change displayed records": 2,
+          "Details can open and close": 2,
+          "Demo data is distinguished from live inventory": 2,
+          "Inspects mobile and desktop output": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/operations-not-marketing/TEST-REPORT.md",
+          "evals/runs/operations-not-marketing/evidence/contrast-check-after.txt"
+        ],
+        "notes": "测试官轮（用户委托：测评→意见→修复）：Playwright 真实取证复现 7 项缺陷（含此前误判为脚本污染的 D3：Esc 仅在焦点位于面板内生效）全部修复并逐项复验——焦点归还（双路径统一+detached 兜底）、document 级 Esc、移动端滚动锁（overflow hidden+恢复）、暗色 hover token 化（#2f57d6，反向变亮）、文档 3→4 张修正、contrast 参数化 --css。contrast 22/22（新增 hover 2 对，暗 6.08:1）；console 0 错误；键盘回归 Enter/Esc/Tab 通过。链路审计 5 项建议（L1 门账本/L2 自动轮门B策略/L3 软链校验/L4 e3 双轨/L5 PAIRS 约定）见 TEST-REPORT.md。"
       }
     ],
     "reference-first-adaptation": [

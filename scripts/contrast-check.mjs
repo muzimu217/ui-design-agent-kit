@@ -11,9 +11,14 @@ import { ROOT } from "./verify.mjs";
 // matching how the browser paints tinted pills on cards.
 // Threshold: 4.5:1 (all measured text is small). Exit 1 on any failure.
 //
-// Usage: npm run contrast
+// Usage: npm run contrast [--css <path-to-styles.css>]
+// Default target: the operations dashboard (first product under test).
+// Nonexistent tokens referenced by PAIRS throw loudly, so token drift fails
+// instead of silently skipping a pair.
 
-const cssPath = path.join(ROOT, "evals/runs/operations-not-marketing/app/src/styles.css");
+const DEFAULT_CSS = path.join(ROOT, "evals/runs/operations-not-marketing/app/src/styles.css");
+const cssArgIndex = process.argv.indexOf("--css");
+const cssPath = cssArgIndex === -1 ? DEFAULT_CSS : path.resolve(process.argv[cssArgIndex + 1]);
 
 function parseTokenBlock(css) {
   const rootMatch = css.match(/:root\s*\{([^}]*)\}/);
@@ -79,6 +84,7 @@ const PAIRS = [
   { mode: "light", fg: "low", bg: "low-bg", label: "状态胶囊·低库存" },
   { mode: "light", fg: "out", bg: "out-bg", label: "状态胶囊·缺货" },
   { mode: "light", fg: "#ffffff", bg: "brand", label: "主按钮/分段选中·白字" },
+  { mode: "light", fg: "#ffffff", bg: "brand-hover", label: "主按钮 hover·白字" },
   { mode: "light", fg: "bg", bg: "ink", label: "Toast 文字" },
   { mode: "dark", fg: "ink", bg: "surface", label: "正文/卡片" },
   { mode: "dark", fg: "ink", bg: "bg", label: "正文/页面底" },
@@ -89,6 +95,7 @@ const PAIRS = [
   { mode: "dark", fg: "low", bg: "low-bg", label: "状态胶囊·低库存" },
   { mode: "dark", fg: "out", bg: "out-bg", label: "状态胶囊·缺货" },
   { mode: "dark", fg: "#ffffff", bg: "brand", label: "主按钮/分段选中·白字" },
+  { mode: "dark", fg: "#ffffff", bg: "brand-hover", label: "主按钮 hover·白字" },
   { mode: "dark", fg: "bg", bg: "ink", label: "Toast 文字" },
 ];
 

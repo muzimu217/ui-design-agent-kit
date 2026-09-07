@@ -73,14 +73,18 @@ function ItemDetail({
     closeRef.current?.focus();
   }, []);
 
+  // Esc 关闭不依赖焦点在面板内：焦点可能已移到面板外（如搜索框），
+  // 因此在 document 级监听，而不是只挂在 aside 上
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
   return (
-    <aside
-      className="panel"
-      aria-label={`商品详情：${item.name}`}
-      onKeyDown={(event) => {
-        if (event.key === "Escape") onClose();
-      }}
-    >
+    <aside className="panel" aria-label={`商品详情：${item.name}`}>
       <div className="panel__head">
         <div className="panel__title">
           <StatusPill item={item} />
@@ -141,6 +145,17 @@ export default function App() {
 
   useEffect(() => () => window.clearTimeout(toastTimer.current), []);
 
+  // 移动端底部门打开时锁定背景滚动（桌面侧栏为非模态，不锁）
+  useEffect(() => {
+    if (!selectedId) return;
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [selectedId]);
+
   const baseFiltered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return DEMO_ITEMS.filter((item) => {
@@ -175,7 +190,13 @@ export default function App() {
 
   const closeDetail = () => {
     setSelectedId(null);
-    detailTriggerRef.current?.focus();
+    const trigger = detailTriggerRef.current;
+    if (trigger && document.contains(trigger)) {
+      trigger.focus();
+    } else {
+      // 触发行已被筛除（卸载）时，焦点回落到搜索框而不是丢到 body
+      document.querySelector<HTMLInputElement>(".search-box input")?.focus();
+    }
     detailTriggerRef.current = null;
   };
 
@@ -300,15 +321,13 @@ export default function App() {
               <tr
                 key={item.id}
                 className={selectedId === item.id ? "is-selected" : undefined}
-                onClick={() => setSelectedId(item.id)}
+                onClick={(event) => {
+                  detailTriggerRef.current = event.currentTarget.querySelector(".row-link");
+                  setSelectedId(item.id);
+                }}
               >
                 <td className="cell-name">
-                  <button
-                    type="button"
-                    className="row-link"
-                    title={item.name}
-                    onClick={(event) => openDetail(event, item.id)}
-                  >
+                  <button type="button" className="row-link" title={item.name}>
                     {item.name}
                   </button>
                 </td>

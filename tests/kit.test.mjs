@@ -11,10 +11,13 @@ test("installed skills, references, and pinned MCP config are complete", async (
   const result = await verify();
   assert.deepEqual(result.errors, []);
   assert.deepEqual(result.skills.sort(), [
-    "animation-vocabulary", "baoyu-design", "emil-design-eng", "impeccable",
-    "motion", "pick-ui-library", "remotion-best-practices", "remotion-create",
-    "remotion-docs", "remotion-markup", "remotion-render", "remotion-studio",
-    "remotion-video-agent", "ui-design-agent", "ui-ux-pro-max",
+    "animation-vocabulary", "baoyu-design", "emil-design-eng",
+    "gsap-core", "gsap-frameworks", "gsap-performance", "gsap-plugins",
+    "gsap-react", "gsap-scrolltrigger", "gsap-timeline", "gsap-utils",
+    "impeccable", "motion", "pick-ui-library", "remotion-best-practices",
+    "remotion-create", "remotion-docs", "remotion-markup", "remotion-render",
+    "remotion-studio", "remotion-video-agent", "ui-design-agent",
+    "ui-ux-pro-max",
   ]);
 });
 
@@ -85,6 +88,22 @@ test("browser smoke closes its isolated session even when navigation fails", asy
   assert.deepEqual(calls, ["browser_navigate", "browser_close"]);
 });
 
+test("Motion smoke accepts the current docs-only tool surface", async () => {
+  const calls = [];
+  const client = {
+    callTool: async ({name}) => {
+      calls.push(name);
+      return {content: [{type: "resource_link", uri: "motion://docs/use-reduced-motion"}]};
+    },
+    readResource: async ({uri}) => ({contents: [{uri, text: "Motion documentation with enough evidence to verify the resource read and preserve the current API guidance for reduced-motion behavior in a real project."}]}),
+  };
+  assert.equal(
+    await smokeCheck("motion", client, [{name: "search-motion-docs"}]),
+    "docs search + resource read",
+  );
+  assert.deepEqual(calls, ["search-motion-docs"]);
+});
+
 test("design search runs outside the repository working directory", () => {
   const script = path.join(ROOT, ".agents/skills/ui-ux-pro-max/scripts/search.py");
   const stdout = execFileSync("python3", [script, "keyboard focus modal", "--domain", "ux", "--json"], {
@@ -113,7 +132,7 @@ test("single-file prompt embeds its references and uses working in-document link
   const links = [...prompt.matchAll(/\]\(#([^)]+)\)/g)];
   assert.ok(links.length >= 3);
   for (const [, anchor] of links) assert.ok(headingAnchors.has(anchor), `Broken prompt anchor: ${anchor}`);
-  for (const name of ["motion-contract.md", "tool-routing.md", "material-scouting.md", "plan-execute.md", "image-to-code-fidelity.md", "acceptance.md"]) {
+  for (const name of ["motion-contract.md", "tool-routing.md", "spatial-media.md", "stitch-mcp.md", "material-scouting.md", "plan-execute.md", "image-to-code-fidelity.md", "acceptance.md"]) {
     const source = await readFile(path.join(ROOT, ".agents/skills/ui-design-agent/references", name), "utf8");
     assert.ok(prompt.includes(source.trim()), `Omitted reference: ${name}`);
   }

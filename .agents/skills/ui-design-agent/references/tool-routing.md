@@ -59,6 +59,11 @@ license notices when adapting code, assets, fonts, or examples.
 
 ## Three.js and React Three Fiber
 
+Read `spatial-media.md` for natural-language routing, the scene/asset contract,
+Blender authoring, rigid-body physics, and web/video delivery. Three.js, R3F,
+Drei, and Rapier are runtime libraries, not assumed MCP servers. Context7 or
+official docs supply API guidance; browser tools verify the actual result.
+
 For Three.js, React Three Fiber, Drei, or related 3D work, use this order:
 
 1. Inspect the current scene, camera, renderer, controls, assets, and interaction
@@ -135,7 +140,10 @@ cannot read returned resources, open the corresponding official public doc or
 use Context7 and disclose the fallback.
 
 The public server at `https://mcp.motion.dev` provides documentation search and
-CSS easing generation. `https://mcp.motion.dev/plus` is separate and disabled in
+may expose additional helpers such as CSS easing generation. Treat the current
+`listTools` result as authoritative: the doctor requires docs search plus a
+readable documentation resource, and checks easing generation only when that
+tool is advertised. `https://mcp.motion.dev/plus` is separate and disabled in
 this kit. Motion+ gates its audit methodology, premium source, and editor.
 Never present an ordinary browser check as a MotionScore audit, reconstruct gated
 source from metadata, or request a token in chat. A free-doc implementation can
@@ -176,6 +184,15 @@ confirmation gate, not as a substitute for implementing the deliverable:
 verify free-quota behavior and each call result, and do not report a prototype
 as a shipped implementation.
 
+Stitch call logic is documented from field experience in the `stitch-mcp.md`
+reference: generate via `generate_screen_from_text` (a 60-second disconnect is
+normal; never retry, each retry adds a draft), read results from
+`get_project.screenInstances` (never `list_screens`, which returns empty),
+fetch resources via `get_screen` with `name=projects/<pid>/screens/<sid>`, and
+download with `curl -sSL` because the URLs redirect with 302. See that
+reference for the anti-pattern table, prompt-quality checklist, and
+troubleshooting table.
+
 Media-generation candidates (for example minimax image/video/music/TTS CLIs)
 are optional and unverified here: resolve publisher, license, API key and
 environment requirements, and output terms before any call. Engineered asset
@@ -196,13 +213,21 @@ Inspect their code, license, dependencies, tokens, contrast, and runtime costs
 before importing. Extract useful relationships from fluid typography references;
 implement legible stable sizes and breakpoints, not viewport-driven font scaling.
 
-For GSAP, consult its official docs through Context7 or `https://gsap.com/docs/v3/`;
-for Lenis, verify the maintained package and API from its official repository.
-Use the existing stack, scope DOM selectors, clean up animation contexts and
-scroll listeners, and check interruption and reduced motion. Do not substitute
-browser timelines for a seekable, deterministic Remotion frame timeline.
+For GSAP, use the installed official skills (`gsap-core`, `gsap-timeline`,
+`gsap-scrolltrigger`, `gsap-react`, `gsap-frameworks`, `gsap-plugins`,
+`gsap-performance`, `gsap-utils`) and consult `https://gsap.com/docs/v3/`
+when a skill is missing. For Lenis, verify the maintained package and API
+from its official repository. Use the existing stack, scope DOM selectors,
+clean up animation contexts and scroll listeners, and check interruption and
+reduced motion. Do not substitute browser timelines for a seekable,
+deterministic Remotion frame timeline.
 
 ## Remotion
+
+For an embedded composition or a 3D scene reused in video, also read the
+`remotion-video-agent` reference `three-and-web.md`. A rendered video, a React
+Player, and a freely interactive 3D canvas are different deliverables. Route
+each requested surface explicitly instead of promising one as all three.
 
 For a React video, composition, motion graphic, captioned sequence, or explicit
 video render, invoke `remotion-video-agent`. It routes the official project-level

@@ -119,6 +119,78 @@
       "license": "MIT",
       "notice": ".agents/skills/baoyu-design/LICENSE",
       "adaptations": ["Vendored SKILL.md only; agents/ helper scripts and gen-pptx package excluded as execution helpers outside the kit's scope"]
+    },
+    {
+      "name": "gsap-core",
+      "repository": "https://github.com/greensock/gsap-skills",
+      "revision": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourcePath": "skills/gsap-core",
+      "license": "MIT",
+      "notice": ".agents/skills/gsap-core/LICENSE",
+      "adaptations": []
+    },
+    {
+      "name": "gsap-frameworks",
+      "repository": "https://github.com/greensock/gsap-skills",
+      "revision": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourcePath": "skills/gsap-frameworks",
+      "license": "MIT",
+      "notice": ".agents/skills/gsap-frameworks/LICENSE",
+      "adaptations": []
+    },
+    {
+      "name": "gsap-performance",
+      "repository": "https://github.com/greensock/gsap-skills",
+      "revision": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourcePath": "skills/gsap-performance",
+      "license": "MIT",
+      "notice": ".agents/skills/gsap-performance/LICENSE",
+      "adaptations": []
+    },
+    {
+      "name": "gsap-plugins",
+      "repository": "https://github.com/greensock/gsap-skills",
+      "revision": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourcePath": "skills/gsap-plugins",
+      "license": "MIT",
+      "notice": ".agents/skills/gsap-plugins/LICENSE",
+      "adaptations": []
+    },
+    {
+      "name": "gsap-react",
+      "repository": "https://github.com/greensock/gsap-skills",
+      "revision": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourcePath": "skills/gsap-react",
+      "license": "MIT",
+      "notice": ".agents/skills/gsap-react/LICENSE",
+      "adaptations": []
+    },
+    {
+      "name": "gsap-scrolltrigger",
+      "repository": "https://github.com/greensock/gsap-skills",
+      "revision": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourcePath": "skills/gsap-scrolltrigger",
+      "license": "MIT",
+      "notice": ".agents/skills/gsap-scrolltrigger/LICENSE",
+      "adaptations": []
+    },
+    {
+      "name": "gsap-timeline",
+      "repository": "https://github.com/greensock/gsap-skills",
+      "revision": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourcePath": "skills/gsap-timeline",
+      "license": "MIT",
+      "notice": ".agents/skills/gsap-timeline/LICENSE",
+      "adaptations": []
+    },
+    {
+      "name": "gsap-utils",
+      "repository": "https://github.com/greensock/gsap-skills",
+      "revision": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourcePath": "skills/gsap-utils",
+      "license": "MIT",
+      "notice": ".agents/skills/gsap-utils/LICENSE",
+      "adaptations": []
     }
   ],
   "mcp": [

@@ -35,6 +35,14 @@ a substitute for each upstream repository's license text.
   Only the `SKILL.md` instruction is vendored; the upstream `agents/` helper
   scripts and `gen-pptx` package are excluded. The original LICENSE is
   preserved in `.agents/skills/baoyu-design/`.
+- GSAP AI Skills, `greensock/gsap-skills`, revision
+  `aed9cfd3277740755f6bfc1155c7aa645403b760`: MIT. Source:
+  https://github.com/greensock/gsap-skills
+  Vendored entries: `gsap-core`, `gsap-frameworks`, `gsap-performance`,
+  `gsap-plugins`, `gsap-react`, `gsap-scrolltrigger`, `gsap-timeline`,
+  `gsap-utils`. The original LICENSE is preserved in each installed skill
+  directory. Per the upstream README, GSAP and all its plugins are free
+  including commercial use.
 
 ## Local adaptations
 
@@ -61,3 +69,16 @@ The custom `ui-design-agent` and `remotion-video-agent` files in this repository
 are authored for this project. Remotion package usage remains subject to the
 license and commercial terms of the target Remotion project; this kit does not
 install or redistribute Remotion runtime packages.
+
+## Research-only references
+
+- The tihuqiche study inspects `Licoy/tihuqiche` at revision
+  `51815d8be6c4f2720610a3ee94f067b02e6be899` and its public website. Its repository
+  LICENSE declares MIT. The study records observations and design relationships;
+  no upstream code, models, branding, or production assets are vendored here.
+  Browser screenshots are local ignored research evidence, not shipping assets.
+- `ahujasid/blender-mcp`, Three.js/R3F/Drei, Rapier, and the Blender glTF exporter
+  are linked as implementation research routes. No new server, runtime, or
+  upstream skill is installed by this extension, so existing source pins and
+  upstream notices remain unchanged. Future adoption needs its own version,
+  license, asset-provenance, and permission review.

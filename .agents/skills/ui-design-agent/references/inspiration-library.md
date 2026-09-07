@@ -97,6 +97,26 @@ Use the candidate score and access bucket in
 [material-scouting.md](material-scouting.md), then show the primary results to
 the user before secondary exploration.
 
+## Category routing index (need type -> website)
+
+The knowledge base for "where to search": match the task's need type to the
+website, then run the reference-first search there. Reachability checked
+2026-09-06; blocked entries need a real browser.
+
+| Need type | Website | Use it for | Reachability |
+| --- | --- | --- | --- |
+| 动效 / Motion | [Landing Love](https://www.landing.love) | Motion and interaction inspiration, animated sections | Direct https OK |
+| 审美 / Aesthetics | [Land Book](https://land-book.com) | Aesthetic tone and visual mood reference | Blocks non-browser clients (403); use a real browser |
+| 创意 / Creativity | [Awwwards](https://www.awwwards.com) | Award-level creative and trend benchmarks | Direct https OK |
+| 精致 / Refinement | [One Page Love](https://onepagelove.com) | Polished single-page layouts | Direct https OK (was 525 earlier; re-checked 200) |
+| 酷炫 / Bold | [Lapa Ninja](https://www.lapa.ninja) | Bold, high-impact visual direction | Blocks non-browser clients (403); use a real browser |
+| 现成 / Ready-made | [21st.dev](https://21st.dev) | Ready-made UI components and AI-generated component registry (shadcn-compatible picks) | Direct https OK |
+| 设计感 / Design quality | [SiteInspire](https://www.siteinspire.com) | Refined, design-led layouts | Rate-limited (429); retry or use a real browser |
+
+Routing rule: look up the need type here first, go to the matched website,
+search by product type plus the specific interaction or material, then bring
+candidates back through the material confirmation gate (gate B).
+
 ## Optional design-taste skills
 
 Not installed in this kit; listed as candidate capabilities for hosts that

@@ -20,9 +20,12 @@ a new visual direction or interaction pattern:
 1. Inspect the target repository's current UI, routes, tokens, assets, and nearby
    components. Prefer an in-repository precedent when one exists.
 2. Read `material-scouting.md`, classify the need as a reference, component,
-   asset, or prompt, then search one dominant intent across no more than three
-   high-priority sources and five first-pass candidates. Use the actual MCP or
-   browser tools when available; a catalog entry is not a connection.
+   asset, or prompt, and look up the need type in the inspiration library's
+   category routing index (motion, aesthetics, creativity, refinement, bold,
+   ready-made, design quality) to pick the matching website. Then search one
+   dominant intent across no more than three high-priority sources and five
+   first-pass candidates. Use the actual MCP or browser tools when available;
+   a catalog entry is not a connection.
 3. Rank candidates with `scripts/material-rank.mjs`. Present the reachable,
    high-score primary bucket first; retain low-score, blocked, rate-limited, or
    unverified sources in a separately labeled secondary bucket. Do not repeat

@@ -21,6 +21,7 @@
 | 11 | Taste Skill（`Leonxlnx/taste-skill`） | ✅ 已验证 | 84.7k★，anti-slop 前端品味框架（Claude Code 风格 agent skill），官网 tasteskill.dev | 可选品味 skill |
 | 12 | "Intenable"（听写误差）→ impeccable.style | ✅ 已确认 | 用户澄清后验证：https://impeccable.style 返回 200，站点自称 "1 skill, 23 commands, curated anti-patterns"，即已安装 impeccable skill 的官网 | 已收录（配套已安装 skill） |
 | 13 | 设计案例画廊批量验证（18 站） | ⚠️ 混合 | 200 可达 12 个：godly/awwwards/mobbin/refero/saaslandingpage/dark.design/hoverstat/landingfolio/pttrns/designsystemsrepo/bestwebsite.gallery/shots.so；403 反爬：land-book/pageflows；429 限流：siteinspire；000 不可达：minimal.gallery/uipatterns.io；525：onepagelove | 12 个可达站点收编进灵感库"Design case galleries" |
+| 14 | AI 分类素材知识库（7 站路由索引） | ⚠️ 混合 | 200 可达 4 个：landing.love/awwwards/onepagelove(此前 525 复测 200)/21st.dev；403 反爬：land-book/lapa.ninja；429 限流：siteinspire | 收编进灵感库"Category routing index"（动效/审美/创意/精致/酷炫/现成/设计感 7 类） |
 
 ## 二、处理决策
 

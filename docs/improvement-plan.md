@@ -66,6 +66,13 @@
    `STITCH_API_KEY`（严禁内联/提交）。待真实调用验证（设置环境变量 +
    `enabled = true` + 一次成功调用）后，再决定是否纳入锁文件与默认路由；
    同时注意之前对话中暴露的旧 key 已提示用户吊销轮换。
+8. **Stitch 实战调用逻辑（2026-09-06 收录）**：团队实测经验已整理为
+   `references/stitch-mcp.md`——四步流程（`generate_screen_from_text` →
+   `get_project` 读 `screenInstances` → `get_screen` → `curl -sSL` 下载）、
+   60 秒断连正常不重试（重试=多一份稿）、`list_screens` 返回空不可信、
+   `name=projects/<pid>/screens/<sid>` 前缀规则、反面模式表与排错速查。
+   tool-routing.md 的 Stitch 条目已从"候选未验证"升级为"实测逻辑"定位；
+   仍待真实环境调用验证后纳入锁文件。
 
 ## 五、验收方式
 

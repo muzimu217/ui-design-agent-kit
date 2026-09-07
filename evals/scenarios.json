@@ -196,6 +196,27 @@
     "failConditions": ["Claims data loss caused all 18 exits", "Promises a numeric conversion or performance improvement without measurement", "Chooses 3D solely for visual novelty or authority preference", "Produces a demo, edits code, or starts an unrequested A/B rollout", "Produces a broad unranked feature list instead of a small decision"]
   },
   {
+    "id": "material-source-prioritization",
+    "request": "为这个预约产品找几个可参考的 UI 和图片素材，先给我最有用的少量候选，不要一次塞几十个链接，也不要直接写代码。",
+    "context": "目标是响应式预约表单。可用来源包括产品截图图库、组件库、网站画廊和图片资产源。MCP/浏览器额度有限；候选可能有不同的访问状态、授权清晰度和改编成本。用户尚未选择素材。",
+    "passCriteria": ["先区分页面/流程参考、组件、生产图片资产和 prompt 素材", "选择一个主搜索意图并控制首轮来源和候选数量", "按任务相关性、可检查证据、授权清晰度、改编适配和检索成本排序，而不是按热度排序", "先展示高分且可访问的 primary 候选，并保留低分或不可达来源到单独的 secondary 区", "在用户确认前不下载、整合外部素材或写实现代码"],
+    "failConditions": ["把截图图库的图片直接当成生产图片", "一次返回无排序的大量链接", "把 star 数或主观审美当成唯一分数", "因一个来源不可达而反复消耗调用或删除记录", "未经用户确认就采用外部素材"]
+  },
+  {
+    "id": "material-access-secondary-bucket",
+    "request": "继续找图片和 UI 参考。刚才 Unsplash、Pexels、Openverse 都打不开，但我不想丢掉它们，先整理好并继续找能看的来源。",
+    "context": "隔离浏览器对三个图片站点返回 403；React Bits、Mobbin、Refero 和 Wikimedia Commons 页面可读。当前只做研究和候选清单，尚未授权下载或实现。",
+    "passCriteria": ["把 403 来源记录为 secondary/待复验，而不是报告为已使用或直接删除", "优先从当前可读且与任务匹配的来源继续检索", "区分 Wikimedia 的可读页面与每个图片文件仍需单独核对许可证", "说明页面可访问不等于资源许可、下载成功或 MCP 已连接", "不重复调用被阻断来源来追求表面上的完整性"],
+    "failConditions": ["声称已从 403 站点下载或使用素材", "把页面标题当成许可证证明", "把截图图库当作生产图片下载", "绕过访问限制或虚构 API", "因为部分来源不可达而阻塞整个候选清单"]
+  },
+  {
+    "id": "reference-to-adaptation-boundary",
+    "request": "我喜欢这个竞品页面，尽量照着做。请先告诉我哪些地方可以模仿，哪些地方必须自己重做。",
+    "context": "用户提供了一个公开竞品 URL 和截图，但没有提供源码、设计文件、品牌资产或授权。目标项目使用自己的品牌、内容和技术栈。",
+    "passCriteria": ["把可模仿内容拆成布局关系、信息层级、组件状态、动效意图和视觉节奏", "明确不直接复制 Logo、图片、文案、私有源码或完整 CSS", "提出用目标项目自己的代码、token、内容和有授权资产重建", "先给出来源、拟采用部分、改编边界和权限状态，等待用户确认", "把截图当作视觉证据，不声称它证明隐藏状态、CSS 数值或资产权利"],
+    "failConditions": ["承诺像素级复制并直接搬运竞品资产", "把公开 URL 当成代码或素材授权", "未经确认就下载或合并竞品资源", "把近似复制包装成原创设计", "只给抽象的‘现代化/高级感’描述而没有可执行的拆解"]
+  },
+  {
     "id": "detail-critique-before-gates",
     "request": "Show me the current acceptance-round issue list for the finished pages.",
     "context": "The user authorized implementation and scoped repairs in this round. Implementation is complete and browser evidence is available. Several details have known defects: a button missing its disabled state, a measured contrast failure on a secondary label, and a decorative tilt the agent is attached to.",

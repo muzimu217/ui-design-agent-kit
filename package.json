@@ -8,6 +8,7 @@
   "scripts": {
     "prompt:build": "node scripts/build-prompt.mjs",
     "eval:e3": "node scripts/eval-e3.mjs",
+    "material:rank": "node scripts/material-rank.mjs",
     "verify": "node scripts/verify.mjs",
     "test": "node --test tests/*.test.mjs",
     "doctor": "node scripts/doctor.mjs",

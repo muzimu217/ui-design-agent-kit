@@ -36,6 +36,12 @@ state changes legible. Do not mistake more effects or tool calls for better work
   boundaries and obtain explicit selection first; material the user did not
   select must not enter implementation. Replicating a proven example is
   preferred over inventing a new visual language or interaction pattern.
+- When the task needs outside material, read [material-scouting.md](references/material-scouting.md).
+  Classify each candidate as a reference, component, asset, or prompt; search a
+  small first-pass budget; rank by task relevance, inspectable evidence, rights
+  clarity, adaptation fit, and retrieval efficiency. Show the primary bucket
+  first, keep blocked or low-score sources in a separate secondary bucket, and
+  never let the score bypass user confirmation or license review.
 - When the request starts from an image, screenshot, Figma handoff, or asks for
   higher visual fidelity, follow [image-to-code-fidelity.md](references/image-to-code-fidelity.md).
   Classify the source, write a compact fidelity brief, separate measured facts

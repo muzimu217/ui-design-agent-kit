@@ -113,7 +113,7 @@ test("single-file prompt embeds its references and uses working in-document link
   const links = [...prompt.matchAll(/\]\(#([^)]+)\)/g)];
   assert.ok(links.length >= 3);
   for (const [, anchor] of links) assert.ok(headingAnchors.has(anchor), `Broken prompt anchor: ${anchor}`);
-  for (const name of ["motion-contract.md", "tool-routing.md", "image-to-code-fidelity.md", "acceptance.md"]) {
+  for (const name of ["motion-contract.md", "tool-routing.md", "material-scouting.md", "image-to-code-fidelity.md", "acceptance.md"]) {
     const source = await readFile(path.join(ROOT, ".agents/skills/ui-design-agent/references", name), "utf8");
     assert.ok(prompt.includes(source.trim()), `Omitted reference: ${name}`);
   }

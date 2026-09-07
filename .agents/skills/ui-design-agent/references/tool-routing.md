@@ -19,23 +19,25 @@ a new visual direction or interaction pattern:
 
 1. Inspect the target repository's current UI, routes, tokens, assets, and nearby
    components. Prefer an in-repository precedent when one exists.
-2. Search the relevant official docs/showcase, shipped product examples,
-   component registries, template libraries, and asset sites using the product
-   type plus the specific interaction or material, consulting the inspiration
-   library as the concrete source catalog. A site such as Drei's docs is a
-   useful baseline when its examples match a React Three Fiber task; it is not
-   a license to copy unrelated code or assume the site is an available connector.
-3. Present the candidate shortlist to the user with source URLs, the parts
+2. Read `material-scouting.md`, classify the need as a reference, component,
+   asset, or prompt, then search one dominant intent across no more than three
+   high-priority sources and five first-pass candidates. Use the actual MCP or
+   browser tools when available; a catalog entry is not a connection.
+3. Rank candidates with `scripts/material-rank.mjs`. Present the reachable,
+   high-score primary bucket first; retain low-score, blocked, rate-limited, or
+   unverified sources in a separately labeled secondary bucket. Do not repeat
+   failed calls in the same pass merely to promote a source.
+4. Present the candidate shortlist to the user with source URLs, the parts
    proposed for adoption, and the adaptation and license boundary, and obtain
    confirmation before integrating external material. Replicating a proven
    example is preferred over inventing a new direction.
-4. Select one or more inspectable baselines. Record the source URL or local path,
+5. Select one or more inspectable baselines. Record the source URL or local path,
    the relationship being adapted, and the license or permission status. If a
    source cannot be inspected or licensed, treat it as visual research only.
-5. Adapt the baseline to the existing stack, brand, content, and architecture.
+6. Adapt the baseline to the existing stack, brand, content, and architecture.
    Reuse compatible primitives and licensed assets; write project-specific code
    for anything that cannot be reused lawfully or safely.
-6. If the search finds no compatible baseline, disclose the search boundary and
+7. If the search finds no compatible baseline, disclose the search boundary and
    create only the minimum new direction required. Explicitly requested original
    work is the other exception.
 
@@ -266,6 +268,9 @@ Do not promise commercial permission or require a purchase without verifying it.
   When image generation is available, use it for example imagery; when it is
   not, state that once and proceed with placeholders or licensed assets. The
   implementation is driven by the design prompt and code, not by the image tool.
+  For repeatable candidate triage, pass MCP/browser findings through
+  `node scripts/material-rank.mjs --input <candidate-json>` and retain its
+  primary/secondary/excluded buckets in the research record.
 
 ## Browser evidence
 

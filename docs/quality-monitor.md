@@ -21,7 +21,7 @@
 | --- | --- | --- | --- | --- |
 | 1 | 任务分类与边界 | Respect the assignment | — | review-stays-read-only、preserve-existing-vue、operations-not-marketing |
 | 2 | 现状盘点 | Respect the assignment（读目标仓库） | — | reference-first-adaptation |
-| 3 | 素材检索 | reference-first + Route capabilities | inspiration-library.md | reference-first-adaptation、animation-ecosystem-routing、candidate-tools-not-fictional |
+| 3 | 素材检索 | reference-first + Route capabilities | inspiration-library.md、material-scouting.md | reference-first-adaptation、material-source-prioritization、material-access-secondary-bucket、reference-to-adaptation-boundary |
 | 4 | 素材确认门 | reference-first（候选清单交用户确认） | tool-routing.md 步骤 3、design-contract.md | material-confirmation-gate（2026-09-06 新增） |
 | 5 | 设计契约 | Establish a direction | design-contract.md | design-contract-quality（2026-09-06 新增） |
 | 6 | 能力路由与降级 | Route capabilities deliberately | tool-routing.md | motion-free-tier、offline-fallback、candidate-tools-not-fictional、threejs-open-source-baseline、remotion-brand-animation |
@@ -97,6 +97,17 @@ detail-critique.md、acceptance.md、chain-flow.md 四处一致；acceptance.md
 提升或回退；原始答复、输入指纹和限制见 [E3 记录](../evals/reports/2026-09-06-e3.md)。
 机械验证为 16/16，不等于 29 个场景已执行或应用通过视觉验收。
 
+### 第四轮：素材检索优先级与访问降级（2026-09-06）
+
+新增 `material-scouting.md` 与无依赖排序器 `scripts/material-rank.mjs`：先按
+素材类型分类，再限制首轮为 3 个来源 / 5 个候选；按相关性、可检查证据、授权
+清晰度、改编适配、检索效率加权，primary 先展示，低分、不可达、限流和未验证
+来源保留在 secondary，明确禁止或不可信内容进入 excluded。新增图片资产来源层，
+并将截图参考与生产图片分开。通过 Playwright MCP 实测 React Bits、Mobbin、Refero、
+Wikimedia Commons 可读；Unsplash、Pexels、Openverse 当前隔离浏览器 403，记录为
+secondary，不重复重试。新增 3 个素材行为场景；机械测试为 21/21，未把页面可达
+当作许可证或下载成功。✅
+
 ## 四、可持续检查清单
 
 **每次改动后（机械层，约 30 秒）**
@@ -129,9 +140,9 @@ npm run prompt:build  # 重建导出，确认锚点与引用顺序
 
 | 指标 | 当前值 | 达标线 |
 | --- | --- | --- |
-| 评测场景数 | 29 | ≥ 每环节 1 个，共 ≥ 9 |
+| 评测场景数 | 32 | ≥ 每环节 1 个，共 ≥ 9 |
 | verify 错误数 | 0 | 0 |
-| 测试通过数 | 16/16 | 全过 |
+| 测试通过数 | 21/21 | 全过 |
 | 已装 skill 锁定率 | 13/15（另 2 个为本 kit 自有入口） | 上游 skill 100% 锁定 |
 | 素材库检查日期 | 2026-09-06 | 每次抽查后更新 |
 

@@ -60,6 +60,11 @@ npm run doctor:mcp
 
 [评测场景](evals/scenarios.json) 覆盖产品类型、动效参数、不可用工具、减少动效、长列表和视频转场；它们是可重复执行的行为评测规范，单元测试只检查其结构，不代表已经逐场景运行了生成任务。
 
+素材检索遵循[候选排序规范](.agents/skills/ui-design-agent/references/material-scouting.md)：
+先搜高优先级来源和少量候选，再把 MCP/浏览器结果交给
+`npm run material:rank -- --input <candidate-json>`；不可达、低分或未验证来源会
+保留在 secondary 区，不会因为一次失败就删除，也不会自动进入实现。
+
 `npm run eval:e3` 准备三个固定场景的决策评测输入，不调用模型或评分。
 首轮前后对比、原始答复与证据限制见 [E3 记录](evals/reports/2026-09-06-e3.md)。
 

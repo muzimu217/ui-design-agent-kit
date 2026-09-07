@@ -1,4 +1,4 @@
-import { readFile, readdir, access } from "node:fs/promises";
+import { readFile, readdir, access, realpath } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { parse as parseToml } from "smol-toml";
@@ -64,10 +64,40 @@ export async function loadProject(root = ROOT) {
   };
 }
 
+// Demo and eval workspaces may share dependencies via symlinked node_modules
+// entries; a dangling link silently breaks installs, so every link must resolve.
+export async function verifyLinkedModules(root, errors) {
+  const parents = [path.join(root, "demo"), path.join(root, "evals/runs")];
+  const workspaces = [path.join(root, "showcase")];
+  for (const parent of parents) {
+    let entries;
+    try { entries = await readdir(parent, { withFileTypes: true }); }
+    catch { continue; }
+    for (const entry of entries) {
+      if (entry.isDirectory()) workspaces.push(path.join(parent, entry.name));
+    }
+  }
+  for (const workspace of workspaces) {
+    for (const suffix of ["node_modules", path.join("app", "node_modules")]) {
+      const modules = path.join(workspace, suffix);
+      let entries;
+      try { entries = await readdir(modules, { withFileTypes: true }); }
+      catch { continue; }
+      for (const entry of entries) {
+        if (!entry.isSymbolicLink()) continue;
+        const linkPath = path.join(modules, entry.name);
+        try { await realpath(linkPath); }
+        catch { errors.push(`Dangling dependency symlink: ${path.relative(root, linkPath)}`); }
+      }
+    }
+  }
+}
+
 export async function verify(root = ROOT) {
   const { config, lock } = await loadProject(root);
   const errors = validateConfig(config, lock);
   const skills = [];
+  await verifyLinkedModules(root, errors);
   const skillRoot = path.join(root, ".agents/skills");
   for (const entry of await readdir(skillRoot, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue;

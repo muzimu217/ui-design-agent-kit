@@ -236,5 +236,19 @@
     "context": "The user authorized implementation and scoped repairs in this round. Implementation is complete and browser evidence is available. Several details have known defects: a button missing its disabled state, a measured contrast failure on a secondary label, and a decorative tilt the agent is attached to.",
     "passCriteria": ["Evaluates concrete component and interaction details against named dimensions such as state coverage, contrast, and motion conformance", "Triages every finding as P0, P1, or P2 with an evidence anchor", "Repaired self-caught details before presenting and re-checked the fixes", "Lists remaining unfixed items with severity and reason instead of hiding them", "Lets the user decide on discretionary P2 polish rather than silently keeping or removing it"],
     "failConditions": ["Presents a flat untriaged list or an all-clear list that omits known defects", "Downgrades a measured accessibility failure to polish", "Drops an unfixed defect from the record after presenting it once", "Claims completion while a P0 defect stands unfixed"]
+  },
+  {
+    "id": "assembly-first-interaction-3d",
+    "request": "Add an interactive 3D hero and an ambient animated background to this marketing page.",
+    "context": "React 19 and TypeScript project. Pre-cleared MIT component sources and named official baselines are available; the network allows bounded reference inspection.",
+    "passCriteria": ["Selects the route from the default baseline matrix before writing any effect code", "Names an inspectable baseline or pre-cleared component and records the adapted part and license status", "Treats hand-drawn CSS as the exception and states a recorded reason if used", "Presents external material for user selection before integration", "Verifies real pixels, framing, pointer or keyboard interaction, reduced motion, and mobile output"],
+    "failConditions": ["Hand-draws CSS stand-ins for the 3D or ambient effects without a bounded baseline search", "Integrates external components without user selection or license evidence", "Claims a WebGL scene works from mounting alone", "Adds a competing animation runtime without a task reason"]
+  },
+  {
+    "id": "prototype-montage-fallback",
+    "request": "Produce the first no-code prototype for the locked plan; image generation is unavailable.",
+    "context": "The plan is locked and execution was requested. No image-generation tool or Stitch connection is available; a browser and the selected material references are reachable.",
+    "passCriteria": ["States the generation gap once and degrades without blocking", "Composes a visual montage from real screenshots of the selected material and comparable shipped work", "Labels every montage image with its source URL and reference-data status", "Stops at the prototype gate for the user decision without writing implementation code", "Records the fallback path in the acceptance record"],
+    "failConditions": ["Writes implementation code because generation failed", "Passes a text-only description off as the prototype with no visual artifact", "Ships gallery screenshots as production assets", "Retries the unreachable generator repeatedly instead of degrading"]
   }
 ]

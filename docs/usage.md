@@ -19,6 +19,30 @@ its motion, routing, design-contract, and acceptance references. The export is
 generated, not a second source to edit. The target host still needs its own
 skills and MCP setup.
 
+## Using the kit from Codex in an external product workspace
+
+Inside this repository, Codex loads `AGENTS.md` automatically, and `AGENTS.md`
+routes UI work to `ui-design-agent/SKILL.md` and its tool routing. A sibling
+product workspace (for example `../<product-name>`) inherits none of that: an
+agent running there will not read this repository's files on its own.
+
+For UI work in an external workspace, inject the export instead of relying on
+discovery:
+
+1. Run `npm run prompt:build` here, then copy `output/ui-design-agent.system.md`
+   into the target workspace (or reference it by absolute path).
+2. Point the target workspace's own `AGENTS.md` — the file Codex auto-loads
+   there — at the export, or pass the export as the developer/system prompt
+   for that session.
+3. The export embeds the entrypoint and every registered reference in one
+   file, so the agent does not need to re-read kit sources: the gates,
+   material-confirmation rules, MCP call-trace requirements, and acceptance
+   conventions travel with the prompt. The host still supplies its own MCP
+   servers and supporting skills.
+
+Evidence and acceptance records stay in the target workspace, per the boundary
+rules in `docs/architecture.md`.
+
 For web interaction motion:
 
 ```text

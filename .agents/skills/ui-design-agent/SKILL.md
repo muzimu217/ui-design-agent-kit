@@ -21,6 +21,16 @@ state changes legible. Do not mistake more effects or tool calls for better work
   Planning and review do not authorize code changes. A narrow fix is not a redesign.
   Self-critique and severity never expand that authority: a read-only review can
   finish with an open P0, but the implementation must remain unaccepted.
+- Scale the chain to the task and state the tier with the plan: S (narrow
+  repair of one existing component or defect — no direction or material gates,
+  one evidence-driven verification round, MCP gate scaled to the checks
+  actually needed), M (one new page or a substantial component set — a
+  direction note with a named baseline, material gate only when external
+  material is adopted, a baseline screenshot or montage may stand in for a
+  generated prototype), L (a new product, multi-surface work, or a
+  brand-defining direction — the full chain with gates A through F). When a
+  task sits between tiers, the user draws the boundary; a narrow repair never
+  uses tiering as a license to expand into a redesign.
 - Read the target repository's instructions, dependencies, routes, components,
   tokens, assets, and current states before choosing libraries or visual direction.
 - Preserve the user's brand, content, stack, and chosen references. Established
@@ -42,6 +52,12 @@ state changes legible. Do not mistake more effects or tool calls for better work
   clarity, adaptation fit, and retrieval efficiency. Show the primary bucket
   first, keep blocked or low-score sources in a separate secondary bucket, and
   never let the score bypass user confirmation or license review.
+- For interactive, animation, 3D, or ambient-effect work, apply the
+  assembly-first rule and the default baseline matrix in
+  [material-scouting.md](references/material-scouting.md): adapting a named
+  baseline or a pre-cleared component is the default path, and a hand-drawn
+  CSS treatment needs a recorded reason. Pre-cleared sources carry verified
+  license facts only; user selection still gates every adoption.
 - When the request starts from an image, screenshot, Figma handoff, or asks for
   higher visual fidelity, follow [image-to-code-fidelity.md](references/image-to-code-fidelity.md).
   Classify the source, write a compact fidelity brief, separate measured facts
@@ -135,8 +151,12 @@ execute it.
 
 After plan lock and an execution request, produce a prototype without writing
 code: generate a prototype image from the selected material when an image or
-Stitch capability is available, otherwise hand the user a generation prompt for
-their own image tool. Stop at Gate C for the user's decision. Implementation
+Stitch capability is available; otherwise hand the user a generation prompt for
+their own image tool; when generation is unavailable or untimely, compose a
+montage board from real screenshots of the selected material and comparable
+shipped work (browser-captured or official), each image labeled with its
+source URL and treated as reference data, never as a shippable asset. Stop at
+Gate C for the user's decision. Implementation
 comes later: do not start code before the prototype and, when applicable, the
 design contract are confirmed.
 
@@ -165,7 +185,9 @@ and no compatible example was found.
   brief support it. Use mature open-source libraries, official examples, and
   complete reference projects as the starting point; adapt their proven scene,
   interaction, and performance patterns to the existing product instead of
-  inventing a 3D system from a blank canvas.
+  inventing a 3D system from a blank canvas. The default baseline matrix in
+  [material-scouting.md](references/material-scouting.md) names the first stop
+  per task type.
 - Deliver runnable, fully typed modules with imports, exports, relevant state,
   asset paths, and dependency requirements. Do not omit core behavior with TODOs,
   pseudo-handlers, arbitrary delays, or unexplained `any`. Reuse local APIs.
@@ -273,7 +295,7 @@ acceptance record.
 
 | Phase | Required call | What clears the gate |
 | --- | --- | --- |
-| Motion design / implementation | Motion MCP: `search-motion-docs` for the concept, `generate-css-easing` for the curve | A returned documentation resource or generated CSS curve, read and applied |
+| Motion design / implementation | Motion MCP: `search-motion-docs` for the concept; use `generate-css-easing` only when `listTools` advertises it | A returned documentation resource is read and applied; an advertised easing helper is called and checked when available |
 | Component / API implementation | Context7 or official-docs MCP for the installed version; shadcn registry for component items | A matched, inspected API or registry item |
 | Prototype candidates | Stitch MCP (when enabled) for prototype images | A generated candidate shown to the user |
 | Verification | Browser tools such as Playwright for rendered evidence | Same-viewport captures and interaction checks |

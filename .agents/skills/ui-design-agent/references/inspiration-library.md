@@ -8,6 +8,11 @@ before adapting anything into the target project.
 
 ## Component and motion libraries
 
+The assembly-first rule, pre-cleared sources with verified licenses, and the
+default baseline matrix for interactive, animation, and 3D work live in
+[material-scouting.md](material-scouting.md); this catalog stays the broader
+research index.
+
 | Source | What it provides | Best used for | Access and authorization note |
 | --- | --- | --- | --- |
 | [React Bits](https://reactbits.dev) | Open-source animated, interactive, fully customizable React components | React 18/19 UI with distinctive entrance, background, and text effects | Inspect the component source and license in its repository before adapting; do not assume every variant is free for all uses |

@@ -65,6 +65,61 @@ or a search-result snippet.
 An inaccessible source is never promoted merely because its score is high. A
 reachable source with unclear rights is still secondary until rights are checked.
 
+## Assembly-first rule for interactive, animation, and 3D work
+
+Hand-drawn CSS is the exception for interactive, animated, ambient, or 3D
+treatments, not the default. For those categories:
+
+1. Start from the default baseline matrix below: pick the first-stop route,
+   name the baseline (official example, pre-cleared component, or mature MIT
+   project), and record the adapted part and its license status.
+2. Adapt within the license boundary; prefer pulling a pre-cleared component
+   over re-implementing an equivalent effect in bespoke CSS.
+3. Hand-writing a CSS stand-in is allowed only when a bounded search found no
+   compatible baseline (record the search boundary), the user explicitly asked
+   for original work, or adaptation would cost more than a clean local
+   implementation — state which reason applies in the research notes.
+
+Pre-clearing removes repeated license re-verification only. It does not remove
+the user material gate: adopting any external component still goes through the
+shortlist and the user's explicit selection.
+
+## Pre-cleared component sources
+
+License facts below were verified against the upstream repository license
+(SPDX via the GitHub API or a read license file) on the listed date. Re-check
+any entry older than a quarter before relying on it; the monthly freshness
+inspection spot-checks this table.
+
+| Source | Stack | Provides | License | Verified |
+| --- | --- | --- | --- | --- |
+| shadcn/ui registry | React + Tailwind | Accessible primitives | MIT | 2026-09-06 |
+| Inspira UI | Vue / Nuxt | Animated component set | MIT | 2026-09-07 |
+| Magic UI | React + Tailwind | Copy-paste animated and ambient components | MIT | 2026-09-07 |
+| Motion (`motion/react`) | React / Vue / JS | Spring runtime and presets | MIT | 2026-09-07 |
+| Three.js + React Three Fiber + Drei | React | 3D scene, controls, helpers | MIT | 2026-09-07 |
+| Lenis | Framework-agnostic | Smooth scroll | MIT | 2026-09-07 |
+
+Not pre-cleared on purpose: React Bits ships a custom license (read its
+`LICENSE.md` per adoption); GSAP is under its own standard license terms
+(verify the current official terms per use); Aceternity UI and 21st.dev items
+are per-component. Treat all of those as normal scouted candidates, not
+pre-cleared material.
+
+## Default baseline matrix
+
+First stop per task signal; name the chosen baseline at the direction gate.
+Adapt within license boundaries and the target stack.
+
+| Task signal | Default first stop | Fallback |
+| --- | --- | --- |
+| Interactive 3D scene or product view | R3F + Drei official examples and mature MIT projects | Three.js official examples |
+| Ambient / WebGL background, hero effect | Magic UI component (Inspira UI for Vue), adapted | R3F scene from a named baseline |
+| Scroll-driven narrative, parallax | Lenis + the project's Motion system | GSAP after a license and terms check |
+| State transitions, micro-interactions | Motion presets per [motion-contract.md](motion-contract.md) | CSS spring per the motion contract |
+| Entrance and text-effect treatments | Magic UI / Inspira UI component | Original treatment per the design contract |
+| Video or timeline deliverable | `remotion-video-agent` route | — |
+
 ## Candidate record
 
 The input to `scripts/material-rank.mjs` uses this minimal shape:

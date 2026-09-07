@@ -24,7 +24,7 @@
 | 3 | 素材检索 | reference-first + Route capabilities | inspiration-library.md、material-scouting.md | reference-first-adaptation、material-source-prioritization、material-access-secondary-bucket、reference-to-adaptation-boundary |
 | 4 | 素材确认门 | reference-first（候选清单交用户确认） | tool-routing.md 步骤 3、design-contract.md | material-confirmation-gate（2026-09-06 新增） |
 | 5 | 设计契约 | Establish a direction | design-contract.md | design-contract-quality（2026-09-06 新增） |
-| 6 | 能力路由与降级 | Route capabilities deliberately | tool-routing.md | motion-free-tier、offline-fallback、candidate-tools-not-fictional、threejs-open-source-baseline、remotion-brand-animation |
+| 6 | 能力路由与降级 | Route capabilities deliberately | tool-routing.md | motion-free-tier、offline-fallback、candidate-tools-not-fictional、threejs-open-source-baseline、remotion-brand-animation、assembly-first-interaction-3d ✅（2026-09-07） |
 | 7 | 实现与动效 | Implement the whole interaction | motion-contract.md | physical-motion-presets、reduced-motion-over-style、long-list-choreography、operations-not-marketing |
 | 8 | 验收 | Verify and hand off | acceptance.md、image-to-code-fidelity.md | honest-verification、image-to-code-fidelity-loop、remotion-overlap-math、remotion-seeking-and-assets、remotion-render-scope |
 | 9 | 交付与诚实 | Verify and hand off | acceptance.md | honest-verification、untrusted-registry-content、brand-specific-experience |
@@ -32,19 +32,20 @@
 
 覆盖规则：**每个环节至少一个专属或强相关场景**；新增/大改环节时同步补场景。
 
-### 确认门覆盖（chain-flow v7）
+### 确认门覆盖（chain-flow v7.1）
 
-完整产品流程见 `docs/chain-flow.md`（v7 = Plan/Execute 模式 + 六阶段思维内核 + 六道确认门 +
-细节级自我批评内环，其中门F 为 MCP 调用门禁）。思维内核：
+完整产品流程见 `docs/chain-flow.md`（v7.1 = Plan/Execute 模式 + 六阶段思维内核 + 六道确认门 +
+细节级自我批评内环 + 门账本 + 任务分级，其中门F 为 MCP 调用门禁）。思维内核：
 `references/ui-designer-thinking.md`（六阶段：问题→场景→架构→视觉→交互→
 验证 + 通用清单 + 各阶段专属自检问题）。确认门是强制闸门，验收记录必须
-显示每个适用确认门已通过，未显示即视为未闭环：
+显示每个适用确认门已通过，未显示即视为未闭环；**门上待裁决事项统一登记
+`docs/gates.md`（门账本），裁决后回填、不删除行**：
 
 | 确认门 | SKILL.md 锚点 | 强制场景 | 评测场景覆盖 |
 | --- | --- | --- | --- |
 | 门A 设计稿 | Establish a direction（preliminary draft） | 实质性新 UI（强制） | direction-draft-gate ✅（2026-09-06 补齐） |
 | 门B 素材选择 | reference-first（explicit selection，未选素材不得进入实现） | 采用外部素材（强制） | material-confirmation-gate ✅ |
-| 门C 原型 | Establish a direction（prototype without writing code，生图/提示词双路径） | 实质性新 UI（强制） | prototype-before-code ✅（2026-09-06 补齐） |
+| 门C 原型 | Establish a direction（prototype without writing code，生图/提示词/拼板三路径） | 实质性新 UI（强制） | prototype-before-code ✅（2026-09-06 补齐）、prototype-montage-fallback ✅（2026-09-07） |
 | 门D 契约 | Establish a direction（design contract） | 大项目/动效复杂 | design-contract-quality ✅ |
 | 门E 每轮验收 | Verify and hand off（multi-round interaction verification，逐页替换建议） | 代码完成后每轮（强制） | honest-verification + detail-critique-before-gates ✅ |
 | 门F MCP 调用门禁 | Enforce MCP call gates（设计/实现必须真实调用相关 MCP 并留痕） | 实质 UI 任务的设计/实现/验收（强制） | mcp-gate-enforcement ✅ |
@@ -117,6 +118,28 @@ secondary，不重复重试。新增 3 个素材行为场景；机械测试为 2
 Mode 才能一键启动第一版无代码原型，并停在门 C。新增场景覆盖“未锁定计划不得
 生成原型”和“锁定后只能执行对应 revision”；一键执行不自动通过任何用户门。
 
+### 第六轮：门账本与装配优先素材层（2026-09-07，用户委托优化执行）
+
+**完整性**：新增 `docs/gates.md` 门账本（存量 13 项迁入；登记/回填/不删行、
+P2 衰减、批量裁决规则，阈值 D1/D2 待用户定责）；chain-flow 升 v7.1（门账本 +
+任务分级 S/M/L + 原型三路径）。✅
+
+**一致性**：S/M/L 与门C-lite 口径在 SKILL.md「Respect the assignment」与
+chain-flow v7.1 一致；装配优先规则本体只在 `material-scouting.md`，SKILL.md
+与 `inspiration-library.md` 单向引用，无平行副本。✅
+
+**可验证性**：新增 2 场景（`assembly-first-interaction-3d`、
+`prototype-montage-fallback`，总数 36）；`verify.mjs` 新增依赖软链校验
+（demo / evals/runs / showcase 的 node_modules 与 app/node_modules）并配
+独立测试 `tests/verify-symlink.test.mjs`。✅
+
+**资产合规**：预清素材层许可全部 GitHub API 实测留痕（2026-09-07）；
+React Bits（自定义许可）、GSAP（自有条款）、Aceternity / 21st.dev
+（逐组件）明确不入预清。✅
+
+**新鲜度**：预清表带验证日期，纳入月度巡检抽查范围；`.gitignore` 补
+evals/runs 构建产物与 zhumu-blog 条目。✅
+
 ## 四、可持续检查清单
 
 **每次改动后（机械层，约 30 秒）**
@@ -130,6 +153,7 @@ npm run prompt:build  # 重建导出，确认锚点与引用顺序
 **每次改动后（语义层，2 分钟）**
 
 - [ ] 改动的环节仍在本报告第二节映射表内，或映射表已同步
+- [ ] 新停门事项已登记 `docs/gates.md`，已裁决事项已回填（不删除行）
 - [ ] 验收记录含确认门痕迹：方向稿门/素材选择门/成品验收门至少列出通过情况
 - [ ] 验收记录含 MCP 调用痕迹：设计/实现/验收逐环节列出（服务器/工具/结果），或明确声明"本环节无需 MCP"及原因
 - [ ] 每道门呈现前跑过细节级自我批评；未修复项带 P0/P1/P2 严重度与原因留痕（detail-critique.md）
@@ -149,10 +173,10 @@ npm run prompt:build  # 重建导出，确认锚点与引用顺序
 
 | 指标 | 当前值 | 达标线 |
 | --- | --- | --- |
-| 评测场景数 | 34 | ≥ 每环节 1 个，共 ≥ 9 |
+| 评测场景数 | 36 | ≥ 每环节 1 个，共 ≥ 9 |
 | verify 错误数 | 0 | 0 |
-| 测试通过数 | 21/21 | 全过 |
+| 测试通过数 | 23/23（1 项随并行 WIP 待提交） | 全过 |
 | 已装 skill 锁定率 | 13/15（另 2 个为本 kit 自有入口） | 上游 skill 100% 锁定 |
-| 素材库检查日期 | 2026-09-06 | 每次抽查后更新 |
+| 素材库检查日期 | 灵感库 2026-09-06 / 预清组件源表 2026-09-07 | 每次抽查后更新 |
 
 若某维度跌破达标线，按第三节格式补一份"审查结果"更新，并修复到通过再合入。

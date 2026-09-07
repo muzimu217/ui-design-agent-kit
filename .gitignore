@@ -21,3 +21,9 @@ demo/phone-demo/evidence/
 demo/blog-demo/node_modules/
 demo/blog-demo/dist/
 demo/blog-demo/evidence/
+demo/zhumu-blog/node_modules/
+demo/zhumu-blog/dist/
+demo/zhumu-blog/evidence/
+evals/runs/**/dist/
+evals/runs/**/release/
+evals/runs/**/node_modules/

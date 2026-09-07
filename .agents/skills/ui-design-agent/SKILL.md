@@ -40,7 +40,11 @@ state changes legible. Do not mistake more effects or tool calls for better work
   local assets, then search for comparable shipped work on relevant official docs,
   showcases, component registries, template libraries, asset sites, and the
   [inspiration library](references/inspiration-library.md) (for example a relevant
-  Drei docs/showcase when the task involves React Three Fiber). Select a concrete
+  Drei docs/showcase when the task involves React Three Fiber). Knowledge-base
+  lookup comes first: match the task's need type in the library's category
+  routing index and read the matched site's source-catalog entry (usage
+  example, screenshot, mirror alternatives) before searching elsewhere. Select a
+  concrete
   baseline before designing, record its URL or local path, the parts being
   adapted, and the license or usage permission. When adopting external material
   into the site, present the shortlist to the user with sources and adaptation

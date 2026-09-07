@@ -99,23 +99,49 @@ the user before secondary exploration.
 
 ## Category routing index (need type -> website)
 
-The knowledge base for "where to search": match the task's need type to the
-website, then run the reference-first search there. Reachability checked
-2026-09-06; blocked entries need a real browser.
+The knowledge base for "where to search" (the 灵感库): match the task's need
+type to the website, then run the reference-first search there. Reachability
+checked 2026-09-06, re-checked 2026-09-07 with curl plus Playwright; blocked
+entries need a real browser.
 
 | Need type | Website | Use it for | Reachability |
 | --- | --- | --- | --- |
 | 动效 / Motion | [Landing Love](https://www.landing.love) | Motion and interaction inspiration, animated sections | Direct https OK |
-| 审美 / Aesthetics | [Land Book](https://land-book.com) | Aesthetic tone and visual mood reference | Blocks non-browser clients (403); use a real browser |
+| 审美 / Aesthetics | [Land Book](https://land-book.com) | Aesthetic tone and visual mood reference | 403 + Cloudflare challenge (headless blocked too); needs an interactive browser |
 | 创意 / Creativity | [Awwwards](https://www.awwwards.com) | Award-level creative and trend benchmarks | Direct https OK |
 | 精致 / Refinement | [One Page Love](https://onepagelove.com) | Polished single-page layouts | Direct https OK (was 525 earlier; re-checked 200) |
-| 酷炫 / Bold | [Lapa Ninja](https://www.lapa.ninja) | Bold, high-impact visual direction | Blocks non-browser clients (403); use a real browser |
+| 酷炫 / Bold | [Lapa Ninja](https://www.lapa.ninja) | Bold, high-impact visual direction | Direct https OK (2026-09-07; was 403 earlier — anti-bot fluctuates, re-check) |
 | 现成 / Ready-made | [21st.dev](https://21st.dev) | Ready-made UI components and AI-generated component registry (shadcn-compatible picks) | Direct https OK |
-| 设计感 / Design quality | [SiteInspire](https://www.siteinspire.com) | Refined, design-led layouts | Rate-limited (429); retry or use a real browser |
+| 设计感 / Design quality | [SiteInspire](https://www.siteinspire.com) | Refined, design-led layouts | Rate-limits scripts (429); loads fine in a real browser |
 
 Routing rule: look up the need type here first, go to the matched website,
 search by product type plus the specific interaction or material, then bring
-candidates back through the material confirmation gate (gate B).
+candidates back through the material confirmation gate (gate B). Per-site
+entries — efficacy analysis, a concrete usage example, a homepage screenshot
+(`screenshots/`), and mirror alternatives — live in
+[source-catalog.md](source-catalog.md). When a routed site is blocked,
+rate-limited, or anti-crawled, take its recorded alternatives instead of
+retrying the failure.
+
+## Expanding the library (adding new sources)
+
+The library grows through use: the user supplies a URL (or the agent proposes
+a candidate found during research), and it joins the same record system —
+analyze first, decide second. Never add a source on a bare URL.
+
+1. Propose — the user provides a URL, or the agent surfaces a candidate.
+2. Efficacy analysis — answer before anything is written: what does the site
+   actually provide, which need types fit, is it a duplicate of an existing
+   entry, and what content form does it offer (screenshots, component code,
+   prompts, templates)?
+3. Decide — clear efficacy, no duplicate, reachable: write the entry into
+   `source-catalog.md` with the full template (usage example, screenshot or
+   the reason none exists, mirror alternatives, access status, date, source).
+   Otherwise do not add it; record the rejection reason instead.
+4. If the source serves a need type the routing index lacks, add the mapping
+   row here in the same edit.
+5. Verify reachability (curl plus a real browser when scripts are blocked),
+   capture the homepage screenshot, and record the date.
 
 ## Optional design-taste skills
 

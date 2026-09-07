@@ -58,3 +58,24 @@
   若代码/资产未获授权，只改编其可观察关系。
 - **素材确认门**：外部素材要进用户网站，必须先给用户提交候选清单
   （来源 URL + 拟采用部分 + 改编/授权边界），获得确认后再整合。
+
+## 四、分类路由 7 站条目化复验（2026-09-07）
+
+灵感库升级为三层知识库后（① 分类路由索引 ② 素材条目记录
+`references/source-catalog.md` ③ 检索机制），对路由索引 7 站做
+curl + Playwright 双通道复验并抓首页截图（存
+`references/screenshots/`），结果已写入条目库的"可达性与授权"字段：
+
+| # | 站点 | curl | Playwright 浏览器 | 截图 |
+| --- | --- | --- | --- | --- |
+| 1 | landing.love | 200 | 正常加载（标称 2146 动画网站，整页录像） | ✅ shot-landing-love.jpeg |
+| 2 | land-book.com | 403 | Cloudflare 挑战页拦截（"请稍候…"），不绕过 | ❌ 无（条目记镜像替代） |
+| 3 | awwwards.com | 200 | 正常加载 | ✅ shot-awwwards.jpeg |
+| 4 | onepagelove.com | 200 | 正常加载（此前 525 已恢复） | ✅ shot-onepagelove.jpeg |
+| 5 | lapa.ninja | 200（此前 403，反爬状态波动） | 正常加载（标称 7300+ 落地页） | ✅ shot-lapa-ninja.jpeg |
+| 6 | 21st.dev | 200 | 正常加载（标称 12,000+ UI） | ✅ shot-21st-dev.jpeg |
+| 7 | siteinspire.com | 429 | **正常加载**（限流只针对脚本） | ✅ shot-siteinspire.jpeg |
+
+结论：7 站中 6 站浏览器可达并留有截图；land-book 需真实交互浏览器，
+条目已记录镜像替代（Lapa Ninja / Best Website Gallery）。截图属参考
+数据，不进生产。

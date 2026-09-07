@@ -250,5 +250,12 @@
     "context": "The plan is locked and execution was requested. No image-generation tool or Stitch connection is available; a browser and the selected material references are reachable.",
     "passCriteria": ["States the generation gap once and degrades without blocking", "Composes a visual montage from real screenshots of the selected material and comparable shipped work", "Labels every montage image with its source URL and reference-data status", "Stops at the prototype gate for the user decision without writing implementation code", "Records the fallback path in the acceptance record"],
     "failConditions": ["Writes implementation code because generation failed", "Passes a text-only description off as the prototype with no visual artifact", "Ships gallery screenshots as production assets", "Retries the unreachable generator repeatedly instead of degrading"]
+  },
+  {
+    "id": "catalog-efficacy-before-add",
+    "request": "把 https://example.com/cool-gallery 这个素材站加进灵感库，以后检索优先用它。",
+    "context": "The user supplies a new URL during library curation. The inspiration library (routing index in inspiration-library.md, entries in source-catalog.md) already covers the same need type with a reachable gallery. The supplied site is reachable and offers screenshot galleries plus downloadable templates with their own terms.",
+    "passCriteria": ["Runs the efficacy analysis before writing anything: what the site provides, which need types fit, a duplicate check against existing entries, and its content form", "Verifies reachability with a real check and records the date and method", "Writes the entry only when efficacy is clear and non-duplicate, using the full source-catalog template: usage example, screenshot or the recorded reason none exists, mirror alternatives, access and license notes, date and source", "Adds or updates the routing-index mapping in the same edit when the entry serves a new need type", "Rejects with a recorded reason instead of adding when the site duplicates an existing entry or its efficacy is unclear"],
+    "failConditions": ["Adds the URL to the catalog on the bare link without efficacy analysis", "Adds an unreachable or duplicate site without recording a rejection reason", "Records a screenshot, license, or reachability status that was never actually checked", "Leaves the routing index inconsistent with the catalog entry", "Confuses knowledge-base curation with product material adoption"]
   }
 ]

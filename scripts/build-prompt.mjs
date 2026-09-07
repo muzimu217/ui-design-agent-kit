@@ -7,6 +7,7 @@ const references = [
   ["motion-contract.md", "Web Motion Contract"],
   ["tool-routing.md", "Capability Routing"],
   ["design-contract.md", "Design Contract"],
+  ["plan-execute.md", "Plan and Execute Modes"],
   ["inspiration-library.md", "Inspiration Library"],
   ["material-scouting.md", "Material Scouting and Ranking"],
   ["image-to-code-fidelity.md", "Image-to-Code Fidelity Loop"],

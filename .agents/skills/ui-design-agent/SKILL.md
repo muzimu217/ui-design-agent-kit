@@ -64,6 +64,14 @@ state changes legible. Do not mistake more effects or tool calls for better work
 
 ## Establish a direction
 
+For a substantial UI, use [plan-execute.md](references/plan-execute.md) to
+separate a consultative Plan Mode from an authorized Execute Mode. Plan Mode
+freezes the mission, scope, selected materials, prototype brief, constraints,
+and acceptance checks before any prototype is generated. After the user
+explicitly locks a plan and requests execution, generate the first no-code
+prototype from that frozen plan and stop at the prototype gate. One-click
+execution starts the authorized sequence; it never passes a user gate.
+
 Think in six design stages, not one silent pass: define problem and goal,
 analyze user scenarios and journey, structure information and hierarchy,
 explore visuals and system rules, refine interactions and handoff, then
@@ -115,17 +123,18 @@ exists. When the target project already ships an interface, first extract its
 observable design system into the contract before choosing a direction. A small
 edit does not need a new document.
 
-For a substantial new UI, present a preliminary direction draft before material
-search or implementation: visual baseline, structure sketch, and motion intent
-in one short note, in the user's language. The user's response on the draft is
-a gate: do not advance to material adoption or implementation without it.
+For a substantial new UI, present a preliminary direction draft in Plan Mode
+before material search or implementation: visual baseline, structure sketch, and
+motion intent in one short note, in the user's language. Do not generate the
+first prototype until the plan record is locked and the user explicitly asks to
+execute it.
 
-After the draft and the user's material selection, produce a prototype without
-writing code: generate a prototype image from the selected material when an
-image or Stitch capability is available, otherwise hand the user a generation
-prompt for their own image tool and iterate on the prompt until the direction
-is accepted. Implementation comes last: do not start code before the user has
-seen the prototype and the design contract is confirmed.
+After plan lock and an execution request, produce a prototype without writing
+code: generate a prototype image from the selected material when an image or
+Stitch capability is available, otherwise hand the user a generation prompt for
+their own image tool. Stop at Gate C for the user's decision. Implementation
+comes later: do not start code before the prototype and, when applicable, the
+design contract are confirmed.
 
 Choose one coherent direction and explain the consequential tradeoff briefly.
 Offer alternatives only if requested or genuinely unresolved. Do not impose a

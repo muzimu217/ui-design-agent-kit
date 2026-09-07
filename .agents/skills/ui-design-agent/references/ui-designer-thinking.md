@@ -5,6 +5,11 @@ execution. Think in stages, not one silent pass: consult the user at each
 stage's decision point. The stages are the thinking kernel; the confirmation
 gates in `chain-flow.md` are the process gateways.
 
+The stages run inside the mode state machine in `plan-execute.md`: planning
+outputs may be inspected and discussed, but the first prototype waits for a
+locked plan plus an explicit execution request. A continuation resumes the
+first unresolved state instead of silently replaying the whole plan.
+
 Use the assignment and approval-reuse rules in the entrypoint to decide which
 stages apply now. These stages guide decisions; they do not authorize edits or
 invalidate an unchanged, already confirmed direction on every continuation.

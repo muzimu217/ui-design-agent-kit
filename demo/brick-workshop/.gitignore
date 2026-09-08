@@ -1,0 +1,4 @@
+# 构建产物与测试输出不进库
+node_modules/
+dist/
+coverage/

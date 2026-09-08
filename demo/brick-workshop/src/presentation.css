@@ -1,0 +1,33 @@
+.presentation { position: relative; height: 100dvh; min-height: 240px; width: 100%; display: grid; grid-template-rows: 48px minmax(0, 1fr) 44px; background: #f2f5f7; color: #26343d; }
+.presentation-model { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
+.presentation-model .brick-scene { cursor: grab !important; }
+.presentation-model .brick-scene:active { cursor: grabbing !important; }
+.presentation-models { z-index: 2; display: flex; justify-content: center; gap: 4px; padding: 2px 8px; }
+.presentation-models button { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; min-width: 0; padding: 0 10px; font-size: 12px; color: #61717d; border-radius: 5px; }
+.presentation-models button:hover { color: #26343d; background: #e6edf1; }
+.presentation-models button.is-selected { color: #177656; }
+.presentation-models button > svg, .presentation-models button > span:not(.presentation-selection) { position: relative; z-index: 1; }
+.presentation-selection { position: absolute; inset: 4px 0; background: #e3efe9; border-radius: 5px; }
+.presentation-playback { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; }
+.presentation-count { display: inline-flex; gap: 5px; color: #61717d; width: 60px; font-size: 11px; font-variant-numeric: tabular-nums; }
+.presentation-count > span:first-child { color: #26343d; font-weight: 650; }
+.presentation-count-divider { color: #a5b5bd; }
+.presentation-playback progress { width: 88px; height: 3px; background: #d9e2e7; }
+.presentation-playback progress::-webkit-progress-value { background: #177656; }
+.presentation-playback progress::-moz-progress-bar { background: #177656; }
+.presentation-icon { width: 44px; height: 44px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; }
+.presentation-icon:hover:not(:disabled) { background: #e2eaee; }
+.presentation-icon:disabled { opacity: .4; }
+.presentation-loading { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 13px; color: #61717d; pointer-events: none; }
+.presentation-fallback { position: absolute; inset: 0; display: grid; place-items: center; background: #f2f5f7; }
+.presentation-fallback img { width: 100%; height: 100%; object-fit: contain; opacity: .25; }
+.presentation-fallback > div { position: absolute; display: grid; justify-items: center; gap: 12px; padding: 20px; }
+.presentation-fallback p { font-size: 14px; font-weight: 600; }
+.presentation-fallback button { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 16px; color: #fff; background: #177656; border-radius: 6px; }
+@media (min-width: 640px) {
+  .presentation { grid-template-rows: 52px minmax(0, 1fr) 48px; }
+  .presentation-models { gap: 8px; }
+  .presentation-models button { font-size: 13px; padding: 0 14px; gap: 8px; }
+  .presentation-playback { gap: 12px; }
+  .presentation-playback progress { width: 120px; }
+}

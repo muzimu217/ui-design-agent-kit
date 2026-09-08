@@ -1,0 +1,99 @@
+name: Agent Workflow Showcase Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - demo/brick-workshop/**
+      - demo/inventory-console/**
+      - showcase/products/**
+      - showcase/scripts/**
+      - showcase/tests/**
+      - showcase/licenses/**
+      - .github/workflows/product-pages.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - demo/brick-workshop/**
+      - demo/inventory-console/**
+      - showcase/products/**
+      - showcase/scripts/**
+      - showcase/tests/**
+      - showcase/licenses/**
+      - .github/workflows/product-pages.yml
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Publish the built showcase after Pages has been enabled
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: product-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            showcase/products/package-lock.json
+            demo/brick-workshop/package-lock.json
+            demo/inventory-console/package-lock.json
+      - name: Install showcase dependencies
+        run: npm ci --ignore-scripts
+        working-directory: showcase/products
+      - name: Install demo dependencies
+        run: npm ci --ignore-scripts
+        working-directory: demo/brick-workshop
+      - name: Test gameplay and state
+        run: npm test
+        working-directory: demo/brick-workshop
+      - name: Install inventory demo dependencies
+        run: npm ci --ignore-scripts
+        working-directory: demo/inventory-console
+      - name: Test inventory demo
+        run: npm test
+        working-directory: demo/inventory-console
+      - name: Test publication boundary
+        run: node --test showcase/tests/*.test.mjs
+      - name: Build isolated public artifact
+        env:
+          PAGES_BASE: /${{ github.event.repository.name }}/
+          VITE_RELEASE_ID: ${{ github.sha }}
+        run: node showcase/scripts/build-pages.mjs --base "$PAGES_BASE"
+      - name: Upload only the public artifact
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
+        with:
+          path: test-artifacts/pages/site
+          retention-days: 7
+
+  deploy:
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      vars.PAGES_DEPLOY_ENABLED == 'true' &&
+      (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.deploy))
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Read configured Pages site
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+      - name: Deploy public artifact
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

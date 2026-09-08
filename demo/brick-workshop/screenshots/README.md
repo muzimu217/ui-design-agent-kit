@@ -10,6 +10,7 @@
 | house.webp | 小屋挑战完成 |
 | rocket.webp | 火箭挑战完成 |
 | castle.webp | 城堡挑战完成 |
+| readme-desktop.webp | README 首图，1440x900，2026-09-08 重新构建后采集 |
 
 截图证明对应检查时的画面，不证明 GitHub Pages 已部署或手机真机性能。
 展示站通过明确的图片导入使用这五个文件，不发布整个测试输出目录。

@@ -7,6 +7,27 @@ invoke the orchestrator explicitly:
 $ui-design-agent Build an accessible analytics dashboard from this brief.
 ```
 
+For an everyday-language request without a technical brief:
+
+```text
+$ui-design-agent 我想把同事提交的采购申请集中起来，能看谁还没处理。先帮我整理第一版需求，参考和素材由你联网查，最后给我完整开发提示词，先不要写代码。
+```
+
+For a fillable starter, use the [initial request template](../.agents/skills/ui-design-agent/references/plan-execute.md#initial-request-template).
+The same reference contains the development prompt output template; both are
+included in `npm run prompt:build`. They are built into this project-scoped kit,
+not a global setting for unrelated workspaces.
+
+Agent dispatch is deliberately bounded. S-level repairs use 0 subagents by
+default and are handled by the main agent. M-level work uses sequential
+subagents when needed, and the standard L-level A/B/C chain is also
+sequential: only one subagent may be active for a task at a time, and the next
+one is dispatched only after the previous one has stopped and its declared
+scope has been reviewed. Parallel dispatch is an explicit exception that
+requires user authorization and a recorded reason, non-overlapping scopes,
+and token tradeoff.
+
+
 For the requested physical-motion design direction:
 
 ```text
@@ -18,6 +39,15 @@ For a portable system prompt, run `npm run prompt:build`. It produces
 its motion, routing, design-contract, and acceptance references. The export is
 generated, not a second source to edit. The target host still needs its own
 skills and MCP setup.
+
+For product documentation and identity presentation:
+
+```text
+$ui-design-agent 按内置产品 README 标准整理这个项目。保留产品名，用真实界面截图说明产品，核对运行命令、功能边界、验证记录和许可；不要修改应用或发布仓库。
+```
+
+The [product README standard](../.agents/skills/ui-design-agent/references/product-readme.md)
+also travels with the exported prompt.
 
 ## Using the kit from Codex in an external product workspace
 

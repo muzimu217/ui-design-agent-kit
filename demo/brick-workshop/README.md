@@ -1,10 +1,14 @@
-# 积木小工坊 Demo
+# 积木小工坊
 
-由本仓库 UI Design Agent 工作流生成的 3D 拼搭实验，经用户明确要求收录为独立展示 demo。
-这里保存可运行源码、依赖锁、规则测试和精选截图；不加入根 package.json 或 Agent 运行时。
-原独立工作区仍保留，本目录为本次收录的维护入口。
+在浏览器里选砖、搭建和保存作品的 3D 拼搭工作台。
 
-![桌面试玩](screenshots/desktop.webp)
+[快速开始](#本地运行) · [能做什么](#展示范围) · [来源与证据](#来源与证据)
+
+![积木小工坊的真实桌面工作区，包含积木选择、颜色和搭建区域](screenshots/readme-desktop.webp)
+
+> 可运行 demo。使用离散网格与支撑规则，不是结构承重模拟器；作品只保存在本机浏览器。[截图记录](../../docs/readme-media.md)
+
+由 UI Design Agent 工作流生成，经明确要求收录为独立 demo。源码、依赖锁、规则测试和截图都在本目录；不加入根 Agent 运行时。原独立工作区仍保留。
 
 ## 本地运行
 
@@ -42,3 +46,8 @@ npm run build
 [小屋](screenshots/house.webp) · [火箭](screenshots/rocket.webp) · [城堡](screenshots/castle.webp)
 
 这些图片是真实运行截图转为 WebP，不含原型参考网站素材或用户私有作品。
+
+## 反馈与许可
+
+报告问题时附浏览器、操作步骤和预期/实际结果；作品 JSON 只分享不含私密内容的样例。
+项目源码未单独授予开源许可证。依赖和素材按[来源说明](docs/SOURCES.md)及[第三方声明](../../THIRD_PARTY_NOTICES.md)分别处理。

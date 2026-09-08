@@ -6,7 +6,7 @@ create a demo app unless the user requests an interface or a runnable example.
 
 ## UI work
 
-For actual UI design or implementation, read
+For UI requirements planning, reference/material research, design, or implementation, read
 `.agents/skills/ui-design-agent/SKILL.md` and use its tool routing. It is the
 entrypoint for product reasoning, visual direction, implementation, motion,
 and evidence-based verification. Communicate in the user's language.

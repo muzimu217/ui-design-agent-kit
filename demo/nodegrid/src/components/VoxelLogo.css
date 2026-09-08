@@ -1,0 +1,317 @@
+/* ============================================================
+   VoxelLogo —— 3D 体素云 logo（logo-demo.html v4 的 React 移植）
+   88 个完整立方体格子（3 层堆叠），交互与降级与原稿一致：
+   · 默认 20s 缓慢自转；hover ≤150ms 微倾
+   · 点击切换「轮转展示」双轴环绕 + 加速自转 + 双扫光 + halo 1.22
+   · reduced-motion：全部动画停止，静态 rotateY(-38deg)，雨滴隐藏
+   尺寸经 --s 缩放（原稿 s=22px）
+   ============================================================ */
+
+.vlogo {
+  --s: 22px;
+  position: relative;
+  display: inline-block;
+  padding: calc(var(--s) * 3.2) calc(var(--s) * 2) 0;
+  cursor: pointer;
+  perspective: 1100px;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.vlogo .halo {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: calc(var(--s) * 21);
+  height: calc(var(--s) * 11);
+  transform: translate(-50%, -40%);
+  background: radial-gradient(closest-side, rgba(34, 211, 238, 0.3), transparent 70%);
+  pointer-events: none;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.vlogo .tilt {
+  position: relative;
+  width: calc(var(--s) * 12);
+  height: calc(var(--s) * 7);
+  margin: 0 auto;
+  transform-style: preserve-3d;
+  transform: rotateX(-26deg);
+  transition: transform 0.15s ease-out;
+}
+.vlogo:hover .tilt,
+.vlogo:focus-visible .tilt {
+  transform: rotateX(-19deg);
+}
+
+.vlogo .cloud {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  animation: vlogo-idle-spin 20s linear infinite;
+}
+
+/* 像素格子：完整立方体（可见 5 面），面片贴合体素中心 */
+.vlogo .c {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: translate3d(
+    calc((var(--x) - 5.5) * var(--s)),
+    calc((-1 * var(--y) * var(--s)) - var(--s) / 2),
+    calc((var(--z) - 3) * var(--s))
+  );
+}
+.vlogo .c s {
+  position: absolute;
+  width: var(--s);
+  height: var(--s);
+  left: calc(var(--s) / -2);
+  top: calc(var(--s) / -2);
+  box-shadow: inset 0 0 0 1px rgba(189, 250, 255, calc(0.2 + var(--y) * 0.08));
+  backface-visibility: hidden;
+}
+.vlogo .c s:nth-child(1) {
+  transform: rotateX(90deg) translateZ(calc(var(--s) / 2));
+  background: linear-gradient(
+    135deg,
+    hsl(187 95% calc(54% + var(--y) * 10%)),
+    hsl(191 88% calc(34% + var(--y) * 10%))
+  );
+}
+.vlogo .c s:nth-child(2) {
+  transform: translateZ(calc(var(--s) / 2));
+  background: linear-gradient(
+    180deg,
+    hsl(192 80% calc(25% + var(--y) * 5%)),
+    hsl(196 75% calc(12% + var(--y) * 4%))
+  );
+}
+.vlogo .c s:nth-child(3) {
+  transform: rotateY(180deg) translateZ(calc(var(--s) / 2));
+  background: hsl(199 72% calc(10% + var(--y) * 4%));
+}
+.vlogo .c s:nth-child(4) {
+  transform: rotateY(-90deg) translateZ(calc(var(--s) / 2));
+  background: linear-gradient(
+    180deg,
+    hsl(194 78% calc(20% + var(--y) * 5%)),
+    hsl(198 72% calc(9% + var(--y) * 4%))
+  );
+}
+.vlogo .c s:nth-child(5) {
+  transform: rotateY(90deg) translateZ(calc(var(--s) / 2));
+  background: linear-gradient(
+    180deg,
+    hsl(194 78% calc(22% + var(--y) * 5%)),
+    hsl(198 72% calc(11% + var(--y) * 4%))
+  );
+}
+
+/* 数据雨滴 */
+.vlogo .drops {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+.vlogo .drops u {
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  left: calc(50% + var(--dx) * var(--s));
+  top: 42%;
+  background: linear-gradient(180deg, #9df3ff, rgba(34, 211, 238, 0.15));
+  box-shadow:
+    0 0 8px rgba(34, 211, 238, 0.8),
+    inset 0 0 0 1px rgba(234, 252, 255, 0.4);
+  opacity: 0;
+  animation: vlogo-fall var(--t) linear infinite;
+  animation-delay: var(--d);
+}
+@keyframes vlogo-fall {
+  0% {
+    transform: translate3d(0, 6px, 0) scaleY(1);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.95;
+  }
+  78% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate3d(0, calc(var(--s) * 4.2), 0) scaleY(1.5);
+    opacity: 0;
+  }
+}
+
+/* HUD 刻度环地台 */
+.vlogo .ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.vlogo .ring.r1 {
+  width: calc(var(--s) * 20);
+  height: calc(var(--s) * 20);
+  border: 1px dashed rgba(34, 211, 238, 0.3);
+  transform: translate(-50%, -50%) rotateX(90deg);
+  animation: vlogo-ring-spin 26s linear infinite;
+}
+.vlogo .ring.r2 {
+  width: calc(var(--s) * 14.5);
+  height: calc(var(--s) * 14.5);
+  border: 1px solid rgba(34, 211, 238, 0.16);
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(34, 211, 238, 0.14) 0deg 2deg,
+    transparent 2deg 15deg
+  );
+  mask-image: radial-gradient(closest-side, transparent 58%, #000 60%, #000 97%, transparent 100%);
+  -webkit-mask-image: radial-gradient(closest-side, transparent 58%, #000 60%, #000 97%, transparent 100%);
+  transform: translate(-50%, -50%) rotateX(90deg);
+  animation: vlogo-ring-spin 40s linear infinite reverse;
+}
+.vlogo .ring.r3 {
+  width: calc(var(--s) * 11.8);
+  height: calc(var(--s) * 11.8);
+  background: radial-gradient(closest-side, rgba(34, 211, 238, 0.18), transparent 70%);
+  transform: translate(-50%, -50%) rotateX(90deg);
+}
+@keyframes vlogo-ring-spin {
+  from {
+    transform: translate(-50%, -50%) rotateX(90deg) rotateZ(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotateX(90deg) rotateZ(360deg);
+  }
+}
+
+@keyframes vlogo-idle-spin {
+  from {
+    transform: rotateY(0);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+@keyframes vlogo-fast-spin {
+  from {
+    transform: rotateY(0);
+  }
+  to {
+    transform: rotateY(720deg);
+  }
+}
+@keyframes vlogo-orbit-tilt {
+  0%,
+  100% {
+    transform: rotateX(-30deg);
+  }
+  50% {
+    transform: rotateX(14deg);
+  }
+}
+
+/* 扫光带 ×2 */
+.vlogo .sweep {
+  position: absolute;
+  top: -10%;
+  height: 120%;
+  width: 20%;
+  background: linear-gradient(100deg, transparent, rgba(234, 252, 255, 0.26), transparent);
+  transform: skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+}
+.vlogo .sweep.a,
+.vlogo .sweep.b {
+  left: -12%;
+}
+
+/* 轮转展示模式（点击后） */
+.vlogo.showcase .tilt {
+  animation: vlogo-orbit-tilt 5s ease-in-out infinite;
+}
+.vlogo.showcase .cloud {
+  animation: vlogo-fast-spin 5s linear infinite;
+}
+.vlogo.showcase .halo {
+  opacity: 1;
+  transform: translate(-50%, -40%) scale(1.22);
+}
+.vlogo.showcase .sweep.a {
+  opacity: 1;
+  animation: vlogo-sweep-move 2.4s ease-in-out infinite;
+}
+.vlogo.showcase .sweep.b {
+  opacity: 1;
+  animation: vlogo-sweep-move 2.4s ease-in-out infinite 0.8s;
+}
+.vlogo.showcase .drops u {
+  animation-duration: calc(var(--t) * 0.55);
+}
+@keyframes vlogo-sweep-move {
+  from {
+    left: -14%;
+  }
+  to {
+    left: 104%;
+  }
+}
+
+.vlogo .wordmark {
+  display: block;
+  margin-top: calc(var(--s) * 2.5);
+  font-family: var(--font-mono);
+  font-size: calc(var(--s) * 1.36);
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  color: var(--ink);
+  text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
+}
+.vlogo .wordmark b {
+  color: var(--brand);
+  font-weight: inherit;
+}
+.vlogo .tagline {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  color: #4892a6;
+}
+.vlogo .state {
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: #3ea8bd;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vlogo .cloud,
+  .vlogo .tilt,
+  .vlogo .ring,
+  .vlogo .sweep,
+  .vlogo .drops u {
+    animation: none !important;
+  }
+  .vlogo .cloud {
+    transform: rotateY(-38deg);
+  }
+  .vlogo .drops u {
+    display: none;
+  }
+}

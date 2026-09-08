@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 10.5" role="img" aria-label="NODEGRID 横版字标">
+  <!-- NODEGRID 2D 横版 lockup：图标（11×5 像素云投影）+ 等宽字标
+       注意：text 依赖系统等宽字体，正式交付前需转轮廓（path） -->
+  <defs>
+    <filter id="glow2" x="-40%" y="-80%" width="180%" height="260%">
+      <feDropShadow dx="0" dy="0" stdDeviation="0.14" flood-color="#22d3ee" flood-opacity="0.8"/>
+    </filter>
+  </defs>
+  <g filter="url(#glow2)">
+    <!-- 像素云图标（左，占 0-11 × 0-5） -->
+    <g fill="#9df3ff">
+      <rect x="4.04" y="0.04" width="0.92" height="0.92"/><rect x="5.04" y="0.04" width="0.92" height="0.92"/><rect x="6.04" y="0.04" width="0.92" height="0.92"/>
+    </g>
+    <g fill="#38d9f0">
+      <rect x="3.04" y="1.04" width="0.92" height="0.92"/><rect x="4.04" y="1.04" width="0.92" height="0.92"/><rect x="5.04" y="1.04" width="0.92" height="0.92"/><rect x="6.04" y="1.04" width="0.92" height="0.92"/><rect x="7.04" y="1.04" width="0.92" height="0.92"/>
+    </g>
+    <g fill="#22d3ee">
+      <rect x="1.04" y="2.04" width="0.92" height="0.92"/><rect x="2.04" y="2.04" width="0.92" height="0.92"/><rect x="6.04" y="2.04" width="0.92" height="0.92"/><rect x="7.04" y="2.04" width="0.92" height="0.92"/><rect x="8.04" y="2.04" width="0.92" height="0.92"/>
+    </g>
+    <g fill="#eafcff">
+      <rect x="3.04" y="2.04" width="0.92" height="0.92"/><rect x="4.04" y="2.04" width="0.92" height="0.92"/><rect x="5.04" y="2.04" width="0.92" height="0.92"/>
+    </g>
+    <g fill="#0e7490">
+      <rect x="0.04" y="3.04" width="0.92" height="0.92"/><rect x="1.04" y="3.04" width="0.92" height="0.92"/><rect x="2.04" y="3.04" width="0.92" height="0.92"/><rect x="3.04" y="3.04" width="0.92" height="0.92"/><rect x="4.04" y="3.04" width="0.92" height="0.92"/><rect x="5.04" y="3.04" width="0.92" height="0.92"/><rect x="6.04" y="3.04" width="0.92" height="0.92"/><rect x="7.04" y="3.04" width="0.92" height="0.92"/><rect x="8.04" y="3.04" width="0.92" height="0.92"/><rect x="9.04" y="3.04" width="0.92" height="0.92"/><rect x="10.04" y="3.04" width="0.92" height="0.92"/>
+    </g>
+    <g fill="#0a5068">
+      <rect x="2.04" y="4.04" width="0.92" height="0.92"/><rect x="3.04" y="4.04" width="0.92" height="0.92"/><rect x="4.04" y="4.04" width="0.92" height="0.92"/><rect x="5.04" y="4.04" width="0.92" height="0.92"/><rect x="6.04" y="4.04" width="0.92" height="0.92"/><rect x="7.04" y="4.04" width="0.92" height="0.92"/><rect x="8.04" y="4.04" width="0.92" height="0.92"/>
+    </g>
+    <g fill="#7fc6d8">
+      <rect x="3.2" y="6.1" width="0.6" height="0.75" opacity="0.9"/>
+      <rect x="7.3" y="5.9" width="0.6" height="0.75" opacity="0.75"/>
+    </g>
+    <!-- 字标（右） -->
+    <text x="13.4" y="3.9" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="4.1" font-weight="700" letter-spacing="0.42" fill="#eafcff">NODE<tspan fill="#22d3ee">GRID</tspan></text>
+    <text x="13.75" y="7.2" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="1.28" letter-spacing="0.52" fill="#4892a6">全球节点云 · CLOUD &amp; BARE METAL</text>
+  </g>
+</svg>

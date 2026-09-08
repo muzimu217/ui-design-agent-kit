@@ -1,0 +1,42 @@
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translate(-50%, 16px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(92vw, 480px);
+  padding: 12px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-btn);
+  background: var(--bg-overlay);
+  box-shadow: var(--shadow-overlay);
+  color: var(--ink);
+  font-size: 14px;
+  z-index: 90;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 300ms var(--ease-elegant),
+    transform 300ms var(--ease-elegant),
+    visibility 0s linear 300ms;
+}
+.toast.is-on {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition:
+    opacity 300ms var(--ease-elegant),
+    transform 300ms var(--ease-elegant),
+    visibility 0s;
+}
+.toast-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--warn);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.7);
+  flex: none;
+}

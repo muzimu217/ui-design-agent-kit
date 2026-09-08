@@ -1,0 +1,157 @@
+/* ============================================================
+   S5 信任区
+   ============================================================ */
+.sla-bar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--bg-raised);
+  padding: 18px clamp(14px, 3vw, 28px);
+  margin-bottom: clamp(28px, 5vh, 48px);
+}
+.sla-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sla-num {
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: 700;
+  color: var(--brand-hi);
+}
+.sla-num small {
+  font-size: 0.5em;
+  color: var(--brand);
+  margin-left: 2px;
+}
+.sla-label {
+  font-size: 11px;
+  color: var(--ink-2);
+  letter-spacing: 0.1em;
+}
+
+.photo-wall {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: clamp(32px, 6vh, 56px);
+}
+.photo-item {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--bg-raised);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.photo-item img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+  border-bottom: 1px solid var(--line);
+}
+.photo-item figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.photo-credit {
+  font-size: 10px;
+  color: var(--ink-3);
+  letter-spacing: 0.06em;
+}
+
+/* 大区分组城市列表 */
+.city-groups {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--bg-raised);
+  overflow: hidden;
+}
+.city-groups-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--ink-2);
+  padding: 16px 20px 4px;
+}
+.city-group {
+  border-top: 1px solid var(--line);
+}
+.city-group-head {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--dur-hover) ease-out;
+}
+.city-group-head:hover {
+  background: rgba(14, 116, 144, 0.12);
+}
+.city-group-region {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.city-group-count {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink-3);
+}
+.city-group-arrow {
+  font-family: var(--font-mono);
+  color: var(--brand);
+  font-size: 16px;
+}
+.city-group-body ul {
+  list-style: none;
+  margin: 0;
+  padding: 4px 20px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+}
+.city-group-body li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.city-name {
+  color: var(--ink);
+}
+.city-meta {
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.city-groups-note {
+  padding: 12px 20px 16px;
+  font-size: 12px;
+  color: var(--ink-3);
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 720px) {
+  .sla-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .photo-wall {
+    grid-template-columns: 1fr;
+  }
+}

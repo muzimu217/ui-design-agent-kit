@@ -1,0 +1,58 @@
+/* S0 数据地球容器 */
+.globe-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+}
+
+.globe-wrap canvas {
+  display: block;
+  cursor: grab;
+}
+
+.globe-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.globe-loading-orb {
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  background:
+    radial-gradient(circle at 34% 30%, rgba(157, 243, 255, 0.22), transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(14, 116, 144, 0.4), rgba(4, 7, 13, 0.9) 72%);
+  box-shadow: inset -14px -10px 28px rgba(0, 0, 0, 0.55), 0 0 32px rgba(34, 211, 238, 0.1);
+  animation: orb-breath 2.4s ease-in-out infinite;
+}
+
+@keyframes orb-breath {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-loading-orb {
+    animation: none;
+  }
+}

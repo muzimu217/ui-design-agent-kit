@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>NODEGRID · Logo 概念稿 v4（门A 附件 · 纯 CSS · 像素格子云 88 格 3 层）</title>
+<style>
+  /* ============================================================
+     NODEGRID logo 概念稿 v4 —— 像素格子云（88 个完整立方体格子）
+     纯 CSS：零 JS，checkbox hack 切换轮转展示
+
+     v3→v4 教训与修复：
+     · v3 挤出柱的侧裙以原点居中（上下各半），顶面在柱顶 → 半格缝隙
+       → "顶面悬浮 / 散点像素"（用户门A 抓到的真缺陷）。
+     · v4 回到完整立方体格子：每块 5 面全部贴合体素中心，
+       任意旋转角度都是实心格子云，无悬浮面。
+     · 辉光从 .cloud 的 filter drop-shadow（每帧重算，面多掉帧）
+       改为独立 .halo 光斑层，性能与观感兼得。
+     ============================================================ */
+  :root {
+    --s: 22px;                 /* 单格子边长 */
+    --ink: #eafcff;
+    --cyan: #22d3ee;
+    --bg: #04070d;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    background:
+      radial-gradient(1100px 650px at 50% 118%, rgba(34,211,238,.11), transparent 60%),
+      radial-gradient(900px 480px at 50% -12%, rgba(14,116,144,.16), transparent 55%),
+      var(--bg);
+    color: var(--ink);
+    font-family: "SF Mono", ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+  .stage { text-align: center; }
+
+  #mode { position: absolute; opacity: 0; pointer-events: none; }
+  .logo {
+    position: relative;
+    display: inline-block;
+    padding: 70px 44px 0;
+    cursor: pointer;
+    perspective: 1100px;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  /* 辉光光斑（独立 2D 层，不套 3D，不逐帧重算） */
+  .halo {
+    position: absolute;
+    left: 50%; top: 52%;
+    width: 460px; height: 240px;
+    transform: translate(-50%, -40%);
+    background: radial-gradient(closest-side, rgba(34,211,238,.30), transparent 70%);
+    pointer-events: none;
+    transition: opacity .4s ease, transform .4s ease;
+  }
+
+  /* 外层俯仰 / 内层自转 */
+  .tilt {
+    position: relative;
+    width: calc(var(--s) * 12);
+    height: calc(var(--s) * 7);
+    margin: 0 auto;
+    transform-style: preserve-3d;
+    transform: rotateX(-26deg);
+    transition: transform .15s ease-out;
+  }
+  .logo:hover .tilt { transform: rotateX(-19deg); }
+
+  .cloud {
+    position: absolute; inset: 0;
+    transform-style: preserve-3d;
+    animation: idle-spin 20s linear infinite;
+  }
+
+  /* ---- 像素格子：完整立方体，可见 5 面（俯视省底面） ----
+     体素中心 = ((x-5.5)s, -(y*s + s/2), (z-3)s)，各面 translateZ(s/2) 全贴合 */
+  .c {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 0; height: 0;
+    transform-style: preserve-3d;
+    transform: translate3d(
+      calc((var(--x) - 5.5) * var(--s)),
+      calc((-1 * var(--y) * var(--s)) - var(--s) / 2),
+      calc((var(--z) - 3) * var(--s)));
+  }
+  .c s {
+    position: absolute;
+    width: var(--s); height: var(--s);
+    left: calc(var(--s) / -2); top: calc(var(--s) / -2);
+    box-shadow: inset 0 0 0 1px rgba(189,250,255,calc(.20 + var(--y) * .08)); /* 霓虹描光，随层增亮 */
+    backface-visibility: hidden;
+  }
+  /* 顶面：亮度按所在层 y 上台阶（0/1/2 层 → 52/62/72%） */
+  .c s:nth-child(1) { transform: rotateX(90deg)  translateZ(calc(var(--s)/2));
+    background: linear-gradient(135deg, hsl(187 95% calc(54% + var(--y) * 10%)),
+                                        hsl(191 88% calc(34% + var(--y) * 10%))); }
+  /* 前 / 左 / 右 / 后：四向 AO 暗面梯度，同层同色、层间递进 */
+  .c s:nth-child(2) { transform: translateZ(calc(var(--s)/2));
+    background: linear-gradient(180deg, hsl(192 80% calc(25% + var(--y) * 5%)),
+                                        hsl(196 75% calc(12% + var(--y) * 4%))); }
+  .c s:nth-child(3) { transform: rotateY(180deg) translateZ(calc(var(--s)/2));
+    background: hsl(199 72% calc(10% + var(--y) * 4%)); }
+  .c s:nth-child(4) { transform: rotateY(-90deg) translateZ(calc(var(--s)/2));
+    background: linear-gradient(180deg, hsl(194 78% calc(20% + var(--y) * 5%)),
+                                        hsl(198 72% calc(9% + var(--y) * 4%))); }
+  .c s:nth-child(5) { transform: rotateY(90deg)  translateZ(calc(var(--s)/2));
+    background: linear-gradient(180deg, hsl(194 78% calc(22% + var(--y) * 5%)),
+                                        hsl(198 72% calc(11% + var(--y) * 4%))); }
+
+  /* ---- 数据雨滴：云底坠落的发光像素 ---- */
+  .drops { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; }
+  .drops u {
+    position: absolute;
+    width: 6px; height: 10px;
+    left: calc(50% + var(--dx) * var(--s));
+    top: 42%;
+    background: linear-gradient(180deg, #9df3ff, rgba(34,211,238,.15));
+    box-shadow: 0 0 8px rgba(34,211,238,.8), inset 0 0 0 1px rgba(234,252,255,.4);
+    opacity: 0;
+    animation: fall var(--t) linear infinite;
+    animation-delay: var(--d);
+  }
+  @keyframes fall {
+    0%   { transform: translate3d(0, 6px, 0)  scaleY(1);   opacity: 0; }
+    12%  { opacity: .95; }
+    78%  { opacity: .85; }
+    100% { transform: translate3d(0, 92px, 0) scaleY(1.5); opacity: 0; }
+  }
+
+  /* ---- HUD 刻度环地台 ---- */
+  .ring { position: absolute; left: 50%; top: 50%; border-radius: 50%; pointer-events: none; }
+  .ring.r1 {
+    width: 440px; height: 440px;
+    border: 1px dashed rgba(34,211,238,.30);
+    transform: translate(-50%,-50%) rotateX(90deg);
+    animation: ring-spin 26s linear infinite;
+  }
+  .ring.r2 {
+    width: 320px; height: 320px;
+    border: 1px solid rgba(34,211,238,.16);
+    background: repeating-conic-gradient(from 0deg, rgba(34,211,238,.14) 0deg 2deg, transparent 2deg 15deg);
+    mask-image: radial-gradient(closest-side, transparent 58%, #000 60%, #000 97%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, transparent 58%, #000 60%, #000 97%, transparent 100%);
+    transform: translate(-50%,-50%) rotateX(90deg);
+    animation: ring-spin 40s linear infinite reverse;
+  }
+  .ring.r3 {
+    width: 260px; height: 260px;
+    background: radial-gradient(closest-side, rgba(34,211,238,.18), transparent 70%);
+    transform: translate(-50%,-50%) rotateX(90deg);
+  }
+  @keyframes ring-spin { from { transform: translate(-50%,-50%) rotateX(90deg) rotateZ(0deg); }
+                          to   { transform: translate(-50%,-50%) rotateX(90deg) rotateZ(360deg); } }
+
+  @keyframes idle-spin { from { transform: rotateY(0); } to { transform: rotateY(360deg); } }
+  @keyframes fast-spin { from { transform: rotateY(0); } to { transform: rotateY(720deg); } }
+  @keyframes orbit-tilt {
+    0%, 100% { transform: rotateX(-30deg); }
+    50%      { transform: rotateX(14deg); }
+  }
+
+  /* 扫光带 ×2 */
+  .sweep {
+    position: absolute; top: -10%; height: 120%; width: 20%;
+    background: linear-gradient(100deg, transparent, rgba(234,252,255,.26), transparent);
+    transform: skewX(-18deg);
+    opacity: 0; pointer-events: none;
+  }
+  .sweep.a { left: -12%; }
+  .sweep.b { left: -12%; }
+
+  /* ===== 点击后的轮转展示模式 ===== */
+  #mode:checked + .logo .tilt   { animation: orbit-tilt 5s ease-in-out infinite; }
+  #mode:checked + .logo .cloud  { animation: fast-spin 5s linear infinite; }
+  #mode:checked + .logo .halo   { opacity: 1; transform: translate(-50%,-40%) scale(1.22); }
+  #mode:checked + .logo         { --halo-boost: 1; }
+  #mode:checked + .logo .sweep.a{ opacity: 1; animation: sweep-move 2.4s ease-in-out infinite; }
+  #mode:checked + .logo .sweep.b{ opacity: 1; animation: sweep-move 2.4s ease-in-out infinite .8s; }
+  #mode:checked + .logo .drops u{ animation-duration: calc(var(--t) * .55); }
+  @keyframes sweep-move { from { left: -14%; } to { left: 104%; } }
+
+  .wordmark {
+    display: block;
+    margin-top: 54px;
+    font-size: 30px;
+    letter-spacing: .42em; text-indent: .42em;
+    text-shadow: 0 0 18px rgba(34,211,238,.45);
+  }
+  .wordmark b { color: var(--cyan); font-weight: inherit; }
+  .tagline { margin-top: 12px; font-size: 11px; letter-spacing: .34em; text-indent: .34em; color: #4892a6; }
+
+  .state { margin-top: 16px; font-size: 12px; letter-spacing: .2em; color: #3ea8bd; }
+  #mode:checked ~ .state .lab-idle  { display: none; }
+  #mode:not(:checked) ~ .state .lab-show { display: none; }
+
+  .hint { margin-top: 44px; font-size: 12px; color: #5b7f8c; letter-spacing: .08em; }
+  .hint code { color: #7fc6d8; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cloud, .tilt, .ring, .sweep, .drops u { animation: none !important; }
+    .cloud { transform: rotateY(-38deg); }
+    .drops u { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <input type="checkbox" id="mode" />
+  <label class="logo" for="mode" aria-label="NODEGRID logo，点击切换 360 度轮转展示">
+    <div class="halo" aria-hidden="true"></div>
+    <div class="tilt">
+      <div class="ring r3" aria-hidden="true"></div>
+      <div class="ring r2" aria-hidden="true"></div>
+      <div class="ring r1" aria-hidden="true"></div>
+      <div class="cloud">
+        <!-- 第 0 层（底·52 格）：大云形轮廓 12×7 -->
+        <i class="c" style="--x:4;--y:0;--z:0"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:0;--z:0"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:0;--z:0"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:2;--y:0;--z:1"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:3;--y:0;--z:1"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:4;--y:0;--z:1"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:0;--z:1"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:0;--z:1"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:7;--y:0;--z:1"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:8;--y:0;--z:1"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:1;--y:0;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:2;--y:0;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:3;--y:0;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:4;--y:0;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:0;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:0;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:7;--y:0;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:8;--y:0;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:9;--y:0;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:0;--y:0;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:1;--y:0;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:2;--y:0;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:3;--y:0;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:4;--y:0;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:0;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:0;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:7;--y:0;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:8;--y:0;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:9;--y:0;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:10;--y:0;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:11;--y:0;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:1;--y:0;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:2;--y:0;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:3;--y:0;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:4;--y:0;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:0;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:0;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:7;--y:0;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:8;--y:0;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:9;--y:0;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:10;--y:0;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:2;--y:0;--z:5"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:3;--y:0;--z:5"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:4;--y:0;--z:5"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:0;--z:5"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:0;--z:5"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:7;--y:0;--z:5"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:8;--y:0;--z:5"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:9;--y:0;--z:5"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:4;--y:0;--z:6"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:0;--z:6"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:0;--z:6"><s></s><s></s><s></s><s></s><s></s></i>
+
+        <!-- 第 1 层（中·28 格） -->
+        <i class="c" style="--x:4;--y:1;--z:1"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:1;--z:1"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:1;--z:1"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:7;--y:1;--z:1"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:3;--y:1;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:4;--y:1;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:1;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:1;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:7;--y:1;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:8;--y:1;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:2;--y:1;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:3;--y:1;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:4;--y:1;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:1;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:1;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:7;--y:1;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:8;--y:1;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:9;--y:1;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:3;--y:1;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:4;--y:1;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:1;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:1;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:7;--y:1;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:8;--y:1;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:4;--y:1;--z:5"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:1;--z:5"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:1;--z:5"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:7;--y:1;--z:5"><s></s><s></s><s></s><s></s><s></s></i>
+
+        <!-- 第 2 层（顶·8 格） -->
+        <i class="c" style="--x:5;--y:2;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:2;--z:2"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:4;--y:2;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:2;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:2;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:7;--y:2;--z:3"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:5;--y:2;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+        <i class="c" style="--x:6;--y:2;--z:4"><s></s><s></s><s></s><s></s><s></s></i>
+
+        <!-- 数据雨滴：云底坠落 -->
+        <span class="drops" aria-hidden="true">
+          <u style="--dx:-4.2;--t:3.4s;--d:.2s"></u>
+          <u style="--dx:-2.4;--t:2.8s;--d:1.1s"></u>
+          <u style="--dx:-.6;--t:3.1s;--d:.6s"></u>
+          <u style="--dx:1.2;--t:2.6s;--d:1.6s"></u>
+          <u style="--dx:3.0;--t:3.6s;--d:.9s"></u>
+          <u style="--dx:4.6;--t:3.2s;--d:1.3s"></u>
+        </span>
+      </div>
+      <span class="sweep a"></span>
+      <span class="sweep b"></span>
+    </div>
+    <span class="wordmark">NODE<b>GRID</b></span>
+    <span class="tagline">全球节点云 · CLOUD &amp; BARE METAL</span>
+  </label>
+  <p class="state">
+    <span class="lab-idle">待机 · 缓慢自转</span>
+    <span class="lab-show">轮转展示 · 双轴环绕 + 双扫光</span>
+  </p>
+  <p class="hint">概念稿 v4 · 纯 CSS（像素格子云 88 格 / 3 层堆叠 / 数据雨滴 / HUD 环）· <code>demo/nodegrid</code></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,339 @@
+/* ============================================================
+   NODEGRID 全球节点云 · 样式基座
+   token / 排版 / 深度 / 动效预设 均来自 DESIGN.md（权威契约）
+   禁 transition:all；hover ≤150ms；press scale .98
+   ============================================================ */
+
+:root {
+  /* Color（语义 token · 深空科幻） */
+  --bg-base: #04070d;
+  --bg-raised: #070c13;
+  --bg-overlay: #0b141d;
+  --line: #12333e;
+  --ink: #eafcff;
+  --ink-2: #9fc9d6;
+  --ink-3: #5b7f8c;
+  --brand-hi: #9df3ff;
+  --brand: #22d3ee;
+  --brand-mid: #38d9f0;
+  --brand-deep: #0e7490;
+  --brand-shadow: #0a5068;
+  --accent-hot: #f59e0b;
+  --accent-plan: #7c8bf5;
+  --ok: #34d399;
+  --warn: #f59e0b;
+
+  /* Type */
+  --font-body: 'HarmonyOS Sans SC', 'MiSans', 'PingFang SC', 'Noto Sans SC',
+    system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Motion（motion-contract 预设） */
+  --ease-elegant: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-hover: 120ms;
+  --dur-panel: 340ms;
+
+  /* Depth */
+  --shadow-overlay: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+  /* Radius */
+  --r-card: 10px;
+  --r-btn: 8px;
+  --r-badge: 4px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 背景氛围（克制的两处 radial，不堆辉光） */
+.app-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(1100px 650px at 50% 118%, rgba(34, 211, 238, 0.07), transparent 60%),
+    radial-gradient(900px 480px at 50% -12%, rgba(14, 116, 144, 0.1), transparent 55%),
+    var(--bg-base);
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.28);
+}
+
+/* ---------- 焦点环：2px --brand + 2px offset，全元素可见 ---------- */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ---------- 等宽数据 ---------- */
+.mono,
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- 按钮（Snappy：hover ≤150ms / press .98 / ≥44px 触达） ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 22px;
+  border-radius: var(--r-btn);
+  border: 1px solid transparent;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  transition:
+    background-color var(--dur-hover) ease-out,
+    border-color var(--dur-hover) ease-out,
+    color var(--dur-hover) ease-out,
+    box-shadow var(--dur-hover) ease-out,
+    transform var(--dur-hover) ease-out;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn-primary {
+  background: var(--brand);
+  color: #03242e;
+}
+.btn-primary:hover {
+  background: var(--brand-hi);
+  box-shadow: 0 0 0 1px rgba(157, 243, 255, 0.4), 0 6px 24px rgba(34, 211, 238, 0.18);
+}
+.btn-primary:active {
+  transform: scale(0.98);
+}
+.btn-ghost {
+  background: transparent;
+  border-color: var(--brand-deep);
+  color: var(--brand-hi);
+}
+.btn-ghost:hover {
+  border-color: var(--brand);
+  background: rgba(34, 211, 238, 0.08);
+}
+
+/* ---------- 通用排版 ---------- */
+.section {
+  padding-block: clamp(64px, 10vh, 128px);
+}
+.container {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+}
+.section-title {
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.section-sub {
+  color: var(--ink-2);
+  font-size: 14px;
+  margin-bottom: clamp(24px, 4vh, 48px);
+}
+
+/* ---------- 徽标 chip ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--r-badge);
+  border: 1px solid var(--line);
+  background: rgba(14, 116, 144, 0.14);
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.badge-hot {
+  border-color: rgba(245, 158, 11, 0.55);
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+}
+.badge-plan {
+  border-color: rgba(124, 139, 245, 0.5);
+  background: rgba(124, 139, 245, 0.12);
+  color: #a5b0f8;
+}
+
+/* 状态点 */
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ok);
+  flex: none;
+}
+.dot-plan {
+  background: var(--accent-plan);
+}
+
+
+/* ---------- 级联点亮（stagger 0.06s，仅可见组前 12 项） ---------- */
+.stagger-item {
+  animation: rise-in 0.5s var(--ease-elegant) both;
+  animation-delay: calc(var(--i, 0) * 0.06s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .stagger-item {
+    animation: none;
+  }
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- zoom-through 换场（transform+opacity · Elegant ~600ms） ----------
+   View Transitions 可用时走 ::view-transition-*（见 App 逻辑）；
+   不可用时对元素本体施加同名关键帧（.vt-out / .vt-in）。 */
+@keyframes zoom-through-out {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+@keyframes zoom-through-in {
+  from {
+    transform: scale(1.08);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* 辉光过桥（一步）：radial 叠加层 0 → .6 → 0 */
+@keyframes glow-bridge {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 非 View Transitions 降级：元素本体直接施加同名关键帧 */
+@media (prefers-reduced-motion: no-preference) {
+  .app-page.vt-out .hero {
+    animation: zoom-through-out 600ms var(--ease-elegant) both;
+  }
+}
+
+/* 换场元素命名（App 在换场期间动态挂载，避免隐藏元素常驻命名） */
+.hero.vt-named {
+  view-transition-name: zoom-hero;
+}
+.netstage.vt-named {
+  view-transition-name: zoom-network;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(zoom-hero) {
+    animation: zoom-through-out 600ms var(--ease-elegant) both;
+  }
+  ::view-transition-new(zoom-network) {
+    animation: zoom-through-in 600ms var(--ease-elegant) both;
+  }
+  ::view-transition-old(zoom-network) {
+    animation: zoom-through-out 600ms var(--ease-elegant) both;
+  }
+  ::view-transition-new(zoom-hero) {
+    animation: zoom-through-in 600ms var(--ease-elegant) both;
+  }
+  ::view-transition-group(zoom-hero),
+  ::view-transition-group(zoom-network) {
+    animation-duration: 600ms;
+    animation-timing-function: var(--ease-elegant);
+  }
+}
+
+/* ---------- 图片占位（照片加载失败降级） ---------- */
+.photo-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 180px;
+  background:
+    repeating-linear-gradient(45deg, rgba(14, 116, 144, 0.08) 0 12px, transparent 12px 24px),
+    var(--bg-raised);
+  border: 1px dashed var(--line);
+  color: var(--ink-3);
+  font-size: 12px;
+  text-align: center;
+  padding: 16px;
+}
+.photo-fallback a {
+  color: var(--ink-2);
+  word-break: break-all;
+}
+
+/* ---------- 只读工具（SR） ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

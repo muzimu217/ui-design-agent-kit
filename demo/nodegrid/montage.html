@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>NODEGRID · 门C 方向拼板（路径 c · 参考数据）</title>
+<style>
+  :root { --bg:#04070d; --ink:#eafcff; --cyan:#22d3ee; --line:#12333e; }
+  * { box-sizing:border-box; margin:0; }
+  body {
+    background: radial-gradient(900px 500px at 50% -8%, rgba(14,116,144,.16), transparent 55%), var(--bg);
+    color: var(--ink);
+    font-family: ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    padding: 48px 26px 90px; max-width: 1180px; margin: 0 auto;
+  }
+  h1 { font-size: 17px; letter-spacing: .16em; }
+  h1 b { color: var(--cyan); }
+  .sub { color:#5b7f8c; font-size: 12px; margin: 8px 0 42px; line-height: 1.8; }
+  .warn { display:inline-block; border:1px solid #3a2b12; background:#140d04; color:#d9a441;
+          font-size:11px; padding:5px 12px; border-radius:6px; letter-spacing:.08em; }
+  section { margin-bottom: 52px; }
+  h2 { font-size: 13px; color:#7fc6d8; letter-spacing:.22em; margin-bottom:6px;
+       border-left:3px solid var(--cyan); padding-left:10px; }
+  .dir { font-size:12px; color:#9fc9d6; line-height:1.9; margin:12px 0 18px; }
+  .dir b { color:#eafcff; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px; }
+  figure { border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#070c13; }
+  figure img { width:100%; display:block; }
+  figcaption { padding:10px 14px; font-size:11px; color:#5b7f8c; line-height:1.7; }
+  figcaption a { color:#7fc6d8; word-break:break-all; }
+  .tag { display:inline-block; font-size:10px; border:1px solid var(--line); color:#7fc6d8;
+         border-radius:4px; padding:1px 7px; margin-right:6px; letter-spacing:.1em; }
+</style>
+</head>
+<body>
+  <h1>NODE<b>GRID</b> · 门C 方向拼板</h1>
+  <p class="sub">
+    路径 c（成品截图拼板）：生图与 Stitch MCP 均不可用时的等效门C 产物。
+    <span class="warn">所有截图均为参考数据 · 归原站所有 · 不进生产 · 不作可交付资产</span><br />
+    配套：三屏生图提示词见 PROTOTYPE.md（路径 b）· 2026-09-07
+  </p>
+
+  <section>
+    <h2>第一屏 · HERO（数据地球首屏）</h2>
+    <p class="dir"><b>采用关系</b>：右侧数据地球参考 globe.gl 的点阵/光弧形态（青色节点 + 流动弧线，MIT 库直接实现）；
+       左侧文案排布参考 Lapa Ninja 暗色 statement hero 的节奏——大主张 + 一行副文 + 双 CTA；底部统计条 count-up。</p>
+    <div class="cards">
+      <figure>
+        <img src="evidence/ref-globe-gl.png" alt="globe.gl 官网首屏" />
+        <figcaption><span class="tag">地球形态</span><a href="https://globe.gl/">globe.gl</a>（MIT）— 暗面地球 + 点阵 + 光弧，hero 右侧直接用此库实现节点/弧线层。</figcaption>
+      </figure>
+      <figure>
+        <img src="evidence/ref-lapa-ninja.png" alt="Lapa Ninja 画廊首页" />
+        <figcaption><span class="tag">文案节奏</span><a href="https://www.lapa.ninja/">lapa.ninja</a> — 暗色大字主张 + 克制副文的 hero 排布参考（仅节奏，不复刻视觉）。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>第二屏 · 全球网络地图（像素光点世界地图）</h2>
+    <p class="dir"><b>采用关系</b>：信息结构参考 Cloudflare Network 页（统计条 → 区域分组 → 城市列表的分节奏）；
+       但视觉反其道而行——Cloudflare 是企业亮色，NODEGRID 用暗色全息底图 + <b>闪亮像素光点</b>（核心=白心青晕脉冲环 /
+       边缘=稳定小亮点 / 规划中=虚线环），光点沿弧线流动做流量可视化。点击光点滑出节点详情。</p>
+    <div class="cards">
+      <figure>
+        <img src="evidence/ref-cloudflare-network.png" alt="Cloudflare Network 页首屏" />
+        <figcaption><span class="tag">信息结构</span><a href="https://www.cloudflare.com/network/">cloudflare.com/network</a> — 全球节点页的分区结构参考（仅结构，非视觉复刻）。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>第三屏 · 节点详情 + 定价货架</h2>
+    <p class="dir"><b>采用关系</b>：节点详情面板 = 机房实拍图（NASA 公有领域，Wikimedia Commons）+ 线路徽标（CN2/BGP/CMI）+
+       等宽延迟大数字 + 该节点起价 + 部署按钮。定价 = 三货架 tab（特惠/普通/全球）+ 深色卡片矩阵 + 月年切换 + 配置滑杆实时改价，
+       全部标注「演示数据」。此屏无外部截图参考——按方向稿定价表全新编排。</p>
+    <div class="cards">
+      <figure>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/10/A_NASA_computer_server_farm_-a.jpg" alt="NASA 数据中心机房（公有领域）" loading="lazy" />
+        <figcaption><span class="tag">节点实拍图</span><a href="https://commons.wikimedia.org/wiki/File:A_NASA_computer_server_farm_-a.jpg">Wikimedia Commons · NASA</a>（公有领域）— 节点详情面板默认机房图。</figcaption>
+      </figure>
+    </div>
+  </section>
+</body>
+</html>

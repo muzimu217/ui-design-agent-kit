@@ -1,0 +1,314 @@
+/* ============================================================
+   S4 定价货架
+   ============================================================ */
+.pricing-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.pricing-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-btn);
+  background: var(--bg-overlay);
+}
+.pricing-tab {
+  min-height: 44px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-2);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-hover) ease-out,
+    color var(--dur-hover) ease-out;
+}
+.pricing-tab:hover {
+  color: var(--ink);
+}
+.pricing-tab:active {
+  transform: scale(0.98);
+}
+.pricing-tab.is-on {
+  background: rgba(14, 116, 144, 0.4);
+  color: var(--brand-hi);
+}
+.pricing-tab-hot {
+  font-size: 10px;
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  border-radius: var(--r-badge);
+  padding: 0 5px;
+}
+
+.billing-toggle {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-btn);
+  background: var(--bg-overlay);
+}
+.billing-btn {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-2);
+  font-family: var(--font-body);
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-hover) ease-out,
+    color var(--dur-hover) ease-out;
+}
+.billing-btn .mono {
+  font-size: 11px;
+  color: inherit;
+  opacity: 0.85;
+}
+.billing-btn.is-on {
+  background: rgba(34, 211, 238, 0.16);
+  color: var(--brand-hi);
+}
+.billing-btn:active {
+  transform: scale(0.98);
+}
+
+/* —— 卡片矩阵 —— */
+.price-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.price-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px 20px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--bg-raised);
+  transition:
+    border-color var(--dur-hover) ease-out,
+    transform var(--dur-hover) ease-out,
+    box-shadow var(--dur-hover) ease-out;
+}
+.price-card:hover {
+  border-color: rgba(34, 211, 238, 0.55);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-overlay);
+}
+.price-card.has-badge {
+  border-color: rgba(245, 158, 11, 0.45);
+}
+.price-badge {
+  position: absolute;
+  top: -10px;
+  right: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #04070d;
+  background: var(--accent-hot);
+  border-radius: var(--r-badge);
+  padding: 2px 8px;
+  font-weight: 700;
+}
+.price-name {
+  font-size: 16px;
+  font-weight: 700;
+}
+.price-spec {
+  font-size: 12px;
+  color: var(--ink-2);
+  min-height: 2.6em;
+}
+.price-region {
+  display: flex;
+  gap: 6px;
+}
+.price-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-block: 6px 12px;
+}
+.price-num {
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--brand-hi);
+  line-height: 1.1;
+}
+.price-num small {
+  font-size: 0.42em;
+  color: var(--brand);
+  font-weight: 400;
+  margin-left: 2px;
+}
+.price-hourly {
+  font-size: 12px;
+  color: var(--brand);
+}
+.price-year-note {
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.price-foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.price-buy {
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: 13px;
+}
+
+/* —— 全球节点分组货架 —— */
+.price-groups {
+  display: grid;
+  gap: 14px;
+}
+.price-group {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--bg-raised);
+  padding: 18px 20px;
+}
+.price-group-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.price-group-region {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--brand-hi);
+  letter-spacing: 0.06em;
+}
+.price-group-note {
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.price-group-items {
+  display: grid;
+  gap: 2px;
+}
+.price-line {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 16px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.price-line:last-child {
+  border-bottom: 0;
+}
+.price-line .price-spec {
+  grid-column: 1;
+  min-height: 0;
+}
+.price-line .price-num {
+  grid-row: span 2;
+  grid-column: 2;
+  align-self: center;
+  font-size: 22px;
+  text-align: right;
+}
+.price-line .price-hourly {
+  grid-column: 2;
+  text-align: right;
+}
+
+/* —— 配置滑杆 —— */
+.config {
+  margin-top: 32px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--bg-raised);
+  padding: 24px clamp(16px, 3vw, 28px);
+}
+.config-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 18px;
+}
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px 28px;
+}
+.config-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.config-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.config-val {
+  color: var(--brand-hi);
+  font-size: 14px;
+  font-weight: 700;
+}
+.config input[type='range'] {
+  width: 100%;
+  min-height: 44px;
+  accent-color: var(--brand);
+  cursor: pointer;
+}
+.config-price {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.config-price-label {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.config-price .price-num {
+  font-size: 30px;
+}
+
+@media (max-width: 720px) {
+  .pricing-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .pricing-tabs,
+  .billing-toggle {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .price-num {
+    font-size: 28px;
+  }
+}

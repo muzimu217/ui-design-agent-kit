@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>NODEGRID · 2D 平面形象 Spec（门A 附件）</title>
+<style>
+  :root { --bg:#04070d; --ink:#eafcff; --cyan:#22d3ee; --line:#12333e; }
+  * { box-sizing:border-box; margin:0; }
+  body {
+    background: radial-gradient(900px 500px at 50% -8%, rgba(14,116,144,.16), transparent 55%), var(--bg);
+    color: var(--ink);
+    font-family: ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    padding: 48px 24px 80px;
+    max-width: 1060px; margin: 0 auto;
+  }
+  h1 { font-size: 18px; letter-spacing: .18em; margin-bottom: 6px; }
+  h1 b { color: var(--cyan); }
+  .sub { color:#5b7f8c; font-size: 12px; margin-bottom: 40px; letter-spacing:.08em; }
+  section { margin-bottom: 44px; }
+  h2 { font-size: 13px; color:#7fc6d8; letter-spacing:.22em; margin-bottom:16px; border-left: 3px solid var(--cyan); padding-left: 10px; }
+  .panel { border:1px solid var(--line); border-radius:10px; padding:34px; display:flex; flex-wrap:wrap; gap:34px; align-items:center; justify-content:center; }
+  .panel.dark  { background:#04070d; }
+  .panel.light { background:#f4f8fa; }
+  .panel svg { display:block; }
+  .sizes { display:flex; gap:38px; align-items:flex-end; justify-content:center; border:1px solid var(--line); border-radius:10px; padding:34px 20px; background:#04070d; flex-wrap:wrap; }
+  .sizes figure { text-align:center; }
+  .sizes figcaption { margin-top:10px; font-size:10px; color:#4892a6; letter-spacing:.1em; }
+  .tab { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); border-radius:8px 8px 0 0; padding:7px 14px; background:#0b141d; font-size:12px; }
+  .tab svg { width:16px; height:16px; }
+  .tabbar { border:1px solid var(--line); border-radius:10px; padding:18px 20px; background:#070c13; }
+  pre {
+    background:#070c13; border:1px solid var(--line); border-radius:10px;
+    padding:18px 20px; font-size:12px; line-height:1.75; color:#9fc9d6;
+    white-space:pre-wrap; overflow-x:auto;
+  }
+  pre b { color:#eafcff; }
+  .note { font-size:11px; color:#5b7f8c; margin-top:10px; letter-spacing:.05em; line-height:1.8; }
+</style>
+</head>
+<body>
+  <h1>NODE<b>GRID</b> · 2D 平面形象 Spec</h1>
+  <p class="sub">与 3D 体素云同族：同一朵像素云的正视投影（11×5 格）· 三层亮度 · 格缝 · 霓虹描光 · 数据雨滴 —— 门A 附件，2026-09-07</p>
+
+  <section>
+    <h2>A. 横版 LOCKUP（LOGO-LOCKUP.SVG）</h2>
+    <div class="panel dark">
+      <img src="logo-lockup.svg" alt="NODEGRID 横版字标·深底" style="height:110px" />
+    </div>
+    <div class="panel light">
+      <img src="logo-lockup.svg" alt="NODEGRID 横版字标·浅底（暗色化预览）" style="height:110px; filter:brightness(.34) saturate(1.5)" />
+    </div>
+    <p class="note">浅底场景降低亮度/饱和并去光晕（正式浅底版需单独配色：深青主体 #0e7490 + 石墨字 #23343c，实现阶段出第二套 token）。</p>
+  </section>
+
+  <section>
+    <h2>B. 图标版（LOGO-MARK.SVG）· 多尺寸可缩性</h2>
+    <div class="sizes">
+      <figure><img src="logo-mark.svg" alt="16px" style="width:16px" /><figcaption>16</figcaption></figure>
+      <figure><img src="logo-mark.svg" alt="24px" style="width:24px" /><figcaption>24</figcaption></figure>
+      <figure><img src="logo-mark.svg" alt="32px" style="width:32px" /><figcaption>32</figcaption></figure>
+      <figure><img src="logo-mark.svg" alt="48px" style="width:48px" /><figcaption>48</figcaption></figure>
+      <figure><img src="logo-mark.svg" alt="96px" style="width:96px" /><figcaption>96</figcaption></figure>
+      <figure><img src="logo-mark.svg" alt="192px" style="width:192px" /><figcaption>192</figcaption></figure>
+    </div>
+    <p class="note">16px 下雨滴自然退隐为墨点、云格仍可辨；favicon 用图标版，社交头像建议 ≥48px。</p>
+  </section>
+
+  <section>
+    <h2>C. 浏览器标签页（FAVICON 模拟）</h2>
+    <div class="tabbar">
+      <span class="tab"><img src="logo-mark.svg" alt="" /> NODEGRID · 全球节点云</span>
+      <span class="tab" style="opacity:.55"><img src="logo-mark.svg" alt="" style="filter:grayscale(1) brightness(.8)" /> 其他站点</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>D. 生图提示词（可选：位图/宣传渲染版）</h2>
+    <pre>中文（Stitch / 即梦 / 豆包等）：
+<b>极简像素风云朵 logo</b>，由整齐的方形像素格拼成云的轮廓，三层亮度（顶白亮、中电光青 #22d3ee、底深青 #0e7490），
+格子之间留细缝，每格带 1px 霓虹描边，整体柔辉光；云下方 2-3 颗发光像素像数据雨滴坠落；
+深空近黑背景 #04070D，居中构图，大面积留白，扁平 2D 矢量风，无文字，云服务品牌 NODEGRID 用。
+
+English (Midjourney / SDXL / Stitch):
+minimal <b>pixel-art cloud logo</b> built from tidy square blocks, three brightness tiers
+(top near-white, mid electric cyan #22d3ee, base deep teal #0e7490), thin gaps between blocks,
+1px neon rim light on each block, soft outer glow, two or three glowing pixels falling beneath
+the cloud like data rain, near-black deep-space background #04070D, centered mark with generous
+margins, flat 2D vector style, no text, for a cloud-server brand.</pre>
+    <p class="note">位图版仅作宣传/社媒素材；站点 favicon、导航栏、页脚一律用上面的 SVG 源文件（矢量、可审计、无授权风险）。</p>
+  </section>
+
+  <section>
+    <h2>E. 交付物清单</h2>
+    <pre>demo/nodegrid/logo-mark.svg      图标版（favicon / 头像 / 小尺寸）
+demo/nodegrid/logo-lockup.svg    横版 lockup（导航栏 / 页脚 / 文档页眉）
+demo/nodegrid/logo-demo.html     3D 形象（体素云 88 格，纯 CSS，已定稿）</pre>
+    <p class="note">已知限制：lockup 的字标暂用系统等宽字体，正式交付前需转轮廓（path 化）以脱离字体环境；浅底版配色 token 待实现阶段定稿。</p>
+  </section>
+</body>
+</html>

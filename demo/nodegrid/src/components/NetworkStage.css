@@ -1,0 +1,287 @@
+/* ============================================================
+   S2 全屏舞台（HUD + 地图 + 图例 + 移动端区域列表）
+   ============================================================ */
+.netstage {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: var(--bg-base);
+  display: none;
+  flex-direction: column;
+}
+.netstage.is-active {
+  display: flex;
+}
+
+/* 非 View Transitions 降级：进入时 scale 1.08 → 1 */
+.netstage.is-entering {
+  display: flex;
+  animation: zoom-through-in 600ms var(--ease-elegant) both;
+}
+
+/* 辉光过桥（一步 radial 0 → .6 → 0） */
+.netstage-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side at 50% 45%,
+    rgba(157, 243, 255, 0.5),
+    rgba(34, 211, 238, 0.22) 45%,
+    transparent 75%
+  );
+  animation: glow-bridge 600ms ease-in-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .netstage.is-entering {
+    animation: netstage-fade 150ms ease-out both;
+  }
+  .netstage-flash {
+    display: none;
+  }
+}
+@keyframes netstage-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* —— HUD —— */
+.netstage-hud {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px clamp(12px, 2vw, 20px);
+  border-bottom: 1px solid var(--line);
+  background: rgba(7, 12, 19, 0.88);
+  z-index: 4;
+}
+.netstage-back {
+  min-height: 44px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+.netstage-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-btn);
+  background: var(--bg-overlay);
+}
+.netstage-tab {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-2);
+  font-family: var(--font-body);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-hover) ease-out,
+    color var(--dur-hover) ease-out;
+}
+.netstage-tab:hover {
+  color: var(--ink);
+}
+.netstage-tab.is-on {
+  background: rgba(14, 116, 144, 0.4);
+  color: var(--brand-hi);
+}
+.netstage-tab:active {
+  transform: scale(0.98);
+}
+
+.netstage-search {
+  position: relative;
+  margin-left: auto;
+  min-width: min(260px, 40vw);
+}
+.netstage-search input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 40px 0 14px;
+  border-radius: var(--r-btn);
+  border: 1px solid var(--line);
+  background: var(--bg-overlay);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  outline: none;
+  transition:
+    border-color var(--dur-hover) ease-out,
+    box-shadow var(--dur-hover) ease-out;
+}
+.netstage-search input::placeholder {
+  color: #7fc6d8;
+}
+.netstage-search input:focus-visible {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.25);
+  outline: none;
+}
+.netstage-search-clear {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-3);
+  font-size: 13px;
+  cursor: pointer;
+  transition: color var(--dur-hover) ease-out;
+}
+.netstage-search-clear:hover {
+  color: var(--ink);
+}
+
+/* —— 主体 —— */
+.netstage-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  position: relative;
+}
+.netstage-map {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+
+.netstage-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(4, 7, 13, 0.72);
+  color: var(--ink-2);
+  z-index: 3;
+}
+
+.netstage-legend {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-badge);
+  background: rgba(7, 12, 19, 0.88);
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  z-index: 3;
+  pointer-events: none;
+}
+.lg {
+  display: inline-block;
+  margin-left: 6px;
+}
+.netstage-legend .lg:first-child {
+  margin-left: 0;
+}
+.lg-core {
+  width: 9px;
+  height: 9px;
+  background: #fff;
+  box-shadow: 0 0 8px var(--brand);
+}
+.lg-edge {
+  width: 6px;
+  height: 6px;
+  background: var(--brand-hi);
+  box-shadow: 0 0 6px rgba(157, 243, 255, 0.8);
+}
+.lg-plan {
+  width: 10px;
+  height: 10px;
+  border: 1px dashed var(--accent-plan);
+  border-radius: 2px;
+}
+.lg-arc {
+  width: 18px;
+  height: 0;
+  border-top: 1px solid rgba(34, 211, 238, 0.6);
+}
+
+/* —— 移动端区域列表 —— */
+.netstage-list {
+  max-height: 42svh;
+  overflow-y: auto;
+  border-top: 1px solid var(--line);
+  background: var(--bg-raised);
+  padding: 14px clamp(12px, 3vw, 20px) 20px;
+  display: grid;
+  gap: 14px;
+}
+.netstage-list-title {
+  font-size: 12px;
+  color: var(--ink-2);
+  letter-spacing: 0.18em;
+  margin-bottom: 8px;
+}
+.netstage-list-cities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.netstage-list-city {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-btn);
+  background: var(--bg-overlay);
+  color: var(--ink);
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-hover) ease-out,
+    background-color var(--dur-hover) ease-out,
+    transform var(--dur-hover) ease-out;
+}
+.netstage-list-city:hover {
+  border-color: var(--brand);
+}
+.netstage-list-city:active {
+  transform: scale(0.98);
+}
+.netstage-list-count {
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+@media (max-width: 720px) {
+  .netstage-hud {
+    gap: 8px;
+  }
+  .netstage-search {
+    margin-left: 0;
+    min-width: 100%;
+  }
+  .netstage-legend {
+    display: none;
+  }
+}

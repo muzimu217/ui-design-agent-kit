@@ -1,0 +1,136 @@
+/* ============================================================
+   S2 网络地图
+   ============================================================ */
+.netmap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+}
+.netmap:active {
+  cursor: grabbing;
+}
+.netmap canvas {
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+.netmap-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--ink-3);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  pointer-events: none;
+}
+
+/* 节点命中按钮（44px 触达，位置由 canvas 循环写入 transform） */
+.netmap-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.netnode {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  pointer-events: auto;
+  cursor: pointer;
+  /* 圆点画在 canvas 上，这里只承担命中与标签 */
+  -webkit-tap-highlight-color: transparent;
+}
+.netnode:focus {
+  outline: none;
+}
+.netnode:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+.netnode-chip {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 14px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: rgba(7, 12, 19, 0.82);
+  border: 1px solid var(--line);
+  border-radius: var(--r-badge);
+  padding: 0 6px;
+  pointer-events: none;
+  transition:
+    color var(--dur-hover) ease-out,
+    border-color var(--dur-hover) ease-out,
+    opacity var(--dur-hover) ease-out;
+}
+.netnode.is-core .netnode-chip {
+  color: var(--brand-hi);
+  border-color: rgba(56, 217, 240, 0.55);
+}
+.netnode.is-plan .netnode-chip {
+  color: #a5b0f8;
+  border-color: rgba(124, 139, 245, 0.5);
+}
+.netnode.is-dim .netnode-chip {
+  opacity: 0.35;
+}
+.netnode:hover .netnode-chip,
+.netnode:focus-visible .netnode-chip,
+.netnode.is-selected .netnode-chip {
+  border-color: var(--brand);
+  background: rgba(11, 20, 29, 0.95);
+}
+
+/* 缩放按钮 */
+.netmap-zoom {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.netmap-zbtn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-btn);
+  border: 1px solid var(--line);
+  background: rgba(11, 20, 29, 0.9);
+  color: var(--brand-hi);
+  font-family: var(--font-mono);
+  font-size: 20px;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-hover) ease-out,
+    background-color var(--dur-hover) ease-out,
+    transform var(--dur-hover) ease-out;
+}
+.netmap-zbtn:hover {
+  border-color: var(--brand);
+  background: rgba(14, 116, 144, 0.25);
+}
+.netmap-zbtn:active {
+  transform: scale(0.98);
+}
+
+/* 移动端：简化地图（无拖拽，配合区域列表） */
+.netmap-mobile {
+  cursor: default;
+  touch-action: pan-y;
+}
+.netmap-mobile .netmap-zoom {
+  display: none;
+}

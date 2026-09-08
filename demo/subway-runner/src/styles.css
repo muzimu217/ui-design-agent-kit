@@ -1,0 +1,156 @@
+:root {
+  --ink: #1d2433;
+  --ink-soft: #4a5568;
+  --accent: #ff8a3d;
+  --accent-deep: #e06a1f;
+  --accent-shadow: #a34d12;
+  --gold: #ffc63c;
+  --scrim: rgba(14, 18, 28, 0.55);
+  --panel: rgba(20, 25, 38, 0.78);
+  --line: rgba(255, 255, 255, 0.22);
+  --focus-ring: #ffd9a0;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  color: #fff; overflow: hidden; background: #7cc4ee;
+  -webkit-user-select: none; user-select: none; touch-action: none;
+}
+#scene { position: fixed; inset: 0; display: block; width: 100%; height: 100%; }
+#vignette {
+  position: fixed; inset: 0; pointer-events: none; opacity: 0;
+  background: linear-gradient(to top, rgba(217, 72, 59, 0.38), rgba(217, 72, 59, 0) 26%);
+}
+
+/* ---------- 浮层通用 ---------- */
+.overlay {
+  position: fixed; inset: 0; display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  background: radial-gradient(120% 90% at 50% 38%, rgba(14,18,28,0.08) 0%, var(--scrim) 78%);
+  padding: 24px; text-align: center;
+  opacity: 0; transition: opacity 160ms var(--ease-out);
+}
+body[data-state="title"]  #overlay-title  { display: flex; opacity: 1; }
+body[data-state="over"]   #overlay-over   { display: flex; opacity: 1; }
+body[data-state="paused"] #overlay-paused { display: flex; opacity: 1; }
+
+.logo {
+  font-size: clamp(44px, 9vw, 96px);
+  font-weight: 900; letter-spacing: 0.06em; line-height: 1.1;
+  color: var(--gold);
+  text-shadow: 0 0 2px rgba(29,36,51,0.9), 3px 3px 0 #1d2433, 6px 6px 0 rgba(29,36,51,0.35);
+  transform: rotate(-2deg);
+}
+.logo-sub {
+  margin-top: 10px; font-size: 13px; font-weight: 600;
+  letter-spacing: 0.4em; text-indent: 0.4em;
+  color: rgba(255,255,255,0.85); text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+.btn {
+  appearance: none; border: 0; cursor: pointer;
+  font: inherit; font-weight: 800; color: #fff;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-deep) 100%);
+  border-radius: 14px; padding: 14px 44px; font-size: 20px;
+  box-shadow: 0 5px 0 var(--accent-shadow), 0 10px 24px rgba(29,36,51,0.45);
+  transition: transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 120ms ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--accent-shadow), 0 6px 14px rgba(29,36,51,0.4); }
+.btn:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+.btn--ghost {
+  background: rgba(255,255,255,0.1); box-shadow: inset 0 0 0 2px var(--line);
+  font-weight: 600; font-size: 15px; padding: 10px 26px;
+}
+.btn--ghost:active { box-shadow: inset 0 0 0 2px var(--line); transform: translateY(1px); }
+.btn--ghost:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+
+.controls-legend {
+  margin-top: 34px; display: flex; flex-wrap: wrap; gap: 10px 22px;
+  justify-content: center; font-size: 13px; color: rgba(255,255,255,0.92);
+}
+.controls-legend span { display: inline-flex; align-items: center; gap: 7px; }
+kbd {
+  font: 600 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: rgba(255,255,255,0.14); border: 1px solid var(--line);
+  border-bottom-width: 3px; border-radius: 6px; padding: 5px 7px; min-width: 26px;
+  display: inline-block; text-align: center;
+}
+.demo-note {
+  position: absolute; bottom: 14px; left: 0; right: 0;
+  font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0.08em;
+}
+
+/* ---------- 跑动中 HUD ---------- */
+#hud { position: fixed; inset: 0; pointer-events: none; display: none; }
+body[data-state="running"] #hud, body[data-state="paused"] #hud { display: block; }
+.hud-score {
+  position: absolute; top: 18px; left: 20px;
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; padding: 8px 16px 9px;
+  font-weight: 900; font-size: 26px; letter-spacing: 0.02em;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+  font-variant-numeric: tabular-nums;
+}
+.hud-score small { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.72); margin-left: 3px; }
+.hud-coins {
+  position: absolute; top: 74px; left: 20px;
+  display: flex; align-items: center; gap: 7px;
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; padding: 5px 14px 5px 6px;
+  font-weight: 800; font-size: 16px; font-variant-numeric: tabular-nums;
+}
+.coin-ico { width: 22px; height: 22px; flex: none; }
+.hud-pause {
+  position: absolute; top: 18px; right: 20px; pointer-events: auto;
+  width: 44px; height: 44px; border-radius: 12px; cursor: pointer;
+  background: var(--panel); border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+}
+.hud-pause i { display: block; width: 5px; height: 16px; background: #fff; border-radius: 2px; }
+.hud-pause:active { transform: translateY(1px); }
+.hud-pause:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+.hud-hint {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  font-size: 12px; letter-spacing: 0.12em; color: rgba(255,255,255,0.78);
+  background: rgba(14,18,28,0.38); border-radius: 999px; padding: 5px 16px;
+}
+.hud-hint.fade { opacity: 0; transition: opacity 600ms var(--ease-out); }
+
+/* ---------- 结算卡 ---------- */
+.over-card {
+  background: rgba(28, 33, 48, 0.92);
+  border: 1px solid var(--line); border-radius: 20px;
+  padding: 34px 46px 30px; min-width: min(320px, 86vw);
+  box-shadow: 0 24px 60px rgba(10, 14, 24, 0.55);
+}
+.over-title { font-size: 34px; font-weight: 900; letter-spacing: 0.04em; }
+.over-title em { font-style: normal; color: var(--gold); }
+.over-stats { margin: 22px 0 26px; display: grid; gap: 10px; }
+.over-stats .row {
+  display: flex; justify-content: space-between; gap: 40px;
+  font-size: 15px; color: rgba(255,255,255,0.82);
+  border-bottom: 1px dashed var(--line); padding-bottom: 9px;
+}
+.over-stats .row b { font-size: 18px; color: #fff; font-variant-numeric: tabular-nums; }
+.over-stats .row b.gold { color: var(--gold); }
+.over-actions { display: flex; gap: 12px; justify-content: center; }
+
+/* ---------- 暂停 ---------- */
+#overlay-paused .paused-title {
+  font-size: 30px; font-weight: 900; letter-spacing: 0.2em; text-indent: 0.2em;
+}
+
+@media (max-width: 560px) {
+  .hud-score { font-size: 20px; top: 14px; left: 14px; }
+  .hud-coins { top: 62px; left: 14px; font-size: 14px; }
+  .hud-pause { top: 14px; right: 14px; width: 40px; height: 40px; }
+  .controls-legend { gap: 8px 14px; font-size: 12px; }
+  .over-card { padding: 26px 26px 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay, .btn, .hud-hint.fade { transition: none; }
+}

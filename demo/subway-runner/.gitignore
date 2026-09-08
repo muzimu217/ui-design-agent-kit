@@ -1,0 +1,13 @@
+# 构建产物与测试输出不进库
+node_modules/
+dist/
+coverage/
+
+# Kenney 素材原包体积大（模型 fbx/glb/obj/mtl、贴图 png、zip 原件）
+# 运行时只依赖 public/models/（已精简拷贝）
+# 保留文本许可凭证：License.txt / Overview.html / Visit*.url / Skins/Source
+assets-src/**
+!assets-src/**/
+!assets-src/**/*.txt
+!assets-src/**/*.html
+!assets-src/**/*.url

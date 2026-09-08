@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#7cc4ee" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23ff8a3d'/%3E%3Ccircle cx='16' cy='13' r='6' fill='%23ffc63c'/%3E%3Cpath d='M9 24c2-5 12-5 14 0' stroke='%23fffdf8' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <title>地铁跑酷 · Subway Dash</title>
+  </head>
+  <body data-state="title">
+    <canvas id="scene"></canvas>
+    <div id="vignette" aria-hidden="true"></div>
+
+    <!-- 跑动中 HUD -->
+    <div id="hud">
+      <div class="hud-score"><span id="score-num">0</span><small>m</small></div>
+      <div class="hud-coins">
+        <svg class="coin-ico" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" fill="#ffc63c" stroke="#c78a12" stroke-width="2"/>
+          <circle cx="12" cy="12" r="5.5" fill="none" stroke="#c78a12" stroke-width="2"/>
+        </svg>
+        <span>× <span id="coin-num">0</span></span>
+      </div>
+      <button class="hud-pause" id="btn-pause" aria-label="暂停"><i></i><i></i></button>
+      <div class="hud-hint" id="hud-hint">← → 换道 · ↑ 跳 · ↓ 铲</div>
+    </div>
+
+    <!-- 标题 -->
+    <div class="overlay" id="overlay-title">
+      <h1 class="logo">地铁跑酷</h1>
+      <p class="logo-sub">SUBWAY DASH · DEMO</p>
+      <button class="btn" id="btn-start" style="margin-top: 44px">开始奔跑</button>
+      <div class="controls-legend" aria-label="操作说明">
+        <span><kbd>←</kbd><kbd>→</kbd> 换道</span>
+        <span><kbd>↑</kbd> 跳跃</span>
+        <span><kbd>↓</kbd> 滑铲</span>
+        <span><kbd>Esc</kbd> 暂停</span>
+        <span>触屏：四方向滑动同效</span>
+      </div>
+      <p class="demo-note">UI Design Agent Kit 演示 · 最佳纪录保存在本机浏览器</p>
+    </div>
+
+    <!-- 暂停 -->
+    <div class="overlay" id="overlay-paused">
+      <p class="paused-title">已暂停</p>
+      <button class="btn" id="btn-resume" style="margin-top: 30px">继续</button>
+    </div>
+
+    <!-- 结算 -->
+    <div class="overlay" id="overlay-over">
+      <div class="over-card">
+        <h2 class="over-title" id="over-title">被<em>抓住</em>了！</h2>
+        <div class="over-stats">
+          <div class="row"><span>本局距离</span><b id="over-score">0 m</b></div>
+          <div class="row"><span>金币</span><b class="gold" id="over-coins">× 0</b></div>
+          <div class="row"><span>本机最佳</span><b id="over-best">0 m</b></div>
+        </div>
+        <div class="over-actions">
+          <button class="btn" id="btn-retry">再跑一次</button>
+          <button class="btn btn--ghost" id="btn-back-title">回到标题</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

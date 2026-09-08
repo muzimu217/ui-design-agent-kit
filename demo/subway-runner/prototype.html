@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#7cc4ee" />
+    <title>地铁跑酷 · 门C 视觉原型（非实现）</title>
+    <style>
+      :root {
+        --ink: #1d2433;
+        --ink-soft: #4a5568;
+        --accent: #ff8a3d;
+        --accent-deep: #e06a1f;
+        --gold: #ffc63c;
+        --scrim: rgba(14, 18, 28, 0.55);
+        --panel: rgba(20, 25, 38, 0.78);
+        --line: rgba(255, 255, 255, 0.22);
+        --focus-ring: #ffd9a0;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { height: 100%; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+        color: #fff; overflow: hidden; background: #7cc4ee;
+        -webkit-user-select: none; user-select: none;
+      }
+      #stage { position: fixed; inset: 0; }
+      canvas { display: block; width: 100%; height: 100%; }
+
+      /* ---------- 通用浮层 ---------- */
+      .overlay {
+        position: fixed; inset: 0; display: none;
+        flex-direction: column; align-items: center; justify-content: center;
+        background: radial-gradient(120% 90% at 50% 38%, rgba(14,18,28,0.08) 0%, var(--scrim) 78%);
+        padding: 24px; text-align: center;
+      }
+      body[data-state="title"]  #overlay-title  { display: flex; }
+      body[data-state="over"]   #overlay-over   { display: flex; }
+      body[data-state="paused"] #overlay-paused { display: flex; }
+
+      .logo {
+        font-size: clamp(44px, 9vw, 96px);
+        font-weight: 900;
+        letter-spacing: 0.06em;
+        line-height: 1.1;
+        color: var(--gold);
+        text-shadow:
+          0 0 2px rgba(29,36,51,0.9), 3px 3px 0 #1d2433,
+          6px 6px 0 rgba(29,36,51,0.35);
+        transform: rotate(-2deg);
+      }
+      .logo-sub {
+        margin-top: 10px; font-size: 13px; font-weight: 600;
+        letter-spacing: 0.4em; text-indent: 0.4em;
+        color: rgba(255,255,255,0.85);
+        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+      }
+      .btn {
+        appearance: none; border: 0; cursor: pointer;
+        font: inherit; font-weight: 800; color: #fff;
+        background: linear-gradient(180deg, var(--accent) 0%, var(--accent-deep) 100%);
+        border-radius: 14px; padding: 14px 44px; font-size: 20px;
+        box-shadow: 0 5px 0 #a34d12, 0 10px 24px rgba(29,36,51,0.45);
+        transition: transform 120ms cubic-bezier(.34,1.56,.64,1), box-shadow 120ms ease;
+      }
+      .btn:hover { transform: translateY(-2px); }
+      .btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #a34d12, 0 6px 14px rgba(29,36,51,0.4); }
+      .btn:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+      .btn--ghost {
+        background: rgba(255,255,255,0.1); box-shadow: inset 0 0 0 2px var(--line);
+        font-weight: 600; font-size: 15px; padding: 10px 26px;
+      }
+      .btn--ghost:active { box-shadow: inset 0 0 0 2px var(--line); transform: translateY(1px); }
+
+      .controls-legend {
+        margin-top: 34px; display: flex; flex-wrap: wrap; gap: 10px 22px;
+        justify-content: center; font-size: 13px; color: rgba(255,255,255,0.92);
+      }
+      .controls-legend span { display: inline-flex; align-items: center; gap: 7px; }
+      kbd {
+        font: 600 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+        background: rgba(255,255,255,0.14); border: 1px solid var(--line);
+        border-bottom-width: 3px; border-radius: 6px; padding: 5px 7px; min-width: 26px;
+        display: inline-block; text-align: center;
+      }
+      .proto-note {
+        position: absolute; bottom: 14px; left: 0; right: 0;
+        font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0.08em;
+      }
+
+      /* ---------- 跑动中 HUD ---------- */
+      #hud { position: fixed; inset: 0; pointer-events: none; display: none; }
+      body[data-state="running"] #hud, body[data-state="paused"] #hud { display: block; }
+      .hud-score {
+        position: absolute; top: 18px; left: 20px;
+        background: var(--panel); border: 1px solid var(--line);
+        border-radius: 12px; padding: 8px 16px 9px;
+        font-weight: 900; font-size: 26px; letter-spacing: 0.02em;
+        text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+      }
+      .hud-score small { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.72); margin-left: 3px; }
+      .hud-coins {
+        position: absolute; top: 74px; left: 20px;
+        display: flex; align-items: center; gap: 7px;
+        background: var(--panel); border: 1px solid var(--line);
+        border-radius: 12px; padding: 5px 14px 5px 6px;
+        font-weight: 800; font-size: 16px;
+      }
+      .coin-ico { width: 22px; height: 22px; flex: none; }
+      .hud-pause {
+        position: absolute; top: 18px; right: 20px; pointer-events: auto;
+        width: 44px; height: 44px; border-radius: 12px; cursor: pointer;
+        background: var(--panel); border: 1px solid var(--line);
+        display: flex; align-items: center; justify-content: center; gap: 5px;
+      }
+      .hud-pause i { display: block; width: 5px; height: 16px; background: #fff; border-radius: 2px; }
+      .hud-pause:active { transform: translateY(1px); }
+      .hud-pause:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+      .hud-hint {
+        position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+        font-size: 12px; letter-spacing: 0.12em; color: rgba(255,255,255,0.78);
+        background: rgba(14,18,28,0.38); border-radius: 999px; padding: 5px 16px;
+      }
+
+      /* ---------- 结算卡 ---------- */
+      .over-card {
+        background: rgba(28, 33, 48, 0.92);
+        border: 1px solid var(--line); border-radius: 20px;
+        padding: 34px 46px 30px; min-width: min(320px, 86vw);
+        box-shadow: 0 24px 60px rgba(10, 14, 24, 0.55);
+      }
+      .over-title { font-size: 34px; font-weight: 900; letter-spacing: 0.04em; }
+      .over-title em { font-style: normal; color: var(--gold); }
+      .over-stats { margin: 22px 0 26px; display: grid; gap: 10px; }
+      .over-stats .row {
+        display: flex; justify-content: space-between; gap: 40px;
+        font-size: 15px; color: rgba(255,255,255,0.82);
+        border-bottom: 1px dashed var(--line); padding-bottom: 9px;
+      }
+      .over-stats .row b { font-size: 18px; color: #fff; }
+      .over-stats .row b.gold { color: var(--gold); }
+      .demo-data { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 12px; }
+      .over-actions { display: flex; gap: 12px; justify-content: center; }
+
+      /* ---------- 暂停 ---------- */
+      #overlay-paused .paused-title { font-size: 30px; font-weight: 900; letter-spacing: 0.2em; text-indent: 0.2em; }
+
+      /* ---------- 原型状态切换（仅视觉稿用） ---------- */
+      .proto-switch {
+        position: fixed; right: 14px; bottom: 14px; z-index: 9;
+        display: flex; gap: 6px; align-items: center;
+        background: rgba(14,18,28,0.55); border: 1px solid var(--line);
+        border-radius: 999px; padding: 5px 8px 5px 12px;
+      }
+      .proto-switch .lbl { font-size: 10px; letter-spacing: 0.14em; color: rgba(255,255,255,0.6); }
+      .proto-switch button {
+        appearance: none; border: 0; cursor: pointer; font: 700 11px/1 inherit;
+        color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.08);
+        border: 1px solid transparent; border-radius: 999px; padding: 6px 10px;
+      }
+      .proto-switch button[aria-pressed="true"] { background: rgba(255,198,60,0.22); color: #ffd9a0; border-color: rgba(255,198,60,0.5); }
+
+      @media (max-width: 560px) {
+        .hud-score { font-size: 20px; top: 14px; left: 14px; }
+        .hud-coins { top: 62px; left: 14px; font-size: 14px; }
+        .hud-pause { top: 14px; right: 14px; width: 40px; height: 40px; }
+        .controls-legend { gap: 8px 14px; font-size: 12px; }
+        .over-card { padding: 26px 26px 24px; }
+      }
+    </style>
+  </head>
+  <body data-state="title">
+    <div id="stage"><canvas id="scene"></canvas></div>
+
+    <!-- 跑动中 HUD -->
+    <div id="hud">
+      <div class="hud-score"><span id="score-num">0</span><small>m</small></div>
+      <div class="hud-coins">
+        <svg class="coin-ico" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" fill="#ffc63c" stroke="#c78a12" stroke-width="2"/>
+          <circle cx="12" cy="12" r="5.5" fill="none" stroke="#c78a12" stroke-width="2"/>
+        </svg>
+        <span>× <span id="coin-num">24</span></span>
+      </div>
+      <button class="hud-pause" id="btn-pause" aria-label="暂停"><i></i><i></i></button>
+      <div class="hud-hint">← → 换道 · ↑ 跳 · ↓ 铲</div>
+    </div>
+
+    <!-- 标题 -->
+    <div class="overlay" id="overlay-title">
+      <h1 class="logo">地铁跑酷</h1>
+      <p class="logo-sub">SUBWAY DASH · 原型视觉稿</p>
+      <button class="btn" id="btn-start" style="margin-top: 44px">开始奔跑</button>
+      <div class="controls-legend" aria-label="操作说明">
+        <span><kbd>←</kbd><kbd>→</kbd> 换道</span>
+        <span><kbd>↑</kbd> 跳跃</span>
+        <span><kbd>↓</kbd> 滑铲</span>
+        <span><kbd>Esc</kbd> 暂停</span>
+        <span>触屏：四方向滑动同效</span>
+      </div>
+      <p class="proto-note">门C 原型 · 只验证视觉方向，不含游戏逻辑</p>
+    </div>
+
+    <!-- 暂停 -->
+    <div class="overlay" id="overlay-paused">
+      <p class="paused-title">已暂停</p>
+      <button class="btn" id="btn-resume" style="margin-top: 30px">继续</button>
+    </div>
+
+    <!-- 结算 -->
+    <div class="overlay" id="overlay-over">
+      <div class="over-card">
+        <h2 class="over-title">被<em>抓住</em>了！</h2>
+        <div class="over-stats">
+          <div class="row"><span>本局距离</span><b>368 m</b></div>
+          <div class="row"><span>金币</span><b class="gold">× 42</b></div>
+          <div class="row"><span>历史最佳</span><b>512 m</b></div>
+        </div>
+        <div class="over-actions">
+          <button class="btn" id="btn-retry">再跑一次</button>
+          <button class="btn btn--ghost" id="btn-back-title">回到标题</button>
+        </div>
+        <p class="demo-data">示例数据 · 原型不含逻辑</p>
+      </div>
+    </div>
+
+    <!-- 原型三态切换（评审用，不进实现） -->
+    <div class="proto-switch" role="group" aria-label="原型状态切换">
+      <span class="lbl">原型</span>
+      <button data-goto="title" aria-pressed="true">标题</button>
+      <button data-goto="running" aria-pressed="false">跑动</button>
+      <button data-goto="over" aria-pressed="false">结算</button>
+    </div>
+
+    <script>
+      /* ================= 门C 视觉原型 =================
+         只做方向验证：伪透视场景 + 三状态视图 + 环境动画。
+         无输入控制、无碰撞、无计分逻辑。 */
+      const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const cv = document.getElementById("scene");
+      const ctx = cv.getContext("2d");
+      let W = 0, H = 0, U = 0, DPR = 1;
+
+      function resize() {
+        DPR = Math.min(devicePixelRatio || 1, 2);
+        W = innerWidth; H = innerHeight;
+        cv.width = W * DPR; cv.height = H * DPR;
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        U = Math.min(W / 7, H / 5.5); // 世界单位在 z=0 处的像素尺寸
+      }
+      addEventListener("resize", resize); resize();
+
+      /* ---- 伪透视投影 ---- */
+      const Z0 = 3.2, HORIZON = () => H * 0.36, BASE = () => H * 0.86;
+      const s = (z) => Z0 / (Z0 + z);
+      const px = (x, z) => W / 2 + x * U * s(z);
+      const py = (z) => HORIZON() + (BASE() - HORIZON()) * s(z);
+
+      let scroll = 0, tGlobal = 0, running = false;
+      const SPEED = 2.4; // 世界单位/秒（演示值）
+
+      /* ---- 天空 / 天际线 ---- */
+      const buildingsFar = [], buildingsNear = [];
+      (function seedSkyline() {
+        let r = 7; const rnd = () => (r = (r * 16807) % 2147483647) / 2147483647;
+        let x = -0.15;
+        while (x < 1.15) { const w = 0.03 + rnd() * 0.05, h = 0.05 + rnd() * 0.09; buildingsFar.push({ x, w, h }); x += w + rnd() * 0.012; }
+        x = -0.2;
+        while (x < 1.2) { const w = 0.035 + rnd() * 0.06, h = 0.04 + rnd() * 0.075; buildingsNear.push({ x, w, h }); x += w + rnd() * 0.02; }
+      })();
+
+      function drawSky() {
+        const hy = HORIZON();
+        const g = ctx.createLinearGradient(0, 0, 0, hy);
+        g.addColorStop(0, "#7cc4ee"); g.addColorStop(0.68, "#b7dcf3"); g.addColorStop(1, "#ffe3b3");
+        ctx.fillStyle = g; ctx.fillRect(0, 0, W, hy + 1);
+        // 太阳
+        const sx = W * 0.78, sy = hy * 0.42, sr = U * 0.34;
+        const sg = ctx.createRadialGradient(sx, sy, sr * 0.2, sx, sy, sr * 2.6);
+        sg.addColorStop(0, "rgba(255,214,140,0.95)"); sg.addColorStop(0.35, "rgba(255,200,120,0.35)"); sg.addColorStop(1, "rgba(255,200,120,0)");
+        ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(sx, sy, sr * 2.6, 0, 7); ctx.fill();
+        ctx.fillStyle = "#ffe9c2"; ctx.beginPath(); ctx.arc(sx, sy, sr, 0, 7); ctx.fill();
+        // 云
+        ctx.fillStyle = "rgba(255,255,255,0.78)";
+        const drift = REDUCED ? 0 : tGlobal * 0.008;
+        [[0.16, 0.10, 0.9], [0.52, 0.055, 0.62], [0.86, 0.13, 0.75]].forEach(([cx0, cy0, k], i) => {
+          const bx = ((cx0 + drift * (0.6 + i * 0.2)) % 1.2 - 0.1) * W, by = hy * cy0 + hy * 0.12;
+          ctx.beginPath();
+          ctx.ellipse(bx, by, U * 0.5 * k, U * 0.16 * k, 0, 0, 7);
+          ctx.ellipse(bx + U * 0.34 * k, by + U * 0.03, U * 0.33 * k, U * 0.13 * k, 0, 0, 7);
+          ctx.ellipse(bx - U * 0.3 * k, by + U * 0.05, U * 0.28 * k, U * 0.11 * k, 0, 0, 7);
+          ctx.fill();
+        });
+        // 天际线两层
+        const hyF = hy + 2, hyN = hy + 5;
+        ctx.fillStyle = "#b3cde0";
+        buildingsFar.forEach((b) => ctx.fillRect(b.x * W, hyF - b.h * H, b.w * W, b.h * H + 2));
+        ctx.fillStyle = "#93b4cd";
+        buildingsNear.forEach((b) => ctx.fillRect(b.x * W, hyN - b.h * H, b.w * W, b.h * H + 4));
+        // 地平线雾带，柔化天际线与地面分界
+        const hz = ctx.createLinearGradient(0, hy - 6, 0, hy + 10);
+        hz.addColorStop(0, "rgba(255,235,205,0)"); hz.addColorStop(0.5, "rgba(255,235,205,0.7)"); hz.addColorStop(1, "rgba(255,235,205,0)");
+        ctx.fillStyle = hz; ctx.fillRect(0, hy - 6, W, 16);
+      }
+
+      /* ---- 左墙 / 右站台 ---- */
+      function drawSides() {
+        const hy = HORIZON(), ZF = 8, ZN = -0.62;
+        // 地面基色
+        ctx.fillStyle = "#a9b6ac"; ctx.fillRect(0, hy, W, H - hy);
+        // 左侧墙面（x=-1.55，带涂鸦色块，随世界滚动）
+        const wl = -1.58;
+        ctx.beginPath();
+        ctx.moveTo(px(wl, ZN), py(ZN)); ctx.lineTo(px(wl, ZF), py(ZF));
+        ctx.lineTo(px(wl, ZF), py(ZF) - U * 1.15 * s(ZF)); ctx.lineTo(px(wl, ZN), py(ZN) - U * 1.15 * s(ZN));
+        ctx.closePath();
+        ctx.fillStyle = "#a8654f"; ctx.fill();
+        // 墙顶压条
+        ctx.strokeStyle = "#8d513f"; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(px(wl, ZN), py(ZN) - U * 1.15 * s(ZN)); ctx.lineTo(px(wl, ZF), py(ZF) - U * 1.15 * s(ZF)); ctx.stroke();
+        // 涂鸦色块（世界 z 等距分布，随 scroll 移动）
+        const SP = 1.25, tags = ["#6fae9d", "#d9b45a", "#7d97bd", "#bd7f9e"];
+        for (let i = 0; i < 9; i++) {
+          const zz = ZF - ((scroll + i * SP) % (ZF - ZN + SP));
+          if (zz <= ZN + 0.1) continue;
+          const sz = s(zz), x0 = px(wl, zz), y1 = py(zz), y0 = y1 - U * 0.86 * sz;
+          ctx.fillStyle = tags[i % 4];
+          ctx.globalAlpha = 0.3 + 0.25 * sz;
+          ctx.fillRect(x0 - 2 - U * 0.18 * sz, y0 + U * 0.22 * sz, U * 0.24 * sz, U * 0.26 * sz);
+          ctx.globalAlpha = 1;
+        }
+        // 右侧站台（x=+1.58 立沿 + 黄色安全线 + 立柱）
+        const pr = 1.58;
+        const pg = ctx.createLinearGradient(0, py(ZF), 0, py(ZN));
+        pg.addColorStop(0, "#c6d0d5"); pg.addColorStop(1, "#aeb9c0");
+        ctx.fillStyle = pg;
+        ctx.beginPath();
+        ctx.moveTo(px(pr, ZN), py(ZN)); ctx.lineTo(px(pr, ZF), py(ZF));
+        ctx.lineTo(W, py(ZF)); ctx.lineTo(W, py(ZN));
+        ctx.closePath(); ctx.fill();
+        ctx.fillStyle = "#9aa8b0";
+        ctx.beginPath();
+        ctx.moveTo(px(pr, ZN), py(ZN)); ctx.lineTo(px(pr, ZF), py(ZF));
+        ctx.lineTo(px(pr, ZF), py(ZF) - U * 0.34 * s(ZF)); ctx.lineTo(px(pr, ZN), py(ZN) - U * 0.34 * s(ZN));
+        ctx.closePath(); ctx.fill();
+        // 黄色安全线
+        ctx.strokeStyle = "#f2c144"; ctx.lineWidth = Math.max(2, U * 0.045);
+        ctx.beginPath(); ctx.moveTo(px(pr + 0.1, ZN), py(ZN)); ctx.lineTo(px(pr + 0.1, ZF), py(ZF)); ctx.stroke();
+        // 立柱
+        for (let i = 0; i < 6; i++) {
+          const SP2 = 1.7, zz = ZF - ((scroll * 0.9 + i * SP2) % (ZF - ZN + SP2));
+          if (zz <= ZN + 0.2) continue;
+          const sz = s(zz), x0 = px(pr + 0.32, zz), y1 = py(zz), h = U * 1.3 * sz, w = U * 0.09 * sz;
+          ctx.fillStyle = "#8d99a3"; ctx.fillRect(x0 - w / 2, y1 - h, w, h);
+          ctx.fillStyle = "#b9c4cc"; ctx.fillRect(x0 - w / 2, y1 - h, w * 0.4, h);
+          // 灯臂 + 灯头（朝向轨道）
+          const lx = x0 - w * 1.6;
+          ctx.strokeStyle = "#8d99a3"; ctx.lineWidth = Math.max(1, w * 0.3);
+          ctx.beginPath(); ctx.moveTo(x0, y1 - h); ctx.lineTo(lx, y1 - h); ctx.stroke();
+          ctx.fillStyle = "#ffe9c2";
+          ctx.beginPath(); ctx.arc(lx, y1 - h, Math.max(1.5, w * 0.55), 0, 7); ctx.fill();
+        }
+      }
+
+      /* ---- 轨道 ---- */
+      function drawTrack() {
+        const ZF = 8, ZN = -0.62;
+        // 道床
+        ctx.fillStyle = "#8b7f72";
+        ctx.beginPath();
+        ctx.moveTo(px(-1.5, ZN), py(ZN)); ctx.lineTo(px(-1.5, ZF), py(ZF));
+        ctx.lineTo(px(1.5, ZF), py(ZF)); ctx.lineTo(px(1.5, ZN), py(ZN));
+        ctx.closePath(); ctx.fill();
+        // 三车道分隔阴影
+        [-1, 0, 1].forEach((lane) => {
+          ctx.fillStyle = "#7c7165";
+          ctx.beginPath();
+          ctx.moveTo(px(lane - 0.46, ZN), py(ZN)); ctx.lineTo(px(lane - 0.46, ZF), py(ZF));
+          ctx.lineTo(px(lane + 0.46, ZF), py(ZF)); ctx.lineTo(px(lane + 0.46, ZN), py(ZN));
+          ctx.closePath(); ctx.fill();
+        });
+        // 枕木（随 scroll 滚动）
+        const TS = 0.55;
+        for (let i = 0; i < 15; i++) {
+          const zz = ZF - ((scroll + i * TS) % (ZF - ZN + TS));
+          if (zz <= ZN + 0.02) continue;
+          const sz = s(zz);
+          [-1, 0, 1].forEach((lane) => {
+            ctx.fillStyle = "#5b4a3a";
+            const x0 = px(lane - 0.42, zz), x1 = px(lane + 0.42, zz);
+            const y = py(zz), th = Math.max(1.5, U * 0.085 * sz);
+            ctx.fillRect(x0, y - th, x1 - x0, th);
+            ctx.fillStyle = "#6d5a47";
+            ctx.fillRect(x0, y - th, x1 - x0, th * 0.35);
+          });
+        }
+        // 钢轨（每车道两条）
+        [-1, 0, 1].forEach((lane) => [-0.3, 0.3].forEach((off) => {
+          const zs = Array.from({ length: 13 }, (_, i) => ZN + ((ZF - ZN) * i) / 12);
+          for (let k = 0; k < zs.length - 1; k++) {
+            const a = zs[k], b = zs[k + 1];
+            ctx.strokeStyle = "#4a4038"; ctx.lineWidth = Math.max(1, U * 0.05 * s(a)); ctx.lineCap = "round";
+            ctx.beginPath(); ctx.moveTo(px(lane + off, a), py(a)); ctx.lineTo(px(lane + off, b), py(b)); ctx.stroke();
+            ctx.strokeStyle = "#cfc6b8"; ctx.lineWidth = Math.max(0.5, U * 0.016 * s(a));
+            ctx.beginPath(); ctx.moveTo(px(lane + off, a), py(a) - U * 0.02 * s(a)); ctx.lineTo(px(lane + off, b), py(b) - U * 0.02 * s(b)); ctx.stroke();
+          }
+        }));
+      }
+
+      /* ---- 障碍 / 金币 ---- */
+      function drawTrain(lane, z) {
+        const sz = s(z), x = px(lane, z), y = py(z);
+        const w = U * 0.8 * sz, h = U * 1.34 * sz, r = U * 0.1 * sz;
+        groundShadow(x, y, w * 1.3, 0.42);
+        ctx.fillStyle = "#1d2433";
+        ctx.fillRect(x - w / 2 + w * 0.12, y - U * 0.07 * sz, w * 0.16, U * 0.07 * sz); // 转向架
+        ctx.fillRect(x + w / 2 - w * 0.28, y - U * 0.07 * sz, w * 0.16, U * 0.07 * sz);
+        roundRect(x - w / 2, y - h, w, h, r); ctx.fillStyle = "#2f8fa8"; ctx.fill();
+        roundRect(x - w / 2, y - h, w, h * 0.22, r); ctx.fillStyle = "#3ba7c2"; ctx.fill(); // 顶盖
+        roundRect(x - w * 0.36, y - h * 0.86, w * 0.72, h * 0.3, r * 0.7); ctx.fillStyle = "#173042"; ctx.fill(); // 挡风玻璃
+        ctx.fillStyle = "#ffd9a0"; // 大灯
+        ctx.beginPath(); ctx.arc(x - w * 0.3, y - h * 0.36, U * 0.05 * sz, 0, 7); ctx.arc(x + w * 0.3, y - h * 0.36, U * 0.05 * sz, 0, 7); ctx.fill();
+        ctx.fillStyle = "#e8eef2"; // 门缝
+        ctx.fillRect(x - w * 0.02, y - h * 0.55, w * 0.04, h * 0.42);
+      }
+
+      function drawBarrier(lane, z) {
+        const sz = s(z), x = px(lane, z), y = py(z);
+        const w = U * 0.84 * sz, h = U * 0.42 * sz;
+        groundShadow(x, y, w * 1.05, 0.24);
+        ctx.strokeStyle = "#5a5248"; ctx.lineWidth = Math.max(1.5, U * 0.035 * sz); // 支腿
+        ctx.beginPath();
+        ctx.moveTo(x - w * 0.36, y); ctx.lineTo(x - w * 0.3, y - h * 0.72);
+        ctx.moveTo(x + w * 0.36, y); ctx.lineTo(x + w * 0.3, y - h * 0.72);
+        ctx.stroke();
+        // 条纹板
+        const bh = h * 0.5;
+        ctx.save(); ctx.beginPath(); ctx.rect(x - w / 2, y - h, w, bh); ctx.clip();
+        for (let i = -1; i < 6; i++) {
+          ctx.fillStyle = i % 2 ? "#f2f0e9" : "#f28c28";
+          ctx.beginPath();
+          ctx.moveTo(x - w / 2 + (i * w) / 5, y - h); ctx.lineTo(x - w / 2 + ((i + 1) * w) / 5, y - h);
+          ctx.lineTo(x - w / 2 + ((i + 0.55) * w) / 5, y - h + bh); ctx.lineTo(x - w / 2 + ((i - 0.45) * w) / 5, y - h + bh);
+          ctx.closePath(); ctx.fill();
+        }
+        ctx.restore();
+        ctx.strokeStyle = "#4a3f33"; ctx.lineWidth = Math.max(1, U * 0.018 * sz);
+        ctx.strokeRect(x - w / 2, y - h, w, bh);
+        // 警示灯（呼吸）
+        const blink = REDUCED ? 0.7 : 0.5 + 0.5 * Math.sin(tGlobal * 6);
+        ctx.fillStyle = `rgba(255,120,60,${0.45 + blink * 0.55})`;
+        ctx.beginPath(); ctx.arc(x, y - h - U * 0.07 * sz, U * 0.045 * sz * (0.8 + blink * 0.35), 0, 7); ctx.fill();
+      }
+
+      function drawGate(lane, z) {
+        const sz = s(z), x = px(lane, z), y = py(z);
+        const w = U * 0.92 * sz, h = U * 0.98 * sz, pw = U * 0.08 * sz;
+        groundShadow(x - w / 2 + pw / 2, y, pw * 2.4, 0.3);
+        groundShadow(x + w / 2 - pw / 2, y, pw * 2.4, 0.3);
+        ctx.fillStyle = "#6a7580";
+        ctx.fillRect(x - w / 2, y - h, pw, h); ctx.fillRect(x + w / 2 - pw, y - h, pw, h);
+        // 顶部限高梁（黄黑斜纹）
+        const bh = U * 0.16 * sz;
+        ctx.save(); ctx.beginPath(); ctx.rect(x - w / 2, y - h, w, bh); ctx.clip();
+        ctx.fillStyle = "#f2c144"; ctx.fillRect(x - w / 2, y - h, w, bh);
+        ctx.fillStyle = "#2b2b2b";
+        for (let i = 0; i < 7; i++) {
+          ctx.beginPath();
+          ctx.moveTo(x - w / 2 + i * w / 6, y - h + bh); ctx.lineTo(x - w / 2 + (i + 0.5) * w / 6, y - h);
+          ctx.lineTo(x - w / 2 + (i + 0.9) * w / 6, y - h); ctx.lineTo(x - w / 2 + (i + 0.4) * w / 6, y - h + bh);
+          ctx.closePath(); ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      function drawCoin(lane, z, lift) {
+        const sz = s(z), x = px(lane, z);
+        const bob = REDUCED ? 0 : Math.sin(tGlobal * 3 + z * 2.1) * U * 0.02;
+        const y = py(z) - U * (lift + 0.18) * sz + bob * sz;
+        const r = U * 0.13 * sz;
+        const spin = REDUCED ? 0.85 : Math.abs(Math.cos(tGlobal * 2.6 + z * 1.4));
+        ctx.save(); ctx.translate(x, y); ctx.scale(0.45 + 0.55 * spin, 1);
+        const g = ctx.createRadialGradient(-r * 0.3, -r * 0.3, r * 0.1, 0, 0, r);
+        g.addColorStop(0, "#ffe9a8"); g.addColorStop(1, "#f0a92e");
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill();
+        ctx.strokeStyle = "#c78a12"; ctx.lineWidth = Math.max(1, r * 0.22);
+        ctx.beginPath(); ctx.arc(0, 0, r * 0.66, 0, 7); ctx.stroke();
+        ctx.restore();
+      }
+
+      /* ---- 角色 ---- */
+      function drawRunner(x, y, h, phase, opts = {}) {
+        const { hoodie = "#ff8a3d", skin = "#f2c297", cap = "#ffc63c", pack = "#2f8fa8", pants = "#3f5f8f", alpha = 1 } = opts;
+        const run = (f) => (REDUCED ? 0.55 : Math.sin(phase + f));
+        const bob = REDUCED ? 0 : Math.abs(Math.sin(phase)) * h * 0.035;
+        ctx.save(); ctx.globalAlpha = alpha; ctx.translate(x, y - bob);
+        ctx.fillStyle = "rgba(29,36,51,0.28)";
+        ctx.beginPath(); ctx.ellipse(0, bob + 2, h * 0.26, h * 0.05, 0, 0, 7); ctx.fill();
+        const lw = Math.max(2, h * 0.085); ctx.lineCap = "round";
+        // 腿：前视图高抬膝交替（前摆腿抬膝、后蹬腿贴地），读作奔跑
+        ctx.strokeStyle = pants; ctx.lineWidth = lw;
+        leg(run(0)), leg(run(Math.PI));
+        function leg(sw) {
+          const lift = Math.max(0, sw);
+          const kx = sw * h * 0.16, ky = -h * 0.28 - lift * h * 0.14;
+          const fx = sw * h * 0.24, fy = -h * 0.03 - lift * h * 0.26;
+          ctx.beginPath(); ctx.moveTo(0, -h * 0.42);
+          ctx.quadraticCurveTo(kx, ky, fx, fy); ctx.stroke();
+          ctx.fillStyle = "#f5f2ec"; // 运动鞋
+          ctx.beginPath(); ctx.ellipse(fx + h * 0.02, fy, h * 0.06, h * 0.035, lift * 0.6, 0, 7); ctx.fill();
+        }
+        ctx.rotate(-0.05); // 上身前倾
+        // 背包
+        ctx.fillStyle = pack;
+        roundRect(-h * 0.2, -h * 0.74, h * 0.16, h * 0.26, h * 0.04); ctx.fill();
+        // 躯干（连帽衫）
+        ctx.fillStyle = hoodie;
+        roundRect(-h * 0.16, -h * 0.78, h * 0.32, h * 0.4, h * 0.07); ctx.fill();
+        // 手臂（与腿反相，大幅度摆臂）
+        ctx.strokeStyle = hoodie; ctx.lineWidth = lw * 0.9;
+        arm(run(Math.PI)), arm(run(0));
+        function arm(sw) {
+          const bend = Math.max(0, sw) * h * 0.14;
+          ctx.beginPath(); ctx.moveTo(0, -h * 0.7);
+          ctx.quadraticCurveTo(sw * h * 0.22, -h * 0.62, sw * h * 0.28, -h * 0.52 - bend);
+          ctx.stroke();
+          ctx.fillStyle = skin;
+          ctx.beginPath(); ctx.arc(sw * h * 0.26, -h * 0.5 - bend, h * 0.04, 0, 7); ctx.fill();
+        }
+        // 头 + 帽
+        ctx.fillStyle = skin;
+        ctx.beginPath(); ctx.arc(0, -h * 0.86, h * 0.1, 0, 7); ctx.fill();
+        ctx.fillStyle = cap;
+        ctx.beginPath(); ctx.arc(0, -h * 0.87, h * 0.105, Math.PI, 0); ctx.fill();
+        ctx.fillRect(0, -h * 0.885, h * 0.17, h * 0.035); // 帽檐朝前
+        ctx.restore();
+      }
+
+      function drawGuard(x, y, h) {
+        const phase = tGlobal * 9 + 1.7;
+        drawRunner(x, y, h, phase, { hoodie: "#2f4470", skin: "#e8b48c", cap: "#243452", pack: "#243452", pants: "#3a3f4a", alpha: 0.96 });
+        // 警棍（挥动）
+        const sw = REDUCED ? 0.5 : Math.sin(phase + 1);
+        ctx.strokeStyle = "#5a5f68"; ctx.lineWidth = Math.max(2, h * 0.035); ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(x + sw * h * 0.2, y - h * 0.48);
+        ctx.lineTo(x + sw * h * 0.34, y - h * 0.66);
+        ctx.stroke();
+      }
+
+      function drawDog(x, y, h) {
+        const phase = REDUCED ? 0 : tGlobal * 10;
+        const bob = REDUCED ? 0 : Math.abs(Math.sin(phase * 0.7)) * h * 0.04;
+        ctx.save(); ctx.translate(x, y - bob);
+        ctx.fillStyle = "rgba(29,36,51,0.25)";
+        ctx.beginPath(); ctx.ellipse(0, 2, h * 0.3, h * 0.05, 0, 0, 7); ctx.fill();
+        ctx.fillStyle = "#8a5a34";
+        roundRect(-h * 0.26, -h * 0.34, h * 0.52, h * 0.22, h * 0.08); ctx.fill(); // 身体
+        ctx.beginPath(); ctx.arc(h * 0.28, -h * 0.4, h * 0.09, 0, 7); ctx.fill(); // 头
+        ctx.beginPath(); // 耳
+        ctx.moveTo(h * 0.24, -h * 0.47); ctx.lineTo(h * 0.2, -h * 0.56); ctx.lineTo(h * 0.3, -h * 0.5);
+        ctx.closePath(); ctx.fill();
+        ctx.fillStyle = "#6e4526"; // 尾
+        ctx.beginPath();
+        ctx.moveTo(-h * 0.25, -h * 0.34);
+        ctx.quadraticCurveTo(-h * 0.38, -h * 0.42 - Math.sin(phase) * h * 0.04, -h * 0.34, -h * 0.5);
+        ctx.lineWidth = Math.max(2, h * 0.05); ctx.strokeStyle = "#6e4526"; ctx.stroke();
+        ctx.strokeStyle = "#8a5a34"; ctx.lineWidth = Math.max(2, h * 0.055); ctx.lineCap = "round"; // 腿
+        for (let i = 0; i < 4; i++) {
+          const sw = Math.sin(phase + i * 1.6) * h * 0.08;
+          ctx.beginPath();
+          ctx.moveTo(-h * 0.16 + i * h * 0.11, -h * 0.16);
+          ctx.lineTo(-h * 0.16 + i * h * 0.11 + sw, 0);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function roundRect(x, y, w, h, r) {
+        r = Math.min(r, w / 2, h / 2);
+        ctx.beginPath();
+        ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+      }
+      function groundShadow(x, y, w, a) {
+        ctx.fillStyle = `rgba(29,36,51,${a})`;
+        ctx.beginPath(); ctx.ellipse(x, y, w / 2, Math.max(1, w * 0.09), 0, 0, 7); ctx.fill();
+      }
+
+      /* ---- 帧循环 ---- */
+      let last = performance.now();
+      function frame(now) {
+        const dt = Math.min(0.05, (now - last) / 1000); last = now;
+        tGlobal += dt;
+        if (running && !REDUCED) scroll += SPEED * dt;
+        ctx.clearRect(0, 0, W, H);
+        drawSky(); drawSides(); drawTrack();
+        // 场景布置（演示构图）：远左列车 / 中限高门 / 右低栏 + 金币
+        drawTrain(-1, 5.6);
+        drawGate(0, 3.4);
+        drawBarrier(1, 2.1);
+        for (let i = 0; i < 6; i++) drawCoin(0, 0.8 + i * 0.52, 0.24);           // 中道直线串
+        for (let i = 0; i < 5; i++) drawCoin(1, 1.6 + i * 0.36, 0.34 + Math.sin((i / 4) * Math.PI) * 0.66); // 越栏弧线串
+        // 追捕者：沉到画面下缘、半出画、比主角略小，与主角剪影分离
+        const gz = -0.58, gdz = -0.66;
+        drawGuard(px(-0.27, gz), py(gz), U * 1.18 * s(gz));
+        drawDog(px(0.33, gdz), py(gdz), U * 0.62 * s(gdz));
+        // 主角（中道）
+        drawRunner(px(0, 0), py(0), U * 1.5, tGlobal * 9);
+        // 下缘危险渐晕（追捕者在场的紧张感）
+        const vg = ctx.createLinearGradient(0, H * 0.86, 0, H);
+        vg.addColorStop(0, "rgba(217,72,59,0)"); vg.addColorStop(1, "rgba(217,72,59,0.2)");
+        ctx.fillStyle = vg; ctx.fillRect(0, H * 0.86, W, H * 0.14);
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+
+      /* ---- 状态机（原型级：仅切换视图） ---- */
+      const scoreEl = document.getElementById("score-num");
+      let scoreTimer = null;
+      function setState(st) {
+        document.body.dataset.state = st;
+        running = st === "running";
+        document.querySelectorAll(".proto-switch button").forEach((b) =>
+          b.setAttribute("aria-pressed", String(b.dataset.goto === st)));
+        clearInterval(scoreTimer);
+        if (running) {
+          let sc = 0;
+          scoreTimer = setInterval(() => { sc += 2; scoreEl.textContent = sc; }, 120); // 演示跳动
+        } else scoreEl.textContent = "0";
+      }
+      document.getElementById("btn-start").addEventListener("click", () => setState("running"));
+      document.getElementById("btn-retry").addEventListener("click", () => setState("running"));
+      document.getElementById("btn-back-title").addEventListener("click", () => setState("title"));
+      document.getElementById("btn-pause").addEventListener("click", () => setState("paused"));
+      document.getElementById("btn-resume").addEventListener("click", () => setState("running"));
+      document.querySelectorAll(".proto-switch button").forEach((b) =>
+        b.addEventListener("click", () => setState(b.dataset.goto)));
+    </script>
+  </body>
+</html>

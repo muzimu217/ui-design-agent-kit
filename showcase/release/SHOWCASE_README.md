@@ -5,6 +5,7 @@ UI Design Agent Kit 的**公开反馈与作品提交中心**。
 **主产品是 UI 设计智能体工作流，demo 是工作流的成果案例。**
 
 - [工作流与成果展示站](https://agent.kcos.club/)
+- [最新发布记录与截图](https://github.com/muzimu217/ui-design-agent-kit/blob/main/docs/releases/2026-09-08-public-beta.md)
 - [参与测试](TESTING.md)
 - [提交测试反馈 / 产品建议 / 作品](https://github.com/muzimu217/ui-design-agent-showcase/issues/new/choose)
 

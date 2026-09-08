@@ -1,0 +1,112 @@
+name: 作品提交
+description: 提交你的界面作品，审核通过后加入公开成果展示页
+title: "[作品] "
+labels: ["submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢提交作品。提交内容会公开，审核通过后作品将以项目卡片加入
+        [成果展示页](https://muzimu217.github.io/ui-design-agent-kit/)。
+        请勿粘贴密钥、密码、客户数据、私有代码或未获准公开的素材。
+  - type: input
+    id: name
+    attributes:
+      label: 作品名称
+      placeholder: "例如：NODEGRID 节点云"
+    validations:
+      required: true
+  - type: input
+    id: author
+    attributes:
+      label: 作者 GitHub 主页
+      description: 用于署名与审核沟通
+      placeholder: "https://github.com/你的用户名"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: 作品类别
+      options:
+        - 运营工具
+        - 产品展示
+        - 内容站点
+        - 3D 交互
+        - 游戏
+        - 数据可视化
+        - 其他
+    validations:
+      required: true
+  - type: dropdown
+    id: form
+    attributes:
+      label: 作品形态
+      options:
+        - 在线可访问（有公开网址）
+        - 开源源码（有公开仓库）
+        - 在线与源码都有
+        - 仅截图展示
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: 在线网址或源码仓库链接
+      description: 仅截图展示时填「无」
+      placeholder: "https://…"
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 作品截图（至少 1 张，至多 5 张）
+      description: 直接把图片粘贴或拖进输入框；请遮盖个人信息。
+    validations:
+      required: true
+  - type: textarea
+    id: intro
+    attributes:
+      label: 作品简介与亮点
+      description: 3–5 句：这是什么、为谁做的、最值得看的一个交互或视觉点。
+    validations:
+      required: true
+  - type: textarea
+    id: stack
+    attributes:
+      label: 技术栈
+      placeholder: "例如：React + Vite + Three.js"
+    validations:
+      required: true
+  - type: textarea
+    id: license
+    attributes:
+      label: 第三方素材与许可说明
+      description: 列出所有非自制素材（图片、模型、字体、图标、音频）的来源与许可证；全部自制则写「全部自制」。
+    validations:
+      required: true
+  - type: dropdown
+    id: data
+    attributes:
+      label: 界面数据构成
+      options:
+        - 全部为演示数据
+        - 含真实数据（已脱敏并有权公开）
+    validations:
+      required: true
+  - type: checkboxes
+    id: agreement
+    attributes:
+      label: 提交确认
+      options:
+        - label: 我有权公开提交这些内容与截图，且不包含密钥、隐私或未获准公开的资料。
+          required: true
+        - label: 演示或虚构数据已在界面中标注，不会误导为真实产品或真实业务。
+          required: true
+        - label: 所用第三方素材的许可证允许这种展示方式，来源已在上一栏说明。
+          required: true
+  - type: markdown
+    attributes:
+      value: |
+        **审核说明**：我们检查完整性、素材许可与诚实标注，必要时在本 issue 回复补充要求；
+        通过后作品加入成果展示页并在此通知你，然后关闭 issue。未通过的提交会说明原因。

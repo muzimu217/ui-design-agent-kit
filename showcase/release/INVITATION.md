@@ -2,7 +2,7 @@
 
 主产品是 UI 设计智能体工作流，不是某一个 demo。目前可体验：
 
-- 工作流展示站：https://muzimu217.github.io/ui-design-agent-showcase/
+- 工作流展示站：https://muzimu217.github.io/ui-design-agent-kit/
 - 积木小工坊：3D 拼搭、撤销与本机保存。
 - 库存运营台：演示数据搜索、筛选、排序与详情。
 

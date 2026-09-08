@@ -1,5 +1,7 @@
 # UI Design Agent Kit
 
+<p><img src="showcase/products/public/favicon.svg" alt="UI Design Agent Kit 图标" width="64" height="64" /></p>
+
 从口语需求到可运行界面的一套 AI 工作流：整理需求、查找素材、确认设计、实现交互，再用真实浏览器检查结果。
 
 [快速开始](#快速开始) · [产品案例](#产品案例) · [使用说明](docs/usage.md) · [交付标准](.agents/skills/ui-design-agent/references/product-readme.md)

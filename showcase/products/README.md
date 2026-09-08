@@ -1,5 +1,7 @@
 # UI Design Agent Kit · 成果展厅
 
+<p><img src="public/favicon.svg" alt="UI Design Agent Kit 图标" width="56" height="56" /></p>
+
 把 UI 设计工作流和各类可体验成果放在一起的独立展示站。
 
 [快速开始](#快速开始) · [展示范围](#展示范围) · [数据与发布边界](#数据与发布边界)

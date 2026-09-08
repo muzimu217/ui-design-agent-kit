@@ -53,6 +53,17 @@ test('source maps or private files in build output stop assembly', async (t) => 
   await assert.rejects(access(path.join(root, 'test-artifacts/pages/site')));
 });
 
+test('custom-domain root preserves mounted demo routes and release metadata', async (t) => {
+  const root = await fixture(t);
+  const result = await assemblePages({ root, basePath: '/', licenseText: 'Fixture license' });
+  assert.equal(result.manifest.basePath, '/');
+  assert.deepEqual(result.manifest.entrypoints, ['index.html', 'demos/brick-workshop/index.html', 'demos/inventory-console/index.html']);
+  for (const entrypoint of result.manifest.entrypoints) {
+    await access(path.join(result.output, entrypoint));
+    assert.equal(new URL(entrypoint, 'https://agent.kcos.club/').pathname, `/${entrypoint}`);
+  }
+});
+
 test('symbolic links are rejected before reading their target', async (t) => {
   const root = await fixture(t);
   const directory = path.join(root, 'showcase/products/dist');

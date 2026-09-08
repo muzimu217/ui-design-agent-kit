@@ -68,8 +68,9 @@ jobs:
         run: node --test showcase/tests/*.test.mjs
       - name: Build isolated public artifact
         env:
-          PAGES_BASE: /${{ github.event.repository.name }}/
+          PAGES_BASE: ${{ vars.PAGES_BASE_PATH || format('/{0}/', github.event.repository.name) }}
           VITE_RELEASE_ID: ${{ github.sha }}
+          SHOWCASE_SITE_ORIGIN: ${{ vars.SHOWCASE_SITE_ORIGIN || format('https://{0}.github.io', github.repository_owner) }}
         run: node showcase/scripts/build-pages.mjs --base "$PAGES_BASE"
       - name: Upload only the public artifact
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4

@@ -66,13 +66,13 @@ S3 抽屉断言：`hasNote:true`（“价格与延迟均为产品演示数据”
 | --- | --- | --- |
 | 1. 换场可达 + 中断 | ✅ | R1 程序断言；VT/interrupt 逻辑在 App.tsx（时序守卫 + skipTransition） |
 | 2. 键盘全旅程 | ✅ | Hero→地图→节点→面板（焦点陷入/Esc 还焦）→后退，全部走断言测过 |
-| 3. reduced-motion | ⚠️ 源码静态检查 | 自转/弧 dash/ping/流点/count-up/stagger/换场均有 reduced 分支（IMPLEMENTATION.md 五、自检）；**运行时模拟未自动化**（P1-5） |
+| 3. reduced-motion | ✅ R3 运行时实测 | **已运行时注入 `prefers-reduced-motion: reduce`（CDP 级）+ 2.4s 逐帧采样 20 帧全部静止**；顺带修复插值渐近不收敛导致 reduced 下底图仍 60fps 重绘的 bug（NetworkMap 收敛止损） |
 | 4. 3D/画布探针 | ✅ | `__nodegrid`：globeReady/mapReady/nodeCount=32/visibleLabels ≤60 |
-| 5. 性能 | ⚠️ 结构达标 | 首屏仅 S0 资源（lazy 分块验证）；**帧率实拍未留痕**（P1-5） |
-| 6. 响应式 | ⚠️ 源码达标 | ≤720px 地图降级路径、抽屉变全屏、`clamp()` 字号（源码确认）；**390/768 截图未做**（P1-5） |
+| 5. 性能 | ✅ R3 实测 | **拖拽+缩放 5s 压测：avg 60fps（16.7ms）、p95 16.9ms、最差 17.7ms、0 帧 >50ms**；首屏仅 S0 资源（lazy 分块验证） |
+| 6. 响应式 | ✅ R3 截图 | **390 / 768 / 1440 三档全页截图已归档**；390px 区域列表 17 城 + 地图降级 + 缩放隐藏；≤720px 断点切换正确 |
 | 7. console 0 错误 + 200% 文本缩放 | ✅ | console 0 错误实拍；缩放按 contract 实现（无固定 px 破坏布局） |
 | 8. 门 F 留痕 | ✅ | 见上表 |
-| 9. ACCEPTANCE.md | ✅ | 本文件 |
+| 9. ACCEPTANCE.md | ✅ | 本文件（R3 追加） |
 
 ## 六、证据索引（evidence/ 全部为真实文件）
 
@@ -84,6 +84,11 @@ S3 抽屉断言：`hasNote:true`（“价格与延迟均为产品演示数据”
 | gate-e-r2-s2-network.png | S2 全屏地图 + 32 标签（2880×1550） | probe mapReady=true visibleLabels=32 |
 | gate-e-r2-s3-nodepanel-v1.png | S3 抽屉（香港节点） | 旧版 |
 | gate-e-r2-s3-nodepanel-v2.png | S3 抽屉（香港节点）R2 终版——**无外链/无冗余署名**，note 收敛 | 2880×1550，本日 23:17 |
+| gate-e-r3-responsive-390-home.png / -network.png | R3 响应式 390px 全页 + 网络视图（区域列表 17 城降级） | 390×4595 / 390×4595 |
+| gate-e-r3-responsive-768-home.png | R3 响应式 768px 全页（桌面布局、无溢出、clamp 字号） | 768×3454 |
+| gate-e-r3-responsive-1440-home.png | R3 响应式 1440px 全页 | 1440×3319 |
+| gate-e-r3-network-1440-panel-open.png | R3 1440px 网络视图 + 修复后点击弹出的节点抽屉 | 1440×900 |
+| gate-e-r3-reduced-motion-network.png | R3 reduced-motion 网络视图（地图静止，无 ping/流点） | 1440×900 |
 | logo-2d-spec-v1.png | 2D logo 规范页（1000×4714） | 浅底修复后 |
 | ref-cloudflare-network.png / ref-globe-gl.png / ref-lapa-ninja.png | 参考基线条目 | 归原站所有，不进生产 |
 
@@ -96,16 +101,66 @@ S3 抽屉断言：`hasNote:true`（“价格与延迟均为产品演示数据”
 - 受工具噪声干扰的断言（早期“坏 URL 页面文字”等）已通过 curl + probe + 页面文本
   三重校准后采纳，其中“埦市”等乱码判定为工具噪声而非页面内容。
 
-## 八、P1/P2 待办（未自动测的 gate）
+## 八、门 E R3：点击修复 + 四项加码验证（2026-09-08，用户批准）
 
-- [ ] **P1-5 补测**（用户审批后可做）：①对比度自动检出（当前仅手算预检，
-      IMPLEMENTATION.md 五，含 ink-3 4.53–4.66:1、brand 11.2:1 等）；②390px /
-      768px 响应式截图存档；③reduced-motion 运行时模拟（`emulate media
-      prefers-reduced-motion` 后截图 + 断言无自转/循环）；④性能帧率实拍留痕
-      （S2 平移/缩放 rAF 帧与长任务）。
-- [ ] 对 `gate-e-r2-*.png` 做最终视觉审查（尺寸/内容已核，视觉层留待门 E 闭环）。
+用户裁决：“点头执行”，并报：**网页版 S2 地图点击节点不弹抽屉（手机版可弹）**。
+
+### R3-0 桌面地图点击不弹抽屉（P0 修复）
+
+**现象**：桌面端在 S2 地图点击节点光点/标签，抽屉不弹出；移动端区域列表点击正常。
+
+**根因**（NetworkMap.tsx 拖拽监听）：桌面端 `pointerdown` 处理器无条件对 `.netmap` 容器执行
+`el.setPointerCapture(e.pointerId)`，把后续 `pointerup` 重定向到容器，节点按钮上浏览器
+合成的 `click` 事件因此丢失（合成 `click` 的目标是被捕获元素）。移动端 `.netmap-mobile`
+跳过拖拽监听 → 无捕获 → 标签/列表点击一直正常。
+
+**修复**：捕获从“pointerdown 无条件”改为“**pointermove 超过 5px 拖拽阈值才捕获 +
+拖拽结束释放**”。简单点击不触发捕获，`click` 正常投递到按钮。
+
+**验证（真实 CDP 输入，非合成）**：
+- 点击节点（香港 HKG-01）→ 弹开抽屉且保持打开（`panelOpen:true`）
+- 拖拽平移回归：pointerdown→move +120px→up → 节点跟随移动 80px（指数插值收敛中），
+  面板保持关闭（拖拽不误开）
+- 对照组：修复前同序列 `setPointerCapture` 吞 click；修复后无捕获、click 正常
+
+### R3-1 对比度自动检出（WCAG）
+
+浏览器真实渲染值逐对计算 WCAG 相对亮度：**0 失败**。token 采样：
+ink 19.08:1、ink-2 11.33:1、ink-3 4.67:1、brand 11.16:1（均 ≥4.5 AA 目标），
+与 IMPLEMENTATION.md 手算预检吻合。
+
+### R3-2 响应式三档截图
+
+| 档位 | 断言 | 证据 |
+| --- | --- | --- |
+| 390px 首页 | 无横向溢出、clamp 字号 | gate-e-r3-responsive-390-home.png |
+| 390px 网络视图 | 区域列表 17 城、地图降级、缩放隐藏 | gate-e-r3-responsive-390-network.png |
+| 768px 首页 | 桌面布局（>720 断点）、h1 30.7px、无溢出 | gate-e-r3-responsive-768-home.png |
+| 1440px 首页/网络 | 全页 + 修复后抽屉 | gate-e-r3-*-1440-*.png |
+
+### R3-3 reduced-motion 运行时模拟（含顺带修复）
+
+CDP 级注入 `prefers-reduced-motion: reduce` 后**2.4s 逐帧采样 20 帧全部静止**
+（ping 环/流点/底图全停）。过程中发现并修复：地图视图插值用渐近逼近
+`1-exp(-dt·11)` 永不精确归零 → dirty 恒 true → reduced 下底图仍按 60fps 整帧重绘
+（CSS 显示无动画但 canvas 在画）。修复：收敛到阈值后精确对齐并停止置 dirty。
+
+### R3-4 S2 帧率实测
+
+拖拽 + 缩放 5s 压测（rAF 高采样）：**371 帧采样，avg 60fps（16.7ms）、
+p95 16.9ms、最差 17.7ms、0 帧 >50ms（无长任务）**。
+
+## 九、P2 待办
+
+- [x] ~~P1-5 补测~~ —— 四项已全部完成：①对比度自动检出 0 失败；②390/768/1440 截图归档；
+      ③reduced-motion 运行时模拟（20 帧静止）；④帧率实测（avg 60fps、0 长任务）。
+- [ ] 对 `gate-e-r2-*.png` / `gate-e-r3-*.png` 做最终视觉审查（尺寸/内容已核，视觉层留待门 E 闭环）。
 
 ## 修订记录
 
 - 2026-09-07（R2 终版）：本文件由主代理重建（首轮写入为幻影未落盘）；记录
   R2-1…R2-6 六项修复、六门 ledger、门 F trace、剩余 P1-5 待办；S3 证据 v2 重拍归档。
+- 2026-09-08（R3）：用户点头执行四项加码 + 报修桌面地图点击不弹抽屉。R3-0 P0 修复
+  （pointer capture 吞 click → 阈值捕获）；R3-1 对比度自动检出 0 失败；R3-2 响应式
+  三档截图；R3-3 reduced-motion 运行时注入 + 收敛止损修复；R3-4 帧率实测 60fps。
+  证据 6 张归档，质量门寄存器 3/5/6 转实测 ✅。

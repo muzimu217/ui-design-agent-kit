@@ -232,6 +232,9 @@ export default function NetworkMap({
     if (!el) return;
     const pointers = new Map<number, { x: number; y: number }>();
     let pinchDist = 0;
+    /** 已认为开始拖拽（超过阈值才捕获，避免吞掉点击） */
+    let dragging = false;
+    const DRAG_THRESHOLD = 5;
 
     const down = (e: PointerEvent) => {
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -239,6 +242,11 @@ export default function NetworkMap({
         const [p1, p2] = [...pointers.values()];
         pinchDist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
       }
+      dragging = false;
+    };
+    const startDrag = (e: PointerEvent) => {
+      if (dragging) return;
+      dragging = true;
       el.setPointerCapture(e.pointerId);
     };
     const move = (e: PointerEvent) => {
@@ -248,6 +256,7 @@ export default function NetworkMap({
       const dy = e.clientY - prev.y;
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       if (pointers.size === 1) {
+        if (!dragging && Math.hypot(dx, dy) > DRAG_THRESHOLD) startDrag(e);
         tgt.current = clampView({
           ...tgt.current,
           cx: tgt.current.cx - dx / tgt.current.k,
@@ -258,6 +267,7 @@ export default function NetworkMap({
         cur.current.cy -= dy / cur.current.k;
         dirty.current = true;
       } else if (pointers.size === 2) {
+        startDrag(e);
         const [p1, p2] = [...pointers.values()];
         const d = Math.hypot(p1.x - p2.x, p1.y - p2.y);
         if (pinchDist > 0 && d > 0) {
@@ -268,6 +278,9 @@ export default function NetworkMap({
       }
     };
     const up = (e: PointerEvent) => {
+      // 拖拽结束后释放捕获（若有），避免残留吞掉后续点击
+      if (dragging && el.hasPointerCapture?.(e.pointerId)) el.releasePointerCapture(e.pointerId);
+      dragging = false;
       pointers.delete(e.pointerId);
       if (pointers.size < 2) pinchDist = 0;
     };
@@ -336,6 +349,13 @@ export default function NetworkMap({
         c.k += (t.k - c.k) * s;
         c.cx += (t.cx - c.cx) * s;
         c.cy += (t.cy - c.cy) * s;
+        // 收敛到阈值后精确对齐，避免渐近逼近导致空闲时每帧整幅重绘
+        //（reduced 下必须真正静止，否则 ping/流点虽跳过但底图仍按 60fps 重绘）
+        if (Math.abs(t.k - c.k) < 1e-4 && Math.abs(t.cx - c.cx) < 0.01 && Math.abs(t.cy - c.cy) < 0.01) {
+          c.k = t.k;
+          c.cx = t.cx;
+          c.cy = t.cy;
+        }
         dirty.current = true;
       }
       if (reducedRef.current && !dirty.current) return;

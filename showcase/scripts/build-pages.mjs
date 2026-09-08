@@ -11,6 +11,8 @@ export const PUBLIC_APPS = [
   { project: 'demo/inventory-console', prefix: 'demos/inventory-console' },
   { project: 'demo/nodegrid', prefix: 'demos/nodegrid' },
   { project: 'demo/subway-runner', prefix: 'demos/subway-runner' },
+  { project: 'demo/forma-phone-ui', prefix: 'demos/forma-phone-ui' },
+  { project: 'demo/tempo-day', prefix: 'demos/tempo-day' },
 ];
 const ROOT_FILES = new Set([
   'index.html', 'favicon.svg', 'robots.txt', 'og-image.webp', 'third-party-licenses.json',

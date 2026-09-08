@@ -11,8 +11,12 @@ historic products are deployed or fully accepted.
 | blog.webp | demo/blog-demo/evidence/desktop-1440.png | 一舟札记，虚构个人博客，历史截图 |
 | nodegrid.webp | demo/nodegrid/evidence/gate-e-r2-s0-hero.png | NODEGRID，世界地图节点可视化，完整源码已入库 |
 | subway.webp | demo/subway-runner/evidence/game3d-running-1280.png | 地铁疾行，3D 跑酷游戏，完整源码已入库 |
+| forma.webp | demo/forma-phone-ui/screenshots/desktop-1440.png | FORMA One，虚构手机产品配置页，可试玩 demo |
+| tempo.webp | demo/tempo-day/screenshots/desktop-1440.png | Tempo 今日节奏，当日任务与专注计时，可试玩 demo |
 
-Converted locally to WebP at quality 86 (nodegrid/subway 缩放到宽 1280px). No
+Converted locally to WebP at quality 86 (nodegrid/subway/forma/tempo 缩放到宽
+1280px；forma/tempo 截图取自 2026-09-08 本地 vite preview 于 1440x900 视口的
+真实渲染，经检查后入库). No
 external model, private user work or real business/customer data was
 introduced. Original evidence records remain in their original directories. Do
 not copy whole private documents into the public site or infer complete

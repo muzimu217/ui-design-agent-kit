@@ -2,7 +2,7 @@ import { StrictMode, useCallback, useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { motion, MotionConfig, useInView, useReducedMotion } from 'motion/react';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Blocks, Check, CodeXml, Compass, Copy, FileText, FolderGit2, Gamepad2, Globe, Layers3, Maximize2, Monitor, NotebookPen, PackageCheck, PanelsTopLeft, Plug, ScanEye, Search, Settings2, Smartphone, Workflow, X } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Blocks, Check, CodeXml, Compass, Copy, FileText, FolderGit2, Gamepad2, Globe, Layers3, Maximize2, Monitor, NotebookPen, PackageCheck, PanelsTopLeft, Plug, ScanEye, Search, Settings2, Smartphone, Timer, Workflow, X } from 'lucide-react';
 import desktop from '../../../demo/brick-workshop/screenshots/desktop.webp';
 import mobile from '../../../demo/brick-workshop/screenshots/mobile.webp';
 import house from '../../../demo/brick-workshop/screenshots/house.webp';
@@ -13,6 +13,8 @@ import obsidian from '../media/obsidian.webp';
 import blog from '../media/blog.webp';
 import nodegrid from '../media/nodegrid.webp';
 import subway from '../media/subway.webp';
+import forma from '../media/forma.webp';
+import tempo from '../media/tempo.webp';
 import './styles.css';
 
 const BASE = import.meta.env.BASE_URL;
@@ -20,6 +22,9 @@ const DEMO_URL = `${BASE}demos/brick-workshop/`;
 const INVENTORY_URL = `${BASE}demos/inventory-console/`;
 const NODEGRID_URL = `${BASE}demos/nodegrid/`;
 const SUBWAY_URL = `${BASE}demos/subway-runner/`;
+const FORMA_URL = `${BASE}demos/forma-phone-ui/`;
+const TEMPO_URL = `${BASE}demos/tempo-day/`;
+const PLAYABLE_URLS: Record<string, string> = { nodegrid: NODEGRID_URL, subway: SUBWAY_URL, forma: FORMA_URL, tempo: TEMPO_URL };
 const REPOSITORY_URL = 'https://github.com/muzimu217/ui-design-agent-kit';
 const SHOWCASE_REPOSITORY_URL = 'https://github.com/muzimu217/ui-design-agent-showcase';
 const FEEDBACK_URL = 'https://github.com/muzimu217/ui-design-agent-showcase/issues/new/choose';
@@ -33,9 +38,11 @@ const PROJECTS = [
   { id: 'brick', name: '积木小工坊', category: '3D 交互', image: desktop, icon: Blocks, status: '可试玩 demo', kind: '浏览器交互', alt: '积木小工坊的 3D 搭建工作区和多彩积木盒', description: '本次发布包中的可试玩 3D 交互案例。实时作品与截图来自同一套工坊实现。' },
   { id: 'nodegrid', name: 'NODEGRID', category: '3D 交互', image: nodegrid, icon: Globe, status: '可试玩 demo', kind: '地理数据可视化', alt: 'NODEGRID 世界地图节点可视化首页，深色底与地球网络连线', description: '全球云节点网络的世界地图可视化。拖动、缩放查看 21 座城市的节点分布与演示延迟，节点详情包含机房演示配图与规格。' },
   { id: 'subway', name: '地铁疾行', category: '3D 交互', image: subway, icon: Gamepad2, status: '可试玩 demo', kind: '3D 跑酷游戏', alt: '地铁疾行 3D 跑酷游戏的第三人称追尾视角、跑道与障碍物', description: 'Three.js 实现的无尽跑酷。左右变道、跳跃回避障碍，支持桌面键盘与手机滑动，素材使用 Kenney CC0 开源资源。' },
+  { id: 'forma', name: 'FORMA One', category: '产品展示', image: forma, icon: Smartphone, status: '可体验 demo', kind: '虚构手机配置页', alt: 'FORMA One 虚构手机的釉色与容量配置界面，钴蓝陶瓷机身渲染图', description: '虚构手机的釉色选购页。四种微晶陶瓷釉色与三档容量实时联动价格与规格，窑变视频与机身渲染均为演示设定，不产生真实订单。' },
+  { id: 'tempo', name: 'Tempo 今日节奏', category: '效率工具', image: tempo, icon: Timer, status: '可体验 demo', kind: '当日任务与专注计时', alt: 'Tempo 今日节奏的工作台视图：时间分布条、任务队列与专注计时器', description: '当日计划与专注计时工具。任务按深度工作、日常事务、休息片刻分类，时间分布与专注计时实时联动，数据保存在本机浏览器。' },
 ] as const;
 type Project = typeof PROJECTS[number];
-const FILTERS = ['全部', '运营工具', '产品展示', '内容站点', '3D 交互'] as const;
+const FILTERS = ['全部', '运营工具', '产品展示', '内容站点', '3D 交互', '效率工具'] as const;
 type Filter = typeof FILTERS[number];
 const STAGES = [
   { id: 'brief', name: '需求与方向', icon: Compass, summary: '确认用户、主要任务、页面范围与视觉方向。', output: '需求说明 / 方向记录', decision: '方向由用户确认', gate: true },
@@ -252,7 +259,7 @@ function CaseDialog({ project, onClose }: { project: Project | null; onClose: ()
   const close = () => { if (dialogRef.current?.open) dialogRef.current.close(); onClose(); };
   return <dialog className="case-dialog" ref={dialogRef} aria-labelledby="case-heading" onCancel={(event) => { event.preventDefault(); close(); }} onClick={(event) => { if (event.target === event.currentTarget) close(); }}>
     {project && <div className="case-dialog-content"><header className="case-header"><div><span>{project.category}</span><h2 id="case-heading">{project.name}</h2></div><button type="button" className="icon-button" onClick={close} title="关闭案例" aria-label="关闭案例" autoFocus><X size={22} /></button></header><div className="case-summary"><p>{project.description}</p><span className="case-status">{project.status}<span>·</span>{project.kind}</span></div>
-      {project.id === 'brick' ? <><div className="case-live"><LiveWork /></div><div className="case-play"><span>积木小工坊 / 可试玩 demo</span><ActionLink href={DEMO_URL}>进入工坊</ActionLink></div><ScreenshotGallery /></> : project.id === 'nodegrid' || project.id === 'subway' ? <><img className="case-history-image" src={project.image} alt={project.alt} /><a className="original-image-link case-history-link" href={project.image} target="_blank" rel="noreferrer" aria-label={`在新标签页查看${project.name}原图`}>查看原图<ArrowUpRight size={16} aria-hidden="true" /></a><div className="case-play"><span>{project.name} / 可试玩 demo</span><ActionLink href={project.id === 'nodegrid' ? NODEGRID_URL : SUBWAY_URL}>进入体验</ActionLink></div></> : <><img className="case-history-image" src={project.image} alt={project.alt} /><a className="original-image-link case-history-link" href={project.image} target="_blank" rel="noreferrer" aria-label={`在新标签页查看${project.name}原图`}>查看原图<ArrowUpRight size={16} aria-hidden="true" /></a>{project.id === 'inventory' ? <div className="case-play"><span>库存运营台 / 演示数据</span><ActionLink href={INVENTORY_URL}>体验运营台</ActionLink></div> : <p className="case-evidence-note">历史界面截图。本案例未在此发布包中提供在线试玩。</p>}</>}
+      {project.id === 'brick' ? <><div className="case-live"><LiveWork /></div><div className="case-play"><span>积木小工坊 / 可试玩 demo</span><ActionLink href={DEMO_URL}>进入工坊</ActionLink></div><ScreenshotGallery /></> : project.id in PLAYABLE_URLS ? <><img className="case-history-image" src={project.image} alt={project.alt} /><a className="original-image-link case-history-link" href={project.image} target="_blank" rel="noreferrer" aria-label={`在新标签页查看${project.name}原图`}>查看原图<ArrowUpRight size={16} aria-hidden="true" /></a><div className="case-play"><span>{project.name} / 可试玩 demo</span><ActionLink href={PLAYABLE_URLS[project.id]}>进入体验</ActionLink></div></> : <><img className="case-history-image" src={project.image} alt={project.alt} /><a className="original-image-link case-history-link" href={project.image} target="_blank" rel="noreferrer" aria-label={`在新标签页查看${project.name}原图`}>查看原图<ArrowUpRight size={16} aria-hidden="true" /></a>{project.id === 'inventory' ? <div className="case-play"><span>库存运营台 / 演示数据</span><ActionLink href={INVENTORY_URL}>体验运营台</ActionLink></div> : <p className="case-evidence-note">历史界面截图。本案例未在此发布包中提供在线试玩。</p>}</>}
     </div>}
   </dialog>;
 }
@@ -284,7 +291,7 @@ function App() {
       </section>
       <WorkflowSection />
       <section className="projects-band" id="projects" aria-labelledby="projects-heading"><div className="content-width"><div className="section-heading"><div><h2 id="projects-heading">工作流成果</h2><p>不同的任务，不同的界面表达。</p></div><Layers3 size={28} strokeWidth={1.5} aria-hidden="true" /></div><div className="project-filters" role="tablist" aria-label="成果项目类型">{FILTERS.map((item, index) => <button key={item} id={`filter-${index}`} type="button" role="tab" aria-selected={filter === item} aria-controls="projects-panel" className={filter === item ? 'is-active' : ''} tabIndex={filter === item ? 0 : -1} onClick={() => setFilter(item)} ref={(element) => { filterRefs.current[index] = element; }} onKeyDown={(event) => onFilterKey(event, index)}><span>{item}</span>{filter === item && <motion.span className="filter-selection" layoutId="project-filter" transition={reducedMotion ? { duration: 0 } : SNAPPY} />}</button>)}</div>
-        <div className="projects-grid" id="projects-panel" role="tabpanel" aria-labelledby={`filter-${FILTERS.indexOf(filter)}`} tabIndex={0}>{projects.map((item) => { const Icon = item.icon; return <motion.article key={item.id} className="project-item" layout transition={reducedMotion ? { duration: 0 } : ELEGANT}><button type="button" className="project-image" onClick={(event) => openProject(item, event.currentTarget)} aria-label={`查看${item.name}案例`}><img src={item.image} alt={item.alt} loading="lazy" width={1440} height={900} /><span className="project-open"><Maximize2 size={19} aria-hidden="true" /></span></button><div className="project-meta"><span><Icon size={16} />{item.category}</span><span>{item.status}</span></div><div className="project-title"><div><h3>{item.name}</h3><p>{item.kind}</p></div><button type="button" onClick={(event) => openProject(item, event.currentTarget)} className="case-open-link">{item.id === 'brick' || item.id === 'inventory' || item.id === 'nodegrid' || item.id === 'subway' ? '查看 demo' : '查看截图'}<ArrowUpRight size={17} /></button></div></motion.article>; })}</div>
+        <div className="projects-grid" id="projects-panel" role="tabpanel" aria-labelledby={`filter-${FILTERS.indexOf(filter)}`} tabIndex={0}>{projects.map((item) => { const Icon = item.icon; return <motion.article key={item.id} className="project-item" layout transition={reducedMotion ? { duration: 0 } : ELEGANT}><button type="button" className="project-image" onClick={(event) => openProject(item, event.currentTarget)} aria-label={`查看${item.name}案例`}><img src={item.image} alt={item.alt} loading="lazy" width={1440} height={900} /><span className="project-open"><Maximize2 size={19} aria-hidden="true" /></span></button><div className="project-meta"><span><Icon size={16} />{item.category}</span><span>{item.status}</span></div><div className="project-title"><div><h3>{item.name}</h3><p>{item.kind}</p></div><button type="button" onClick={(event) => openProject(item, event.currentTarget)} className="case-open-link">{item.id === 'brick' || item.id === 'inventory' || item.id in PLAYABLE_URLS ? '查看 demo' : '查看截图'}<ArrowUpRight size={17} /></button></div></motion.article>; })}</div>
       </div></section>
       <section className="verification-band" id="verification" aria-labelledby="verification-heading"><div className="content-width"><div className="section-heading"><div><h2 id="verification-heading">验证，有据可查。</h2><p>四种证据层级，不能相互替代。</p></div><ScanEye size={28} strokeWidth={1.5} aria-hidden="true" /></div><dl className="evidence-definitions">{EVIDENCE.map((item) => { const Icon = item.icon; return <div key={item.name}><dt><Icon size={22} strokeWidth={1.6} />{item.name}</dt><dd>{item.meaning}</dd></div>; })}</dl><p className="evidence-disclaimer">以上为证据定义，不是所有项目均已通过的状态声明。历史截图与可试玩成果已分别标注。</p></div></section>
       <InstallSection />

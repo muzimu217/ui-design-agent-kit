@@ -27,3 +27,12 @@ demo/zhumu-blog/evidence/
 evals/runs/**/dist/
 evals/runs/**/release/
 evals/runs/**/node_modules/
+test-artifacts/
+demo/brick-workshop/dist/
+demo/brick-workshop/coverage/
+showcase/products/dist/
+demo/inventory-console/dist/
+demo/inventory-console/coverage/
+demo/forma-phone-ui/dist/
+demo/forma-phone-ui/artifacts/
+demo/tempo-day/artifacts/

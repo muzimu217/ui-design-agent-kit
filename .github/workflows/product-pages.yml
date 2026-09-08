@@ -8,6 +8,8 @@ on:
       - demo/inventory-console/**
       - demo/nodegrid/**
       - demo/subway-runner/**
+      - demo/forma-phone-ui/**
+      - demo/tempo-day/**
       - showcase/products/**
       - showcase/scripts/**
       - showcase/tests/**
@@ -20,6 +22,8 @@ on:
       - demo/inventory-console/**
       - demo/nodegrid/**
       - demo/subway-runner/**
+      - demo/forma-phone-ui/**
+      - demo/tempo-day/**
       - showcase/products/**
       - showcase/scripts/**
       - showcase/tests/**
@@ -55,6 +59,8 @@ jobs:
             demo/inventory-console/package-lock.json
             demo/nodegrid/package-lock.json
             demo/subway-runner/package-lock.json
+            demo/forma-phone-ui/package-lock.json
+            demo/tempo-day/package-lock.json
       - name: Install showcase dependencies
         run: npm ci --ignore-scripts
         working-directory: showcase/products
@@ -79,6 +85,15 @@ jobs:
       - name: Test subway demo
         run: npm test
         working-directory: demo/subway-runner
+      - name: Install FORMA demo dependencies
+        run: npm ci --ignore-scripts
+        working-directory: demo/forma-phone-ui
+      - name: Install tempo demo dependencies
+        run: npm ci --ignore-scripts
+        working-directory: demo/tempo-day
+      - name: Test tempo demo
+        run: npm test
+        working-directory: demo/tempo-day
       - name: Test publication boundary
         run: node --test showcase/tests/*.test.mjs
       - name: Build isolated public artifact

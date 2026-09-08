@@ -31,6 +31,12 @@ python3 -m http.server 4174 --directory dist
 
 门C 视觉原型存档在 `dist/prototype.html`（构建自动携带）。
 
+角色和皮肤贴图加载完成后才开放开局；加载失败时，原按钮提供重试。
+[`subway-readiness.browser.js`](../../showcase/tests/subway-readiness.browser.js)
+可由 Playwright MCP 的 `browser_run_code_unsafe.filename` 在展示站页面执行，
+覆盖贴图延迟、失败重试、解码就绪、触屏换道与暂停。它不包含在 `npm test`
+的纯逻辑单测中，需另行运行真实浏览器。
+
 ## 结构
 
 - `src/engine.ts` — 游戏模型：状态机、弹簧换道、跳跃/滑铲、生成不变量

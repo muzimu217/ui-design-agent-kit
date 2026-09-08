@@ -12,7 +12,6 @@ const game = new Game();
 const env = new ThreeEnv(canvas, REDUCED);
 const actors = new Actors(REDUCED);
 actors.attach(env.scene);
-actors.load().catch((err: unknown) => console.error("模型加载失败", err));
 
 function resize(): void {
   env.resize(innerWidth, innerHeight);
@@ -21,12 +20,39 @@ addEventListener("resize", resize);
 resize();
 
 const uiRefs = initUI({
-  start: () => { game.start(); flashHint(); },
+  start: () => {
+    if (!actors.ready) { void loadActors(); return; }
+    game.start();
+    flashHint();
+  },
   retry: () => { game.start(); flashHint(); },
   toTitle: () => game.toTitle(),
   pause: () => game.togglePause(),
   resume: () => game.togglePause(),
 });
+
+let actorsLoading = false;
+async function loadActors(): Promise<void> {
+  if (actorsLoading || actors.ready) return;
+  actorsLoading = true;
+  uiRefs.start.disabled = true;
+  uiRefs.start.textContent = "正在加载";
+  uiRefs.start.setAttribute("aria-busy", "true");
+  uiRefs.start.removeAttribute("title");
+  try {
+    await actors.load();
+    uiRefs.start.textContent = "开始奔跑";
+  } catch (error: unknown) {
+    console.error("模型加载失败", error);
+    uiRefs.start.textContent = "重试加载";
+    uiRefs.start.title = "角色加载失败，点击重试";
+  } finally {
+    actorsLoading = false;
+    uiRefs.start.disabled = false;
+    uiRefs.start.removeAttribute("aria-busy");
+  }
+}
+void loadActors();
 
 let hintTimer: ReturnType<typeof setTimeout> | undefined;
 function flashHint(): void {

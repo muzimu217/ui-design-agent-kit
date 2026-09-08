@@ -45,7 +45,7 @@ export default function NodePanel({ node, open, triggerRef, onClose, onNeighbor,
         ) : (
           <img
             src={`${import.meta.env.BASE_URL}photos/nasa.jpg`}
-            alt={`${node.city} 节点机房实拍`}
+            alt={`${node.city} 节点演示配图（NASA 机房照片）`}
             onError={() => setPhotoError(true)}
             loading="lazy"
           />

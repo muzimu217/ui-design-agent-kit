@@ -10,8 +10,8 @@ import { LANE } from "./three-env";
 
 const PLAYER_HEIGHT = 1.8;
 
-function reskin(root: THREE.Object3D, skinUrl: string): void {
-  const tex = new THREE.TextureLoader().load(skinUrl);
+async function reskin(root: THREE.Object3D, skinUrl: string): Promise<void> {
+  const tex = await new THREE.TextureLoader().loadAsync(skinUrl);
   tex.colorSpace = THREE.SRGBColorSpace;
   root.traverse((o) => {
     const mesh = o as THREE.Mesh;
@@ -72,14 +72,14 @@ export class Actors {
     // 主角：滑板少年皮肤
     const playerRoot = new THREE.Group();
     model.rotation.y = Math.PI; // 面朝 -z（前进方向）
-    reskin(model, `${import.meta.env.BASE_URL}models/skins/skaterMaleA.png`);
+    await reskin(model, `${M}skins/skaterMaleA.png`);
     normalizeHeight(model, PLAYER_HEIGHT);
     model.traverse((o) => { if ((o as THREE.Mesh).isMesh) o.castShadow = true; });
     playerRoot.add(model);
     this.player = this.makeRunner(playerRoot, clips);
     // 警卫：同骨架克隆 + 罪犯皮肤充当深色制服
     const guardModel = skeletonClone(model);
-    reskin(guardModel, `${import.meta.env.BASE_URL}models/skins/criminalMaleA.png`);
+    await reskin(guardModel, `${M}skins/criminalMaleA.png`);
     const guardRoot = new THREE.Group();
     guardRoot.add(guardModel);
     this.guard = this.makeRunner(guardRoot, clips);

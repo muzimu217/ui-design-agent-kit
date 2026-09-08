@@ -18,6 +18,7 @@ export function initUI(handlers: UIHandlers) {
   $("btn-pause").addEventListener("click", handlers.pause);
   $("btn-resume").addEventListener("click", handlers.resume);
   return {
+    start: $("btn-start") as HTMLButtonElement,
     score: $("score-num"),
     coins: $("coin-num"),
     overScore: $("over-score"),

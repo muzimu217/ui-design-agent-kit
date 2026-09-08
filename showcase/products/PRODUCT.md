@@ -27,7 +27,7 @@ process, produced interfaces, and evidence boundaries.
   `BASE_URL + demos/brick-workshop/` in the assembled static site.
 - No account, backend, external model service, or new persistence.
 - Presentation mode never imports the workspace persistence module.
-- Inventory, phone, and blog cases provide historical screenshots only. The
+- Phone and blog cases provide historical screenshots only. The
   brick workshop, the inventory console, NODEGRID, and the subway runner are
   mounted as playable routes in this package.
 - NODEGRID and the subway runner are completed, in-repository playable demos
@@ -37,8 +37,8 @@ process, produced interfaces, and evidence boundaries.
   verify) and the three usage paths. It does not claim the kit auto-installs
   MCP services, skills, or accounts.
 - Four evidence levels are definitions, not blanket success badges.
-- The GitHub repository is currently private. Do not claim public source or a
-  live deployment before deployment has been verified.
+- The GitHub source repository is public. A deployed release still needs
+  separate browser verification before being described as verified.
 
 ## Brand Commitments
 

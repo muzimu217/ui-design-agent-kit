@@ -73,9 +73,6 @@ jobs:
       - name: Install NODEGRID demo dependencies
         run: npm ci --ignore-scripts
         working-directory: demo/nodegrid
-      - name: Build NODEGRID demo
-        run: npm run build
-        working-directory: demo/nodegrid
       - name: Install subway demo dependencies
         run: npm ci --ignore-scripts
         working-directory: demo/subway-runner

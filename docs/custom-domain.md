@@ -37,8 +37,9 @@ curl --fail https://agent.kcos.club/build-manifest.json
 Check DNS resolution, certificate issuance, HTTPS enforcement, and the actual
 deployed release separately. A saved Pages setting does not prove HTTPS is ready.
 The published manifest must have `basePath: "/"` and match the deployed commit.
-Open the showcase and both `/demos/brick-workshop/` and
-`/demos/inventory-console/` in a browser to verify assets and navigation.
+Open the showcase and each of the four demo routes in a browser to verify
+assets and navigation: `brick-workshop`, `inventory-console`, `nodegrid`, and
+`subway-runner`, all under `/demos/`.
 
 ## Domain Changes
 

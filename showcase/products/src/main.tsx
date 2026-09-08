@@ -31,8 +31,8 @@ const PROJECTS = [
   { id: 'obsidian', name: '曜石 X1', category: '产品展示', image: obsidian, icon: Smartphone, status: '历史截图', kind: '虚构产品', alt: '曜石 X1 虚构手机产品展示的历史截图', description: '虚构手机产品的展示案例。品牌、型号与规格均为演示设定，不构成真实产品或购买信息。' },
   { id: 'blog', name: '一舟札记', category: '内容站点', image: blog, icon: NotebookPen, status: '历史截图', kind: '虚构博客', alt: '一舟札记虚构个人博客的历史截图，包含作者介绍与文章入口', description: '以作者介绍与文章阅读为核心的内容站点案例。博客人物与内容为演示设定。' },
   { id: 'brick', name: '积木小工坊', category: '3D 交互', image: desktop, icon: Blocks, status: '可试玩 demo', kind: '浏览器交互', alt: '积木小工坊的 3D 搭建工作区和多彩积木盒', description: '本次发布包中的可试玩 3D 交互案例。实时作品与截图来自同一套工坊实现。' },
-  { id: 'nodegrid', name: 'NODEGRID', category: '3D 交互', image: nodegrid, icon: Globe, status: '可试玩 demo', kind: '地理数据可视化', alt: 'NODEGRID 世界地图节点可视化首页，深色底与地球网络连线', description: '全球云节点网络的世界地图可视化。拖动、缩放查看 21 座城市的节点分布与实时延迟，节点详情抽屉展示机房实拍与规格。' },
-  { id: 'subway', name: '地铁疾行', category: '3D 交互', image: subway, icon: Gamepad2, status: '可试玩 demo', kind: '3D 跑酷游戏', alt: '地铁疾行 3D 跑酷游戏的第一人称跑道与障碍物画面', description: 'Three.js 实现的无尽跑酷。左右变道、跳跃回避障碍，支持桌面键盘与手机滑动，素材使用 Kenney CC0 开源资源。' },
+  { id: 'nodegrid', name: 'NODEGRID', category: '3D 交互', image: nodegrid, icon: Globe, status: '可试玩 demo', kind: '地理数据可视化', alt: 'NODEGRID 世界地图节点可视化首页，深色底与地球网络连线', description: '全球云节点网络的世界地图可视化。拖动、缩放查看 21 座城市的节点分布与演示延迟，节点详情包含机房演示配图与规格。' },
+  { id: 'subway', name: '地铁疾行', category: '3D 交互', image: subway, icon: Gamepad2, status: '可试玩 demo', kind: '3D 跑酷游戏', alt: '地铁疾行 3D 跑酷游戏的第三人称追尾视角、跑道与障碍物', description: 'Three.js 实现的无尽跑酷。左右变道、跳跃回避障碍，支持桌面键盘与手机滑动，素材使用 Kenney CC0 开源资源。' },
 ] as const;
 type Project = typeof PROJECTS[number];
 const FILTERS = ['全部', '运营工具', '产品展示', '内容站点', '3D 交互'] as const;
@@ -288,9 +288,9 @@ function App() {
       </div></section>
       <section className="verification-band" id="verification" aria-labelledby="verification-heading"><div className="content-width"><div className="section-heading"><div><h2 id="verification-heading">验证，有据可查。</h2><p>四种证据层级，不能相互替代。</p></div><ScanEye size={28} strokeWidth={1.5} aria-hidden="true" /></div><dl className="evidence-definitions">{EVIDENCE.map((item) => { const Icon = item.icon; return <div key={item.name}><dt><Icon size={22} strokeWidth={1.6} />{item.name}</dt><dd>{item.meaning}</dd></div>; })}</dl><p className="evidence-disclaimer">以上为证据定义，不是所有项目均已通过的状态声明。历史截图与可试玩成果已分别标注。</p></div></section>
       <InstallSection />
-      <section className="closing-band" id="testing" aria-labelledby="closing-heading"><div className="content-width closing-content"><div><h2 id="closing-heading">参与公开测试</h2><p>成果体验已开放。工作流执行测试面向已获访问权限的测试者。</p></div><ActionLink href={FEEDBACK_URL} external>提交测试反馈</ActionLink></div></section>
+      <section className="closing-band" id="testing" aria-labelledby="closing-heading"><div className="content-width closing-content"><div><h2 id="closing-heading">参与公开测试</h2><p>成果与源码已公开。反馈请注明版本、复现步骤，以及 demo 体验或工作流执行测试。</p></div><ActionLink href={FEEDBACK_URL} external>提交测试反馈</ActionLink></div></section>
     </main>
-    <footer className="site-footer content-width"><a href={BASE}>UI 设计智能体工作流</a><span>{RELEASE}</span><a href={FEEDBACK_URL} target="_blank" rel="noreferrer">测试反馈<ArrowUpRight size={14} /></a><a href={`${BASE}THIRD_PARTY_LICENSES.txt`}>依赖许可</a><a href={SHOWCASE_REPOSITORY_URL} target="_blank" rel="noreferrer">公开展示仓库<ArrowUpRight size={14} /></a><a href={REPOSITORY_URL} target="_blank" rel="noreferrer">Agent 源码（需权限）<ArrowUpRight size={14} /></a></footer><CaseDialog project={project} onClose={closeProject} />
+    <footer className="site-footer content-width"><a href={BASE}>UI 设计智能体工作流</a><span>{RELEASE}</span><a href={FEEDBACK_URL} target="_blank" rel="noreferrer">测试反馈<ArrowUpRight size={14} /></a><a href={`${BASE}THIRD_PARTY_LICENSES.txt`}>依赖许可</a><a href={SHOWCASE_REPOSITORY_URL} target="_blank" rel="noreferrer">公开展示仓库<ArrowUpRight size={14} /></a><a href={REPOSITORY_URL} target="_blank" rel="noreferrer">Agent 源码<ArrowUpRight size={14} /></a></footer><CaseDialog project={project} onClose={closeProject} />
   </>;
 }
 

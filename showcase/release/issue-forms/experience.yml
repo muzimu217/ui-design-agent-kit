@@ -1,0 +1,58 @@
+name: 测试反馈
+description: 报告可复现的成果体验问题或经授权的工作流执行问题
+title: "[测试] "
+body:
+  - type: markdown
+    attributes:
+      value: "反馈会公开。请勿提交密钥、联系方式、客户数据、私有代码或内部提示词。截图是可选的。"
+  - type: dropdown
+    id: surface
+    attributes:
+      label: 测试对象
+      options:
+        - 工作流展示站
+        - 积木小工坊 demo
+        - 库存运营台 demo
+        - Agent 工作流执行（已获访问授权）
+    validations:
+      required: true
+  - type: input
+    id: release
+    attributes:
+      label: 页面版本与网址
+      description: 网站页脚版本和发生问题的公开网址
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 浏览器与设备
+      placeholder: "例如：Chrome / Windows，或 Safari / iPhone"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 最短复现步骤
+      description: 从哪个页面开始，做了哪些操作？
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期结果
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果与可选截图
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: 公开反馈确认
+      options:
+        - label: 我已移除个人信息、密钥和未获准公开的资料，并理解此反馈是公开的。
+          required: true

@@ -1,0 +1,40 @@
+name: 下一产品建议
+description: 提议一个能够验证 Agent 工作流能力的产品实验
+title: "[产品建议] "
+body:
+  - type: markdown
+    attributes:
+      value: "请选择一个具体用户任务，不需要提交内部方案、客户数据或私有素材。建议不代表已经接受开发或承诺交付日期。"
+  - type: input
+    id: product
+    attributes:
+      label: 产品与目标用户
+      placeholder: "例如：面向小型工作室的预约管理工具"
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: 用户要完成的主要任务
+    validations:
+      required: true
+  - type: dropdown
+    id: capability
+    attributes:
+      label: 希望验证哪类能力
+      options:
+        - 多步流程与表单
+        - 数据可视化与比较
+        - 复杂编辑器与状态管理
+        - 3D 交互
+        - 动画与视频
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 怎样判断做对了
+      description: 给出可观察的结果或验收动作，避免只有“更高级”这样的形容。
+    validations:
+      required: true

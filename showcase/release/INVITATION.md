@@ -2,9 +2,11 @@
 
 主产品是 UI 设计智能体工作流，不是某一个 demo。目前可体验：
 
-- 工作流展示站：https://muzimu217.github.io/ui-design-agent-kit/
-- 积木小工坊：3D 拼搭、撤销与本机保存。
-- 库存运营台：演示数据搜索、筛选、排序与详情。
+- [工作流展示站](https://agent.kcos.club/)
+- [积木小工坊](https://agent.kcos.club/demos/brick-workshop/)：3D 拼搭、撤销与本机保存。
+- [库存运营台](https://agent.kcos.club/demos/inventory-console/)：演示数据搜索、筛选、排序与详情。
+- [NODEGRID](https://agent.kcos.club/demos/nodegrid/)：地球交互、节点搜索与详情。密集节点可先搜索 ID 再选择。
+- [地铁疾行](https://agent.kcos.club/demos/subway-runner/)：开局、换道、暂停、触屏滑动与资源加载重试。
 
 可以任选一个真实操作流程，在电脑或手机上体验。遇到问题时，请通过
 [测试反馈表单](https://github.com/muzimu217/ui-design-agent-showcase/issues/new/choose)

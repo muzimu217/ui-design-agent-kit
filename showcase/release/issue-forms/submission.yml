@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         感谢提交作品。提交内容会公开，审核通过后作品将以项目卡片加入
-        [成果展示页](https://muzimu217.github.io/ui-design-agent-kit/)。
+        [成果展示页](https://agent.kcos.club/)。
         请勿粘贴密钥、密码、客户数据、私有代码或未获准公开的素材。
   - type: input
     id: name

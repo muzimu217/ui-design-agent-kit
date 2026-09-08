@@ -132,9 +132,33 @@ test("single-file prompt embeds its references and uses working in-document link
   const links = [...prompt.matchAll(/\]\(#([^)]+)\)/g)];
   assert.ok(links.length >= 3);
   for (const [, anchor] of links) assert.ok(headingAnchors.has(anchor), `Broken prompt anchor: ${anchor}`);
-  for (const name of ["motion-contract.md", "tool-routing.md", "spatial-media.md", "stitch-mcp.md", "material-scouting.md", "plan-execute.md", "image-to-code-fidelity.md", "acceptance.md"]) {
+  for (const name of ["motion-contract.md", "tool-routing.md", "spatial-media.md", "stitch-mcp.md", "material-scouting.md", "plan-execute.md", "image-to-code-fidelity.md", "product-readme.md", "acceptance.md"]) {
     const source = await readFile(path.join(ROOT, ".agents/skills/ui-design-agent/references", name), "utf8");
-    assert.ok(prompt.includes(source.trim()), `Omitted reference: ${name}`);
+    assert.equal(prompt.split(source.trim()).length - 1, 1, `Reference must be embedded exactly once: ${name}`);
   }
   assert.equal(await buildPrompt(), prompt);
+});
+
+test("prompt and workflow enforce bounded sequential agent dispatch", async () => {
+  const skill = await readFile(path.join(ROOT, ".agents/skills/ui-design-agent/SKILL.md"), "utf8");
+  const chain = await readFile(path.join(ROOT, "docs/chain-flow.md"), "utf8");
+  const usage = await readFile(path.join(ROOT, "docs/usage.md"), "utf8");
+  for (const source of [skill, chain, usage]) {
+    const normalized = source.replace(/\s+/g, " ");
+    assert.match(normalized, /at most one active subagent|最多一个活跃子代理|only one subagent may be active/i);
+  }
+  const skillText = skill.replace(/\s+/g, " ");
+  const chainText = chain.replace(/\s+/g, " ");
+  assert.match(skillText, /\| S narrow repair \| 0 subagents by default/);
+  assert.match(skillText, /\| M page-level work \| Sequential subagents as needed/);
+  assert.match(skillText, /\| L substantial new UI \| A, B, and C phases at most once each/);
+  assert.match(chainText, /\| S 窄修复 \| 默认 0 个 \|/);
+  assert.match(chainText, /\| M 页面级 \| 按需串行派发 \|/);
+  assert.match(chainText, /\| L 实质性新 UI \| 标准链最多 A\/B\/C 各 1 次 \|/);
+  const usageText = usage.replace(/\s+/g, " ");
+  assert.match(usageText, /S-level repairs use 0 subagents/i);
+  assert.match(usageText, /M-level work uses sequential/i);
+  assert.match(usageText, /L-level A\/B\/C chain is also sequential/i);
+  assert.match(skill, /user explicitly authorizes the exception/i);
+  assert.match(chain, /用户明确授权/);
 });

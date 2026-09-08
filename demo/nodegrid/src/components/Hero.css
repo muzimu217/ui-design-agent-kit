@@ -95,6 +95,7 @@
 
 .hero-globe {
   position: relative;
+  min-width: 0;
   height: 100%;
   min-height: 420px;
   max-height: 74vh;
@@ -141,7 +142,7 @@
 /* ≤720px：竖排，地球缩小 */
 @media (max-width: 720px) {
   .hero-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     align-content: start;
   }
   .hero-globe {

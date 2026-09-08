@@ -25,3 +25,8 @@ python3 -m http.server 4182 --directory dist
 
 需要支持 WebGL 2 的现代浏览器；地理边界数据 `countries-110m.json` 随
 `dist/` 一并分发。
+
+[`nodegrid-layout.browser.js`](../../showcase/tests/nodegrid-layout.browser.js)
+可由 Playwright MCP 的 `browser_run_code_unsafe.filename` 在展示站页面执行，
+验证 375、390、768、1440px 四档的真实画布边界，避免页面隐藏横向溢出时
+漏报画布裁切。该检查需真实浏览器，不等同于构建成功。

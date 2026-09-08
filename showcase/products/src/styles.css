@@ -86,6 +86,20 @@ img { display: block; max-width: 100%; }
 .case-open-link { min-height: 44px; display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: #177656; padding: 8px 0 8px 8px; flex-shrink: 0; }
 .case-open-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 .verification-band { padding-block: 40px; background: var(--paper); border-block: 1px solid var(--line); }
+.install-band { padding-block: 40px; background: var(--surface); border-block: 1px solid var(--line); }
+.install-command { display: flex; align-items: stretch; margin-top: 4px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--ink); }
+.install-command > code { flex: 1 1 auto; min-width: 0; padding: 16px 18px; overflow-x: auto; white-space: pre; font-family: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; line-height: 1.7; color: #eef4f2; }
+.copy-button { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 7px; padding: 0 18px; min-height: 44px; border: 0; border-left: 1px solid #ffffff2e; background: transparent; color: #cfe0db; font-size: 12px; font-weight: 600; cursor: pointer; }
+.copy-button:hover { background: #ffffff14; color: #ffffff; }
+.copy-button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.copy-button.is-copied { color: #9fe0c3; }
+.install-steps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; margin-top: 26px; padding: 0; list-style: none; counter-reset: install-step; }
+.install-steps > li { counter-increment: install-step; display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); }
+.install-steps > li::before { content: counter(install-step, decimal-leading-zero); font-family: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: var(--green); }
+.install-steps strong { font-size: 14px; font-weight: 680; }
+.install-steps span { font-size: 12.5px; line-height: 1.8; color: var(--muted); }
+.install-steps code, .install-note code { font-family: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; background: #ffffff; border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; }
+.install-note { margin-top: 24px; font-size: 11px; color: var(--muted); line-height: 1.8; }
 .evidence-definitions { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
 .evidence-definitions dt { font-size: 16px; font-weight: 650; display: flex; align-items: center; gap: 12px; }
 .evidence-definitions dt > svg { color: #688896; }
@@ -171,7 +185,7 @@ img { display: block; max-width: 100%; }
   .action-link { min-height: 50px; padding: 13px 20px; font-size: 14px; gap: 18px; }
   .hero-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
   .hero-preview > span { min-height: 36px; font-size: 12px; }
-  .workflow-band, .projects-band, .verification-band { padding-block: 56px; }
+  .workflow-band, .projects-band, .verification-band, .install-band { padding-block: 56px; }
   .section-heading { margin-bottom: 32px; }
   .section-heading h2 { font-size: 32px; }
   .section-heading p { font-size: 14px; }
@@ -189,6 +203,7 @@ img { display: block; max-width: 100%; }
   .project-title p, .case-open-link { font-size: 13px; }
   .evidence-definitions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
   .evidence-disclaimer { font-size: 12px; }
+  .install-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
   .closing-band { padding-block: 56px; }
   .closing-content { flex-direction: row; justify-content: space-between; align-items: center; }
   .closing-content h2 { font-size: 30px; }

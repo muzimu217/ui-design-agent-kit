@@ -2,7 +2,7 @@ import { StrictMode, useCallback, useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { motion, MotionConfig, useInView, useReducedMotion } from 'motion/react';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Blocks, Check, CodeXml, Compass, FileText, FolderGit2, Gamepad2, Globe, Layers3, Maximize2, Monitor, NotebookPen, PackageCheck, PanelsTopLeft, Plug, ScanEye, Search, Settings2, Smartphone, Workflow, X } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Blocks, Check, CodeXml, Compass, Copy, FileText, FolderGit2, Gamepad2, Globe, Layers3, Maximize2, Monitor, NotebookPen, PackageCheck, PanelsTopLeft, Plug, ScanEye, Search, Settings2, Smartphone, Workflow, X } from 'lucide-react';
 import desktop from '../../../demo/brick-workshop/screenshots/desktop.webp';
 import mobile from '../../../demo/brick-workshop/screenshots/mobile.webp';
 import house from '../../../demo/brick-workshop/screenshots/house.webp';
@@ -189,6 +189,39 @@ function ScreenshotGallery() {
   </section>;
 }
 
+const INSTALL_CMD = [
+  'git clone https://github.com/muzimu217/ui-design-agent-kit.git',
+  '  && cd ui-design-agent-kit',
+  '  && npm ci --ignore-scripts',
+  '  && npm run verify',
+].join(' \\\n');
+
+function InstallSection() {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(INSTALL_CMD);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch { /* 剪贴板被拒绝时，访客可手动选中复制 */ }
+  };
+  return <section className="install-band" id="install" aria-labelledby="install-heading"><div className="content-width">
+    <div className="section-heading"><div><h2 id="install-heading">一条指令安装。</h2><p>克隆、安装依赖、跑自检，一次完成。</p></div><FolderGit2 size={28} strokeWidth={1.5} aria-hidden="true" /></div>
+    <div className="install-command">
+      <code>{INSTALL_CMD}</code>
+      <button type="button" className={`copy-button${copied ? ' is-copied' : ''}`} onClick={copy} aria-label={copied ? '安装指令已复制' : '复制安装指令'} aria-live="polite">
+        {copied ? <><Check size={15} aria-hidden="true" />已复制</> : <><Copy size={15} aria-hidden="true" />复制</>}
+      </button>
+    </div>
+    <ol className="install-steps">
+      <li><strong>克隆自检</strong><span>需要 Node.js 20.18 以上。<code>npm run verify</code> 通过说明指令、配置与测试就位。</span></li>
+      <li><strong>仓库内直接用</strong><span>Codex 等宿主会自动读取 AGENTS.md，输入 <code>$ui-design-agent …</code> 开始 UI 任务。</span></li>
+      <li><strong>外部工作区注入</strong><span>运行 <code>npm run prompt:build</code> 得到单文件提示词，粘贴到目标项目的 AGENTS.md 或系统提示词。</span></li>
+    </ol>
+    <p className="install-note">Agent 宿主仍需自行接入 MCP 与 skills；导出的提示词内含门禁与验收约定，但不会自动安装或登录任何服务。</p>
+  </div></section>;
+}
+
 function WorkflowSection() {
   const [active, setActive] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -242,7 +275,7 @@ function App() {
   };
   return <>
     <a className="skip-link" href="#projects">跳到成果项目</a>
-    <header className="site-header content-width"><a className="brand" href={BASE} aria-label="UI Design Agent Kit 首页"><Workflow size={24} strokeWidth={1.8} /><span>UI Design<br />Agent Kit</span></a><nav aria-label="主导航"><a href="#workflow">工作流</a><a href="#projects">成果项目</a><a href="#verification">验证</a><a className="github-link" href={SHOWCASE_REPOSITORY_URL} target="_blank" rel="noreferrer" aria-label="公开成果展示仓库"><FolderGit2 size={17} /><span>仓库</span></a></nav></header>
+    <header className="site-header content-width"><a className="brand" href={BASE} aria-label="UI Design Agent Kit 首页"><Workflow size={24} strokeWidth={1.8} /><span>UI Design<br />Agent Kit</span></a><nav aria-label="主导航"><a href="#workflow">工作流</a><a href="#projects">成果项目</a><a href="#install">获取 kit</a><a href="#verification">验证</a><a className="github-link" href={SHOWCASE_REPOSITORY_URL} target="_blank" rel="noreferrer" aria-label="公开成果展示仓库"><FolderGit2 size={17} /><span>仓库</span></a></nav></header>
     <main>
       <section className="hero" aria-labelledby="hero-heading"><div className="hero-title content-width"><h1 id="hero-heading"><motion.span initial={reducedMotion ? false : { y: 16, opacity: 0.8 }} animate={{ y: 0, opacity: 1 }} transition={ELEGANT}>UI Design</motion.span><motion.span initial={reducedMotion ? false : { y: 16, opacity: 0.8 }} animate={{ y: 0, opacity: 1 }} transition={{ ...ELEGANT, delay: 0.06 }}>Agent Kit<span className="title-stop">.</span></motion.span></h1><p className="hero-descriptor">UI 设计智能体工作流</p><p className="hero-description">从需求与参考，到交互实现与浏览器验证。</p><div className="hero-actions"><ActionLink href="#projects">浏览成果</ActionLink><ActionLink href="#workflow" className="secondary-action">查看工作流</ActionLink></div></div>
         <div className="hero-strip content-width" aria-label="工作流成果预览">{PROJECTS.map((item, index) => <motion.button key={item.id} type="button" className="hero-preview" onClick={(event) => openProject(item, event.currentTarget)} aria-label={`查看${item.name}案例`} initial={reducedMotion ? false : { y: 18, opacity: 0.8 }} animate={{ y: 0, opacity: 1, transition: { ...ELEGANT, delay: index * 0.06 } }} whileHover={reducedMotion ? undefined : { y: -5, transition: SNAPPY }} whileTap={reducedMotion ? undefined : { scale: 0.99, transition: SNAPPY }} transition={ELEGANT}><img src={item.image} alt={item.alt} width={item.id === 'blog' || item.id === 'brick' ? 1440 : 1280} height={item.id === 'blog' || item.id === 'brick' ? 900 : 800} /><span><span>{item.category}</span><ArrowUpRight size={16} aria-hidden="true" /></span></motion.button>)}</div>
@@ -252,6 +285,7 @@ function App() {
         <div className="projects-grid" id="projects-panel" role="tabpanel" aria-labelledby={`filter-${FILTERS.indexOf(filter)}`} tabIndex={0}>{projects.map((item) => { const Icon = item.icon; return <motion.article key={item.id} className="project-item" layout transition={reducedMotion ? { duration: 0 } : ELEGANT}><button type="button" className="project-image" onClick={(event) => openProject(item, event.currentTarget)} aria-label={`查看${item.name}案例`}><img src={item.image} alt={item.alt} loading="lazy" width={1440} height={900} /><span className="project-open"><Maximize2 size={19} aria-hidden="true" /></span></button><div className="project-meta"><span><Icon size={16} />{item.category}</span><span>{item.status}</span></div><div className="project-title"><div><h3>{item.name}</h3><p>{item.kind}</p></div><button type="button" onClick={(event) => openProject(item, event.currentTarget)} className="case-open-link">{item.id === 'brick' || item.id === 'inventory' ? '查看 demo' : item.id === 'nodegrid' || item.id === 'subway' ? '查看项目' : '查看截图'}<ArrowUpRight size={17} /></button></div></motion.article>; })}</div>
       </div></section>
       <section className="verification-band" id="verification" aria-labelledby="verification-heading"><div className="content-width"><div className="section-heading"><div><h2 id="verification-heading">验证，有据可查。</h2><p>四种证据层级，不能相互替代。</p></div><ScanEye size={28} strokeWidth={1.5} aria-hidden="true" /></div><dl className="evidence-definitions">{EVIDENCE.map((item) => { const Icon = item.icon; return <div key={item.name}><dt><Icon size={22} strokeWidth={1.6} />{item.name}</dt><dd>{item.meaning}</dd></div>; })}</dl><p className="evidence-disclaimer">以上为证据定义，不是所有项目均已通过的状态声明。历史截图与可试玩成果已分别标注。</p></div></section>
+      <InstallSection />
       <section className="closing-band" id="testing" aria-labelledby="closing-heading"><div className="content-width closing-content"><div><h2 id="closing-heading">参与公开测试</h2><p>成果体验已开放。工作流执行测试面向已获访问权限的测试者。</p></div><ActionLink href={FEEDBACK_URL} external>提交测试反馈</ActionLink></div></section>
     </main>
     <footer className="site-footer content-width"><a href={BASE}>UI 设计智能体工作流</a><span>{RELEASE}</span><a href={FEEDBACK_URL} target="_blank" rel="noreferrer">测试反馈<ArrowUpRight size={14} /></a><a href={`${BASE}THIRD_PARTY_LICENSES.txt`}>依赖许可</a><a href={SHOWCASE_REPOSITORY_URL} target="_blank" rel="noreferrer">公开展示仓库<ArrowUpRight size={14} /></a><a href={REPOSITORY_URL} target="_blank" rel="noreferrer">Agent 源码（需权限）<ArrowUpRight size={14} /></a></footer><CaseDialog project={project} onClose={closeProject} />

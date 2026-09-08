@@ -32,6 +32,9 @@ process, produced interfaces, and evidence boundaries.
 - NODEGRID and the subway runner are completed, in-repository playable demos
   presented as project cards with their real screenshots; they are not mounted
   as playable routes in this static package, and the cards do not claim they are.
+- The install section shows one copyable command (clone, dependency install,
+  verify) and the three usage paths. It does not claim the kit auto-installs
+  MCP services, skills, or accounts.
 - Four evidence levels are definitions, not blanket success badges.
 - The GitHub repository is currently private. Do not claim public source or a
   live deployment before deployment has been verified.

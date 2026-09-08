@@ -16,6 +16,9 @@ The brick workshop is one case, not the product identity of this page.
 - One playable case with an assembled route: the brick workshop, with a read-only
   live presentation and its original five screenshots. Its game and persistence
   remain separate.
+- A one-command install section showing the clone + install + verify pipeline
+  with a copy button, plus the three supported usage paths (in-repo agent
+  dispatch, portable prompt export for external workspaces).
 - Four evidence-level definitions, not an assertion that all projects passed.
 
 ## Local Build

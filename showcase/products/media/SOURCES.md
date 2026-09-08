@@ -19,10 +19,10 @@ not copy whole private documents into the public site or infer complete
 verification from the screenshots.
 
 The brick case separately imports its five curated screenshots from
-`demo/brick-workshop/screenshots/`. The inventory and brick cases have an
-assembled playable route in this publication package; nodegrid and subway are
-playable demos in the Agent repository but are not mounted as playable routes
-in this static package.
+`demo/brick-workshop/screenshots/`. The inventory, brick, NODEGRID, and subway
+cases have assembled playable routes in this publication package. NODEGRID and
+subway remain separate demo apps in the Agent repository and are mounted under
+their own `demos/` paths here.
 
 `workflow-cover.webp` is a 1200x630 local montage of these three screenshots
 and the brick desktop screenshot, with the literal Agent workflow brand and

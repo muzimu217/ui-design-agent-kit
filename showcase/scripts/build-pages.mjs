@@ -9,9 +9,17 @@ export const PUBLIC_APPS = [
   { project: 'showcase/products', prefix: '' },
   { project: 'demo/brick-workshop', prefix: 'demos/brick-workshop' },
   { project: 'demo/inventory-console', prefix: 'demos/inventory-console' },
+  { project: 'demo/nodegrid', prefix: 'demos/nodegrid' },
+  { project: 'demo/subway-runner', prefix: 'demos/subway-runner' },
 ];
-const ROOT_FILES = new Set(['index.html', 'favicon.svg', 'robots.txt', 'og-image.webp', 'third-party-licenses.json']);
-const ASSET_PATTERN = /^assets\/[A-Za-z0-9_./-]+\.(?:js|css|png|jpe?g|webp|avif|svg|woff2?|ttf)$/;
+const ROOT_FILES = new Set([
+  'index.html', 'favicon.svg', 'robots.txt', 'og-image.webp', 'third-party-licenses.json',
+  // nodegrid：公有领域地理边界数据（Natural Earth via world-atlas）与站点图标
+  'countries-110m.json', 'logo-mark.svg',
+  // subway-runner：门C 视觉原型存档（纯静态单文件）
+  'prototype.html',
+]);
+const ASSET_PATTERN = /^(?:assets|models|photos|Textures)\/[A-Za-z0-9_./-]+\.(?:js|css|png|jpe?g|webp|avif|svg|woff2?|ttf|fbx|glb|gltf|bin|json|mp4)$/;
 
 export function normalizeBase(value = '/') {
   if (typeof value !== 'string' || !/^\/(?:[A-Za-z0-9_-]+\/)*$/.test(value)) {
@@ -19,6 +27,8 @@ export function normalizeBase(value = '/') {
   }
   return value;
 }
+
+const DIR_PATTERN = /^(?:assets|models|photos|Textures)(?:\/[A-Za-z0-9_-]+)*$/;
 
 export function assertPublicPath(relative) {
   const parts = relative.split('/');
@@ -39,7 +49,7 @@ export async function publicFiles(directory) {
       const stat = await lstat(absolute);
       if (stat.isSymbolicLink()) throw new Error(`Refusing symbolic link: ${relative}`);
       if (stat.isDirectory()) {
-        if (relative !== 'assets' && !/^assets\/[A-Za-z0-9_/-]+$/.test(relative)) throw new Error(`Refusing build directory: ${relative}`);
+        if (!DIR_PATTERN.test(relative)) throw new Error(`Refusing build directory: ${relative}`);
         await visit(absolute, relative);
       } else if (stat.isFile()) {
         if (stat.nlink !== 1) throw new Error(`Refusing hard link: ${relative}`);

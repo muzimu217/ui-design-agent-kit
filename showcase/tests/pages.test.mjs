@@ -8,7 +8,7 @@ import { normalizeBase, assertPublicPath, publicFiles, assemblePages, runtimeLic
 async function fixture(t) {
   const root = await mkdtemp(path.join(os.tmpdir(), 'brick-pages-test-'));
   t.after(() => rm(root, { recursive: true, force: true }));
-  for (const directory of ['showcase/products/dist', 'demo/brick-workshop/dist', 'demo/inventory-console/dist']) {
+  for (const directory of ['showcase/products/dist', 'demo/brick-workshop/dist', 'demo/inventory-console/dist', 'demo/nodegrid/dist', 'demo/subway-runner/dist']) {
     await mkdir(path.join(root, directory, 'assets'), { recursive: true });
     await writeFile(path.join(root, directory, 'index.html'), '<!doctype html><title>fixture</title>');
     await writeFile(path.join(root, directory, 'assets/app.js'), 'console.log("fixture")');
@@ -26,18 +26,18 @@ test('base paths support project mounts and reject URL/path injection', () => {
 });
 
 test('only explicit public entrypoints and asset types are publishable', () => {
-  for (const name of ['index.html', 'favicon.svg', 'assets/main-Q2.js', 'assets/desktop.webp']) assert.doesNotThrow(() => assertPublicPath(name));
-  for (const name of ['.env', '.codex/config.toml', 'docs/PLAN.md', 'package.json', 'assets/app.js.map', 'assets/../secret.js', 'assets/.env.js', '../index.html', 'node_modules/react/index.js']) {
+  for (const name of ['index.html', 'favicon.svg', 'assets/main-Q2.js', 'assets/desktop.webp', 'countries-110m.json', 'logo-mark.svg', 'prototype.html', 'models/characterMedium.fbx', 'models/animal-dog.glb', 'models/Textures/colormap.png', 'models/skins/skaterMaleA.png', 'photos/nasa.jpg']) assert.doesNotThrow(() => assertPublicPath(name));
+  for (const name of ['.env', '.codex/config.toml', 'docs/PLAN.md', 'package.json', 'assets/app.js.map', 'assets/../secret.js', 'assets/.env.js', '../index.html', 'node_modules/react/index.js', 'models/track.mp3', 'models/../escape.js', 'data/countries.json']) {
     assert.throws(() => assertPublicPath(name), /Refusing/);
   }
 });
 
-test('site assembly publishes only the three explicitly selected applications', async (t) => {
+test('site assembly publishes only the explicitly selected applications', async (t) => {
   const root = await fixture(t);
   await writeFile(path.join(root, 'private-note.txt'), 'not for the public site');
   const result = await assemblePages({ root, basePath: '/kit/', licenseText: 'Fixture license' });
-  assert.deepEqual(result.manifest.entrypoints, ['index.html', 'demos/brick-workshop/index.html', 'demos/inventory-console/index.html']);
-  assert.equal(result.manifest.files.length, 6);
+  assert.deepEqual(result.manifest.entrypoints, ['index.html', 'demos/brick-workshop/index.html', 'demos/inventory-console/index.html', 'demos/nodegrid/index.html', 'demos/subway-runner/index.html']);
+  assert.equal(result.manifest.files.length, 10);
   assert.ok(result.manifest.files.every((item) => /^[a-f0-9]{64}$/.test(item.sha256)));
   assert.equal(await readFile(path.join(result.output, 'THIRD_PARTY_LICENSES.txt'), 'utf8'), 'Fixture license');
   await assert.rejects(access(path.join(result.output, 'private-note.txt')));
@@ -57,7 +57,7 @@ test('custom-domain root preserves mounted demo routes and release metadata', as
   const root = await fixture(t);
   const result = await assemblePages({ root, basePath: '/', licenseText: 'Fixture license' });
   assert.equal(result.manifest.basePath, '/');
-  assert.deepEqual(result.manifest.entrypoints, ['index.html', 'demos/brick-workshop/index.html', 'demos/inventory-console/index.html']);
+  assert.deepEqual(result.manifest.entrypoints, ['index.html', 'demos/brick-workshop/index.html', 'demos/inventory-console/index.html', 'demos/nodegrid/index.html', 'demos/subway-runner/index.html']);
   for (const entrypoint of result.manifest.entrypoints) {
     await access(path.join(result.output, entrypoint));
     assert.equal(new URL(entrypoint, 'https://agent.kcos.club/').pathname, `/${entrypoint}`);

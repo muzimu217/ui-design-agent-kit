@@ -28,10 +28,11 @@ process, produced interfaces, and evidence boundaries.
 - No account, backend, external model service, or new persistence.
 - Presentation mode never imports the workspace persistence module.
 - Inventory, phone, and blog cases provide historical screenshots only. The
-  brick workshop is one peer case and the only playable route in this package.
+  brick workshop, the inventory console, NODEGRID, and the subway runner are
+  mounted as playable routes in this package.
 - NODEGRID and the subway runner are completed, in-repository playable demos
-  presented as project cards with their real screenshots; they are not mounted
-  as playable routes in this static package, and the cards do not claim they are.
+  presented as project cards with their real screenshots and linked to their
+  playable routes (`demos/nodegrid/`, `demos/subway-runner/`).
 - The install section shows one copyable command (clone, dependency install,
   verify) and the three usage paths. It does not claim the kit auto-installs
   MCP services, skills, or accounts.

@@ -56,12 +56,13 @@ export class Actors {
   async load(): Promise<void> {
     const loader = new FBXLoader();
     const load = (url: string) => loader.loadAsync(url);
+    const M = `${import.meta.env.BASE_URL}models/`; // 子路径挂载（showcase demos/*）下也能取到模型
     const [model, idleFbx, runFbx, jumpFbx, dogGltf] = await Promise.all([
-      load("/models/characterMedium.fbx"),
-      load("/models/idle.fbx"),
-      load("/models/run.fbx"),
-      load("/models/jump.fbx"),
-      new GLTFLoader().loadAsync("/models/animal-dog.glb"),
+      load(`${M}characterMedium.fbx`),
+      load(`${M}idle.fbx`),
+      load(`${M}run.fbx`),
+      load(`${M}jump.fbx`),
+      new GLTFLoader().loadAsync(`${M}animal-dog.glb`),
     ]);
     const clips = {
       idle: idleFbx.animations[0],
@@ -71,14 +72,14 @@ export class Actors {
     // 主角：滑板少年皮肤
     const playerRoot = new THREE.Group();
     model.rotation.y = Math.PI; // 面朝 -z（前进方向）
-    reskin(model, "/models/skins/skaterMaleA.png");
+    reskin(model, `${import.meta.env.BASE_URL}models/skins/skaterMaleA.png`);
     normalizeHeight(model, PLAYER_HEIGHT);
     model.traverse((o) => { if ((o as THREE.Mesh).isMesh) o.castShadow = true; });
     playerRoot.add(model);
     this.player = this.makeRunner(playerRoot, clips);
     // 警卫：同骨架克隆 + 罪犯皮肤充当深色制服
     const guardModel = skeletonClone(model);
-    reskin(guardModel, "/models/skins/criminalMaleA.png");
+    reskin(guardModel, `${import.meta.env.BASE_URL}models/skins/criminalMaleA.png`);
     const guardRoot = new THREE.Group();
     guardRoot.add(guardModel);
     this.guard = this.makeRunner(guardRoot, clips);

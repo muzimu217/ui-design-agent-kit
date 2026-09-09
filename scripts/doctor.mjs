@@ -42,9 +42,12 @@ export async function smokeCheck(name, client, tools, options = { timeout: 30000
     if (!document.contents?.some((item) => typeof item.text === "string" && item.text.length > 100)) {
       throw new Error("Motion resource did not return document text");
     }
-    const easing = await call("generate-css-easing", { kind: "spring", duration: 0.25, bounce: 0 });
-    assertToolResult(easing, (r) => /linear\(/.test(contentText(r)), "CSS spring generation");
-    return "docs search + resource read + CSS spring generation";
+    if (names.has("generate-css-easing")) {
+      const easing = await call("generate-css-easing", { kind: "spring", duration: 0.25, bounce: 0 });
+      assertToolResult(easing, (r) => /linear\(/.test(contentText(r)), "CSS spring generation");
+      return "docs search + resource read + CSS spring generation";
+    }
+    return "docs search + resource read";
   }
   if (name === "context7") {
     const result = await call("resolve-library-id", { libraryName: "React", query: "React useState state updates" });

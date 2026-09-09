@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![UI Design Agent Kit 工作流成果展厅](../showcase/products/screenshots/readme-desktop.webp)
+![UI Design Agent Kit 工作流成果展厅](https://raw.githubusercontent.com/muzimu217/ui-design-agent-kit/main/showcase/products/screenshots/readme-desktop.webp)
 
 <sub>真实浏览器截图：工作流成果展厅。这不是概念图，是本地构建后的实际页面。</sub>
 
@@ -72,14 +72,14 @@ $ui-design-agent 我想把采购申请集中起来，看谁还没处理。先整
 <tr>
 <td width="50%">
 
-![库存运营台](../demo/inventory-console/screenshots/readme-desktop.webp)
+![库存运营台](https://raw.githubusercontent.com/muzimu217/ui-design-agent-kit/main/demo/inventory-console/screenshots/readme-desktop.webp)
 
 <p align="center"><sub>库存运营台：列表、详情和演示数据</sub></p>
 
 </td>
 <td width="50%">
 
-![Tempo 今日节奏](../demo/tempo-day/screenshots/readme-desktop.webp)
+![Tempo 今日节奏](https://raw.githubusercontent.com/muzimu217/ui-design-agent-kit/main/demo/tempo-day/screenshots/readme-desktop.webp)
 
 <p align="center"><sub>Tempo 今日节奏：任务管理与专注计时</sub></p>
 
@@ -88,14 +88,14 @@ $ui-design-agent 我想把采购申请集中起来，看谁还没处理。先整
 <tr>
 <td width="50%">
 
-![积木小工坊](../demo/brick-workshop/screenshots/readme-desktop.webp)
+![积木小工坊](https://raw.githubusercontent.com/muzimu217/ui-design-agent-kit/main/demo/brick-workshop/screenshots/readme-desktop.webp)
 
 <p align="center"><sub>积木小工坊：3D 自由拼搭与小挑战</sub></p>
 
 </td>
 <td width="50%">
 
-![NODEGRID](../demo/nodegrid/screenshots/readme-desktop.webp)
+![NODEGRID](https://raw.githubusercontent.com/muzimu217/ui-design-agent-kit/main/demo/nodegrid/screenshots/readme-desktop.webp)
 
 <p align="center"><sub>NODEGRID：虚构云节点网络可视化</sub></p>
 

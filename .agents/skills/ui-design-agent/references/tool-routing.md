@@ -65,7 +65,10 @@ license notices when adapting code, assets, fonts, or examples.
 ## Three.js and React Three Fiber
 
 Read `spatial-media.md` for natural-language routing, the scene/asset contract,
-Blender authoring, rigid-body physics, and web/video delivery. Three.js, R3F,
+Blender authoring, rigid-body physics, and web/video delivery. For the dense
+tech-HUD blueprint (projected DOM labels, camera-tour state machine, asset
+naming contract), read `web3d-hud-architecture.md` after `spatial-media.md`.
+Three.js, R3F,
 Drei, and Rapier are runtime libraries, not assumed MCP servers. Context7 or
 official docs supply API guidance; browser tools verify the actual result.
 

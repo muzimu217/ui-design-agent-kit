@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "reference-first-adaptation",
+  "sourceRevision": "2e177d4460dd121bf042caae9abb75dd3b6a0d2d",
+  "workspace": "demo/blog-demo",
+  "commands": [
+    {
+      "id": "build",
+      "cwd": "demo/blog-demo",
+      "argv": [
+        "npm",
+        "run",
+        "build"
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "path": "demo/blog-demo/package.json",
+      "sha256": "ce49e9c675daa1fc34d7948b9885529a4e24a27e0b2ede81b4a8842b1731c14e"
+    },
+    {
+      "path": "demo/blog-demo/package-lock.json",
+      "sha256": "8809137d550067b872f759e28577d17956c3085080e6b2655a59142449d8b0d3"
+    },
+    {
+      "path": "demo/blog-demo/index.html",
+      "sha256": "f78d00c29562c4f15320d1be9bac5e1e98bd7c62d820ce1050716aab84222298"
+    },
+    {
+      "path": "demo/blog-demo/vite.config.ts",
+      "sha256": "5a31f3041a31d1c6df043a0dc07ecc2cbd7a450b3ff718db2bbc8d9e0e6cff6f"
+    },
+    {
+      "path": "demo/blog-demo/tsconfig.json",
+      "sha256": "ba32385853b2dd94697151d2c28455f2790fc9ac24f3b07cbf921c1f8cce8313"
+    },
+    {
+      "path": "demo/blog-demo/DESIGN.md",
+      "sha256": "d5526cc3b99a2818aee278dac796e39b5f74f85228a4f90ccfd1321dae9536a1"
+    },
+    {
+      "path": "demo/blog-demo/prototype-prompt.md",
+      "sha256": "c0f05e9e31ae8a75ef560ca1a74f74e8e843a26b9d35beb5f1e71bff613854f1"
+    },
+    {
+      "path": "demo/blog-demo/src/App.tsx",
+      "sha256": "cfbfe92a5b0b70f5133a34109b151ae7e3b3b7257f522eb985bda49fb0ec9454"
+    },
+    {
+      "path": "demo/blog-demo/src/main.tsx",
+      "sha256": "ccbefe7be6c69706a1bb01c4c3f20492eb002435af6ba7e5a6d45f7c6aa3a140"
+    },
+    {
+      "path": "demo/blog-demo/src/styles.css",
+      "sha256": "a654feca7ba3392db61b76630b7465f66a435ab6f38ce21205a21f20a1e55918"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "demo/blog-demo/ACCEPTANCE.md",
+      "sha256": "051962c5684da19f26ebd0e406c073bbebc6a47899eceabe72d14acc30565e92"
+    },
+    {
+      "path": "demo/blog-demo/evidence/desktop-1440.png",
+      "sha256": "f3f1302bfd1928f91a34ac7eb141aedd47deb5d04adee0ae88049667147fc9b8"
+    },
+    {
+      "path": "demo/blog-demo/evidence/mobile-375.png",
+      "sha256": "097932c1546d79770121fa461f708dd443ee3f5452c5746128e61533780fd9cb"
+    }
+  ]
+}

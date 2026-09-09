@@ -49,7 +49,7 @@ git grep -n "AQ\." .    # 期望无输出（无密钥泄漏）
 
 | 项 | 状态 | 说明 |
 | --- | --- | --- |
-| impeccable 30-playbook 升级（adapt/audit/bolder/colorize/delight/...） | ⏳ 待用户确认 | 需替换已 vendored 版本（Apache-2.0 兼容、保留 NOTICE），改动面大，另行处理 |
+| impeccable 30-playbook 升级（adapt/audit/bolder/colorize/delight/...） | ⏳ **已决策：延后到审核之后**（2026-09-06 用户拍板） | 技术风险低，但收益被高估、流程风险踩在当前审核节点；待本轮审核完成后再评估 |
 | 身份指令（Identity Directive）、连真实 Chrome 保留登录态 | ❌ 不采纳 | 平台要求 / 与安全边界冲突 |
 | 对方 CSS 示例中的 `transition: all` | ❌ 不采纳 | 与 motion-contract 明确禁止项冲突，仅借鉴方法论 |
 

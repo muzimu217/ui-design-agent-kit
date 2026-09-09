@@ -43,10 +43,14 @@ workspace, as used by `forma-phone-ui`.
 4. Select the relevant skill route and record the design or video contract.
 5. Use only discovered MCP tools and report configured, connected, and called
    as separate evidence levels.
-6. Delegate implementation only inside the target workspace.
-7. Verify the target with build, browser, accessibility, responsive, and reduced
+6. Keep agent dispatch bounded: one main agent and at most one active subagent
+   per task; queue dependent phases and stop/review a worker before dispatching
+   the next. S tasks default to zero subagents; M tasks delegate sequentially as
+   needed; L tasks use the standard A/B/C phases sequentially.
+7. Delegate implementation only inside the target workspace.
+8. Verify the target with build, browser, accessibility, responsive, and reduced
    motion checks appropriate to the task.
-8. Hand off the target path and evidence without copying generated product code
+9. Hand off the target path and evidence without copying generated product code
    back into the kit.
 
 ## Evidence Levels
@@ -65,8 +69,23 @@ does not prove that an agent used the tool correctly.
 
 ## Current Trial
 
-`/Users/blackevil/Documents/ChatGPT/forma-phone-ui` is an external sibling
-workspace containing the fictional FORMA One product demo. It is intentionally
-not part of this repository's package graph, scripts, skills, MCP config, or
-evaluation corpus. Its own build, screenshots, and product documents remain
-with that workspace.
+### Explicitly Retained Product Showcase
+
+On 2026-09-07, the user explicitly requested retaining the brick-building
+experiment in this repository for product demonstration. `demo/brick-workshop/`
+contains isolated source, tests, lockfile and curated screenshots;
+`showcase/products/` is the Agent workflow's public-facing exhibition entry,
+with a multi-project outcome portfolio; the brick workshop is one example,
+not the primary product or home-page identity. Neither enters the
+root package graph or the agent runtime. This exception does not admit unrelated
+generated products. Only the two compiled applications are assembled for Pages;
+the original external workspace and old showcase sources are preserved.
+See [product-showcase.md](product-showcase.md) for build and publication boundaries.
+
+`demo/forma-phone-ui` (the fictional FORMA One product demo, moved here from an
+external sibling workspace by explicit user request on 2026-09-08) and
+`demo/tempo-day` (a time/calendar demo app, admitted the same way) follow the
+same fixture rules as `demo/brick-workshop`: isolated source with their own
+package state, never part of the root package graph, scripts, skills, MCP
+config, or evaluation corpus. Their build outputs and raw verification
+artifacts are gitignored.

@@ -35,6 +35,11 @@ is assumed to be installed, connected, or licensed for reuse without inspection.
 Read [workflow.md](references/workflow.md) for the relevant mode and load only
 the official Remotion skill needed for the current request:
 
+When this route is dispatched by a main agent, follow the kit's bounded
+concurrency policy: one active subagent per task, with dependent video phases
+queued and the next worker started only after the previous worker has stopped
+and been reviewed.
+
 - `remotion-best-practices` routes all Remotion work when the exact mode is unclear.
 - `remotion-create` covers a new project or composition.
 - `remotion-docs` is required before relying on a current API or package detail.
@@ -42,6 +47,11 @@ the official Remotion skill needed for the current request:
   media, audio, fonts, and timing.
 - `remotion-studio` opens a preview for visual inspection.
 - `remotion-render` covers explicit render requests or advanced rendering.
+
+For 3D compositions, shared Blender/glTF assets, or video embedded in a website,
+also read [three-and-web.md](references/three-and-web.md). Distinguish a live
+interactive scene, a parameterized Player, and an encoded video; implement and
+verify the surfaces actually requested, without migrating the host framework.
 
 For review or planning, remain read-only. A skill workflow cannot authorize
 scaffolding, purchasing assets, uploading private media, deploying, or changing

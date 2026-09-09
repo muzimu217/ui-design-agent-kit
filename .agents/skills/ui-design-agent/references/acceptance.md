@@ -68,6 +68,32 @@ review. In a review, report the blocker without repairing it. Do not mark an arb
 aesthetic score as an objective pass. Any claimed visual
 parity must be based on the actual supplied reference and rendered implementation.
 
+## Public testing and feedback
+
+Apply this section only when public testing, recruitment, or a feedback campaign
+is requested. Keep the product identity explicit: testing a generated demo is
+not evidence that its generating Agent workflow was executed or evaluated.
+
+- Name the test surface, release/revision, available access, and concrete user
+  task. A private workflow cannot be offered as public self-service merely
+  because its output website is public; workflow execution needs authorized
+  access, while demo experience can be open.
+- Keep public artifacts and feedback separate from private instructions,
+  credentials, source, customer data, and internal traces. Review the actual
+  publication inventory, not only the deployment configuration.
+- Collect the smallest reproducible report: target and version, environment,
+  steps, expected/actual result, and optional sanitized evidence. State when
+  reports are public and do not require personal contact information.
+- Distinguish publishing a recruitment invitation, sending it to named people,
+  receiving responses, and completing a study. Do not invent participants or
+  treat an open form as user validation. Direct invitations need a scoped
+  recipient/channel; public recruitment does not authorize private-repository
+  access grants or unsolicited bulk outreach.
+- Reproduce and classify feedback before changing instructions: product defect,
+  tool/environment issue, contract gap, or workflow decision failure. Repair a
+  local defect locally; amend a shared skill and add a behavior case only when
+  the evidence supports that level of change. Keep untested reports unverified.
+
 ## Handoff record
 
 Use the target project's existing reporting convention. A concise record can be:

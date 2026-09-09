@@ -308,6 +308,14 @@ Issues、bug 报告、功能建议、文档改进和 Pull Request 都欢迎。
 
 ---
 
+## 社区
+
+本项目已获得 [LINUX DO](https://linux.do) 社区收录与认可，感谢社区的支持与讨论。
+
+[访问 LINUX DO 社区](https://linux.do)
+
+---
+
 ## 许可
 
 这个仓库当前作为内部工具维护，没有把 Remotion skills 的整套产物宣称为可自由再分发的 MIT 项目。发布前需确认上游授权；版本和修改记录见[来源锁定](tooling/sources.lock.json)与[第三方声明](THIRD_PARTY_NOTICES.md)。

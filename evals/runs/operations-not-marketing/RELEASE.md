@@ -56,4 +56,4 @@ query 无空格（`(prefers-color-scheme:dark)`）匹配不到暗色块；`rgba(
 - zip/dist 为可重建产物，未入 git（仓库约定）；发布以源码 + 本报告为准。
 - gzip 63.8kB 单 JS 含 React 运行时；未做代码分割（12 行数据表无路由，
   无分割必要）。
-- 待用户裁决项不变（见 docs/sprint-2026-09-06.md 第四节）。
+- 待用户裁决项不变（见 docs/archive/sprint-2026-09-06.md 第四节）。

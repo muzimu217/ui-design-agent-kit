@@ -44,7 +44,7 @@ the deployed build. Record the inspected revision and attribution boundary.
 Extract reusable relationships: recognizable subject, silhouette, lighting,
 camera distance, depth cues, input feedback, interruption, state transitions,
 and asset reuse. Do not copy every panel treatment or a reference's defects.
-The researched example for this kit is `docs/tihuqiche-spatial-study.md`; it is
+The researched example for this kit is `docs/archive/tihuqiche-spatial-study.md`; it is
 an optional case study, not required material for unrelated product tasks.
 
 ## Add a scene contract to the existing design contract

@@ -116,7 +116,7 @@ $remotion-video-agent 用已授权的产品 GLB 制作 15 秒、30fps 的产品�
 ```
 
 For the reference analysis and learning priorities, see
-[the tihuqiche study](tihuqiche-spatial-study.md). Its screenshots and source
+[the tihuqiche study](archive/tihuqiche-spatial-study.md). Its screenshots and source
 inspection are evidence about that reference, not proof of a generated app.
 
 For a brand-led animation or an adjacent open-source reference:

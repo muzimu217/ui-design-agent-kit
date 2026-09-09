@@ -1,4 +1,5 @@
 # 地铁跑酷 Subway Dash · 验收记录（ACCEPTANCE.md）
+> 注：2026-09-09 仓库瘦身移除了本档内嵌的过程证据截图（原图可在 git 历史检索），文字记录完整保留。
 
 > 验收对象：`demo/subway-runner/`（Vite + TypeScript strict 子项目）。
 > 计划依据：`DESIGN.md`（P-subway-1 完成 canvas 版实现取证；用户认为手绘角色

@@ -2,7 +2,7 @@ import { StrictMode, useCallback, useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { motion, MotionConfig, useInView, useReducedMotion } from 'motion/react';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Blocks, Check, CodeXml, Compass, Copy, FileText, FolderGit2, Gamepad2, Globe, Layers3, Maximize2, Monitor, NotebookPen, PackageCheck, PanelsTopLeft, Plug, ScanEye, Search, Settings2, Smartphone, Timer, Workflow, X } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Blocks, Check, CodeXml, Compass, Copy, FileText, FolderGit2, Gamepad2, Globe, Layers3, Maximize2, Monitor, NotebookPen, PackageCheck, PanelsTopLeft, Play, Plug, ScanEye, Search, Settings2, Smartphone, Timer, Workflow, X } from 'lucide-react';
 import desktop from '../../../demo/brick-workshop/screenshots/desktop.webp';
 import mobile from '../../../demo/brick-workshop/screenshots/mobile.webp';
 import house from '../../../demo/brick-workshop/screenshots/house.webp';
@@ -15,6 +15,7 @@ import nodegrid from '../media/nodegrid.webp';
 import subway from '../media/subway.webp';
 import forma from '../media/forma.webp';
 import tempo from '../media/tempo.webp';
+import introVideo from '../media/intro.mp4';
 import './styles.css';
 
 const BASE = import.meta.env.BASE_URL;
@@ -231,6 +232,17 @@ function InstallSection() {
   </div></section>;
 }
 
+function IntroVideoSection() {
+  const reducedMotion = useReducedMotion();
+  return <section className="intro-video-band" id="intro-video" aria-labelledby="intro-video-heading"><div className="content-width">
+    <div className="section-heading"><div><h2 id="intro-video-heading">20 秒，看懂这条工作流。</h2><p>产品介绍视频：从口语需求，到有证据的交付。</p></div><Play size={28} strokeWidth={1.5} aria-hidden="true" /></div>
+    <figure className="intro-video-figure">
+      <video className="intro-video" src={introVideo} width={1920} height={1080} controls muted loop playsInline preload="metadata" autoPlay={!reducedMotion} aria-label="UI Design Agent Kit 介绍视频：标题、六道确认门、showcase 案例与测试数字"></video>
+      <figcaption>由本仓库 <code>intro-video/</code> 的 Remotion 管线渲染。画面全部来自仓库内第一方案例截图，配乐与音效为程序化合成，不含真实用户数据。</figcaption>
+    </figure>
+  </div></section>;
+}
+
 function WorkflowSection() {
   const [active, setActive] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -289,6 +301,7 @@ function App() {
       <section className="hero" aria-labelledby="hero-heading"><div className="hero-title content-width"><h1 id="hero-heading"><motion.span initial={reducedMotion ? false : { y: 16, opacity: 0.8 }} animate={{ y: 0, opacity: 1 }} transition={ELEGANT}>UI Design</motion.span><motion.span initial={reducedMotion ? false : { y: 16, opacity: 0.8 }} animate={{ y: 0, opacity: 1 }} transition={{ ...ELEGANT, delay: 0.06 }}>Agent Kit<span className="title-stop">.</span></motion.span></h1><p className="hero-descriptor">UI 设计智能体工作流</p><p className="hero-description">从需求与参考，到交互实现与浏览器验证。</p><div className="hero-actions"><ActionLink href="#projects">浏览成果</ActionLink><ActionLink href="#workflow" className="secondary-action">查看工作流</ActionLink></div></div>
         <div className="hero-strip content-width" aria-label="工作流成果预览">{PROJECTS.map((item, index) => <motion.button key={item.id} type="button" className="hero-preview" onClick={(event) => openProject(item, event.currentTarget)} aria-label={`查看${item.name}案例`} initial={reducedMotion ? false : { y: 18, opacity: 0.8 }} animate={{ y: 0, opacity: 1, transition: { ...ELEGANT, delay: index * 0.06 } }} whileHover={reducedMotion ? undefined : { y: -5, transition: SNAPPY }} whileTap={reducedMotion ? undefined : { scale: 0.99, transition: SNAPPY }} transition={ELEGANT}><img src={item.image} alt={item.alt} width={item.id === 'blog' || item.id === 'brick' ? 1440 : 1280} height={item.id === 'blog' || item.id === 'brick' ? 900 : 800} /><span><span>{item.category}</span><ArrowUpRight size={16} aria-hidden="true" /></span></motion.button>)}</div>
       </section>
+      <IntroVideoSection />
       <WorkflowSection />
       <section className="projects-band" id="projects" aria-labelledby="projects-heading"><div className="content-width"><div className="section-heading"><div><h2 id="projects-heading">工作流成果</h2><p>不同的任务，不同的界面表达。</p></div><Layers3 size={28} strokeWidth={1.5} aria-hidden="true" /></div><div className="project-filters" role="tablist" aria-label="成果项目类型">{FILTERS.map((item, index) => <button key={item} id={`filter-${index}`} type="button" role="tab" aria-selected={filter === item} aria-controls="projects-panel" className={filter === item ? 'is-active' : ''} tabIndex={filter === item ? 0 : -1} onClick={() => setFilter(item)} ref={(element) => { filterRefs.current[index] = element; }} onKeyDown={(event) => onFilterKey(event, index)}><span>{item}</span>{filter === item && <motion.span className="filter-selection" layoutId="project-filter" transition={reducedMotion ? { duration: 0 } : SNAPPY} />}</button>)}</div>
         <div className="projects-grid" id="projects-panel" role="tabpanel" aria-labelledby={`filter-${FILTERS.indexOf(filter)}`} tabIndex={0}>{projects.map((item) => { const Icon = item.icon; return <motion.article key={item.id} className="project-item" layout transition={reducedMotion ? { duration: 0 } : ELEGANT}><button type="button" className="project-image" onClick={(event) => openProject(item, event.currentTarget)} aria-label={`查看${item.name}案例`}><img src={item.image} alt={item.alt} loading="lazy" width={1440} height={900} /><span className="project-open"><Maximize2 size={19} aria-hidden="true" /></span></button><div className="project-meta"><span><Icon size={16} />{item.category}</span><span>{item.status}</span></div><div className="project-title"><div><h3>{item.name}</h3><p>{item.kind}</p></div><button type="button" onClick={(event) => openProject(item, event.currentTarget)} className="case-open-link">{item.id === 'brick' || item.id === 'inventory' || item.id in PLAYABLE_URLS ? '查看 demo' : '查看截图'}<ArrowUpRight size={17} /></button></div></motion.article>; })}</div>

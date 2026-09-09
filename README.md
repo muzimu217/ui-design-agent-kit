@@ -29,6 +29,12 @@
 
 <sub>工作流成果展厅：展示已收录案例、入口与验证记录，不充当可执行 AI 客户端。</sub>
 
+<br />
+
+<video src="showcase/products/media/intro.mp4" controls muted loop playsInline preload="metadata"></video>
+
+<sub>产品介绍视频（20 秒）：由仓库 <code>intro-video/</code> 的 Remotion 管线渲染，先学最好的界面，再交付有证据的产品。</sub>
+
 </div>
 
 ---

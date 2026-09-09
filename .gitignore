@@ -9,7 +9,6 @@ output/
 .playwright-cli/
 .playwright-mcp/
 .impeccable/
-.playwright-mcp/
 showcase/node_modules/
 showcase/dist/
 demo/product-demo/node_modules/

@@ -97,6 +97,28 @@ For a transition-focused request:
 $remotion-video-agent Make the transition between the title and feature scenes feel cinematic. Inspect the current Remotion version and official transition docs first, calculate the overlap in frames, preserve the scene content, then verify the midpoint and endpoints in Studio.
 ```
 
+For a subject-led interactive 3D website without naming libraries:
+
+```text
+$ui-design-agent 为现有产品页加入可以拖动旋转、切换颜色的真实产品模型，手机和键盘也能操作。沿用当前技术栈，先确认视觉方向和可用资产，再实现和验收；不要用静态图片冒充 3D。
+```
+
+For Blender-authored assets and real physics:
+
+```text
+$ui-design-agent 为已确认的展示区域制作几个可以拖动、落下碰撞的 3D 物件。先检查已有模型和工具；需要 Blender 时说明建模与 GLB 导出的路径，真实碰撞使用成熟物理引擎。保留可编辑源文件，不擅自安装插件或调用付费模型服务。
+```
+
+For a 3D video embedded in an existing site:
+
+```text
+$remotion-video-agent 用已授权的产品 GLB 制作 15 秒、30fps 的产品短片，输出 MP4 并嵌入现有 Vue 页面，带封面和播放控制。模型与网站共用，视频运动由帧驱动；检查成片、手机播放和减少动效，不要迁移整个网站到 React。
+```
+
+For the reference analysis and learning priorities, see
+[the tihuqiche study](tihuqiche-spatial-study.md). Its screenshots and source
+inspection are evidence about that reference, not proof of a generated app.
+
 For a brand-led animation or an adjacent open-source reference:
 
 ```text

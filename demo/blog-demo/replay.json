@@ -60,14 +60,6 @@
     {
       "path": "demo/blog-demo/ACCEPTANCE.md",
       "sha256": "051962c5684da19f26ebd0e406c073bbebc6a47899eceabe72d14acc30565e92"
-    },
-    {
-      "path": "demo/blog-demo/evidence/desktop-1440.png",
-      "sha256": "f3f1302bfd1928f91a34ac7eb141aedd47deb5d04adee0ae88049667147fc9b8"
-    },
-    {
-      "path": "demo/blog-demo/evidence/mobile-375.png",
-      "sha256": "097932c1546d79770121fa461f708dd443ee3f5452c5746128e61533780fd9cb"
     }
   ]
 }

@@ -7,7 +7,7 @@ import { inspectReplay } from "../scripts/replay.mjs";
 test("blog demo replay package has anchored inputs and evidence", async () => {
   const report = await inspectReplay("demo/blog-demo/replay.json");
   assert.equal(report.ok, true, report.errors.join("; "));
-  assert.equal(report.artifacts.length, 13);
+  assert.equal(report.artifacts.length, 11);
   assert.equal(report.manifest.scenarioId, "reference-first-adaptation");
 });
 

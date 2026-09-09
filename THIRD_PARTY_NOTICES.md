@@ -86,3 +86,25 @@ install or redistribute Remotion runtime packages.
   upstream skill is installed by this extension, so existing source pins and
   upstream notices remain unchanged. Future adoption needs its own version,
   license, asset-provenance, and permission review.
+
+## Demo assets (demo/subway-runner)
+
+- Kenney "Animated Characters Protagonists" (1.1): CC0 1.0
+  (https://creativecommons.org/publicdomain/zero/1.0/). Used files:
+  `Model/characterMedium.fbx`, `Animations/{idle,run,jump}.fbx`,
+  `Skins/{skaterMaleA,criminalMaleA}.png`. Source:
+  https://kenney.nl/assets/animated-characters-protagonists (downloaded
+  2026-09-07; the pack's License.txt is preserved at
+  `demo/subway-runner/assets-src/kenney-protagonists/License.txt`).
+- Kenney "Cube Pets" (2.0): CC0 1.0. Used files:
+  `Models/GLB format/animal-dog.glb` and its external
+  `Models/GLB format/Textures/colormap.png` (kept at the loader-relative path
+  `public/models/Textures/colormap.png`). Source:
+  https://kenney.nl/assets/cube-pets (downloaded 2026-09-07; License.txt at
+  `demo/subway-runner/assets-src/kenney-cube-pets/License.txt`).
+- Both packs were selected by the user at the P-subway-2 material gate.
+  Crediting Kenney (kenney.nl) is appreciated by the author but not required
+  by CC0; this notice serves as the provenance record.
+- npm runtime dependency `three` (MIT) and devDependency `@types/three`
+  (MIT, DefinitelyTyped) are installed only inside the demo subproject;
+  the kit root package.json is unchanged.

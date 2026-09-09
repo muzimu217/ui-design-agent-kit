@@ -311,6 +311,10 @@ is not proof of a connection, and a connection is not proof of a successful call
   workflow in [tool-routing.md](references/tool-routing.md). Read
   [spatial-media.md](references/spatial-media.md) for the scene contract,
   physics decision, Blender-to-web asset handoff, and mixed web/video delivery.
+  Read [web3d-hud-architecture.md](references/web3d-hud-architecture.md) when
+  the brief is a dense tech-HUD or instrument experience over the scene —
+  projected DOM labels, camera-tour states, and the asset naming contract
+  behind them.
   Keep asset authoring, live rendering, simulation, and video clocks separate;
   a Blender MCP is an optional authoring bridge, not a browser runtime.
 - Use Context7 or official docs to resolve implementation APIs against the
@@ -347,6 +351,31 @@ For a substantial new UI, run the chain through isolated subagents with an
 explicit division of labor. The main agent classifies, routes, dispatches,
 reviews, and merges; it does not silently absorb an implementation phase it
 delegated.
+
+### Bounded dispatch policy
+
+The default execution shape is **one main agent plus at most one active
+subagent for the current task**. Do not dispatch A, B, and C concurrently just
+because their roles are distinct. Their work consumes separate context and
+tokens, and the design chain has dependencies that make concurrent handoffs
+misleading.
+
+Use the task tier to decide how much delegation is justified:
+
+| Tier | Delegation budget | Dispatch rule |
+| --- | --- | --- |
+| S narrow repair | 0 subagents by default | Main agent handles the bounded change and verification directly. |
+| M page-level work | Sequential subagents as needed | At most one active subagent; stop and review it before the next phase is dispatched. |
+| L substantial new UI | A, B, and C phases at most once each in the standard chain | A → B → C is a queue, never a concurrent batch; each worker exits before the next worker starts. |
+
+The lifecycle is `dispatch → wait for completion or failure → inspect the
+declared-scope diff → record the result → stop/release the subagent → dispatch
+the next phase`. A failed or incomplete phase may be re-dispatched only after
+the previous worker has stopped, with the reason recorded. Independent work
+that could technically run in parallel is queued by default; exceed one active
+subagent only when the user explicitly authorizes the exception and the main
+agent records non-overlapping scopes, the expected token tradeoff, and the
+reason the sequential path is insufficient.
 
 | Phase | Owner | Deliverable | Isolation rule |
 | --- | --- | --- | --- |

@@ -101,8 +101,9 @@ the user before secondary exploration.
 
 The knowledge base for "where to search" (the 灵感库): match the task's need
 type to the website, then run the reference-first search there. Reachability
-checked 2026-09-06, re-checked 2026-09-07 with curl plus Playwright; blocked
-entries need a real browser.
+checked 2026-09-06, re-checked 2026-09-07 with curl plus Playwright; the
+2026-09-11 batch added 13 sources across 9 new need types, verified the same
+way; blocked entries need a real browser.
 
 | Need type | Website | Use it for | Reachability |
 | --- | --- | --- | --- |
@@ -113,6 +114,19 @@ entries need a real browser.
 | 酷炫 / Bold | [Lapa Ninja](https://www.lapa.ninja) | Bold, high-impact visual direction | Direct https OK (2026-09-07; was 403 earlier — anti-bot fluctuates, re-check) |
 | 现成 / Ready-made | [21st.dev](https://21st.dev) | Ready-made UI components and AI-generated component registry (shadcn-compatible picks) | Direct https OK |
 | 设计感 / Design quality | [SiteInspire](https://www.siteinspire.com) | Refined, design-led layouts | Rate-limits scripts (429); loads fine in a real browser |
+| 配色 / Color | [Realtime Colors](https://www.realtimecolors.com) | Preview palettes and fonts live on a real layout; export Tailwind/CSS tokens | Direct https OK (2026-09-11) |
+| 配色 / Color | [Coolors](https://coolors.co) | Fast palette generation, contrast check, mockup visualizer | curl 403; browser OK (2026-09-11) |
+| 字体 / Typography | [Typewolf](https://www.typewolf.com) | Trending fonts, pairing suggestions, free alternatives | Direct https OK (2026-09-11) |
+| 字体 / Typography | [Fonts In Use](https://fontsinuse.com) | Real-project type usage archive by industry/format | Direct https OK (2026-09-11) |
+| 图标 / Icons | [Iconify](https://iconify.design) | 300k+ open-source icons from 150+ sets, one framework | Direct https OK (2026-09-11) |
+| 图标 / Icons | [Phosphor Icons](https://phosphoricons.com) | Coherent single-style set with six weights | Direct https OK (2026-09-11) |
+| 插图 / Illustration | [unDraw](https://undraw.co) | Open-source recolorable flat illustrations, commercial use | Direct https OK (2026-09-11) |
+| 3D 素材 / 3D assets | [Poly Haven](https://polyhaven.com) | CC0 photoreal models, PBR textures, HDRIs | Direct https OK (2026-09-11) |
+| 3D 素材 / 3D assets | [Kenney](https://kenney.nl) | CC0 game-ready stylized asset packs, cohesive style | Direct https OK (2026-09-11) |
+| 移动端 / Mobile patterns | [ScreensDesign](https://screensdesign.com) | Top-chart iOS apps: full flow videos, paywalls, onboarding | Direct https OK (2026-09-11); UI Sources and Design Vault redirect here |
+| 流程 / UX flows | [Nicelydone](https://nicelydone.club) | Web-app UX/UI pattern examples by category | curl 403; browser OK (2026-09-11) |
+| 设计系统 / Design systems | [DesignSystems.one](https://www.designsystems.one) | 107 real systems with stack/token notes and design.md downloads | Direct https OK (2026-09-11) |
+| 工具索引 / Tools directory | [toools.design](https://www.toools.design) | Large categorized directory of design tools and free resources | Direct https OK (2026-09-11) |
 
 Routing rule: look up the need type here first, go to the matched website,
 search by product type plus the specific interaction or material, then bring

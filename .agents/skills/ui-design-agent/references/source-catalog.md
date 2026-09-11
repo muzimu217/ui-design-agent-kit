@@ -351,3 +351,195 @@
 | 适用类型 | 工具索引 / Tools directory |
 | 可达性与授权 | curl 200、浏览器正常加载（2026-09-11 实测）；目录免费，所链工具/素材各自授权自核 |
 | 加入日期 / 来源 | 2026-09-11 / AI 发现（用户定向网络调研批次） |
+
+### Ant Design（企业级设计系统 / Enterprise design systems）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://ant.design（仓库 ant-design/ant-design） |
+| 功效分析·提供什么 | 蚂蚁集团企业级 UI 设计语言与 React 组件库，GitHub 99k+ star 的中后台事实标准；首页实测已到 v6.6（React 19 支持、AI 友好、官方 MCP 服务），设计规范/组件文档/物料市场齐全，中英双语 |
+| 功效分析·适合任务 | 中后台/运营系统选型基线；表格、表单、列表等数据密集场景的交互规范参考 |
+| 功效分析·视觉特征 | 克制、密度高、规范文档极完整，设计价值观与 token 体系可直接对照 |
+| 功效分析·内容形态 | 设计规范文档 + 可复制组件代码 + 设计资源（Figma/Sketch） |
+| 使用场景示例 | "审批后台要复杂表格的筛选/批量操作规范" → 查 Design 模块 Table 规范与 demo → 摘交互规则进契约 → 组件层按许可直接用 |
+| 截图示例 | screenshots/shot-ant-design.jpeg（2026-09-11，Playwright 实拍首页） |
+| 镜像替代 | TDesign、Arco Design（同类企业级体系） |
+| 适用类型 | 企业级设计系统 / Enterprise design systems |
+| 可达性与授权 | curl 200、浏览器正常加载（2026-09-11 实测）；MIT，可商用 |
+| 加入日期 / 来源 | 2026-09-11 / AI 发现（企业级批次） |
+
+### TDesign（企业级设计系统 / Enterprise design systems）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://tdesign.tencent.com（仓库 Tencent/tdesign） |
+| 功效分析·提供什么 | 腾讯开源企业级设计体系，仓库自述即 "Enterprise Design System"；一次体系覆盖 React/Vue/Web/移动端/小程序多技术栈，含设计指南与 Figma 资源 |
+| 功效分析·适合任务 | 需要多端统一规范的项目；国内企业语境下的中后台基线 |
+| 功效分析·视觉特征 | 现代、中性、规范文档按端分站，体系完整度高于多数同类 |
+| 功效分析·内容形态 | 设计指南 + 多栈组件代码 + 设计资源 |
+| 使用场景示例 | "同一套后台要 Web+小程序两套实现" → 按端进对应子站 → 对比同一组件在两端的规范差异 → 契约里写通用规则与端内例外 |
+| 截图示例 | screenshots/shot-tdesign.jpeg（2026-09-11，Playwright 实拍首页） |
+| 镜像替代 | Ant Design、Arco Design |
+| 适用类型 | 企业级设计系统 / Enterprise design systems |
+| 可达性与授权 | curl 200、浏览器正常加载（2026-09-11 实测）；MIT，可商用 |
+| 加入日期 / 来源 | 2026-09-11 / AI 发现（企业级批次） |
+
+### Semi Design（企业级设计系统 / Enterprise design systems）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://semi.design（仓库 DouyinFE/semi-design） |
+| 功效分析·提供什么 | 抖音前端开源的现代设计系统与 React 组件库：3,000+ Design Tokens、Design-to-Code、主题化工具 DDS，官方自述 AI-friendly |
+| 功效分析·适合任务 | 需要深度定制主题 token 的产品；研究 token 驱动与 AI 时代设计系统的实现方式 |
+| 功效分析·视觉特征 | 现代轻盈、动效细腻，与 Ant Design 气质差异化 |
+| 功效分析·内容形态 | 设计规范 + 组件文档 + 主题工具（交互式站点） |
+| 使用场景示例 | "要为产品做深色+品牌色双主题" → 站内体验 DDS 主题编辑 → 参考 token 分层命名 → 契约里落 token 结构 |
+| 截图示例 | screenshots/shot-semi-design.jpeg（2026-09-11，Playwright 实拍首页） |
+| 镜像替代 | Arco Design、Ant Design |
+| 适用类型 | 企业级设计系统 / Enterprise design systems |
+| 可达性与授权 | curl 200、浏览器正常加载（2026-09-11 实测）；GitHub 许可识别为 NOASSERTION（LICENSE 含附加条款），**作为依赖引入前逐条核对 LICENSE**，参考研究不受限 |
+| 加入日期 / 来源 | 2026-09-11 / AI 发现（企业级批次） |
+
+### Arco Design（企业级设计系统 / Enterprise design systems）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://arco.design（仓库 arco-design/arco-design） |
+| 功效分析·提供什么 | 字节跳动企业级产品设计解决方案：React/Vue/移动端多栈组件库 + 图标库 + 主题商店 + 物料市场 |
+| 功效分析·适合任务 | 中后台系统基线；需要现成物料/模板拼装时 |
+| 功效分析·视觉特征 | 现代中性、信息密度适中，字节系产品同源 |
+| 功效分析·内容形态 | 设计规范 + 组件代码 + 物料/模板 |
+| 使用场景示例 | "数据看板要折线/柱状图表规范" → 查组件与物料里的图表区块 → 摘布局与配色规则 → 按许可装配 |
+| 截图示例 | screenshots/shot-arco-design.jpeg（2026-09-11，Playwright 实拍首页） |
+| 镜像替代 | Semi Design、TDesign |
+| 适用类型 | 企业级设计系统 / Enterprise design systems |
+| 可达性与授权 | curl 200、浏览器正常加载（2026-09-11 实测）；MIT，可商用 |
+| 加入日期 / 来源 | 2026-09-11 / AI 发现（企业级批次） |
+
+### Carbon Design System（企业级设计系统 / Enterprise design systems）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://carbondesignsystem.com（仓库 carbon-design-system/carbon） |
+| 功效分析·提供什么 | IBM 开源设计系统：设计指南（含 AI 公平、数据可视化专项指南）、token 体系、Web Components/React/Vue 等多栈实现与 Figma 工具链 |
+| 功效分析·适合任务 | 企业级规范方法论研究：guidelines 深度（图表、空状态、内容指导）是标杆；大型系统 token 架构参考 |
+| 功效分析·视觉特征 | IBM 平面网格风、对比强烈、文档教育性极强 |
+| 功效分析·内容形态 | 设计指南 + token + 多栈组件代码 + Figma 库 |
+| 使用场景示例 | "后台图表配色没把握" → 查 Carbon Data Visualization 指南 → 摘系列色顺序与语义色规则 → 契约落 token |
+| 截图示例 | screenshots/shot-carbon.jpeg（2026-09-11，Playwright 实拍首页） |
+| 镜像替代 | Fluent UI、DesignSystems.one（目录） |
+| 适用类型 | 企业级设计系统 / Enterprise design systems |
+| 可达性与授权 | curl 200、浏览器正常加载（2026-09-11 实测）；Apache-2.0，可商用 |
+| 加入日期 / 来源 | 2026-09-11 / AI 发现（企业级批次） |
+
+### Fluent UI（企业级设计系统 / Enterprise design systems）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://developer.microsoft.com/en-us/fluentui（仓库 microsoft/fluentui；react.fluentui.dev 为组件 Storybook） |
+| 功效分析·提供什么 | 微软官方设计系统实现：React v9 组件库 + Web Components，Microsoft 365 同源，跨平台设计指南（web/iOS/Android/macOS） |
+| 功效分析·适合任务 | 企业办公场景组件规范；需要平台横贯（Win/Mac/移动）一致性的参考 |
+| 功效分析·视觉特征 | Fluent 2 语言：柔和深度、圆角、光效克制 |
+| 功效分析·内容形态 | 设计指南 + 组件代码 + 平台规范文档 |
+| 使用场景示例 | "桌面端产品要有 Office 质感" → 查 Fluent 2 指南的 depth/elevation 规则 → 摘层次与圆角体系 → 契约落 token |
+| 截图示例 | screenshots/shot-fluent-ui.jpeg（2026-09-11，Playwright 实拍官方门户） |
+| 镜像替代 | Carbon、Primer |
+| 适用类型 | 企业级设计系统 / Enterprise design systems |
+| 可达性与授权 | 浏览器正常加载（2026-09-11 实测；microsoft.github.io/fluentui 旧路径已迁）；仓库许可 GitHub 识别为 NOASSERTION（主流认知为 MIT+附加声明），**引入前读 LICENSE 核实** |
+| 加入日期 / 来源 | 2026-09-11 / AI 发现（企业级批次） |
+
+### Primer（企业级设计系统 / Enterprise design systems）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://primer.style（仓库 primer/react，体系总仓 primer/primer） |
+| 功效分析·提供什么 | GitHub 官方设计系统：primitives token + React 组件 + 设计文档，开发者工具语境的标杆 |
+| 功效分析·适合任务 | 开发者产品/文档站风格参考；暗色模式与色板功能层的工程化做法 |
+| 功效分析·视觉特征 | 紧凑、功能色语义清晰、暗色模式成熟 |
+| 功效分析·内容形态 | 设计文档 + token + React 组件代码 |
+| 使用场景示例 | "代码托管类产品要功能色语义" → 查 Primer foundations 的 color 角色 → 摘 success/danger/muted 用法 → 契约落语义 token |
+| 截图示例 | screenshots/shot-primer.jpeg（2026-09-11，Playwright 实拍首页） |
+| 镜像替代 | Blueprint、Polaris（见 Polaris 条目） |
+| 适用类型 | 企业级设计系统 / Enterprise design systems |
+| 可达性与授权 | curl 200、浏览器正常加载（2026-09-11 实测）；MIT，可商用 |
+| 加入日期 / 来源 | 2026-09-11 / AI 发现（企业级批次） |
+
+### Polaris（企业级设计系统 / Enterprise design systems）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://shopify.dev/docs/api/polaris（polaris.shopify.com 已 301 至此；原 Shopify/polaris-react-archive 仓库已归档） |
+| 功效分析·提供什么 | Shopify 设计体系：merchant/admin 后台的设计规范、组件与 token 文档；React 实现已并入 Shopify 私有 monorepo，公开文档与已发布包仍可用 |
+| 功效分析·适合任务 | 电商后台/B 端管理界面规范参考：表单、资源列表、卡片式布局的成熟范式 |
+| 功效分析·视觉特征 | 友好克制、内容优先，admin UI 范式教科书 |
+| 功效分析·内容形态 | 设计指南 + 组件 API 文档 + token |
+| 使用场景示例 | "管理后台要资源列表+筛选器范式" → 查 Polaris 的 Resource list/Index table 指南 → 摘分页、批量、空状态规则 → 契约引用范式 |
+| 截图示例 | screenshots/shot-polaris.jpeg（2026-09-11，Playwright 实拍 shopify.dev 文档页） |
+| 镜像替代 | Primer、Ant Design |
+| 适用类型 | 企业级设计系统 / Enterprise design systems |
+| 可达性与授权 | curl 200、浏览器正常加载（2026-09-11 实测）；已发布包 MIT；React 实现仓 2026 年归档（Deprecated），新代码在私有仓，跟踪以官方文档为准 |
+| 加入日期 / 来源 | 2026-09-11 / AI 发现（企业级批次） |
+
+### Lightning Design System 2（企业级设计系统 / Enterprise design systems）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://www.lightningdesignsystem.com（React 实现 salesforce/design-system-react，BSD-3） |
+| 功效分析·提供什么 | Salesforce 企业 CRM 设计系统：SLDS 2 文档站实测持续更新（Summer '26 v3.3），含组件规范、Styling Hook（CSS 变量）体系、平台设计指南；注意旧主仓 salesforce-ux/design-system 已归档，文档站为权威源 |
+| 功效分析·适合任务 | 企业级 CRM/业务平台规范；CSS 变量换肤（Styling Hooks）与 Color Modes 的工程做法 |
+| 功效分析·视觉特征 | 平台化企业风、规范颗粒度极细 |
+| 功效分析·内容形态 | 设计规范 + Styling Hook 索引 + React 组件库（design-system-react） |
+| 使用场景示例 | "SaaS 要主题换肤方案" → 查 Styling Hook Index 与 Color Modes → 摘 CSS 变量分层与主题注册做法 → 契约落主题机制 |
+| 截图示例 | screenshots/shot-slds.jpeg（2026-09-11，Playwright 实拍 SLDS 2 首页） |
+| 镜像替代 | Carbon、Fluent UI |
+| 适用类型 | 企业级设计系统 / Enterprise design systems |
+| 可达性与授权 | 浏览器正常加载（2026-09-11 实测；注意域名是 lightningdesignsystem.com 一整词）；文档站内容参考用途；design-system-react 为 BSD-3 且活跃 |
+| 加入日期 / 来源 | 2026-09-11 / AI 发现（企业级批次） |
+
+### Blueprint（企业级设计系统 / Enterprise design systems）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://blueprintjs.com（仓库 palantir/blueprint） |
+| 功效分析·提供什么 | Palantir 开源的桌面端 React UI 工具库：22k+ star，专为数据密集、复杂交互的企业应用设计（表格/日期时间/树/多选等重组件） |
+| 功效分析·适合任务 | 数据密集桌面端后台；需要重型交互组件（可编辑表格、时间线）时 |
+| 功效分析·视觉特征 | 紧凑深色友好、工具气质浓，专为密屏设计 |
+| 功效分析·内容形态 | 组件文档 + 代码 + 图标库 |
+| 使用场景示例 | "风控台要可编辑大表格+日期区间" → 查 Table 与 DateRange 组件能力边界 → 决定复用或重写 → 契约记录取舍 |
+| 截图示例 | screenshots/shot-blueprint.jpeg（2026-09-11，Playwright 实拍首页） |
+| 镜像替代 | Ant Design、EUI |
+| 适用类型 | 企业级设计系统 / Enterprise design systems |
+| 可达性与授权 | curl 200、浏览器正常加载（2026-09-11 实测）；Apache-2.0，可商用 |
+| 加入日期 / 来源 | 2026-09-11 / AI 发现（企业级批次） |
+
+### React Spectrum（企业级设计系统 / Enterprise design systems）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://react-spectrum.adobe.com（仓库 adobe/react-spectrum） |
+| 功效分析·提供什么 | Adobe 设计系统实现：React Spectrum（组件）、React Aria（无障碍行为钩子）、React Stately（状态逻辑）三库分层；行为与样式分离的架构样本 |
+| 功效分析·适合任务 | 无障碍与自适应架构研究：任何技术栈都能借鉴 React Aria 的行为规范；Adobe 系产品气质参考 |
+| 功效分析·视觉特征 | Adobe 品牌风、设计细腻，文档对 a11y 行为逐条说明 |
+| 功效分析·内容形态 | 设计文档 + 组件/行为库代码 |
+| 使用场景示例 | "自研组件库要把 a11y 行为抽离" → 读 React Aria 的 hooks 文档 → 摘键盘/焦点/ARIA 规则 → 自家 hook 层照此实现 |
+| 截图示例 | screenshots/shot-react-spectrum.jpeg（2026-09-11，Playwright 实拍首页） |
+| 镜像替代 | Carbon、Fluent UI |
+| 适用类型 | 企业级设计系统 / Enterprise design systems |
+| 可达性与授权 | curl 200、浏览器正常加载（2026-09-11 实测）；Apache-2.0，可商用 |
+| 加入日期 / 来源 | 2026-09-11 / AI 发现（企业级批次） |
+
+### Elastic EUI（企业级设计系统 / Enterprise design systems）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://eui.elastic.co（仓库 elastic/eui；elastic.github.io/eui 301 至此） |
+| 功效分析·提供什么 | Elastic 官方 UI 框架（Kibana 同款）：6k+ star，面向数据可视化与可观测性场景的组件体系，图表/时序/日志类组件齐备 |
+| 功效分析·适合任务 | 可观测性/数据分析产品界面参考；暗色数据密集场景 |
+| 功效分析·视觉特征 | 数据密集、暗色优先、工程感强 |
+| 功效分析·内容形态 | 组件文档 + 代码 + 设计指南 |
+| 使用场景示例 | "日志平台要时间范围选择+直方图联动" → 查 EUI 的 DatePicker 与 Stat 组件 → 摘联动规则 → 契约记录交互边界 |
+| 截图示例 | screenshots/shot-eui.jpeg（2026-09-11，Playwright 实拍文档首页） |
+| 镜像替代 | Blueprint、Primer |
+| 适用类型 | 企业级设计系统 / Enterprise design systems |
+| 可达性与授权 | 浏览器正常加载（2026-09-11 实测）；仓库许可 GitHub 识别为 NOASSERTION（Elastic 系双许可），**作为代码依赖前必须核对 LICENSE**，参考研究不受限 |
+| 加入日期 / 来源 | 2026-09-11 / AI 发现（企业级批次） |

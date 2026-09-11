@@ -127,6 +127,18 @@ way; blocked entries need a real browser.
 | 流程 / UX flows | [Nicelydone](https://nicelydone.club) | Web-app UX/UI pattern examples by category | curl 403; browser OK (2026-09-11) |
 | 设计系统 / Design systems | [DesignSystems.one](https://www.designsystems.one) | 107 real systems with stack/token notes and design.md downloads | Direct https OK (2026-09-11) |
 | 工具索引 / Tools directory | [toools.design](https://www.toools.design) | Large categorized directory of design tools and free resources | Direct https OK (2026-09-11) |
+| 企业级设计系统 / Enterprise design systems | [Ant Design](https://ant.design) | Ant's enterprise UI language and React library, CN/EN docs (v6, MIT) | Direct https OK (2026-09-11) |
+| 企业级设计系统 / Enterprise design systems | [TDesign](https://tdesign.tencent.com) | Tencent's enterprise system across React/Vue/mini-program stacks (MIT) | Direct https OK (2026-09-11) |
+| 企业级设计系统 / Enterprise design systems | [Semi Design](https://semi.design) | ByteDance/Douyin token-driven system, 3000+ tokens, theming tool | Direct https OK (2026-09-11); license reads NOASSERTION — check LICENSE |
+| 企业级设计系统 / Enterprise design systems | [Arco Design](https://arco.design) | ByteDance enterprise solution, React/Vue/mobile + materials (MIT) | Direct https OK (2026-09-11) |
+| 企业级设计系统 / Enterprise design systems | [Carbon](https://carbondesignsystem.com) | IBM's system; deep guidelines incl. data viz and AI fairness (Apache-2.0) | Direct https OK (2026-09-11) |
+| 企业级设计系统 / Enterprise design systems | [Fluent UI](https://developer.microsoft.com/en-us/fluentui) | Microsoft 365 system: React v9, web components, cross-platform guides | Browser OK (2026-09-11); old GitHub Pages path migrated |
+| 企业级设计系统 / Enterprise design systems | [Primer](https://primer.style) | GitHub's system; functional color roles and dark mode done well (MIT) | Direct https OK (2026-09-11) |
+| 企业级设计系统 / Enterprise design systems | [Polaris](https://shopify.dev/docs/api/polaris) | Shopify admin patterns: index tables, forms, cards; canonical B-end reference | Direct https OK (2026-09-11); React repo archived into private monorepo |
+| 企业级设计系统 / Enterprise design systems | [Lightning Design System 2](https://www.lightningdesignsystem.com) | Salesforce platform patterns; Styling Hooks and Color Modes | Browser OK (2026-09-11); old main repo archived, docs site authoritative |
+| 企业级设计系统 / Enterprise design systems | [Blueprint](https://blueprintjs.com) | Palantir's toolkit for data-dense desktop apps (Apache-2.0) | Direct https OK (2026-09-11) |
+| 企业级设计系统 / Enterprise design systems | [React Spectrum](https://react-spectrum.adobe.com) | Adobe's system; behavior/style split via React Aria/Stately (Apache-2.0) | Direct https OK (2026-09-11) |
+| 企业级设计系统 / Enterprise design systems | [Elastic EUI](https://eui.elastic.co) | Kibana's framework for observability and data-viz products | Browser OK (2026-09-11); license NOASSERTION — check LICENSE |
 
 Routing rule: look up the need type here first, go to the matched website,
 search by product type plus the specific interaction or material, then bring

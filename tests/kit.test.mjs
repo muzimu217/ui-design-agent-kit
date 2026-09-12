@@ -162,3 +162,21 @@ test("prompt and workflow enforce bounded sequential agent dispatch", async () =
   assert.match(skill, /user explicitly authorizes the exception/i);
   assert.match(chain, /用户明确授权/);
 });
+
+test("SKILL.md stays under the growth tripwire and the lean prompt export stays self-contained", async () => {
+  const skill = await readFile(path.join(ROOT, ".agents/skills/ui-design-agent/SKILL.md"), "utf8");
+  const lines = skill.split(/\r?\n/).length;
+  assert.ok(
+    lines <= 600,
+    `SKILL.md is ${lines} lines (tripwire 600): sink stable details into references/ and keep routing in the body`,
+  );
+
+  const full = await buildPrompt();
+  const lean = await buildPrompt(ROOT, { lean: true });
+  assert.ok(lean.length < full.length, "lean export must be smaller than the full export");
+  for (const marker of ["Design Contract", "Web Motion Contract", "UI Acceptance", "User Taste Profile"]) {
+    assert.ok(lean.includes(marker), `lean export is missing core section: ${marker}`);
+  }
+  assert.ok(!lean.includes("](references/"), "lean export keeps links to references it does not embed");
+  assert.ok(full.includes("](#"), "full export must rewrite reference links to anchors");
+});

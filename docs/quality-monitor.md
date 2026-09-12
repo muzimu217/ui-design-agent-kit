@@ -169,13 +169,16 @@ onepagelove 200、siteinspire 浏览器可达（429 仅拦脚本）、land-book
 
 ```bash
 npm run verify        # 锁文件/skill/许可证/config 合规
-npm test              # 结构、单文件 prompt 嵌入与锚点
-npm run prompt:build  # 重建导出，确认锚点与引用顺序
+npm test              # 结构、单文件 prompt 嵌入与锚点、SKILL.md 瘦身边线
+npm run prompt:build  # 重建全量导出，确认锚点与引用顺序
+npm run prompt:build:lean  # 重建精简导出（契约/动效/验收/品味四件核心）
 ```
 
 **每次改动后（语义层，2 分钟）**
 
 - [ ] 改动的环节仍在本报告第二节映射表内，或映射表已同步
+- [ ] SKILL.md 未超 600 行瘦身边线；超线时把稳定细节下沉 references/，正文只留路由与触发条件（kit.test 有机械兜底）
+- [ ] 五个设计品味技能（ui-ux-pro-max/impeccable/emil-design-eng/baoyu-design/jiejoe-design）按 tool-routing 互斥触发表路由，单次最多跑一个
 - [ ] 新停门事项已登记 `docs/gates.md`，已裁决事项已回填（不删除行）
 - [ ] 验收记录含确认门痕迹：方向稿门/素材选择门/成品验收门至少列出通过情况
 - [ ] 验收记录含 MCP 调用痕迹：设计/实现/验收逐环节列出（服务器/工具/结果），或明确声明"本环节无需 MCP"及原因

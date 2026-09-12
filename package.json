@@ -7,6 +7,7 @@
   "engines": { "node": ">=20.18.1" },
   "scripts": {
     "prompt:build": "node scripts/build-prompt.mjs",
+    "prompt:build:lean": "node scripts/build-prompt.mjs --lean",
     "eval": "node scripts/eval-run.mjs",
     "eval:e3": "node scripts/eval-e3.mjs",
     "replay": "node scripts/replay.mjs",

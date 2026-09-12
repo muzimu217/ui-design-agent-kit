@@ -134,6 +134,24 @@ Vendored design skills (MIT, pinned revisions in `tooling/sources.lock.json`):
   helpers are not available; deliver the artifact without claiming those
   helpers ran.
 
+### Design-taste skill routing (overlapping triggers)
+
+Five installed skills all speak to "design quality". Route by the task's
+verb, and run at most one of them per pass; when two seem to apply, the
+first matching row wins and the choice is recorded in the acceptance notes.
+
+| Task verb | Route to | Not for |
+| --- | --- | --- |
+| Look up data (palette, font pair, UX pattern, anti-pattern) | `ui-ux-pro-max` | Critique, artifacts, or motion |
+| Review, critique, or targeted refinement is requested | `impeccable` | Data lookup; producing artifacts |
+| Decide polish judgment calls (component and animation details) | `emil-design-eng` | Replacing a requested review; broad redesign |
+| Deliver a standalone HTML design artifact | `baoyu-design` | Implementation inside the target project's app |
+| Expressive interaction motion (magnetic pointer, scroll choreography, loading screens) | `jiejoe-design` + the GSAP skills | General polish already covered by the Motion route |
+
+`animation-vocabulary` (vague-motion term lookup) and `pick-ui-library`
+(library choice for a concrete component) stay narrow; resolve them first
+when their question is open, then route to the table above.
+
 ## Motion
 
 Read the installed `motion` skill and the relevant `best-practices/` reference.

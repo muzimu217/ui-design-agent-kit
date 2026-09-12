@@ -19,6 +19,7 @@
 [![Verify](https://img.shields.io/badge/npm%20run-verify-blue)](#验证)
 
 **[快速开始](#快速开始)** ·
+[线上展厅](https://agent.kcos.club/) ·
 [产品案例](#产品案例) ·
 [使用说明](docs/usage.md) ·
 [交付标准](.agents/skills/ui-design-agent/references/product-readme.md)

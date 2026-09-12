@@ -123,7 +123,7 @@ way; blocked entries need a real browser.
 | 插图 / Illustration | [unDraw](https://undraw.co) | Open-source recolorable flat illustrations, commercial use | Direct https OK (2026-09-11) |
 | 3D 素材 / 3D assets | [Poly Haven](https://polyhaven.com) | CC0 photoreal models, PBR textures, HDRIs | Direct https OK (2026-09-11) |
 | 3D 素材 / 3D assets | [Kenney](https://kenney.nl) | CC0 game-ready stylized asset packs, cohesive style | Direct https OK (2026-09-11) |
-| 3D 素材 / 3D assets | [Tripo AI](https://www.tripo3d.ai/) | Text/image-to-3D generator (quad mesh, rigging, print-ready); free tier is non-commercial | curl 000 (TLS-blocked scripts); browser OK (2026-09-12); commercial rights require a paid plan |
+| 3D 素材 / 3D assets | [Tripo AI Gallery](https://studio.tripo3d.ai/3d-model-gallery/) | Public ready-made 3D models; GLB/USDZ for Three.js web display; export needs a free account | Browser OK (2026-09-12); free/public models are non-commercial (CC BY 4.0 per their blog) — paid plan for commercial |
 | 移动端 / Mobile patterns | [ScreensDesign](https://screensdesign.com) | Top-chart iOS apps: full flow videos, paywalls, onboarding | Direct https OK (2026-09-11); UI Sources and Design Vault redirect here |
 | 流程 / UX flows | [Nicelydone](https://nicelydone.club) | Web-app UX/UI pattern examples by category | curl 403; browser OK (2026-09-11) |
 | 设计系统 / Design systems | [DesignSystems.one](https://www.designsystems.one) | 107 real systems with stack/token notes and design.md downloads | Direct https OK (2026-09-11) |

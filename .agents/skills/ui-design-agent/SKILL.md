@@ -57,6 +57,10 @@ state changes legible. Do not mistake more effects or tool calls for better work
   clarity, adaptation fit, and retrieval efficiency. Show the primary bucket
   first, keep blocked or low-score sources in a separate secondary bucket, and
   never let the score bypass user confirmation or license review.
+- Selection must hit the user's recorded taste. Before a direction draft or
+  candidate shortlist, read [user-taste-profile.md](references/user-taste-profile.md)
+  and state which taste entries each candidate honors or deliberately violates;
+  a silent violation is a process defect.
 - For interactive, animation, 3D, or ambient-effect work, apply the
   assembly-first rule and the default baseline matrix in
   [material-scouting.md](references/material-scouting.md): adapting a named
@@ -102,6 +106,9 @@ fix a universal feature set, visual style, or technology stack:
    three outcome-changing questions at a time; explain choices in ordinary
    language. Missing optional fields do not block a draft. Do not invent
    permissions, data sources, integrations, or business rules to fill gaps.
+   When the user states a new or changed cross-project preference in
+   conversation, record it in [user-taste-profile.md](references/user-taste-profile.md):
+   append a dated entry, supersede by id, never rewrite history.
 2. **Frame the surface and direction.** Distinguish an internal work tool,
    customer application, and marketing/brand website. Map the main journey to
    pages, actions, necessary data, and states. For a new substantial UI, present
@@ -456,6 +463,10 @@ documentation refresh that preserves the approved product.
 Read [acceptance.md](references/acceptance.md) before the verification pass. Test
 the primary journey and affected edge states in the actual browser, inspect
 mobile and desktop screenshots, and check keyboard and reduced-motion behavior.
+When taste-profile entries changed since the last confirmation, attach the
+confirmation digest to an existing checkpoint (new-project intake or a gate
+presentation) so the user can confirm, edit, or retire entries; see
+[user-taste-profile.md](references/user-taste-profile.md).
 Use the project's tests/build/typecheck as applicable. For 3D or canvas work,
 verify nonblank pixels, framing, movement, and interaction, not just DOM presence.
 Review the result against the design contract's quality gates and the checks below.

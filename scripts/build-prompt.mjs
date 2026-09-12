@@ -10,6 +10,7 @@ const references = [
   ["web3d-hud-architecture.md", "Web 3D HUD Architecture"],
   ["stitch-mcp.md", "Stitch MCP Call Logic"],
   ["design-contract.md", "Design Contract"],
+  ["user-taste-profile.md", "User Taste Profile"],
   ["plan-execute.md", "Plan and Execute Modes"],
   ["inspiration-library.md", "Inspiration Library"],
   ["material-scouting.md", "Material Scouting and Ranking"],

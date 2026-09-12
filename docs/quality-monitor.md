@@ -21,7 +21,7 @@
 | --- | --- | --- | --- | --- |
 | 1 | 任务分类与边界 | Respect the assignment + Plan/Execute | plan-execute.md | review-stays-read-only、preserve-existing-vue、operations-not-marketing、plan-lock-before-prototype、execute-requires-plan-lock |
 | 2 | 现状盘点 | Respect the assignment（读目标仓库） | — | reference-first-adaptation |
-| 3 | 素材检索 | reference-first + Route capabilities | inspiration-library.md、material-scouting.md | reference-first-adaptation、material-source-prioritization、material-access-secondary-bucket、reference-to-adaptation-boundary |
+| 3 | 素材检索 | reference-first + Route capabilities | inspiration-library.md、material-scouting.md、user-taste-profile.md | reference-first-adaptation、material-source-prioritization、material-access-secondary-bucket、reference-to-adaptation-boundary、taste-profile-hit-update-confirm |
 | 4 | 素材确认门 | reference-first（候选清单交用户确认） | tool-routing.md 步骤 3、design-contract.md | material-confirmation-gate（2026-09-06 新增） |
 | 5 | 设计契约 | Establish a direction | design-contract.md | design-contract-quality（2026-09-06 新增） |
 | 6 | 能力路由与降级 | Route capabilities deliberately | tool-routing.md | motion-free-tier、offline-fallback、candidate-tools-not-fictional、threejs-open-source-baseline、remotion-brand-animation、assembly-first-interaction-3d ✅（2026-09-07） |

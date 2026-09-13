@@ -1,10 +1,12 @@
 {
   "name": "ui-design-agent-kit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "Project-scoped UI design agent instructions, skills, and verified MCP integrations.",
-  "engines": { "node": ">=20.18.1" },
+  "engines": {
+    "node": ">=20.18.1"
+  },
   "scripts": {
     "prompt:build": "node scripts/build-prompt.mjs",
     "prompt:build:lean": "node scripts/build-prompt.mjs --lean",

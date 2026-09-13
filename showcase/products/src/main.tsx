@@ -2,7 +2,7 @@ import { StrictMode, useCallback, useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { motion, MotionConfig, useInView, useReducedMotion } from 'motion/react';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Blocks, Check, CodeXml, Compass, Copy, FileText, FolderGit2, Gamepad2, Globe, Layers3, Maximize2, Monitor, NotebookPen, PackageCheck, PanelsTopLeft, Play, Plug, ScanEye, Search, Settings2, Smartphone, Timer, Workflow, X } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Blocks, Check, CodeXml, Compass, Copy, FileText, FolderGit2, Gamepad2, Globe, Headphones, Layers3, Maximize2, Monitor, NotebookPen, PackageCheck, PanelsTopLeft, Play, Plug, ScanEye, Search, Settings2, Smartphone, Timer, Workflow, X } from 'lucide-react';
 import desktop from '../../../demo/brick-workshop/screenshots/desktop.webp';
 import mobile from '../../../demo/brick-workshop/screenshots/mobile.webp';
 import house from '../../../demo/brick-workshop/screenshots/house.webp';
@@ -15,6 +15,7 @@ import nodegrid from '../media/nodegrid.webp';
 import subway from '../media/subway.webp';
 import forma from '../media/forma.webp';
 import tempo from '../media/tempo.webp';
+import ruiear from '../media/ruiear.webp';
 import introVideo from '../media/intro.mp4';
 import './styles.css';
 
@@ -25,7 +26,8 @@ const NODEGRID_URL = `${BASE}demos/nodegrid/`;
 const SUBWAY_URL = `${BASE}demos/subway-runner/`;
 const FORMA_URL = `${BASE}demos/forma-phone-ui/`;
 const TEMPO_URL = `${BASE}demos/tempo-day/`;
-const PLAYABLE_URLS: Record<string, string> = { nodegrid: NODEGRID_URL, subway: SUBWAY_URL, forma: FORMA_URL, tempo: TEMPO_URL };
+const RUIEAR_URL = `${BASE}demos/ruiear/`;
+const PLAYABLE_URLS: Record<string, string> = { nodegrid: NODEGRID_URL, subway: SUBWAY_URL, forma: FORMA_URL, tempo: TEMPO_URL, ruiear: RUIEAR_URL };
 const REPOSITORY_URL = 'https://github.com/muzimu217/ui-design-agent-kit';
 const SHOWCASE_REPOSITORY_URL = 'https://github.com/muzimu217/ui-design-agent-showcase';
 const FEEDBACK_URL = 'https://github.com/muzimu217/ui-design-agent-showcase/issues/new/choose';
@@ -40,6 +42,7 @@ const PROJECTS = [
   { id: 'nodegrid', name: 'NODEGRID', category: '3D 交互', image: nodegrid, icon: Globe, status: '可试玩 demo', kind: '地理数据可视化', alt: 'NODEGRID 世界地图节点可视化首页，深色底与地球网络连线', description: '全球云节点网络的世界地图可视化。拖动、缩放查看 21 座城市的节点分布与演示延迟，节点详情包含机房演示配图与规格。' },
   { id: 'subway', name: '地铁疾行', category: '3D 交互', image: subway, icon: Gamepad2, status: '可试玩 demo', kind: '3D 跑酷游戏', alt: '地铁疾行 3D 跑酷游戏的第三人称追尾视角、跑道与障碍物', description: 'Three.js 实现的无尽跑酷。左右变道、跳跃回避障碍，支持桌面键盘与手机滑动，素材使用 Kenney CC0 开源资源。' },
   { id: 'forma', name: 'FORMA One', category: '产品展示', image: forma, icon: Smartphone, status: '可体验 demo', kind: '虚构手机配置页', alt: 'FORMA One 虚构手机的釉色与容量配置界面，钴蓝陶瓷机身渲染图', description: '虚构手机的釉色选购页。四种微晶陶瓷釉色与三档容量实时联动价格与规格，窑变视频与机身渲染均为演示设定，不产生真实订单。' },
+  { id: 'ruiear', name: '睿耳 RuiEar', category: '产品展示', image: ruiear, icon: Headphones, status: '可试玩 demo', kind: 'AI 耳机产品页', alt: '睿耳 RuiEar AI 耳机产品页首屏：玫瑰红到落日橙渐变上的白色耳机与充电盒 3D 渲染', description: 'AI 耳机概念产品页。真实授权 3D 模型全程在场：五配色实时换装、滚动刮擦的开合盖动画、逐条出现的实时互译演示与降噪开关，人像照片为 AI 生成示意图。' },
   { id: 'tempo', name: 'Tempo 今日节奏', category: '效率工具', image: tempo, icon: Timer, status: '可体验 demo', kind: '当日任务与专注计时', alt: 'Tempo 今日节奏的工作台视图：时间分布条、任务队列与专注计时器', description: '当日计划与专注计时工具。任务按深度工作、日常事务、休息片刻分类，时间分布与专注计时实时联动，数据保存在本机浏览器。' },
 ] as const;
 type Project = typeof PROJECTS[number];

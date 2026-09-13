@@ -1,0 +1,6 @@
+node_modules
+dist
+.playwright-mcp
+*.local
+photos-src
+research

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>睿耳 RuiEar · 原型拼贴板 · P-earbuds-2 · Gate C</title>
+<style>
+  :root {
+    --ink: #1d1d1f; --ink-2: #6e6e73; --paper: #f5f5f7; --card: #ffffff;
+    --line: #e3e3e6; --blue: #0071e3;
+    --c-rose: #e0475b; --c-sky: #4da3e8; --c-sunset: #f4633a; --c-midnight: #1d1d1f; --c-moon: #f5f5f7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; padding-bottom: 96px; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  header.board { background: #fff; border-bottom: 1px solid var(--line); padding: 40px 0 28px; }
+  .kicker { font-size: 12px; letter-spacing: .12em; color: var(--ink-2); text-transform: uppercase; }
+  h1 { font-size: 34px; letter-spacing: -0.02em; margin: 6px 0 4px; }
+  .meta { font-size: 13px; color: var(--ink-2); }
+  .meta b { color: var(--ink); font-weight: 600; }
+  section.part { margin-top: 56px; }
+  .part-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+  .part-title .no { font-size: 13px; color: var(--blue); font-weight: 700; }
+  .part-title h2 { font-size: 22px; letter-spacing: -0.01em; }
+  .part-sub { font-size: 13.5px; color: var(--ink-2); margin-bottom: 20px; max-width: 760px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+  .grid { display: grid; gap: 16px; }
+  .g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 860px) { .g2, .g3 { grid-template-columns: 1fr; } }
+  .note { font-size: 12.5px; color: var(--ink-2); }
+  .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px; background: #eeeef2; color: var(--ink-2); margin-left: 8px; vertical-align: 2px; }
+  .tag.ref { background: #fdeeee; color: #a33; }
+  .tag.asset { background: #e8f2fd; color: #1a62b8; }
+  .sig { font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--line); padding: 10px 16px; background: #fafafa; }
+  .sig a { color: #1a62b8; }
+  img.ref-img { width: 100%; display: block; }
+  .frame-label { font-size: 12px; font-weight: 700; color: var(--ink); padding: 12px 16px 2px; }
+  .frame-desc { font-size: 12.5px; color: var(--ink-2); padding: 0 16px 12px; }
+
+  /* wireframe mock building blocks */
+  .mock { background: #fff; border: 1px dashed #c9c9ce; border-radius: 12px; padding: 18px; }
+  .mock-nav { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; background: rgba(255,255,255,.85); border: 1px dashed #c9c9ce; border-radius: 10px; padding: 8px 14px; }
+  .mock-nav b { font-size: 13px; }
+  .pill { border: 1px solid var(--blue); color: var(--blue); font-size: 11px; border-radius: 99px; padding: 2px 10px; }
+  .hero-mock { border-radius: 14px; padding: 28px 22px 20px; color: #fff; background:
+    radial-gradient(120% 140% at 80% 0%, var(--c-sunset) 0%, var(--c-rose) 55%, #7a2340 100%); }
+  .hero-mock .prod { height: 150px; border-radius: 12px; background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.05)); display: flex; align-items: center; justify-content: center; font-size: 12px; color: rgba(255,255,255,.75); margin-bottom: 18px; }
+  .hero-mock h3 { font-size: 26px; letter-spacing: -0.02em; line-height: 1.2; }
+  .hero-mock p { font-size: 12.5px; opacity: .85; margin-top: 6px; }
+  .hero-mock .row { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 12px; }
+  .btn-blue { background: var(--blue); color: #fff; border-radius: 99px; padding: 4px 14px; font-size: 12px; }
+  .swatch-row { display: flex; gap: 10px; justify-content: center; padding: 12px 0 4px; }
+  .sw { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--line), 0 1px 4px rgba(0,0,0,.12); }
+  .sw.active { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .stage { border-radius: 14px; height: 170px; display: flex; align-items: center; justify-content: center; font-size: 12px; text-align: center; padding: 0 24px; }
+  .feat { border-radius: 14px; padding: 20px; min-height: 130px; }
+  .feat h4 { font-size: 16px; letter-spacing: -0.01em; }
+  .feat p { font-size: 12px; opacity: .8; margin-top: 4px; max-width: 420px; }
+  .price { border: 1px solid var(--line); border-radius: 14px; padding: 18px; background: #fff; display: flex; flex-direction: column; gap: 6px; }
+  .price.hot { border: 2px solid var(--ink); position: relative; }
+  .price .tier { font-size: 13px; font-weight: 700; }
+  .price .amt { font-size: 26px; letter-spacing: -0.02em; }
+  .price .amt small { font-size: 12px; color: var(--ink-2); font-weight: 400; }
+  .price ul { list-style: none; font-size: 12px; color: var(--ink-2); display: grid; gap: 4px; margin-top: 6px; }
+  .price ul li::before { content: "— "; }
+  .price .cta { margin-top: 10px; text-align: center; border-radius: 99px; padding: 6px 0; font-size: 12px; background: var(--blue); color: #fff; }
+  .price .cta.ghost { background: #eeeef2; color: var(--ink); }
+
+  /* color journey */
+  .journey { display: flex; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); }
+  .journey div { flex: 1; padding: 42px 8px 10px; font-size: 11px; text-align: center; color: rgba(255,255,255,.92); }
+  .journey div.light { color: var(--ink-2); }
+
+  /* ring transition storyboard */
+  .rings { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  @media (max-width: 860px) { .rings { grid-template-columns: 1fr 1fr; } }
+  .ring-frame { border: 1px dashed #c9c9ce; border-radius: 12px; height: 150px; position: relative; overflow: hidden; background: #fff; }
+  .ring-frame .cap { position: absolute; left: 0; right: 0; bottom: 0; font-size: 11px; color: var(--ink-2); background: rgba(255,255,255,.9); padding: 4px 8px; border-top: 1px solid var(--line); }
+  .ring { position: absolute; border-radius: 50%; transform: translate(-50%,-50%); left: 50%; top: 50%; }
+
+  /* bilingual */
+  .bi { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 860px) { .bi { grid-template-columns: 1fr; } }
+  table.ledger { width: 100%; border-collapse: collapse; font-size: 12.5px; background: #fff; }
+  table.ledger th, table.ledger td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
+  table.ledger th { background: #fafafa; font-weight: 600; }
+  .decide { background: #fffbe8; border: 1px solid #eadf9b; border-radius: 18px; padding: 20px 22px; }
+  .decide h3 { font-size: 16px; margin-bottom: 8px; }
+  .decide ol { padding-left: 20px; font-size: 13.5px; display: grid; gap: 6px; }
+  footer.board { margin-top: 64px; font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--line); padding-top: 18px; }
+</style>
+</head>
+<body>
+
+<header class="board">
+  <div class="wrap">
+    <div class="kicker">RuiEar · Prototype Board · Gate C</div>
+    <h1>睿耳 RuiEar · AI 耳机落地页 · 原型拼贴板</h1>
+    <p class="meta">计划 <b>P-earbuds-2</b>（已锁定 2026-09-12）· 无码原型：真实截图 + 线框示意 · <b>裁决对象是方向与结构，不是最终视觉</b></p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- PART 1: structure -->
+  <section class="part">
+    <div class="part-title"><span class="no">01</span><h2>页面结构蓝图（8 个区块）</h2></div>
+    <p class="part-sub">参考基线：apple.com.cn AirPods Pro / AirPods Max 实拍（下方嵌入）。每个区块一个主题色身份，从上到下执行「鲜艳 → 平淡」的色调旅程。</p>
+
+    <div class="card" style="padding:18px; display:grid; gap:16px;">
+
+      <div>
+        <div class="frame-label">① 本地导航</div>
+        <div class="mock-nav"><b>睿耳 RuiEar</b><span style="color:var(--ink-2)">概览 · 工艺 · 价格</span><span>中 / <b>EN</b>&nbsp;&nbsp;<span class="pill">购买</span></span></div>
+      </div>
+
+      <div>
+        <div class="frame-label">② Hero（鲜艳·玫瑰红→落日橙渐变域）<span class="tag ref">参考 R1</span></div>
+        <div class="hero-mock">
+          <div class="prod">〔3D 产品渲染：耳机 + 充电盒，A1 白模实时渲染〕</div>
+          <h3>听懂世界，<br>也让你被听懂。</h3>
+          <p>睿耳 Buds · AI 实时翻译 / 自适应降噪 / 超长续航（示意文案）</p>
+          <div class="row"><span>RMB ？99（示意）</span><span class="btn-blue">购买</span></div>
+        </div>
+        <img class="ref-img" src="research/apple-airpods-pro-hero.jpeg" alt="AirPods Pro hero 参考截图" style="margin-top:10px; border-radius:10px;">
+        <div class="sig">参考来源：<a href="https://www.apple.com.cn/airpods-pro/">apple.com.cn/airpods-pro</a> · 2026-09-12 实拍 · 参考-only，不搬运任何资产。构图关系借鉴：浅底/产品居中/左下两行大标题/右下价格+胶囊 CTA——我们的 Hero 换成主题色渐变底（自有风格）。</div>
+      </div>
+
+      <div>
+        <div class="frame-label">③ 配色剧场（签名交互一 · 天空蓝域）<span class="tag asset">素材 B3/B1 双轨</span><span class="tag ref">交互参考 R2</span></div>
+        <div class="grid g2">
+          <div class="mock">
+            <div class="stage" style="background:linear-gradient(180deg,#dbeefd,#f3f9ff); color:#2a6ca8;">〔同一 3D 白模 · 材质实时换色〕<br>切色时：材质色 spring 过渡 + 区块底色联动淡入 + 标题色名切换</div>
+            <div style="text-align:center; font-size:12px; margin-top:8px;">月光白</div>
+            <div class="swatch-row">
+              <span class="sw active" style="background:#f2f2f4;"></span>
+              <span class="sw" style="background:#1d1d1f;"></span>
+              <span class="sw" style="background:#4da3e8;"></span>
+              <span class="sw" style="background:#f4633a;"></span>
+              <span class="sw" style="background:#e0475b;"></span>
+            </div>
+            <p class="note" style="text-align:center;">色板顺序：月光白 / 午夜黑 / 天空蓝 / 落日橙 / 玫瑰红（radiogroup，方向键可切，HEX 原型通过后定稿）</p>
+          </div>
+          <div>
+            <img class="ref-img" src="research/apple-airpods-max-picker2.jpeg" alt="AirPods Max 配色选取器参考" style="border-radius:10px;">
+            <div class="sig">交互蓝本：<a href="https://www.apple.com.cn/airpods-max/">apple.com.cn/airpods-max</a> 实拍 · radiogroup 色板 + 成套资源联动；我们用 3D 实时换色替代成套换图。</div>
+          </div>
+        </div>
+        <img class="ref-img" src="research/sketchfab-airpodspro2.jpeg" alt="B1 候选 Sketchfab AirPods Pro 2 证据" style="margin-top:10px; border-radius:10px;">
+        <div class="sig">素材路线（双轨，2026-09-12 你已选定）：① <b>B3 程序化建模先行</b>——盒体+铰链盖+双耳塞全分件、五配色材质槽，零授权负担；② <b>B1 替换候选</b>：Sketchfab「AirPods Pro 2」CC BY 4.0（图示），你免费注册下载 GLTF 后择优替换。原 Tripo 路线因免费档会员墙关闭（你实测）；Poly Pizza 无 TWS 形态已排除。</div>
+      </div>
+
+      <div>
+        <div class="frame-label">④ AI 功能叙事三屏（色调渐平淡，明暗交替）<span class="tag ref">参考 R3</span></div>
+        <div class="grid g3">
+          <div class="feat" style="background:linear-gradient(160deg,#4da3e8,#1b5e9c); color:#fff;"><h4>实时 AI 翻译</h4><p>对话即时互译，像戴了随身译员（示意文案，中英双语版）。深色域收尾。</p></div>
+          <div class="feat" style="background:#1d1d1f; color:#fff;"><h4>自适应降噪</h4><p>按环境自动调节降噪深度。进阶版起配备（示意文案）。纯深色区块。</p></div>
+          <div class="feat" style="background:#f5f5f7; color:var(--ink); border:1px solid var(--line);"><h4>超长续航</h4><p>续航数字待定（示意）。全页面在此转为平淡浅色域。</p></div>
+        </div>
+        <img class="ref-img" src="research/apple-dark-section.jpeg" alt="Apple 功能区块 参考截图" style="margin-top:10px; border-radius:10px;">
+        <div class="sig">参考来源：<a href="https://www.apple.com.cn/airpods-max/">apple.com.cn/airpods-max</a> 降噪区块实拍 · 借鉴「一侧饱和媒体 + 一侧文字列」的分区法与明暗节奏。</div>
+      </div>
+
+      <div>
+        <div class="frame-label">⑤ 3D 工艺叙事区（签名交互二 · 午夜黑域）</div>
+        <div class="grid g3">
+          <div class="mock" style="text-align:center;"><div style="height:110px; background:#f0f0f3; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:12px;">〔盒盖缓缓翻开〕</div><p class="note" style="margin-top:8px;">开盖：盖体绕轴 spring 旋转，内部指示灯亮起</p></div>
+          <div class="mock" style="text-align:center;"><div style="height:110px; background:#e8e8ec; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:12px;">〔双耳塞入仓〕</div><p class="note" style="margin-top:8px;">入仓：耳塞沿弧线下落吸附，磁吸归位微震</p></div>
+          <div class="mock" style="text-align:center;"><div style="height:110px; background:#f0f0f3; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:12px;">〔合盖 + 整体旋转展示〕</div><p class="note" style="margin-top:8px;">合盖后整盒缓慢自转，随时可拖拽</p></div>
+        </div>
+        <p class="note" style="margin-top:10px;">实现前提：A1 GLB 需含盒盖/耳塞/盒体分件；导出后第一步验件，不足则走程序化建模降级（分件可控）。动画幅度按你要求放大，reduced-motion 全部退化为淡入。</p>
+      </div>
+
+      <div>
+        <div class="frame-label">⑥ 三档价格卡（平淡浅色域 · 示意价）</div>
+        <div class="grid g3">
+          <div class="price">
+            <div class="tier">标准版</div>
+            <div class="amt">RMB 299<small> /示意</small></div>
+            <ul><li>超长续航</li><li>USB-C 充电</li><li>无降噪</li><li>基础音质</li></ul>
+            <div class="cta ghost">购买（演示）</div>
+          </div>
+          <div class="price hot">
+            <div class="tier">进阶版</div>
+            <div class="amt">RMB 599<small> /示意 · 约 2 倍</small></div>
+            <ul><li>标准版全部</li><li>自适应降噪</li><li>超久续航 翻倍</li><li>通透模式</li></ul>
+            <div class="cta">购买（演示）</div>
+          </div>
+          <div class="price">
+            <div class="tier">AI 尊享版</div>
+            <div class="amt">RMB 899<small> /示意</small></div>
+            <ul><li>进阶版全部</li><li>实时 AI 翻译</li><li>AI 语音助手</li><li>最高配全部功能</li></ul>
+            <div class="cta">购买（演示）</div>
+          </div>
+        </div>
+        <p class="note" style="margin-top:10px;">三档口径已锁定；数字为示意价，正式数字你定。卡片中档高亮是参考做法，可去掉。</p>
+      </div>
+
+      <div>
+        <div class="frame-label">⑦ 规格速览条 + ⑧ 尾屏 CTA / 页脚</div>
+        <div class="mock">
+          <div style="display:flex; gap:18px; flex-wrap:wrap; font-size:12px; color:var(--ink-2); border-bottom:1px dashed #c9c9ce; padding-bottom:12px;">
+            <span>蓝牙 5.4（示意）</span><span>续航 ？h（示意）</span><span>USB-C</span><span>IPX4（示意）</span><span>重量 ？g（示意）</span>
+          </div>
+          <div style="text-align:center; padding:18px 0 10px;">
+            <div style="font-size:20px; letter-spacing:-0.01em;">睿耳 Buds，随时开讲。</div>
+            <div style="margin-top:10px;"><span class="btn-blue">购买（演示）</span></div>
+          </div>
+          <p class="note" style="border-top:1px dashed #c9c9ce; padding-top:10px;">页脚：© 睿数 · 睿耳 RuiEar ｜ 本页为概念演示页，非真实产品；价格/参数为示意数据 ｜ 3D 模型：Tripo 创作者（CC BY 4.0，署名落地时补全）</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PART 2: color journey -->
+  <section class="part">
+    <div class="part-title"><span class="no">02</span><h2>色调旅程：顶部鲜艳 → 下部平淡</h2></div>
+    <p class="part-sub">每个区块一个主题色身份；饱和度与明度沿滚动方向逐步回落，深浅域交替，形成你说的「顶上鲜艳、下面平淡」。</p>
+    <div class="journey">
+      <div style="background:linear-gradient(160deg,#f4633a,#e0475b);">① 导航+Hero<br>玫瑰红→落日橙（最鲜艳）</div>
+      <div style="background:#4da3e8;">② 配色剧场<br>天空蓝</div>
+      <div style="background:#5b87b8;">③ 翻译<br>雾蓝（降饱和）</div>
+      <div style="background:#1d1d1f;">④ 降噪<br>午夜黑（深域）</div>
+      <div style="background:#8a8a90;">⑤ 工艺 3D<br>石墨灰</div>
+      <div style="background:#e8e8ec;" class="light">⑥ 价格<br>浅灰（平淡）</div>
+      <div style="background:#f5f5f7;" class="light">⑦ 页脚<br>纸白（最平淡）</div>
+    </div>
+  </section>
+
+  <!-- PART 3: ring transition -->
+  <section class="part">
+    <div class="part-title"><span class="no">03</span><h2>同心色环过渡（签名交互三 · 分镜）</h2></div>
+    <p class="part-sub">跨板块触发：新板块主题色从屏幕中心一圈圈扩散成满屏色场，随后内容在新底色上揭示。动效幅度大（你的要求），spring 驱动，约 700–900ms，滚动反向可回退；reduced-motion 退化为直接淡入。</p>
+    <div class="rings">
+      <div class="ring-frame">
+        <div class="ring" style="width:0;height:0;background:#4da3e8;opacity:.0;"></div>
+        <div class="cap">帧 1 · 滚动接近边界，页面静止</div>
+      </div>
+      <div class="ring-frame">
+        <div class="ring" style="width:40px;height:40px;background:#4da3e8;"></div>
+        <div class="ring" style="width:90px;height:90px;border:2px solid #4da3e8;opacity:.5;"></div>
+        <div class="ring" style="width:140px;height:140px;border:2px solid #4da3e8;opacity:.25;"></div>
+        <div class="cap">帧 2 · 主题色环从中心扩散（实心+描边环）</div>
+      </div>
+      <div class="ring-frame" style="background:#4da3e8;">
+        <div class="cap" style="color:#fff; background:transparent; border-top:1px solid rgba(255,255,255,.3);">帧 3 · 满屏新主题色场（短暂占位）</div>
+      </div>
+      <div class="ring-frame" style="background:linear-gradient(180deg,#dbeefd,#f3f9ff);">
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:13px; color:#2a6ca8;">新板块内容揭示</div>
+        <div class="cap">帧 4 · 内容在新底色上淡入，色场退为区块底色</div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:10px;">实现路径（T-003 素材拼接优先）：先检索 Magic UI / React Bits 的 ripple / concentric 现成组件并核许可；无适配则本地 CSS/SVG 实现，理由入契约。</p>
+  </section>
+
+  <!-- PART 4: bilingual -->
+  <section class="part">
+    <div class="part-title"><span class="no">04</span><h2>中英双语切换示意</h2></div>
+    <p class="part-sub">导航右侧「中 / EN」开关，全站文案走轻量字典；语言状态本地记忆，刷新保持。</p>
+    <div class="bi">
+      <div class="mock">
+        <div class="mock-nav" style="margin-bottom:10px;"><b>睿耳 RuiEar</b><span>概览 · 工艺 · 价格</span><span><b>中</b> / EN</span></div>
+        <div style="font-size:20px; letter-spacing:-0.01em;">听懂世界，也让你被听懂。</div>
+        <p class="note" style="margin-top:6px;">三档价格 · 标准版 / 进阶版 / AI 尊享版</p>
+      </div>
+      <div class="mock">
+        <div class="mock-nav" style="margin-bottom:10px;"><b>RuiEar</b><span>Overview · Design · Pricing</span><span>中 / <b>EN</b></span></div>
+        <div style="font-size:20px; letter-spacing:-0.01em;">Understand the world.<br>Be understood.</div>
+        <p class="note" style="margin-top:6px;">Three tiers · Standard / Advanced / AI Premium</p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:10px;">英文品牌名占位 <b>RuiEar</b>，你可在实现前随时改定。</p>
+  </section>
+
+  <!-- PART 5: ledger -->
+  <section class="part">
+    <div class="part-title"><span class="no">05</span><h2>素材与授权台账</h2></div>
+    <table class="ledger">
+      <tr><th>id</th><th>类型</th><th>内容</th><th>来源</th><th>授权与义务</th><th>处置</th></tr>
+      <tr>
+        <td>B3</td><td>asset(自建)</td><td>程序化 TWS 模型：盒体+铰链盖+双耳塞分件，五配色材质槽</td>
+        <td>本项目 R3F 自建</td>
+        <td>无外部权利负担</td>
+        <td><b>采用（先行）</b></td>
+      </tr>
+      <tr>
+        <td>B1</td><td>asset(备选)</td><td>Sketchfab「Apple AirPods Pro 2」白模，分件可见</td>
+        <td><a href="https://sketchfab.com/3d-models/apple-airpods-pro-2-3485954745b8449a8ffdfdf4775a4bde">Sketchfab · rajprajapat</a>（实查 2026-09-12）</td>
+        <td>CC BY 4.0（署名）；下载需免费注册账号；到货先验分件/材质槽</td>
+        <td>择优替换候选</td>
+      </tr>
+      <tr>
+        <td>A1(旧)</td><td>asset</td><td>Tripo AirPods 风格白模</td>
+        <td><a href="https://studio.tripo3d.ai/3d-model/apple-airpods-style-wireless-earbuds-with-charging-case-white-plastic-28298075-82fe-40bd-bef7-29a737674ebf">Tripo 画廊</a></td>
+        <td>免费档会员墙，路径失败（用户实测 2026-09-12）</td>
+        <td>关闭，留档</td>
+      </tr>
+      <tr><td>R1</td><td>reference</td><td>AirPods Pro 页结构/构图</td><td><a href="https://www.apple.com.cn/airpods-pro/">apple.com.cn</a></td><td>参考-only，不搬运资产</td><td>结构基线</td></tr>
+      <tr><td>R2</td><td>reference</td><td>AirPods Max 配色选取器</td><td><a href="https://www.apple.com.cn/airpods-max/">apple.com.cn</a></td><td>参考-only</td><td>交互蓝本</td></tr>
+      <tr><td>R3</td><td>reference</td><td>功能区块「饱和媒体+文字列」</td><td>apple.com.cn 实拍</td><td>参考-only</td><td>叙事分区参考</td></tr>
+      <tr><td>C1–C4</td><td>component</td><td>R3F + drei / Motion / Lenis / Tailwind</td><td>预清仓源（MIT，2026-09-07 核验）</td><td>MIT，无额外义务</td><td>采用</td></tr>
+    </table>
+  </section>
+
+  <!-- PART 6: decision -->
+  <section class="part">
+    <div class="part-title"><span class="no">06</span><h2>Gate C · 请你裁决</h2></div>
+    <div class="decide">
+      <h3>看完本板后请回复其一：</h3>
+      <ol>
+        <li><b>「原型通过」</b>—— 进入设计契约 + 实现（GLB 可稍后给，先用程序化占位模型推进）；</li>
+        <li><b>「要改：…」</b>—— 指出区块/色调/分镜/文案问题，我修订后重上 Gate C。</li>
+      </ol>
+      <h3 style="margin-top:14px;">顺手可定（不定我先按占位走）：</h3>
+      <ol>
+        <li>五色 HEX 终值（现在是我按色名拟的）；</li>
+        <li>三档示意价数字；</li>
+        <li>英文品牌名 RuiEar 是否就用；</li>
+        <li>A1 GLB 你何时方便导出（不影响先行开工）。</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer class="board">
+    睿耳 RuiEar 原型拼贴板 · P-earbuds-2 · 生成于 2026-09-12 · 板内 Apple 截图与 Sketchfab 截图均为参考/素材证据（见台账），不作为最终页面资产直接发布（B1 若替换采用则按 CC BY 4.0 落地署名）。
+  </footer>
+
+</main>
+</body>
+</html>

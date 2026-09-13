@@ -13,6 +13,7 @@ export const PUBLIC_APPS = [
   { project: 'demo/subway-runner', prefix: 'demos/subway-runner' },
   { project: 'demo/forma-phone-ui', prefix: 'demos/forma-phone-ui' },
   { project: 'demo/tempo-day', prefix: 'demos/tempo-day' },
+  { project: 'demo/ruiear', prefix: 'demos/ruiear' },
 ];
 const ROOT_FILES = new Set([
   'index.html', 'favicon.svg', 'robots.txt', 'og-image.webp', 'third-party-licenses.json',

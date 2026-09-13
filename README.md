@@ -179,6 +179,7 @@ $ui-design-agent 我想把采购申请集中起来，看谁还没处理。先整
 | NODEGRID | 虚构云节点网络可视化 | [查看](demo/nodegrid/README.md) |
 | 地铁跑酷（展厅名：地铁疾行） | 三车道 3D 跑酷 | [查看](demo/subway-runner/README.md) |
 | FORMA One | 虚构手机配置与购买路径演示 | [查看](demo/forma-phone-ui/README.md) |
+| 睿耳 RuiEar | AI 耳机概念产品页，3D 配色切换与开合盖动画 | [查看](demo/ruiear/README.md) |
 | 曜石 12 Pro | 双机型配置与意向清单演示 | [查看](demo/phone-demo/README.md) |
 | 曜时 X1 | 虚构智能腕表展示 | [查看](demo/product-demo/README.md) |
 | 一舟札记 | 虚构作者与文章阅读演示 | [查看](demo/blog-demo/README.md) |

@@ -260,6 +260,28 @@ npm test
 4. **发布到社区时压缩介绍长度**，保留封面、核心理念、三张成果图、快速开始和仓库链接。
 5. **在评论区补充案例细节**，不要在首贴里把所有项目一口气塞满。
 
+## X（Twitter）短推（≤280 字符，非会员可直接发）
+
+### 英文版（首发推荐，面向海外 AI 开发者）
+
+```text
+AI shouldn't freestyle your UI. My workflow: research references → freeze a plan (you approve) → design contract → build → verify in a real browser with screenshot evidence.
+
+11 demos, 2 playable in 3D: https://agent.kcos.club
+Repo: https://github.com/muzimu217/ui-design-agent-kit
+```
+
+### 中文版
+
+```text
+别让 AI 凭空捏 UI。我开源的工作流：先查真实参考 → 冻结计划（你确认才动工）→ 设计契约 → 实现 → 真实浏览器截图验收。
+
+11 个案例，2 个 3D 可直接玩：https://agent.kcos.club
+仓库：https://github.com/muzimu217/ui-design-agent-kit
+```
+
+发布建议：英文版先发，附上展厅首屏截图或 20 秒介绍视频；中文版间隔 2 小时以上再发。
+
 ## 反馈方向
 
 如果你愿意试用，最欢迎三类反馈：

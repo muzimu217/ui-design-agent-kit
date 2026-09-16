@@ -45,7 +45,8 @@ test('整页可以渲染出五个 section，不抛异常', () => {
 });
 
 test('首屏读数块把时间、潮位、单位、涨退潮文字与演示徽章都渲染出来', () => {
-  const html = renderToString(createElement(Hero, { status: 'ready', nowMinutes: 370 }));
+  const day = createTideDay();
+  const html = renderToString(createElement(Hero, { status: 'ready', nowMinutes: 370, day }));
   assert.ok(html.includes('今日潮位 · 现在'), '读数块标签');
   assert.ok(html.includes('06:10'), '时间');
   assert.ok(html.includes('2.88'), '潮位 2 位小数');
@@ -58,12 +59,12 @@ test('首屏读数块把时间、潮位、单位、涨退潮文字与演示徽�
 });
 
 test('首屏在加载/空态给出占位读数，不留空白也不显示假数字', () => {
-  const loading = renderToString(createElement(Hero, { status: 'loading', nowMinutes: 370 }));
+  const loading = renderToString(createElement(Hero, { status: 'loading', nowMinutes: 370, day: null }));
   assert.ok(loading.includes('—.—'));
   assert.ok(loading.includes('正在载入'));
   assert.ok(!/\d\.\d{2}/.test(loading), '加载态不得出现真实的小数读数');
 
-  const empty = renderToString(createElement(Hero, { status: 'empty', nowMinutes: 370 }));
+  const empty = renderToString(createElement(Hero, { status: 'empty', nowMinutes: 370, day: null }));
   assert.ok(empty.includes('暂无数据'));
   assert.ok(empty.includes('数据不可用'));
 });
@@ -204,14 +205,21 @@ test('时间轴覆盖层与曲线内区共用同一套水平范围，游标与�
   const css = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
   // 曲线内区只在纵向让出留白带（inset: var(--plot-inset) 0），左右为 0；
   // 时间轴 inset: 0 铺满绘图区。两者水平范围一致，value 0..144 才与曲线 x 一一对应。
-  assert.match(css, /\.curve-inner\s*\{[^}]*inset:\s*var\(--plot-inset\)\s+0\s*;/);
+  // 内区与所有覆盖层共用同一套上下 inset（--plot-inset / --plot-inset-bottom）。
+  // 下带比上带高一行，好让低潮标注与时间刻度各占一行、不再重叠。
+  const INSET = /inset:\s*var\(--plot-inset\)\s+0\s+var\(--plot-inset-bottom\)\s*;/;
+  assert.match(css, new RegExp('\\.curve-inner\\s*\\{[^}]*' + INSET.source));
   assert.match(css, /\.tide-range\s*\{[^}]*inset:\s*0\s*;/);
-  // 覆盖层（标注 / 当前时刻 / 游标）必须与内区用同一套 inset，否则会被留白带整体偏移。
   for (const cls of ['curve-annotations', 'now-marker', 'curve-cursor']) {
     const block = css.match(new RegExp(`\\.${cls}\\s*\\{([^}]*)\\}`));
     assert.ok(block, `${cls} 应有样式块`);
-    assert.match(block[1], /inset:\s*var\(--plot-inset\)\s+0\s*;/, `${cls} 必须与 .curve-inner 共用 inset`);
+    assert.match(block[1], INSET, `${cls} 必须与 .curve-inner 共用同一套 inset，否则会被留白带整体偏移`);
   }
+  // 下留白带必须确实高于上带，否则低潮标注会压住刻度行。
+  const top = css.match(/--plot-inset:\s*([\d.]+)rem/);
+  const bottom = css.match(/--plot-inset-bottom:\s*([\d.]+)rem/);
+  assert.ok(top && bottom, '上下留白带变量都应存在');
+  assert.ok(Number(bottom[1]) > Number(top[1]), '下留白带必须高于上带（避免低潮标注压刻度）');
 });
 
 test('B3：时间轴用 opacity:0 隐藏，且保留在布局中', () => {

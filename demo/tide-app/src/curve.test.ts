@@ -8,7 +8,9 @@ import {
   createGeometry,
   minutesForTick,
   xForMinutes,
+  xForPoint,
   yForLevel,
+  yForPoint,
 } from './curve.ts';
 
 /** `.curve-inner` 的像素尺寸（内区，已排除 CSS 留白带）。 */
@@ -45,14 +47,24 @@ test('测量尺寸为 0 时给安全兜底，不产生除零或 NaN', () => {
   assert.ok(!buildLinePath(day.points, geometry).includes('NaN'));
 });
 
-test('曲线路径点数与采样点数一致，且路径以 M 开头', () => {
+test('曲线路径经过每一个采样点，且是平滑的（不是折线）', () => {
   const day = createTideDay();
   const geometry = createGeometry(day, BOX);
   const path = buildLinePath(day.points, geometry);
-  const commands = path.match(/[ML]/g) ?? [];
-  assert.equal(commands.length, day.points.length);
+
   assert.ok(path.startsWith('M'));
   assert.ok(!path.includes('NaN'));
+  // 平滑路径：每段用三次贝塞尔（C），而不是逐点直线（L）。
+  assert.ok(path.includes('C'), '路径应含三次贝塞尔段');
+  assert.equal((path.match(/L/g) ?? []).length, 0, '平滑曲线不应含直线段');
+
+  // 关键不变量：曲线必须精确穿过每个采样点，否则曲线与读数会不一致。
+  // 每段 C 的终点就是下一个采样点，故段数应为 points.length - 1。
+  assert.equal((path.match(/C/g) ?? []).length, day.points.length - 1);
+  const last = day.points[day.points.length - 1];
+  const round2 = (v: number) => Math.round(v * 100) / 100;
+  const expectedEnd = `${round2(xForPoint(last, geometry))} ${round2(yForPoint(last, geometry))}`;
+  assert.ok(path.trimEnd().endsWith(expectedEnd), `路径终点应落在最后一个采样点 ${expectedEnd}`);
 });
 
 test('填充区域闭合到内区下沿，形成封闭路径', () => {

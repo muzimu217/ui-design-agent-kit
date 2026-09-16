@@ -182,6 +182,28 @@ export async function runGates() {
     add(gate, label, !hit, hit ? "命中禁用写法" : "零命中");
   }
 
+  // A rendered element is not a delivered element. The first implementation set
+  // section content to `opacity: 0` and relied on an in-view animation to reveal
+  // it; the trigger never fired, so the page showed empty boxes while every DOM
+  // assertion still passed. Anything that gates visibility on an animation is a
+  // defect, because a failure of the animation becomes a blank page.
+  const entryHidden = /initial=\{[^}]*opacity:\s*0/.test(codeOnly) || /opacity:\s*0[^;]*\}[^}]*whileInView/.test(codeOnly);
+  add("QG25", "内容不得靠动画才可见", !entryHidden, entryHidden ? "入场动画把内容初始设为不可见" : "零命中");
+  const blurEntry = /filter:\s*['"]blur\(/.test(codeOnly);
+  add("QG26", "入场不得用 blur 遮内容", !blurEntry, blurEntry ? "入场用 blur 隐藏内容" : "零命中");
+
+  // 场景卡不能只是文字堆叠：每张卡都要有真实图形（与主曲线同源的数据波形）。
+  const scenarioSpark = /\.scenario-spark/.test(codeOnly) && /buildScenarioSpark/.test(codeOnly);
+  add("QG27", "场景卡含数据图形而非纯文字", scenarioSpark, scenarioSpark ? "每张卡有波形" : "场景卡缺少图形");
+
+  // 首屏必须有视觉主体：一条整日波形，而不是一个读数框漂在空白里。
+  const heroSpark = /\.hero-spark/.test(codeOnly) && /buildSparkline/.test(codeOnly);
+  add("QG28", "首屏有数据波形作视觉主体", heroSpark, heroSpark ? "首屏含整日波形" : "首屏无视觉主体");
+
+  // 首屏不得用 min-height:100svh + 居中（那会把内容挤成一小团、上下留大片空白）。
+  const heroCentered = /\.hero\s*\{[^}]*min-height:\s*100svh/.test(codeOnly);
+  add("QG29", "首屏不靠满屏高度居中", !heroCentered, heroCentered ? "首屏用 100svh 居中，会留大片空白" : "按内容排版");
+
   // QG6 / QG7: every occurrence of 预报 must sit next to a demo badge.
   const forecast = [...blob.matchAll(/预报/g)].length;
   const demoBadges = [...blob.matchAll(/演示数据|演示/g)].length;

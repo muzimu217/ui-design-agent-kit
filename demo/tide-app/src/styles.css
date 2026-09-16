@@ -37,6 +37,11 @@
 
   /* --- 绘图区上下留白带（rem：文字缩放时跟着长） --- */
   --plot-inset: 1.875rem;
+  /* 下留白带比上带高一行：低潮标注落在内区下沿之下，而时间刻度紧贴绘图区底边。
+     两者曾因此重叠（12:20 压住 12:00）。加高下带后各占一行。
+     注意：内区与所有覆盖层共用同一套 inset，所以只加高这一个变量，
+     不能单独改某个覆盖层的 inset——那会让标注与曲线坐标错位。 */
+  --plot-inset-bottom: 2.75rem;
 
   color-scheme: dark;
 }
@@ -216,17 +221,65 @@ button {
 
 /* -------------------------------------------------------------- 1 · Hero */
 
+/* 首屏不再靠 min-height:100svh + 居中（那会把内容挤成一团、上下留大片空白）。
+   改为按内容排版，右侧放整日潮位波形，让第一屏有视觉主体。 */
 .hero {
-  min-height: 100svh;
   display: flex;
   align-items: center;
-  padding-block: clamp(32px, 8vw, 80px);
+  /* 首屏按内容排版：上留品牌呼吸空间，下不留大块空白。
+     之前用 min-height:100svh + 垂直居中，把内容挤成一小团、上下各留几百像素空白。 */
+  padding-block: clamp(28px, 6vw, 64px) clamp(18px, 3vw, 36px);
 }
 
 .hero-inner {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 48px);
+  align-items: center;
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 首屏波形：整日潮位。宽度铺满、高度固定，靠 preserveAspectRatio="none" 拉伸，
+   描边用 vector-effect 保持不被拉扁。 */
+.hero-spark {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.hero-spark svg {
+  display: block;
+  width: 100%;
+  height: clamp(96px, 14vw, 150px);
+}
+
+.hero-spark-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+@media (min-width: 900px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  }
 }
 
 .brand {
@@ -449,7 +502,7 @@ button {
 
 .curve-inner {
   position: absolute;
-  inset: var(--plot-inset) 0;
+  inset: var(--plot-inset) 0 var(--plot-inset-bottom);
 }
 
 .curve-canvas {
@@ -559,10 +612,13 @@ button {
 /* --- 高低潮标注（D1：不可点击，不得呈现按钮样式） ---
    关键：覆盖层必须与 `.curve-inner` 用同一套 inset，否则标注会被 --plot-inset 偏移。
    没有背景、没有边框、没有 hover 态、没有 pointer 光标；
-   位置固定落在绘图区的上下留白带里，所以不需要衬底就能读。 */
+   位置固定落在绘图区的上下留白带里，所以不需要衬底就能读。
+
+   下留白带比上带多留一行：低潮标注落在内区下沿之下，而时间刻度紧贴绘图区底边，
+   两者曾因此重叠（12:20 压住 12:00）。下带加高后，标注与刻度各占一行。 */
 .curve-annotations {
   position: absolute;
-  inset: var(--plot-inset) 0;
+  inset: var(--plot-inset) 0 var(--plot-inset-bottom);
   pointer-events: none;
   z-index: 1;
 }
@@ -616,7 +672,7 @@ button {
    与 `.curve-inner` 同一套 inset，使 translateX/`top` 与曲线的像素坐标对齐。 */
 .now-marker {
   position: absolute;
-  inset: var(--plot-inset) 0;
+  inset: var(--plot-inset) 0 var(--plot-inset-bottom);
   width: 0;
   pointer-events: none;
   z-index: 2;
@@ -678,7 +734,7 @@ button {
    标注不淡出，因此不会因为遮挡而损失对比度。 --- */
 .curve-cursor {
   position: absolute;
-  inset: var(--plot-inset) 0;
+  inset: var(--plot-inset) 0 var(--plot-inset-bottom);
   width: 0;
   pointer-events: none;
   z-index: 3;
@@ -818,6 +874,20 @@ button {
    契约 9.6 写「Lucide 图标（20px，--accent）」，但 Do #3 写强调色「只用于三处……
    其他一律不用」。两者直接冲突，这里按 Do #3 的绝对表述实现（图标不属于数据本体、
    焦点环、主 CTA 三者之一），冲突已在交付报告中登记。 */
+/* 场景卡顶部的当日波形：整日曲线 + 该卡关心时段的加亮段。
+   它是数据（与主曲线同源），所以卡片不只是文字堆叠。 */
+.scenario-spark {
+  display: block;
+  width: 100%;
+  margin-bottom: 2px;
+}
+
+.scenario-spark svg {
+  display: block;
+  width: 100%;
+  height: 56px;
+}
+
 .scenario-icon {
   display: inline-flex;
   align-items: center;

@@ -13,6 +13,7 @@ import { MotionConfig, motion } from 'motion/react';
 import { MapPin, Sun, Waves } from 'lucide-react';
 import {
   AXIS_MAX,
+  DAY_MINUTES,
   SAMPLE_COUNT,
   buildCurveInUse,
   buildScenarioValues,
@@ -28,6 +29,7 @@ import {
   type TideTrend,
 } from './model.ts';
 import { TideCurve, type CurveStatus } from './TideCurve.tsx';
+import { buildScenarioSpark, buildSparkArea, buildSparkline } from './curve.ts';
 import {
   DemoDataBadge,
   NumericText,
@@ -84,7 +86,7 @@ function App() {
         跳到今天的潮汐曲线
       </a>
 
-      <Hero status={status} nowMinutes={nowMinutes} />
+      <Hero status={status} nowMinutes={nowMinutes} day={day} />
       <TideCurve status={status} day={day} step={step} onStepChange={handleStepChange} nowMinutes={nowMinutes} />
       <CurveInUse status={status} day={day} />
       <Scenarios status={status} day={day} />
@@ -95,13 +97,20 @@ function App() {
 
 /* ---------------------------------------------------------------- 1 · Hero */
 
-type HeroProps = { status: CurveStatus; nowMinutes: number };
+type HeroProps = { status: CurveStatus; nowMinutes: number; day: TideDay | null };
 
 /** 第一屏。导出是为了让测试能用显式 status 直接核对 A2 要求的读数块内容。 */
-export function Hero({ status, nowMinutes }: HeroProps) {
+export function Hero({ status, nowMinutes, day }: HeroProps) {
   const ready = status === 'ready';
   const level = ready ? levelAtMinutes(nowMinutes) : null;
   const trend: TideTrend = trendAtMinutes(nowMinutes);
+
+  // 首屏波形：整日潮位压成一条窄幅曲线。它与第二屏的完整曲线用同一份数据、
+  // 同一套平滑算法，所以形状一致——首屏因此有视觉主体，而不是一个读数框漂在空白里。
+  const SPARK = { width: 1000, height: 130 };
+  const sparkLine = day ? buildSparkline(day.points, SPARK, day) : '';
+  const sparkArea = day ? buildSparkArea(day.points, SPARK, day) : '';
+  const nowRatio = nowMinutes / DAY_MINUTES;
 
   return (
     <header className="section hero" aria-labelledby="hero-title">
@@ -111,40 +120,82 @@ export function Hero({ status, nowMinutes }: HeroProps) {
           <span className="brand-name">潮汐 TIDE</span>
         </p>
 
-        <h1 id="hero-title" className="hero-title">
-          今天什么时候能下水，打开就知道。
-        </h1>
+        <div className="hero-grid">
+          <div className="hero-copy">
+            <h1 id="hero-title" className="hero-title">
+              今天什么时候能下水，打开就知道。
+            </h1>
 
-        {/* A2：这个读数块必须在 375×812 与 1440×900 首屏完整可见，不依赖滚动或动画完成。 */}
-        <div className="hero-readout">
-          <div className="hero-readout-head">
-            <p className="readout-caption">今日潮位 · 现在</p>
-            <DemoDataBadge />
+            {/* A2：这个读数块必须在 375×812 与 1440×900 首屏完整可见，不依赖滚动或动画完成。 */}
+            <div className="hero-readout">
+              <div className="hero-readout-head">
+                <p className="readout-caption">今日潮位 · 现在</p>
+                <DemoDataBadge />
+              </div>
+              <p className="hero-level">
+                <span className="hero-level-value num" lang="en">
+                  {level === null ? (status === 'loading' ? '—.—' : '暂无数据') : formatLevel(level)}
+                </span>
+                {level !== null ? <UnitLabel /> : null}
+              </p>
+              <p className="hero-meta">
+                <span className="num" lang="en">
+                  {formatClock(nowMinutes)}
+                </span>
+                <span className="meta-separator" aria-hidden="true">
+                  ·
+                </span>
+                <span>{level === null ? (status === 'loading' ? '正在载入' : '数据不可用') : trendLabel(trend)}</span>
+              </p>
+              <span className="visually-hidden">
+                {level === null ? '今日潮位数据暂不可用。' : readoutSentence(nowMinutes, level)}
+              </span>
+            </div>
+
+            <div className="hero-actions">
+              <PressableLink className="primary-cta" href="#tide-curve">
+                看今天的潮汐
+              </PressableLink>
+            </div>
           </div>
-          <p className="hero-level">
-            <span className="hero-level-value num" lang="en">
-              {level === null ? (status === 'loading' ? '—.—' : '暂无数据') : formatLevel(level)}
-            </span>
-            {level !== null ? <UnitLabel /> : null}
-          </p>
-          <p className="hero-meta">
-            <span className="num" lang="en">
-              {formatClock(nowMinutes)}
-            </span>
-            <span className="meta-separator" aria-hidden="true">
-              ·
-            </span>
-            <span>{level === null ? (status === 'loading' ? '正在载入' : '数据不可用') : trendLabel(trend)}</span>
-          </p>
-          <span className="visually-hidden">
-            {level === null ? '今日潮位数据暂不可用。' : readoutSentence(nowMinutes, level)}
-          </span>
-        </div>
 
-        <div className="hero-actions">
-          <PressableLink className="primary-cta" href="#tide-curve">
-            看今天的潮汐
-          </PressableLink>
+          {/* 首屏波形：整日潮位。纯展示，交互在第二屏的完整曲线上。 */}
+          {day ? (
+            <figure className="hero-spark" aria-hidden="true">
+              <svg viewBox={`0 0 ${SPARK.width} ${SPARK.height}`} preserveAspectRatio="none" focusable="false">
+                <defs>
+                  <linearGradient id="spark-fill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.1" />
+                    <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+                <path d={sparkArea} fill="url(#spark-fill)" />
+                <path
+                  d={sparkLine}
+                  fill="none"
+                  stroke="var(--accent)"
+                  strokeWidth="2.5"
+                  vectorEffect="non-scaling-stroke"
+                />
+                <line
+                  x1={nowRatio * SPARK.width}
+                  y1="0"
+                  x2={nowRatio * SPARK.width}
+                  y2={SPARK.height}
+                  stroke="var(--text-secondary)"
+                  strokeWidth="1"
+                  strokeDasharray="4 4"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
+              <figcaption className="hero-spark-caption">
+                <span>今日潮位波形</span>
+                <span className="num" lang="en">
+                  00:00 – 24:00
+                </span>
+              </figcaption>
+            </figure>
+          ) : null}
         </div>
       </div>
     </header>
@@ -176,9 +227,12 @@ function CurveInUse({ status, day }: CurveInUseProps) {
               <motion.li
                 key={item.id}
                 className="use-item"
-                initial={reduceMotion ? false : { opacity: 0, y: 12, filter: 'blur(4px)' }}
-                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                viewport={{ once: true, amount: 0.4 }}
+                /* Content is visible by default: the entrance only nudges it into
+                   place. Never gate visibility on an animation, or a page whose
+                   trigger never fires shows an empty box. */
+                initial={reduceMotion ? false : { y: 10 }}
+                whileInView={{ y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={reduceMotion ? { duration: 0 } : { ...elegant, delay: index * STAGGER_SECONDS }}
               >
                 <p className="use-title">{item.title}</p>
@@ -208,6 +262,9 @@ function Scenarios({ status, day }: ScenariosProps) {
   const values = day ? buildScenarioValues(day) : null;
   const unavailable = '今日示例数据不可用';
 
+  // 每张卡的高亮时段直接来自 summary —— 卡片因此能指出自己在讲曲线上的哪一段，
+  // 波形不是装饰图，而是同一天数据的局部放大。
+  const summary = day?.summary ?? null;
   const cards = [
     {
       id: 'fishing',
@@ -215,6 +272,7 @@ function Scenarios({ status, day }: ScenariosProps) {
       title: '海钓',
       benefit: '涨潮最急的两小时，水跟着鱼一起动。',
       value: values?.fishing ?? unavailable,
+      window: summary?.fishing ? { fromMinutes: summary.fishing.fromMinutes, toMinutes: summary.fishing.toMinutes } : null,
     },
     {
       id: 'foraging',
@@ -222,6 +280,9 @@ function Scenarios({ status, day }: ScenariosProps) {
       title: '赶海',
       benefit: '低潮前两小时上滩，回程还留得出时间。',
       value: values?.foraging ?? unavailable,
+      window: summary?.foraging
+        ? { fromMinutes: Math.max(0, summary.foraging.toMinutes - 120), toMinutes: summary.foraging.toMinutes }
+        : null,
     },
     {
       id: 'photography',
@@ -229,6 +290,9 @@ function Scenarios({ status, day }: ScenariosProps) {
       title: '摄影',
       benefit: '当日最高潮位，礁石线整个没过。',
       value: values?.photography ?? unavailable,
+      window: summary?.highest
+        ? { fromMinutes: Math.max(0, summary.highest.minutes - 60), toMinutes: Math.min(DAY_MINUTES, summary.highest.minutes + 60) }
+        : null,
     },
   ];
 
@@ -245,16 +309,69 @@ function Scenarios({ status, day }: ScenariosProps) {
         <ul className="scenario-grid">
           {cards.map((card, index) => {
             const Icon = card.icon;
+            // 该卡的当日波形 + 高亮时段：与主曲线同源、同平滑算法。
+            const SPARK = { width: 300, height: 56 };
+            const spark = day
+              ? buildScenarioSpark(day.points, SPARK, day, card.window)
+              : { base: '', highlight: '', windowRect: null };
             return (
               <motion.li
                 key={card.id}
                 className="scenario-item"
-                initial={reduceMotion ? false : { opacity: 0, y: 12, filter: 'blur(4px)' }}
-                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                viewport={{ once: true, amount: 0.3 }}
+                /* Same rule as the use-list: visible by default, the entrance is
+                   decoration only. */
+                initial={reduceMotion ? false : { y: 10 }}
+                whileInView={{ y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={reduceMotion ? { duration: 0 } : { ...elegant, delay: index * STAGGER_SECONDS }}
               >
                 <PressableLink className="scenario-card" href="#tide-curve">
+                  {spark.base ? (
+                    <span className="scenario-spark" aria-hidden="true">
+                      <svg viewBox={`0 0 ${SPARK.width} ${SPARK.height}`} preserveAspectRatio="none" focusable="false">
+                        {spark.windowRect ? (
+                          <rect
+                            x={spark.windowRect.x}
+                            y="0"
+                            width={spark.windowRect.width}
+                            height={SPARK.height}
+                            fill="var(--accent)"
+                            opacity="0.14"
+                          />
+                        ) : null}
+                        <path
+                          d={spark.base}
+                          fill="none"
+                          stroke="var(--text-secondary)"
+                          strokeWidth="1.5"
+                          opacity="0.55"
+                          vectorEffect="non-scaling-stroke"
+                        />
+                        {spark.highlight ? (
+                          <path
+                            d={spark.highlight}
+                            fill="none"
+                            stroke="var(--accent)"
+                            strokeWidth="3.5"
+                            strokeLinecap="round"
+                            vectorEffect="non-scaling-stroke"
+                          />
+                        ) : null}
+                        {/* 窗口两端各一个小标记，让两小时的窄窗口在整日尺度上也能被看见 */}
+                        {spark.windowRect ? (
+                          <>
+                            <circle cx={spark.windowRect.x} cy={SPARK.height / 2} r="3" fill="var(--accent)" />
+                            <circle
+                              cx={spark.windowRect.x + spark.windowRect.width}
+                              cy={SPARK.height / 2}
+                              r="3"
+                              fill="var(--accent)"
+                            />
+                          </>
+                        ) : null}
+                      </svg>
+                    </span>
+                  ) : null}
                   <span className="scenario-icon">
                     <Icon size={20} aria-hidden="true" />
                   </span>

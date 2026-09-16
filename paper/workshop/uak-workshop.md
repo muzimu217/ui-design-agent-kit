@@ -184,6 +184,12 @@ work are visible only to a process that looks for them at the right
 granularity, with the evidence attached — gates for direction, an inner loop
 for craft, and a ledger for everything still owed to the human.
 
+# Acknowledgment {.unnumbered}
+
+Drafted with AI coding agents operating under the gated workflow described
+above; the author adjudicated all content, and every claim is backed by
+artifacts in the public repository.
+
 # References {.unnumbered}
 
 ::: {#refs}

@@ -7,6 +7,8 @@ __pycache__/
 !.env.example
 output/
 paper/out/
+paper/submission/arxiv-bundle/
+paper/submission/*.zip
 .playwright-cli/
 .playwright-mcp/
 .impeccable/

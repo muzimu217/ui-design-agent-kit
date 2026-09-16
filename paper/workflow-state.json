@@ -32,7 +32,7 @@
     "deliver": {
       "status": "gated",
       "evidence": "docs/gates.md",
-      "note": "P3 待用户裁决：paper/ 入库、推送授权、arXiv 分类（cs.HC vs cs.SE）。"
+      "note": "入库已提交（706aea5，本地）；P3 剩余：推送授权、arXiv 分类（cs.HC vs cs.SE）、各平台发布清单见 paper/submission/SUBMIT.md。"
     }
   },
   "gates": {

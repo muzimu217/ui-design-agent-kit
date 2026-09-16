@@ -474,6 +474,14 @@ the detail layer closed the gap — is the argument in miniature: the failure
 modes that matter in UI work are visible only to a process that looks for
 them, at the right granularity, with the evidence attached.
 
+# Acknowledgment {.unnumbered}
+
+This manuscript was drafted with AI coding agents operating under the gated,
+human-adjudicated workflow the paper itself describes: the author reviewed and
+adjudicated all content, every claim is backed by evidence artifacts in the
+public repository, and all references were verified against their primary
+sources.
+
 # References {.unnumbered}
 
 ::: {#refs}

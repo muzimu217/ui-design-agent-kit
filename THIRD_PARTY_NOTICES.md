@@ -47,6 +47,19 @@ a substitute for each upstream repository's license text.
   the `JIEJOE-WEB-Tutorial` repositories (MIT), Bilibili UI-motion tutorials.
   The skill is re-authored for this kit and does not copy upstream code; the
   distillation source and license are recorded in the skill's metadata.
+- Archify (distilled), `tt-a1i/archify`, revision
+  `64b1ba0c1ee40c3da4d1d11d03ed353cccffdf2e`: MIT. Source:
+  https://github.com/tt-a1i/archify
+  The upstream `LICENSE` (MIT, Copyright (c) 2026 tt-a1i (Archify) and
+  (c) 2025 Cocoon AI) is preserved at
+  `.agents/skills/archify-diagram/LICENSE`. Only usage knowledge is distilled:
+  the five diagram types and when to use each, the minimal typed JSON IR for each
+  type, the validate/deliver workflow, and the documented scope limits. No
+  upstream runtime, renderer, schema, generated validator, brand mark, template,
+  or generated artifact is vendored, and the kit does not install Archify. The
+  five minimal IR examples in the skill were authored for this kit against the
+  pinned upstream schemas and each passed upstream `validate --quality showcase`
+  with 9/9 artifact checks before inclusion.
 
 ## Local adaptations
 
@@ -68,6 +81,13 @@ a substitute for each upstream repository's license text.
   `compile-design-system.mjs`, design-system checker, fork verifier) and the
   `gen-pptx` package are excluded to keep this kit's maintenance scope; the
   vendored instruction text is unchanged.
+- Archify Diagram: distilled rather than vendored. The upstream `archify/`
+  package (Node CLI, renderers, JSON schemas, generated validators, brand-mark
+  catalogue, `assets/template.html`) and the repository's generated artifacts
+  (`archify.zip`, rendered example HTML, 49 research logs, benchmarks, tests) are
+  excluded. Upstream frontmatter keys are rewritten to this kit's allowed set,
+  with the upstream version recorded in `metadata`. The skill documents that the
+  runtime must be installed separately from upstream and never claims to ship it.
 
 The custom `ui-design-agent` and `remotion-video-agent` files in this repository
 are authored for this project. Remotion package usage remains subject to the

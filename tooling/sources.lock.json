@@ -191,6 +191,20 @@
       "license": "MIT",
       "notice": ".agents/skills/gsap-utils/LICENSE",
       "adaptations": []
+    },
+    {
+      "name": "archify-diagram",
+      "repository": "https://github.com/tt-a1i/archify",
+      "revision": "64b1ba0c1ee40c3da4d1d11d03ed353cccffdf2e",
+      "sourcePath": "archify",
+      "license": "MIT",
+      "notice": ".agents/skills/archify-diagram/LICENSE",
+      "adaptations": [
+        "Distilled to a usage guide; no upstream runtime, renderers, schemas, generated validators, or template assets are vendored",
+        "Excluded the 775KB template.html, 1.8MB archify.zip, 107-entry brand-mark catalogue, 62 research logs (including 48 visual-evolution round files), generated HTML examples, and the full test suite",
+        "Re-authored the five minimal IR examples from the upstream schemas; each was validated upstream with 9/9 showcase checks before inclusion",
+        "Frontmatter rewritten to this kit's allowed keys; upstream version moved to metadata.version"
+      ]
     }
   ],
   "mcp": [

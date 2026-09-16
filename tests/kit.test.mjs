@@ -11,7 +11,7 @@ test("installed skills, references, and pinned MCP config are complete", async (
   const result = await verify();
   assert.deepEqual(result.errors, []);
   assert.deepEqual(result.skills.sort(), [
-    "animation-vocabulary", "baoyu-design", "emil-design-eng",
+    "animation-vocabulary", "archify-diagram", "baoyu-design", "emil-design-eng",
     "gsap-core", "gsap-frameworks", "gsap-performance", "gsap-plugins",
     "gsap-react", "gsap-scrolltrigger", "gsap-timeline", "gsap-utils",
     "impeccable", "jiejoe-design", "motion", "pick-ui-library",

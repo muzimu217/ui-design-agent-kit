@@ -58,6 +58,10 @@ async function collect(dir, exts, out = []) {
     // reference product, so they are not implementation and must not be scanned
     // for forbidden patterns.
     if (entry.name === "docs" || entry.name === "screenshots") continue;
+    // Test files assert that a forbidden string is absent, so the string itself
+    // appears in them. Scanning them would flag the very check that enforces the
+    // rule; the rule is about implementation code.
+    if (/\.test\.tsx?$/.test(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) await collect(full, exts, out);
     else if (exts.some((ext) => entry.name.endsWith(ext))) out.push(full);
@@ -73,6 +77,17 @@ async function readAll(files) {
 
 function rel(file) {
   return path.relative(ROOT, file);
+}
+
+// Remove comments so a rule is not "violated" by the comment explaining it.
+// Handles /* */, //, and CSS/HTML comments; string literals are left alone,
+// which is fine because the patterns we scan for are not written inside strings.
+function stripComments(source) {
+  return source
+    .replace(/\/\*[\s\S]*?\*\//g, " ")
+    .replace(/<!--[\s\S]*?-->/g, " ")
+    .replace(/^\s*\/\/.*$/gm, " ")
+    .replace(/\s\/\/[^"'\n]*$/gm, " ");
 }
 
 // --- gates ----------------------------------------------------------------
@@ -156,13 +171,15 @@ export async function runGates() {
     .filter((d) => /\.(css|tsx|ts|html)$/.test(d.file))
     .map((d) => d.text)
     .join("\n");
+
+  // Strip comments before the pattern scan. The contract's own prose and the
+  // code comments legitimately say "do not use display:none", which would
+  // otherwise register as a violation of the rule they are explaining.
+  const codeOnly = stripComments(styleAndCode);
+
   for (const [pattern, label, gate] of forbidden) {
-    const hit = new RegExp(pattern, "i").test(styleAndCode);
-    if (gate === "QG8" && pattern.includes("visibility")) {
-      // Merge both QG8 patterns into one result below.
-      continue;
-    }
-    add(gate === "QG8" ? "QG8" : gate, label, !hit, hit ? "命中禁用写法" : "零命中");
+    const hit = new RegExp(pattern, "i").test(codeOnly);
+    add(gate, label, !hit, hit ? "命中禁用写法" : "零命中");
   }
 
   // QG6 / QG7: every occurrence of 预报 must sit next to a demo badge.

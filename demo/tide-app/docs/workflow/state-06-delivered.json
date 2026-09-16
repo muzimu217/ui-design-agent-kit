@@ -1,0 +1,16 @@
+{
+  "task": "潮汐 TIDE · 海钓赶海潮汐预报产品页",
+  "revision": "P-tide-1",
+  "updatedOn": "2026-09-16",
+  "note": "全链路完成：六个阶段、五道确认门全部通过，验收记录含未验证项清单。",
+  "stages": {
+    "brief": { "status": "passed", "evidence": "docs/DIRECTION.md · docs/GATE-A-DECISION.md", "note": "门A 通过，附 4 项强制修正。" },
+    "reference": { "status": "passed", "evidence": "docs/RESEARCH-NOTES.md · docs/reference/OBSERVATION-tideguide.md", "note": "门B 通过；实地观察推翻了方向稿第三屏设定。" },
+    "contract": { "status": "passed", "evidence": "docs/DESIGN.md · docs/GATE-CD-DECISION.md", "note": "门C/D 通过；色值全部实测计算。" },
+    "build": { "status": "passed", "evidence": "src/TideCurve.tsx · src/App.tsx", "note": "46 个单元测试通过；类型检查通过。" },
+    "verify": { "status": "passed", "evidence": "docs/ACCEPTANCE.md", "note": "门E 通过：静态 14/14，浏览器实测首屏读数、键盘、焦点环、触控目标、减少动效均达标；7 项未验证已如实列出。" },
+    "deliver": { "status": "passed", "evidence": "README.md · docs/ACCEPTANCE.md", "note": "交付完成。" }
+  },
+  "gates": { "A": "passed", "B": "passed", "C": "passed", "D": "passed", "E": "passed", "F": "passed" },
+  "blockedReason": null
+}

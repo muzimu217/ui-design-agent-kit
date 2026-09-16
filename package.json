@@ -19,6 +19,7 @@
     "contrast": "node scripts/contrast-check.mjs",
     "diagram": "node scripts/workflow-diagram/cli.mjs build",
     "diagram:check": "node scripts/workflow-diagram/cli.mjs check",
+    "diagram:state": "node scripts/workflow-diagram/cli.mjs state-template",
     "verify": "node scripts/verify.mjs",
     "test": "node --test tests/*.test.mjs",
     "doctor": "node scripts/doctor.mjs",

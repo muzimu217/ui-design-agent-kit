@@ -5,11 +5,13 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { ROOT, loadPipeline, buildModel } from "../scripts/workflow-diagram/model.mjs";
+import { loadState, validateState, currentStage, progress } from "../scripts/workflow-diagram/state.mjs";
 import { layout } from "../scripts/workflow-diagram/layout.mjs";
 import { renderSvg } from "../scripts/workflow-diagram/svg.mjs";
 import { renderHtml } from "../scripts/workflow-diagram/html.mjs";
 
 const CLI = path.join(ROOT, "scripts/workflow-diagram/cli.mjs");
+const EXAMPLE_STATE = path.join(ROOT, "scripts/workflow-diagram/examples/ruiear.task-state.json");
 
 test("the diagram model is derived from the pipeline, never restated", async () => {
   const pipeline = await loadPipeline();
@@ -112,6 +114,7 @@ test("the CLI builds, checks, and reports failures instead of false success", as
     );
     assert.equal(built.stages, 6);
     assert.equal(built.gates, 6);
+    assert.equal(built.mode, "process");
     assert.ok(built.bytes > 5000);
 
     const checked = JSON.parse(execFileSync("node", [CLI, "check", output], { encoding: "utf8", timeout: 30000 }));
@@ -128,4 +131,62 @@ test("the CLI builds, checks, and reports failures instead of false success", as
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
+});
+
+test("a task state file drives real node status, not decoration", async () => {
+  const pipeline = await loadPipeline();
+  const state = await loadState(EXAMPLE_STATE, pipeline);
+
+  // The example is a real record: five stages done, delivery still gated.
+  assert.equal(currentStage(state, pipeline), "deliver");
+  assert.deepEqual(progress(state, pipeline), { passed: 5, total: 6 });
+
+  const model = buildModel(pipeline, { state });
+  assert.equal(model.mode, "task");
+  assert.equal(model.task.name, state.task);
+
+  const stageNodes = model.nodes.filter((node) => node.kind === "stage");
+  assert.equal(stageNodes.find((node) => node.stageId === "deliver").status, "gated");
+  assert.equal(stageNodes.find((node) => node.stageId === "brief").status, "passed");
+  // Exactly one node is marked current, and it is the stage the task is on.
+  const currentNodes = model.nodes.filter((node) => node.isCurrent);
+  assert.equal(currentNodes.length, 1);
+  assert.equal(currentNodes[0].stageId, "deliver");
+  // Recorded evidence replaces the expected-evidence placeholder.
+  const brief = stageNodes.find((node) => node.stageId === "brief");
+  assert.equal(brief.evidence, "demo/ruiear/PLAN.md");
+  assert.ok(brief.evidenceExpected, "the expected evidence text must still be available");
+
+  // Without a state file nothing may claim to be current or non-pending.
+  const plain = buildModel(pipeline);
+  assert.equal(plain.mode, "process");
+  assert.equal(plain.task, null);
+  assert.equal(plain.nodes.some((node) => node.isCurrent), false);
+  assert.equal(plain.nodes.every((node) => node.status === "pending"), true);
+});
+
+test("a state file that does not describe this pipeline fails loudly", async () => {
+  const pipeline = await loadPipeline();
+  assert.throws(() => validateState({ task: "x", stages: { nope: { status: "passed" } } }, pipeline), /unknown stage/);
+  assert.throws(() => validateState({ task: "x", stages: { brief: { status: "done" } } }, pipeline), /expected one of/);
+  assert.throws(() => validateState({ task: "x", gates: { Z: "passed" } }, pipeline), /unknown gate/);
+  assert.throws(() => validateState({ stages: {} }, pipeline), /task/);
+  assert.equal(validateState({ task: "x" }, pipeline), true);
+});
+
+test("the rendered task diagram exposes status and stays self-contained", async () => {
+  const pipeline = await loadPipeline();
+  const state = await loadState(EXAMPLE_STATE, pipeline);
+  const model = buildModel(pipeline, { state });
+  const laid = layout(model);
+  const html = renderHtml({ svg: renderSvg(laid, model), model, laid, meta: { title: model.title } });
+
+  assert.match(html, /已完成 <strong>5<\/strong> \/ 6 个阶段/);
+  assert.match(html, /data-status="gated"/);
+  assert.match(html, /data-status="passed"/);
+  assert.match(html, /data-current="true"/);
+  assert.match(html, /任务状态/);
+  assert.equal(/(src|href)=["']https?:\/\//i.test(html), false);
+  // The status vocabulary must be explained, not only drawn.
+  for (const label of ["已通过", "等待确认", "未开始"]) assert.ok(html.includes(label), `legend missing ${label}`);
 });

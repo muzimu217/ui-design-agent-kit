@@ -4,6 +4,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { currentStage, progress } from "./state.mjs";
 
 export const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 
@@ -39,13 +40,19 @@ function validate(pipeline) {
 
 // The model is intentionally presentation-shaped: the renderer reads it and
 // never reaches back into the raw pipeline document.
-export function buildModel(pipeline, { title, note } = {}) {
+//
+// `state` is optional. Without it the diagram shows the process itself (every
+// node pending). With it the diagram shows where one task actually is.
+export function buildModel(pipeline, { title, note, state } = {}) {
   const stages = pipeline.stages;
   const gateByStage = new Map();
   for (const gate of pipeline.gates) {
     if (!gateByStage.has(gate.stage)) gateByStage.set(gate.stage, []);
     gateByStage.get(gate.stage).push(gate);
   }
+  const stageStatus = (id) => state?.stages?.[id]?.status ?? "pending";
+  const gateStatus = (id) => state?.gates?.[id] ?? "pending";
+  const current = state ? currentStage(state, pipeline) : null;
 
   const nodes = [];
   stages.forEach((stage, index) => {
@@ -58,9 +65,12 @@ export function buildModel(pipeline, { title, note } = {}) {
       title: stage.name,
       subtitle: stage.output,
       detail: stage.summary,
-      evidence: stage.evidence,
+      evidence: state?.stages?.[stage.id]?.evidence ?? stage.evidence,
+      evidenceExpected: stage.evidence,
+      stageNote: state?.stages?.[stage.id]?.note ?? null,
       decision: stage.decision,
-      status: "pending",
+      status: stageStatus(stage.id),
+      isCurrent: current === stage.id,
       step: String(index + 1).padStart(2, "0"),
     });
     for (const gate of gateByStage.get(stage.id) ?? []) {
@@ -78,7 +88,8 @@ export function buildModel(pipeline, { title, note } = {}) {
         title: `门${gate.id} ${gate.name}`,
         subtitle: gate.mandatoryLabel ?? gate.mandatory,
         detail: gate.artifact,
-        status: "pending",
+        status: gateStatus(gate.id),
+        isCurrent: current === stage.id && gateStatus(gate.id) === "gated",
         step: String(index + 1).padStart(2, "0"),
       });
     }
@@ -97,7 +108,10 @@ export function buildModel(pipeline, { title, note } = {}) {
       lane: "rework",
       title: "返工",
       subtitle: `调整「${stage.name}」`,
-      status: "pending",
+      // Rework lights up only when its stage is blocked, so the return path is
+      // visible exactly when it is actually in use.
+      status: stageStatus(stage.id) === "blocked" ? "active" : "pending",
+      isCurrent: false,
     });
   }
 
@@ -129,7 +143,24 @@ export function buildModel(pipeline, { title, note } = {}) {
 
   return {
     title: title ?? pipeline.pipelineTitle ?? "UI 设计交付流程",
-    note: note ?? "阶段与确认门来自 tooling/workflow-stages.json，改数据即改图。",
+    note:
+      note ??
+      (state
+        ? "状态取自任务记录，阶段与确认门来自 tooling/workflow-stages.json。"
+        : "阶段与确认门来自 tooling/workflow-stages.json，改数据即改图。"),
+    mode: state ? "task" : "process",
+    task: state
+      ? {
+          name: state.task,
+          revision: state.revision,
+          updatedOn: state.updatedOn,
+          note: state.note,
+          blockedReason: state.blockedReason,
+          currentStage: current,
+          progress: progress(state, pipeline),
+          timeline: state.timeline,
+        }
+      : null,
     actors: pipeline.actors,
     statusValues: pipeline.statusValues,
     stages: stages.map((stage, index) => ({
@@ -141,6 +172,10 @@ export function buildModel(pipeline, { title, note } = {}) {
       summary: stage.summary,
       output: stage.output,
       evidence: stage.evidence,
+      status: stageStatus(stage.id),
+      stageNote: state?.stages?.[stage.id]?.note ?? null,
+      evidenceActual: state?.stages?.[stage.id]?.evidence ?? null,
+      isCurrent: current === stage.id,
     })),
     nodes,
     edges,

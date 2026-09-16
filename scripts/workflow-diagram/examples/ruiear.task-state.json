@@ -1,0 +1,47 @@
+{
+  "task": "睿耳 RuiEar · AI 耳机产品落地页",
+  "revision": "P-earbuds-2",
+  "updatedOn": "2026-09-16",
+  "note": "示例状态：取自 demo/ruiear 的真实交付记录（PLAN.md / DESIGN.md / ACCEPTANCE.md）。",
+  "stages": {
+    "brief": {
+      "status": "passed",
+      "evidence": "demo/ruiear/PLAN.md",
+      "note": "方向记录并入 PLAN.md，未单独出 DIRECTION.md。"
+    },
+    "reference": {
+      "status": "passed",
+      "evidence": "demo/ruiear/research/ · public/models/airpods_pro.glb",
+      "note": "门B 曾重开：Tripo 免费档会员墙导致 A1 获取失败。"
+    },
+    "contract": {
+      "status": "passed",
+      "evidence": "demo/ruiear/DESIGN.md · prototype-board.html",
+      "note": "门C 用户原话「其他都可以了」；契约 v1.1 随实现补功能三屏伴生 UI 卡。"
+    },
+    "build": {
+      "status": "passed",
+      "evidence": "demo/ruiear/src/ · demo/ruiear/ACCEPTANCE.md",
+      "note": "门F 降级留痕：Motion MCP 未配置，改用 motion-contract.md 规范预设。"
+    },
+    "verify": {
+      "status": "passed",
+      "evidence": "demo/ruiear/ACCEPTANCE.md · demo/ruiear/docs/shots/",
+      "note": "Round 1 / 1.1 / 1.2 三轮，P0/P1 修复后截图复验。"
+    },
+    "deliver": {
+      "status": "gated",
+      "evidence": "demo/ruiear/README.md",
+      "note": "记录中未出现用户确认接收，链条停在交付门。"
+    }
+  },
+  "gates": {
+    "A": "passed",
+    "B": "passed",
+    "C": "passed",
+    "D": "passed",
+    "E": "passed",
+    "F": "passed"
+  },
+  "blockedReason": null
+}

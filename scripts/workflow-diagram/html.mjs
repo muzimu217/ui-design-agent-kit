@@ -2,11 +2,12 @@
 // inline script, no network access, no external font or library. Opening the
 // file offline must give the same result as serving it.
 
-import { COLORS } from "./svg.mjs";
+import { COLORS, STATUS_META } from "./svg.mjs";
 
 export function renderHtml({ svg, model, laid, meta = {} }) {
   const title = meta.title ?? model.title;
   const generated = meta.generated ?? "";
+  const task = model.task;
   const stages = model.stages.map((stage) => ({
     id: stage.id,
     name: stage.name,
@@ -15,15 +16,20 @@ export function renderHtml({ svg, model, laid, meta = {} }) {
     output: stage.output,
     evidence: stage.evidence,
     decisionPoint: stage.decisionPoint,
+    status: stage.status,
+    stageNote: stage.stageNote,
+    evidenceActual: stage.evidenceActual,
+    isCurrent: stage.isCurrent,
     nodeIds: model.nodes.filter((node) => node.stageId === stage.id).map((node) => node.id),
   }));
+  const statuses = model.statusValues.map((item) => item.id);
 
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>${escapeHtml(title)}</title>
+<title>${escapeHtml(task ? `${task.name} · ${title}` : title)}</title>
 <style>${styles()}</style>
 </head>
 <body data-theme="light">
@@ -41,18 +47,42 @@ export function renderHtml({ svg, model, laid, meta = {} }) {
   </div>
 </header>
 
+${
+  task
+    ? `<section class="wf-task" aria-label="任务状态">
+  <div class="wf-task-head">
+    <span class="wf-task-badge">任务状态</span>
+    <strong>${escapeHtml(task.name)}</strong>
+    ${task.revision ? `<span class="wf-task-meta">${escapeHtml(task.revision)}</span>` : ""}
+    ${task.updatedOn ? `<span class="wf-task-meta">更新于 ${escapeHtml(task.updatedOn)}</span>` : ""}
+  </div>
+  <p class="wf-task-line">
+    已完成 <strong>${task.progress.passed}</strong> / ${task.progress.total} 个阶段${
+      task.currentStage ? ` · 当前停在「${escapeHtml(stageName(stages, task.currentStage))}」` : ""
+    }
+  </p>
+  ${task.blockedReason ? `<p class="wf-task-blocked">受阻原因：${escapeHtml(task.blockedReason)}</p>` : ""}
+</section>`
+    : ""
+}
+
 <section class="wf-intro">
   <p class="wf-note">${escapeHtml(model.note)}</p>
+  ${task?.note ? `<p class="wf-note">${escapeHtml(task.note)}</p>` : ""}
   ${generated ? `<p class="wf-generated">生成于 ${escapeHtml(generated)}</p>` : ""}
 </section>
 
 <section class="wf-progress" aria-live="polite">
   <div class="wf-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${stages.length}" aria-valuenow="0" id="wf-bar"><span></span></div>
-  <p class="wf-step-note" id="wf-step-note">尚未开始。播放或按「下一步」逐步查看每个阶段与确认门。</p>
+  <p class="wf-step-note" id="wf-step-note">${
+    task
+      ? "图上的状态来自任务记录。播放或按「下一步」逐步查看每个阶段与确认门。"
+      : "尚未开始。播放或按「下一步」逐步查看每个阶段与确认门。"
+  }</p>
 </section>
 
 <nav class="wf-legend" aria-label="图例">
-  ${legendItems()}
+  ${legendItems(statuses)}
 </nav>
 
 <div class="wf-stage-rail" role="tablist" aria-label="交付阶段">
@@ -60,9 +90,9 @@ export function renderHtml({ svg, model, laid, meta = {} }) {
     .map(
       (stage, index) =>
         `<button type="button" role="tab" class="wf-stage-tab" data-stage="${escapeHtml(stage.id)}" ` +
-        `aria-selected="${index === 0}" tabindex="${index === 0 ? 0 : -1}">` +
+        `data-status="${escapeHtml(stage.status)}" aria-selected="${index === 0}" tabindex="${index === 0 ? 0 : -1}">` +
         `<span class="wf-stage-name">${escapeHtml(stage.name)}</span>` +
-        `<span class="wf-stage-meta">${stage.gates.length ? `门 ${stage.gates.join("/")}` : "无门"}</span>` +
+        `<span class="wf-stage-meta">${stage.gates.length ? `门 ${stage.gates.join("/")}` : "无门"} · ${escapeHtml(statusLabel(model.statusValues, stage.status))}</span>` +
         `</button>`,
     )
     .join("")}
@@ -75,50 +105,85 @@ export function renderHtml({ svg, model, laid, meta = {} }) {
 <aside class="wf-panel" id="wf-panel" aria-live="polite"></aside>
 
 <section class="wf-cards">
-  ${cards(stages)}
+  ${cards(stages, model)}
 </section>
 
-<script>${script(stages)}</script>
+<script>${script(stages, statuses)}</script>
 </body>
 </html>
 `;
 }
 
-function legendItems() {
-  const items = [
+function stageName(stages, id) {
+  return stages.find((stage) => stage.id === id)?.name ?? id;
+}
+
+function statusLabel(statusValues, id) {
+  return statusValues.find((item) => item.id === id)?.label ?? id;
+}
+
+function legendItems(statuses) {
+  const nodeKinds = [
     ["stage", "交付环节"],
     ["gate", "确认门（用户）"],
     ["rework", "返工"],
+  ];
+  const edgeKinds = [
     ["flow", "顺序流"],
     ["pass", "门通过"],
     ["return", "不通过 → 返工"],
   ];
-  return items
-    .map(([kind, label]) => {
-      const color =
-        COLORS[kind]?.stroke ?? COLORS.edge[kind] ?? COLORS.muted;
-      return `<span class="wf-legend-item"><span class="wf-swatch" style="--swatch:${color}"></span>${escapeHtml(label)}</span>`;
-    })
-    .join("");
+  const statusItems = statuses.map((id) => {
+    const meta = STATUS_META[id];
+    return `<span class="wf-legend-item"><span class="wf-swatch" style="--swatch:${meta.badge}"></span>${escapeHtml(meta.label)}</span>`;
+  });
+  const kindItems = [...nodeKinds, ...edgeKinds].map(([kind, label]) => {
+    const color = COLORS[kind]?.stroke ?? COLORS.edge[kind] ?? COLORS.muted;
+    return `<span class="wf-legend-item"><span class="wf-swatch" style="--swatch:${color}"></span>${escapeHtml(label)}</span>`;
+  });
+  return (
+    `<span class="wf-legend-group">形状</span>${kindItems.join("")}` +
+    `<span class="wf-legend-group">状态</span>${statusItems.join("")}`
+  );
 }
 
-function cards(stages) {
+function cards(stages, model) {
   const gated = stages.filter((stage) => stage.gates.length);
-  const ungated = stages.filter((stage) => !stage.gates.length);
+  const statusLabelOf = (id) => statusLabel(model.statusValues, id);
   return `
   <article class="wf-card">
     <h2>主线</h2>
-    <ol>${stages.map((stage) => `<li>${escapeHtml(stage.name)}${stage.gates.length ? `（门 ${stage.gates.join("/")}）` : ""}</li>`).join("")}</ol>
+    <ol>${stages
+      .map(
+        (stage) =>
+          `<li><span class="wf-card-status" data-status="${escapeHtml(stage.status)}">${escapeHtml(
+            statusLabelOf(stage.status),
+          )}</span>${escapeHtml(stage.name)}${stage.gates.length ? `（门 ${stage.gates.join("/")}）` : ""}</li>`,
+      )
+      .join("")}</ol>
   </article>
   <article class="wf-card">
     <h2>停点</h2>
     <p>${gated.length} 个阶段设有确认门，未通过不得进入下一环节。</p>
-    <ul>${gated.map((stage) => `<li>${escapeHtml(stage.name)}：${escapeHtml(stage.decisionPoint ? "用户裁决" : "按规则确认")}</li>`).join("")}</ul>
+    <ul>${gated
+      .map(
+        (stage) =>
+          `<li>${escapeHtml(stage.name)}：${escapeHtml(statusLabelOf(stage.status))}${
+            stage.stageNote ? ` · ${escapeHtml(stage.stageNote)}` : ""
+          }</li>`,
+      )
+      .join("")}</ul>
   </article>
   <article class="wf-card">
     <h2>证据</h2>
-    <ul>${stages.map((stage) => `<li>${escapeHtml(stage.name)}：${escapeHtml(stage.evidence ?? "—")}</li>`).join("")}</ul>
-    <p class="wf-card-note">无门的阶段：${ungated.map((stage) => escapeHtml(stage.name)).join("、") || "无"}。</p>
+    <ul>${stages
+      .map(
+        (stage) =>
+          `<li>${escapeHtml(stage.name)}：${escapeHtml(stage.evidenceActual ?? stage.evidence ?? "—")}${
+            stage.evidenceActual ? "" : `<span class="wf-card-expected">（预期）</span>`
+          }</li>`,
+      )
+      .join("")}</ul>
   </article>`;
 }
 
@@ -126,12 +191,12 @@ function styles() {
   return `
 :root{
   --bg:#ffffff; --fg:${COLORS.ink}; --muted:${COLORS.muted}; --line:${COLORS.hairline};
-  --card:#f7f9fb; --accent:#1f7a5c; --gate:#b3244a; --rework:#b5711b;
+  --card:#f7f9fb; --accent:#1f7a5c; --gate:#b3244a; --rework:#b5711b; --blocked:#c2410c;
   --font:ui-sans-serif,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
 }
 body[data-theme="dark"]{
   --bg:#0f1419; --fg:#e6edf3; --muted:#93a1b0; --line:#243039; --card:#161d24;
-  --accent:#4cc38a; --gate:#e5637f; --rework:#e0a355;
+  --accent:#4cc38a; --gate:#e5637f; --rework:#e0a355; --blocked:#f97316;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.6;
@@ -149,6 +214,13 @@ h1{font-size:20px;margin:0;font-weight:650;letter-spacing:-.01em}
 .wf-btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
 .wf-btn[disabled]{opacity:.5;cursor:not-allowed}
 .wf-intro{padding:16px 24px 0}
+.wf-task{margin:16px 24px 0;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:14px 16px}
+.wf-task-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.wf-task-badge{font-size:11.5px;font-weight:650;letter-spacing:.04em;color:#fff;background:var(--accent);border-radius:6px;padding:2px 8px}
+.wf-task-head strong{font-size:15px}
+.wf-task-meta{font-size:12px;color:var(--muted)}
+.wf-task-line{margin:8px 0 0;font-size:13.5px;color:var(--muted)}
+.wf-task-blocked{margin:6px 0 0;font-size:13px;color:var(--blocked)}
 .wf-note{margin:0;color:var(--muted);font-size:14px;max-width:70ch}
 .wf-generated{margin:4px 0 0;color:var(--muted);font-size:12px}
 .wf-progress{padding:12px 24px 0}
@@ -157,6 +229,7 @@ h1{font-size:20px;margin:0;font-weight:650;letter-spacing:-.01em}
 .wf-step-note{margin:8px 0 0;font-size:13px;color:var(--muted);min-height:1.5em}
 .wf-legend{display:flex;flex-wrap:wrap;gap:14px;padding:14px 24px;margin:0;list-style:none}
 .wf-legend-item{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted)}
+.wf-legend-group{font-size:11.5px;font-weight:650;color:var(--fg);opacity:.7;padding:2px 0}
 .wf-swatch{width:12px;height:12px;border-radius:3px;background:var(--swatch);flex:none}
 .wf-stage-rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(120px,1fr);gap:8px;
   padding:0 24px 12px;overflow-x:auto}
@@ -164,6 +237,10 @@ h1{font-size:20px;margin:0;font-weight:650;letter-spacing:-.01em}
   padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);
   color:var(--fg);font:inherit;cursor:pointer;text-align:left}
 .wf-stage-tab[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.wf-stage-tab[data-status="passed"] .wf-stage-name::before{content:"✓ ";color:var(--accent)}
+.wf-stage-tab[data-status="gated"] .wf-stage-name::before{content:"⏸ ";color:var(--gate)}
+.wf-stage-tab[data-status="active"] .wf-stage-name::before{content:"▶ ";color:var(--accent)}
+.wf-stage-tab[data-status="blocked"] .wf-stage-name::before{content:"! ";color:var(--blocked)}
 .wf-stage-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .wf-stage-name{font-size:13.5px;font-weight:600}
 .wf-stage-meta{font-size:11.5px;color:var(--muted)}
@@ -194,6 +271,11 @@ h1{font-size:20px;margin:0;font-weight:650;letter-spacing:-.01em}
 .wf-card ul,.wf-card ol{margin:0;padding-left:18px;font-size:13px;color:var(--muted)}
 .wf-card p{margin:0;font-size:13px;color:var(--muted)}
 .wf-card-note{margin-top:8px !important}
+.wf-card-status{display:inline-block;min-width:3.4em;margin-right:6px;font-size:11.5px;color:var(--muted)}
+.wf-card-status[data-status="passed"]{color:var(--accent)}
+.wf-card-status[data-status="gated"]{color:var(--gate)}
+.wf-card-status[data-status="blocked"]{color:var(--blocked)}
+.wf-card-expected{opacity:.7}
 @media (max-width:640px){
   .wf-header{padding:16px}
   .wf-controls{width:100%}
@@ -207,11 +289,15 @@ h1{font-size:20px;margin:0;font-weight:650;letter-spacing:-.01em}
 `;
 }
 
-function script(stages) {
+function script(stages, statuses) {
   const data = JSON.stringify(stages);
+  const statusLabels = JSON.stringify(
+    Object.fromEntries(statuses.map((id) => [id, STATUS_META[id]?.label ?? id])),
+  );
   return `
 (function(){
   var STAGES = ${data};
+  var STATUS_LABEL = ${statusLabels};
   var stageOrder = STAGES.map(function(s){ return s.id; });
   var cursor = -1;
   var playing = false;
@@ -228,15 +314,22 @@ function script(stages) {
   var themeBtn = document.getElementById('wf-theme');
   var exportBtn = document.getElementById('wf-export');
 
+  // The task's real status is the source of truth for the badge and colour.
+  // Playback focus is a separate attribute so stepping through the diagram can
+  // never overwrite what the record actually says.
+  function realStatus(stageId){
+    for (var i=0;i<STAGES.length;i++) if (STAGES[i].id === stageId) return STAGES[i].status;
+    return 'pending';
+  }
   function nodesOf(stageId){
-    return Array.prototype.slice.call(svg.querySelectorAll('[data-stage="'+stageId+'"]'));
+    return Array.prototype.slice.call(svg.querySelectorAll('.wf-node[data-stage="'+stageId+'"]'));
   }
   function allNodes(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-node')); }
   function allEdges(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-edge')); }
 
-  function clearHighlights(){
-    allNodes().forEach(function(n){ n.removeAttribute('data-dim'); n.removeAttribute('data-active'); n.setAttribute('data-status','pending'); });
-    allEdges().forEach(function(e){ e.removeAttribute('data-dim'); });
+  function clearFocus(){
+    allNodes().forEach(function(n){ n.setAttribute('data-dim','false'); n.removeAttribute('data-active'); });
+    allEdges().forEach(function(e){ e.setAttribute('data-dim','false'); });
   }
 
   function focusStage(stageId){
@@ -246,7 +339,6 @@ function script(stages) {
       var isTarget = !!keep[n.getAttribute('data-node')];
       n.setAttribute('data-dim', isTarget ? 'false' : 'true');
       if (isTarget) n.setAttribute('data-active','true'); else n.removeAttribute('data-active');
-      n.setAttribute('data-status', isTarget ? 'active' : 'pending');
     });
     allEdges().forEach(function(e){
       var from = e.getAttribute('data-from'), to = e.getAttribute('data-to');
@@ -258,11 +350,10 @@ function script(stages) {
 
   function syncTabs(stageId){
     var tabs = document.querySelectorAll('.wf-stage-tab');
-    Array.prototype.forEach.call(tabs, function(tab, i){
+    Array.prototype.forEach.call(tabs, function(tab){
       var on = tab.getAttribute('data-stage') === stageId;
       tab.setAttribute('aria-selected', on ? 'true' : 'false');
       tab.setAttribute('tabindex', on ? '0' : '-1');
-      if (on && i >= 0) { /* keep focus management user-driven */ }
     });
   }
 
@@ -276,11 +367,14 @@ function script(stages) {
         '<h2>' + esc(stage.name) + '</h2>' +
         '<p>' + esc(stage.summary) + '</p>' +
         '<dl>' +
+          '<dt>任务状态</dt><dd>' + esc(STATUS_LABEL[stage.status] || stage.status) + '</dd>' +
           '<dt>确认门</dt><dd>' + esc(gates) + '</dd>' +
           '<dt>阶段产出</dt><dd>' + esc(stage.output) + '</dd>' +
-          '<dt>证据</dt><dd>' + esc(stage.evidence || '—') + '</dd>' +
+          '<dt>证据</dt><dd>' + esc(stage.evidenceActual || stage.evidence || '—') +
+            (stage.evidenceActual ? '' : ' <span class="wf-card-expected">（预期）</span>') + '</dd>' +
           '<dt>决策</dt><dd>' + esc(stage.decisionPoint ? '用户确认' : '按规则推进') + '</dd>' +
         '</dl>' +
+        (stage.stageNote ? '<p class="wf-panel-note">' + esc(stage.stageNote) + '</p>' : '') +
       '</div>';
   }
 
@@ -292,7 +386,7 @@ function script(stages) {
     if (barFill) barFill.style.width = ((cursor + 1) / stageOrder.length * 100) + '%';
     if (bar) bar.setAttribute('aria-valuenow', String(cursor + 1));
     if (cursor < 0){
-      clearHighlights();
+      clearFocus();
       note.textContent = '尚未开始。播放或按「下一步」逐步查看每个阶段与确认门。';
       panel.innerHTML = '';
       syncTabs('');
@@ -300,7 +394,8 @@ function script(stages) {
     }
     var stage = STAGES[cursor];
     note.textContent = '第 ' + (cursor + 1) + ' / ' + STAGES.length + ' 步 · ' + stage.name +
-      (stage.gates.length ? '：停在门 ' + stage.gates.join('、') + ' 等用户裁决' : '：无确认门，直接进入下一阶段');
+      ' · 记录状态：' + (STATUS_LABEL[stage.status] || stage.status) +
+      (stage.gates.length ? ' · 门 ' + stage.gates.join('、') : '');
     focusStage(stage.id);
   }
 
@@ -338,7 +433,8 @@ function script(stages) {
   });
   if (exportBtn) exportBtn.addEventListener('click', function(){
     var clone = svg.cloneNode(true);
-    clone.querySelectorAll('[data-dim="true"]').forEach(function(el){ el.remove(); });
+    clone.querySelectorAll('[data-dim="true"]').forEach(function(el){ el.removeAttribute('data-dim'); });
+    clone.querySelectorAll('[data-active="true"]').forEach(function(el){ el.removeAttribute('data-active'); });
     var blob = new Blob([new XMLSerializer().serializeToString(clone)], {type:'image/svg+xml'});
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -372,7 +468,10 @@ function script(stages) {
     if (index >= 0){ stop(); setCursor(index); }
   });
 
-  setCursor(-1);
+  // Open on the stage the task is actually on, when the record says so.
+  var startAt = -1;
+  for (var i=0;i<STAGES.length;i++){ if (STAGES[i].isCurrent) { startAt = i; break; } }
+  if (startAt >= 0) setCursor(startAt); else setCursor(-1);
 })();
 `;
 }

@@ -13,6 +13,15 @@ const PALETTE = {
   gate: { fill: "#fdeff2", stroke: "#b3244a", text: "#8c1c3a" },
   rework: { fill: "#fdf3e7", stroke: "#b5711b", text: "#8a5410" },
   edge: { flow: "#8b98a6", pass: "#1f7a5c", gate: "#b3244a", rework: "#b5711b", return: "#b5711b", trace: "#6b7a8c" },
+  // Status is carried by both the badge glyph and the stroke weight, so it does
+  // not depend on colour alone.
+  status: {
+    pending: { badge: "#c3ccd6", glyph: "", label: "未开始" },
+    active: { badge: "#1f7a5c", glyph: "▶", label: "进行中" },
+    gated: { badge: "#b3244a", glyph: "⏸", label: "等待确认" },
+    passed: { badge: "#1f7a5c", glyph: "✓", label: "已通过" },
+    blocked: { badge: "#c2410c", glyph: "!", label: "受阻" },
+  },
 };
 
 export function renderSvg(laid, model) {
@@ -77,15 +86,26 @@ export function renderSvg(laid, model) {
     );
   }
 
-  // Nodes
+  // Nodes. Status is rendered, not implied: a badge glyph plus stroke weight
+  // carry it so the reading does not depend on colour alone.
   for (const node of laid.nodes) {
     const tone = PALETTE[node.kind === "gate" ? "gate" : node.kind === "rework" ? "rework" : "stage"];
+    const status = PALETTE.status[node.status] ?? PALETTE.status.pending;
+    const isDone = node.status === "passed";
+    const isCurrent = node.isCurrent === true;
+    const strokeWidth = isCurrent ? 3 : isDone ? 2.4 : node.status === "pending" ? 1.2 : 2;
+    const opacity = node.status === "pending" && !isCurrent ? 0.62 : 1;
     parts.push(
       `<g class="wf-node" data-node="${esc(node.id)}" data-kind="${esc(node.kind)}" data-stage="${esc(node.stageId)}" ` +
-        `data-status="pending" tabindex="0" role="listitem" aria-label="${esc(nodeAria(node))}">` +
+        `data-status="${esc(node.status)}" data-current="${isCurrent ? "true" : "false"}" ` +
+        `tabindex="0" role="listitem" aria-label="${esc(nodeAria(node))}">` +
         `<rect x="${round(node.x)}" y="${round(node.y)}" width="${round(node.width)}" height="${round(node.height)}" rx="10" ` +
-        `fill="${tone.fill}" stroke="${tone.stroke}" stroke-width="1.5"/>` +
-        (node.step ? `<text x="${round(node.x + 10)}" y="${round(node.y + 16)}" class="wf-node-step">${esc(node.step)}</text>` : "") +
+        `fill="${tone.fill}" stroke="${tone.stroke}" stroke-width="${strokeWidth}" opacity="${opacity}"` +
+        `${isCurrent ? ` stroke-dasharray="none"` : ""}/>` +
+        (node.step
+          ? `<text x="${round(node.x + 10)}" y="${round(node.y + 16)}" class="wf-node-step">${esc(node.step)}</text>`
+          : "") +
+        statusBadge(node, status) +
         `<text x="${round(node.cx)}" y="${round(node.y + (node.kind === "stage" ? 30 : 26))}" class="wf-node-title" text-anchor="middle">${esc(node.title)}</text>` +
         `<text x="${round(node.cx)}" y="${round(node.y + (node.kind === "stage" ? 48 : 44))}" class="wf-node-sub" text-anchor="middle">${esc(truncate(node.subtitle ?? "", node.kind === "rework" ? 10 : 18))}</text>` +
         `</g>`,
@@ -96,9 +116,26 @@ export function renderSvg(laid, model) {
   return parts.join("\n");
 }
 
+// A small filled circle with a glyph, placed at the node's top-right corner.
+function statusBadge(node, status) {
+  const cx = node.x + node.width - 13;
+  const cy = node.y + 13;
+  return (
+    `<g class="wf-status" data-status="${esc(node.status)}">` +
+    `<circle cx="${round(cx)}" cy="${round(cy)}" r="8" fill="${status.badge}"/>` +
+    (status.glyph
+      ? `<text x="${round(cx)}" y="${round(cy + 3.5)}" class="wf-status-glyph" text-anchor="middle">${esc(status.glyph)}</text>`
+      : "") +
+    `</g>`
+  );
+}
+
 function nodeAria(node) {
   const bits = [node.title];
   if (node.subtitle) bits.push(node.subtitle);
+  const status = PALETTE.status[node.status];
+  if (status) bits.push(`状态：${status.label}`);
+  if (node.isCurrent) bits.push("当前阶段");
   if (node.detail) bits.push(node.detail);
   if (node.evidence) bits.push(`证据：${node.evidence}`);
   return bits.join("。");
@@ -158,3 +195,4 @@ function round(value) {
 }
 
 export const COLORS = PALETTE;
+export const STATUS_META = PALETTE.status;

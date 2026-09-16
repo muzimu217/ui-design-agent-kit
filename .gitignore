@@ -35,3 +35,6 @@ demo/inventory-console/coverage/
 demo/forma-phone-ui/dist/
 demo/forma-phone-ui/artifacts/
 demo/tempo-day/artifacts/
+intro-video/out/
+intro-video/node_modules/
+showcase/products/node_modules/

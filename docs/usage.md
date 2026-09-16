@@ -131,27 +131,3 @@ contracts. The Motion AI Kit is the source for web Motion docs and CSS easing.
 The deprecated Remotion MCP is intentionally not configured.
 The animation ecosystem references are candidates for research and routing; they
 are not automatically installed, connected, or licensed for code and media reuse.
-
-## Architecture diagrams with the archify-diagram skill
-
-`archify-diagram` is a distilled usage guide for the
-[Archify](https://github.com/tt-a1i/archify) diagram tool: five typed diagram
-types, the minimal typed JSON IR for each, and the validate/deliver workflow.
-
-```text
-$archify-diagram Map this repository's runtime architecture as one interactive HTML diagram. Pick the diagram type first, author the typed JSON IR, validate it at showcase quality, and report the validation receipt honestly.
-```
-
-This kit does **not** install the Archify runtime; it vendors usage knowledge
-only. Install the tool separately before expecting rendered output:
-
-```bash
-npx skills add tt-a1i/archify -g
-node bin/archify.mjs doctor
-```
-
-Without the runtime, the skill can still help choose a diagram type and draft IR,
-but the draft is unverified until a real `validate` run accepts it. Never report a
-generated, validated, or visually reviewed diagram that was not actually produced.
-Archify has no automatic Mermaid parsing, no general-purpose auto-layout, and no
-WYSIWYG editing.

@@ -189,6 +189,13 @@ with their severity. The user judges direction at the gates; you judge craft
 before the gates. An unfixed P0 blocks implementation acceptance, not delivery
 of a review or a blocker report.
 
+At a gate presentation, or whenever the user asks where the work stands, produce
+the workflow diagram per [workflow-visualization.md](references/workflow-visualization.md):
+record the task's real stage statuses and evidence in a state file, render it to
+one self-contained HTML the user can open, and check it before handing it over.
+It reports the record, never an optimistic version of it. A narrow repair that
+touches no gate does not need one.
+
 Identify the audience, primary job, target surface, critical states, and technical
 constraints. Choose the surface's mode, not a stereotype for the entire company:
 

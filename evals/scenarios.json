@@ -535,6 +535,25 @@
     ]
   },
   {
+    "id": "design-md-baseline-adaptation",
+    "request": "我想给团队做一个任务看板，整体要 Linear 的感觉。先用它公开的品牌视觉语言帮我定方向，别直接开写代码。",
+    "context": "用户点名 Linear 的视觉风格。本 kit 已把 awesome-design-md（74 份品牌 DESIGN.md 分析，MIT，revision 锁定在 sources.lock.json 的 designContracts 区）登记为品牌契约知识源，取用走 `node tooling/design-md.mjs pull linear.app`。用户尚未确认视觉方向或素材。该文档是对公开网站 CSS 的第三方分析，不是 Linear 官方规范。",
+    "passCriteria": [
+      "先用取用脚本把 linear.app 的 DESIGN.md 拉到任务本地目录作为可证伪 token 对照源，并说明 revision 与 MIT 授权",
+      "把上游 token 关系与组件规则改写进本 kit 契约结构，自行撰写上游没有的段落（Mission、Accessibility、Writing tone、Rules: Do/Don't、Quality gates）",
+      "在方向稿中把该品牌分析列为具名参考基线，标注改编边界与授权状态",
+      "说明该文档是第三方分析非官方品牌资产，不声称与 Linear 的关联",
+      "在用户确认方向与素材前不写实现代码"
+    ],
+    "failConditions": [
+      "凭记忆杜撰 Linear 的色值或字阶而不取用锁定的知识源",
+      "把上游 DESIGN.md 全文照搬当作契约或直接 ship 它的 token",
+      "声称产出物获得 Linear 官方授权或 affiliations",
+      "把拉取的文件提交进仓库或当作生产资产",
+      "跳过素材确认门直接进入实现"
+    ]
+  },
+  {
     "id": "plan-lock-before-prototype",
     "request": "我们先进入计划模式。请通过提问把需求、用户、素材、视觉方向、原型范围和验收条件定下来；计划没确认前不要生成原型。",
     "context": "这是一个全新的预约产品。用户只给了产品类型，尚未确认受众、主链路、参考素材、目标视口、非目标和原型范围。环境有图片生成能力，但当前请求是咨询和计划，不是执行。",

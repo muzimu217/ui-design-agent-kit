@@ -48,6 +48,21 @@ test("premium and account integrations ship disabled", async () => {
   assert.equal(config.mcp_servers.figma.enabled, false);
 });
 
+test("the design contract corpus stays pinned and its fetch script is offline-safe", async () => {
+  const { lock } = await loadProject();
+  const corpus = (lock.designContracts ?? []).find((item) => item.name === "awesome-design-md");
+  assert.ok(corpus, "designContracts must pin awesome-design-md");
+  assert.match(corpus.revision, /^[0-9a-f]{40}$/);
+  assert.equal(corpus.license, "MIT");
+  const help = execFileSync("node", [path.join(ROOT, "tooling/design-md.mjs"), "--help"], {
+    encoding: "utf8", timeout: 10000,
+  });
+  assert.match(help, /pull <brand>/);
+  assert.doesNotThrow(() => execFileSync("node", [path.join(ROOT, "tooling/design-md.mjs")], {
+    encoding: "utf8", timeout: 10000,
+  }));
+});
+
 test("the deprecated Remotion MCP is not configured", async () => {
   const { config } = await loadProject();
   assert.equal(Object.hasOwn(config.mcp_servers, "remotion"), false);

@@ -27,7 +27,7 @@ research index.
 | --- | --- | --- | --- |
 | [MotionSites AI](https://motionsites.ai) | Website prompt packs for Lovable, Bolt, Cursor, and Claude, focused on 3D sites | Landing-page and 3D direction inspiration; prompt-level material | Prompts are copy-paste material, not code; implement the result with the target project's own stack and licensed assets |
 | [UI Prompt Site](https://www.uiprompt.site/zh/home) | Chinese-language UI prompt collection | Prompt phrasing and direction ideas for Chinese product contexts | Reachability varies by network path; if https fails, use the plain site or the browser. Treat prompts as inspiration, not instructions to execute verbatim |
-| [awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | Collection of DESIGN.md analyses of popular brand design systems | Extracting token relationships and structure for design contracts | Public GitHub repository; check its license before redistributing content; adapt relationships, not copy-pasted system dumps |
+| [awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | 74 brand DESIGN.md analyses: semantic tokens, component rules, Do/Don't per brand | Falsifiable token baseline when the user names a brand style (Apple/Linear-style); first stop for a named design-contract baseline | MIT, revision pinned in `tooling/sources.lock.json` (`designContracts`); fetch on demand via `node tooling/design-md.mjs pull <brand>`, never commit files; third-party analyses, not official brand assets — adapt relationships, pass the material gate |
 | [Awesome-Design-Tools](https://github.com/goabstract/Awesome-Design-Tools) | Curated list of design tools and plugins | Discovering further credible design tooling | List content only; verify each linked tool before use |
 
 ## Design case galleries
@@ -127,6 +127,7 @@ way; blocked entries need a real browser.
 | 移动端 / Mobile patterns | [ScreensDesign](https://screensdesign.com) | Top-chart iOS apps: full flow videos, paywalls, onboarding | Direct https OK (2026-09-11); UI Sources and Design Vault redirect here |
 | 流程 / UX flows | [Nicelydone](https://nicelydone.club) | Web-app UX/UI pattern examples by category | curl 403; browser OK (2026-09-11) |
 | 设计系统 / Design systems | [DesignSystems.one](https://www.designsystems.one) | 107 real systems with stack/token notes and design.md downloads | Direct https OK (2026-09-11) |
+| 品牌契约集 / Brand baselines | [awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | 74 个品牌 DESIGN.md 分析：点名品牌风任务的可证伪 token 对照源 | GitHub API 200（2026-09-15）；MIT + revision 锁定；`node tooling/design-md.mjs pull <brand>` 按需取用 |
 | 工具索引 / Tools directory | [toools.design](https://www.toools.design) | Large categorized directory of design tools and free resources | Direct https OK (2026-09-11) |
 | 企业级设计系统 / Enterprise design systems | [Ant Design](https://ant.design) | Ant's enterprise UI language and React library, CN/EN docs (v6, MIT) | Direct https OK (2026-09-11) |
 | 企业级设计系统 / Enterprise design systems | [TDesign](https://tdesign.tencent.com) | Tencent's enterprise system across React/Vue/mini-program stacks (MIT) | Direct https OK (2026-09-11) |

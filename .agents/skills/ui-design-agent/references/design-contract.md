@@ -35,9 +35,19 @@ search was performed and no compatible example was found.
    design system into the contract before choosing a new direction.
 2. Record the selected reference baseline: URL or local path, the parts being
    adapted, and the license or permission status.
-3. Write the contract in the project's existing design document, or in a
+3. When the brief names a known brand's visual language ("Apple-like",
+   "Linear-style"), pull that brand's DESIGN.md analysis as the falsifiable
+   token baseline: `node tooling/design-md.mjs pull <brand>` (catalog list,
+   license, and pinned revision in `tooling/sources.lock.json`,
+   `designContracts`). Treat the file as reference material: adapt its token
+   relationships into this contract's structure and self-author the sections
+   the upstream format lacks (Mission, Accessibility, Writing tone, Rules:
+   Do/Don't, Quality gates). It is a third-party analysis, not an official
+   brand document; never claim brand affiliation, and adoption still passes
+   the material confirmation gate.
+4. Write the contract in the project's existing design document, or in a
    task-local note if none exists.
-4. Implement against the contract. Amend it only when a requirement or a
+5. Implement against the contract. Amend it only when a requirement or a
    verified constraint changes, then state the amendment.
 
 ## Anti-pattern quick reference

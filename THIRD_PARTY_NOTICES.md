@@ -86,6 +86,16 @@ install or redistribute Remotion runtime packages.
   upstream skill is installed by this extension, so existing source pins and
   upstream notices remain unchanged. Future adoption needs its own version,
   license, asset-provenance, and permission review.
+- Awesome DESIGN.md, `VoltAgent/awesome-design-md`, revision
+  `8147538b4226ae41e2487a9179e3bcc1f68e8554`: MIT. Source:
+  https://github.com/VoltAgent/awesome-design-md — registered as a design
+  contract knowledge source in `tooling/sources.lock.json` (`designContracts`).
+  Individual brand DESIGN.md files are fetched on demand via
+  `tooling/design-md.mjs` into task-local directories and are never committed
+  to or redistributed by this repository. The upstream files are third-party
+  analyses of publicly visible CSS on brand websites, provided "as is"; they
+  are not official brand assets, and no brand affiliation is claimed. Only the
+  fetch script and catalog index facts are authored here.
 
 ## Demo assets (demo/subway-runner)
 

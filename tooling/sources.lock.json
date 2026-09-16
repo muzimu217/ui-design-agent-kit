@@ -200,5 +200,16 @@
     { "name": "playwright", "package": "@playwright/mcp@0.0.80", "defaultEnabled": true },
     { "name": "motion_plus", "url": "https://mcp.motion.dev/plus", "defaultEnabled": false },
     { "name": "figma", "url": "https://mcp.figma.com/mcp", "defaultEnabled": false }
+  ],
+  "designContracts": [
+    {
+      "name": "awesome-design-md",
+      "repository": "https://github.com/VoltAgent/awesome-design-md",
+      "revision": "8147538b4226ae41e2487a9179e3bcc1f68e8554",
+      "license": "MIT",
+      "catalogPath": "design-md",
+      "usage": "Fetched on demand via tooling/design-md.mjs; files are never committed to this repository",
+      "notice": "THIRD_PARTY_NOTICES.md"
+    }
   ]
 }

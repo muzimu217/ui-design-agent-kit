@@ -46,8 +46,13 @@
 
 ## 四、后续待办（工程师执行）
 
-1. **确认 "Awesome DESIGN" 指向**：当前收录 `VoltAgent/awesome-design-md`，
-   若用户指 `goabstract/Awesome-Design-Tools` 或其他，替换/补充素材库条目。
+1. ~~**确认 "Awesome DESIGN" 指向**~~ ✅ 已收口（2026-09-15）：用户拍板指向
+   `VoltAgent/awesome-design-md`（116k★，MIT，74 份品牌 DESIGN.md）。已按
+   "设计契约知识源"接入：`tooling/sources.lock.json` 新增 `designContracts` 区
+   锁定 revision `8147538b4226`，取用脚本 `tooling/design-md.mjs`（list/pull，
+   按需拉取不入库），素材条目库独立条目 + 灵感库路由索引"品牌契约集"行 +
+   design-contract.md / tool-routing.md 品牌风取用步骤，provenance 见
+   THIRD_PARTY_NOTICES.md "Research-only references"。
 2. **真实浏览器复验**：uiverse.io（403）与 uiprompt.site（https 不稳）用
    Playwright 实测后回填素材库"可达性信号表"。
 3. **生图能力接入**：若目标环境配置图像生成 MCP/CLI，在 tool-routing.md

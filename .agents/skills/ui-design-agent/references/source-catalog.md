@@ -352,6 +352,22 @@
 | 可达性与授权 | curl 200、浏览器正常加载（2026-09-11 实测）；目录免费；各系统内容授权归原组织，改编关系而非照搬文本 |
 | 加入日期 / 来源 | 2026-09-11 / AI 发现（用户定向网络调研批次） |
 
+### awesome-design-md（品牌契约集 / Brand design baselines）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://github.com/VoltAgent/awesome-design-md |
+| 功效分析·提供什么 | 74 个知名品牌视觉语言的 DESIGN.md 分析集（Apple/Linear/Vercel/Stripe/Notion/Tesla 等，含 90 年代复古特辑），每份含语义 token（色彩/字阶/圆角/间距）、组件状态、Do/Don't 与响应式规则；版本锁定见 `tooling/sources.lock.json` 的 `designContracts` 区，取用走 `node tooling/design-md.mjs list / pull <brand>` |
+| 功效分析·适合任务 | 用户点名"某个品牌的视觉语言"（如 Apple/Linear 风）时的可证伪 token 对照源；设计契约 Stage 4 找具名基线时的第一站；契约结构对照 |
+| 功效分析·视觉特征 | 对公开网站 CSS 的第三方分析，水位随品牌而异；是"该品牌网站实际长什么样"的结构化转写，非官方规范 |
+| 功效分析·内容形态 | Markdown 规范文档（按需拉取，不入库）+ 每品牌 preview.html 视觉目录（上游自看，不复制） |
+| 使用场景示例 | "做个 Linear 风格的任务工具" → `pull linear.app` 拉到任务本地目录 → 读它的 token 关系与组件规则 → 改写进本 kit 契约结构（Mission/Do-Don't/Quality gates 须自写）→ 作为具名基线过方向门 |
+| 截图示例 | 无截图：仓库为 Markdown 集合无独立视觉页面；内容真实性由 `pull` 实测保证（2026-09-15 拉取 apple/DESIGN.md 37KB 核对 frontmatter 通过），结构参考 DesignSystems.one 条目截图 |
+| 镜像替代 | DesignSystems.one（可下载 design.md 的系统目录）、各品牌官网直接观测（image-to-code-fidelity 流程） |
+| 适用类型 | 品牌契约集 / Brand design baselines；设计系统 / Design systems |
+| 可达性与授权 | GitHub API 实测 200（2026-09-15，仓库 116k★）；仓库 MIT（revision 8147538b4226 已锁定）；文档是对公开 CSS 的分析"as is"提供，不拥有品牌视觉身份——改编关系与 token 结构，不照搬全文，不声称品牌关联；拉取结果按 reference/prompt 类素材走素材确认门 |
+| 加入日期 / 来源 | 2026-09-15 / 用户提议（用户拍板指向本仓库） |
+
 ### toools.design（工具索引 / Tools directory）
 
 | 字段 | 内容 |

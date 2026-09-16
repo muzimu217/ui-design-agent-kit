@@ -28,6 +28,13 @@ a new visual direction or interaction pattern:
    anti-crawled. Then search one dominant intent across no more than three
    high-priority sources and five first-pass candidates. Use the actual MCP or
    browser tools when available; a catalog entry is not a connection.
+   When the brief names a known brand's visual language, route first to the
+   brand-baseline corpus: `node tooling/design-md.mjs pull <brand>` fetches
+   that brand's DESIGN.md analysis (74 brands, MIT, revision pinned in
+   `tooling/sources.lock.json` under `designContracts`) into a task-local
+   directory. The fetched file is `reference`/`prompt`-kind material: it
+   shapes the design contract's falsifiable tokens and is never shipped or
+   committed, and adoption still passes the material confirmation gate.
 3. Rank candidates with `scripts/material-rank.mjs`. Present the reachable,
    high-score primary bucket first; retain low-score, blocked, rate-limited, or
    unverified sources in a separately labeled secondary bucket. Do not repeat

@@ -16,7 +16,7 @@
 | 6 | https://motionsites.ai | ✅ 200 | AI 网站提示词包（Lovable/Bolt/Cursor/Claude，3D 网站） | 提示词与设计契约 |
 | 7 | https://www.uiprompt.site/zh/home | ⚠️ https 直连失败；http 返回 301 | 中文 UI 提示词收藏站 | 提示词与设计契约 |
 | 8 | motionlab.dev（Motion.Lab） | ⚠️ 200 但为 Next.js 默认占位页 | 空壳页面，无可引用内容 | 不可用 |
-| 9 | "Awesome DESIGN" | 🔍 二义性 | GitHub 搜索结果两项候选：`VoltAgent/awesome-design-md`（114k★，品牌 DESIGN.md 分析集，与本 kit 设计契约方向强相关）；`goabstract/Awesome-Design-Tools`（41k★，设计工具清单） | 提示词与设计契约 |
+| 9 | "Awesome DESIGN" | ✅ 指向已确认（2026-09-15） | 用户拍板 `VoltAgent/awesome-design-md`（116k★，MIT，74 份品牌 DESIGN.md 分析）。已从轻登记升级为设计契约知识源：lock `designContracts` 锁 revision `8147538b4226`、`tooling/design-md.mjs` 按需取用（不入库）、素材条目库独立条目 + 灵感库"品牌契约集"路由行 | 设计契约知识源 |
 | 10 | "UI UX Pro Max" | ✅ 已安装 | 本项目级 skill（本地可检索设计知识） | 已内置 |
 | 11 | Taste Skill（`Leonxlnx/taste-skill`） | ✅ 已验证 | 84.7k★，anti-slop 前端品味框架（Claude Code 风格 agent skill），官网 tasteskill.dev | 可选品味 skill |
 | 12 | "Intenable"（听写误差）→ impeccable.style | ✅ 已确认 | 用户澄清后验证：https://impeccable.style 返回 200，站点自称 "1 skill, 23 commands, curated anti-patterns"，即已安装 impeccable skill 的官网 | 已收录（配套已安装 skill） |
@@ -34,7 +34,9 @@
 3. 不可用项（motionlab.dev）明确标注"禁止引用"；反爬与不稳定项
    （uiverse.io、uiprompt.site）标注备用访问路径。
 4. "Awesome DESIGN" 与 "Motion.Lab" 名称不唯一，未武断绑定某一仓库；
-   awesome-design-md 因与设计契约方向最匹配已收录，待用户确认指向。
+   awesome-design-md 因与设计契约方向最匹配已收录。~~待用户确认指向~~
+   → 2026-09-15 用户确认指向 `VoltAgent/awesome-design-md`，已升级为设计契约
+   知识源（见第一节第 9 行）。
 5. Taste Skill 以"可选品味 skill"收编进灵感库新增的
    "Optional design-taste skills" 小节（含 tastemaker、senlindesign 两个备选），
    未安装、未内置任何内容。

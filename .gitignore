@@ -6,6 +6,7 @@ __pycache__/
 .env.*
 !.env.example
 output/
+paper/out/
 .playwright-cli/
 .playwright-mcp/
 .impeccable/

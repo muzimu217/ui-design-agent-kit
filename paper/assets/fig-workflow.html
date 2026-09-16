@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!-- Paper figure source: UAK gated workflow (docs/chain-flow.md v7.2).
+Render (2x):
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+  --disable-gpu --hide-scrollbars --force-device-scale-factor=2 \
+  --window-size=1060,1375 \
+  --screenshot=paper/assets/fig-workflow.png \
+  "file://$PWD/paper/assets/fig-workflow.html" -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1060px; background: #ffffff;
+         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #1a2030; }
+  .canvas { position: relative; width: 1060px; padding: 18px 200px 16px 22px; }
+
+  .band { border-radius: 14px; padding: 30px 26px 8px 26px; position: relative; }
+  .band.plan  { background: #f3f5fa; border: 1px solid #dde3ee; }
+  .band.exec  { background: #eff6f1; border: 1px solid #d8e6dd; margin-top: 14px; }
+  .band-label { position: absolute; top: 8px; left: 26px; font-size: 15px; font-weight: 700;
+                letter-spacing: .06em; color: #4a5568; text-transform: uppercase; }
+
+  .stage { background: #ffffff; border: 1.5px solid #c6cfdd; border-radius: 9px;
+           padding: 9px 14px 8px; width: 640px; margin: 0 auto; position: relative; }
+  .stage .n { position: absolute; left: -34px; top: 8px; width: 24px; height: 24px;
+              border-radius: 50%; background: #33415c; color: #fff; font-size: 13px;
+              font-weight: 700; text-align: center; line-height: 24px; }
+  .stage h3 { font-size: 16.5px; font-weight: 700; line-height: 1.25; }
+  .stage p  { font-size: 13.5px; color: #4d5871; margin-top: 2px; line-height: 1.35; }
+  .role { float: right; font-size: 11px; font-weight: 700; color: #7a86a0;
+          border: 1px solid #ccd4e2; border-radius: 4px; padding: 1px 6px;
+          margin-left: 8px; margin-top: 2px; letter-spacing: .03em; }
+
+  .flow { display: flex; flex-direction: column; align-items: center; }
+  .arrow { width: 2px; height: 16px; background: #97a2b8; position: relative; }
+  .arrow::after { content: ""; position: absolute; bottom: -1px; left: -4px;
+                  border-left: 5px solid transparent; border-right: 5px solid transparent;
+                  border-top: 7px solid #97a2b8; }
+
+  .gate { background: #2952a3; color: #ffffff; border-radius: 7px; text-align: center;
+          padding: 4px 18px 5px; margin: 8px 0; box-shadow: 0 1px 0 #1d3d7d; }
+  .gate b { font-size: 14.5px; letter-spacing: .04em; }
+  .gate span { display: block; font-size: 11.5px; color: #c8d6f2; margin-top: 1px; }
+  .gate.soft { background: #ffffff; color: #2952a3; border: 1.5px solid #2952a3;
+               box-shadow: none; }
+  .gate.soft span { color: #6d84b8; }
+
+  .lock { background: #ffffff; border: 1.5px dashed #8fa0bd; border-radius: 9px;
+          width: 640px; margin: 8px auto; text-align: center; padding: 7px 14px; }
+  .lock b { font-size: 14.5px; color: #33415c; letter-spacing: .05em; }
+  .lock span { display: block; font-size: 11.5px; color: #6d7890; }
+
+  /* detail-critique inner loop rail (right margin) */
+  .rail { position: absolute; top: 60px; bottom: 132px; right: 26px; width: 150px; }
+  .rail .bracket { position: absolute; left: 0; top: 0; bottom: 0; width: 10px;
+                   border-right: 2.5px solid #b0812b; }
+  .rail .bracket::before, .rail .bracket::after { content: ""; position: absolute;
+                   right: 0; width: 10px; height: 2.5px; background: #b0812b; }
+  .rail .bracket::before { top: 0; } .rail .bracket::after { bottom: 0; }
+  .rail .txt { position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+               width: 128px; font-size: 12.5px; line-height: 1.4; color: #8a6414; }
+  .rail .txt b { font-size: 12.5px; letter-spacing: .02em; }
+
+  /* S/M/L grading strip */
+  .sml { display: flex; gap: 12px; margin: 14px 4px 0; }
+  .sml .cell { flex: 1; border: 1.5px solid #c6cfdd; border-radius: 9px;
+               background: #fbfcfe; padding: 8px 12px 7px; }
+  .sml .cell b { font-size: 13.5px; color: #33415c; }
+  .sml .cell span { display: block; font-size: 12px; color: #5b6880; margin-top: 2px;
+                    line-height: 1.35; }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <div class="band plan">
+    <div class="band-label">Plan mode &mdash; consult, retrieve, record &middot; no implementation code</div>
+    <div class="flow" style="margin-top: 16px;">
+      <div class="stage"><span class="n">0</span>
+        <span class="role">main</span>
+        <h3>Request intake</h3>
+        <p>Product type, audience, core flow, constraints; task graded S / M / L</p>
+      </div>
+      <div class="arrow"></div>
+      <div class="stage"><span class="n">1</span>
+        <span class="role">main</span>
+        <h3>Direction draft</h3>
+        <p>Visual baseline &middot; structure sketch &middot; motion intent &mdash; no code</p>
+      </div>
+      <div class="arrow"></div>
+      <div class="gate"><b>GATE A &middot; direction</b><span>user approves or sends back</span></div>
+      <div class="arrow"></div>
+      <div class="stage"><span class="n">2</span>
+        <span class="role">sub A</span>
+        <h3>Material scouting</h3>
+        <p>Candidate list with source, screenshot, and license boundary</p>
+      </div>
+      <div class="arrow"></div>
+      <div class="gate"><b>GATE B &middot; materials</b><span>user selects &middot; unselected = unusable</span></div>
+      <div class="arrow"></div>
+      <div class="lock"><b>PLAN LOCK</b><span>user explicitly approves the frozen plan revision</span></div>
+    </div>
+  </div>
+
+  <div class="band exec">
+    <div class="band-label">Execute mode &mdash; only the locked plan is executed</div>
+    <div class="flow" style="margin-top: 16px;">
+      <div class="stage"><span class="n">3</span>
+        <span class="role">main</span>
+        <h3>No-code prototype</h3>
+        <p>Generated image / paste-ready prompt / reference screenshot board</p>
+      </div>
+      <div class="arrow"></div>
+      <div class="gate"><b>GATE C &middot; prototype</b><span>no code before this passes</span></div>
+      <div class="arrow"></div>
+      <div class="stage"><span class="n">4</span>
+        <span class="role">sub B</span>
+        <h3>Design contract</h3>
+        <p>DESIGN.md: semantic tokens, do/don't rules, motion spec</p>
+      </div>
+      <div class="arrow"></div>
+      <div class="gate soft"><b>GATE D &middot; contract</b><span>mandatory for large / motion-heavy tasks</span></div>
+      <div class="arrow"></div>
+      <div class="stage"><span class="n">5</span>
+        <span class="role">sub C</span>
+        <h3>Implementation</h3>
+        <p>Code written last; real MCP tool calls required during design &amp; build</p>
+      </div>
+      <div class="arrow"></div>
+      <div class="gate soft"><b>GATE F &middot; MCP call evidence</b><span>agent-side: no call traces &rArr; no completion claim</span></div>
+      <div class="arrow"></div>
+      <div class="stage"><span class="n">6</span>
+        <span class="role">main + user</span>
+        <h3>Multi-round acceptance</h3>
+        <p>Real-browser walkthrough; per-page issues with P0/P1/P2 severity + replacement suggestions</p>
+      </div>
+      <div class="arrow"></div>
+      <div class="gate"><b>GATE E &middot; every round</b><span>loops until the user confirms</span></div>
+      <div class="arrow"></div>
+      <div class="stage"><span class="n">7</span>
+        <span class="role">main</span>
+        <h3>Delivery</h3>
+        <p>Build, evidence, commit with acceptance record</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="rail">
+    <div class="bracket"></div>
+    <div class="txt"><b>Detail-critique inner loop</b><br>before every gate: per-component review &rarr; P0/P1/P2 triage &rarr; self-fix &rarr; disclose what remains</div>
+  </div>
+
+  <div class="sml">
+    <div class="cell"><b>S &middot; narrow fix</b><span>no gates A&ndash;D; one evidence-backed acceptance round</span></div>
+    <div class="cell"><b>M &middot; page-level</b><span>lite gates A/B/C; full acceptance rounds</span></div>
+    <div class="cell"><b>L &middot; substantive new UI</b><span>full chain, gates A&ndash;F</span></div>
+  </div>
+
+</div>
+</body>
+</html>

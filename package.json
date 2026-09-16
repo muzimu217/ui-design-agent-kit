@@ -20,6 +20,7 @@
     "diagram": "node scripts/workflow-diagram/cli.mjs build",
     "diagram:check": "node scripts/workflow-diagram/cli.mjs check",
     "diagram:state": "node scripts/workflow-diagram/cli.mjs state-template",
+    "paper:build": "node scripts/paper-build.mjs",
     "verify": "node scripts/verify.mjs",
     "test": "node --test tests/*.test.mjs",
     "doctor": "node scripts/doctor.mjs",

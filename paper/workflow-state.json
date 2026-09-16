@@ -1,0 +1,47 @@
+{
+  "task": "UAK 系统论文（paper/）",
+  "revision": "P-paper-1",
+  "updatedOn": "2026-09-16",
+  "note": "论文按设计稿 §7 dogfooding 自己的 P1（内容冻结）→ P2（构建自评）→ P3（用户裁决）门禁，登记在 docs/gates.md §五；A–F 为产品门，本任务不适用，按 pending 记录。",
+  "stages": {
+    "brief": {
+      "status": "passed",
+      "evidence": "docs/superpowers/specs/2026-09-16-uak-paper-design.md",
+      "note": "设计稿入库（d393866），用户放行按稿开发。"
+    },
+    "reference": {
+      "status": "passed",
+      "evidence": "paper/references.bib",
+      "note": "相关工作 14 条文献逐一核实（arXiv / ACL Anthology / ACM DL / NeurIPS proceedings，2026-09-16）。"
+    },
+    "contract": {
+      "status": "passed",
+      "evidence": "paper/uak-paper.md",
+      "note": "9 节手稿；数据口径对齐 evals/results.json 与 docs/gates.md；P2 自评修正 4 处（门F 定性、已定责项数 4、门E 项数、贡献①表述）。"
+    },
+    "build": {
+      "status": "passed",
+      "evidence": "scripts/paper-build.mjs",
+      "note": "npm run paper:build → 全文 8 页 + workshop 4 页 PDF/DOCX；fig-workflow / fig-cases 以 HTML 画布 Chrome @2x 渲染入库。"
+    },
+    "verify": {
+      "status": "passed",
+      "evidence": "paper/out（本地构建，gitignored）",
+      "note": "双 judge 视觉验收通过（全文 8/8 页、workshop 4/4 页）；首轮抓出的表头列宽碰撞与 References 标题缺失已修复复验。"
+    },
+    "deliver": {
+      "status": "gated",
+      "evidence": "docs/gates.md",
+      "note": "P3 待用户裁决：paper/ 入库、推送授权、arXiv 分类（cs.HC vs cs.SE）。"
+    }
+  },
+  "gates": {
+    "A": "pending",
+    "B": "pending",
+    "C": "pending",
+    "D": "pending",
+    "E": "pending",
+    "F": "pending"
+  },
+  "blockedReason": null
+}

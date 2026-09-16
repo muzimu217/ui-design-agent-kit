@@ -56,3 +56,17 @@
 | # | 事项 | 当前处理 |
 | --- | --- | --- |
 | D4 | React Bits 个案采纳流程 | 等用户决定是否固定核查步骤；无决定前按普通候选，逐次读当前 `LICENSE.md` + 门B 选择 |
+
+## 五、论文门禁（UAK paper，2026-09-16 起）
+
+> 论文是本仓库的一等门禁公民：按 `docs/superpowers/specs/2026-09-16-uak-paper-design.md` §7，
+> UAK 系统论文（`paper/`）走 P1 内容冻结 → P2 构建自评 → P3 用户裁决 的门禁。
+> 产物：`paper/uak-paper.md`（8 页稿）+ `paper/workshop/uak-workshop.md`（4 页稿），
+> `npm run paper:build` 产出 PDF+DOCX 于 `paper/out/`（gitignored，可重建）。
+
+| # | 门 | 事项 | 证据位置 | 首次提出 | 轮空 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| P1 | 论文P1 | 全文手稿内容冻结追认（9 节、数据口径、声明边界） | `paper/uak-paper.md` | 2026-09-16 | 0 | open |
+| P2 | 论文P3 | 成品裁决：PDF+DOCX 视觉验收通过后，是否入库 `paper/` 并授权推送 | `paper/out/uak-paper.pdf`（本地构建） | 2026-09-16 | 0 | open |
+| P3 | 论文P3 | arXiv 分类选择（cs.HC vs cs.SE，规范预留的用户决定） | 设计稿 §9 | 2026-09-16 | 0 | open |
+

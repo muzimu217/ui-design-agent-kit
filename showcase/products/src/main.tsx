@@ -29,6 +29,9 @@ const TEMPO_URL = `${BASE}demos/tempo-day/`;
 const RUIEAR_URL = `${BASE}demos/ruiear/`;
 const PLAYABLE_URLS: Record<string, string> = { nodegrid: NODEGRID_URL, subway: SUBWAY_URL, forma: FORMA_URL, tempo: TEMPO_URL, ruiear: RUIEAR_URL };
 const REPOSITORY_URL = 'https://github.com/muzimu217/ui-design-agent-kit';
+const EXPERIMENT_BRANCH = 'experiment/workflow-visualization';
+const EXPERIMENT_URL = `${REPOSITORY_URL}/tree/${EXPERIMENT_BRANCH}`;
+const EXPERIMENT_FEEDBACK_URL = `${REPOSITORY_URL}/issues/new`;
 const SHOWCASE_REPOSITORY_URL = 'https://github.com/muzimu217/ui-design-agent-showcase';
 const FEEDBACK_URL = 'https://github.com/muzimu217/ui-design-agent-showcase/issues/new/choose';
 const RELEASE = import.meta.env.VITE_RELEASE_ID || 'local-preview';
@@ -522,6 +525,20 @@ function App() {
       </div></section>
       <section className="verification-band" id="verification" aria-labelledby="verification-heading"><div className="content-width"><div className="section-heading"><div><h2 id="verification-heading">验证，有据可查。</h2><p>四种证据层级，不能相互替代。</p></div><ScanEye size={28} strokeWidth={1.5} aria-hidden="true" /></div><dl className="evidence-definitions">{EVIDENCE.map((item) => { const Icon = item.icon; return <div key={item.name}><dt><Icon size={22} strokeWidth={1.6} />{item.name}</dt><dd>{item.meaning}</dd></div>; })}</dl><p className="evidence-disclaimer">以上为证据定义，不是所有项目均已通过的状态声明。历史截图与可试玩成果已分别标注。</p></div></section>
       <InstallSection />
+      <section className="experiment-band" id="experiment" aria-labelledby="experiment-heading"><div className="content-width">
+        <div className="section-heading"><div><h2 id="experiment-heading">实验分支：工作流可视化</h2><p>正在测试中，欢迎试用并反馈。</p></div><Layers3 size={28} strokeWidth={1.5} aria-hidden="true" /></div>
+        <p className="experiment-lead">当前有一条独立实验分支，把设计与交付流程渲染成一张可交互的 HTML：每个阶段走到哪、停在哪道确认门、每步产出了什么证据，都能直接看到。分支不并入主线，改动只在该分支上迭代。</p>
+        <dl className="experiment-facts">
+          <div><dt>分支</dt><dd><code>{EXPERIMENT_BRANCH}</code></dd></div>
+          <div><dt>内容</dt><dd>工作流状态图渲染器、任务状态记录格式、链路接线</dd></div>
+          <div><dt>状态</dt><dd>可试用，接口与输出仍可能变动</dd></div>
+        </dl>
+        <p className="experiment-note">反馈请注明分支名、复现步骤与期望结果。若只想看效果，克隆后运行 <code>npm run diagram</code> 即可生成一张自包含的 HTML。</p>
+        <div className="experiment-actions">
+          <ActionLink href={EXPERIMENT_URL} external>查看实验分支</ActionLink>
+          <ActionLink href={EXPERIMENT_FEEDBACK_URL} external className="secondary-action">提交测试反馈</ActionLink>
+        </div>
+      </div></section>
       <section className="closing-band" id="testing" aria-labelledby="closing-heading"><div className="content-width closing-content"><div><h2 id="closing-heading">参与公开测试</h2><p>成果与源码已公开。反馈请注明版本、复现步骤，以及 demo 体验或工作流执行测试。</p></div><ActionLink href={FEEDBACK_URL} external>提交测试反馈</ActionLink></div></section>
     </main>
     <footer className="site-footer content-width"><a href={BASE}>UI 设计智能体工作流</a><span>{RELEASE}</span><a href={FEEDBACK_URL} target="_blank" rel="noreferrer">测试反馈<ArrowUpRight size={14} /></a><a href={`${BASE}THIRD_PARTY_LICENSES.txt`}>依赖许可</a><a href={SHOWCASE_REPOSITORY_URL} target="_blank" rel="noreferrer">公开展示仓库<ArrowUpRight size={14} /></a><a href={REPOSITORY_URL} target="_blank" rel="noreferrer">Agent 源码<ArrowUpRight size={14} /></a></footer><CaseDialog project={project} onClose={closeProject} />

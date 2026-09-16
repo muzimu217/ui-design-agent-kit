@@ -5,19 +5,67 @@
   "note": "Single source of truth for the delivery pipeline shown to users. docs/chain-flow.md carries the prose and the gate definitions; the showcase stage rail holds its own TS constant (icons and copy need React components) and tests/kit.test.mjs enforces that its ids, names, and decision markers match this file. Add a stage or gate here first, then update both consumers in the same change.",
   "decisionPointNote": "decisionPoint records whether the rail marks this stage as ending in a user decision the visitor must see. It is a presentation decision, not a restatement of gates: build carries the MCP call gate (F), which is a trace requirement rather than a user stop, and verify carries the per-round acceptance gate (E), which is shown inside the verification panel rather than as a separate rail marker.",
   "statusValues": [
-    { "id": "pending", "label": "未开始", "meaning": "The stage has not started for this task." },
-    { "id": "active", "label": "进行中", "meaning": "Work is underway; no gate artifact has been presented yet." },
-    { "id": "gated", "label": "等待确认", "meaning": "The gate artifact is with the user and the chain is stopped here." },
-    { "id": "passed", "label": "已通过", "meaning": "The user confirmed this gate; the next stage may start." },
-    { "id": "blocked", "label": "受阻", "meaning": "An unresolved P0, a missing capability, or a failed check stops progress." }
+    {
+      "id": "pending",
+      "label": "未开始",
+      "meaning": "The stage has not started for this task."
+    },
+    {
+      "id": "active",
+      "label": "进行中",
+      "meaning": "Work is underway; no gate artifact has been presented yet."
+    },
+    {
+      "id": "gated",
+      "label": "等待确认",
+      "meaning": "The gate artifact is with the user and the chain is stopped here."
+    },
+    {
+      "id": "passed",
+      "label": "已通过",
+      "meaning": "The user confirmed this gate; the next stage may start."
+    },
+    {
+      "id": "blocked",
+      "label": "受阻",
+      "meaning": "An unresolved P0, a missing capability, or a failed check stops progress."
+    }
+  ],
+  "actors": [
+    {
+      "id": "main",
+      "label": "主代理",
+      "kind": "agent"
+    },
+    {
+      "id": "sub",
+      "label": "子代理",
+      "kind": "agent"
+    },
+    {
+      "id": "user",
+      "label": "确认门（用户）",
+      "kind": "gate"
+    },
+    {
+      "id": "rework",
+      "label": "不通过 → 返工",
+      "kind": "rework"
+    }
   ],
   "stages": [
     {
       "id": "brief",
       "name": "需求与方向",
-      "steps": [0, 1],
-      "gates": ["A"],
+      "steps": [
+        0,
+        1
+      ],
+      "gates": [
+        "A"
+      ],
       "decisionPoint": true,
+      "actor": "main",
       "summary": "确认用户、主要任务、页面范围与视觉方向。",
       "output": "需求说明 / 方向记录",
       "evidence": "方向稿（DIRECTION.md 或任务内记录）",
@@ -26,9 +74,15 @@
     {
       "id": "reference",
       "name": "参考素材",
-      "steps": [2, 3],
-      "gates": ["B"],
+      "steps": [
+        2,
+        3
+      ],
+      "gates": [
+        "B"
+      ],
       "decisionPoint": true,
+      "actor": "sub",
       "summary": "选定可采用的参考、组件和素材，记录来源与使用边界。",
       "output": "参考清单 / 来源记录",
       "evidence": "research-notes.md + 选择记录",
@@ -37,59 +91,155 @@
     {
       "id": "contract",
       "name": "原型与契约",
-      "steps": [4, 5],
-      "gates": ["C", "D"],
+      "steps": [
+        4,
+        5
+      ],
+      "gates": [
+        "C",
+        "D"
+      ],
       "decisionPoint": true,
       "summary": "确认原型，再固定布局、交互、动效与验收条件。",
       "output": "原型 / 设计契约",
       "evidence": "原型图或提示词 + DESIGN.md（含动效规格）",
-      "decision": "原型与契约由用户确认"
+      "decision": "原型与契约由用户确认",
+      "actor": "sub"
     },
     {
       "id": "build",
       "name": "交互实现",
-      "steps": [6],
-      "gates": ["F"],
+      "steps": [
+        6
+      ],
+      "gates": [
+        "F"
+      ],
       "decisionPoint": false,
       "summary": "围绕设计契约完成界面、状态与交互，复用项目既有能力。",
       "output": "可运行界面 / 交互状态",
       "evidence": "代码 + 静态核查 + MCP 调用痕迹",
-      "decision": "按授权范围实现"
+      "decision": "按授权范围实现",
+      "actor": "sub"
     },
     {
       "id": "verify",
       "name": "浏览器验证",
-      "steps": [7],
-      "gates": ["E"],
+      "steps": [
+        7
+      ],
+      "gates": [
+        "E"
+      ],
       "decisionPoint": false,
       "summary": "检查桌面、手机、键盘、减少动态效果与主要操作流程。",
       "output": "截图 / 交互检查 / 问题记录",
       "evidence": "走查记录（含 P0/P1/P2 与证据路径）",
-      "decision": "修复问题后复核"
+      "decision": "修复问题后复核",
+      "actor": "main"
     },
     {
       "id": "deliver",
       "name": "交付与迭代",
-      "steps": [8],
+      "steps": [
+        8
+      ],
       "gates": [],
       "decisionPoint": true,
       "summary": "交付成果与实际检查记录，明确尚未验证的部分。",
       "output": "交付说明 / 已知限制",
       "evidence": "commit + ACCEPTANCE.md",
-      "decision": "由用户确认接收"
+      "decision": "由用户确认接收",
+      "actor": "main"
     }
   ],
   "gates": [
-    { "id": "A", "name": "设计稿", "stage": "brief", "mandatory": "always", "artifact": "方向稿（视觉基调、页面结构草案、动效意图，不写代码）" },
-    { "id": "B", "name": "素材选择", "stage": "reference", "mandatory": "when external material is adopted", "artifact": "候选素材清单（来源 URL、拟采用部分、改编与授权边界）" },
-    { "id": "C", "name": "原型", "stage": "contract", "mandatory": "always for a substantial new UI", "artifact": "无代码原型（生成图或生图提示词）" },
-    { "id": "D", "name": "契约确认", "stage": "contract", "mandatory": "large or motion-heavy work", "artifact": "DESIGN.md + 动效方案" },
-    { "id": "E", "name": "每轮验收", "stage": "verify", "mandatory": "every round after code", "artifact": "逐页问题清单（P0/P1/P2 + 证据）+ 替换建议" },
-    { "id": "F", "name": "MCP 调用门禁", "stage": "build", "mandatory": "substantial UI work", "artifact": "验收记录中的逐环节调用痕迹（服务器 / 工具 / 结果）" }
+    {
+      "id": "A",
+      "name": "设计稿",
+      "stage": "brief",
+      "mandatory": "always",
+      "artifact": "方向稿（视觉基调、页面结构草案、动效意图，不写代码）",
+      "kind": "user",
+      "mandatoryLabel": "强制"
+    },
+    {
+      "id": "B",
+      "name": "素材选择",
+      "stage": "reference",
+      "mandatory": "when external material is adopted",
+      "artifact": "候选素材清单（来源 URL、拟采用部分、改编与授权边界）",
+      "kind": "user",
+      "mandatoryLabel": "采用外部素材时"
+    },
+    {
+      "id": "C",
+      "name": "原型",
+      "stage": "contract",
+      "mandatory": "always for a substantial new UI",
+      "artifact": "无代码原型（生成图或生图提示词）",
+      "kind": "user",
+      "mandatoryLabel": "实质性新 UI 强制"
+    },
+    {
+      "id": "D",
+      "name": "契约确认",
+      "stage": "contract",
+      "mandatory": "large or motion-heavy work",
+      "artifact": "DESIGN.md + 动效方案",
+      "kind": "user",
+      "mandatoryLabel": "大项目/动效复杂"
+    },
+    {
+      "id": "E",
+      "name": "每轮验收",
+      "stage": "verify",
+      "mandatory": "every round after code",
+      "artifact": "逐页问题清单（P0/P1/P2 + 证据）+ 替换建议",
+      "kind": "user",
+      "mandatoryLabel": "代码完成后每轮"
+    },
+    {
+      "id": "F",
+      "name": "MCP 调用门禁",
+      "stage": "build",
+      "mandatory": "substantial UI work",
+      "artifact": "验收记录中的逐环节调用痕迹（服务器 / 工具 / 结果）",
+      "kind": "trace",
+      "mandatoryLabel": "实质性 UI 任务"
+    }
   ],
   "tiers": [
-    { "id": "S", "name": "窄修复", "gates": [], "note": "一个既有组件或缺陷的窄修复；不过方向与素材门，一轮有证据的验证。" },
-    { "id": "M", "name": "页面级", "gates": ["A", "B", "C", "D", "E"], "note": "一个新页面或一组实质组件；门D 按需。" },
-    { "id": "L", "name": "实质性新 UI", "gates": ["A", "B", "C", "D", "E", "F"], "note": "新产品、多端界面或定义品牌的方向；全链门A-F。" }
+    {
+      "id": "S",
+      "name": "窄修复",
+      "gates": [],
+      "note": "一个既有组件或缺陷的窄修复；不过方向与素材门，一轮有证据的验证。"
+    },
+    {
+      "id": "M",
+      "name": "页面级",
+      "gates": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "note": "一个新页面或一组实质组件；门D 按需。"
+    },
+    {
+      "id": "L",
+      "name": "实质性新 UI",
+      "gates": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "note": "新产品、多端界面或定义品牌的方向；全链门A-F。"
+    }
   ]
 }

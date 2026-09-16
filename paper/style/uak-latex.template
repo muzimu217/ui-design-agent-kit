@@ -80,7 +80,7 @@ $for(author)$
 \email{$author.email$}$endif$
 $sep$ \and
 $endfor$
-\date{$date$}
+\date{$date$$if(doi)$\\[2pt]{\small DOI: \texttt{$doi$}}$endif$}
 
 \begin{document}
 $if(has-frontmatter)$

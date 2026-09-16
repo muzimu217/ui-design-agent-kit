@@ -6,6 +6,16 @@
 > 以你本人身份声明的步骤，必须你亲手做**；其余（材料、文件、文字）都已备好。
 > 本文所有"复制粘贴"内容与最终版 PDF 永远以仓库当前 HEAD 为准。
 
+## ⭐ 现在就做（30 分钟动手清单）
+
+1. **注册 ORCID**（5 分钟，orcid.org，实名操作一次，之后所有平台都绑它）。
+2. **Zenodo 注册**（zenodo.org/signup，QQ 邮箱+验证邮件）。
+3. Zenodo 首页点 "New upload" → 先点 **"Get a DOI now!"** 预留 DOI →
+   **把预留的 DOI 号发给助手**（我把它印进 PDF 重新打包，约 1 分钟）→
+   上传 `paper/out/uak-paper.pdf` + `paper/submission/uak-arxiv-submission.zip` →
+   按下面 §2① 填元数据 → Publish。**DOI 即时生效，今天就算"发表"了。**
+4. 做完上面，开始背书搜寻（§4.0 模板，arXiv 背书是唯一长周期环节，越早越好）。
+
 ## 0. 已备好的材料（我做的部分）
 
 | 材料 | 位置 | 用途 |

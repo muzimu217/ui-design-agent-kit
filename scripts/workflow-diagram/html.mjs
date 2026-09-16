@@ -1,6 +1,11 @@
 // Wraps the rendered SVG in one self-contained HTML document: inline styles,
 // inline script, no network access, no external font or library. Opening the
 // file offline must give the same result as serving it.
+//
+// This is a LOCAL status view, not a presentation. There is deliberately no
+// playback control: the diagram already shows the real position, and clicking a
+// node reveals that stage's artifacts and evidence paths. Playback belongs to a
+// showcase page, not to the record of a task in progress.
 
 import { COLORS, STATUS_META } from "./svg.mjs";
 
@@ -20,6 +25,9 @@ export function renderHtml({ svg, model, laid, meta = {} }) {
     stageNote: stage.stageNote,
     evidenceActual: stage.evidenceActual,
     isCurrent: stage.isCurrent,
+    gateNodes: model.nodes
+      .filter((node) => node.kind === "gate" && node.stageId === stage.id)
+      .map((node) => ({ id: node.gateId, title: node.title, detail: node.detail, status: node.status, lane: node.lane })),
     nodeIds: model.nodes.filter((node) => node.stageId === stage.id).map((node) => node.id),
   }));
   const statuses = model.statusValues.map((item) => item.id);
@@ -32,86 +40,106 @@ export function renderHtml({ svg, model, laid, meta = {} }) {
 <title>${escapeHtml(task ? `${task.name} · ${title}` : title)}</title>
 <style>${styles()}</style>
 </head>
-<body data-theme="light">
-<header class="wf-header">
-  <div class="wf-heading">
-    <span class="wf-dot" aria-hidden="true"></span>
-    <h1>${escapeHtml(title)}</h1>
+<body data-theme="dark">
+<div class="wf-shell">
+
+<header class="wf-topbar">
+  <div class="wf-brand">
+    <span class="wf-pulse" aria-hidden="true"></span>
+    <span class="wf-brand-text">${escapeHtml(title)}</span>
+    ${task ? `<span class="wf-brand-task">${escapeHtml(task.name)}</span>` : ""}
   </div>
-  <div class="wf-controls">
-    <button type="button" id="wf-theme" class="wf-btn" aria-pressed="false">深色</button>
-    <button type="button" id="wf-play" class="wf-btn wf-btn-primary">播放流程</button>
-    <button type="button" id="wf-step" class="wf-btn">下一步</button>
-    <button type="button" id="wf-reset" class="wf-btn">重置</button>
-    <button type="button" id="wf-export" class="wf-btn">导出 SVG</button>
+  <div class="wf-toolbar" role="toolbar" aria-label="视图控制">
+    <button type="button" class="wf-tool" id="wf-theme" aria-pressed="true" title="切换明暗主题">
+      <span class="wf-tool-dot" aria-hidden="true"></span><span class="wf-tool-label">深色</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-focus" aria-pressed="false" title="只高亮当前阶段，其余变暗">
+      <span class="wf-tool-label">聚焦</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-labels" aria-pressed="true" title="显示或隐藏连线说明">
+      <span class="wf-tool-label">标注</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-export" title="导出当前图为 SVG">
+      <span class="wf-tool-label">导出</span>
+    </button>
   </div>
 </header>
 
 ${
   task
-    ? `<section class="wf-task" aria-label="任务状态">
-  <div class="wf-task-head">
-    <span class="wf-task-badge">任务状态</span>
-    <strong>${escapeHtml(task.name)}</strong>
-    ${task.revision ? `<span class="wf-task-meta">${escapeHtml(task.revision)}</span>` : ""}
-    ${task.updatedOn ? `<span class="wf-task-meta">更新于 ${escapeHtml(task.updatedOn)}</span>` : ""}
-  </div>
-  <p class="wf-task-line">
-    已完成 <strong>${task.progress.passed}</strong> / ${task.progress.total} 个阶段${
-      task.currentStage ? ` · 当前停在「${escapeHtml(stageName(stages, task.currentStage))}」` : ""
+    ? `<section class="wf-status-bar" aria-label="任务状态">
+  <div class="wf-status-main">
+    <span class="wf-chip wf-chip-${task.currentStage ? currentStatus(stages) : "pending"}">${escapeHtml(
+      task.currentStage ? currentStatusLabel(stages, model.statusValues) : "未开始",
+    )}</span>
+    <span class="wf-status-progress">
+      <strong>${task.progress.passed}</strong> / ${task.progress.total} 阶段
+    </span>
+    ${
+      task.currentStage
+        ? `<span class="wf-status-where">当前停在 <strong>${escapeHtml(stageName(stages, task.currentStage))}</strong></span>`
+        : ""
     }
-  </p>
-  ${task.blockedReason ? `<p class="wf-task-blocked">受阻原因：${escapeHtml(task.blockedReason)}</p>` : ""}
+    ${task.revision ? `<span class="wf-status-rev">${escapeHtml(task.revision)}</span>` : ""}
+  </div>
+  <ol class="wf-rail" aria-label="阶段推进">
+    ${stages
+      .map(
+        (stage) =>
+          `<li class="wf-rail-item" data-stage="${escapeHtml(stage.id)}" data-status="${escapeHtml(stage.status)}"${
+            stage.isCurrent ? ' data-current="true"' : ""
+          }>` +
+          `<button type="button" class="wf-rail-btn" data-stage="${escapeHtml(stage.id)}" ` +
+          `aria-label="${escapeHtml(stage.name)}，${escapeHtml(statusLabel(model.statusValues, stage.status))}">` +
+          `<span class="wf-rail-mark" aria-hidden="true">${railMark(stage.status)}</span>` +
+          `<span class="wf-rail-name">${escapeHtml(stage.name)}</span>` +
+          `</button></li>`,
+      )
+      .join("")}
+  </ol>
+  ${task.blockedReason ? `<p class="wf-blocked">受阻：${escapeHtml(task.blockedReason)}</p>` : ""}
 </section>`
     : ""
 }
 
-<section class="wf-intro">
-  <p class="wf-note">${escapeHtml(model.note)}</p>
-  ${task?.note ? `<p class="wf-note">${escapeHtml(task.note)}</p>` : ""}
-  ${generated ? `<p class="wf-generated">生成于 ${escapeHtml(generated)}</p>` : ""}
+<section class="wf-board">
+  <div class="wf-canvas" id="wf-canvas">
+    ${svg.replace("<svg ", `<svg style="width:${Math.round(laid.width)}px" `)}
+  </div>
 </section>
 
-<section class="wf-progress" aria-live="polite">
-  <div class="wf-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${stages.length}" aria-valuenow="0" id="wf-bar"><span></span></div>
-  <p class="wf-step-note" id="wf-step-note">${
-    task
-      ? "图上的状态来自任务记录。播放或按「下一步」逐步查看每个阶段与确认门。"
-      : "尚未开始。播放或按「下一步」逐步查看每个阶段与确认门。"
-  }</p>
-</section>
+<aside class="wf-detail" id="wf-detail" aria-live="polite">
+  <div class="wf-detail-empty">
+    <p>点击图上任意<strong>阶段</strong>或<strong>确认门</strong>，查看该处的产物、证据与待确认事项。</p>
+  </div>
+</aside>
 
-<nav class="wf-legend" aria-label="图例">
-  ${legendItems(statuses)}
-</nav>
+<footer class="wf-foot">
+  <span class="wf-foot-note">${escapeHtml(model.note)}</span>
+  ${generated ? `<span class="wf-foot-meta">生成于 ${escapeHtml(generated)}</span>` : ""}
+</footer>
 
-<div class="wf-stage-rail" role="tablist" aria-label="交付阶段">
-  ${stages
-    .map(
-      (stage, index) =>
-        `<button type="button" role="tab" class="wf-stage-tab" data-stage="${escapeHtml(stage.id)}" ` +
-        `data-status="${escapeHtml(stage.status)}" aria-selected="${index === 0}" tabindex="${index === 0 ? 0 : -1}">` +
-        `<span class="wf-stage-name">${escapeHtml(stage.name)}</span>` +
-        `<span class="wf-stage-meta">${stage.gates.length ? `门 ${stage.gates.join("/")}` : "无门"} · ${escapeHtml(statusLabel(model.statusValues, stage.status))}</span>` +
-        `</button>`,
-    )
-    .join("")}
 </div>
-
-<main class="wf-canvas" id="wf-canvas">
-  ${svg.replace("<svg ", `<svg style="width:${Math.round(laid.width)}px" `)}
-</main>
-
-<aside class="wf-panel" id="wf-panel" aria-live="polite"></aside>
-
-<section class="wf-cards">
-  ${cards(stages, model)}
-</section>
-
 <script>${script(stages, statuses)}</script>
 </body>
 </html>
 `;
+}
+
+function currentStatus(stages) {
+  return stages.find((stage) => stage.isCurrent)?.status ?? "pending";
+}
+
+function currentStatusLabel(stages, statusValues) {
+  return statusLabel(statusValues, currentStatus(stages));
+}
+
+function railMark(status) {
+  if (status === "passed") return "✓";
+  if (status === "gated") return "⏸";
+  if (status === "active") return "▶";
+  if (status === "blocked") return "!";
+  return "○";
 }
 
 function stageName(stages, id) {
@@ -122,169 +150,173 @@ function statusLabel(statusValues, id) {
   return statusValues.find((item) => item.id === id)?.label ?? id;
 }
 
-function legendItems(statuses) {
-  const nodeKinds = [
-    ["stage", "交付环节"],
-    ["gate", "确认门（用户）"],
-    ["rework", "返工"],
-  ];
-  const edgeKinds = [
-    ["flow", "顺序流"],
-    ["pass", "门通过"],
-    ["return", "不通过 → 返工"],
-  ];
-  const statusItems = statuses.map((id) => {
-    const meta = STATUS_META[id];
-    return `<span class="wf-legend-item"><span class="wf-swatch" style="--swatch:${meta.badge}"></span>${escapeHtml(meta.label)}</span>`;
-  });
-  const kindItems = [...nodeKinds, ...edgeKinds].map(([kind, label]) => {
-    const color = COLORS[kind]?.stroke ?? COLORS.edge[kind] ?? COLORS.muted;
-    return `<span class="wf-legend-item"><span class="wf-swatch" style="--swatch:${color}"></span>${escapeHtml(label)}</span>`;
-  });
-  return (
-    `<span class="wf-legend-group">形状</span>${kindItems.join("")}` +
-    `<span class="wf-legend-group">状态</span>${statusItems.join("")}`
-  );
-}
-
-function cards(stages, model) {
-  const gated = stages.filter((stage) => stage.gates.length);
-  const statusLabelOf = (id) => statusLabel(model.statusValues, id);
-  return `
-  <article class="wf-card">
-    <h2>主线</h2>
-    <ol>${stages
-      .map(
-        (stage) =>
-          `<li><span class="wf-card-status" data-status="${escapeHtml(stage.status)}">${escapeHtml(
-            statusLabelOf(stage.status),
-          )}</span>${escapeHtml(stage.name)}${stage.gates.length ? `（门 ${stage.gates.join("/")}）` : ""}</li>`,
-      )
-      .join("")}</ol>
-  </article>
-  <article class="wf-card">
-    <h2>停点</h2>
-    <p>${gated.length} 个阶段设有确认门，未通过不得进入下一环节。</p>
-    <ul>${gated
-      .map(
-        (stage) =>
-          `<li>${escapeHtml(stage.name)}：${escapeHtml(statusLabelOf(stage.status))}${
-            stage.stageNote ? ` · ${escapeHtml(stage.stageNote)}` : ""
-          }</li>`,
-      )
-      .join("")}</ul>
-  </article>
-  <article class="wf-card">
-    <h2>证据</h2>
-    <ul>${stages
-      .map(
-        (stage) =>
-          `<li>${escapeHtml(stage.name)}：${escapeHtml(stage.evidenceActual ?? stage.evidence ?? "—")}${
-            stage.evidenceActual ? "" : `<span class="wf-card-expected">（预期）</span>`
-          }</li>`,
-      )
-      .join("")}</ul>
-  </article>`;
-}
-
 function styles() {
   return `
 :root{
-  --bg:#ffffff; --fg:${COLORS.ink}; --muted:${COLORS.muted}; --line:${COLORS.hairline};
-  --card:#f7f9fb; --accent:#1f7a5c; --gate:#b3244a; --rework:#b5711b; --blocked:#c2410c;
+  --bg:${COLORS.canvas}; --fg:${COLORS.ink}; --muted:${COLORS.muted}; --line:${COLORS.hairline};
+  --panel:#f7f9fb; --raised:#ffffff;
+  --accent:#1f7a5c; --gate:#b3244a; --rework:#b5711b; --blocked:#c2410c;
+  /* SVG theme hooks: the renderer emits var(--wf-*, <light fallback>) so the
+     same markup follows the theme without re-rendering. */
+  --wf-canvas:${COLORS.canvas};
+  --wf-line:${COLORS.hairline};
+  --wf-lane:${COLORS.laneFill};
+  --wf-lane-gate:${COLORS.laneFillGate};
+  --wf-lane-rework:${COLORS.laneFillRework};
+  --wf-node-stage-fill:${COLORS.stage.fill};
+  --wf-node-stage-stroke:${COLORS.stage.stroke};
+  --wf-node-gate-fill:${COLORS.gate.fill};
+  --wf-node-gate-stroke:${COLORS.gate.stroke};
+  --wf-node-rework-fill:${COLORS.rework.fill};
+  --wf-node-rework-stroke:${COLORS.rework.stroke};
   --font:ui-sans-serif,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
 }
 body[data-theme="dark"]{
-  --bg:#0f1419; --fg:#e6edf3; --muted:#93a1b0; --line:#243039; --card:#161d24;
+  --bg:#0a151c; --fg:#e6edf3; --muted:#8fa3b0; --line:#1d2c36;
+  --panel:#0f1e27; --raised:#132430;
   --accent:#4cc38a; --gate:#e5637f; --rework:#e0a355; --blocked:#f97316;
+  --wf-canvas:#0f1e27;
+  --wf-line:#20323d;
+  --wf-lane:#12232d;
+  --wf-lane-gate:#1b1a24;
+  --wf-lane-rework:#1d1c18;
+  --wf-node-stage-fill:#13302c;
+  --wf-node-stage-stroke:#4cc38a;
+  --wf-node-gate-fill:#301a24;
+  --wf-node-gate-stroke:#e5637f;
+  --wf-node-rework-fill:#2e2519;
+  --wf-node-rework-stroke:#e0a355;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.6;
   -webkit-font-smoothing:antialiased}
-.wf-header{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
-  padding:20px 24px;border-bottom:1px solid var(--line)}
-.wf-heading{display:flex;align-items:center;gap:10px;min-width:0}
-.wf-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);flex:none}
-h1{font-size:20px;margin:0;font-weight:650;letter-spacing:-.01em}
-.wf-controls{display:flex;flex-wrap:wrap;gap:8px}
-.wf-btn{min-height:44px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);
-  color:var(--fg);font:inherit;font-size:14px;cursor:pointer;transition:background .15s,border-color .15s}
-.wf-btn:hover{border-color:var(--accent)}
-.wf-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.wf-btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.wf-btn[disabled]{opacity:.5;cursor:not-allowed}
-.wf-intro{padding:16px 24px 0}
-.wf-task{margin:16px 24px 0;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:14px 16px}
-.wf-task-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
-.wf-task-badge{font-size:11.5px;font-weight:650;letter-spacing:.04em;color:#fff;background:var(--accent);border-radius:6px;padding:2px 8px}
-.wf-task-head strong{font-size:15px}
-.wf-task-meta{font-size:12px;color:var(--muted)}
-.wf-task-line{margin:8px 0 0;font-size:13.5px;color:var(--muted)}
-.wf-task-blocked{margin:6px 0 0;font-size:13px;color:var(--blocked)}
-.wf-note{margin:0;color:var(--muted);font-size:14px;max-width:70ch}
-.wf-generated{margin:4px 0 0;color:var(--muted);font-size:12px}
-.wf-progress{padding:12px 24px 0}
-.wf-bar{height:6px;border-radius:99px;background:var(--card);overflow:hidden;border:1px solid var(--line)}
-.wf-bar span{display:block;height:100%;width:0;background:var(--accent);transition:width .3s ease}
-.wf-step-note{margin:8px 0 0;font-size:13px;color:var(--muted);min-height:1.5em}
-.wf-legend{display:flex;flex-wrap:wrap;gap:14px;padding:14px 24px;margin:0;list-style:none}
-.wf-legend-item{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted)}
-.wf-legend-group{font-size:11.5px;font-weight:650;color:var(--fg);opacity:.7;padding:2px 0}
-.wf-swatch{width:12px;height:12px;border-radius:3px;background:var(--swatch);flex:none}
-.wf-stage-rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(120px,1fr);gap:8px;
-  padding:0 24px 12px;overflow-x:auto}
-.wf-stage-tab{display:flex;flex-direction:column;gap:2px;align-items:flex-start;min-height:56px;
-  padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);
-  color:var(--fg);font:inherit;cursor:pointer;text-align:left}
-.wf-stage-tab[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
-.wf-stage-tab[data-status="passed"] .wf-stage-name::before{content:"✓ ";color:var(--accent)}
-.wf-stage-tab[data-status="gated"] .wf-stage-name::before{content:"⏸ ";color:var(--gate)}
-.wf-stage-tab[data-status="active"] .wf-stage-name::before{content:"▶ ";color:var(--accent)}
-.wf-stage-tab[data-status="blocked"] .wf-stage-name::before{content:"! ";color:var(--blocked)}
-.wf-stage-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.wf-stage-name{font-size:13.5px;font-weight:600}
-.wf-stage-meta{font-size:11.5px;color:var(--muted)}
-.wf-canvas{padding:8px 24px 24px;overflow-x:auto}
+.wf-shell{max-width:1720px;margin:0 auto;padding:0 20px 32px}
+
+/* Top bar: brand on the left, compact icon toolbar on the right. */
+.wf-topbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+  padding:14px 0 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:20}
+.wf-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.wf-pulse{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;
+  box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent);animation:wf-pulse 2.6s ease-out infinite}
+@keyframes wf-pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent)}
+  70%{box-shadow:0 0 0 9px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.wf-brand-text{font-size:14.5px;font-weight:650;letter-spacing:-.01em}
+.wf-brand-task{font-size:12px;color:var(--muted);padding-left:10px;border-left:1px solid var(--line);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:34ch}
+.wf-toolbar{display:flex;align-items:center;gap:4px;padding:3px;border:1px solid var(--line);
+  border-radius:11px;background:var(--panel)}
+.wf-tool{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:0 12px;border:0;
+  border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-size:12.5px;cursor:pointer;
+  transition:background .16s,color .16s}
+.wf-tool:hover{background:var(--raised);color:var(--fg)}
+.wf-tool:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.wf-tool[aria-pressed="true"]{background:var(--raised);color:var(--fg)}
+.wf-tool-dot{width:11px;height:11px;border-radius:3px;background:var(--fg);flex:none;opacity:.75}
+
+/* Status bar: the answer to "where is this task" in one line. */
+.wf-status-bar{padding:16px 0 4px}
+.wf-status-main{display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:13px}
+.wf-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:650;
+  border-radius:7px;padding:3px 10px;color:#fff;background:var(--muted)}
+.wf-chip-passed{background:var(--accent)}
+.wf-chip-gated{background:var(--gate)}
+.wf-chip-blocked{background:var(--blocked)}
+.wf-chip-active{background:var(--accent)}
+.wf-status-progress{font-variant-numeric:tabular-nums;color:var(--muted)}
+.wf-status-progress strong{color:var(--fg);font-size:15px}
+.wf-status-where{color:var(--muted)}
+.wf-status-rev{font-family:var(--mono);font-size:11.5px;color:var(--muted);
+  border:1px solid var(--line);border-radius:5px;padding:1px 7px}
+.wf-blocked{margin:8px 0 0;font-size:12.5px;color:var(--blocked)}
+
+/* Stage rail: each node lights according to its real status. */
+.wf-rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;
+  list-style:none;margin:14px 0 0;padding:0;overflow-x:auto}
+.wf-rail-item{min-width:0}
+.wf-rail-btn{display:flex;align-items:center;gap:8px;width:100%;min-height:40px;padding:6px 10px;
+  border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--muted);
+  font:inherit;font-size:12.5px;cursor:pointer;text-align:left;transition:border-color .16s,background .16s,color .16s}
+.wf-rail-btn:hover{border-color:var(--accent)}
+.wf-rail-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wf-rail-mark{font-size:12px;width:1em;text-align:center;flex:none}
+.wf-rail-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wf-rail-item[data-status="passed"] .wf-rail-btn{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.wf-rail-item[data-status="gated"] .wf-rail-btn{color:var(--gate);border-color:color-mix(in srgb,var(--gate) 45%,var(--line))}
+.wf-rail-item[data-status="blocked"] .wf-rail-btn{color:var(--blocked);border-color:color-mix(in srgb,var(--blocked) 45%,var(--line))}
+.wf-rail-item[data-status="active"] .wf-rail-btn{color:var(--accent)}
+.wf-rail-item[data-current="true"] .wf-rail-btn{background:var(--raised);color:var(--fg);
+  box-shadow:inset 0 0 0 1.5px var(--accent);font-weight:650}
+
+/* Board */
+.wf-board{margin-top:18px;border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
+.wf-canvas{padding:16px;overflow-x:auto}
 .wf-svg{display:block;height:auto;max-width:none}
-.wf-lane-label{font-size:12px;font-weight:600;fill:var(--muted)}
-.wf-col-label{font-size:13px;font-weight:650;fill:var(--fg)}
-.wf-col-meta{font-size:11px;fill:var(--muted)}
-.wf-node-step{font-size:10px;font-weight:700;fill:var(--muted)}
-.wf-node-title{font-size:13.5px;font-weight:650}
-.wf-node-sub{font-size:11px;fill:var(--muted)}
-.wf-edge-label{font-size:10.5px;fill:var(--muted)}
+.wf-svg text{fill:var(--fg)}
+.wf-lane-label{fill:var(--muted) !important;font-size:12px;font-weight:650}
+.wf-col-label{fill:var(--fg) !important;font-size:13px;font-weight:650}
+.wf-col-meta{fill:var(--muted) !important;font-size:11px}
+.wf-node-step{fill:var(--muted) !important;font-size:10px;font-weight:700}
+.wf-node-title{fill:var(--fg) !important;font-size:13.5px;font-weight:650}
+.wf-node-sub{fill:var(--muted) !important;font-size:11px}
+.wf-edge-label{fill:var(--muted) !important;font-size:10.5px}
+.wf-status-glyph{fill:#fff !important;font-size:10px;font-weight:700}
 .wf-node{cursor:pointer}
 .wf-node:focus-visible{outline:none}
-.wf-node:focus-visible rect{stroke-width:3}
-.wf-node[data-dim="true"]{opacity:.28}
-.wf-node[data-active="true"] rect{stroke-width:3}
-.wf-edge[data-dim="true"]{opacity:.18}
-.wf-panel{padding:0 24px 24px}
-.wf-panel-inner{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:16px 18px}
-.wf-panel h2{margin:0 0 6px;font-size:16px}
-.wf-panel dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:10px 0 0;font-size:13.5px}
-.wf-panel dt{color:var(--muted)}
-.wf-panel dd{margin:0}
-.wf-cards{display:grid;gap:14px;padding:0 24px 40px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.wf-card{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:14px 16px}
-.wf-card h2{margin:0 0 8px;font-size:14px}
-.wf-card ul,.wf-card ol{margin:0;padding-left:18px;font-size:13px;color:var(--muted)}
-.wf-card p{margin:0;font-size:13px;color:var(--muted)}
-.wf-card-note{margin-top:8px !important}
-.wf-card-status{display:inline-block;min-width:3.4em;margin-right:6px;font-size:11.5px;color:var(--muted)}
-.wf-card-status[data-status="passed"]{color:var(--accent)}
-.wf-card-status[data-status="gated"]{color:var(--gate)}
-.wf-card-status[data-status="blocked"]{color:var(--blocked)}
-.wf-card-expected{opacity:.7}
+.wf-node:focus-visible rect{stroke-width:3.5}
+.wf-node[data-selected="true"] rect{stroke-width:3.5}
+.wf-node[data-dim="true"]{opacity:.26}
+.wf-edge[data-dim="true"]{opacity:.16}
+body[data-labels="off"] .wf-edge-label{display:none}
+body[data-focus="on"] .wf-node[data-dim="true"]{opacity:.14}
+
+/* Detail panel: what a gate or stage is holding, and where it lives. */
+.wf-detail{margin-top:16px}
+.wf-detail-empty{border:1px dashed var(--line);border-radius:12px;padding:20px 22px;color:var(--muted);font-size:13px}
+.wf-detail-empty p{margin:0}
+.wf-card{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:18px 20px}
+.wf-card-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.wf-card-kind{font-size:11px;font-weight:650;letter-spacing:.04em;border-radius:6px;padding:2px 8px;
+  color:#fff;background:var(--muted)}
+.wf-card-kind-stage{background:var(--accent)}
+.wf-card-kind-gate{background:var(--gate)}
+.wf-card-kind-rework{background:var(--rework)}
+.wf-card h2{margin:0;font-size:17px;font-weight:680}
+.wf-card-status{font-size:12px;font-weight:650;border-radius:6px;padding:2px 9px;color:#fff;background:var(--muted)}
+.wf-card-status[data-status="passed"]{background:var(--accent)}
+.wf-card-status[data-status="gated"]{background:var(--gate)}
+.wf-card-status[data-status="blocked"]{background:var(--blocked)}
+.wf-card-summary{margin:12px 0 0;font-size:13.5px;color:var(--muted);max-width:74ch}
+.wf-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:16px}
+.wf-field{border-top:1px solid var(--line);padding-top:12px}
+.wf-field h3{margin:0 0 6px;font-size:11.5px;font-weight:650;letter-spacing:.04em;color:var(--muted)}
+.wf-field p{margin:0;font-size:13px}
+.wf-field ul{margin:0;padding-left:0;list-style:none;display:grid;gap:6px}
+.wf-field li{font-size:12.5px;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+.wf-path{font-family:var(--mono);font-size:11.5px;background:var(--raised);border:1px solid var(--line);
+  border-radius:5px;padding:2px 7px;color:var(--fg);word-break:break-all}
+.wf-expected{font-size:11px;color:var(--muted);border:1px dashed var(--line);border-radius:5px;padding:1px 6px}
+.wf-note-line{margin:10px 0 0;font-size:12.5px;color:var(--muted);border-left:2px solid var(--line);padding-left:10px}
+.wf-wait{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--gate);font-weight:650}
+.wf-gate-list{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.wf-gate-item{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:var(--raised)}
+.wf-gate-item strong{font-size:13px}
+.wf-gate-item p{margin:5px 0 0;font-size:12.5px;color:var(--muted)}
+.wf-foot{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between;
+  margin-top:18px;padding-top:12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted)}
+
+@media (min-width:900px){
+  .wf-grid{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+}
 @media (max-width:640px){
-  .wf-header{padding:16px}
-  .wf-controls{width:100%}
-  .wf-btn{flex:1 1 auto}
-  .wf-intro,.wf-progress,.wf-legend,.wf-stage-rail,.wf-canvas,.wf-panel,.wf-cards{padding-left:16px;padding-right:16px}
-  .wf-svg{min-width:640px}
+  .wf-shell{padding:0 12px 24px}
+  .wf-brand-task{display:none}
+  .wf-tool-label{display:none}
+  .wf-tool{min-height:40px;padding:0 11px}
+  .wf-canvas{padding:10px}
 }
 @media (prefers-reduced-motion:reduce){
-  .wf-bar span{transition:none}
+  .wf-pulse{animation:none}
 }
 `;
 }
@@ -294,147 +326,161 @@ function script(stages, statuses) {
   const statusLabels = JSON.stringify(
     Object.fromEntries(statuses.map((id) => [id, STATUS_META[id]?.label ?? id])),
   );
+  const gates = JSON.stringify(
+    Object.fromEntries(
+      stages.flatMap((stage) => stage.gateNodes.map((gate) => [gate.id, { ...gate, stageId: stage.id }])),
+    ),
+  );
   return `
 (function(){
   var STAGES = ${data};
   var STATUS_LABEL = ${statusLabels};
-  var stageOrder = STAGES.map(function(s){ return s.id; });
-  var cursor = -1;
-  var playing = false;
-  var timer = null;
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var GATES = ${gates};
   var svg = document.querySelector('.wf-svg');
-  var panel = document.getElementById('wf-panel');
-  var note = document.getElementById('wf-step-note');
-  var bar = document.getElementById('wf-bar');
-  var barFill = bar ? bar.querySelector('span') : null;
-  var playBtn = document.getElementById('wf-play');
-  var stepBtn = document.getElementById('wf-step');
-  var resetBtn = document.getElementById('wf-reset');
+  var detail = document.getElementById('wf-detail');
   var themeBtn = document.getElementById('wf-theme');
+  var focusBtn = document.getElementById('wf-focus');
+  var labelsBtn = document.getElementById('wf-labels');
   var exportBtn = document.getElementById('wf-export');
-
-  // The task's real status is the source of truth for the badge and colour.
-  // Playback focus is a separate attribute so stepping through the diagram can
-  // never overwrite what the record actually says.
-  function realStatus(stageId){
-    for (var i=0;i<STAGES.length;i++) if (STAGES[i].id === stageId) return STAGES[i].status;
-    return 'pending';
-  }
-  function nodesOf(stageId){
-    return Array.prototype.slice.call(svg.querySelectorAll('.wf-node[data-stage="'+stageId+'"]'));
-  }
-  function allNodes(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-node')); }
-  function allEdges(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-edge')); }
-
-  function clearFocus(){
-    allNodes().forEach(function(n){ n.setAttribute('data-dim','false'); n.removeAttribute('data-active'); });
-    allEdges().forEach(function(e){ e.setAttribute('data-dim','false'); });
-  }
-
-  function focusStage(stageId){
-    var keep = {};
-    nodesOf(stageId).forEach(function(n){ keep[n.getAttribute('data-node')] = true; });
-    allNodes().forEach(function(n){
-      var isTarget = !!keep[n.getAttribute('data-node')];
-      n.setAttribute('data-dim', isTarget ? 'false' : 'true');
-      if (isTarget) n.setAttribute('data-active','true'); else n.removeAttribute('data-active');
-    });
-    allEdges().forEach(function(e){
-      var from = e.getAttribute('data-from'), to = e.getAttribute('data-to');
-      e.setAttribute('data-dim', (keep[from] || keep[to]) ? 'false' : 'true');
-    });
-    renderPanel(stageId);
-    syncTabs(stageId);
-  }
-
-  function syncTabs(stageId){
-    var tabs = document.querySelectorAll('.wf-stage-tab');
-    Array.prototype.forEach.call(tabs, function(tab){
-      var on = tab.getAttribute('data-stage') === stageId;
-      tab.setAttribute('aria-selected', on ? 'true' : 'false');
-      tab.setAttribute('tabindex', on ? '0' : '-1');
-    });
-  }
-
-  function renderPanel(stageId){
-    var stage = null;
-    for (var i=0;i<STAGES.length;i++) if (STAGES[i].id === stageId) stage = STAGES[i];
-    if (!stage){ panel.innerHTML=''; return; }
-    var gates = stage.gates.length ? stage.gates.join('、') : '无';
-    panel.innerHTML =
-      '<div class="wf-panel-inner">' +
-        '<h2>' + esc(stage.name) + '</h2>' +
-        '<p>' + esc(stage.summary) + '</p>' +
-        '<dl>' +
-          '<dt>任务状态</dt><dd>' + esc(STATUS_LABEL[stage.status] || stage.status) + '</dd>' +
-          '<dt>确认门</dt><dd>' + esc(gates) + '</dd>' +
-          '<dt>阶段产出</dt><dd>' + esc(stage.output) + '</dd>' +
-          '<dt>证据</dt><dd>' + esc(stage.evidenceActual || stage.evidence || '—') +
-            (stage.evidenceActual ? '' : ' <span class="wf-card-expected">（预期）</span>') + '</dd>' +
-          '<dt>决策</dt><dd>' + esc(stage.decisionPoint ? '用户确认' : '按规则推进') + '</dd>' +
-        '</dl>' +
-        (stage.stageNote ? '<p class="wf-panel-note">' + esc(stage.stageNote) + '</p>' : '') +
-      '</div>';
-  }
 
   function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g, function(c){
     return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
+  function allNodes(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-node')); }
+  function allEdges(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-edge')); }
+  function stageOf(id){ for (var i=0;i<STAGES.length;i++) if (STAGES[i].id===id) return STAGES[i]; return null; }
 
-  function setCursor(next){
-    cursor = Math.max(-1, Math.min(next, stageOrder.length - 1));
-    if (barFill) barFill.style.width = ((cursor + 1) / stageOrder.length * 100) + '%';
-    if (bar) bar.setAttribute('aria-valuenow', String(cursor + 1));
-    if (cursor < 0){
-      clearFocus();
-      note.textContent = '尚未开始。播放或按「下一步」逐步查看每个阶段与确认门。';
-      panel.innerHTML = '';
-      syncTabs('');
-      return;
-    }
-    var stage = STAGES[cursor];
-    note.textContent = '第 ' + (cursor + 1) + ' / ' + STAGES.length + ' 步 · ' + stage.name +
-      ' · 记录状态：' + (STATUS_LABEL[stage.status] || stage.status) +
-      (stage.gates.length ? ' · 门 ' + stage.gates.join('、') : '');
-    focusStage(stage.id);
+  function clearSelection(){
+    allNodes().forEach(function(n){ n.removeAttribute('data-selected'); n.removeAttribute('data-dim'); });
+    allEdges().forEach(function(e){ e.removeAttribute('data-dim'); });
   }
 
-  function stop(){
-    playing = false;
-    if (timer){ clearTimeout(timer); timer = null; }
-    if (playBtn) playBtn.textContent = '播放流程';
+  function selectNode(nodeId){
+    var node = svg.querySelector('.wf-node[data-node="'+nodeId+'"]');
+    if (!node) return;
+    var keep = {};
+    keep[nodeId] = true;
+    allNodes().forEach(function(n){
+      var on = n.getAttribute('data-node') === nodeId;
+      n.setAttribute('data-selected', on ? 'true' : 'false');
+      n.setAttribute('data-dim', on ? 'false' : 'true');
+    });
+    allEdges().forEach(function(e){
+      var hit = e.getAttribute('data-from') === nodeId || e.getAttribute('data-to') === nodeId;
+      e.setAttribute('data-dim', hit ? 'false' : 'true');
+    });
+    var stageId = node.getAttribute('data-stage');
+    var kind = node.getAttribute('data-kind');
+    if (kind === 'gate') renderGate(node.getAttribute('data-node').replace('gate:',''), stageId);
+    else renderStage(stageId);
   }
 
-  function advance(){
-    if (cursor >= stageOrder.length - 1){ stop(); return; }
-    setCursor(cursor + 1);
-    if (playing) timer = setTimeout(advance, 1500);
+  function pathRow(label, path, expected){
+    if (!path && !expected) return '';
+    if (path) return '<li><span class="wf-path">'+esc(path)+'</span></li>';
+    return '<li><span class="wf-path">'+esc(expected)+'</span><span class="wf-expected">预期位置，尚未产出</span></li>';
   }
 
-  if (playBtn) playBtn.addEventListener('click', function(){
-    if (playing){ stop(); return; }
-    if (reduced.matches){
-      setCursor(stageOrder.length - 1);
-      note.textContent = '系统已开启减少动态效果：直接显示最终阶段，可用「下一步」手动查看。';
-      return;
-    }
-    playing = true;
-    playBtn.textContent = '暂停';
-    if (cursor >= stageOrder.length - 1) setCursor(-1);
-    timer = setTimeout(advance, 200);
+  function renderStage(stageId){
+    var stage = stageOf(stageId);
+    if (!stage){ detail.innerHTML=''; return; }
+    var actual = stage.evidenceActual;
+    var expected = stage.evidence;
+    var gates = stage.gateNodes.map(function(g){
+      return '<li class="wf-gate-item"><strong>'+esc(g.title)+'</strong>'+
+        '<p>'+esc(STATUS_LABEL[g.status] || g.status)+(g.lane==='user' ? ' · 用户确认门' : ' · 留痕要求（不阻塞）')+'</p>'+
+        '<p>'+esc(g.detail || '')+'</p></li>';
+    }).join('');
+    detail.innerHTML =
+      '<div class="wf-card">'+
+        '<div class="wf-card-head">'+
+          '<span class="wf-card-kind wf-card-kind-stage">阶段</span>'+
+          '<h2>'+esc(stage.name)+'</h2>'+
+          '<span class="wf-card-status" data-status="'+esc(stage.status)+'">'+esc(STATUS_LABEL[stage.status]||stage.status)+'</span>'+
+        '</div>'+
+        '<p class="wf-card-summary">'+esc(stage.summary)+'</p>'+
+        '<div class="wf-grid">'+
+          '<div class="wf-field"><h3>产物与证据</h3><ul>'+
+            pathRow('证据', actual, expected)+
+          '</ul>'+
+          (stage.stageNote ? '<p class="wf-note-line">'+esc(stage.stageNote)+'</p>' : '')+
+          '</div>'+
+          '<div class="wf-field"><h3>阶段产出</h3><p>'+esc(stage.output || '—')+'</p>'+
+            '<h3 style="margin-top:12px">决策</h3><p>'+esc(stage.decisionPoint ? '用户确认' : '按规则推进')+'</p>'+
+          '</div>'+
+        '</div>'+
+        (gates ? '<div class="wf-field"><h3>该阶段的门</h3><ul class="wf-gate-list">'+gates+'</ul></div>' : '')+
+      '</div>';
+  }
+
+  function renderGate(gateId, stageId){
+    var gate = GATES[gateId];
+    var stage = stageOf(stageId);
+    if (!gate || !stage){ detail.innerHTML=''; return; }
+    var waiting = gate.status === 'gated';
+    detail.innerHTML =
+      '<div class="wf-card">'+
+        '<div class="wf-card-head">'+
+          '<span class="wf-card-kind wf-card-kind-gate">确认门</span>'+
+          '<h2>'+esc(gate.title)+'</h2>'+
+          '<span class="wf-card-status" data-status="'+esc(gate.status)+'">'+esc(STATUS_LABEL[gate.status]||gate.status)+'</span>'+
+        '</div>'+
+        (waiting ? '<p class="wf-card-summary"><span class="wf-wait">⏸ 等待确认</span></p>' : '')+
+        '<div class="wf-grid">'+
+          '<div class="wf-field"><h3>本门需要确认的稿件</h3><p>'+esc(gate.detail || '—')+'</p>'+
+            '<h3 style="margin-top:12px">稿件位置</h3><ul>'+
+              pathRow('证据', stage.evidenceActual, stage.evidence)+
+            '</ul></div>'+
+          '<div class="wf-field"><h3>所属阶段</h3><p>'+esc(stage.name)+'</p>'+
+            '<h3 style="margin-top:12px">裁决方式</h3><p>'+
+              esc(gate.lane === 'user' ? '用户确认后放行' : '留痕要求，不阻塞流程')+'</p>'+
+          '</div>'+
+        '</div>'+
+        (stage.stageNote ? '<p class="wf-note-line">'+esc(stage.stageNote)+'</p>' : '')+
+      '</div>';
+  }
+
+  svg.addEventListener('click', function(ev){
+    var node = ev.target.closest ? ev.target.closest('.wf-node') : null;
+    if (!node) return;
+    selectNode(node.getAttribute('data-node'));
   });
-  if (stepBtn) stepBtn.addEventListener('click', function(){ stop(); advance(); });
-  if (resetBtn) resetBtn.addEventListener('click', function(){ stop(); setCursor(-1); });
+  svg.addEventListener('keydown', function(ev){
+    if (ev.key !== 'Enter' && ev.key !== ' ') return;
+    var node = ev.target.closest ? ev.target.closest('.wf-node') : null;
+    if (!node) return;
+    ev.preventDefault();
+    selectNode(node.getAttribute('data-node'));
+  });
+
+  var railBtns = document.querySelectorAll('.wf-rail-btn');
+  Array.prototype.forEach.call(railBtns, function(btn){
+    btn.addEventListener('click', function(){
+      var stageId = btn.getAttribute('data-stage');
+      var node = svg.querySelector('.wf-node[data-node="stage:'+stageId+'"]');
+      if (node) selectNode('stage:'+stageId);
+    });
+  });
+
   if (themeBtn) themeBtn.addEventListener('click', function(){
     var dark = document.body.getAttribute('data-theme') === 'dark';
     document.body.setAttribute('data-theme', dark ? 'light' : 'dark');
-    themeBtn.textContent = dark ? '深色' : '浅色';
     themeBtn.setAttribute('aria-pressed', dark ? 'false' : 'true');
+    themeBtn.querySelector('.wf-tool-label').textContent = dark ? '浅色' : '深色';
+  });
+  if (focusBtn) focusBtn.addEventListener('click', function(){
+    var on = document.body.getAttribute('data-focus') === 'on';
+    document.body.setAttribute('data-focus', on ? 'off' : 'on');
+    focusBtn.setAttribute('aria-pressed', on ? 'false' : 'true');
+  });
+  if (labelsBtn) labelsBtn.addEventListener('click', function(){
+    var off = document.body.getAttribute('data-labels') === 'off';
+    document.body.setAttribute('data-labels', off ? 'on' : 'off');
+    labelsBtn.setAttribute('aria-pressed', off ? 'true' : 'false');
   });
   if (exportBtn) exportBtn.addEventListener('click', function(){
     var clone = svg.cloneNode(true);
-    clone.querySelectorAll('[data-dim="true"]').forEach(function(el){ el.removeAttribute('data-dim'); });
-    clone.querySelectorAll('[data-active="true"]').forEach(function(el){ el.removeAttribute('data-active'); });
+    clone.querySelectorAll('[data-dim]').forEach(function(el){ el.removeAttribute('data-dim'); });
+    clone.querySelectorAll('[data-selected]').forEach(function(el){ el.removeAttribute('data-selected'); });
     var blob = new Blob([new XMLSerializer().serializeToString(clone)], {type:'image/svg+xml'});
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -443,35 +489,16 @@ function script(stages, statuses) {
     setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
   });
 
-  var tabs = document.querySelectorAll('.wf-stage-tab');
-  Array.prototype.forEach.call(tabs, function(tab, index){
-    tab.addEventListener('click', function(){ stop(); setCursor(index); });
-    tab.addEventListener('keydown', function(ev){
-      var next = null;
-      if (ev.key === 'ArrowRight') next = Math.min(index + 1, tabs.length - 1);
-      else if (ev.key === 'ArrowLeft') next = Math.max(index - 1, 0);
-      else if (ev.key === 'Home') next = 0;
-      else if (ev.key === 'End') next = tabs.length - 1;
-      if (next === null) return;
-      ev.preventDefault();
-      tabs[next].focus();
-      stop();
-      setCursor(next);
-    });
-  });
-
-  svg.addEventListener('click', function(ev){
-    var node = ev.target.closest ? ev.target.closest('.wf-node') : null;
-    if (!node) return;
-    var stageId = node.getAttribute('data-stage');
-    var index = stageOrder.indexOf(stageId);
-    if (index >= 0){ stop(); setCursor(index); }
-  });
-
-  // Open on the stage the task is actually on, when the record says so.
-  var startAt = -1;
-  for (var i=0;i<STAGES.length;i++){ if (STAGES[i].isCurrent) { startAt = i; break; } }
-  if (startAt >= 0) setCursor(startAt); else setCursor(-1);
+  // Open on the stage the record says the task is on, so the first thing the
+  // reader sees is where the work actually stands.
+  var current = null;
+  for (var i=0;i<STAGES.length;i++) if (STAGES[i].isCurrent) current = STAGES[i];
+  if (current){
+    var node = svg.querySelector('.wf-node[data-node="stage:'+current.id+'"]');
+    if (node) selectNode('stage:'+current.id);
+  } else {
+    clearSelection();
+  }
 })();
 `;
 }

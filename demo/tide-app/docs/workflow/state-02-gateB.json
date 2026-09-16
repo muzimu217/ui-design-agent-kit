@@ -1,0 +1,16 @@
+{
+  "task": "潮汐 TIDE · 海钓赶海潮汐预报产品页",
+  "revision": "P-tide-1",
+  "updatedOn": "2026-09-16",
+  "note": "阶段 1-2 完成：方向稿与素材清单均已裁决通过，停在门C/D 等原型与契约确认。",
+  "stages": {
+    "brief": { "status": "passed", "evidence": "docs/DIRECTION.md · docs/GATE-A-DECISION.md", "note": "门A 通过，附 4 项强制修正 A1-A4。" },
+    "reference": { "status": "passed", "evidence": "docs/RESEARCH-NOTES.md · docs/reference/OBSERVATION-tideguide.md", "note": "门B 通过：采纳 R1/R2/R3/A3/P1，排除 A1/A2/D1。实地观察推翻第三屏设定。" },
+    "contract": { "status": "gated", "evidence": "docs/DESIGN.md（待产出）", "note": "等门C 原型裁决与门D 契约确认。" },
+    "build": { "status": "pending" },
+    "verify": { "status": "pending" },
+    "deliver": { "status": "pending" }
+  },
+  "gates": { "A": "passed", "B": "passed", "C": "gated", "D": "pending", "E": "pending", "F": "pending" },
+  "blockedReason": null
+}

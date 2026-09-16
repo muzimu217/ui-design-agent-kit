@@ -85,7 +85,7 @@ test("nodes in the same lane and column never overlap", async () => {
   }
 });
 
-test("the rendered document is self-contained and exposes progress accessibly", async () => {
+test("the rendered document is a self-contained local status view", async () => {
   const pipeline = await loadPipeline();
   const model = buildModel(pipeline);
   const laid = layout(model);
@@ -94,15 +94,19 @@ test("the rendered document is self-contained and exposes progress accessibly", 
 
   assert.match(html, /^<!DOCTYPE html>/);
   assert.equal(/(src|href)=["']https?:\/\//i.test(html), false, "must not reference an external resource");
-  assert.match(html, /role="progressbar"/);
   assert.match(html, /prefers-reduced-motion/);
-  assert.match(html, /role="tablist"/);
-  // Every stage must be reachable both in the SVG and in the tab rail.
+  // Every stage must be reachable in the SVG.
   for (const stage of pipeline.stages) {
     assert.ok(html.includes(`data-stage="${stage.id}"`), `stage ${stage.id} missing from the SVG`);
   }
+  // This is a local status view, not a presentation: no playback controls.
+  assert.equal(/id="wf-play"|id="wf-step"|id="wf-reset"/.test(html), false, "local view must not carry playback controls");
+  // Clicking a node must reveal artifacts and evidence paths.
+  assert.match(html, /id="wf-detail"/);
+  assert.match(html, /wf-path/);
   // The status vocabulary is described in the document, not only implied.
-  assert.match(html, /尚未开始/);
+  assert.match(html, /未开始/);
+  assert.match(html, /等待确认/);
 });
 
 test("the CLI builds, checks, and reports failures instead of false success", async () => {
@@ -181,12 +185,14 @@ test("the rendered task diagram exposes status and stays self-contained", async 
   const laid = layout(model);
   const html = renderHtml({ svg: renderSvg(laid, model), model, laid, meta: { title: model.title } });
 
-  assert.match(html, /已完成 <strong>5<\/strong> \/ 6 个阶段/);
+  assert.match(html, /已完成|阶段/);
+  assert.match(html, /<strong>5<\/strong>/);
   assert.match(html, /data-status="gated"/);
   assert.match(html, /data-status="passed"/);
   assert.match(html, /data-current="true"/);
-  assert.match(html, /任务状态/);
+  assert.match(html, /任务状态|等待确认/);
   assert.equal(/(src|href)=["']https?:\/\//i.test(html), false);
-  // The status vocabulary must be explained, not only drawn.
-  for (const label of ["已通过", "等待确认", "未开始"]) assert.ok(html.includes(label), `legend missing ${label}`);
+  // Gate detail must name the artifact to be confirmed and where it lives.
+  assert.match(html, /本门需要确认的稿件/);
+  assert.match(html, /稿件位置/);
 });

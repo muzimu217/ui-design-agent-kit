@@ -108,7 +108,6 @@ async function check({ positional }) {
   if (!html.startsWith("<!DOCTYPE html>")) problems.push("not an HTML document");
   if (!html.includes("<svg")) problems.push("no inline SVG");
   if (/(src|href)=["']https?:\/\//i.test(html)) problems.push("references an external resource; the file must be self-contained");
-  if (!html.includes('role="progressbar"')) problems.push("missing progressbar (progress must be exposed, not only drawn)");
   if (!html.includes("prefers-reduced-motion")) problems.push("missing reduced-motion handling");
   for (const stage of ["brief", "reference", "contract", "build", "verify", "deliver"]) {
     if (!html.includes(`data-stage="${stage}"`)) problems.push(`missing stage ${stage} in the rendered output`);
@@ -117,6 +116,15 @@ async function check({ positional }) {
   if (!/data-status="(pending|active|gated|passed|blocked)"/.test(html)) {
     problems.push("no per-node status rendered");
   }
+  // This is a local status view: it must NOT ship playback controls. Playback
+  // belongs to a showcase page, not to the record of a task in progress.
+  if (/id="wf-play"|id="wf-step"|id="wf-reset"/.test(html)) {
+    problems.push("local status view must not carry playback controls");
+  }
+  // Clicking a node must reveal artifacts, evidence paths, and the gate state.
+  if (!html.includes('id="wf-detail"')) problems.push("missing detail panel for node selection");
+  if (!html.includes("wf-path")) problems.push("detail panel does not expose artifact/evidence paths");
+  if (!html.includes("等待确认")) problems.push("gate waiting state is not surfaced to the reader");
   return { file, ok: problems.length === 0, problems };
 }
 

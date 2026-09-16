@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>潮汐 TIDE · 海钓赶海潮汐预报产品页 · UI 设计交付流程</title>
+<style>
+:root{
+  --bg:#ffffff; --fg:#12181f; --muted:#5d6b7a; --line:#dfe5ec;
+  --card:#f7f9fb; --accent:#1f7a5c; --gate:#b3244a; --rework:#b5711b; --blocked:#c2410c;
+  --font:ui-sans-serif,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+}
+body[data-theme="dark"]{
+  --bg:#0f1419; --fg:#e6edf3; --muted:#93a1b0; --line:#243039; --card:#161d24;
+  --accent:#4cc38a; --gate:#e5637f; --rework:#e0a355; --blocked:#f97316;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+.wf-header{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+  padding:20px 24px;border-bottom:1px solid var(--line)}
+.wf-heading{display:flex;align-items:center;gap:10px;min-width:0}
+.wf-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);flex:none}
+h1{font-size:20px;margin:0;font-weight:650;letter-spacing:-.01em}
+.wf-controls{display:flex;flex-wrap:wrap;gap:8px}
+.wf-btn{min-height:44px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);
+  color:var(--fg);font:inherit;font-size:14px;cursor:pointer;transition:background .15s,border-color .15s}
+.wf-btn:hover{border-color:var(--accent)}
+.wf-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wf-btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.wf-btn[disabled]{opacity:.5;cursor:not-allowed}
+.wf-intro{padding:16px 24px 0}
+.wf-task{margin:16px 24px 0;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:14px 16px}
+.wf-task-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.wf-task-badge{font-size:11.5px;font-weight:650;letter-spacing:.04em;color:#fff;background:var(--accent);border-radius:6px;padding:2px 8px}
+.wf-task-head strong{font-size:15px}
+.wf-task-meta{font-size:12px;color:var(--muted)}
+.wf-task-line{margin:8px 0 0;font-size:13.5px;color:var(--muted)}
+.wf-task-blocked{margin:6px 0 0;font-size:13px;color:var(--blocked)}
+.wf-note{margin:0;color:var(--muted);font-size:14px;max-width:70ch}
+.wf-generated{margin:4px 0 0;color:var(--muted);font-size:12px}
+.wf-progress{padding:12px 24px 0}
+.wf-bar{height:6px;border-radius:99px;background:var(--card);overflow:hidden;border:1px solid var(--line)}
+.wf-bar span{display:block;height:100%;width:0;background:var(--accent);transition:width .3s ease}
+.wf-step-note{margin:8px 0 0;font-size:13px;color:var(--muted);min-height:1.5em}
+.wf-legend{display:flex;flex-wrap:wrap;gap:14px;padding:14px 24px;margin:0;list-style:none}
+.wf-legend-item{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted)}
+.wf-legend-group{font-size:11.5px;font-weight:650;color:var(--fg);opacity:.7;padding:2px 0}
+.wf-swatch{width:12px;height:12px;border-radius:3px;background:var(--swatch);flex:none}
+.wf-stage-rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(120px,1fr);gap:8px;
+  padding:0 24px 12px;overflow-x:auto}
+.wf-stage-tab{display:flex;flex-direction:column;gap:2px;align-items:flex-start;min-height:56px;
+  padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);
+  color:var(--fg);font:inherit;cursor:pointer;text-align:left}
+.wf-stage-tab[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.wf-stage-tab[data-status="passed"] .wf-stage-name::before{content:"✓ ";color:var(--accent)}
+.wf-stage-tab[data-status="gated"] .wf-stage-name::before{content:"⏸ ";color:var(--gate)}
+.wf-stage-tab[data-status="active"] .wf-stage-name::before{content:"▶ ";color:var(--accent)}
+.wf-stage-tab[data-status="blocked"] .wf-stage-name::before{content:"! ";color:var(--blocked)}
+.wf-stage-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wf-stage-name{font-size:13.5px;font-weight:600}
+.wf-stage-meta{font-size:11.5px;color:var(--muted)}
+.wf-canvas{padding:8px 24px 24px;overflow-x:auto}
+.wf-svg{display:block;height:auto;max-width:none}
+.wf-lane-label{font-size:12px;font-weight:600;fill:var(--muted)}
+.wf-col-label{font-size:13px;font-weight:650;fill:var(--fg)}
+.wf-col-meta{font-size:11px;fill:var(--muted)}
+.wf-node-step{font-size:10px;font-weight:700;fill:var(--muted)}
+.wf-node-title{font-size:13.5px;font-weight:650}
+.wf-node-sub{font-size:11px;fill:var(--muted)}
+.wf-edge-label{font-size:10.5px;fill:var(--muted)}
+.wf-node{cursor:pointer}
+.wf-node:focus-visible{outline:none}
+.wf-node:focus-visible rect{stroke-width:3}
+.wf-node[data-dim="true"]{opacity:.28}
+.wf-node[data-active="true"] rect{stroke-width:3}
+.wf-edge[data-dim="true"]{opacity:.18}
+.wf-panel{padding:0 24px 24px}
+.wf-panel-inner{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:16px 18px}
+.wf-panel h2{margin:0 0 6px;font-size:16px}
+.wf-panel dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:10px 0 0;font-size:13.5px}
+.wf-panel dt{color:var(--muted)}
+.wf-panel dd{margin:0}
+.wf-cards{display:grid;gap:14px;padding:0 24px 40px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.wf-card{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:14px 16px}
+.wf-card h2{margin:0 0 8px;font-size:14px}
+.wf-card ul,.wf-card ol{margin:0;padding-left:18px;font-size:13px;color:var(--muted)}
+.wf-card p{margin:0;font-size:13px;color:var(--muted)}
+.wf-card-note{margin-top:8px !important}
+.wf-card-status{display:inline-block;min-width:3.4em;margin-right:6px;font-size:11.5px;color:var(--muted)}
+.wf-card-status[data-status="passed"]{color:var(--accent)}
+.wf-card-status[data-status="gated"]{color:var(--gate)}
+.wf-card-status[data-status="blocked"]{color:var(--blocked)}
+.wf-card-expected{opacity:.7}
+@media (max-width:640px){
+  .wf-header{padding:16px}
+  .wf-controls{width:100%}
+  .wf-btn{flex:1 1 auto}
+  .wf-intro,.wf-progress,.wf-legend,.wf-stage-rail,.wf-canvas,.wf-panel,.wf-cards{padding-left:16px;padding-right:16px}
+  .wf-svg{min-width:640px}
+}
+@media (prefers-reduced-motion:reduce){
+  .wf-bar span{transition:none}
+}
+</style>
+</head>
+<body data-theme="light">
+<header class="wf-header">
+  <div class="wf-heading">
+    <span class="wf-dot" aria-hidden="true"></span>
+    <h1>UI 设计交付流程</h1>
+  </div>
+  <div class="wf-controls">
+    <button type="button" id="wf-theme" class="wf-btn" aria-pressed="false">深色</button>
+    <button type="button" id="wf-play" class="wf-btn wf-btn-primary">播放流程</button>
+    <button type="button" id="wf-step" class="wf-btn">下一步</button>
+    <button type="button" id="wf-reset" class="wf-btn">重置</button>
+    <button type="button" id="wf-export" class="wf-btn">导出 SVG</button>
+  </div>
+</header>
+
+<section class="wf-task" aria-label="任务状态">
+  <div class="wf-task-head">
+    <span class="wf-task-badge">任务状态</span>
+    <strong>潮汐 TIDE · 海钓赶海潮汐预报产品页</strong>
+    <span class="wf-task-meta">P-tide-1</span>
+    <span class="wf-task-meta">更新于 2026-09-16</span>
+  </div>
+  <p class="wf-task-line">
+    已完成 <strong>0</strong> / 6 个阶段 · 当前停在「需求与方向」
+  </p>
+  
+</section>
+
+<section class="wf-intro">
+  <p class="wf-note">状态取自任务记录，阶段与确认门来自 tooling/workflow-stages.json。</p>
+  <p class="wf-note">阶段 1 完成：方向稿已出，停在门A 等用户确认方向。</p>
+  <p class="wf-generated">生成于 2026-09-16</p>
+</section>
+
+<section class="wf-progress" aria-live="polite">
+  <div class="wf-bar" role="progressbar" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" id="wf-bar"><span></span></div>
+  <p class="wf-step-note" id="wf-step-note">图上的状态来自任务记录。播放或按「下一步」逐步查看每个阶段与确认门。</p>
+</section>
+
+<nav class="wf-legend" aria-label="图例">
+  <span class="wf-legend-group">形状</span><span class="wf-legend-item"><span class="wf-swatch" style="--swatch:#1f7a5c"></span>交付环节</span><span class="wf-legend-item"><span class="wf-swatch" style="--swatch:#b3244a"></span>确认门（用户）</span><span class="wf-legend-item"><span class="wf-swatch" style="--swatch:#b5711b"></span>返工</span><span class="wf-legend-item"><span class="wf-swatch" style="--swatch:#8b98a6"></span>顺序流</span><span class="wf-legend-item"><span class="wf-swatch" style="--swatch:#1f7a5c"></span>门通过</span><span class="wf-legend-item"><span class="wf-swatch" style="--swatch:#b5711b"></span>不通过 → 返工</span><span class="wf-legend-group">状态</span><span class="wf-legend-item"><span class="wf-swatch" style="--swatch:#c3ccd6"></span>未开始</span><span class="wf-legend-item"><span class="wf-swatch" style="--swatch:#1f7a5c"></span>进行中</span><span class="wf-legend-item"><span class="wf-swatch" style="--swatch:#b3244a"></span>等待确认</span><span class="wf-legend-item"><span class="wf-swatch" style="--swatch:#1f7a5c"></span>已通过</span><span class="wf-legend-item"><span class="wf-swatch" style="--swatch:#c2410c"></span>受阻</span>
+</nav>
+
+<div class="wf-stage-rail" role="tablist" aria-label="交付阶段">
+  <button type="button" role="tab" class="wf-stage-tab" data-stage="brief" data-status="gated" aria-selected="true" tabindex="0"><span class="wf-stage-name">需求与方向</span><span class="wf-stage-meta">门 A · 等待确认</span></button><button type="button" role="tab" class="wf-stage-tab" data-stage="reference" data-status="pending" aria-selected="false" tabindex="-1"><span class="wf-stage-name">参考素材</span><span class="wf-stage-meta">门 B · 未开始</span></button><button type="button" role="tab" class="wf-stage-tab" data-stage="contract" data-status="pending" aria-selected="false" tabindex="-1"><span class="wf-stage-name">原型与契约</span><span class="wf-stage-meta">门 C/D · 未开始</span></button><button type="button" role="tab" class="wf-stage-tab" data-stage="build" data-status="pending" aria-selected="false" tabindex="-1"><span class="wf-stage-name">交互实现</span><span class="wf-stage-meta">门 F · 未开始</span></button><button type="button" role="tab" class="wf-stage-tab" data-stage="verify" data-status="pending" aria-selected="false" tabindex="-1"><span class="wf-stage-name">浏览器验证</span><span class="wf-stage-meta">门 E · 未开始</span></button><button type="button" role="tab" class="wf-stage-tab" data-stage="deliver" data-status="pending" aria-selected="false" tabindex="-1"><span class="wf-stage-name">交付与迭代</span><span class="wf-stage-meta">无门 · 未开始</span></button>
+</div>
+
+<main class="wf-canvas" id="wf-canvas">
+  <svg style="width:1580px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1580 670" role="img" aria-labelledby="wf-title wf-desc" class="wf-svg">
+<title id="wf-title">UI 设计交付流程</title>
+<desc id="wf-desc">状态取自任务记录，阶段与确认门来自 tooling/workflow-stages.json。</desc>
+<defs><marker id="wf-arrow-flow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8b98a6"/></marker><marker id="wf-arrow-pass" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1f7a5c"/></marker><marker id="wf-arrow-gate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#b3244a"/></marker><marker id="wf-arrow-rework" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#b5711b"/></marker><marker id="wf-arrow-return" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#b5711b"/></marker><marker id="wf-arrow-trace" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7a8c"/></marker></defs>
+<rect x="0" y="0" width="1580" height="670" fill="#ffffff"/>
+<g class="wf-lane" data-lane="main"><rect x="16" y="92" width="1548" height="90" rx="10" fill="#f7f9fb" stroke="#dfe5ec" stroke-width="1"/><line x1="148" y1="100" x2="148" y2="174" stroke="#dfe5ec" stroke-width="1"/><text x="28" y="141" class="wf-lane-label">主代理</text></g>
+<g class="wf-lane" data-lane="sub"><rect x="16" y="192" width="1548" height="164" rx="10" fill="#f7f9fb" stroke="#dfe5ec" stroke-width="1"/><line x1="148" y1="200" x2="148" y2="348" stroke="#dfe5ec" stroke-width="1"/><text x="28" y="278" class="wf-lane-label">子代理</text></g>
+<g class="wf-lane" data-lane="user"><rect x="16" y="366" width="1548" height="164" rx="10" fill="#fdf6f7" stroke="#dfe5ec" stroke-width="1"/><line x1="148" y1="374" x2="148" y2="522" stroke="#dfe5ec" stroke-width="1"/><text x="28" y="452" class="wf-lane-label">确认门（用户）</text></g>
+<g class="wf-lane" data-lane="rework"><rect x="16" y="540" width="1548" height="90" rx="10" fill="#fbf7f4" stroke="#dfe5ec" stroke-width="1"/><line x1="148" y1="548" x2="148" y2="622" stroke="#dfe5ec" stroke-width="1"/><text x="28" y="589" class="wf-lane-label">不通过 → 返工</text></g>
+<g class="wf-column" data-stage="brief"><text x="274" y="48" class="wf-col-label" text-anchor="middle">需求与方向</text><text x="274" y="68" class="wf-col-meta" text-anchor="middle">含确认门</text></g>
+<g class="wf-column" data-stage="reference"><text x="510" y="48" class="wf-col-label" text-anchor="middle">参考素材</text><text x="510" y="68" class="wf-col-meta" text-anchor="middle">含确认门</text></g>
+<g class="wf-column" data-stage="contract"><text x="746" y="48" class="wf-col-label" text-anchor="middle">原型与契约</text><text x="746" y="68" class="wf-col-meta" text-anchor="middle">含确认门</text></g>
+<g class="wf-column" data-stage="build"><text x="982" y="48" class="wf-col-label" text-anchor="middle">交互实现</text><text x="982" y="68" class="wf-col-meta" text-anchor="middle">无确认门</text></g>
+<g class="wf-column" data-stage="verify"><text x="1218" y="48" class="wf-col-label" text-anchor="middle">浏览器验证</text><text x="1218" y="68" class="wf-col-meta" text-anchor="middle">无确认门</text></g>
+<g class="wf-column" data-stage="deliver"><text x="1454" y="48" class="wf-col-label" text-anchor="middle">交付与迭代</text><text x="1454" y="68" class="wf-col-meta" text-anchor="middle">含确认门</text></g>
+<g class="wf-edge" data-variant="gate" data-from="stage:brief" data-to="gate:A"><path d="M274 168 L274 380" fill="none" stroke="#b3244a" stroke-width="2"  marker-end="url(#wf-arrow-gate)"/><text x="280" y="278" class="wf-edge-label" text-anchor="start">呈报</text></g>
+<g class="wf-edge" data-variant="rework" data-from="gate:A" data-to="rework:brief"><path d="M274 436 L274 554" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-rework)"/><text x="280" y="499" class="wf-edge-label" text-anchor="start">不通过</text></g>
+<g class="wf-edge" data-variant="return" data-from="rework:brief" data-to="stage:brief"><path d="M274 554 L274 168" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-return)"/><text x="280" y="365" class="wf-edge-label" text-anchor="start">调整后重走</text></g>
+<g class="wf-edge" data-variant="pass" data-from="gate:A" data-to="stage:reference"><path d="M348 408 L386 408 L386 237 L424 237" fill="none" stroke="#1f7a5c" stroke-width="2"  marker-end="url(#wf-arrow-pass)"/><text x="367" y="402" class="wf-edge-label" text-anchor="middle">通过</text></g>
+<g class="wf-edge" data-variant="gate" data-from="stage:reference" data-to="gate:B"><path d="M510 268 L510 380" fill="none" stroke="#b3244a" stroke-width="2"  marker-end="url(#wf-arrow-gate)"/><text x="516" y="328" class="wf-edge-label" text-anchor="start">呈报</text></g>
+<g class="wf-edge" data-variant="rework" data-from="gate:B" data-to="rework:reference"><path d="M510 436 L510 554" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-rework)"/><text x="516" y="499" class="wf-edge-label" text-anchor="start">不通过</text></g>
+<g class="wf-edge" data-variant="return" data-from="rework:reference" data-to="stage:reference"><path d="M510 554 L510 268" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-return)"/><text x="516" y="415" class="wf-edge-label" text-anchor="start">调整后重走</text></g>
+<g class="wf-edge" data-variant="pass" data-from="gate:B" data-to="stage:contract"><path d="M584 408 L622 408 L622 237 L660 237" fill="none" stroke="#1f7a5c" stroke-width="2"  marker-end="url(#wf-arrow-pass)"/><text x="603" y="402" class="wf-edge-label" text-anchor="middle">通过</text></g>
+<g class="wf-edge" data-variant="gate" data-from="stage:contract" data-to="gate:C"><path d="M746 268 L746 380" fill="none" stroke="#b3244a" stroke-width="2"  marker-end="url(#wf-arrow-gate)"/><text x="752" y="328" class="wf-edge-label" text-anchor="start">呈报</text></g>
+<g class="wf-edge" data-variant="rework" data-from="gate:C" data-to="rework:contract"><path d="M746 436 L746 554" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-rework)"/><text x="752" y="499" class="wf-edge-label" text-anchor="start">不通过</text></g>
+<g class="wf-edge" data-variant="return" data-from="rework:contract" data-to="stage:contract"><path d="M746 554 L746 268" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-return)"/><text x="752" y="415" class="wf-edge-label" text-anchor="start">调整后重走</text></g>
+<g class="wf-edge" data-variant="pass" data-from="gate:C" data-to="stage:build"><path d="M820 408 L858 408 L858 237 L896 237" fill="none" stroke="#1f7a5c" stroke-width="2"  marker-end="url(#wf-arrow-pass)"/><text x="839" y="402" class="wf-edge-label" text-anchor="middle">通过</text></g>
+<g class="wf-edge" data-variant="gate" data-from="stage:contract" data-to="gate:D"><path d="M746 268 L746 454" fill="none" stroke="#b3244a" stroke-width="2"  marker-end="url(#wf-arrow-gate)"/><text x="752" y="365" class="wf-edge-label" text-anchor="start">同步确认</text></g>
+<g class="wf-edge" data-variant="flow" data-from="stage:build" data-to="stage:verify"><path d="M1068 237 L1100 237 L1100 137 L1132 137" fill="none" stroke="#8b98a6" stroke-width="1.6"  marker-end="url(#wf-arrow-flow)"/></g>
+<g class="wf-edge" data-variant="trace" data-from="stage:build" data-to="gate:F"><path d="M982 268 L982 280" fill="none" stroke="#6b7a8c" stroke-width="2"  marker-end="url(#wf-arrow-trace)"/><text x="988" y="278" class="wf-edge-label" text-anchor="start">留痕要求</text></g>
+<g class="wf-edge" data-variant="gate" data-from="stage:verify" data-to="gate:E"><path d="M1218 168 L1218 380" fill="none" stroke="#b3244a" stroke-width="2"  marker-end="url(#wf-arrow-gate)"/><text x="1224" y="278" class="wf-edge-label" text-anchor="start">呈报</text></g>
+<g class="wf-edge" data-variant="rework" data-from="gate:E" data-to="rework:verify"><path d="M1218 436 L1218 554" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-rework)"/><text x="1224" y="499" class="wf-edge-label" text-anchor="start">不通过</text></g>
+<g class="wf-edge" data-variant="return" data-from="rework:verify" data-to="stage:verify"><path d="M1218 554 L1218 168" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-return)"/><text x="1224" y="365" class="wf-edge-label" text-anchor="start">调整后重走</text></g>
+<g class="wf-edge" data-variant="pass" data-from="gate:E" data-to="stage:deliver"><path d="M1292 408 L1330 408 L1330 137 L1368 137" fill="none" stroke="#1f7a5c" stroke-width="2"  marker-end="url(#wf-arrow-pass)"/><text x="1311" y="402" class="wf-edge-label" text-anchor="middle">通过</text></g>
+<g class="wf-node" data-node="stage:brief" data-kind="stage" data-stage="brief" data-status="gated" data-current="true" tabindex="0" role="listitem" aria-label="需求与方向。需求说明 / 方向记录。状态：等待确认。当前阶段。确认用户、主要任务、页面范围与视觉方向。。证据：demo/tide-app/docs/DIRECTION.md"><rect x="188" y="106" width="172" height="62" rx="10" fill="#eef6f3" stroke="#1f7a5c" stroke-width="3" opacity="1" stroke-dasharray="none"/><text x="198" y="122" class="wf-node-step">01</text><g class="wf-status" data-status="gated"><circle cx="347" cy="119" r="8" fill="#b3244a"/><text x="347" y="122.5" class="wf-status-glyph" text-anchor="middle">⏸</text></g><text x="274" y="136" class="wf-node-title" text-anchor="middle">需求与方向</text><text x="274" y="154" class="wf-node-sub" text-anchor="middle">需求说明 / 方向记录</text></g>
+<g class="wf-node" data-node="gate:A" data-kind="gate" data-stage="brief" data-status="gated" data-current="true" tabindex="0" role="listitem" aria-label="门A 设计稿。强制。状态：等待确认。当前阶段。方向稿（视觉基调、页面结构草案、动效意图，不写代码）"><rect x="200" y="380" width="148" height="56" rx="10" fill="#fdeff2" stroke="#b3244a" stroke-width="3" opacity="1" stroke-dasharray="none"/><text x="210" y="396" class="wf-node-step">01</text><g class="wf-status" data-status="gated"><circle cx="335" cy="393" r="8" fill="#b3244a"/><text x="335" y="396.5" class="wf-status-glyph" text-anchor="middle">⏸</text></g><text x="274" y="406" class="wf-node-title" text-anchor="middle">门A 设计稿</text><text x="274" y="424" class="wf-node-sub" text-anchor="middle">强制</text></g>
+<g class="wf-node" data-node="stage:reference" data-kind="stage" data-stage="reference" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="参考素材。参考清单 / 来源记录。状态：未开始。选定可采用的参考、组件和素材，记录来源与使用边界。。证据：research-notes.md + 选择记录"><rect x="424" y="206" width="172" height="62" rx="10" fill="#eef6f3" stroke="#1f7a5c" stroke-width="1.2" opacity="0.62"/><text x="434" y="222" class="wf-node-step">02</text><g class="wf-status" data-status="pending"><circle cx="583" cy="219" r="8" fill="#c3ccd6"/></g><text x="510" y="236" class="wf-node-title" text-anchor="middle">参考素材</text><text x="510" y="254" class="wf-node-sub" text-anchor="middle">参考清单 / 来源记录</text></g>
+<g class="wf-node" data-node="gate:B" data-kind="gate" data-stage="reference" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="门B 素材选择。采用外部素材时。状态：未开始。候选素材清单（来源 URL、拟采用部分、改编与授权边界）"><rect x="436" y="380" width="148" height="56" rx="10" fill="#fdeff2" stroke="#b3244a" stroke-width="1.2" opacity="0.62"/><text x="446" y="396" class="wf-node-step">02</text><g class="wf-status" data-status="pending"><circle cx="571" cy="393" r="8" fill="#c3ccd6"/></g><text x="510" y="406" class="wf-node-title" text-anchor="middle">门B 素材选择</text><text x="510" y="424" class="wf-node-sub" text-anchor="middle">采用外部素材时</text></g>
+<g class="wf-node" data-node="stage:contract" data-kind="stage" data-stage="contract" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="原型与契约。原型 / 设计契约。状态：未开始。确认原型，再固定布局、交互、动效与验收条件。。证据：原型图或提示词 + DESIGN.md（含动效规格）"><rect x="660" y="206" width="172" height="62" rx="10" fill="#eef6f3" stroke="#1f7a5c" stroke-width="1.2" opacity="0.62"/><text x="670" y="222" class="wf-node-step">03</text><g class="wf-status" data-status="pending"><circle cx="819" cy="219" r="8" fill="#c3ccd6"/></g><text x="746" y="236" class="wf-node-title" text-anchor="middle">原型与契约</text><text x="746" y="254" class="wf-node-sub" text-anchor="middle">原型 / 设计契约</text></g>
+<g class="wf-node" data-node="gate:C" data-kind="gate" data-stage="contract" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="门C 原型。实质性新 UI 强制。状态：未开始。无代码原型（生成图或生图提示词）"><rect x="672" y="380" width="148" height="56" rx="10" fill="#fdeff2" stroke="#b3244a" stroke-width="1.2" opacity="0.62"/><text x="682" y="396" class="wf-node-step">03</text><g class="wf-status" data-status="pending"><circle cx="807" cy="393" r="8" fill="#c3ccd6"/></g><text x="746" y="406" class="wf-node-title" text-anchor="middle">门C 原型</text><text x="746" y="424" class="wf-node-sub" text-anchor="middle">实质性新 UI 强制</text></g>
+<g class="wf-node" data-node="gate:D" data-kind="gate" data-stage="contract" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="门D 契约确认。大项目/动效复杂。状态：未开始。DESIGN.md + 动效方案"><rect x="672" y="454" width="148" height="56" rx="10" fill="#fdeff2" stroke="#b3244a" stroke-width="1.2" opacity="0.62"/><text x="682" y="470" class="wf-node-step">03</text><g class="wf-status" data-status="pending"><circle cx="807" cy="467" r="8" fill="#c3ccd6"/></g><text x="746" y="480" class="wf-node-title" text-anchor="middle">门D 契约确认</text><text x="746" y="498" class="wf-node-sub" text-anchor="middle">大项目/动效复杂</text></g>
+<g class="wf-node" data-node="stage:build" data-kind="stage" data-stage="build" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="交互实现。可运行界面 / 交互状态。状态：未开始。围绕设计契约完成界面、状态与交互，复用项目既有能力。。证据：代码 + 静态核查 + MCP 调用痕迹"><rect x="896" y="206" width="172" height="62" rx="10" fill="#eef6f3" stroke="#1f7a5c" stroke-width="1.2" opacity="0.62"/><text x="906" y="222" class="wf-node-step">04</text><g class="wf-status" data-status="pending"><circle cx="1055" cy="219" r="8" fill="#c3ccd6"/></g><text x="982" y="236" class="wf-node-title" text-anchor="middle">交互实现</text><text x="982" y="254" class="wf-node-sub" text-anchor="middle">可运行界面 / 交互状态</text></g>
+<g class="wf-node" data-node="gate:F" data-kind="gate" data-stage="build" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="门F MCP 调用门禁。实质性 UI 任务。状态：未开始。验收记录中的逐环节调用痕迹（服务器 / 工具 / 结果）"><rect x="908" y="280" width="148" height="56" rx="10" fill="#fdeff2" stroke="#b3244a" stroke-width="1.2" opacity="0.62"/><text x="918" y="296" class="wf-node-step">04</text><g class="wf-status" data-status="pending"><circle cx="1043" cy="293" r="8" fill="#c3ccd6"/></g><text x="982" y="306" class="wf-node-title" text-anchor="middle">门F MCP 调用门禁</text><text x="982" y="324" class="wf-node-sub" text-anchor="middle">实质性 UI 任务</text></g>
+<g class="wf-node" data-node="stage:verify" data-kind="stage" data-stage="verify" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="浏览器验证。截图 / 交互检查 / 问题记录。状态：未开始。检查桌面、手机、键盘、减少动态效果与主要操作流程。。证据：走查记录（含 P0/P1/P2 与证据路径）"><rect x="1132" y="106" width="172" height="62" rx="10" fill="#eef6f3" stroke="#1f7a5c" stroke-width="1.2" opacity="0.62"/><text x="1142" y="122" class="wf-node-step">05</text><g class="wf-status" data-status="pending"><circle cx="1291" cy="119" r="8" fill="#c3ccd6"/></g><text x="1218" y="136" class="wf-node-title" text-anchor="middle">浏览器验证</text><text x="1218" y="154" class="wf-node-sub" text-anchor="middle">截图 / 交互检查 / 问题记录</text></g>
+<g class="wf-node" data-node="gate:E" data-kind="gate" data-stage="verify" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="门E 每轮验收。代码完成后每轮。状态：未开始。逐页问题清单（P0/P1/P2 + 证据）+ 替换建议"><rect x="1144" y="380" width="148" height="56" rx="10" fill="#fdeff2" stroke="#b3244a" stroke-width="1.2" opacity="0.62"/><text x="1154" y="396" class="wf-node-step">05</text><g class="wf-status" data-status="pending"><circle cx="1279" cy="393" r="8" fill="#c3ccd6"/></g><text x="1218" y="406" class="wf-node-title" text-anchor="middle">门E 每轮验收</text><text x="1218" y="424" class="wf-node-sub" text-anchor="middle">代码完成后每轮</text></g>
+<g class="wf-node" data-node="stage:deliver" data-kind="stage" data-stage="deliver" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="交付与迭代。交付说明 / 已知限制。状态：未开始。交付成果与实际检查记录，明确尚未验证的部分。。证据：commit + ACCEPTANCE.md"><rect x="1368" y="106" width="172" height="62" rx="10" fill="#eef6f3" stroke="#1f7a5c" stroke-width="1.2" opacity="0.62"/><text x="1378" y="122" class="wf-node-step">06</text><g class="wf-status" data-status="pending"><circle cx="1527" cy="119" r="8" fill="#c3ccd6"/></g><text x="1454" y="136" class="wf-node-title" text-anchor="middle">交付与迭代</text><text x="1454" y="154" class="wf-node-sub" text-anchor="middle">交付说明 / 已知限制</text></g>
+<g class="wf-node" data-node="rework:brief" data-kind="rework" data-stage="brief" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="返工。调整「需求与方向」。状态：未开始"><rect x="208" y="554" width="132" height="52" rx="10" fill="#fdf3e7" stroke="#b5711b" stroke-width="1.2" opacity="0.62"/><g class="wf-status" data-status="pending"><circle cx="327" cy="567" r="8" fill="#c3ccd6"/></g><text x="274" y="580" class="wf-node-title" text-anchor="middle">返工</text><text x="274" y="598" class="wf-node-sub" text-anchor="middle">调整「需求与方向」</text></g>
+<g class="wf-node" data-node="rework:reference" data-kind="rework" data-stage="reference" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="返工。调整「参考素材」。状态：未开始"><rect x="444" y="554" width="132" height="52" rx="10" fill="#fdf3e7" stroke="#b5711b" stroke-width="1.2" opacity="0.62"/><g class="wf-status" data-status="pending"><circle cx="563" cy="567" r="8" fill="#c3ccd6"/></g><text x="510" y="580" class="wf-node-title" text-anchor="middle">返工</text><text x="510" y="598" class="wf-node-sub" text-anchor="middle">调整「参考素材」</text></g>
+<g class="wf-node" data-node="rework:contract" data-kind="rework" data-stage="contract" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="返工。调整「原型与契约」。状态：未开始"><rect x="680" y="554" width="132" height="52" rx="10" fill="#fdf3e7" stroke="#b5711b" stroke-width="1.2" opacity="0.62"/><g class="wf-status" data-status="pending"><circle cx="799" cy="567" r="8" fill="#c3ccd6"/></g><text x="746" y="580" class="wf-node-title" text-anchor="middle">返工</text><text x="746" y="598" class="wf-node-sub" text-anchor="middle">调整「原型与契约」</text></g>
+<g class="wf-node" data-node="rework:verify" data-kind="rework" data-stage="verify" data-status="pending" data-current="false" tabindex="0" role="listitem" aria-label="返工。调整「浏览器验证」。状态：未开始"><rect x="1152" y="554" width="132" height="52" rx="10" fill="#fdf3e7" stroke="#b5711b" stroke-width="1.2" opacity="0.62"/><g class="wf-status" data-status="pending"><circle cx="1271" cy="567" r="8" fill="#c3ccd6"/></g><text x="1218" y="580" class="wf-node-title" text-anchor="middle">返工</text><text x="1218" y="598" class="wf-node-sub" text-anchor="middle">调整「浏览器验证」</text></g>
+</svg>
+</main>
+
+<aside class="wf-panel" id="wf-panel" aria-live="polite"></aside>
+
+<section class="wf-cards">
+  
+  <article class="wf-card">
+    <h2>主线</h2>
+    <ol><li><span class="wf-card-status" data-status="gated">等待确认</span>需求与方向（门 A）</li><li><span class="wf-card-status" data-status="pending">未开始</span>参考素材（门 B）</li><li><span class="wf-card-status" data-status="pending">未开始</span>原型与契约（门 C/D）</li><li><span class="wf-card-status" data-status="pending">未开始</span>交互实现（门 F）</li><li><span class="wf-card-status" data-status="pending">未开始</span>浏览器验证（门 E）</li><li><span class="wf-card-status" data-status="pending">未开始</span>交付与迭代</li></ol>
+  </article>
+  <article class="wf-card">
+    <h2>停点</h2>
+    <p>5 个阶段设有确认门，未通过不得进入下一环节。</p>
+    <ul><li>需求与方向：等待确认 · 方向稿已出：深海底蓝 + 潮线青，潮汐曲线为核心交互。等门A 裁决。</li><li>参考素材：未开始</li><li>原型与契约：未开始</li><li>交互实现：未开始</li><li>浏览器验证：未开始</li></ul>
+  </article>
+  <article class="wf-card">
+    <h2>证据</h2>
+    <ul><li>需求与方向：demo/tide-app/docs/DIRECTION.md</li><li>参考素材：research-notes.md + 选择记录<span class="wf-card-expected">（预期）</span></li><li>原型与契约：原型图或提示词 + DESIGN.md（含动效规格）<span class="wf-card-expected">（预期）</span></li><li>交互实现：代码 + 静态核查 + MCP 调用痕迹<span class="wf-card-expected">（预期）</span></li><li>浏览器验证：走查记录（含 P0/P1/P2 与证据路径）<span class="wf-card-expected">（预期）</span></li><li>交付与迭代：commit + ACCEPTANCE.md<span class="wf-card-expected">（预期）</span></li></ul>
+  </article>
+</section>
+
+<script>
+(function(){
+  var STAGES = [{"id":"brief","name":"需求与方向","gates":["A"],"summary":"确认用户、主要任务、页面范围与视觉方向。","output":"需求说明 / 方向记录","evidence":"方向稿（DIRECTION.md 或任务内记录）","decisionPoint":true,"status":"gated","stageNote":"方向稿已出：深海底蓝 + 潮线青，潮汐曲线为核心交互。等门A 裁决。","evidenceActual":"demo/tide-app/docs/DIRECTION.md","isCurrent":true,"nodeIds":["stage:brief","gate:A","rework:brief"]},{"id":"reference","name":"参考素材","gates":["B"],"summary":"选定可采用的参考、组件和素材，记录来源与使用边界。","output":"参考清单 / 来源记录","evidence":"research-notes.md + 选择记录","decisionPoint":true,"status":"pending","stageNote":null,"evidenceActual":null,"isCurrent":false,"nodeIds":["stage:reference","gate:B","rework:reference"]},{"id":"contract","name":"原型与契约","gates":["C","D"],"summary":"确认原型，再固定布局、交互、动效与验收条件。","output":"原型 / 设计契约","evidence":"原型图或提示词 + DESIGN.md（含动效规格）","decisionPoint":true,"status":"pending","stageNote":null,"evidenceActual":null,"isCurrent":false,"nodeIds":["stage:contract","gate:C","gate:D","rework:contract"]},{"id":"build","name":"交互实现","gates":["F"],"summary":"围绕设计契约完成界面、状态与交互，复用项目既有能力。","output":"可运行界面 / 交互状态","evidence":"代码 + 静态核查 + MCP 调用痕迹","decisionPoint":false,"status":"pending","stageNote":null,"evidenceActual":null,"isCurrent":false,"nodeIds":["stage:build","gate:F"]},{"id":"verify","name":"浏览器验证","gates":["E"],"summary":"检查桌面、手机、键盘、减少动态效果与主要操作流程。","output":"截图 / 交互检查 / 问题记录","evidence":"走查记录（含 P0/P1/P2 与证据路径）","decisionPoint":false,"status":"pending","stageNote":null,"evidenceActual":null,"isCurrent":false,"nodeIds":["stage:verify","gate:E","rework:verify"]},{"id":"deliver","name":"交付与迭代","gates":[],"summary":"交付成果与实际检查记录，明确尚未验证的部分。","output":"交付说明 / 已知限制","evidence":"commit + ACCEPTANCE.md","decisionPoint":true,"status":"pending","stageNote":null,"evidenceActual":null,"isCurrent":false,"nodeIds":["stage:deliver"]}];
+  var STATUS_LABEL = {"pending":"未开始","active":"进行中","gated":"等待确认","passed":"已通过","blocked":"受阻"};
+  var stageOrder = STAGES.map(function(s){ return s.id; });
+  var cursor = -1;
+  var playing = false;
+  var timer = null;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var svg = document.querySelector('.wf-svg');
+  var panel = document.getElementById('wf-panel');
+  var note = document.getElementById('wf-step-note');
+  var bar = document.getElementById('wf-bar');
+  var barFill = bar ? bar.querySelector('span') : null;
+  var playBtn = document.getElementById('wf-play');
+  var stepBtn = document.getElementById('wf-step');
+  var resetBtn = document.getElementById('wf-reset');
+  var themeBtn = document.getElementById('wf-theme');
+  var exportBtn = document.getElementById('wf-export');
+
+  // The task's real status is the source of truth for the badge and colour.
+  // Playback focus is a separate attribute so stepping through the diagram can
+  // never overwrite what the record actually says.
+  function realStatus(stageId){
+    for (var i=0;i<STAGES.length;i++) if (STAGES[i].id === stageId) return STAGES[i].status;
+    return 'pending';
+  }
+  function nodesOf(stageId){
+    return Array.prototype.slice.call(svg.querySelectorAll('.wf-node[data-stage="'+stageId+'"]'));
+  }
+  function allNodes(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-node')); }
+  function allEdges(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-edge')); }
+
+  function clearFocus(){
+    allNodes().forEach(function(n){ n.setAttribute('data-dim','false'); n.removeAttribute('data-active'); });
+    allEdges().forEach(function(e){ e.setAttribute('data-dim','false'); });
+  }
+
+  function focusStage(stageId){
+    var keep = {};
+    nodesOf(stageId).forEach(function(n){ keep[n.getAttribute('data-node')] = true; });
+    allNodes().forEach(function(n){
+      var isTarget = !!keep[n.getAttribute('data-node')];
+      n.setAttribute('data-dim', isTarget ? 'false' : 'true');
+      if (isTarget) n.setAttribute('data-active','true'); else n.removeAttribute('data-active');
+    });
+    allEdges().forEach(function(e){
+      var from = e.getAttribute('data-from'), to = e.getAttribute('data-to');
+      e.setAttribute('data-dim', (keep[from] || keep[to]) ? 'false' : 'true');
+    });
+    renderPanel(stageId);
+    syncTabs(stageId);
+  }
+
+  function syncTabs(stageId){
+    var tabs = document.querySelectorAll('.wf-stage-tab');
+    Array.prototype.forEach.call(tabs, function(tab){
+      var on = tab.getAttribute('data-stage') === stageId;
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      tab.setAttribute('tabindex', on ? '0' : '-1');
+    });
+  }
+
+  function renderPanel(stageId){
+    var stage = null;
+    for (var i=0;i<STAGES.length;i++) if (STAGES[i].id === stageId) stage = STAGES[i];
+    if (!stage){ panel.innerHTML=''; return; }
+    var gates = stage.gates.length ? stage.gates.join('、') : '无';
+    panel.innerHTML =
+      '<div class="wf-panel-inner">' +
+        '<h2>' + esc(stage.name) + '</h2>' +
+        '<p>' + esc(stage.summary) + '</p>' +
+        '<dl>' +
+          '<dt>任务状态</dt><dd>' + esc(STATUS_LABEL[stage.status] || stage.status) + '</dd>' +
+          '<dt>确认门</dt><dd>' + esc(gates) + '</dd>' +
+          '<dt>阶段产出</dt><dd>' + esc(stage.output) + '</dd>' +
+          '<dt>证据</dt><dd>' + esc(stage.evidenceActual || stage.evidence || '—') +
+            (stage.evidenceActual ? '' : ' <span class="wf-card-expected">（预期）</span>') + '</dd>' +
+          '<dt>决策</dt><dd>' + esc(stage.decisionPoint ? '用户确认' : '按规则推进') + '</dd>' +
+        '</dl>' +
+        (stage.stageNote ? '<p class="wf-panel-note">' + esc(stage.stageNote) + '</p>' : '') +
+      '</div>';
+  }
+
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g, function(c){
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
+
+  function setCursor(next){
+    cursor = Math.max(-1, Math.min(next, stageOrder.length - 1));
+    if (barFill) barFill.style.width = ((cursor + 1) / stageOrder.length * 100) + '%';
+    if (bar) bar.setAttribute('aria-valuenow', String(cursor + 1));
+    if (cursor < 0){
+      clearFocus();
+      note.textContent = '尚未开始。播放或按「下一步」逐步查看每个阶段与确认门。';
+      panel.innerHTML = '';
+      syncTabs('');
+      return;
+    }
+    var stage = STAGES[cursor];
+    note.textContent = '第 ' + (cursor + 1) + ' / ' + STAGES.length + ' 步 · ' + stage.name +
+      ' · 记录状态：' + (STATUS_LABEL[stage.status] || stage.status) +
+      (stage.gates.length ? ' · 门 ' + stage.gates.join('、') : '');
+    focusStage(stage.id);
+  }
+
+  function stop(){
+    playing = false;
+    if (timer){ clearTimeout(timer); timer = null; }
+    if (playBtn) playBtn.textContent = '播放流程';
+  }
+
+  function advance(){
+    if (cursor >= stageOrder.length - 1){ stop(); return; }
+    setCursor(cursor + 1);
+    if (playing) timer = setTimeout(advance, 1500);
+  }
+
+  if (playBtn) playBtn.addEventListener('click', function(){
+    if (playing){ stop(); return; }
+    if (reduced.matches){
+      setCursor(stageOrder.length - 1);
+      note.textContent = '系统已开启减少动态效果：直接显示最终阶段，可用「下一步」手动查看。';
+      return;
+    }
+    playing = true;
+    playBtn.textContent = '暂停';
+    if (cursor >= stageOrder.length - 1) setCursor(-1);
+    timer = setTimeout(advance, 200);
+  });
+  if (stepBtn) stepBtn.addEventListener('click', function(){ stop(); advance(); });
+  if (resetBtn) resetBtn.addEventListener('click', function(){ stop(); setCursor(-1); });
+  if (themeBtn) themeBtn.addEventListener('click', function(){
+    var dark = document.body.getAttribute('data-theme') === 'dark';
+    document.body.setAttribute('data-theme', dark ? 'light' : 'dark');
+    themeBtn.textContent = dark ? '深色' : '浅色';
+    themeBtn.setAttribute('aria-pressed', dark ? 'false' : 'true');
+  });
+  if (exportBtn) exportBtn.addEventListener('click', function(){
+    var clone = svg.cloneNode(true);
+    clone.querySelectorAll('[data-dim="true"]').forEach(function(el){ el.removeAttribute('data-dim'); });
+    clone.querySelectorAll('[data-active="true"]').forEach(function(el){ el.removeAttribute('data-active'); });
+    var blob = new Blob([new XMLSerializer().serializeToString(clone)], {type:'image/svg+xml'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'workflow-diagram.svg';
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+  });
+
+  var tabs = document.querySelectorAll('.wf-stage-tab');
+  Array.prototype.forEach.call(tabs, function(tab, index){
+    tab.addEventListener('click', function(){ stop(); setCursor(index); });
+    tab.addEventListener('keydown', function(ev){
+      var next = null;
+      if (ev.key === 'ArrowRight') next = Math.min(index + 1, tabs.length - 1);
+      else if (ev.key === 'ArrowLeft') next = Math.max(index - 1, 0);
+      else if (ev.key === 'Home') next = 0;
+      else if (ev.key === 'End') next = tabs.length - 1;
+      if (next === null) return;
+      ev.preventDefault();
+      tabs[next].focus();
+      stop();
+      setCursor(next);
+    });
+  });
+
+  svg.addEventListener('click', function(ev){
+    var node = ev.target.closest ? ev.target.closest('.wf-node') : null;
+    if (!node) return;
+    var stageId = node.getAttribute('data-stage');
+    var index = stageOrder.indexOf(stageId);
+    if (index >= 0){ stop(); setCursor(index); }
+  });
+
+  // Open on the stage the task is actually on, when the record says so.
+  var startAt = -1;
+  for (var i=0;i<STAGES.length;i++){ if (STAGES[i].isCurrent) { startAt = i; break; } }
+  if (startAt >= 0) setCursor(startAt); else setCursor(-1);
+})();
+</script>
+</body>
+</html>

@@ -1,5 +1,9 @@
 // Renders the laid-out model to inline SVG. Everything is emitted as strings;
 // there is no runtime dependency and no external stylesheet.
+//
+// Colours are emitted as CSS custom properties with light-theme fallbacks, so
+// the same markup renders correctly in both themes and the page can switch
+// without re-rendering. The literal values below are the light theme.
 
 const PALETTE = {
   canvas: "#ffffff",
@@ -24,6 +28,10 @@ const PALETTE = {
   },
 };
 
+// Theme-aware fills: a CSS variable with the light value as fallback. The page
+// defines these variables per theme, so the SVG follows without re-render.
+const laneVar = (name, fallback) => `var(--wf-${name}, ${fallback})`;
+
 export function renderSvg(laid, model) {
   const GUTTER_X = 16 + 132;
   const parts = [];
@@ -34,21 +42,26 @@ export function renderSvg(laid, model) {
   parts.push(`<title id="wf-title">${esc(model.title)}</title>`);
   parts.push(`<desc id="wf-desc">${esc(model.note)}</desc>`);
   parts.push(defs());
-  parts.push(`<rect x="0" y="0" width="${round(laid.width)}" height="${round(laid.height)}" fill="${PALETTE.canvas}"/>`);
+  parts.push(`<rect x="0" y="0" width="${round(laid.width)}" height="${round(laid.height)}" fill="${laneVar("canvas", PALETTE.canvas)}"/>`);
 
   // Lane bands + labels. The label lives in its own left gutter, so a node can
   // never cover it no matter how the columns are packed. A long label wraps
   // onto two lines rather than being clipped.
   for (const lane of laid.lanes) {
-    const fill = lane.kind === "gate" ? PALETTE.laneFillGate : lane.kind === "rework" ? PALETTE.laneFillRework : PALETTE.laneFill;
+    const fill =
+      lane.kind === "gate"
+        ? laneVar("lane-gate", PALETTE.laneFillGate)
+        : lane.kind === "rework"
+          ? laneVar("lane-rework", PALETTE.laneFillRework)
+          : laneVar("lane", PALETTE.laneFill);
     const lines = wrapLabel(lane.label, 8);
     const labelY = lane.top + lane.height / 2 - ((lines.length - 1) * 14) / 2;
     parts.push(
       `<g class="wf-lane" data-lane="${esc(lane.id)}">` +
         `<rect x="16" y="${round(lane.top)}" width="${round(laid.width - 32)}" height="${round(lane.height)}" rx="10" ` +
-        `fill="${fill}" stroke="${PALETTE.hairline}" stroke-width="1"/>` +
+        `fill="${fill}" stroke="${laneVar("line", PALETTE.hairline)}" stroke-width="1"/>` +
         `<line x1="${GUTTER_X}" y1="${round(lane.top + 8)}" x2="${GUTTER_X}" y2="${round(lane.top + lane.height - 8)}" ` +
-        `stroke="${PALETTE.hairline}" stroke-width="1"/>` +
+        `stroke="${laneVar("line", PALETTE.hairline)}" stroke-width="1"/>` +
         lines
           .map(
             (line, index) =>
@@ -100,7 +113,7 @@ export function renderSvg(laid, model) {
         `data-status="${esc(node.status)}" data-current="${isCurrent ? "true" : "false"}" ` +
         `tabindex="0" role="listitem" aria-label="${esc(nodeAria(node))}">` +
         `<rect x="${round(node.x)}" y="${round(node.y)}" width="${round(node.width)}" height="${round(node.height)}" rx="10" ` +
-        `fill="${tone.fill}" stroke="${tone.stroke}" stroke-width="${strokeWidth}" opacity="${opacity}"` +
+        `fill="${laneVar(`node-${node.kind}-fill`, tone.fill)}" stroke="${laneVar(`node-${node.kind}-stroke`, tone.stroke)}" stroke-width="${strokeWidth}" opacity="${opacity}"` +
         `${isCurrent ? ` stroke-dasharray="none"` : ""}/>` +
         (node.step
           ? `<text x="${round(node.x + 10)}" y="${round(node.y + 16)}" class="wf-node-step">${esc(node.step)}</text>`

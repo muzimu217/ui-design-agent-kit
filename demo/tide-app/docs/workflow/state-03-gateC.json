@@ -1,0 +1,16 @@
+{
+  "task": "潮汐 TIDE · 海钓赶海潮汐预报产品页",
+  "revision": "P-tide-1",
+  "updatedOn": "2026-09-16",
+  "note": "阶段 3 完成：设计契约已产出（375 行，色值实测计算），停在门C/D 等确认。",
+  "stages": {
+    "brief": { "status": "passed", "evidence": "docs/DIRECTION.md · docs/GATE-A-DECISION.md" },
+    "reference": { "status": "passed", "evidence": "docs/RESEARCH-NOTES.md · docs/reference/OBSERVATION-tideguide.md" },
+    "contract": { "status": "gated", "evidence": "docs/DESIGN.md", "note": "契约 v1 已出：底色 #0d2431、正文 13.94:1、QG1-QG24。等门C 原型裁决与门D 契约确认。" },
+    "build": { "status": "pending" },
+    "verify": { "status": "pending" },
+    "deliver": { "status": "pending" }
+  },
+  "gates": { "A": "passed", "B": "passed", "C": "gated", "D": "gated", "E": "pending", "F": "pending" },
+  "blockedReason": null
+}

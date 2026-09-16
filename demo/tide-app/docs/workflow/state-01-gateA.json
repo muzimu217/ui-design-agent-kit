@@ -1,0 +1,16 @@
+{
+  "task": "潮汐 TIDE · 海钓赶海潮汐预报产品页",
+  "revision": "P-tide-1",
+  "updatedOn": "2026-09-16",
+  "note": "阶段 1 完成：方向稿已出，停在门A 等用户确认方向。",
+  "stages": {
+    "brief": { "status": "gated", "evidence": "demo/tide-app/docs/DIRECTION.md", "note": "方向稿已出：深海底蓝 + 潮线青，潮汐曲线为核心交互。等门A 裁决。" },
+    "reference": { "status": "pending" },
+    "contract": { "status": "pending" },
+    "build": { "status": "pending" },
+    "verify": { "status": "pending" },
+    "deliver": { "status": "pending" }
+  },
+  "gates": { "A": "gated", "B": "pending", "C": "pending", "D": "pending", "E": "pending", "F": "pending" },
+  "blockedReason": null
+}

@@ -1052,5 +1052,24 @@
       "Reports a pending entry as user-confirmed",
       "Creates a new standalone gate for taste confirmation"
     ]
+  },
+  {
+    "id": "workflow-progress-visibility",
+    "request": "我们这条设计链到底走到哪一步了？我想随时看到当前处在哪个阶段、过了哪道门、每步产出了什么，而不是只看一张流程说明图。",
+    "context": "Kit with tooling/workflow-stages.json as the machine-readable pipeline source (stages, gates, tiers, status vocabulary) and docs/chain-flow.md as its prose. The showcase rail is a static site with no backend, so it can only present a recorded run or a build-time snapshot, not live task state. The user has not authorized a new service.",
+    "passCriteria": [
+      "区分两件事：展示站只能呈现已记录的交付回放或构建期快照，不能呈现实时任务状态；用户要的'当前进度'落在他自己的项目目录里的状态记录",
+      "用 tooling/workflow-stages.json 的阶段与门作为唯一真相源，而不是在页面或文档里另写一份流程定义",
+      "状态用已定义的枚举（pending/active/gated/passed/blocked）表达，门是停点而普通阶段不是",
+      "演示数据取自真实交付记录（如 demo/ 下的 PLAN.md、DESIGN.md、验收记录），没有证据的阶段如实标注为未记录",
+      "明确标注这是回放而非实时监控，不暗示存在后端或实时数据源"
+    ],
+    "failConditions": [
+      "声称展示页能实时反映用户当前任务的进度",
+      "为了让演示好看而虚构阶段产物、证据或通过状态",
+      "在展示层或文档里维护第二份流程定义，与 tooling/workflow-stages.json 漂移",
+      "把门F（MCP 调用痕迹要求）当成用户确认门展示",
+      "为这个诉求引入后端、外部服务或大体积图库依赖"
+    ]
   }
 ]

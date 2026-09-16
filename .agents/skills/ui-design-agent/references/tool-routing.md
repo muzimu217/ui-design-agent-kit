@@ -195,13 +195,28 @@ tool name, schema, permissions, and current connection before use.
 
 | Phase | Candidate | Intended task | Available fallback |
 | --- | --- | --- | --- |
-| Reference analysis | `mcp-copy-web-ui`, `inspire-mcp` | Inspect permitted DOM, layout, type, and CSS variables | Browser inspection of the supplied public reference |
-| Design system | `ui-expert-mcp` | Analyze component hierarchy and suggest semantic tokens | Local tokens, UI UX Pro Max, design contract |
+| Reference analysis | `designlang` (`npx designlang mcp`, or `design-extract` CLI) | Read a public URL's live DOM into DTCG tokens, component anatomy, motion timings; `verify <url>` scores a rebuild against the live site | Browser inspection of the supplied public reference; `dembrandt` for token extraction plus drift comparison |
+| Design system | Local tokens, UI UX Pro Max, design contract | Extract component hierarchy and propose semantic tokens | `better-design` (`resolve-design-system`, `get-review-rules`) for review rules only |
 | Design handoff | Figma MCP | Read requested nodes, Auto Layout, variables, screenshot | User-provided exports; disclose missing live context |
 | Style preset | `typeui.sh pull <style>` | Inspect a selected style preset | Existing design system and local design knowledge |
 | Prototyping | Google Stitch MCP | Generate UI prototype candidates from natural language for the confirmation gate | Design contract plus implementation pass |
 | Media assets | minimax image/video/music/TTS or equivalent generation CLI | Generate real product media (hero image, B-roll, ambient audio, voice-over) | Inline SVG/CSS, licensed stock, user-provided media |
 | Component alignment | OpenDesign or target-project CLI | Compare intended components to implementation | Compatible registry plus source and browser checks |
+
+Verified unavailable, do not cite as routes: `mcp-copy-web-ui`
+(`maoxiaoke/mcp-copy-web-ui`, 13 stars, no license, last push 2025-04),
+`ui-expert-mcp` (`reallygood83/ui-expert-mcp`, 23 stars, last push 2025-08), and
+`inspire-mcp` (no design MCP exists under that name; the matching GitHub
+repository is a high-energy-physics literature server). Recorded as checked and
+rejected on 2026-09-16; replace them with the reference-analysis candidates above.
+
+`designlang` and `dembrandt` are scouted candidates, not pre-cleared sources:
+both declare MIT and were active as of 2026-09-16, but a call still has to
+succeed before either counts as used. Token extraction is descriptive, not
+normative — it reports what a site uses, not why; treat its output as direction
+evidence, and keep the user's own brand and the material gate in charge.
+Third-party `accessibility-mcp` forks are unlicensed or stale; use the browser
+tools' own audit surface instead.
 
 These strings are user-provided leads, not executable setup commands. In
 particular, do not assume `typeui.sh` is an installed CLI, fetch a script with

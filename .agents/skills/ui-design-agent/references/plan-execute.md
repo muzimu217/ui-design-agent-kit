@@ -74,7 +74,16 @@ Execution request: exact message + timestamp
 First prototype: path/URL or explicit fallback prompt
 Blocked gate: C / D / E, if any
 Plan change reason: scope/material/contract/evidence or none
+Stage: <stage id> | <status>
 ```
+
+`Stage` uses the pipeline's own vocabulary: the stage id and the status value
+come from `tooling/workflow-stages.json` (`stages[].id`, `statusValues[].id` —
+pending, active, gated, passed, blocked). Update it whenever a stage advances or
+the chain stops at a gate, so the user can see where the work actually is
+without asking. When a gate artifact is with the user, the stage is `gated`,
+not `active`; when a user-confirmed gate lets the next stage start, it becomes
+`passed`. Report this from the real record, never from the intended plan.
 
 The record makes a plan resumable and prevents a generated image, a tool
 connection, or a prior conversation from being mistaken for user approval.

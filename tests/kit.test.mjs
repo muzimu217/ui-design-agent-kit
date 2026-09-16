@@ -178,6 +178,48 @@ test("prompt and workflow enforce bounded sequential agent dispatch", async () =
   assert.match(chain, /用户明确授权/);
 });
 
+test("the delivery pipeline has one source of truth that matches its consumers", async () => {
+  const pipeline = JSON.parse(await readFile(path.join(ROOT, "tooling/workflow-stages.json"), "utf8"));
+  const stageIds = pipeline.stages.map((stage) => stage.id);
+  assert.equal(new Set(stageIds).size, stageIds.length, "stage ids must be unique");
+  assert.ok(pipeline.statusValues.length >= 3, "a status vocabulary is required to show progress");
+  for (const stage of pipeline.stages) {
+    assert.ok(stage.name && stage.summary && stage.output, `stage ${stage.id} needs name, summary, and output`);
+    assert.equal(typeof stage.decisionPoint, "boolean", `stage ${stage.id} needs a decisionPoint flag`);
+    for (const gate of stage.gates) {
+      assert.ok(pipeline.gates.some((item) => item.id === gate), `stage ${stage.id} cites unknown gate ${gate}`);
+    }
+  }
+  for (const gate of pipeline.gates) {
+    assert.ok(stageIds.includes(gate.stage), `gate ${gate.id} points at unknown stage ${gate.stage}`);
+    assert.ok(gate.name && gate.artifact && gate.mandatory, `gate ${gate.id} needs name, artifact, and mandatory`);
+  }
+
+  // chain-flow.md carries the prose; every gate it defines must exist in the JSON.
+  const chain = await readFile(path.join(ROOT, "docs/chain-flow.md"), "utf8");
+  for (const gate of pipeline.gates) {
+    assert.match(chain, new RegExp(`门${gate.id}`), `chain-flow.md is missing gate ${gate.id}`);
+  }
+  assert.match(chain, /tooling\/workflow-stages\.json/, "chain-flow.md must point at the machine-readable source");
+
+  // The showcase rail keeps its own React constant; ids, names, and decision markers must agree.
+  const showcase = await readFile(path.join(ROOT, "showcase/products/src/main.tsx"), "utf8");
+  const block = showcase.match(/const STAGES = \[([\s\S]*?)\] as const;/);
+  assert.ok(block, "showcase STAGES constant not found");
+  for (const stage of pipeline.stages) {
+    const row = block[1].match(new RegExp(`\\{[^{}]*id: '${stage.id}'[^{}]*\\}`));
+    assert.ok(row, `showcase is missing stage ${stage.id}`);
+    assert.ok(row[0].includes(`name: '${stage.name}'`), `showcase stage ${stage.id} name drifted`);
+    assert.equal(
+      row[0].includes("gate: true"),
+      stage.decisionPoint,
+      `showcase stage ${stage.id} decision marker drifted`,
+    );
+  }
+  const showcaseIds = [...block[1].matchAll(/id: '([a-z]+)'/g)].map((match) => match[1]);
+  assert.deepEqual(showcaseIds, stageIds, "showcase stage order or membership drifted");
+});
+
 test("SKILL.md stays under the growth tripwire and the lean prompt export stays self-contained", async () => {
   const skill = await readFile(path.join(ROOT, ".agents/skills/ui-design-agent/SKILL.md"), "utf8");
   const lines = skill.split(/\r?\n/).length;

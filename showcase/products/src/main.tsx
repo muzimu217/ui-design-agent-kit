@@ -2,7 +2,7 @@ import { StrictMode, useCallback, useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { motion, MotionConfig, useInView, useReducedMotion } from 'motion/react';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Blocks, Check, CodeXml, Compass, Copy, FileText, FolderGit2, Gamepad2, Globe, Headphones, Layers3, Maximize2, Monitor, NotebookPen, PackageCheck, PanelsTopLeft, Play, Plug, ScanEye, Search, Settings2, Smartphone, Timer, Workflow, X } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Blocks, Check, CircleCheck, CircleDashed, CirclePause, CodeXml, Compass, Copy, FileText, FolderGit2, Gamepad2, Globe, Headphones, Layers3, LoaderCircle, Maximize2, Monitor, NotebookPen, OctagonAlert, PackageCheck, PanelsTopLeft, Pause, Play, Plug, RotateCcw, ScanEye, Search, Settings2, SkipForward, Smartphone, Timer, Workflow, X } from 'lucide-react';
 import desktop from '../../../demo/brick-workshop/screenshots/desktop.webp';
 import mobile from '../../../demo/brick-workshop/screenshots/mobile.webp';
 import house from '../../../demo/brick-workshop/screenshots/house.webp';
@@ -49,13 +49,130 @@ type Project = typeof PROJECTS[number];
 const FILTERS = ['全部', '运营工具', '产品展示', '内容站点', '3D 交互', '效率工具'] as const;
 type Filter = typeof FILTERS[number];
 const STAGES = [
-  { id: 'brief', name: '需求与方向', icon: Compass, summary: '确认用户、主要任务、页面范围与视觉方向。', output: '需求说明 / 方向记录', decision: '方向由用户确认', gate: true },
-  { id: 'reference', name: '参考素材', icon: Search, summary: '选定可采用的参考、组件和素材，记录来源与使用边界。', output: '参考清单 / 来源记录', decision: '采用素材前确认', gate: true },
-  { id: 'contract', name: '原型与契约', icon: PanelsTopLeft, summary: '确认原型，再固定布局、交互、动效与验收条件。', output: '原型 / 设计契约', decision: '原型与契约由用户确认', gate: true },
-  { id: 'build', name: '交互实现', icon: CodeXml, summary: '围绕设计契约完成界面、状态与交互，复用项目既有能力。', output: '可运行界面 / 交互状态', decision: '按授权范围实现', gate: false },
-  { id: 'verify', name: '浏览器验证', icon: ScanEye, summary: '检查桌面、手机、键盘、减少动态效果与主要操作流程。', output: '截图 / 交互检查 / 问题记录', decision: '修复问题后复核', gate: false },
-  { id: 'deliver', name: '交付与迭代', icon: PackageCheck, summary: '交付成果与实际检查记录，明确尚未验证的部分。', output: '交付说明 / 已知限制', decision: '由用户确认接收', gate: true },
+  { id: 'brief', name: '需求与方向', icon: Compass, summary: '确认用户、主要任务、页面范围与视觉方向。', output: '需求说明 / 方向记录', decision: '方向由用户确认', gate: true, status: 'passed' },
+  { id: 'reference', name: '参考素材', icon: Search, summary: '选定可采用的参考、组件和素材，记录来源与使用边界。', output: '参考清单 / 来源记录', decision: '采用素材前确认', gate: true, status: 'passed' },
+  { id: 'contract', name: '原型与契约', icon: PanelsTopLeft, summary: '确认原型，再固定布局、交互、动效与验收条件。', output: '原型 / 设计契约', decision: '原型与契约由用户确认', gate: true, status: 'passed' },
+  { id: 'build', name: '交互实现', icon: CodeXml, summary: '围绕设计契约完成界面、状态与交互，复用项目既有能力。', output: '可运行界面 / 交互状态', decision: '按授权范围实现', gate: false, status: 'passed' },
+  { id: 'verify', name: '浏览器验证', icon: ScanEye, summary: '检查桌面、手机、键盘、减少动态效果与主要操作流程。', output: '截图 / 交互检查 / 问题记录', decision: '修复问题后复核', gate: false, status: 'passed' },
+  { id: 'deliver', name: '交付与迭代', icon: PackageCheck, summary: '交付成果与实际检查记录，明确尚未验证的部分。', output: '交付说明 / 已知限制', decision: '由用户确认接收', gate: true, status: 'gated' },
 ] as const;
+const STATUS_META = {
+  pending: { label: '未开始', icon: CircleDashed },
+  active: { label: '进行中', icon: LoaderCircle },
+  gated: { label: '等待确认', icon: CirclePause },
+  passed: { label: '已通过', icon: CircleCheck },
+  blocked: { label: '受阻', icon: OctagonAlert },
+} as const;
+type StatusId = keyof typeof STATUS_META;
+// 与 tooling/workflow-stages.json 的 statusValues 语义一致（未开始 / 进行中 / 等待确认 / 已通过 / 受阻）。
+const STATUS_LEGEND = [
+  { id: 'pending', meaning: '该阶段在本案例中尚未开始。' },
+  { id: 'active', meaning: '工作正在进行，尚未呈报门产物。' },
+  { id: 'gated', meaning: '门产物已交用户，链条停在这里等确认。' },
+  { id: 'passed', meaning: '用户已确认该门，下一阶段可以开始。' },
+  { id: 'blocked', meaning: '未解决的 P0、缺失能力或检查失败阻断了推进。' },
+] as const satisfies readonly { id: StatusId; meaning: string }[];
+type StageId = (typeof STAGES)[number]['id'];
+type StageRecord = {
+  artifacts: readonly { label: string; path: string }[];
+  evidence: readonly { label: string; path: string }[];
+  gap?: string;
+};
+// 数据来自 demo/ruiear 的真实交付记录（PLAN.md / DESIGN.md / ACCEPTANCE.md / docs/shots）。
+// 只登记记录中确实存在的产物与证据路径；记录缺失处用 gap 如实标注，不补造。
+const CASE_SOURCE = {
+  name: '睿耳 RuiEar · AI 耳机产品落地页',
+  revision: 'P-earbuds-2',
+  scope: 'M 级升 L 级链路（双语 i18n + 自有视觉体系 + 3D 叙事）',
+} as const;
+const STAGE_RECORDS: Record<StageId, StageRecord> = {
+  brief: {
+    artifacts: [{ label: '任务与范围、信息结构、视觉方向', path: 'demo/ruiear/PLAN.md' }],
+    evidence: [{ label: '用户确认「确认计划，出原型」（2026-09-12）', path: 'demo/ruiear/PLAN.md' }],
+    gap: '该案例未单独保存 DIRECTION.md，方向记录并入 PLAN.md，没有独立方向稿文件。',
+  },
+  reference: {
+    artifacts: [
+      { label: '素材候选与变更记录（A1/B1/B2/B3）', path: 'demo/ruiear/PLAN.md' },
+      { label: '最终授权模型元数据（CC BY 4.0）', path: 'demo/ruiear/public/models/airpods_pro.glb' },
+    ],
+    evidence: [
+      { label: 'Tripo 候选实查', path: 'demo/ruiear/research/tripo-earbuds-candidate.jpeg' },
+      { label: 'Sketchfab B1 AirPods Pro 2', path: 'demo/ruiear/research/sketchfab-airpodspro2.jpeg' },
+      { label: 'Sketchfab B2 Vinlley（需遮蔽品牌字）', path: 'demo/ruiear/research/sketchfab-vinlley-model.jpeg' },
+      { label: 'Poly Pizza 有线款排除', path: 'demo/ruiear/research/polypizza-download-check.jpeg' },
+    ],
+    gap: '门B 曾重开：Tripo 免费档会员墙导致 A1 获取失败，记录在 PLAN.md「素材变更记录」。',
+  },
+  contract: {
+    artifacts: [
+      { label: '无代码原型拼贴板', path: 'demo/ruiear/prototype-board.html' },
+      { label: '设计契约 DESIGN.md v1 / v1.1', path: 'demo/ruiear/DESIGN.md' },
+    ],
+    evidence: [
+      { label: '原型板全图', path: 'demo/ruiear/research/board-full.jpeg' },
+      { label: '五色板核对', path: 'demo/ruiear/research/board-swatch-check.jpeg' },
+      { label: '门C 裁决「其他都可以了」', path: 'demo/ruiear/PLAN.md' },
+    ],
+  },
+  build: {
+    artifacts: [
+      { label: '实现组件（Hero / 配色剧场 / 功能三屏 / 价格）', path: 'demo/ruiear/src/components/' },
+      { label: '3D 场景', path: 'demo/ruiear/src/three/ProductCanvas.tsx' },
+    ],
+    evidence: [{ label: '工具 / MCP 调用留痕表', path: 'demo/ruiear/ACCEPTANCE.md' }],
+    gap: '门F 降级留痕：Motion MCP 未配置，改用 motion-contract.md 规范预设，ACCEPTANCE.md 已如实记录。',
+  },
+  verify: {
+    artifacts: [{ label: 'Round 1 / 1.1 / 1.2 验收记录与 P0/P1 清单', path: 'demo/ruiear/ACCEPTANCE.md' }],
+    evidence: [
+      { label: '桌面主流程', path: 'demo/ruiear/docs/shots/hero-desktop.jpeg' },
+      { label: '移动 390', path: 'demo/ruiear/docs/shots/hero-mobile.jpeg' },
+      { label: '配色剧场（玫瑰红）', path: 'demo/ruiear/docs/shots/color-theater-rose.jpeg' },
+      { label: '刮擦动画', path: 'demo/ruiear/docs/shots/process-scrub.jpeg' },
+      { label: '价格三档', path: 'demo/ruiear/docs/shots/pricing.jpeg' },
+      { label: '功能屏（互译 / 降噪 / 续航）', path: 'demo/ruiear/docs/shots/feature-translate.jpeg' },
+    ],
+    gap: '记录状态为「Round 1 待用户复验」，未显示用户对 Round 1 的最终裁决。',
+  },
+  deliver: {
+    artifacts: [
+      { label: '交付说明与能力清单', path: 'demo/ruiear/README.md' },
+      { label: '验收记录（含遗留 P2 与下一步）', path: 'demo/ruiear/ACCEPTANCE.md' },
+    ],
+    evidence: [{ label: '入库提交 b6d1d0d', path: 'demo/ruiear/README.md' }],
+    gap: 'ACCEPTANCE.md「下一步」仍写待用户复验，记录中未出现用户确认接收，因此本阶段停在等待确认。',
+  },
+};
+type ReplayStep = { stage: StageId; status: StatusId; note: string };
+// 按 PLAN.md 与 ACCEPTANCE.md 的真实事件顺序回放；日期取自记录原文。
+const REPLAY: readonly ReplayStep[] = [
+  { stage: 'brief', status: 'active', note: '2026-09-12 读取 PLAN.md：任务与范围、信息结构、视觉方向。' },
+  { stage: 'brief', status: 'gated', note: '门A 方向待用户确认；方向记录在 PLAN.md，未单独出方向稿。' },
+  { stage: 'brief', status: 'passed', note: '用户确认「确认计划，出原型」，计划锁定为 P-earbuds-2。' },
+  { stage: 'reference', status: 'active', note: '素材实查：Poly Pizza / Sketchfab / Tripo 三源，实查截图留证。' },
+  { stage: 'reference', status: 'gated', note: '门B 候选清单待用户选择（A1 / B1 / B2 / B3）。' },
+  { stage: 'reference', status: 'blocked', note: 'Tripo 免费档会员墙，A1 获取路径失败，门B 重开；用户补充蓝牙 TWS 形态要求。' },
+  { stage: 'reference', status: 'passed', note: '用户选「双轨」；airpods_pro.glb 验件通过（91K 顶点、Lid 独立节点、CC BY 4.0）。' },
+  { stage: 'contract', status: 'active', note: '原型先行：prototype-board.html 真实截图拼贴板。' },
+  { stage: 'contract', status: 'gated', note: '门C 原型待裁决（PLAN 一度标记 Blocked gate: C）。' },
+  { stage: 'contract', status: 'passed', note: '用户原话「其他都可以了」= 原型通过，实现序列授权生效。' },
+  { stage: 'contract', status: 'gated', note: '门D 设计契约待确认：DESIGN.md tokens、五色映射、动效预算。' },
+  { stage: 'contract', status: 'passed', note: '契约确认；v1.1 随实现验证补功能三屏伴生 UI 卡。' },
+  { stage: 'build', status: 'active', note: '按契约垂直切片实现：Hero+配色剧场 → 3D 叙事 → 价格/规格 → 双语。' },
+  { stage: 'build', status: 'passed', note: '构建通过；门F 降级留痕（Motion MCP 未配置，采用规范预设）。' },
+  { stage: 'verify', status: 'active', note: 'Playwright MCP：同视口截图、键盘事件、emulateMedia(reducedMotion)、控制台采集。' },
+  { stage: 'verify', status: 'passed', note: 'Round 1 实证矩阵通过；P0/P1 缺陷修复后截图复验。' },
+  { stage: 'deliver', status: 'active', note: 'README / ACCEPTANCE 归档，入库提交 b6d1d0d。' },
+  { stage: 'deliver', status: 'gated', note: '待用户复验并确认接收；记录到此为止，链条停在交付门。' },
+];
+const statusAt = (stageId: StageId, cursor: number): StatusId => {
+  let status: StatusId = 'pending';
+  for (let index = 0; index <= cursor && index < REPLAY.length; index += 1) {
+    if (REPLAY[index].stage === stageId) status = REPLAY[index].status;
+  }
+  return status;
+};
 const EVIDENCE = [
   { name: '指令已安装', icon: FileText, meaning: '相关技能与说明已存在，不代表运行结果。' },
   { name: '工具已配置', icon: Settings2, meaning: '连接配置有效，不等于服务已连接或调用成功。' },
@@ -248,10 +365,41 @@ function IntroVideoSection() {
 
 function WorkflowSection() {
   const [active, setActive] = useState(0);
+  const [cursor, setCursor] = useState(REPLAY.length - 1);
+  const [playing, setPlaying] = useState(false);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = useReducedMotion() ?? false;
   const stage = STAGES[active];
   const StageIcon = stage.icon;
+  const record = STAGE_RECORDS[stage.id];
+  const stageStatus = statusAt(stage.id, cursor);
+  const StatusIcon = STATUS_META[stageStatus].icon;
+  const atEnd = cursor >= REPLAY.length - 1;
+  const event = REPLAY[Math.min(cursor, REPLAY.length - 1)];
+
+  const goTo = useCallback((next: number) => {
+    const clamped = Math.max(0, Math.min(next, REPLAY.length - 1));
+    setCursor(clamped);
+    const nextStage = STAGES.findIndex((item) => item.id === REPLAY[clamped].stage);
+    if (nextStage >= 0) setActive(nextStage);
+  }, []);
+
+  useEffect(() => {
+    if (!playing) return;
+    if (reducedMotion) { setPlaying(false); goTo(REPLAY.length - 1); return; }
+    if (atEnd) { setPlaying(false); return; }
+    const timer = window.setTimeout(() => goTo(cursor + 1), 1400);
+    return () => window.clearTimeout(timer);
+  }, [playing, cursor, atEnd, reducedMotion, goTo]);
+
+  const play = () => {
+    if (reducedMotion) { goTo(REPLAY.length - 1); return; }
+    if (atEnd) goTo(0);
+    setPlaying(true);
+  };
+  const pause = () => setPlaying(false);
+  const step = () => { setPlaying(false); goTo(cursor + 1); };
+  const reset = () => { setPlaying(false); goTo(0); };
   const onKey = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     let next: number | null = null;
     if (event.key === 'ArrowRight') next = (index + 1) % STAGES.length;
@@ -261,10 +409,73 @@ function WorkflowSection() {
     if (next === null) return;
     event.preventDefault(); setActive(next); tabRefs.current[next]?.focus();
   };
+
   return <section className="workflow-band" id="workflow" aria-labelledby="workflow-heading"><div className="content-width">
     <div className="section-heading"><div><h2 id="workflow-heading">从需求，到交付。</h2><p>一条有确认节点的 UI 设计与实现流程。</p></div><Workflow size={28} strokeWidth={1.5} aria-hidden="true" /></div>
-    <div className="workflow-rail" role="tablist" aria-label="工作流阶段">{STAGES.map((item, index) => { const Icon = item.icon; return <button key={item.id} id={`stage-${item.id}`} type="button" role="tab" aria-selected={active === index} aria-controls="stage-panel" tabIndex={active === index ? 0 : -1} className={active === index ? 'is-active' : ''} onClick={() => setActive(index)} ref={(element) => { tabRefs.current[index] = element; }} onKeyDown={(event) => onKey(event, index)}><span className="stage-node"><Icon size={21} strokeWidth={1.8} /></span><span>{item.name}</span>{active === index && <motion.span className="stage-selection" layoutId="workflow-stage" transition={reducedMotion ? { duration: 0 } : SNAPPY} />}</button>; })}</div>
-    <div className="stage-panel" role="tabpanel" tabIndex={0} id="stage-panel" aria-labelledby={`stage-${stage.id}`}><motion.div key={stage.id} className="stage-description" initial={reducedMotion ? false : { opacity: 0.65, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={ELEGANT}><h3><StageIcon size={23} strokeWidth={1.6} />{stage.name}</h3><p>{stage.summary}</p></motion.div><div className="stage-delivery"><div><span>阶段产出</span><strong>{stage.output}</strong></div><span className={stage.gate ? 'human-gate' : 'stage-boundary'}>{stage.gate && <Compass size={15} />}{stage.decision}</span></div></div>
+    <div className="workflow-replay">
+      <div className="replay-copy">
+        <p className="replay-kicker">一次真实交付的记录 · 演示回放</p>
+        <p className="replay-source">案例：<strong>{CASE_SOURCE.name}</strong><span>{CASE_SOURCE.revision}</span><span>{CASE_SOURCE.scope}</span></p>
+        <p className="replay-note">下面按该案例的记录逐条回放状态流转，产物与证据路径取自仓库 <code>demo/ruiear/</code>。这是离线演示回放，不是实时监控，也不连接任何服务。</p>
+      </div>
+      <div className="replay-controls" role="group" aria-label="回放状态流转">
+        {playing
+          ? <button type="button" className="replay-button" onClick={pause}><Pause size={17} aria-hidden="true" />暂停回放</button>
+          : <button type="button" className="replay-button" onClick={play} disabled={reducedMotion} title={reducedMotion ? '已按系统设置减少动态效果，直接显示最终状态' : undefined}><Play size={17} aria-hidden="true" />{atEnd ? '从头回放' : '继续回放'}</button>}
+        <button type="button" className="replay-button secondary" onClick={step} disabled={atEnd}><SkipForward size={17} aria-hidden="true" />下一步</button>
+        <button type="button" className="replay-button secondary" onClick={reset} disabled={cursor === 0}><RotateCcw size={17} aria-hidden="true" />重置</button>
+      </div>
+      <div className="replay-progress">
+        <div className="replay-track" role="progressbar" aria-label="回放进度" aria-valuemin={1} aria-valuemax={REPLAY.length} aria-valuenow={cursor + 1}>
+          <motion.span className="replay-fill" animate={{ width: `${((cursor + 1) / REPLAY.length) * 100}%` }} transition={reducedMotion ? { duration: 0 } : SNAPPY} />
+        </div>
+        <p className="replay-step" aria-live="polite">
+          <span className="replay-step-count">{String(cursor + 1).padStart(2, '0')} / {String(REPLAY.length).padStart(2, '0')}</span>
+          <span className="replay-step-text">{event.note}</span>
+        </p>
+        {reducedMotion && <p className="replay-reduced">系统已开启减少动态效果：直接显示该案例记录的最终状态，可手动逐步查看。</p>}
+      </div>
+      <dl className="status-legend">
+        {STATUS_LEGEND.map((item) => {
+          const LegendIcon = STATUS_META[item.id].icon;
+          return <div key={item.id} className={`status-${item.id}`}><dt><LegendIcon size={14} aria-hidden="true" />{STATUS_META[item.id].label}</dt><dd>{item.meaning}</dd></div>;
+        })}
+      </dl>
+    </div>
+    <div className="workflow-rail" role="tablist" aria-label="工作流阶段">{STAGES.map((item, index) => {
+      const Icon = item.icon;
+      const itemStatus = statusAt(item.id, cursor);
+      const ItemStatusIcon = STATUS_META[itemStatus].icon;
+      return <button key={item.id} id={`stage-${item.id}`} type="button" role="tab" aria-selected={active === index} aria-controls="stage-panel" tabIndex={active === index ? 0 : -1} className={`${active === index ? 'is-active' : ''} status-${itemStatus}`} onClick={() => setActive(index)} ref={(element) => { tabRefs.current[index] = element; }} onKeyDown={(event) => onKey(event, index)}>
+        <span className="stage-node"><Icon size={21} strokeWidth={1.8} /></span>
+        <span>{item.name}</span>
+        <span className={`stage-status status-${itemStatus}`}><ItemStatusIcon size={14} aria-hidden="true" /><span className="visually-hidden">状态：{STATUS_META[itemStatus].label}</span></span>
+        {active === index && <motion.span className="stage-selection" layoutId="workflow-stage" transition={reducedMotion ? { duration: 0 } : SNAPPY} />}
+      </button>;
+    })}</div>
+    <div className="stage-panel" role="tabpanel" tabIndex={0} id="stage-panel" aria-labelledby={`stage-${stage.id}`}>
+      <motion.div key={stage.id} className="stage-description" initial={reducedMotion ? false : { opacity: 0.65, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={ELEGANT}>
+        <h3><StageIcon size={23} strokeWidth={1.6} />{stage.name}</h3>
+        <p className={`stage-status-line status-${stageStatus}`}><StatusIcon size={15} aria-hidden="true" /><span>本案例状态：{STATUS_META[stageStatus].label}</span></p>
+        <p>{stage.summary}</p>
+        <div className="stage-records">
+          <div className="stage-record">
+            <h4><FileText size={15} aria-hidden="true" />该阶段产物</h4>
+            <ul>{record.artifacts.map((artifact) => <li key={artifact.path}><span>{artifact.label}</span><code>{artifact.path}</code></li>)}</ul>
+          </div>
+          <div className="stage-record">
+            <h4><ScanEye size={15} aria-hidden="true" />证据</h4>
+            <ul>{record.evidence.map((item) => <li key={item.path}><span>{item.label}</span><code>{item.path}</code></li>)}</ul>
+          </div>
+          {record.gap && <p className="stage-gap"><CircleDashed size={15} aria-hidden="true" />{record.gap}</p>}
+        </div>
+      </motion.div>
+      <div className="stage-delivery">
+        <div><span>阶段产出</span><strong>{stage.output}</strong></div>
+        <div><span>记录终态</span><strong className={`stage-final status-${stage.status}`}>{STATUS_META[stage.status].label}</strong></div>
+        <span className={stage.gate ? 'human-gate' : 'stage-boundary'}>{stage.gate && <Compass size={15} />}{stage.decision}</span>
+      </div>
+    </div>
   </div></section>;
 }
 

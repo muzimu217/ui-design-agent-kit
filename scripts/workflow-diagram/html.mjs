@@ -68,20 +68,26 @@ export function renderHtml({ svg, model, laid, meta = {} }) {
 ${
   task
     ? `<section class="wf-status-bar" aria-label="任务状态">
-  <div class="wf-status-main">
-    <span class="wf-chip wf-chip-${task.currentStage ? currentStatus(stages) : "pending"}">${escapeHtml(
-      task.currentStage ? currentStatusLabel(stages, model.statusValues) : "未开始",
-    )}</span>
-    <span class="wf-status-progress">
-      <strong>${task.progress.passed}</strong> / ${task.progress.total} 阶段
-    </span>
-    ${
-      task.currentStage
-        ? `<span class="wf-status-where">当前停在 <strong>${escapeHtml(stageName(stages, task.currentStage))}</strong></span>`
-        : ""
-    }
-    ${task.revision ? `<span class="wf-status-rev">${escapeHtml(task.revision)}</span>` : ""}
-  </div>
+  <span class="wf-chip wf-chip-${task.currentStage ? currentStatus(stages) : "pending"}">${escapeHtml(
+    task.currentStage ? currentStatusLabel(stages, model.statusValues) : "未开始",
+  )}</span>
+  <span class="wf-status-progress"><strong>${task.progress.passed}</strong> / ${task.progress.total} 阶段</span>
+  ${
+    task.currentStage
+      ? `<span class="wf-status-where">当前停在 <strong>${escapeHtml(stageName(stages, task.currentStage))}</strong></span>`
+      : ""
+  }
+  ${task.revision ? `<span class="wf-status-rev">${escapeHtml(task.revision)}</span>` : ""}
+  ${
+    task.blockedReason
+      ? `<span class="wf-status-blocked">受阻：${escapeHtml(task.blockedReason)}</span>`
+      : ""
+  }
+</section>`
+    : ""
+}
+
+<section class="wf-rail-wrap">
   <ol class="wf-rail" aria-label="阶段推进">
     ${stages
       .map(
@@ -97,10 +103,7 @@ ${
       )
       .join("")}
   </ol>
-  ${task.blockedReason ? `<p class="wf-blocked">受阻：${escapeHtml(task.blockedReason)}</p>` : ""}
-</section>`
-    : ""
-}
+</section>
 
 <section class="wf-board">
   <div class="wf-canvas" id="wf-canvas">
@@ -108,16 +111,10 @@ ${
   </div>
 </section>
 
-<aside class="wf-detail" id="wf-detail" aria-live="polite">
-  <div class="wf-detail-empty">
-    <p>点击图上任意<strong>阶段</strong>或<strong>确认门</strong>，查看该处的产物、证据与待确认事项。</p>
-  </div>
+<aside class="wf-drawer" id="wf-drawer" aria-live="polite" hidden>
+  <button type="button" class="wf-drawer-close" id="wf-drawer-close" aria-label="关闭详情">×</button>
+  <div class="wf-drawer-body" id="wf-detail"></div>
 </aside>
-
-<footer class="wf-foot">
-  <span class="wf-foot-note">${escapeHtml(model.note)}</span>
-  ${generated ? `<span class="wf-foot-meta">生成于 ${escapeHtml(generated)}</span>` : ""}
-</footer>
 
 </div>
 <script>${script(stages, statuses)}</script>
@@ -191,7 +188,12 @@ body[data-theme="dark"]{
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.6;
   -webkit-font-smoothing:antialiased}
-.wf-shell{max-width:1720px;margin:0 auto;padding:0 20px 32px}
+/* One screen, no page scroll: the board absorbs the remaining height and the
+   diagram scales to fit. Detail opens in a side drawer instead of below. */
+html,body{height:100%}
+body{overflow:hidden}
+.wf-shell{height:100vh;display:flex;flex-direction:column;gap:10px;
+  max-width:none;padding:12px 18px 14px}
 
 /* Top bar: brand on the left, compact icon toolbar on the right. */
 .wf-topbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
@@ -215,8 +217,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-
 .wf-tool-dot{width:11px;height:11px;border-radius:3px;background:var(--fg);flex:none;opacity:.75}
 
 /* Status bar: the answer to "where is this task" in one line. */
-.wf-status-bar{padding:16px 0 4px}
-.wf-status-main{display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:13px}
+.wf-status-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;flex:none}
 .wf-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:650;
   border-radius:7px;padding:3px 10px;color:#fff;background:var(--muted)}
 .wf-chip-passed{background:var(--accent)}
@@ -224,17 +225,19 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-
 .wf-chip-blocked{background:var(--blocked)}
 .wf-chip-active{background:var(--accent)}
 .wf-status-progress{font-variant-numeric:tabular-nums;color:var(--muted)}
-.wf-status-progress strong{color:var(--fg);font-size:15px}
+.wf-status-progress strong{color:var(--fg);font-size:14px}
+.wf-status-blocked{color:var(--blocked)}
 .wf-status-where{color:var(--muted)}
 .wf-status-rev{font-family:var(--mono);font-size:11.5px;color:var(--muted);
   border:1px solid var(--line);border-radius:5px;padding:1px 7px}
-.wf-blocked{margin:8px 0 0;font-size:12.5px;color:var(--blocked)}
+
 
 /* Stage rail: each node lights according to its real status. */
+.wf-rail-wrap{flex:none}
 .wf-rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;
-  list-style:none;margin:14px 0 0;padding:0;overflow-x:auto}
+  list-style:none;margin:0;padding:0;overflow-x:auto}
 .wf-rail-item{min-width:0}
-.wf-rail-btn{display:flex;align-items:center;gap:8px;width:100%;min-height:40px;padding:6px 10px;
+.wf-rail-btn{display:flex;align-items:center;gap:7px;width:100%;min-height:34px;padding:5px 9px;
   border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--muted);
   font:inherit;font-size:12.5px;cursor:pointer;text-align:left;transition:border-color .16s,background .16s,color .16s}
 .wf-rail-btn:hover{border-color:var(--accent)}
@@ -248,10 +251,12 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-
 .wf-rail-item[data-current="true"] .wf-rail-btn{background:var(--raised);color:var(--fg);
   box-shadow:inset 0 0 0 1.5px var(--accent);font-weight:650}
 
-/* Board */
-.wf-board{margin-top:18px;border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
-.wf-canvas{padding:16px;overflow-x:auto}
-.wf-svg{display:block;height:auto;max-width:none}
+/* Board: fills the remaining height; the SVG scales to fit, no page scroll. */
+.wf-board{flex:1 1 auto;min-height:0;border:1px solid var(--line);border-radius:14px;
+  background:var(--panel);overflow:hidden;display:flex}
+.wf-canvas{padding:12px;flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:center;
+  overflow:hidden}
+.wf-svg{display:block;width:100%;height:100%;max-width:none}
 .wf-svg text{fill:var(--fg)}
 .wf-lane-label{fill:var(--muted) !important;font-size:12px;font-weight:650}
 .wf-col-label{fill:var(--fg) !important;font-size:13px;font-weight:650}
@@ -270,10 +275,17 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-
 body[data-labels="off"] .wf-edge-label{display:none}
 body[data-focus="on"] .wf-node[data-dim="true"]{opacity:.14}
 
-/* Detail panel: what a gate or stage is holding, and where it lives. */
-.wf-detail{margin-top:16px}
-.wf-detail-empty{border:1px dashed var(--line);border-radius:12px;padding:20px 22px;color:var(--muted);font-size:13px}
-.wf-detail-empty p{margin:0}
+/* Detail drawer: slides in over the board instead of pushing it down. */
+.wf-drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,92vw);z-index:40;
+  background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;
+  box-shadow:-18px 0 40px rgba(0,0,0,.28);padding:18px 18px 22px}
+.wf-drawer[hidden]{display:none}
+.wf-drawer-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:8px;
+  border:1px solid var(--line);background:var(--raised);color:var(--muted);font-size:17px;line-height:1;
+  cursor:pointer}
+.wf-drawer-close:hover{color:var(--fg)}
+.wf-drawer-close:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wf-drawer .wf-card{border:0;background:transparent;padding:0}
 .wf-card{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:18px 20px}
 .wf-card-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
 .wf-card-kind{font-size:11px;font-weight:650;letter-spacing:.04em;border-radius:6px;padding:2px 8px;
@@ -302,18 +314,17 @@ body[data-focus="on"] .wf-node[data-dim="true"]{opacity:.14}
 .wf-gate-item{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:var(--raised)}
 .wf-gate-item strong{font-size:13px}
 .wf-gate-item p{margin:5px 0 0;font-size:12.5px;color:var(--muted)}
-.wf-foot{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between;
-  margin-top:18px;padding-top:12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted)}
 
 @media (min-width:900px){
   .wf-grid{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
 }
 @media (max-width:640px){
-  .wf-shell{padding:0 12px 24px}
+  .wf-shell{padding:10px 12px 12px;gap:8px}
   .wf-brand-task{display:none}
   .wf-tool-label{display:none}
   .wf-tool{min-height:40px;padding:0 11px}
-  .wf-canvas{padding:10px}
+  .wf-canvas{padding:8px}
+  .wf-drawer{width:100vw;border-left:0}
 }
 @media (prefers-reduced-motion:reduce){
   .wf-pulse{animation:none}
@@ -338,6 +349,8 @@ function script(stages, statuses) {
   var GATES = ${gates};
   var svg = document.querySelector('.wf-svg');
   var detail = document.getElementById('wf-detail');
+  var drawer = document.getElementById('wf-drawer');
+  var drawerClose = document.getElementById('wf-drawer-close');
   var themeBtn = document.getElementById('wf-theme');
   var focusBtn = document.getElementById('wf-focus');
   var labelsBtn = document.getElementById('wf-labels');
@@ -372,7 +385,31 @@ function script(stages, statuses) {
     var kind = node.getAttribute('data-kind');
     if (kind === 'gate') renderGate(node.getAttribute('data-node').replace('gate:',''), stageId);
     else renderStage(stageId);
+    if (drawer) drawer.hidden = false;
   }
+
+  // Highlight without opening the drawer: the board stays fully visible until
+  // the reader asks for detail.
+  function highlight(nodeId){
+    allNodes().forEach(function(n){
+      var on = n.getAttribute('data-node') === nodeId;
+      n.setAttribute('data-selected', on ? 'true' : 'false');
+      n.setAttribute('data-dim', on ? 'false' : 'true');
+    });
+    allEdges().forEach(function(e){
+      var hit = e.getAttribute('data-from') === nodeId || e.getAttribute('data-to') === nodeId;
+      e.setAttribute('data-dim', hit ? 'false' : 'true');
+    });
+  }
+
+  function closeDrawer(){
+    if (drawer) drawer.hidden = true;
+    clearSelection();
+  }
+  if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', function(ev){
+    if (ev.key === 'Escape' && drawer && !drawer.hidden) closeDrawer();
+  });
 
   function pathRow(label, path, expected){
     if (!path && !expected) return '';
@@ -493,12 +530,29 @@ function script(stages, statuses) {
   // reader sees is where the work actually stands.
   var current = null;
   for (var i=0;i<STAGES.length;i++) if (STAGES[i].isCurrent) current = STAGES[i];
-  if (current){
-    var node = svg.querySelector('.wf-node[data-node="stage:'+current.id+'"]');
-    if (node) selectNode('stage:'+current.id);
-  } else {
-    clearSelection();
+  if (current) highlight('stage:'+current.id);
+  else clearSelection();
+
+  // Fit the diagram to the available board height so the whole view needs no
+  // page scrolling at any window size.
+  function fitDiagram(){
+    var canvas = document.getElementById('wf-canvas');
+    var el = document.querySelector('.wf-svg');
+    if (!canvas || !el) return;
+    var box = el.getAttribute('viewBox');
+    if (!box) return;
+    var parts = box.split(/\s+/).map(Number);
+    var vw = parts[2], vh = parts[3];
+    if (!vw || !vh) return;
+    var availW = canvas.clientWidth - 4;
+    var availH = canvas.clientHeight - 4;
+    if (availW <= 0 || availH <= 0) return;
+    var scale = Math.min(availW / vw, availH / vh);
+    el.style.width = Math.round(vw * scale) + 'px';
+    el.style.height = Math.round(vh * scale) + 'px';
   }
+  fitDiagram();
+  window.addEventListener('resize', fitDiagram);
 })();
 `;
 }

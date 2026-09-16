@@ -28,6 +28,17 @@ export function renderHtml({ svg, model, laid, meta = {} }) {
     gateNodes: model.nodes
       .filter((node) => node.kind === "gate" && node.stageId === stage.id)
       .map((node) => ({ id: node.gateId, title: node.title, detail: node.detail, status: node.status, lane: node.lane })),
+    // `html` is rendered Markdown; `source` is the raw file text for every kind,
+    // which is what an HTML artifact renders from.
+    artifacts: (model.artifacts?.[stage.id] ?? []).map((artifact) => ({
+      path: artifact.path,
+      status: artifact.status,
+      kind: artifact.kind ?? null,
+      reason: artifact.reason ?? null,
+      bytes: artifact.bytes ?? null,
+      html: artifact.kind === "markdown" ? (artifact.html ?? null) : null,
+      source: artifact.text ?? null,
+    })),
     nodeIds: model.nodes.filter((node) => node.stageId === stage.id).map((node) => node.id),
   }));
   const statuses = model.statusValues.map((item) => item.id);
@@ -286,6 +297,41 @@ body[data-focus="on"] .wf-node[data-dim="true"]{opacity:.14}
 .wf-drawer-close:hover{color:var(--fg)}
 .wf-drawer-close:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .wf-drawer .wf-card{border:0;background:transparent;padding:0}
+
+/* Embedded artifact: the document itself, readable in the drawer. */
+.wf-artifacts{display:grid;gap:14px}
+.wf-artifact{border:1px solid var(--line);border-radius:10px;background:var(--raised);overflow:hidden}
+.wf-artifact-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:9px 11px;
+  border-bottom:1px solid var(--line);background:var(--panel)}
+.wf-artifact-state{font-size:11px;color:var(--muted);margin-left:auto}
+.wf-artifact-tools{display:flex;gap:6px;padding:8px 11px;border-bottom:1px solid var(--line)}
+.wf-mini{min-height:28px;padding:0 10px;border:1px solid var(--line);border-radius:7px;
+  background:var(--panel);color:var(--muted);font:inherit;font-size:11.5px;cursor:pointer}
+.wf-mini:hover{color:var(--fg);border-color:var(--accent)}
+.wf-mini:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.wf-artifact-frame{display:block;width:100%;height:340px;border:0;background:#fff}
+.wf-artifact-src{margin:0;max-height:340px;overflow:auto;font-family:var(--mono);font-size:11px;
+  padding:10px 12px;white-space:pre-wrap}
+.wf-artifact-doc{max-height:440px;overflow:auto;padding:12px 14px}
+.wf-artifact-missing{margin:0;padding:12px 14px;font-size:12.5px;color:var(--muted)}
+.wf-artifact-doc .md-h1{font-size:16px;margin:0 0 8px}
+.wf-artifact-doc .md-h2{font-size:14px;margin:14px 0 6px}
+.wf-artifact-doc .md-h3{font-size:13px;margin:12px 0 5px;color:var(--muted)}
+.wf-artifact-doc .md-h4,.wf-artifact-doc .md-h5,.wf-artifact-doc .md-h6{font-size:12.5px;margin:10px 0 4px;color:var(--muted)}
+.wf-artifact-doc .md-p{margin:0 0 8px;font-size:12.5px;line-height:1.75}
+.wf-artifact-doc .md-list{margin:0 0 8px;padding-left:18px;font-size:12.5px;line-height:1.75}
+.wf-artifact-doc .md-quote{margin:0 0 8px;padding-left:10px;border-left:2px solid var(--line);color:var(--muted);font-size:12.5px}
+.wf-artifact-doc .md-code{font-family:var(--mono);font-size:11.5px;background:var(--panel);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.wf-artifact-doc .md-pre{margin:0 0 8px;padding:10px 12px;background:var(--panel);border:1px solid var(--line);
+  border-radius:8px;overflow:auto;font-family:var(--mono);font-size:11px;line-height:1.6}
+.wf-artifact-doc .md-hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+.wf-artifact-doc .md-table-wrap{overflow:auto;margin:0 0 10px}
+.wf-artifact-doc .md-table{border-collapse:collapse;font-size:11.5px;min-width:100%}
+.wf-artifact-doc .md-table th,.wf-artifact-doc .md-table td{border:1px solid var(--line);
+  padding:5px 8px;text-align:left;vertical-align:top}
+.wf-artifact-doc .md-table th{background:var(--panel);font-weight:650}
+.wf-artifact-doc .md-link{color:var(--accent)}
 .wf-card{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:18px 20px}
 .wf-card-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
 .wf-card-kind{font-size:11px;font-weight:650;letter-spacing:.04em;border-radius:6px;padding:2px 8px;
@@ -361,6 +407,65 @@ function script(stages, statuses) {
   function allNodes(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-node')); }
   function allEdges(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-edge')); }
   function stageOf(id){ for (var i=0;i<STAGES.length;i++) if (STAGES[i].id===id) return STAGES[i]; return null; }
+
+  // The document itself, embedded at build time. A missing artifact is stated
+  // as missing rather than replaced with something that looks like content.
+  function artifactBlock(stage){
+    var list = stage.artifacts || [];
+    if (!list.length){
+      return '<div class="wf-field"><h3>稿件内容</h3>' +
+        '<p class="wf-artifact-missing">该阶段尚未产出可内嵌的稿件。</p></div>';
+    }
+    var blocks = list.map(function(a, i){
+      var id = 'wf-artifact-' + stage.id + '-' + i;
+      if (a.status !== 'ok'){
+        return '<div class="wf-artifact" id="' + id + '">' +
+          '<div class="wf-artifact-head"><span class="wf-path">' + esc(a.path) + '</span>' +
+          '<span class="wf-artifact-state">文件不存在</span></div>' +
+          '<p class="wf-artifact-missing">' + esc(a.reason || '') + '</p></div>';
+      }
+      var head = '<div class="wf-artifact-head"><span class="wf-path">' + esc(a.path) + '</span>' +
+        '<span class="wf-artifact-state">' + Math.round((a.bytes || 0) / 1024) + ' KB</span></div>';
+      if (a.kind === 'html'){
+        return '<div class="wf-artifact" id="' + id + '">' + head +
+          '<div class="wf-artifact-tools">' +
+            '<button type="button" class="wf-mini" data-preview="' + id + '">预览渲染</button>' +
+            '<button type="button" class="wf-mini" data-source="' + id + '">看源码</button>' +
+          '</div>' +
+          '<iframe class="wf-artifact-frame" id="' + id + '-frame" sandbox="allow-scripts" ' +
+            'title="' + esc(a.path) + ' 渲染预览"></iframe>' +
+          '<pre class="wf-artifact-src" id="' + id + '-src" hidden></pre>' +
+        '</div>';
+      }
+      return '<div class="wf-artifact" id="' + id + '">' + head +
+        '<div class="wf-artifact-doc">' +
+          (a.html || '<pre class="md-pre"><code>' + esc(a.source || '') + '</code></pre>') +
+        '</div></div>';
+    }).join('');
+    return '<div class="wf-field"><h3>稿件内容</h3><div class="wf-artifacts">' + blocks + '</div></div>';
+  }
+
+  // Fill a sandboxed iframe from the embedded source and wire the two toggles.
+  function wireArtifacts(stage){
+    (stage.artifacts || []).forEach(function(a, i){
+      if (a.status !== 'ok' || a.kind !== 'html') return;
+      var id = 'wf-artifact-' + stage.id + '-' + i;
+      var frame = document.getElementById(id + '-frame');
+      var src = document.getElementById(id + '-src');
+      if (frame && !frame.getAttribute('srcdoc')) frame.setAttribute('srcdoc', a.source || '');
+      if (src) src.textContent = a.source || '';
+    });
+    Array.prototype.forEach.call(detail.querySelectorAll('.wf-mini'), function(btn){
+      btn.addEventListener('click', function(){
+        var id = btn.getAttribute('data-preview') || btn.getAttribute('data-source');
+        var frame = document.getElementById(id + '-frame');
+        var src = document.getElementById(id + '-src');
+        var showSource = !!btn.getAttribute('data-source');
+        if (frame) frame.hidden = showSource;
+        if (src) src.hidden = !showSource;
+      });
+    });
+  }
 
   function clearSelection(){
     allNodes().forEach(function(n){ n.removeAttribute('data-selected'); n.removeAttribute('data-dim'); });
@@ -445,8 +550,10 @@ function script(stages, statuses) {
             '<h3 style="margin-top:12px">决策</h3><p>'+esc(stage.decisionPoint ? '用户确认' : '按规则推进')+'</p>'+
           '</div>'+
         '</div>'+
+        artifactBlock(stage)+
         (gates ? '<div class="wf-field"><h3>该阶段的门</h3><ul class="wf-gate-list">'+gates+'</ul></div>' : '')+
       '</div>';
+    wireArtifacts(stage);
   }
 
   function renderGate(gateId, stageId){
@@ -473,7 +580,9 @@ function script(stages, statuses) {
           '</div>'+
         '</div>'+
         (stage.stageNote ? '<p class="wf-note-line">'+esc(stage.stageNote)+'</p>' : '')+
+        artifactBlock(stage)+
       '</div>';
+    wireArtifacts(stage);
   }
 
   svg.addEventListener('click', function(ev){

@@ -20,6 +20,7 @@ import { mkdir, writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import { ROOT, loadPipeline, buildModel } from "./model.mjs";
 import { loadState, validateState } from "./state.mjs";
+import { embedArtifacts } from "./artifacts.mjs";
 import { layout } from "./layout.mjs";
 import { renderSvg } from "./svg.mjs";
 import { renderHtml } from "./html.mjs";
@@ -27,7 +28,7 @@ import { renderHtml } from "./html.mjs";
 const DEFAULT_OUTPUT = path.join(ROOT, "output/workflow-diagram.html");
 
 function parseArgs(argv) {
-  const flags = { json: false, title: null, state: null };
+  const flags = { json: false, title: null, state: null, workspace: null };
   const positional = [];
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index];
@@ -36,6 +37,8 @@ function parseArgs(argv) {
     else if (token.startsWith("--title=")) flags.title = token.slice("--title=".length);
     else if (token === "--state") flags.state = argv[++index];
     else if (token.startsWith("--state=")) flags.state = token.slice("--state=".length);
+    else if (token === "--workspace") flags.workspace = argv[++index];
+    else if (token.startsWith("--workspace=")) flags.workspace = token.slice("--workspace=".length);
     else positional.push(token);
   }
   return { flags, positional };
@@ -51,6 +54,10 @@ async function build({ flags, positional }, root = ROOT) {
   const pipeline = await loadPipeline(root);
   const state = await resolveState(flags, root);
   const model = buildModel(pipeline, { title: flags.title ?? undefined, state });
+  // Inline the referenced artifacts so the diagram shows the document itself.
+  // --workspace sets what evidence paths are relative to (default: cwd).
+  const workspace = flags.workspace ? path.resolve(flags.workspace) : process.cwd();
+  await embedArtifacts(model, { workspace });
   const laid = layout(model);
   const svg = renderSvg(laid, model);
   const html = renderHtml({
@@ -67,6 +74,12 @@ async function build({ flags, positional }, root = ROOT) {
   return {
     output,
     mode: model.mode,
+    workspace,
+    artifacts: model.artifacts
+      ? Object.fromEntries(
+          Object.entries(model.artifacts).map(([stage, list]) => [stage, list.map((a) => `${a.path}:${a.status}`)]),
+        )
+      : {},
     task: model.task ? model.task.name : null,
     currentStage: model.task ? model.task.currentStage : null,
     progress: model.task ? model.task.progress : null,
@@ -125,6 +138,14 @@ async function check({ positional }) {
   if (!html.includes('id="wf-detail"')) problems.push("missing detail panel for node selection");
   if (!html.includes("wf-path")) problems.push("detail panel does not expose artifact/evidence paths");
   if (!html.includes("等待确认")) problems.push("gate waiting state is not surfaced to the reader");
+  // Referenced artifacts must be inlined so the reader sees the document, not
+  // just a path string. Element ids are built at runtime, so this checks the
+  // embedded payload rather than a rendered id.
+  if (!/"artifacts":\[/.test(html)) {
+    problems.push("no embedded artifact payload: the view must carry the document, not only its path");
+  } else if (/"status":"missing"/.test(html) && !/"status":"ok"/.test(html)) {
+    problems.push("every referenced artifact is missing on disk; the reader would see no document");
+  }
   return { file, ok: problems.length === 0, problems };
 }
 
@@ -140,6 +161,8 @@ Commands:
 
 Options:
   --state <file>          Task state JSON: real stage statuses for one task
+  --workspace <dir>       Base directory for evidence paths in the state file
+                          (default: current directory)
   --title <text>          Override the diagram title
   --json                  Machine-readable result
 

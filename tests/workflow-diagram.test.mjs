@@ -148,26 +148,49 @@ test("the viewer ships the interaction baseline: legend, search, camera, motion"
   assert.match(html, /wf-band-chip/);
 });
 
-test("the demo preview never rewrites the recorded state", async () => {
+test("the replay walks only the recorded journey and never rewrites state", async () => {
   const pipeline = await loadPipeline();
   const state = await loadState(EXAMPLE_STATE, pipeline);
   const model = buildModel(pipeline, { state });
   const laid = layout(model);
   const html = renderHtml({ svg: renderSvg(laid, model), model, laid, meta: { title: model.title } });
 
-  // The file opens on the real current stage with demo off. Assert on the
+  // The file opens on the real current stage with replay off. Assert on the
   // <body> tag itself — the stylesheet's body[data-demo="on"] selectors are
   // styling rules, not state.
   const bodyTag = html.match(/<body[^>]*>/)?.[0] ?? "";
   assert.match(bodyTag, /data-demo="off"/);
   assert.ok(!bodyTag.includes('data-demo="on"'), "the static file must not open in demo mode");
-  // Demo walks the highlight only: it has no path to set statuses or gates.
   assert.match(html, /id="wf-demo-btn"/);
-  // The demo body must not contain status-mutating calls: highlight and camera
-  // only. (Search the inline script for direct dataset writes.)
+  // Replay embeds the journey: stages up to and including the current one.
+  // The future must never be played as if it happened.
   const script = html.slice(html.indexOf("<script>") + 8, html.lastIndexOf("</script>"));
-  assert.ok(!/setAttribute\(['"]data-status/.test(script), "demo must not write node status");
-  assert.ok(!/setAttribute\(['"]data-current/.test(script), "demo must not rewrite the current node");
+  const replayMatch = script.match(/var REPLAY = (\[[\s\S]*?\]);/);
+  assert.ok(replayMatch, "embedded replay journey missing");
+  const replay = JSON.parse(replayMatch[1]);
+  assert.equal(replay[replay.length - 1].id, "deliver", "replay must stop at the current stage");
+  assert.equal(
+    replay.some((stage) => stage.status === "pending"),
+    false,
+    "replay must not include stages that have not happened",
+  );
+  assert.equal(/var REPLAY_MODE = "task"/.test(script), true);
+  // The replay is presentation only: it has no path to set statuses or gates.
+  assert.ok(!/setAttribute\(['"]data-status/.test(script), "replay must not write node status");
+  assert.ok(!/setAttribute\(['"]data-current/.test(script), "replay must not rewrite the current node");
+});
+
+test("a process diagram embeds the full pipeline as the replay journey", async () => {
+  const pipeline = await loadPipeline();
+  const model = buildModel(pipeline);
+  const laid = layout(model);
+  const html = renderHtml({ svg: renderSvg(laid, model), model, laid, meta: { title: model.title } });
+  const script = html.slice(html.indexOf("<script>") + 8, html.lastIndexOf("</script>"));
+  const replayMatch = script.match(/var REPLAY = (\[[\s\S]*?\]);/);
+  assert.ok(replayMatch, "embedded replay journey missing");
+  const replay = JSON.parse(replayMatch[1]);
+  assert.equal(replay.length, pipeline.stages.length, "process mode walks every stage");
+  assert.equal(/var REPLAY_MODE = "process"/.test(script), true);
 });
 
 test("the CLI builds, checks, and reports failures instead of false success", async () => {

@@ -68,6 +68,19 @@ export function renderHtml({ svg, model, laid, meta = {} }) {
     )
     .join("");
 
+  // Replay walks the journey the record actually took: stages up to and
+  // including the current one. Nothing beyond the frontier is ever played —
+  // for a task record that means the walk stops at the gate awaiting
+  // adjudication; a process diagram (no task) walks the full pipeline.
+  const currentIndex = stages.findIndex((stage) => stage.isCurrent);
+  const replayStages = (currentIndex >= 0 ? stages.slice(0, currentIndex + 1) : stages).map((stage) => ({
+    id: stage.id,
+    name: stage.name,
+    status: stage.status,
+    summary: stage.summary,
+    gatedGate: (stage.gateNodes.find((gate) => gate.status === "gated") ?? {}).title ?? null,
+  }));
+
   // Bottom summary cards are rendered at build time: they summarize the record,
   // so they must exist even before any script runs.
   const gatedGates = stages.flatMap((stage) =>
@@ -156,8 +169,8 @@ export function renderHtml({ svg, model, laid, meta = {} }) {
     <button type="button" class="wf-tool" id="wf-cards-btn" aria-pressed="false" aria-expanded="false" title="要点摘要">
       <span class="wf-tool-label">要点</span>
     </button>
-    <button type="button" class="wf-tool" id="wf-demo-btn" aria-pressed="false" title="演示预览：自动走一遍阶段（Esc 退出）">
-      <span class="wf-tool-label">演示</span>
+    <button type="button" class="wf-tool" id="wf-demo-btn" aria-pressed="false" title="回放任务走过的路：到未通过的门即停（Esc 退出）">
+      <span class="wf-tool-label">回放</span>
     </button>
     <button type="button" class="wf-tool" id="wf-export" title="导出当前图为 SVG">
       <span class="wf-tool-label">导出</span>
@@ -243,7 +256,7 @@ ${
 ${cardsHtml}
 
 </div>
-<script>${script(stages, statuses)}</script>
+<script>${script(stages, statuses, replayStages)}</script>
 </body>
 </html>
 `;
@@ -489,10 +502,13 @@ body[data-motion="off"] *{transition:none !important}
 
 /* Demo preview: chrome recedes, one caption carries the narration. */
 .wf-demo-caption{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:14;
-  max-width:min(720px,90%);border:1px solid var(--line);border-radius:12px;background:var(--panel);
+  max-width:min(760px,92%);border:1px solid var(--line);border-radius:12px;background:var(--panel);
   box-shadow:0 18px 48px rgba(0,0,0,.30);padding:10px 16px;font-size:13px;text-align:center}
 .wf-demo-caption b{font-weight:700}
 .wf-demo-caption[hidden]{display:none}
+.wf-cap-status{margin-left:9px;color:var(--muted)}
+.wf-cap-note{margin-left:9px;color:var(--muted)}
+.wf-cap-stop{margin-left:9px;color:var(--gate);font-weight:650}
 body[data-demo="on"] .wf-topbar,body[data-demo="on"] .wf-status-bar,
 body[data-demo="on"] .wf-rail-wrap{opacity:.07;pointer-events:none}
 
@@ -603,8 +619,10 @@ body[data-demo="on"] .wf-rail-wrap{opacity:.07;pointer-events:none}
 `;
 }
 
-function script(stages, statuses) {
+function script(stages, statuses, replayStages) {
   const data = JSON.stringify(stages).replace(/</g, "\\u003c");
+  const replay = JSON.stringify(replayStages).replace(/</g, "\\u003c");
+  const replayMode = JSON.stringify(stages.some((stage) => stage.isCurrent) ? "task" : "process");
   const statusLabels = JSON.stringify(
     Object.fromEntries(statuses.map((id) => [id, STATUS_META[id]?.label ?? id])),
   );
@@ -616,6 +634,8 @@ function script(stages, statuses) {
   return `
 (function(){
   var STAGES = ${data};
+  var REPLAY = ${replay};
+  var REPLAY_MODE = ${replayMode};
   var STATUS_LABEL = ${statusLabels};
   var GATES = ${gates};
   var svg = document.querySelector('.wf-svg');
@@ -768,28 +788,63 @@ function script(stages, statuses) {
     cards.hidden = false; cardsBtn.setAttribute('aria-pressed','true'); cardsBtn.setAttribute('aria-expanded','true');
   });
 
-  // ---------- demo preview ----------
-  var demoTimer = null, demoIdx = 0;
-  function showDemoStep(){
-    var s = STAGES[demoIdx]; if (!s) return;
+  // ---------- replay: walk the journey the record actually took ----------
+  // Task mode plays stages up to the current one and STOPS at the gate that is
+  // still awaiting adjudication — the future is never played as if it happened.
+  // Process mode (no task) walks the whole pipeline as an introduction.
+  var demoTimer = null, demoStep = 0, demoActive = false;
+  function replayHold(i){
+    if (REPLAY_MODE === 'task' && i === REPLAY.length - 1) return 4400;
+    return 2300;
+  }
+  function showReplayStep(i){
+    var s = REPLAY[i]; if (!s) return;
     highlight('stage:'+s.id); centerOn('stage:'+s.id);
-    caption.innerHTML = '<b>'+esc(s.name)+'</b> · '+esc(STATUS_LABEL[s.status]||s.status)+
-      (s.summary ? ' — '+esc(s.summary) : '');
+    var isLast = REPLAY_MODE === 'task' && i === REPLAY.length - 1;
+    var html = '<b>回放 ' + (i+1) + '/' + REPLAY.length + ' · ' + esc(s.name) + '</b>' +
+      '<span class="wf-cap-status">' + esc(STATUS_LABEL[s.status] || s.status) + '</span>';
+    if (isLast){
+      var stop = s.gatedGate
+        ? '⏸ 停在 ' + esc(s.gatedGate) + '：等待你的裁决，不再后放'
+        : (s.status === 'gated' ? '⏸ 停在这里等待确认，不再后放' : '');
+      html += stop
+        ? '<span class="wf-cap-stop">' + stop + '</span>'
+        : '<span class="wf-cap-stop">已回放到当前进度</span>';
+    } else if (s.summary){
+      html += '<span class="wf-cap-note">' + esc(s.summary) + '</span>';
+    }
+    caption.innerHTML = html;
     caption.hidden = false;
   }
+  function stepReplay(){
+    demoStep += 1;
+    if (demoStep >= REPLAY.length){ finishReplay(); return; }
+    showReplayStep(demoStep);
+    demoTimer = setTimeout(stepReplay, replayHold(demoStep));
+  }
+  function finishReplay(){
+    var last = REPLAY[REPLAY.length - 1];
+    var waiting = last && (last.gatedGate || last.status === 'gated');
+    caption.innerHTML = '<b>回放结束</b><span class="wf-cap-stop">当前停在「' +
+      esc(last ? last.name : '') + '」' +
+      (waiting ? ' · 等待你的确认' : '') + '</span>';
+    demoTimer = setTimeout(stopDemo, 3400);
+  }
   function startDemo(){
+    if (!REPLAY.length) return;
     document.body.setAttribute('data-demo','on');
     demoBtn.setAttribute('aria-pressed','true');
     closePanels(); if (drawer && !drawer.hidden) closeDrawer();
-    fit(); demoIdx = 0;
-    for (var i=0;i<STAGES.length;i++) if (STAGES[i].isCurrent) demoIdx = i;
-    showDemoStep();
-    demoTimer = setInterval(function(){ demoIdx = (demoIdx+1)%STAGES.length; showDemoStep(); }, 4200);
+    demoActive = true; demoStep = 0;
+    fit();
+    showReplayStep(0);
+    demoTimer = setTimeout(stepReplay, replayHold(0));
   }
   function stopDemo(){
     document.body.setAttribute('data-demo','off');
     demoBtn.setAttribute('aria-pressed','false');
-    if (demoTimer){ clearInterval(demoTimer); demoTimer = null; }
+    demoActive = false;
+    if (demoTimer){ clearTimeout(demoTimer); demoTimer = null; }
     caption.hidden = true; fit();
     var cur = null;
     for (var i=0;i<STAGES.length;i++) if (STAGES[i].isCurrent) cur = STAGES[i];
@@ -797,7 +852,7 @@ function script(stages, statuses) {
     if (cur) highlight('stage:'+cur.id);
   }
   demoBtn.addEventListener('click', function(){
-    if (document.body.getAttribute('data-demo')==='on') stopDemo(); else startDemo();
+    if (demoActive) stopDemo(); else startDemo();
   });
 
   // ---------- artifact embedding (the document itself) ----------

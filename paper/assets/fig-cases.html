@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- Paper figure source: three-up case-study collage from committed demo screenshots.
+Render (2x):
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+  --disable-gpu --hide-scrollbars --force-device-scale-factor=2 \
+  --window-size=2460,640 \
+  --screenshot=paper/assets/fig-cases.png \
+  "file://$PWD/paper/assets/fig-cases.html" -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 2460px; background: #ffffff;
+         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #1a2030; }
+  .row { display: flex; gap: 40px; padding: 24px 24px 20px; }
+  .card { width: 780px; }
+  .shot { width: 780px; height: 488px; object-fit: cover; object-position: top left;
+          border: 1px solid #c9d2e0; border-radius: 6px; display: block; }
+  .cap { margin-top: 9px; }
+  .cap b { font-size: 21px; }
+  .cap span { display: block; font-size: 17px; color: #55607a; margin-top: 2px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="card">
+      <img class="shot" src="../../demo/ruiear/docs/shots/hero-desktop.jpeg" alt="RuiEar">
+      <div class="cap"><b>RuiEar</b>
+        <span>AI-earbuds concept page: 3D model viewer, lid-open animation, config flow</span></div>
+    </div>
+    <div class="card">
+      <img class="shot" src="../../demo/brick-workshop/screenshots/readme-desktop.webp" alt="Brick Workshop">
+      <div class="cap"><b>Brick Workshop</b>
+        <span>3D brick-building sandbox with physics, saved in-repo as a showcase fixture</span></div>
+    </div>
+    <div class="card">
+      <img class="shot" src="../../demo/forma-phone-ui/screenshots/readme-desktop.webp" alt="FORMA One">
+      <div class="cap"><b>FORMA One (fictional product, labeled)</b>
+        <span>Phone configuration and purchase path used as an external-workspace case</span></div>
+    </div>
+  </div>
+</body>
+</html>

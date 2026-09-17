@@ -17,6 +17,7 @@
     "loop": "node scripts/loop-check.mjs",
     "material:rank": "node scripts/material-rank.mjs",
     "contrast": "node scripts/contrast-check.mjs",
+    "paper:build": "node scripts/paper-build.mjs",
     "verify": "node scripts/verify.mjs",
     "test": "node --test tests/*.test.mjs",
     "doctor": "node scripts/doctor.mjs",

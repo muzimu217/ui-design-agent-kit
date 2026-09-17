@@ -31,6 +31,8 @@ abstract: |
   maintainer, and we report no head-to-head comparison against other UI
   generation systems.
 keywords: "design agents, human-in-the-loop, LLM workflows, UI generation, evidence-based verification"
+thanks: "Preprint. DOI: 10.5281/zenodo.22804947. The kit, evaluation data, and gate records are public: https://github.com/muzimu217/ui-design-agent-kit"
+doi: 10.5281/zenodo.22804947
 numbersections: true
 header-includes: |
   \settopmatter{printacmref=false, printfolios=true}

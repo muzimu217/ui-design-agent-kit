@@ -12,6 +12,10 @@ authors:
 version: 0.2.0
 date-released: "2026-09-16"
 url: "https://github.com/muzimu217/ui-design-agent-kit"
+identifiers:
+  - identifier: 10.5281/zenodo.22804947
+    type: doi
+    description: "The UAK paper preprint record on Zenodo."
 keywords:
   - design agents
   - human-in-the-loop

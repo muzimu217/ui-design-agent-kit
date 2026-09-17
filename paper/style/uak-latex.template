@@ -61,7 +61,7 @@ $if(pdf-trailer-id)$
 $endif$
 
 $if(title)$
-\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
+\title{$title$}
 $endif$
 $if(subtitle)$
 \usepackage{etoolbox}
@@ -77,10 +77,11 @@ $for(author)$
 \affiliation{\institution{$author.affiliation$}$if(author.city)$
 \city{$author.city$}$endif$$if(author.country)$
 \country{$author.country$}$endif$}$endif$$if(author.email)$
-\email{$author.email$}$endif$
+\email{$author.email$}$endif$$if(thanks)$
+\thanks{$thanks$}$endif$
 $sep$ \and
 $endfor$
-\date{$date$$if(doi)$\\[2pt]{\small DOI: \texttt{$doi$}}$endif$}
+\date{$date$}
 
 \begin{document}
 $if(has-frontmatter)$

@@ -2,10 +2,11 @@
 // inline script, no network access, no external font or library. Opening the
 // file offline must give the same result as serving it.
 //
-// This is a LOCAL status view, not a presentation. There is deliberately no
-// playback control: the diagram already shows the real position, and clicking a
-// node reveals that stage's artifacts and evidence paths. Playback belongs to a
-// showcase page, not to the record of a task in progress.
+// This is a LOCAL status view first. The record opens on the real current
+// stage; a camera (zoom/pan) lets the reader move around dense boards; an
+// explicit 演示 preview walks the stages for presentations but never rewrites
+// the recorded status. There are no transport controls: playback-as-progress
+// belongs to a showcase page, not to the record of a task in progress.
 
 import { COLORS, STATUS_META } from "./svg.mjs";
 
@@ -43,6 +44,78 @@ export function renderHtml({ svg, model, laid, meta = {} }) {
   }));
   const statuses = model.statusValues.map((item) => item.id);
 
+  // Legend counts come from the real nodes, never from the pipeline shape.
+  const statusCounts = {};
+  for (const node of model.nodes) statusCounts[node.status] = (statusCounts[node.status] ?? 0) + 1;
+  const kindCounts = {};
+  for (const node of model.nodes) kindCounts[node.kind] = (kindCounts[node.kind] ?? 0) + 1;
+  const legendRows = model.statusValues
+    .map((item) => ({ ...item, count: statusCounts[item.id] ?? 0 }))
+    .map(
+      (row) =>
+        `<li class="wf-legend-row"><span class="wf-legend-mark" data-status="${escapeHtml(row.id)}">${railMark(row.id)}</span>` +
+        `<span class="wf-legend-label">${escapeHtml(row.label)}</span>` +
+        `<span class="wf-legend-meaning">${escapeHtml(row.meaning ?? "")}</span>` +
+        `<span class="wf-legend-count">${row.count}</span></li>`,
+    )
+    .join("");
+  const laneRows = (model.actors ?? [])
+    .map(
+      (lane) =>
+        `<li class="wf-legend-row"><span class="wf-legend-swatch" data-lane="${escapeHtml(lane.kind)}"></span>` +
+        `<span class="wf-legend-label">${escapeHtml(lane.label)}</span>` +
+        `<span class="wf-legend-meaning">${lane.kind === "gate" ? "用户裁决停点" : "执行泳道"}</span></li>`,
+    )
+    .join("");
+
+  // Bottom summary cards are rendered at build time: they summarize the record,
+  // so they must exist even before any script runs.
+  const gatedGates = stages.flatMap((stage) =>
+    stage.gateNodes.filter((gate) => gate.status === "gated").map((gate) => ({ ...gate, stageName: stage.name })),
+  );
+  const artifactTotals = stages.reduce(
+    (totals, stage) => {
+      for (const artifact of stage.artifacts ?? []) {
+        totals.all += 1;
+        if (artifact.status === "ok") totals.ok += 1;
+      }
+      return totals;
+    },
+    { ok: 0, all: 0 },
+  );
+  const currentStage = stages.find((stage) => stage.isCurrent) ?? null;
+  const cardsHtml = `
+  <section class="wf-cards" id="wf-cards" aria-label="要点摘要" hidden>
+    <div class="wf-cards-row">
+      <article class="wf-sum-card">
+        <h3>当前状态</h3>
+        <p class="wf-sum-big">${
+          currentStage ? escapeHtml(currentStage.name) : "未开始"
+        }</p>
+        <p class="wf-sum-line">${task ? `<strong>${task.progress.passed}</strong> / ${task.progress.total} 阶段` : "流程视图（无任务状态）"}${
+    task?.revision ? ` · ${escapeHtml(task.revision)}` : ""
+  }</p>
+        ${task?.blockedReason ? `<p class="wf-sum-line wf-sum-blocked">受阻：${escapeHtml(task.blockedReason)}</p>` : ""}
+      </article>
+      <article class="wf-sum-card">
+        <h3>等待确认的门</h3>
+        ${
+          gatedGates.length
+            ? `<ul class="wf-sum-list">${gatedGates
+                .map((gate) => `<li><strong>${escapeHtml(gate.title)}</strong><span>${escapeHtml(gate.stageName)}</span></li>`)
+                .join("")}</ul>`
+            : `<p class="wf-sum-line">当前没有停在门上的裁决。</p>`
+        }
+      </article>
+      <article class="wf-sum-card">
+        <h3>产出速览</h3>
+        <p class="wf-sum-big">${artifactTotals.ok}<span class="wf-sum-dim"> / ${artifactTotals.all}</span></p>
+        <p class="wf-sum-line">已内嵌稿件 / 引用总数</p>
+        <p class="wf-sum-line">${kindCounts.stage ?? 0} 阶段 · ${kindCounts.gate ?? 0} 门 · ${kindCounts.rework ?? 0} 返工点</p>
+      </article>
+    </div>
+  </section>`;
+
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -51,7 +124,7 @@ export function renderHtml({ svg, model, laid, meta = {} }) {
 <title>${escapeHtml(task ? `${task.name} · ${title}` : title)}</title>
 <style>${styles()}</style>
 </head>
-<body data-theme="dark">
+<body data-theme="dark" data-motion="on" data-demo="off">
 <div class="wf-shell">
 
 <header class="wf-topbar">
@@ -60,15 +133,31 @@ export function renderHtml({ svg, model, laid, meta = {} }) {
     <span class="wf-brand-text">${escapeHtml(title)}</span>
     ${task ? `<span class="wf-brand-task">${escapeHtml(task.name)}</span>` : ""}
   </div>
+  <div class="wf-search" id="wf-search-wrap">
+    <input type="search" id="wf-search" placeholder="搜索节点（/）" autocomplete="off" spellcheck="false" aria-label="搜索节点"/>
+    <div class="wf-search-pop" id="wf-search-pop" hidden></div>
+  </div>
   <div class="wf-toolbar" role="toolbar" aria-label="视图控制">
     <button type="button" class="wf-tool" id="wf-theme" aria-pressed="true" title="切换明暗主题">
       <span class="wf-tool-dot" aria-hidden="true"></span><span class="wf-tool-label">深色</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-motion" aria-pressed="true" title="开启动效；关闭后所有过渡静止">
+      <span class="wf-tool-label">动效</span>
     </button>
     <button type="button" class="wf-tool" id="wf-focus" aria-pressed="false" title="只高亮当前阶段，其余变暗">
       <span class="wf-tool-label">聚焦</span>
     </button>
     <button type="button" class="wf-tool" id="wf-labels" aria-pressed="true" title="显示或隐藏连线说明">
       <span class="wf-tool-label">标注</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-legend-btn" aria-pressed="false" aria-expanded="false" title="图例：状态、节点与泳道说明">
+      <span class="wf-tool-label">图例</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-cards-btn" aria-pressed="false" aria-expanded="false" title="要点摘要">
+      <span class="wf-tool-label">要点</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-demo-btn" aria-pressed="false" title="演示预览：自动走一遍阶段（Esc 退出）">
+      <span class="wf-tool-label">演示</span>
     </button>
     <button type="button" class="wf-tool" id="wf-export" title="导出当前图为 SVG">
       <span class="wf-tool-label">导出</span>
@@ -117,15 +206,41 @@ ${
 </section>
 
 <section class="wf-board">
-  <div class="wf-canvas" id="wf-canvas">
-    ${svg.replace("<svg ", `<svg style="width:${Math.round(laid.width)}px" `)}
+  <div class="wf-viewport" id="wf-viewport">
+    <div class="wf-canvas" id="wf-canvas">
+      ${svg.replace("<svg ", `<svg style="width:${Math.round(laid.width)}px" `)}
+    </div>
   </div>
+  <div class="wf-zoombar" role="group" aria-label="缩放控制">
+    <button type="button" id="wf-zoom-out" title="缩小（-）" aria-label="缩小">−</button>
+    <button type="button" id="wf-zoom-read" title="回到 100%">100%</button>
+    <button type="button" id="wf-zoom-in" title="放大（+）" aria-label="放大">＋</button>
+    <button type="button" id="wf-zoom-fit" title="适应窗口（0）">适应</button>
+  </div>
+  <aside class="wf-legend" id="wf-legend" hidden aria-label="图例">
+    <h3>状态</h3>
+    <ul class="wf-legend-list">${legendRows}</ul>
+    <h3>节点与泳道</h3>
+    <ul class="wf-legend-list">${laneRows}
+      <li class="wf-legend-row"><span class="wf-legend-swatch wf-legend-swatch-stage"></span><span class="wf-legend-label">阶段 / 返工点</span></li>
+    </ul>
+    <h3>快捷键</h3>
+    <ul class="wf-legend-keys">
+      <li><kbd>+</kbd> / <kbd>−</kbd> 缩放</li>
+      <li><kbd>0</kbd> 适应窗口</li>
+      <li><kbd>/</kbd> 搜索节点</li>
+      <li><kbd>Esc</kbd> 关闭面板 / 退出演示</li>
+    </ul>
+  </aside>
+  <div class="wf-demo-caption" id="wf-demo-caption" hidden aria-live="polite"></div>
 </section>
 
 <aside class="wf-drawer" id="wf-drawer" aria-live="polite" hidden>
   <button type="button" class="wf-drawer-close" id="wf-drawer-close" aria-label="关闭详情">×</button>
   <div class="wf-drawer-body" id="wf-detail"></div>
 </aside>
+
+${cardsHtml}
 
 </div>
 <script>${script(stages, statuses)}</script>
@@ -164,10 +279,14 @@ function styles() {
   --bg:${COLORS.canvas}; --fg:${COLORS.ink}; --muted:${COLORS.muted}; --line:${COLORS.hairline};
   --panel:#f7f9fb; --raised:#ffffff;
   --accent:#1f7a5c; --gate:#b3244a; --rework:#b5711b; --blocked:#c2410c;
+  /* Motion budget: control state 140–200ms; entrance may run longer but is
+     finite and skipped entirely under reduced motion or the 动效 toggle. */
+  --t-fast:.16s; --t-state:.18s; --t-drawer:.22s;
   /* SVG theme hooks: the renderer emits var(--wf-*, <light fallback>) so the
      same markup follows the theme without re-rendering. */
   --wf-canvas:${COLORS.canvas};
   --wf-line:${COLORS.hairline};
+  --wf-band:#c9d5e0; --wf-band-chip:#ffffff;
   --wf-lane:${COLORS.laneFill};
   --wf-lane-gate:${COLORS.laneFillGate};
   --wf-lane-rework:${COLORS.laneFillRework};
@@ -186,6 +305,7 @@ body[data-theme="dark"]{
   --accent:#4cc38a; --gate:#e5637f; --rework:#e0a355; --blocked:#f97316;
   --wf-canvas:#0f1e27;
   --wf-line:#20323d;
+  --wf-band:#315061; --wf-band-chip:#12232d;
   --wf-lane:#12232d;
   --wf-lane-gate:#1b1a24;
   --wf-lane-rework:#1d1c18;
@@ -199,16 +319,17 @@ body[data-theme="dark"]{
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.6;
   -webkit-font-smoothing:antialiased}
-/* One screen, no page scroll: the board absorbs the remaining height and the
-   diagram scales to fit. Detail opens in a side drawer instead of below. */
+/* One screen, no page scroll: the board absorbs the remaining height. Detail
+   opens in a side drawer; summary cards open as a bottom sheet. */
 html,body{height:100%}
 body{overflow:hidden}
 .wf-shell{height:100vh;display:flex;flex-direction:column;gap:10px;
   max-width:none;padding:12px 18px 14px}
 
-/* Top bar: brand on the left, compact icon toolbar on the right. */
+/* Top bar: brand, node search, compact toolbar. */
 .wf-topbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
-  padding:14px 0 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:20}
+  padding:14px 0 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:20;
+  transition:opacity .3s ease}
 .wf-brand{display:flex;align-items:center;gap:10px;min-width:0}
 .wf-pulse{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;
   box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent);animation:wf-pulse 2.6s ease-out infinite}
@@ -217,18 +338,37 @@ body{overflow:hidden}
 .wf-brand-text{font-size:14.5px;font-weight:650;letter-spacing:-.01em}
 .wf-brand-task{font-size:12px;color:var(--muted);padding-left:10px;border-left:1px solid var(--line);
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:34ch}
+.wf-search{position:relative;flex:0 1 260px;min-width:170px}
+.wf-search input{width:100%;min-height:34px;padding:0 12px;border:1px solid var(--line);border-radius:9px;
+  background:var(--panel);color:var(--fg);font:inherit;font-size:12.5px;outline:none;
+  transition:border-color var(--t-fast)}
+.wf-search input::placeholder{color:var(--muted)}
+.wf-search input:focus{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 22%,transparent)}
+.wf-search-pop{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:60;max-height:320px;overflow:auto;
+  border:1px solid var(--line);border-radius:10px;background:var(--panel);
+  box-shadow:0 18px 48px rgba(0,0,0,.30)}
+.wf-search-pop[hidden]{display:none}
+.wf-search-item{display:flex;align-items:center;gap:9px;width:100%;padding:8px 11px;border:0;
+  background:transparent;color:var(--fg);font:inherit;font-size:12.5px;cursor:pointer;text-align:left}
+.wf-search-item:hover{background:var(--raised)}
+.wf-search-kind{font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--muted);
+  border:1px solid var(--line);border-radius:5px;padding:1px 6px;flex:none}
+.wf-search-text{flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wf-search-status{color:var(--muted);font-size:11.5px;flex:none}
+.wf-search-empty{padding:10px 12px;font-size:12.5px;color:var(--muted)}
 .wf-toolbar{display:flex;align-items:center;gap:4px;padding:3px;border:1px solid var(--line);
   border-radius:11px;background:var(--panel)}
 .wf-tool{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:0 12px;border:0;
   border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-size:12.5px;cursor:pointer;
-  transition:background .16s,color .16s}
+  transition:background var(--t-fast),color var(--t-fast)}
 .wf-tool:hover{background:var(--raised);color:var(--fg)}
 .wf-tool:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .wf-tool[aria-pressed="true"]{background:var(--raised);color:var(--fg)}
 .wf-tool-dot{width:11px;height:11px;border-radius:3px;background:var(--fg);flex:none;opacity:.75}
 
 /* Status bar: the answer to "where is this task" in one line. */
-.wf-status-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;flex:none}
+.wf-status-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;flex:none;
+  transition:opacity .3s ease}
 .wf-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:650;
   border-radius:7px;padding:3px 10px;color:#fff;background:var(--muted)}
 .wf-chip-passed{background:var(--accent)}
@@ -244,13 +384,14 @@ body{overflow:hidden}
 
 
 /* Stage rail: each node lights according to its real status. */
-.wf-rail-wrap{flex:none}
+.wf-rail-wrap{flex:none;transition:opacity .3s ease}
 .wf-rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;
   list-style:none;margin:0;padding:0;overflow-x:auto}
 .wf-rail-item{min-width:0}
 .wf-rail-btn{display:flex;align-items:center;gap:7px;width:100%;min-height:34px;padding:5px 9px;
   border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--muted);
-  font:inherit;font-size:12.5px;cursor:pointer;text-align:left;transition:border-color .16s,background .16s,color .16s}
+  font:inherit;font-size:12.5px;cursor:pointer;text-align:left;
+  transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast)}
 .wf-rail-btn:hover{border-color:var(--accent)}
 .wf-rail-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .wf-rail-mark{font-size:12px;width:1em;text-align:center;flex:none}
@@ -262,35 +403,122 @@ body{overflow:hidden}
 .wf-rail-item[data-current="true"] .wf-rail-btn{background:var(--raised);color:var(--fg);
   box-shadow:inset 0 0 0 1.5px var(--accent);font-weight:650}
 
-/* Board: fills the remaining height; the SVG scales to fit, no page scroll. */
+/* Board: camera viewport. The inner canvas is transformed (zoom/pan); the SVG
+   scales to fit on load and the reader takes over from there. */
 .wf-board{flex:1 1 auto;min-height:0;border:1px solid var(--line);border-radius:14px;
-  background:var(--panel);overflow:hidden;display:flex}
-.wf-canvas{padding:12px;flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:center;
-  overflow:hidden}
-.wf-svg{display:block;width:100%;height:100%;max-width:none}
+  background:var(--panel);position:relative;overflow:hidden}
+.wf-viewport{position:absolute;inset:0;overflow:hidden;cursor:grab;touch-action:none}
+.wf-viewport[data-panning="true"]{cursor:grabbing}
+.wf-canvas{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;padding:0}
+.wf-canvas.wf-anim{transition:transform var(--t-drawer) cubic-bezier(.22,.61,.36,1)}
+.wf-svg{display:block}
 .wf-svg text{fill:var(--fg)}
 .wf-lane-label{fill:var(--muted) !important;font-size:12px;font-weight:650}
 .wf-col-label{fill:var(--fg) !important;font-size:13px;font-weight:650}
 .wf-col-meta{fill:var(--muted) !important;font-size:11px}
+.wf-band-chip{fill:var(--muted) !important;font-size:10px;font-weight:700;letter-spacing:.08em}
 .wf-node-step{fill:var(--muted) !important;font-size:10px;font-weight:700}
 .wf-node-title{fill:var(--fg) !important;font-size:13.5px;font-weight:650}
 .wf-node-sub{fill:var(--muted) !important;font-size:11px}
 .wf-edge-label{fill:var(--muted) !important;font-size:10.5px}
 .wf-status-glyph{fill:#fff !important;font-size:10px;font-weight:700}
-.wf-node{cursor:pointer}
-.wf-node:focus-visible{outline:none}
+.wf-node{cursor:pointer;outline:none}
+.wf-node rect{transition:stroke-width var(--t-state) ease,stroke var(--t-state) ease,fill var(--t-state) ease,opacity var(--t-state) ease}
 .wf-node:focus-visible rect{stroke-width:3.5}
 .wf-node[data-selected="true"] rect{stroke-width:3.5}
 .wf-node[data-dim="true"]{opacity:.26}
+.wf-edge{transition:opacity var(--t-state) ease}
 .wf-edge[data-dim="true"]{opacity:.16}
 body[data-labels="off"] .wf-edge-label{display:none}
 body[data-focus="on"] .wf-node[data-dim="true"]{opacity:.14}
+
+/* Motion: entrance stagger, gated pulse, reduced-motion + manual cutoff.
+   The stagger index comes from the renderer (--wf-i per node). */
+.wf-node{animation:wf-enter .5s cubic-bezier(.22,.61,.36,1) both;
+  animation-delay:calc(var(--wf-i, 0) * 42ms)}
+@keyframes wf-enter{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+.wf-node[data-status="gated"] rect{animation:wf-gate-pulse 2.4s ease-in-out infinite}
+@keyframes wf-gate-pulse{0%,100%{stroke-opacity:1}50%{stroke-opacity:.45}}
+.wf-node[data-current="true"] rect{filter:drop-shadow(0 0 7px color-mix(in srgb,var(--accent) 45%,transparent))}
+@media (prefers-reduced-motion:reduce){
+  .wf-pulse,.wf-node,.wf-node[data-status="gated"] rect{animation:none}
+  *{transition-duration:.01ms !important}
+}
+body[data-motion="off"] .wf-pulse,
+body[data-motion="off"] .wf-node,
+body[data-motion="off"] .wf-node[data-status="gated"] rect{animation:none !important}
+body[data-motion="off"] *{transition:none !important}
+
+/* Floating camera controls, bottom-right like a map instrument. */
+.wf-zoombar{position:absolute;right:12px;bottom:12px;display:flex;align-items:stretch;gap:2px;
+  padding:3px;border:1px solid var(--line);border-radius:10px;background:var(--panel);
+  box-shadow:0 10px 30px rgba(0,0,0,.22);z-index:10}
+.wf-zoombar button{min-width:34px;min-height:30px;padding:0 9px;border:0;border-radius:7px;
+  background:transparent;color:var(--muted);font:inherit;font-size:12.5px;cursor:pointer;
+  font-variant-numeric:tabular-nums;transition:background var(--t-fast),color var(--t-fast)}
+.wf-zoombar button:hover{background:var(--raised);color:var(--fg)}
+.wf-zoombar button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.wf-zoombar #wf-zoom-read{min-width:52px;text-align:center;color:var(--fg)}
+
+/* Legend: floating panel over the board, bottom-left. */
+.wf-legend{position:absolute;left:12px;bottom:12px;z-index:12;width:min(340px,86%);
+  border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:12px 14px;
+  box-shadow:0 18px 48px rgba(0,0,0,.30);max-height:70%;overflow:auto}
+.wf-legend[hidden]{display:none}
+.wf-legend h3{margin:10px 0 6px;font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted)}
+.wf-legend h3:first-child{margin-top:0}
+.wf-legend-list{margin:0;padding:0;list-style:none;display:grid;gap:5px}
+.wf-legend-row{display:flex;align-items:baseline;gap:8px;font-size:12px}
+.wf-legend-mark{width:1em;text-align:center;flex:none;font-weight:700}
+.wf-legend-mark[data-status="passed"],.wf-legend-mark[data-status="active"]{color:var(--accent)}
+.wf-legend-mark[data-status="gated"]{color:var(--gate)}
+.wf-legend-mark[data-status="blocked"]{color:var(--blocked)}
+.wf-legend-mark[data-status="pending"]{color:var(--muted)}
+.wf-legend-label{font-weight:650;flex:none}
+.wf-legend-meaning{color:var(--muted);font-size:11.5px;flex:1 1 auto;min-width:0}
+.wf-legend-count{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.wf-legend-swatch{width:16px;height:10px;border-radius:3px;border:1px solid var(--line);flex:none}
+.wf-legend-swatch[data-lane="gate"]{background:var(--wf-lane-gate)}
+.wf-legend-swatch[data-lane="rework"]{background:var(--wf-lane-rework)}
+.wf-legend-swatch[data-lane="agent"]{background:var(--wf-lane)}
+.wf-legend-swatch-stage{background:var(--wf-node-stage-fill);border-color:var(--wf-node-stage-stroke)}
+.wf-legend-keys{margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:11.5px;color:var(--muted)}
+.wf-legend-keys kbd{font-family:var(--mono);font-size:10.5px;border:1px solid var(--line);
+  border-radius:4px;padding:0 5px;background:var(--raised);color:var(--fg)}
+
+/* Demo preview: chrome recedes, one caption carries the narration. */
+.wf-demo-caption{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:14;
+  max-width:min(720px,90%);border:1px solid var(--line);border-radius:12px;background:var(--panel);
+  box-shadow:0 18px 48px rgba(0,0,0,.30);padding:10px 16px;font-size:13px;text-align:center}
+.wf-demo-caption b{font-weight:700}
+.wf-demo-caption[hidden]{display:none}
+body[data-demo="on"] .wf-topbar,body[data-demo="on"] .wf-status-bar,
+body[data-demo="on"] .wf-rail-wrap{opacity:.07;pointer-events:none}
+
+/* Summary cards: bottom sheet over the board. */
+.wf-cards{position:absolute;left:12px;right:12px;bottom:12px;z-index:11}
+.wf-cards[hidden]{display:none}
+.wf-cards-row{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.wf-sum-card{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:12px 14px;
+  box-shadow:0 18px 48px rgba(0,0,0,.30)}
+.wf-sum-card h3{margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted)}
+.wf-sum-big{margin:0 0 4px;font-size:20px;font-weight:700}
+.wf-sum-dim{color:var(--muted);font-size:13px;font-weight:400}
+.wf-sum-line{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.wf-sum-blocked{color:var(--blocked)}
+.wf-sum-list{margin:0;padding:0;list-style:none;display:grid;gap:5px}
+.wf-sum-list li{display:flex;justify-content:space-between;gap:10px;font-size:12px}
+.wf-sum-list li span{color:var(--muted)}
 
 /* Detail drawer: slides in over the board instead of pushing it down. */
 .wf-drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,92vw);z-index:40;
   background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;
   box-shadow:-18px 0 40px rgba(0,0,0,.28);padding:18px 18px 22px}
 .wf-drawer[hidden]{display:none}
+.wf-drawer:not([hidden]){animation:wf-drawer-in var(--t-drawer) cubic-bezier(.22,.61,.36,1)}
+@keyframes wf-drawer-in{from{transform:translateX(100%)}to{transform:translateX(0)}}
 .wf-drawer-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:8px;
   border:1px solid var(--line);background:var(--raised);color:var(--muted);font-size:17px;line-height:1;
   cursor:pointer}
@@ -368,18 +596,15 @@ body[data-focus="on"] .wf-node[data-dim="true"]{opacity:.14}
   .wf-shell{padding:10px 12px 12px;gap:8px}
   .wf-brand-task{display:none}
   .wf-tool-label{display:none}
+  .wf-search{flex-basis:150px}
   .wf-tool{min-height:40px;padding:0 11px}
-  .wf-canvas{padding:8px}
   .wf-drawer{width:100vw;border-left:0}
-}
-@media (prefers-reduced-motion:reduce){
-  .wf-pulse{animation:none}
 }
 `;
 }
 
 function script(stages, statuses) {
-  const data = JSON.stringify(stages);
+  const data = JSON.stringify(stages).replace(/</g, "\\u003c");
   const statusLabels = JSON.stringify(
     Object.fromEntries(statuses.map((id) => [id, STATUS_META[id]?.label ?? id])),
   );
@@ -387,29 +612,195 @@ function script(stages, statuses) {
     Object.fromEntries(
       stages.flatMap((stage) => stage.gateNodes.map((gate) => [gate.id, { ...gate, stageId: stage.id }])),
     ),
-  );
+  ).replace(/</g, "\\u003c");
   return `
 (function(){
   var STAGES = ${data};
   var STATUS_LABEL = ${statusLabels};
   var GATES = ${gates};
   var svg = document.querySelector('.wf-svg');
+  var viewport = document.getElementById('wf-viewport');
+  var canvas = document.getElementById('wf-canvas');
   var detail = document.getElementById('wf-detail');
   var drawer = document.getElementById('wf-drawer');
   var drawerClose = document.getElementById('wf-drawer-close');
   var themeBtn = document.getElementById('wf-theme');
+  var motionBtn = document.getElementById('wf-motion');
   var focusBtn = document.getElementById('wf-focus');
   var labelsBtn = document.getElementById('wf-labels');
+  var legendBtn = document.getElementById('wf-legend-btn');
+  var legend = document.getElementById('wf-legend');
+  var cardsBtn = document.getElementById('wf-cards-btn');
+  var cards = document.getElementById('wf-cards');
+  var demoBtn = document.getElementById('wf-demo-btn');
+  var caption = document.getElementById('wf-demo-caption');
   var exportBtn = document.getElementById('wf-export');
+  var searchInput = document.getElementById('wf-search');
+  var searchPop = document.getElementById('wf-search-pop');
+  var suppressClick = false;
 
+  function $(id){ return document.getElementById(id); }
   function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g, function(c){
     return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
   function allNodes(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-node')); }
   function allEdges(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-edge')); }
   function stageOf(id){ for (var i=0;i<STAGES.length;i++) if (STAGES[i].id===id) return STAGES[i]; return null; }
 
-  // The document itself, embedded at build time. A missing artifact is stated
-  // as missing rather than replaced with something that looks like content.
+  // ---------- camera: zoom / pan / fit ----------
+  var cam = { s:1, tx:0, ty:0, fit:true };
+  function viewBox(){ var b=(svg.getAttribute('viewBox')||'0 0 1000 700').split(/\\s+/).map(Number); return {w:b[2]||1000,h:b[3]||700}; }
+  function apply(){
+    canvas.style.transform = 'translate('+cam.tx+'px,'+cam.ty+'px) scale('+cam.s+')';
+    var read = $('wf-zoom-read'); if (read) read.textContent = Math.round(cam.s*100)+'%';
+  }
+  function fit(){
+    var vb = viewBox(); var r = viewport.getBoundingClientRect();
+    if (r.width<10||r.height<10) return;
+    var s = Math.min((r.width-48)/vb.w,(r.height-48)/vb.h);
+    cam.s = Math.max(0.2,Math.min(3,s));
+    cam.tx = (r.width - vb.w*cam.s)/2; cam.ty = (r.height - vb.h*cam.s)/2;
+    cam.fit = true; apply();
+  }
+  function zoomAt(px,py,factor){
+    var ns = Math.max(0.2, Math.min(3, cam.s*factor)); var k = ns/cam.s;
+    cam.tx = px-(px-cam.tx)*k; cam.ty = py-(py-cam.ty)*k; cam.s = ns; cam.fit = false; apply();
+  }
+  function zoomCenter(f){ var r=viewport.getBoundingClientRect(); zoomAt(r.width/2,r.height/2,f); }
+  function centerOn(nodeId){
+    var n = svg.querySelector('.wf-node[data-node="'+nodeId+'"]'); if(!n) return;
+    var b = n.getBBox(); var r = viewport.getBoundingClientRect();
+    canvas.classList.add('wf-anim');
+    cam.tx = r.width/2 - (b.x+b.width/2)*cam.s;
+    cam.ty = r.height/2 - (b.y+b.height/2)*cam.s;
+    cam.fit = false; apply();
+    setTimeout(function(){ canvas.classList.remove('wf-anim'); }, 260);
+  }
+  viewport.addEventListener('wheel', function(ev){
+    ev.preventDefault();
+    var r = viewport.getBoundingClientRect();
+    zoomAt(ev.clientX-r.left, ev.clientY-r.top, Math.exp(-ev.deltaY*0.0016));
+  }, { passive:false });
+  var pan = null;
+  viewport.addEventListener('pointerdown', function(ev){
+    if (ev.button!==0) return;
+    if (ev.target && ev.target.closest && ev.target.closest('.wf-node')) return;
+    pan = { x:ev.clientX, y:ev.clientY, tx:cam.tx, ty:cam.ty, moved:0 };
+    cam.fit = false;
+    try { viewport.setPointerCapture(ev.pointerId); } catch(e){}
+    viewport.setAttribute('data-panning','true');
+  });
+  viewport.addEventListener('pointermove', function(ev){
+    if (!pan) return;
+    var dx = ev.clientX-pan.x, dy = ev.clientY-pan.y;
+    pan.moved = Math.max(pan.moved, Math.abs(dx)+Math.abs(dy));
+    cam.tx = pan.tx+dx; cam.ty = pan.ty+dy; apply();
+  });
+  function endPan(){
+    if (pan && pan.moved>4) suppressClick = true;
+    pan = null; viewport.removeAttribute('data-panning');
+  }
+  viewport.addEventListener('pointerup', endPan);
+  viewport.addEventListener('pointercancel', endPan);
+  $('wf-zoom-in').addEventListener('click', function(){ zoomCenter(1.25); });
+  $('wf-zoom-out').addEventListener('click', function(){ zoomCenter(0.8); });
+  $('wf-zoom-fit').addEventListener('click', fit);
+  $('wf-zoom-read').addEventListener('click', function(){ zoomCenter(1/cam.s); });
+  window.addEventListener('resize', function(){ if (cam.fit) fit(); });
+
+  // ---------- search ----------
+  function nodeIndex(){
+    return allNodes().map(function(n){
+      var t = n.querySelector('.wf-node-title'), s = n.querySelector('.wf-node-sub');
+      return { id:n.getAttribute('data-node'), kind:n.getAttribute('data-kind'),
+        status:n.getAttribute('data-status'), stage:n.getAttribute('data-stage'),
+        text:(t?t.textContent:''), sub:(s?s.textContent:'') };
+    });
+  }
+  function runSearch(q){
+    q = (q||'').trim().toLowerCase();
+    if (!q){ searchPop.hidden = true; searchPop.innerHTML=''; return; }
+    var hits = nodeIndex().filter(function(n){
+      return (n.text+' '+n.sub+' '+n.stage).toLowerCase().indexOf(q) >= 0;
+    }).slice(0,8);
+    searchPop.innerHTML = hits.length
+      ? hits.map(function(n){
+          return '<button type="button" class="wf-search-item" data-node="'+esc(n.id)+'">' +
+            '<span class="wf-search-kind">'+esc(n.kind)+'</span>' +
+            '<span class="wf-search-text">'+esc(n.text||n.id)+'</span>' +
+            '<span class="wf-search-status">'+esc(STATUS_LABEL[n.status]||n.status)+'</span></button>';
+        }).join('')
+      : '<div class="wf-search-empty">无匹配节点</div>';
+    searchPop.hidden = false;
+  }
+  searchInput.addEventListener('input', function(){ runSearch(searchInput.value); });
+  searchInput.addEventListener('keydown', function(ev){
+    if (ev.key === 'Enter'){
+      var first = searchPop.querySelector('.wf-search-item');
+      if (first){ pickSearch(first.getAttribute('data-node')); }
+    }
+    if (ev.key === 'Escape'){ searchInput.value=''; runSearch(''); searchInput.blur(); }
+  });
+  searchPop.addEventListener('click', function(ev){
+    var item = ev.target.closest ? ev.target.closest('.wf-search-item') : null;
+    if (item) pickSearch(item.getAttribute('data-node'));
+  });
+  function pickSearch(nodeId){
+    searchPop.hidden = true; searchInput.value=''; searchInput.blur();
+    selectNode(nodeId); centerOn(nodeId);
+  }
+
+  // ---------- panels ----------
+  function closePanels(){
+    legend.hidden = true; legendBtn.setAttribute('aria-pressed','false'); legendBtn.setAttribute('aria-expanded','false');
+    cards.hidden = true; cardsBtn.setAttribute('aria-pressed','false'); cardsBtn.setAttribute('aria-expanded','false');
+    searchPop.hidden = true;
+  }
+  legendBtn.addEventListener('click', function(){
+    var open = !legend.hidden;
+    closePanels();
+    if (open) return;
+    legend.hidden = false; legendBtn.setAttribute('aria-pressed','true'); legendBtn.setAttribute('aria-expanded','true');
+  });
+  cardsBtn.addEventListener('click', function(){
+    var open = !cards.hidden;
+    closePanels();
+    if (open) return;
+    cards.hidden = false; cardsBtn.setAttribute('aria-pressed','true'); cardsBtn.setAttribute('aria-expanded','true');
+  });
+
+  // ---------- demo preview ----------
+  var demoTimer = null, demoIdx = 0;
+  function showDemoStep(){
+    var s = STAGES[demoIdx]; if (!s) return;
+    highlight('stage:'+s.id); centerOn('stage:'+s.id);
+    caption.innerHTML = '<b>'+esc(s.name)+'</b> · '+esc(STATUS_LABEL[s.status]||s.status)+
+      (s.summary ? ' — '+esc(s.summary) : '');
+    caption.hidden = false;
+  }
+  function startDemo(){
+    document.body.setAttribute('data-demo','on');
+    demoBtn.setAttribute('aria-pressed','true');
+    closePanels(); if (drawer && !drawer.hidden) closeDrawer();
+    fit(); demoIdx = 0;
+    for (var i=0;i<STAGES.length;i++) if (STAGES[i].isCurrent) demoIdx = i;
+    showDemoStep();
+    demoTimer = setInterval(function(){ demoIdx = (demoIdx+1)%STAGES.length; showDemoStep(); }, 4200);
+  }
+  function stopDemo(){
+    document.body.setAttribute('data-demo','off');
+    demoBtn.setAttribute('aria-pressed','false');
+    if (demoTimer){ clearInterval(demoTimer); demoTimer = null; }
+    caption.hidden = true; fit();
+    var cur = null;
+    for (var i=0;i<STAGES.length;i++) if (STAGES[i].isCurrent) cur = STAGES[i];
+    clearSelection();
+    if (cur) highlight('stage:'+cur.id);
+  }
+  demoBtn.addEventListener('click', function(){
+    if (document.body.getAttribute('data-demo')==='on') stopDemo(); else startDemo();
+  });
+
+  // ---------- artifact embedding (the document itself) ----------
   function artifactBlock(stage){
     var list = stage.artifacts || [];
     if (!list.length){
@@ -445,7 +836,6 @@ function script(stages, statuses) {
     return '<div class="wf-field"><h3>稿件内容</h3><div class="wf-artifacts">' + blocks + '</div></div>';
   }
 
-  // Fill a sandboxed iframe from the embedded source and wire the two toggles.
   function wireArtifacts(stage){
     (stage.artifacts || []).forEach(function(a, i){
       if (a.status !== 'ok' || a.kind !== 'html') return;
@@ -475,17 +865,7 @@ function script(stages, statuses) {
   function selectNode(nodeId){
     var node = svg.querySelector('.wf-node[data-node="'+nodeId+'"]');
     if (!node) return;
-    var keep = {};
-    keep[nodeId] = true;
-    allNodes().forEach(function(n){
-      var on = n.getAttribute('data-node') === nodeId;
-      n.setAttribute('data-selected', on ? 'true' : 'false');
-      n.setAttribute('data-dim', on ? 'false' : 'true');
-    });
-    allEdges().forEach(function(e){
-      var hit = e.getAttribute('data-from') === nodeId || e.getAttribute('data-to') === nodeId;
-      e.setAttribute('data-dim', hit ? 'false' : 'true');
-    });
+    highlight(nodeId);
     var stageId = node.getAttribute('data-stage');
     var kind = node.getAttribute('data-kind');
     if (kind === 'gate') renderGate(node.getAttribute('data-node').replace('gate:',''), stageId);
@@ -493,8 +873,6 @@ function script(stages, statuses) {
     if (drawer) drawer.hidden = false;
   }
 
-  // Highlight without opening the drawer: the board stays fully visible until
-  // the reader asks for detail.
   function highlight(nodeId){
     allNodes().forEach(function(n){
       var on = n.getAttribute('data-node') === nodeId;
@@ -512,9 +890,6 @@ function script(stages, statuses) {
     clearSelection();
   }
   if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
-  document.addEventListener('keydown', function(ev){
-    if (ev.key === 'Escape' && drawer && !drawer.hidden) closeDrawer();
-  });
 
   function pathRow(label, path, expected){
     if (!path && !expected) return '';
@@ -586,6 +961,7 @@ function script(stages, statuses) {
   }
 
   svg.addEventListener('click', function(ev){
+    if (suppressClick){ suppressClick = false; return; }
     var node = ev.target.closest ? ev.target.closest('.wf-node') : null;
     if (!node) return;
     selectNode(node.getAttribute('data-node'));
@@ -602,16 +978,21 @@ function script(stages, statuses) {
   Array.prototype.forEach.call(railBtns, function(btn){
     btn.addEventListener('click', function(){
       var stageId = btn.getAttribute('data-stage');
-      var node = svg.querySelector('.wf-node[data-node="stage:'+stageId+'"]');
-      if (node) selectNode('stage:'+stageId);
+      selectNode('stage:'+stageId); centerOn('stage:'+stageId);
     });
   });
 
+  // ---------- theme / motion / focus / labels ----------
   if (themeBtn) themeBtn.addEventListener('click', function(){
     var dark = document.body.getAttribute('data-theme') === 'dark';
     document.body.setAttribute('data-theme', dark ? 'light' : 'dark');
     themeBtn.setAttribute('aria-pressed', dark ? 'false' : 'true');
     themeBtn.querySelector('.wf-tool-label').textContent = dark ? '浅色' : '深色';
+  });
+  if (motionBtn) motionBtn.addEventListener('click', function(){
+    var on = document.body.getAttribute('data-motion') === 'on';
+    document.body.setAttribute('data-motion', on ? 'off' : 'on');
+    motionBtn.setAttribute('aria-pressed', on ? 'false' : 'true');
   });
   if (focusBtn) focusBtn.addEventListener('click', function(){
     var on = document.body.getAttribute('data-focus') === 'on';
@@ -625,8 +1006,25 @@ function script(stages, statuses) {
   });
   if (exportBtn) exportBtn.addEventListener('click', function(){
     var clone = svg.cloneNode(true);
+    // Export cleanup: viewer state (focus, dim, selection, keyboard hooks) is
+    // stripped, and paint styles are inlined because the standalone file has
+    // no stylesheet — class-based fills would fall back to black.
     clone.querySelectorAll('[data-dim]').forEach(function(el){ el.removeAttribute('data-dim'); });
     clone.querySelectorAll('[data-selected]').forEach(function(el){ el.removeAttribute('data-selected'); });
+    clone.querySelectorAll('[tabindex]').forEach(function(el){ el.removeAttribute('tabindex'); });
+    var source = svg.querySelectorAll('*');
+    var target = clone.querySelectorAll('*');
+    var props = ['fill','stroke','stroke-width','stroke-dasharray','opacity','font-size','font-weight','font-family'];
+    for (var i=0;i<source.length && i<target.length;i++){
+      var cs = window.getComputedStyle(source[i]);
+      if (!cs) continue;
+      for (var p=0;p<props.length;p++){
+        var v = cs.getPropertyValue(props[p]);
+        if (v) target[i].setAttribute(props[p], v);
+      }
+    }
+    var vb = viewBox();
+    clone.setAttribute('width', vb.w); clone.setAttribute('height', vb.h);
     var blob = new Blob([new XMLSerializer().serializeToString(clone)], {type:'image/svg+xml'});
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -635,33 +1033,43 @@ function script(stages, statuses) {
     setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
   });
 
+  // ---------- keys ----------
+  document.addEventListener('keydown', function(ev){
+    var t = ev.target;
+    var typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA');
+    if (ev.key === 'Escape'){
+      if (typing){ t.blur(); return; }
+      if (document.body.getAttribute('data-demo')==='on'){ stopDemo(); return; }
+      closePanels();
+      if (drawer && !drawer.hidden) closeDrawer();
+      return;
+    }
+    if (typing) return;
+    if (ev.key === '/' ){ ev.preventDefault(); searchInput.focus(); return; }
+    var r = viewport.getBoundingClientRect();
+    if (ev.key === '+' || ev.key === '=') zoomAt(r.width/2, r.height/2, 1.25);
+    else if (ev.key === '-' || ev.key === '_') zoomAt(r.width/2, r.height/2, 0.8);
+    else if (ev.key === '0') fit();
+  });
+
+  // ---------- theme from URL (?theme=light for captures) ----------
+  try {
+    var q = new URLSearchParams(location.search);
+    if (q.get('theme') === 'light' && themeBtn){
+      document.body.setAttribute('data-theme','light');
+      themeBtn.setAttribute('aria-pressed','false');
+      themeBtn.querySelector('.wf-tool-label').textContent = '浅色';
+    }
+  } catch(e){}
+
   // Open on the stage the record says the task is on, so the first thing the
-  // reader sees is where the work actually stands.
+  // reader sees is where the work actually stands. Demo stays off by default.
   var current = null;
   for (var i=0;i<STAGES.length;i++) if (STAGES[i].isCurrent) current = STAGES[i];
   if (current) highlight('stage:'+current.id);
   else clearSelection();
 
-  // Fit the diagram to the available board height so the whole view needs no
-  // page scrolling at any window size.
-  function fitDiagram(){
-    var canvas = document.getElementById('wf-canvas');
-    var el = document.querySelector('.wf-svg');
-    if (!canvas || !el) return;
-    var box = el.getAttribute('viewBox');
-    if (!box) return;
-    var parts = box.split(/\s+/).map(Number);
-    var vw = parts[2], vh = parts[3];
-    if (!vw || !vh) return;
-    var availW = canvas.clientWidth - 4;
-    var availH = canvas.clientHeight - 4;
-    if (availW <= 0 || availH <= 0) return;
-    var scale = Math.min(availW / vw, availH / vh);
-    el.style.width = Math.round(vw * scale) + 'px';
-    el.style.height = Math.round(vh * scale) + 'px';
-  }
-  fitDiagram();
-  window.addEventListener('resize', fitDiagram);
+  fit();
 })();
 `;
 }

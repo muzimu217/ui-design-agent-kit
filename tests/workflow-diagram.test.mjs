@@ -99,14 +99,75 @@ test("the rendered document is a self-contained local status view", async () => 
   for (const stage of pipeline.stages) {
     assert.ok(html.includes(`data-stage="${stage.id}"`), `stage ${stage.id} missing from the SVG`);
   }
-  // This is a local status view, not a presentation: no playback controls.
+  // This is a local status view, not a presentation: no transport playback
+  // controls. The 演示 preview is opt-in and must default to off.
   assert.equal(/id="wf-play"|id="wf-step"|id="wf-reset"/.test(html), false, "local view must not carry playback controls");
+  assert.match(html, /data-demo="off"/);
+  assert.match(html, /id="wf-demo-btn"/);
   // Clicking a node must reveal artifacts and evidence paths.
   assert.match(html, /id="wf-detail"/);
   assert.match(html, /wf-path/);
   // The status vocabulary is described in the document, not only implied.
   assert.match(html, /未开始/);
   assert.match(html, /等待确认/);
+});
+
+test("the viewer ships the interaction baseline: legend, search, camera, motion", async () => {
+  const pipeline = await loadPipeline();
+  const model = buildModel(pipeline);
+  const laid = layout(model);
+  const html = renderHtml({ svg: renderSvg(laid, model), model, laid, meta: { title: model.title } });
+
+  // Legend: every status in the vocabulary is explained, with real counts.
+  assert.match(html, /id="wf-legend"/);
+  for (const status of pipeline.statusValues) {
+    assert.ok(html.includes(`data-status="${status.id}"`), `legend misses status ${status.id}`);
+  }
+  // Search: an input plus a result popover wired to the node index.
+  assert.match(html, /id="wf-search"/);
+  assert.match(html, /id="wf-search-pop"/);
+  // Camera: zoom in/out/fit/read controls exist and the viewport pans.
+  for (const id of ["wf-zoom-in", "wf-zoom-out", "wf-zoom-fit", "wf-zoom-read", "wf-viewport"]) {
+    assert.ok(html.includes(`id="${id}"`), `camera control ${id} missing`);
+  }
+  assert.match(html, /addEventListener\('wheel'/);
+  assert.match(html, /addEventListener\('pointerdown'/);
+  // Motion is governed: an entrance stagger per node, a cutoff toggle, and
+  // reduced-motion handling; state changes transition through one governed
+  // token (--t-state: 180ms, inside the 140–200ms band) rather than ad-hoc
+  // durations scattered across rules.
+  assert.match(html, /--wf-i:/);
+  assert.match(html, /data-motion="on"/);
+  assert.match(html, /id="wf-motion"/);
+  assert.match(html, /--t-state:\.18s/);
+  assert.match(html, /transition:[^;]*var\(--t-state\)/);
+  assert.match(html, /prefers-reduced-motion:reduce/);
+  // Summary cards and stage bands render at build time, not on demand.
+  assert.match(html, /id="wf-cards"/);
+  assert.match(html, /class="wf-band"/);
+  assert.match(html, /wf-band-chip/);
+});
+
+test("the demo preview never rewrites the recorded state", async () => {
+  const pipeline = await loadPipeline();
+  const state = await loadState(EXAMPLE_STATE, pipeline);
+  const model = buildModel(pipeline, { state });
+  const laid = layout(model);
+  const html = renderHtml({ svg: renderSvg(laid, model), model, laid, meta: { title: model.title } });
+
+  // The file opens on the real current stage with demo off. Assert on the
+  // <body> tag itself — the stylesheet's body[data-demo="on"] selectors are
+  // styling rules, not state.
+  const bodyTag = html.match(/<body[^>]*>/)?.[0] ?? "";
+  assert.match(bodyTag, /data-demo="off"/);
+  assert.ok(!bodyTag.includes('data-demo="on"'), "the static file must not open in demo mode");
+  // Demo walks the highlight only: it has no path to set statuses or gates.
+  assert.match(html, /id="wf-demo-btn"/);
+  // The demo body must not contain status-mutating calls: highlight and camera
+  // only. (Search the inline script for direct dataset writes.)
+  const script = html.slice(html.indexOf("<script>") + 8, html.lastIndexOf("</script>"));
+  assert.ok(!/setAttribute\(['"]data-status/.test(script), "demo must not write node status");
+  assert.ok(!/setAttribute\(['"]data-current/.test(script), "demo must not rewrite the current node");
 });
 
 test("the CLI builds, checks, and reports failures instead of false success", async () => {

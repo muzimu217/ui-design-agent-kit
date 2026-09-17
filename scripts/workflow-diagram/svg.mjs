@@ -85,6 +85,26 @@ export function renderSvg(laid, model) {
     );
   }
 
+  // Stage bands: dashed containers that group every lane cell of one column.
+  // They are drawn over the lane fills but under the edges, so the grouping
+  // reads without hiding the swimlanes. The chip at the top carries the step
+  // number so the band and the rail stay in sync.
+  laid.columns.forEach((column, index) => {
+    const x = column.x - 24;
+    const width = column.width + 48;
+    const y = 16;
+    const height = laid.height - 32;
+    parts.push(
+      `<g class="wf-band" data-stage="${esc(column.id)}">` +
+        `<rect x="${round(x)}" y="${round(y)}" width="${round(width)}" height="${round(height)}" rx="14" fill="none" ` +
+        `stroke="${laneVar("band", PALETTE.hairline)}" stroke-width="1.4" stroke-dasharray="7 5"/>` +
+        `<rect x="${round(x + 10)}" y="${round(y - 1)}" width="30" height="18" rx="5" ` +
+        `fill="${laneVar("band-chip", PALETTE.canvas)}" stroke="${laneVar("band", PALETTE.hairline)}" stroke-width="1"/>` +
+        `<text x="${round(x + 25)}" y="${round(y + 12)}" class="wf-band-chip" text-anchor="middle">${esc(String(index + 1).padStart(2, "0"))}</text>` +
+        `</g>`,
+    );
+  });
+
   // Edges first so nodes sit on top.
   for (const edge of laid.edges) {
     const color = PALETTE.edge[edge.variant] ?? PALETTE.edge.flow;
@@ -100,7 +120,9 @@ export function renderSvg(laid, model) {
   }
 
   // Nodes. Status is rendered, not implied: a badge glyph plus stroke weight
-  // carry it so the reading does not depend on colour alone.
+  // carry it so the reading does not depend on colour alone. The --wf-i index
+  // drives the viewer's entrance stagger (pure presentation, zero data effect).
+  let nodeIndex = 0;
   for (const node of laid.nodes) {
     const tone = PALETTE[node.kind === "gate" ? "gate" : node.kind === "rework" ? "rework" : "stage"];
     const status = PALETTE.status[node.status] ?? PALETTE.status.pending;
@@ -111,6 +133,7 @@ export function renderSvg(laid, model) {
     parts.push(
       `<g class="wf-node" data-node="${esc(node.id)}" data-kind="${esc(node.kind)}" data-stage="${esc(node.stageId)}" ` +
         `data-status="${esc(node.status)}" data-current="${isCurrent ? "true" : "false"}" ` +
+        `style="--wf-i:${nodeIndex}" ` +
         `tabindex="0" role="listitem" aria-label="${esc(nodeAria(node))}">` +
         `<rect x="${round(node.x)}" y="${round(node.y)}" width="${round(node.width)}" height="${round(node.height)}" rx="10" ` +
         `fill="${laneVar(`node-${node.kind}-fill`, tone.fill)}" stroke="${laneVar(`node-${node.kind}-stroke`, tone.stroke)}" stroke-width="${strokeWidth}" opacity="${opacity}"` +
@@ -123,6 +146,7 @@ export function renderSvg(laid, model) {
         `<text x="${round(node.cx)}" y="${round(node.y + (node.kind === "stage" ? 48 : 44))}" class="wf-node-sub" text-anchor="middle">${esc(truncate(node.subtitle ?? "", node.kind === "rework" ? 10 : 18))}</text>` +
         `</g>`,
     );
+    nodeIndex += 1;
   }
 
   parts.push(`</svg>`);

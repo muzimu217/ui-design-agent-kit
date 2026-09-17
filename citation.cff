@@ -1,0 +1,32 @@
+# Citation metadata for the UI Design Agent Kit repository.
+# GitHub renders this as the "Cite this repository" button.
+# Update `version`/`date-released` and add `doi` when the Zenodo release DOI exists.
+cff-version: 1.2.0
+message: "If you use this kit in your research, please cite the accompanying paper."
+title: "UI Design Agent Kit (UAK): A Gated, Evidence-Driven UI Design Agent Workflow"
+authors:
+  - family-names: Li
+    given-names: Cheng
+    email: 1278844978@qq.com
+    affiliation: "University of Electronic Science and Technology of China, Chengdu College"
+version: 0.2.0
+date-released: "2026-09-16"
+preferred-citation:
+  type: article
+  title: "UAK: A Gated, Evidence-Driven UI Design Agent Workflow"
+  authors:
+    - family-names: Li
+      given-names: Cheng
+      email: 1278844978@qq.com
+  doi: 10.5281/zenodo.22804947
+url: "https://github.com/muzimu217/ui-design-agent-kit"
+identifiers:
+  - identifier: 10.5281/zenodo.22804947
+    type: doi
+    description: "The UAK paper preprint record on Zenodo."
+keywords:
+  - design agents
+  - human-in-the-loop
+  - LLM workflows
+  - UI generation
+  - evidence-based verification

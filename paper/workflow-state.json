@@ -1,38 +1,38 @@
 {
   "task": "UAK 系统论文（paper/）",
-  "revision": "P-paper-1",
-  "updatedOn": "2026-09-16",
-  "note": "论文按设计稿 §7 dogfooding 自己的 P1（内容冻结）→ P2（构建自评）→ P3（用户裁决）门禁，登记在 docs/gates.md §五；A–F 为产品门，本任务不适用，按 pending 记录。",
+  "revision": "P-paper-2",
+  "updatedOn": "2026-09-17",
+  "note": "论文按设计稿 §7 dogfooding 自己的 P1（内容冻结）→ P2（构建自评）→ P3（用户裁决）门禁，登记在 docs/gates.md §五；A–F 为产品门，本任务不适用，按 pending 记录。论文已入公开主干 main（ded0ca6），Zenodo 已发布，代码已获 Software Heritage 永久存档。",
   "stages": {
     "brief": {
       "status": "passed",
       "evidence": "docs/superpowers/specs/2026-09-16-uak-paper-design.md",
-      "note": "设计稿入库（d393866），用户放行按稿开发。"
+      "note": "设计稿入库，用户放行按稿开发。"
     },
     "reference": {
       "status": "passed",
       "evidence": "paper/references.bib",
-      "note": "相关工作 14 条文献逐一核实（arXiv / ACL Anthology / ACM DL / NeurIPS proceedings，2026-09-16）。"
+      "note": "相关工作 14 条文献逐一核实（arXiv / ACL Anthology / ACM DL / NeurIPS proceedings）。"
     },
     "contract": {
       "status": "passed",
       "evidence": "paper/uak-paper.md",
-      "note": "9 节手稿；数据口径对齐 evals/results.json 与 docs/gates.md；P2 自评修正 4 处（门F 定性、已定责项数 4、门E 项数、贡献①表述）。"
+      "note": "9 节手稿；数据口径对齐 evals/results.json 与 docs/gates.md；自评修正 4 处（门F 定性、已定责项数、门E 项数、贡献①表述）。"
     },
     "build": {
       "status": "passed",
       "evidence": "scripts/paper-build.mjs",
-      "note": "npm run paper:build → 全文 8 页 + workshop 4 页 PDF/DOCX；fig-workflow / fig-cases 以 HTML 画布 Chrome @2x 渲染入库。"
+      "note": "npm run paper:build → 全文 8 页 + workshop 4 页 PDF/DOCX；两张图为 HTML 画布 Chrome @2x 渲染；arXiv 源码包可重建。"
     },
     "verify": {
       "status": "passed",
       "evidence": "paper/out（本地构建，gitignored）",
-      "note": "双 judge 视觉验收通过（全文 8/8 页、workshop 4/4 页）；首轮抓出的表头列宽碰撞与 References 标题缺失已修复复验。"
+      "note": "双 judge 视觉验收通过（全文 8/8、workshop 4/4）；表头碰撞与 References 标题缺失已修复复验。"
     },
     "deliver": {
-      "status": "gated",
-      "evidence": "docs/gates.md",
-      "note": "入库已提交（706aea5，本地）；P3 剩余：推送授权、arXiv 分类（cs.HC vs cs.SE）、各平台发布清单见 paper/submission/SUBMIT.md。"
+      "status": "passed",
+      "evidence": "https://zenodo.org/records/22804947",
+      "note": "已入公开主干 main（ded0ca6，仅搬论文提交，未夹带实验分支改动，Pages 未触发）；Zenodo 发布 DOI 10.5281/zenodo.22804947；Software Heritage 存档 2481841 succeeded（SWHID swh:1:snp:c25e3b9c…）。"
     }
   },
   "gates": {
@@ -43,5 +43,5 @@
     "E": "pending",
     "F": "pending"
   },
-  "blockedReason": null
+  "blockedReason": "后续平台发布（arXiv 背书 / HAL / Preprints.org / SSRN）需要用户账号登录，已按用户指示推迟；材料全部备好，见 paper/submission/。"
 }

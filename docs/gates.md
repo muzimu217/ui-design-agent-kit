@@ -56,7 +56,6 @@
 | # | 事项 | 当前处理 |
 | --- | --- | --- |
 | D4 | React Bits 个案采纳流程 | 等用户决定是否固定核查步骤；无决定前按普通候选，逐次读当前 `LICENSE.md` + 门B 选择 |
-
 ## 五、论文门禁（UAK paper，2026-09-16 起）
 
 > 论文是本仓库的一等门禁公民：按 `docs/superpowers/specs/2026-09-16-uak-paper-design.md` §7，
@@ -73,13 +72,14 @@
 | P5 | 论文P3 | arXiv 背书人联系（用户登录后从候选名单发信） | `paper/submission/ENDORSERS.md` | 2026-09-17 | 0 | open |
 
 - 回填（2026-09-16）：P1 approved——用户指示"符合专业论坛格式后发布到对应社区"，视为内容追认；
-  随即入库 commit 706aea5（本地，未推送）。P2 保持 open 的剩余部分=推送授权。
+  随即入库 commit 706aea5（当时仅本地）。
 - 回填（2026-09-17）：**P4 首站达成——Zenodo 已发布**：https://zenodo.org/records/22804947
   DOI `10.5281/zenodo.22804947`（PDF 铜脚注一致），开放获取，含 PDF+LaTeX 源码包；
   作者 Li, Cheng + ORCID 0009-0000-3980-9294 + 单位；已知缺口：记录页 license/keywords 标签
   未持久化（Zenodo 慢载+编辑接口剥离，用户可日后发新版本补）。arXiv 背书搜寻进行中。
-- 回填（2026-09-17）：**P2 部分达成——论文分支已推送** `origin/experiment/uak-paper`
-  （用户授权"交给你了"；仅推实验分支，main 与线上站未动，论文正文声称的"证据在公开仓库"现已成立）。
+- 回填（2026-09-17）：**P2 达成——论文已入公开主干** `main`
+  （用户裁定：论文必须在公开仓库主干、不能只留在本地或实验分支；仅搬论文提交，
+  未夹带实验分支的其他改动；Pages workflow 触发路径不含 `paper/`，线上站不受影响）。
   **代码永久存档达成**：Software Heritage save 请求 2481841 `succeeded`（full visit），
   快照 SWHID `swh:1:snp:c25e3b9c9f537f1f5f6351ffc4dd9f2c17c680af`。
   P5 待用户登录 arXiv 后从 ENDORSERS.md 候选名单发信。

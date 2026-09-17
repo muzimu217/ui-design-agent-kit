@@ -14,6 +14,7 @@
 
 [![Stars](https://img.shields.io/github/stars/muzimu217/ui-design-agent-kit?style=flat\&label=stars)](https://github.com/muzimu217/ui-design-agent-kit/stargazers)
 [![Issues](https://img.shields.io/github/issues/muzimu217/ui-design-agent-kit?label=issues)](https://github.com/muzimu217/ui-design-agent-kit/issues)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22804947.svg)](https://doi.org/10.5281/zenodo.22804947)
 [![License](https://img.shields.io/badge/license-internal-lightgrey)](#许可)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.18.1-339933)](package.json)
 [![Verify](https://img.shields.io/badge/npm%20run-verify-blue)](#验证)

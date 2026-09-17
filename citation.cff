@@ -11,6 +11,14 @@ authors:
     affiliation: "University of Electronic Science and Technology of China, Chengdu College"
 version: 0.2.0
 date-released: "2026-09-16"
+preferred-citation:
+  type: article
+  title: "UAK: A Gated, Evidence-Driven UI Design Agent Workflow"
+  authors:
+    - family-names: Li
+      given-names: Cheng
+      email: 1278844978@qq.com
+  doi: 10.5281/zenodo.22804947
 url: "https://github.com/muzimu217/ui-design-agent-kit"
 identifiers:
   - identifier: 10.5281/zenodo.22804947

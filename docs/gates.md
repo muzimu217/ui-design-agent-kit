@@ -56,3 +56,31 @@
 | # | 事项 | 当前处理 |
 | --- | --- | --- |
 | D4 | React Bits 个案采纳流程 | 等用户决定是否固定核查步骤；无决定前按普通候选，逐次读当前 `LICENSE.md` + 门B 选择 |
+## 五、论文门禁（UAK paper，2026-09-16 起）
+
+> 论文是本仓库的一等门禁公民：按 `docs/superpowers/specs/2026-09-16-uak-paper-design.md` §7，
+> UAK 系统论文（`paper/`）走 P1 内容冻结 → P2 构建自评 → P3 用户裁决 的门禁。
+> 产物：`paper/uak-paper.md`（8 页稿）+ `paper/workshop/uak-workshop.md`（4 页稿），
+> `npm run paper:build` 产出 PDF+DOCX 于 `paper/out/`（gitignored，可重建）。
+
+| # | 门 | 事项 | 证据位置 | 首次提出 | 轮空 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| P1 | 论文P1 | 全文手稿内容冻结追认（9 节、数据口径、声明边界） | `paper/uak-paper.md` | 2026-09-16 | 0 | approved |
+| P2 | 论文P3 | 成品裁决：PDF+DOCX 视觉验收通过后，是否入库 `paper/` 并授权推送 | `paper/out/uak-paper.pdf`（本地构建） | 2026-09-16 | 0 | open |
+| P3 | 论文P3 | arXiv 分类选择（cs.HC vs cs.SE，规范预留的用户决定） | 设计稿 §9 | 2026-09-16 | 0 | open |
+| P4 | 论文P3 | 各预印本/自出版平台发布（arXiv 背书、Zenodo DOI 等） | `paper/submission/SUBMIT.md` | 2026-09-16 | 0 | open |
+| P5 | 论文P3 | arXiv 背书人联系（用户登录后从候选名单发信） | `paper/submission/ENDORSERS.md` | 2026-09-17 | 0 | open |
+
+- 回填（2026-09-16）：P1 approved——用户指示"符合专业论坛格式后发布到对应社区"，视为内容追认；
+  随即入库 commit 706aea5（当时仅本地）。
+- 回填（2026-09-17）：**P4 首站达成——Zenodo 已发布**：https://zenodo.org/records/22804947
+  DOI `10.5281/zenodo.22804947`（PDF 铜脚注一致），开放获取，含 PDF+LaTeX 源码包；
+  作者 Li, Cheng + ORCID 0009-0000-3980-9294 + 单位；已知缺口：记录页 license/keywords 标签
+  未持久化（Zenodo 慢载+编辑接口剥离，用户可日后发新版本补）。arXiv 背书搜寻进行中。
+- 回填（2026-09-17）：**P2 达成——论文已入公开主干** `main`
+  （用户裁定：论文必须在公开仓库主干、不能只留在本地或实验分支；仅搬论文提交，
+  未夹带实验分支的其他改动；Pages workflow 触发路径不含 `paper/`，线上站不受影响）。
+  **代码永久存档达成**：Software Heritage save 请求 2481841 `succeeded`（full visit），
+  快照 SWHID `swh:1:snp:c25e3b9c9f537f1f5f6351ffc4dd9f2c17c680af`。
+  P5 待用户登录 arXiv 后从 ENDORSERS.md 候选名单发信。
+

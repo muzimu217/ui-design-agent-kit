@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="description" content="习惯打卡：一周七日网格，单击打卡，连续天数统计。数据仅保存在本浏览器。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23647a52'/%3E%3Cpath d='M20 12 9 17l-5-5' transform='translate(-1.5 -1.5) scale(1.05)' fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<title>习惯打卡</title>
+<!--
+  习惯打卡 · 单文件本地工具（双击即开，离线可用）
+  图标：Lucide（lucide-static v1.47.0，内联 SVG path）
+  ISC License — Copyright (c) 2026 Lucide Icons and Contributors
+  https://github.com/lucide-icons/lucide （保留本声明即满足 ISC 授权要求）
+  布局与交互关系改编自对 DoHabit（dohabit.app，AGPL-3.0）与 Loop Habit Tracker
+  （GPL-3.0）的实机检视：仅采用可观察关系，未复制其代码或资产。
+-->
+<style>
+  :root{
+    --paper:#f5f4ef; --surface:#ffffff; --ink:#2b2a25; --muted:#6f6d63;
+    --line:#e3e2d9; --accent:#84552a; --cellline:#8f8d80;
+    --c-sage:#647a52; --c-clay:#96613a; --c-slate:#5d7787;
+    --c-plum:#7d5a6e; --c-teal:#4f7d6d; --c-ochre:#8a7434;
+    --r-s:6px; --r-m:9px; --r-l:14px;
+    --ease:cubic-bezier(0.16,1,0.3,1);
+    --cols:minmax(96px,1.2fr) repeat(7,minmax(40px,1fr)) 84px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--paper);color:var(--ink);font:15px/1.5 -apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;padding:20px 16px 48px}
+  .wrap{max-width:1000px;margin:0 auto}
+  .ic{width:18px;height:18px;flex:none}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+  button:disabled{cursor:default}
+  :focus{outline:none}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--r-s)}
+
+  /* 顶栏 */
+  header{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
+  h1{font-size:22px;font-weight:650;letter-spacing:.01em;margin-right:auto}
+  .nav{display:flex;align-items:center;gap:4px}
+  .ibtn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);color:var(--ink);transition:border-color .12s var(--ease),transform .12s var(--ease)}
+  .ibtn:hover{border-color:#b9b7aa}
+  .ibtn:active{transform:scale(.96)}
+  .ibtn:disabled{opacity:.35}
+  .weeklabel{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-m);height:32px;padding:0 12px;font-size:13px;color:var(--ink);transition:border-color .12s var(--ease)}
+  .weeklabel:hover{border-color:#b9b7aa}
+  .weeklabel.past{color:var(--accent);border-color:#d8c3a8}
+  .primary{display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:var(--paper);border-radius:var(--r-m);height:34px;padding:0 14px;font-size:14px;font-weight:550;transition:transform .12s var(--ease)}
+  .primary:hover{transform:scale(1.02)}
+  .primary:active{transform:scale(.96)}
+
+  .summary{font-size:13px;color:var(--muted);margin-bottom:12px;min-height:1.2em}
+
+  /* 示例横幅 / 空状态 */
+  .banner{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:10px 14px;font-size:13px;color:var(--muted);margin-bottom:12px}
+  .banner b{color:var(--ink);font-weight:600}
+  .linkbtn{color:var(--accent);font-weight:550;text-decoration:underline;text-underline-offset:3px;border-radius:var(--r-s);padding:2px 4px}
+  .empty{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:44px 20px;text-align:center}
+  .empty h2{font-size:17px;font-weight:600;margin-bottom:6px}
+  .empty p{font-size:13px;color:var(--muted);margin-bottom:18px}
+  .empty .rowbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+  /* 周表格 */
+  .sheet{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:8px 14px 6px}
+  .grid-head,.row{display:grid;grid-template-columns:var(--cols);gap:0 6px;align-items:center}
+  .grid-head{position:sticky;top:0;z-index:2;background:var(--surface);padding:8px 0 6px;border-bottom:1px solid var(--line)}
+  .hd{font-size:12px;color:var(--muted);text-align:center;line-height:1.25}
+  .hd b{display:block;font-weight:550;color:var(--ink)}
+  .hd i{display:block;font-style:normal;font-size:11px}
+  .hd.today{color:var(--accent)}
+  .hd.today b{color:var(--accent)}
+  .hd.streak-hd{text-align:right;padding-right:4px}
+  .row{padding:10px 0;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .namecell{display:flex;align-items:flex-start;gap:8px;min-width:0;padding-right:4px}
+  .cdot{width:10px;height:10px;border-radius:50%;background:var(--hc);flex:none;margin-top:5px}
+  .nametext{min-width:0}
+  .n{font-size:14px;font-weight:550;line-height:1.35;word-break:break-word;display:inline}
+  .sampletag{display:inline-block;font-size:10px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:0 6px;margin-left:4px;vertical-align:1px}
+  .meta{display:none;font-size:11px;color:var(--muted);margin-top:2px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .meta .ic{width:11px;height:11px;vertical-align:-2px}
+  .acts{display:flex;gap:2px;margin-left:auto}
+  .sbtn{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:var(--r-s);color:var(--muted);transition:background-color .12s var(--ease),color .12s var(--ease),transform .12s var(--ease)}
+  .sbtn .ic{width:15px;height:15px}
+  .sbtn:hover{background:var(--paper);color:var(--ink)}
+  .sbtn:active{transform:scale(.94)}
+  .cell{height:42px;border:1.5px solid var(--cellline);border-radius:var(--r-m);background:var(--surface);display:grid;place-items:center;color:#fff;transition:background-color .14s var(--ease),border-color .14s var(--ease),transform .12s var(--ease)}
+  .cell:hover{border-color:var(--muted)}
+  .cell:active{transform:scale(.96)}
+  .cell[aria-pressed="true"]{background:var(--hc);border-color:var(--hc)}
+  .cell[aria-pressed="true"]:hover{filter:brightness(1.05)}
+  .cell[aria-pressed="true"] .ic{animation:checkpop .16s var(--ease)}
+  .cell.today{outline:2px dashed var(--accent);outline-offset:2px}
+  .cell:disabled{opacity:.3;pointer-events:none}
+  @keyframes checkpop{from{transform:scale(.6);opacity:.4}}
+  .streakc{text-align:right;padding-right:4px;line-height:1.3}
+  .streakc b{font-size:14px;font-weight:600}
+  .streakc .lbl{display:block;font-size:11px;color:var(--muted)}
+  .streakc .ic{width:13px;height:13px;vertical-align:-2px;color:var(--muted)}
+
+  footer{margin-top:14px;font-size:12px;color:var(--muted)}
+
+  /* 对话框 */
+  dialog{border:1px solid var(--line);border-radius:var(--r-l);padding:20px;width:min(92vw,380px);background:var(--surface);color:var(--ink)}
+  dialog::backdrop{background:rgba(43,42,37,.35)}
+  dialog h2{font-size:16px;font-weight:600;margin-bottom:14px}
+  dialog label.t{display:block;font-size:13px;font-weight:550;margin:12px 0 6px}
+  dialog input[type=text]{width:100%;height:38px;border:1px solid var(--line);border-radius:var(--r-m);padding:0 10px;font:inherit;background:var(--paper)}
+  dialog input[type=text]:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+  .swatches{display:flex;gap:8px;flex-wrap:wrap}
+  .sw{position:relative;width:30px;height:30px}
+  .sw input{position:absolute;inset:0;opacity:0;cursor:pointer}
+  .sw span{display:block;width:30px;height:30px;border-radius:50%;border:2px solid transparent;transition:transform .12s var(--ease)}
+  .sw input:checked+span{border-color:var(--ink)}
+  .sw input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+  .dlgbtns{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+  .btn{height:34px;padding:0 14px;border-radius:var(--r-m);font-size:14px;border:1px solid var(--line);background:var(--surface);transition:transform .12s var(--ease)}
+  .btn:hover{border-color:#b9b7aa}
+  .btn:active{transform:scale(.96)}
+  .btn.dark{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .btn.danger{background:#8c3a2e;color:#fff;border-color:#8c3a2e}
+  dialog p.msg{font-size:14px;line-height:1.6}
+
+  @media (max-width:640px){
+    body{padding:14px 12px 40px}
+    :root{--cols:repeat(7,minmax(26px,1fr))}
+    h1{font-size:19px}
+    .grid-head,.row{gap:4px 4px}
+    .grid-head .hd:first-child{display:none}
+    .streak-hd,.streakc{display:none}
+    .namecell{grid-column:1/-1;grid-row:1;padding-right:0}
+    .cell{grid-row:2;height:44px}
+    .meta{display:inline-flex;align-items:center;gap:4px;margin-left:6px}
+    .sheet{padding:6px 6px 4px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{transition:none!important;animation:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>习惯打卡</h1>
+    <div class="nav" role="group" aria-label="切换周">
+      <button class="ibtn" id="btnPrev" aria-label="上一周">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <button class="weeklabel" id="btnThisWeek" aria-label="回到本周">本周</button>
+      <button class="ibtn" id="btnNext" aria-label="下一周">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    </div>
+    <button class="primary" id="btnAdd">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+      添加习惯
+    </button>
+  </header>
+
+  <p class="summary" id="summary" aria-live="polite"></p>
+
+  <div class="banner" id="sampleBanner" hidden>
+    <b>当前是示例数据</b>
+    <span>用来演示打卡与连续统计，随时可以清掉。</span>
+    <button class="linkbtn" id="btnClearSamples">清空示例，从零开始</button>
+  </div>
+
+  <div class="empty" id="emptyState" hidden>
+    <h2>还没有习惯</h2>
+    <p>添加第一个习惯，点一下格子就完成打卡；数据只存在这台浏览器里。</p>
+    <div class="rowbtns">
+      <button class="primary" id="btnAddEmpty">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        添加第一个习惯
+      </button>
+      <button class="btn" id="btnSeed">导入示例数据</button>
+    </div>
+  </div>
+
+  <main>
+    <section class="sheet" id="sheet" aria-label="本周打卡表">
+      <div class="grid-head" id="gridHead"></div>
+      <div id="rows"></div>
+    </section>
+  </main>
+
+  <footer>数据仅保存在本浏览器（localStorage），清除浏览器数据会删除记录；不上传任何服务器。</footer>
+</div>
+
+<dialog id="habitDialog" aria-labelledby="hdTitle">
+  <form id="habitForm" novalidate>
+    <h2 id="hdTitle">添加习惯</h2>
+    <label class="t" for="fName">名称</label>
+    <input type="text" id="fName" name="name" maxlength="24" placeholder="比如：每天喝水" autocomplete="off" required>
+    <label class="t">颜色</label>
+    <div class="swatches" id="fColors" role="radiogroup" aria-label="选择颜色"></div>
+    <div class="dlgbtns">
+      <button type="button" class="btn" id="btnCancelHabit">取消</button>
+      <button type="submit" class="btn dark" id="btnSaveHabit">保存</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="confirmDialog" aria-labelledby="cfTitle">
+  <h2 id="cfTitle">确认操作</h2>
+  <p class="msg" id="cfText"></p>
+  <div class="dlgbtns">
+    <button type="button" class="btn" id="btnCancelConfirm">取消</button>
+    <button type="button" class="btn danger" id="btnDoConfirm">删除</button>
+  </div>
+</dialog>
+
+<script>
+"use strict";
+/* 数据与状态 ------------------------------------------------ */
+const STORAGE_KEY = "habit-tracker-v1";
+const COLORS = ["sage","clay","slate","plum","teal","ochre"];
+const WD = ["日","一","二","三","四","五","六"];
+const ICON_PATHS = {
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  flame:'<path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/>',
+  pencil:'<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>',
+  trash:'<path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'
+};
+const svg = (name) => '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON_PATHS[name] + "</svg>";
+
+const fmt = d => d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+const parse = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
+const shift = (s,n) => { const d = parse(s); d.setDate(d.getDate()+n); return fmt(d); };
+const mondayOf = s => { const d = parse(s); d.setDate(d.getDate() - (d.getDay()+6)%7); return fmt(d); };
+const todayStr = () => fmt(new Date());
+
+function uid(){ return (crypto.randomUUID ? crypto.randomUUID() : Date.now() + "-" + Math.random().toString(36).slice(2)); }
+
+function seedHabits(){
+  const t = todayStr();
+  const mark = days => { const h = {}; days.forEach(n => h[shift(t,n)] = 1); return h; };
+  return [
+    { id:uid(), name:"喝水",   color:"sage",  sample:true, createdAt:t, done: mark([-13,-12,-11,-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0]) },
+    { id:uid(), name:"阅读",   color:"clay",  sample:true, createdAt:t, done: mark([0,-1,-3,-4,-6,-7,-10]) },
+    { id:uid(), name:"拉伸",   color:"slate", sample:true, createdAt:t, done: mark([-2,-5,-9]) }
+  ];
+}
+function load(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return null;
+    const data = JSON.parse(raw);
+    if(!Array.isArray(data.habits)) return null;
+    return data;
+  }catch(e){ return null; }
+}
+function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify({ v:1, habits: state.habits })); }
+
+let state = load() || { v:1, habits: seedHabits() };
+if(!load()) save();
+let viewMonday = mondayOf(todayStr());
+let editingId = null;   // 当前编辑的习惯 id（对话框）
+let confirmAction = null; // 确认框回调
+
+/* 统计 ------------------------------------------------------ */
+function streaks(h){
+  const done = h.done, today = todayStr();
+  let cur = 0, t = done[today] ? today : shift(today,-1);
+  while(done[t]){ cur++; t = shift(t,-1); }
+  const keys = Object.keys(done).filter(k => k <= today).sort();
+  let best = 0, run = 0, prev = null;
+  for(const k of keys){ run = (prev && shift(prev,1) === k) ? run+1 : 1; if(run>best) best=run; prev = k; }
+  return { cur, best };
+}
+
+/* 渲染 ------------------------------------------------------ */
+const el = id => document.getElementById(id);
+const rowsEl = el("rows"), headEl = el("gridHead");
+
+function render(focus){
+  const today = todayStr();
+  const days = Array.from({length:7}, (_,i) => shift(viewMonday, i));
+  const isCurrent = viewMonday === mondayOf(today);
+
+  // 顶栏周标签
+  const a = parse(viewMonday), b = parse(days[6]);
+  el("btnThisWeek").textContent = (a.getMonth()+1) + "." + a.getDate() + " – " + (b.getMonth()+1) + "." + b.getDate() + (isCurrent ? " · 本周" : "");
+  el("btnThisWeek").classList.toggle("past", !isCurrent);
+  el("btnNext").disabled = isCurrent;
+
+  // 表头
+  let head = '<div class="hd" aria-hidden="true"></div>';
+  for(const d of days){
+    const dt = parse(d);
+    head += '<div class="hd'+(d===today?" today":"")+'" aria-hidden="true"><b>周'+WD[dt.getDay()]+"</b><i>"+(dt.getMonth()+1)+"/"+dt.getDate()+"</i></div>";
+  }
+  head += '<div class="hd streak-hd" aria-hidden="true">连续</div>';
+  headEl.innerHTML = head;
+
+  // 概要
+  const hasHabits = state.habits.length > 0;
+  el("sheet").hidden = !hasHabits;
+  el("emptyState").hidden = hasHabits;
+  const anySample = state.habits.some(h => h.sample);
+  el("sampleBanner").hidden = !anySample;
+  if(hasHabits){
+    let doneCount = 0;
+    for(const h of state.habits) for(const d of days) if(h.done[d]) doneCount++;
+    const maxBest = Math.max(...state.habits.map(h => streaks(h).best));
+    el("summary").textContent = (isCurrent ? "本周" : "该周") + "已完成 " + doneCount + " / " + (days.length * state.habits.length) + " · 最长连续 " + maxBest + " 天";
+  }else{
+    el("summary").textContent = "";
+  }
+
+  // 行
+  let html = "";
+  for(const h of state.habits){
+    const s = streaks(h);
+    html += '<div class="row" style="--hc:var(--c-'+h.color+')">';
+    html += '<div class="namecell"><span class="cdot" aria-hidden="true"></span>';
+    html += '<div class="nametext"><span class="n">'+esc(h.name)+"</span>"+(h.sample?'<span class="sampletag">示例</span>':"");
+    html += '<div class="meta" aria-label="当前连续'+s.cur+'天，最佳连续'+s.best+'天">'+svg("flame")+" 当前 "+s.cur+" · 最佳 "+s.best+"</div></div>";
+    html += '<span class="acts">';
+    html += '<button class="sbtn edit" data-id="'+h.id+'" aria-label="编辑 '+esc(h.name)+'">'+svg("pencil")+"</button>";
+    html += '<button class="sbtn del" data-id="'+h.id+'" aria-label="删除 '+esc(h.name)+'">'+svg("trash")+"</button>";
+    html += "</span></div>";
+    for(const d of days){
+      const done = !!h.done[d], future = d > today;
+      const dt = parse(d);
+      const label = h.name+"，"+(dt.getMonth()+1)+"月"+dt.getDate()+"日 周"+WD[dt.getDay()]+"：" + (future ? "未来日期，不可打卡" : done ? "已完成，点击撤销" : "未完成，点击打卡");
+      html += '<button class="cell'+(d===today?" today":"")+'" data-id="'+h.id+'" data-date="'+d+'" aria-pressed="'+done+'"'+(future?" disabled":"")+' aria-label="'+esc(label)+'">';
+      if(done) html += svg("check");
+      html += "</button>";
+    }
+    html += '<div class="streakc" aria-label="当前连续'+s.cur+'天，最佳连续'+s.best+'天">'+svg("flame")+"<b>"+s.cur+" / "+s.best+"</b>"+'<span class="lbl">当前 / 最佳</span></div>';
+    html += "</div>";
+  }
+  rowsEl.innerHTML = html;
+
+  if(focus && focus.id && focus.date){
+    const c = rowsEl.querySelector('[data-id="'+focus.id+'"][data-date="'+focus.date+'"]');
+    if(c) c.focus({preventScroll:true});
+  }else if(focus && focus.sel){
+    const t = rowsEl.querySelector(focus.sel);
+    if(t) t.focus({preventScroll:true});
+  }
+}
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+/* 交互 ------------------------------------------------------ */
+rowsEl.addEventListener("click", e => {
+  const cell = e.target.closest("button.cell");
+  if(cell){
+    const h = state.habits.find(x => x.id === cell.dataset.id);
+    if(!h) return;
+    const d = cell.dataset.date;
+    if(h.done[d]) delete h.done[d]; else h.done[d] = 1;
+    save();
+    render({ id:h.id, date:d });
+    return;
+  }
+  const edit = e.target.closest("button.edit");
+  if(edit){ openHabitDialog(edit.dataset.id); return; }
+  const del = e.target.closest("button.del");
+  if(del){
+    const h = state.habits.find(x => x.id === del.dataset.id);
+    if(h) openConfirm("删除「"+h.name+"」？它的全部打卡记录会一并删除，且无法恢复。", "删除", () => {
+      state.habits = state.habits.filter(x => x.id !== h.id);
+      save(); render();
+    });
+  }
+});
+
+el("btnPrev").addEventListener("click", () => { viewMonday = shift(viewMonday,-7); render(); });
+el("btnNext").addEventListener("click", () => { viewMonday = shift(viewMonday, 7); render(); });
+el("btnThisWeek").addEventListener("click", () => { viewMonday = mondayOf(todayStr()); render(); });
+
+/* 习惯对话框 */
+const dlgHabit = el("habitDialog"), fName = el("fName");
+function buildSwatches(selected){
+  el("fColors").innerHTML = COLORS.map(c =>
+    '<span class="sw"><input type="radio" name="color" value="'+c+'"'+(c===selected?" checked":"")+' aria-label="颜色 '+c+'"><span style="background:var(--c-'+c+')"></span></span>'
+  ).join("");
+}
+function openHabitDialog(id){
+  editingId = id || null;
+  el("hdTitle").textContent = editingId ? "编辑习惯" : "添加习惯";
+  const h = editingId ? state.habits.find(x => x.id === editingId) : null;
+  fName.value = h ? h.name : "";
+  buildSwatches(h ? h.color : "sage");
+  dlgHabit.showModal();
+  fName.focus();
+}
+el("btnAdd").addEventListener("click", () => openHabitDialog(null));
+el("btnAddEmpty").addEventListener("click", () => openHabitDialog(null));
+el("btnCancelHabit").addEventListener("click", () => dlgHabit.close());
+el("habitForm").addEventListener("submit", e => {
+  e.preventDefault();
+  if(!fName.checkValidity()){ fName.reportValidity(); return; }
+  const name = fName.value.trim();
+  if(!name){ fName.reportValidity(); return; }
+  const color = (dlgHabit.querySelector('input[name=color]:checked') || {value:"sage"}).value;
+  if(editingId){
+    const h = state.habits.find(x => x.id === editingId);
+    if(h){ h.name = name; h.color = color; h.sample = false; }
+    save(); dlgHabit.close(); render({ sel:'.edit[data-id="'+editingId+'"]' });
+  }else{
+    const id = uid();
+    state.habits.push({ id, name, color, sample:false, createdAt:todayStr(), done:{} });
+    save(); dlgHabit.close(); render({ sel:'.edit[data-id="'+id+'"]' });
+  }
+});
+
+/* 确认对话框（删除 / 清空示例） */
+const dlgConfirm = el("confirmDialog");
+function openConfirm(text, actionLabel, fn){
+  el("cfText").textContent = text;
+  el("btnDoConfirm").textContent = actionLabel;
+  confirmAction = fn;
+  dlgConfirm.showModal();
+}
+el("btnCancelConfirm").addEventListener("click", () => dlgConfirm.close());
+el("btnDoConfirm").addEventListener("click", () => { const fn = confirmAction; dlgConfirm.close(); if(fn) fn(); });
+
+/* 示例数据 */
+el("btnClearSamples").addEventListener("click", () => {
+  openConfirm("清空 3 条示例习惯及其打卡记录？正式添加的习惯不受影响。", "清空示例", () => {
+    state.habits = state.habits.filter(h => !h.sample);
+    save(); render();
+  });
+});
+el("btnSeed").addEventListener("click", () => {
+  const seeded = seedHabits();
+  state.habits = state.habits.concat(seeded);
+  save(); render();
+});
+
+/* 启动 */
+render();
+</script>
+</body>
+</html>

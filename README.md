@@ -187,7 +187,7 @@ $ui-design-agent 我想把采购申请集中起来，看谁还没处理。先整
 | 曜时 X1 | 虚构智能腕表展示 | [查看](demo/product-demo/README.md) |
 | 一舟札记 | 虚构作者与文章阅读演示 | [查看](demo/blog-demo/README.md) |
 | 竹与墨 | 水墨风技术博客演示 | [查看](demo/zhumu-blog/README.md) |
-| AURELIS M2 | 早期腕表材质与表盘概念 | [查看](showcase/README.md) |
+| AURELIS M2 | 早期腕表材质与表盘概念（构建失败待修，见 showcase/README.md 附注） | [查看](showcase/README.md) |
 
 生成的产品默认放在仓库外的独立工作区；这里只保留已明确收录的案例。根目录不导入产品运行代码。
 

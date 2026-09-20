@@ -20,8 +20,10 @@ abstract: |
   inner loop, and replaces self-reported success with a five-level evidence
   ladder that only ends at a visually verified rendered page. A gate ledger
   records every decision the user still owes, with decay rules for stale items
-  and batch adjudication. Behavior is pinned by a 60-scenario evaluation corpus;
-  five scenarios have been executed over ten recorded rounds under a
+  and batch adjudication. Behavior is pinned by a 60-scenario evaluation
+  corpus at the release snapshot (62 scenarios, 15 executed as of
+  2026-09-20); five scenarios had been executed over ten recorded rounds
+  under a
   deterministic 0--2 rubric with fail-zeroing, and a separate eight-dimension
   style review shows that a functionally perfect dashboard initially scored
   63/100 on style, exposing a failure mode that functional rubrics do not see.
@@ -324,7 +326,8 @@ UAK's evaluation has two layers that must not be conflated: a *behavior
 contract corpus*, which specifies what the agent should do, and *executed
 runs*, which record what it actually did under a deterministic rubric.
 
-**Corpus.** `evals/scenarios.json` holds 60 scenarios, each a natural-language
+**Corpus.** `evals/scenarios.json` holds 60 scenarios at the release snapshot
+(62 as of 2026-09-20), each a natural-language
 request with context, pass criteria, and fail conditions — covering product
 types (dashboard, 3D scene, marketing page, blog), motion-parameter
 compliance, degraded and unavailable tools, reduced-motion behavior, long-list
@@ -335,10 +338,11 @@ not allowed to blur this line.
 **Rubric and executed runs.** Each pass criterion is scored 0 (not done),
 1 (done without full evidence), or 2 (done with evidence); hitting any fail
 condition zeroes the scenario; the scenario score is
-$100 \times \mathrm{earned} / (2 \times \mathrm{criteria})$, rounded. Five
-scenarios have been executed, over ten recorded rounds, on the inventory
+$100 \times \mathrm{earned} / (2 \times \mathrm{criteria})$, rounded. At the release snapshot, five
+scenarios had been executed, over ten recorded rounds, on the inventory
 operations console (an internal dashboard demo) and on four workflow-behavior
-probes; Table 2 summarizes. All executed rounds scored 100 on their functional
+probes (15 scenarios across 22 recorded rounds as of 2026-09-20);
+Table 2 summarizes. All executed rounds scored 100 on their functional
 criteria — unsurprising for scenarios designed alongside the system — and the
 informative signal is elsewhere.
 

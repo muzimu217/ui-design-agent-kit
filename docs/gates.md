@@ -10,19 +10,25 @@
 
 | # | 门 | 事项 | 证据位置 | 首次提出 | 轮空 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 门A | 山径基线方向（国家公园预约 × 现代预订台） | evals/runs/direction-draft-gate/DIRECTION.md §7 | 2026-09-06 冲刺6 | 0 | open |
-| 2 | 门A | 四屏结构草案 | 同上 | 2026-09-06 冲刺6 | 0 | open |
-| 3 | 门A | 地图是否纳入范围 | 同上 | 2026-09-06 冲刺6 | 0 | open |
-| 4 | 门A | 演示文案口径 | 同上 | 2026-09-06 冲刺6 | 0 | open |
-| 5 | 门B | 运营台 Enterprise 彩板追认（素材临时采用） | evals/runs/operations-not-marketing/DESIGN.md | 2026-09-06 冲刺3 | 0 | open |
-| 6 | 门B | 运营台字体降级追认（素材临时采用） | 同上 | 2026-09-06 冲刺3 | 0 | open |
-| 7 | 门B | shadcn Card 结构是否采纳 | evals/runs/material-confirmation-gate/MATERIAL-CANDIDATES.md §四 | 2026-09-06 冲刺7 | 0 | open |
-| 8 | 门B | 原生 KPI 指标卡行是否保留 | 同上 | 2026-09-06 冲刺7 | 0 | open |
-| 9 | 门C | step1/step2 生图提示词可用性 | evals/runs/prototype-before-code/PROTOTYPE.md §七 | 2026-09-06 冲刺8 | 0 | open |
-| 10 | 门C | step3（第 3 屏）是否现出 | 同上 | 2026-09-06 冲刺8 | 0 | open |
-| 11 | 门E | 库存台 P2：行双 onClick 冗余 | evals/runs/operations-not-marketing/EVIDENCE.md | 2026-09-06 冲刺2 | 0 | open |
-| 12 | 门E | 库存台 P2：移动端底部门背景滚动 | 同上 | 2026-09-06 冲刺2 | 0 | open |
-| 13 | 门E | 运营台 v2.3 整体验收（RELEASE.md 验证矩阵） | evals/runs/operations-not-marketing/RELEASE.md | 2026-09-07 收口轮 | 0 | open |
+| 1 | 门A | 山径基线方向（国家公园预约 × 现代预订台） | evals/runs/direction-draft-gate/DIRECTION.md §7 | 2026-09-06 冲刺6 | ≥5 | open |
+| 2 | 门A | 四屏结构草案 | 同上 | 2026-09-06 冲刺6 | ≥5 | open |
+| 3 | 门A | 地图是否纳入范围 | 同上 | 2026-09-06 冲刺6 | ≥5 | open |
+| 4 | 门A | 演示文案口径 | 同上 | 2026-09-06 冲刺6 | ≥5 | open |
+| 5 | 门B | 运营台 Enterprise 彩板追认（素材临时采用） | evals/runs/operations-not-marketing/DESIGN.md | 2026-09-06 冲刺3 | ≥5 | open |
+| 6 | 门B | 运营台字体降级追认（素材临时采用） | 同上 | 2026-09-06 冲刺3 | ≥5 | open |
+| 7 | 门B | shadcn Card 结构是否采纳 | evals/runs/material-confirmation-gate/MATERIAL-CANDIDATES.md §四 | 2026-09-06 冲刺7 | ≥5 | open |
+| 8 | 门B | 原生 KPI 指标卡行是否保留 | 同上 | 2026-09-06 冲刺7 | ≥5 | open |
+| 9 | 门C | step1/step2 生图提示词可用性 | evals/runs/prototype-before-code/PROTOTYPE.md §七 | 2026-09-06 冲刺8 | ≥5 | open |
+| 10 | 门C | step3（第 3 屏）是否现出 | 同上 | 2026-09-06 冲刺8 | ≥5 | open |
+| 11 | 门E | 库存台 P2：行双 onClick 冗余 | evals/runs/operations-not-marketing/EVIDENCE.md | 2026-09-06 冲刺2 | ≥5 | open |
+| 12 | 门E | 库存台 P2：移动端底部门背景滚动 | 同上 | 2026-09-06 冲刺2 | ≥5 | open |
+| 13 | 门E | 运营台 v2.3 整体验收（RELEASE.md 验证矩阵） | evals/runs/operations-not-marketing/RELEASE.md | 2026-09-07 收口轮 | ≥5 | open |
+
+> **轮空补记（2026-09-20，大师评审 P1 整改）**：建账以来轮空计数未逐窗累计，
+> 属流程执行缺陷。保守回填：存量 13 项记 `≥5`（2026-09-07 收口、09-11、
+> 09-12、09-13、09-16、09-20 均构成裁决窗口）；论文 P3/P4/P5 记 `≥2`。
+> 方向类事项不衰减；门E P2 三项按 D1 不追溯。批量裁决载体
+> `docs/archive/gate-decision-packet.md` 持续有效（D5），各项仍需逐项裁决。
 
 ## 二、登记与衰减规则
 
@@ -67,10 +73,10 @@
 | # | 门 | 事项 | 证据位置 | 首次提出 | 轮空 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- |
 | P1 | 论文P1 | 全文手稿内容冻结追认（9 节、数据口径、声明边界） | `paper/uak-paper.md` | 2026-09-16 | 0 | approved |
-| P2 | 论文P3 | 成品裁决：PDF+DOCX 视觉验收通过后，是否入库 `paper/` 并授权推送 | `paper/out/uak-paper.pdf`（本地构建） | 2026-09-16 | 0 | open |
-| P3 | 论文P3 | arXiv 分类选择（cs.HC vs cs.SE，规范预留的用户决定） | 设计稿 §9 | 2026-09-16 | 0 | open |
-| P4 | 论文P3 | 各预印本/自出版平台发布（arXiv 背书、Zenodo DOI 等） | `paper/submission/SUBMIT.md` | 2026-09-16 | 0 | open |
-| P5 | 论文P3 | arXiv 背书人联系（用户登录后从候选名单发信） | `paper/submission/ENDORSERS.md` | 2026-09-17 | 0 | open |
+| P2 | 论文P3 | 成品裁决：PDF+DOCX 视觉验收通过后，是否入库 `paper/` 并授权推送 | `paper/out/uak-paper.pdf`（本地构建） | 2026-09-16 | ≥2 | approved |
+| P3 | 论文P3 | arXiv 分类选择（cs.HC vs cs.SE，规范预留的用户决定） | 设计稿 §9 | 2026-09-16 | ≥2 | open |
+| P4 | 论文P3 | 各预印本/自出版平台发布（arXiv 背书、Zenodo DOI 等） | `paper/submission/SUBMIT.md` | 2026-09-16 | ≥2 | open |
+| P5 | 论文P3 | arXiv 背书人联系（用户登录后从候选名单发信） | `paper/submission/ENDORSERS.md` | 2026-09-17 | ≥2 | open |
 
 - 回填（2026-09-16）：P1 approved——用户指示"符合专业论坛格式后发布到对应社区"，视为内容追认；
   随即入库 commit 706aea5（当时仅本地）。

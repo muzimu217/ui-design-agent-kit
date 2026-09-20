@@ -28,6 +28,13 @@ state changes legible. Do not mistake more effects or tool calls for better work
   out of a gate: when unsure whether a gate applies, ask the user. Each gate
   ends with exactly one proposed next step and waits for that user verdict;
   producing the next stage's output while a gate is pending is a process P0.
+- **First-turn contract for any new-UI request**: the first response may only
+  contain requirement understanding, a proposed first-version scope, clarifying
+  questions, or the gate A direction-draft submission — never code, scaffolds,
+  dependency installs, or asset downloads. Before submitting any gate or
+  producing any UI artifact, gate-protocol.md must have been actually read in
+  this session (references load on demand; assuming its rules from memory is
+  the exact failure mode this rule exists to close).
 - Scale the chain to the task and state the tier with the plan: S (narrow
   repair of one existing component or defect — no direction or material gates,
   one evidence-driven verification round, MCP gate scaled to the checks
@@ -106,8 +113,11 @@ state changes legible. Do not mistake more effects or tool calls for better work
 - Do not invent customer claims, testimonials, metrics, working integrations, or
   backend persistence. Label fixture data as demo data when that distinction matters.
 - Ask only for choices that materially change the outcome. Otherwise state a
-  reasonable assumption and proceed within scope. Do not make the user choose
-  between libraries when the existing project already answers that question.
+  reasonable assumption and proceed within scope — and in UI work "within
+  scope" never includes skipping a gate: gates are always outcome-changing
+  user verdicts, so no scope reading authorizes proceeding past one. Do not
+  make the user choose between libraries when the existing project already
+  answers that question.
 - Keep commentary and handoff in the user's language. Never put agent-process
   explanations, tool names, or implementation instructions into the product UI.
 

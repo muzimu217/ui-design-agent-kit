@@ -56,10 +56,13 @@ test("bilingual README case tables link the same set of case documents", async (
 });
 
 test("known case-table warning annotations stay in both languages", async () => {
-  const zh = await read("README.md");
-  const en = await read("README.en.md");
-  assert.match(zh, /AURELIS M2[^|]*构建失败待修/, "zh AURELIS M2 row must keep the build-failing note");
-  assert.match(en, /AURELIS M2[^|]*build failing/, "en AURELIS M2 row must keep the build-failing note");
+  const rowOf = (source) => source.split("\n").find((line) => line.includes("AURELIS M2"));
+  const zhRow = rowOf(await read("README.md"));
+  const enRow = rowOf(await read("README.en.md"));
+  assert.ok(zhRow, "zh case table must list AURELIS M2");
+  assert.ok(enRow, "en case table must list AURELIS M2");
+  assert.ok(zhRow.includes("构建失败待修"), "zh AURELIS M2 row must keep the build-failing note");
+  assert.ok(enRow.includes("build failing"), "en AURELIS M2 row must keep the build-failing note");
 });
 
 test("every evals/runs directory is accounted for by the ledger or a marker", async () => {

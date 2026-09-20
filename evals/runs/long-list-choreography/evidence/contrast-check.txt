@@ -1,0 +1,9 @@
+PASS 正文/bg #1B2430 on #F7F6F3 = 14.48:1
+PASS 正文/panel #1B2430 on #FFFFFF = 15.65:1
+PASS 次级/panel #5D6673 on #FFFFFF = 5.81:1
+PASS 表头/实底#FBFAF7 #5D6673 on #FBFAF7 = 5.57:1
+PASS ok chip #19703D on #E3F2E8 = 5.29:1
+PASS warn chip #9A5B00 on #FBF0DC = 4.81:1
+PASS zero chip #B3372E on #FAEAE8 = 5.14:1
+PASS 选中 #1B2430 on #E7EFF9 = 13.50:1
+ALL 8 PASS (shipped values)

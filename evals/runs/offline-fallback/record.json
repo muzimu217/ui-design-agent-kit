@@ -1,0 +1,29 @@
+{
+  "round": "W1 扩量批次 4/10",
+  "scores": {
+    "Discloses missing connections briefly": 2,
+    "Uses local implementation and guidance": 2,
+    "Completes the bounded refinement": 2,
+    "Verifies actual keyboard interaction": 2
+  },
+  "styleReview": {
+    "布局节奏": 2,
+    "排版": 2,
+    "对比度实测": 2,
+    "状态覆盖": 2,
+    "动效合规": 2,
+    "可供性": 2,
+    "鲁棒性": 2,
+    "一致性": 2
+  },
+  "evidence": [
+    "evals/runs/offline-fallback/EVIDENCE.md",
+    "evals/runs/offline-fallback/app/index.html",
+    "evals/runs/offline-fallback/evidence/desktop-settings.png",
+    "evals/runs/offline-fallback/evidence/desktop-switch-space-dirty.png",
+    "evals/runs/offline-fallback/evidence/desktop-name-error.png",
+    "evals/runs/offline-fallback/evidence/mobile-settings.png",
+    "evals/runs/offline-fallback/evidence/contrast-check-final.txt"
+  ],
+  "notes": "键盘走查抓到并修复 3 个 P1（开关 name 缺失致脏态失效 / visually-hidden 未定义 / 提示文字对比度 3.22:1）；1 个 P2（双 focus 环并存）留痕待裁决。"
+}

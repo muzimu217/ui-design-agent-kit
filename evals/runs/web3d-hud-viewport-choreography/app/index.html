@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>耳机装置 · HUD 巡检页</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230b0f14'/%3E%3Ccircle cx='8' cy='8' r='4' fill='%234cc2ff'/%3E%3C/svg%3E" />
+<style>
+  :root{
+    --bg:#0b0f14; --panel:rgba(13,19,26,.86); --line:#1d2a38;
+    --ink:#dfe9f3; --ink-2:#8fa3b8; --ink-3:#71889e;
+    --accent:#4cc2ff; --warn:#ffb454; --ok:#59d499;
+    --r:10px; --ease-out:cubic-bezier(0.22,1,0.36,1); --t:160ms;
+  }
+  *{box-sizing:border-box} html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);overflow:hidden;
+    font:14px/1.55 -apple-system,"PingFang SC","Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased}
+  #stage{position:fixed;inset:0}
+  #stage canvas{display:block}
+  #labels{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+  .hud{position:fixed;z-index:10}
+  .topbar{top:0;left:0;right:0;display:flex;align-items:center;gap:12px;
+    padding:10px 16px;background:linear-gradient(rgba(11,15,20,.92),rgba(11,15,20,0));
+    animation:hud-in 200ms var(--ease-out) both}
+  .topbar h1{font-size:15px;margin:0;letter-spacing:.04em}
+  .topbar .st{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .topbar .st b{color:var(--accent);font-weight:600}
+  @keyframes hud-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .stations{left:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;
+    animation:hud-in 220ms var(--ease-out) 60ms both}
+  .stations button{
+    display:flex;align-items:center;gap:8px;min-width:168px;text-align:left;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+    color:var(--ink);font:inherit;font-size:13px;padding:9px 12px;cursor:pointer;
+    transition:border-color var(--t) var(--ease-out),background var(--t) var(--ease-out)}
+  .stations button:hover{border-color:var(--accent)}
+  .stations button[aria-pressed=true]{border-color:var(--accent);background:rgba(76,194,255,.10)}
+  .stations button:focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}
+  .stations .dot{width:8px;height:8px;border-radius:50%;background:var(--ink-3);flex:none}
+  .stations button[aria-pressed=true] .dot{background:var(--accent)}
+  .panel{top:52px;right:16px;width:264px;max-height:calc(100% - 150px);overflow:auto;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+    padding:14px;backdrop-filter:blur(6px);
+    transform:translateX(16px);opacity:0;pointer-events:none;
+    transition:transform var(--t) var(--ease-out),opacity var(--t) var(--ease-out)}
+  .panel.open{transform:none;opacity:1;pointer-events:auto}
+  .panel h2{margin:0 0 2px;font-size:14px;color:var(--accent)}
+  .panel .sub{margin:0 0 10px;color:var(--ink-3);font-size:12px}
+  .panel dl{margin:0;font-variant-numeric:tabular-nums}
+  .panel .row{display:flex;justify-content:space-between;gap:10px;
+    padding:6px 0;border-top:1px solid var(--line);font-size:13px}
+  .panel dt{color:var(--ink-2)} .panel dd{margin:0}
+  .panel .bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:4px 0 8px}
+  .panel .bar i{display:block;height:100%;background:var(--accent)}
+  .attribution{right:16px;bottom:12px;color:var(--ink-3);font-size:11.5px;text-align:right}
+  .attribution a{color:var(--ink-2)}
+  .ruler{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;
+    display:flex;gap:0;color:var(--ink-3);font-size:11px;pointer-events:none}
+  .ruler span{width:56px;border-left:1px solid var(--line);padding:2px 0 0 4px}
+  .lbl{background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--accent);
+    border-radius:6px;padding:4px 8px;font-size:12px;color:var(--ink);white-space:nowrap;
+    transform:translate(-50%,-130%)}
+  .lbl small{display:block;color:var(--ink-3);font-size:11px}
+  @media (prefers-reduced-motion:reduce){
+    .topbar,.stations{animation:none}
+    .panel{transition:none}
+    .stations button{transition:none}
+  }
+  @media (max-width:720px){
+    .panel{top:auto;bottom:0;left:0;right:0;width:auto;max-height:44%;
+      border-radius:var(--r) var(--r) 0 0;
+      transform:translateY(16px)}
+    .panel.open{transform:none}
+    .stations{left:12px;right:12px;bottom:calc(44% + 12px);flex-direction:row;flex-wrap:wrap}
+    .stations button{min-width:0;flex:1 1 30%;justify-content:center}
+    .ruler{display:none}
+  }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="labels"></div>
+
+<header class="hud topbar">
+  <h1>耳机装置 · 巡检</h1>
+  <span class="st">机位 <b id="st-name">总览</b> · 状态机 <b id="st-state">idle</b></span>
+</header>
+
+<nav class="hud stations" aria-label="机位选择">
+  <button type="button" data-station="OVERVIEW" aria-pressed="true"><span class="dot"></span>总览</button>
+  <button type="button" data-station="FOCUS_LED" aria-pressed="false"><span class="dot"></span>指示灯聚焦</button>
+  <button type="button" data-station="FOCUS_LID" aria-pressed="false"><span class="dot"></span>仓盖聚焦</button>
+</nav>
+
+<aside class="hud panel" id="panel" aria-live="polite" aria-label="部件参数">
+  <h2 id="p-title">总览</h2>
+  <p class="sub" id="p-sub">全装置状态</p>
+  <dl id="p-rows"></dl>
+</aside>
+
+<div class="ruler" aria-hidden="true">
+  <span>0.0m</span><span>0.2</span><span>0.4</span><span>0.6</span><span>0.8</span><span>1.0m</span>
+</div>
+
+<footer class="hud attribution">
+  3D 模型：<a href="https://sketchfab.com/3d-models/airpods-pro-3f84ddc3d87a4ec0a5e5f379abfecd9c" rel="noopener">AirPods Pro</a>
+  by Jed Falcone ·
+  <a href="http://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>
+  （demo/ruiear 授权留痕）· 巡检页为演示，数据为演示值
+</footer>
+
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+} }
+</script>
+<script type="module">
+  import * as THREE from 'three';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+  import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+  // 改编边界：标签投影用 three 自带 CSS2DRenderer（现成实现），本页仅补
+  // 视锥/背向隐藏判断；机位补间自写 12 行（单一时钟驱动），不引第二动画运行时。
+
+  const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ===== 场景 =====
+  const stage = document.getElementById('stage');
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0b0f14);
+  const camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, 0.05, 60);
+  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  stage.appendChild(renderer.domElement);
+  const labelRenderer = new CSS2DRenderer({ element: document.getElementById('labels') });
+  labelRenderer.setSize(innerWidth, innerHeight);
+
+  scene.add(new THREE.HemisphereLight(0xbfd8ee, 0x16202b, 1.15));
+  const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(3, 5, 4); scene.add(key);
+  const rim = new THREE.DirectionalLight(0x4cc2ff, 0.9); rim.position.set(-4, 2, -3); scene.add(rim);
+
+  // ===== 命名机位状态机：位置与视线目标成对定义、成对补间 =====
+  const STATES = {
+    OVERVIEW:  { name: '总览',     pos: [2.4, 1.2, 3.0], target: [0, 0.1, 0] },
+    FOCUS_LED: { name: '指示灯',   pos: [0.35, 0.5, 1.9], target: [-0.28, -0.02, 0.2] },
+    FOCUS_LID: { name: '仓盖',     pos: [1.15, 0.85, 2.1], target: [0.18, 0.32, 0] },
+  };
+  const camPos = new THREE.Vector3(...STATES.OVERVIEW.pos);
+  const camTarget = new THREE.Vector3(...STATES.OVERVIEW.target);
+  const tween = { active: false, t: 0, dur: REDUCED ? 0 : 0.9, fromP: new THREE.Vector3(), fromT: new THREE.Vector3(), toP: new THREE.Vector3(), toT: new THREE.Vector3() };
+  let current = 'OVERVIEW';
+
+  function goto(id) {
+    const s = STATES[id]; if (!s || id === current && !tween.active) { if (!s) return; }
+    current = id;
+    // 从当前值续接：起点永远是此刻的真实相机状态，绝不回跳
+    tween.fromP.copy(camPos); tween.fromT.copy(camTarget);
+    tween.toP.set(...s.pos); tween.toT.set(...s.target);
+    tween.t = 0; tween.active = true;
+    tween.dur = REDUCED ? 0 : 0.9;
+    bump();
+    syncUI(id);
+  }
+  function stepTween(dt) {
+    if (!tween.active) return;
+    tween.t += dt;
+    const k = tween.dur === 0 ? 1 : Math.min(tween.t / tween.dur, 1);
+    const e = 1 - Math.pow(1 - k, 3); // ease-out cubic（Elegant 系）
+    camPos.lerpVectors(tween.fromP, tween.toP, e);
+    camTarget.lerpVectors(tween.fromT, tween.toT, e);
+    if (k >= 1) tween.active = false;
+  }
+
+  // ===== 模型与锚点 =====
+  let model = null; const anchors = new Map(); const disposables = [];
+  const LABEL_DEFS = [
+    { id: 'led',  frac: [0.44, 0.47, 0.85], title: '状态指示灯', sub: '电量提示 · 实拍可见' },
+    { id: 'lid',  frac: [0.55, 0.78, 0.45], title: '仓盖缝', sub: '密合度巡检点' },
+    { id: 'base', frac: [0.3, 0.12, 0.6],   title: '充电触点', sub: '底部 · 演示值' },
+  ];
+  const PANEL_DATA = {
+    OVERVIEW:  { title: '总览',   sub: '全装置状态', rows: [['部件', '3 组'], ['装配误差', '≤0.2mm'], ['巡检圈次', '第 2 圈']] },
+    FOCUS_LED: { title: '状态指示灯', sub: 'FOCUS_LED', rows: [['点亮状态', '正常', 0.9], ['色相偏差', '2%', 0.2], ['亮度一致性', '97%', 0.97]] },
+    FOCUS_LID: { title: '仓盖',   sub: 'FOCUS_LID', rows: [['盖缝间隙', '0.11mm', 0.22], ['开合扭矩', '1.1N·m', 0.55], ['磁吸保持力', '8N', 0.7]] },
+  };
+  new GLTFLoader().load('../../../../demo/ruiear/public/models/airpods_pro.glb', (gltf) => {
+    model = gltf.scene;
+    const box = new THREE.Box3().setFromObject(model);
+    const size = box.getSize(new THREE.Vector3()), center = box.getCenter(new THREE.Vector3());
+    const s = 1.6 / Math.max(size.x, size.y, size.z);
+    model.scale.setScalar(s);
+    model.position.set(-center.x * s, -center.y * s + 0.05, -center.z * s);
+    scene.add(model);
+    disposables.push(model);
+    // 锚点按包围盒比例吸附到模型实际几何上
+    const real = new THREE.Box3().setFromObject(model);
+    for (const def of LABEL_DEFS) {
+      const p = new THREE.Vector3(
+        real.min.x + (real.max.x - real.min.x) * def.frac[0],
+        real.min.y + (real.max.y - real.min.y) * def.frac[1],
+        real.min.z + (real.max.z - real.min.z) * def.frac[2]);
+      const el = document.createElement('div');
+      el.className = 'lbl'; el.id = 'lbl-' + def.id;
+      el.innerHTML = `${def.title}<small>${def.sub}</small>`;
+      const obj = new CSS2DObject(el);
+      obj.position.copy(p);
+      scene.add(obj); anchors.set(def.id, { obj, el });
+      disposables.push(obj);
+    }
+    bump();
+  }, undefined, (err) => {
+    document.getElementById('st-state').textContent = '模型加载失败：' + (err?.message || err);
+  });
+
+  // ===== HUD 面板 =====
+  const panel = document.getElementById('panel');
+  function syncUI(id) {
+    const s = STATES[id], d = PANEL_DATA[id];
+    document.getElementById('st-name').textContent = s.name;
+    document.getElementById('st-state').textContent = tween.active ? 'tween→' + id : id;
+    document.getElementById('p-title').textContent = d.title;
+    document.getElementById('p-sub').textContent = d.sub;
+    document.getElementById('p-rows').innerHTML = d.rows.map(r =>
+      `<div class="row"><dt>${r[0]}</dt><dd>${r[1] ?? ''}</dd></div>` +
+      (r[2] !== undefined ? `<div class="bar" aria-hidden="true"><i style="width:${Math.round(r[2] * 100)}%"></i></div>` : '')
+    ).join('');
+    panel.classList.toggle('open', id !== 'OVERVIEW');
+    document.querySelectorAll('.stations button').forEach(b =>
+      b.setAttribute('aria-pressed', String(b.dataset.station === id)));
+  }
+
+  document.querySelectorAll('.stations button').forEach(b =>
+    b.addEventListener('click', () => goto(b.dataset.station)));
+
+  // ===== 单一时钟：补间 + 标签可见性 + 渲染 + 闲置降频，全部在同一段 rAF =====
+  let last = performance.now(), frames = 0, rendered = 0, lastActivity = performance.now(), alive = true, disposed = false;
+  const IDLE_MS = 15000, IDLE_DIV = 4;
+  function bump() { lastActivity = performance.now(); }
+  addEventListener('pointerdown', bump, true);
+  addEventListener('keydown', bump, true);
+  addEventListener('resize', () => {
+    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight); labelRenderer.setSize(innerWidth, innerHeight); bump();
+  });
+  const frustum = new THREE.Frustum(), mat4 = new THREE.Matrix4();
+  function frame(now) {
+    if (!alive) return;
+    rafId = requestAnimationFrame(frame);
+    frames++;
+    const idle = now - lastActivity > IDLE_MS;
+    if (idle && frames % IDLE_DIV !== 0) return; // 闲置降频：1/4 速率
+    rendered++;
+    const dt = Math.min((now - last) / 1000, 1 / 30); last = now;
+    stepTween(dt);
+    camera.position.copy(camPos);
+    camera.lookAt(camTarget);
+    if (anchors.size) {
+      mat4.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+      frustum.setFromProjectionMatrix(mat4);
+      const camDir = new THREE.Vector3(); camera.getWorldDirection(camDir);
+      for (const { obj, el } of anchors.values()) {
+        const wp = obj.getWorldPosition(new THREE.Vector3());
+        const toAnchor = wp.clone().sub(camera.position);
+        const behind = toAnchor.dot(camDir) < 0;
+        const inside = frustum.containsPoint(wp);
+        el.style.display = (behind || !inside) ? 'none' : '';
+      }
+    }
+    document.getElementById('st-state').textContent = tween.active ? 'tween→' + current : current;
+    renderer.render(scene, camera);
+    labelRenderer.render(scene, camera);
+  }
+  let rafId = requestAnimationFrame(frame);
+  syncUI('OVERVIEW');
+
+  // ===== 验证钩子（非产品逻辑）+ teardown =====
+  window.__hud = {
+    REDUCED,
+    state: () => current,
+    cam: () => ({ p: camPos.toArray().map(v => +v.toFixed(4)), t: camTarget.toArray().map(v => +v.toFixed(4)), tweening: tween.active }),
+    goto,
+    forceCam: (p, t) => { camPos.set(...p); camTarget.set(...t); tween.active = false; },
+    labels: () => [...anchors.entries()].map(([id, { el }]) => ({ id, shown: el.style.display !== 'none' })),
+    stats: () => ({ frames, rendered, idle: performance.now() - lastActivity > IDLE_MS, alive }),
+    dispose: () => {
+      alive = false; cancelAnimationFrame(rafId);
+      for (const d of disposables) { d.traverse?.(o => {
+        if (o.geometry) o.geometry.dispose();
+        if (o.material) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => m.dispose());
+      }); }
+      renderer.dispose(); stage.innerHTML = ''; document.getElementById('labels').innerHTML = '';
+      removeEventListener('pointerdown', bump, true); removeEventListener('keydown', bump, true);
+      disposed = true;
+    },
+    isDisposed: () => disposed,
+  };
+</script>
+</body>
+</html>

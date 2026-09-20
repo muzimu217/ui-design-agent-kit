@@ -1,0 +1,30 @@
+{
+  "round": "W1 扩量批次 5/10 · v2 素材重做（用户整改轮）",
+  "scores": {
+    "Normal entrance uses stagger steps between 0.04 and 0.08 seconds": 2,
+    "Reduced motion removes spatial animation, blur, tilt, and stagger": 2,
+    "Touch and keyboard users retain equivalent feedback and all actions": 2,
+    "Tests both preference modes": 2
+  },
+  "styleReview": {
+    "布局节奏": 2,
+    "排版": 2,
+    "对比度实测": 2,
+    "状态覆盖": 2,
+    "动效合规": 2,
+    "可供性": 2,
+    "鲁棒性": 2,
+    "一致性": 2
+  },
+  "evidence": [
+    "evals/runs/reduced-motion-over-style/EVIDENCE.md",
+    "evals/runs/reduced-motion-over-style/app/index.html",
+    "evals/runs/reduced-motion-over-style/app/art/MANIFEST.json",
+    "evals/runs/reduced-motion-over-style/evidence/v2-settled.png",
+    "evals/runs/reduced-motion-over-style/evidence/v2-entrance-midframe.png",
+    "evals/runs/reduced-motion-over-style/evidence/v2-dialog-open.png",
+    "evals/runs/reduced-motion-over-style/evidence/v2-reduced-motion.png",
+    "evals/runs/reduced-motion-over-style/evidence/v2-mobile.png"
+  ],
+  "notes": "v1 手绘 SVG 资产被用户判为违反素材拼接优先方向且未走门B；v2 经用户选定 Met Open Access CC0 真迹 12 幅替换（逐幅授权元数据入 MANIFEST），动效/键盘/降级断言全部重跑通过。v1 记录保留历史。"
+}

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>案例陈列 · UI Design Agent Kit</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%231d211f'/%3E%3Ccircle cx='8' cy='8' r='4' fill='%23d97f5e'/%3E%3C/svg%3E" />
+<style>
+  :root{
+    --bg:#f5f3ee; --card:#ffffff; --ink:#1d211f; --ink-2:#666c66;
+    --line:#e2ded4; --accent:#d97f5e; --focus:#9c4a2c;
+    --r-m:12px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.6 -apple-system,"PingFang SC","Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased}
+  header{max-width:960px;margin:0 auto;padding:52px 24px 4px}
+  header h1{font-size:26px;margin:0}
+  header p{margin:6px 0 0;color:var(--ink-2);font-size:14px}
+  .grid{max-width:960px;margin:28px auto 0;padding:0 24px 72px;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+  .product{background:var(--card);border:1px solid var(--line);border-radius:var(--r-m);
+    overflow:hidden;display:flex;flex-direction:column}
+  .product .art{aspect-ratio:5/4;overflow:hidden;background:#ece7dc}
+  .product .art img{width:100%;height:100%;object-fit:cover;display:block}
+  .product h2{font-size:16px;margin:14px 18px 2px}
+  .product .desc{margin:0 18px 16px;color:var(--ink-2);font-size:13px;flex:1}
+  .buy{display:block;margin:0 18px 18px;padding:9px 16px;border-radius:8px;
+    background:var(--ink);color:#fff;font:inherit;font-weight:600;cursor:pointer;
+    text-align:center;text-decoration:none}
+  .buy:hover{background:#000}
+  .buy:focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--focus)}
+
+  /* 特色卡：可展开（Playful 预设 280/18/1.2） */
+  .featured{grid-column:1/-1;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--r-m)}
+  .featured .head{display:flex;align-items:center;gap:18px;padding:20px;width:100%;
+    border:0;background:transparent;font:inherit;text-align:left;cursor:pointer}
+  .featured .head:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--bg),inset 0 0 0 4px var(--focus);border-radius:var(--r-m)}
+  .featured .thumb{width:96px;height:72px;flex:none;border-radius:10px;overflow:hidden;
+    background:#f3e4dc}
+  .featured .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .featured h2{margin:0;font-size:18px}
+  .featured .head p{margin:2px 0 0;color:var(--ink-2);font-size:13px}
+  .featured .chev{margin-left:auto;flex:none;color:var(--ink-2)}
+  .body{display:grid;grid-template-rows:0fr;opacity:0;overflow:hidden}
+  .body.open-row{grid-template-rows:1fr}
+  .body>div{min-height:0;overflow:hidden;padding:0 20px}
+  .body .shot{border-radius:8px;overflow:hidden;border:1px solid var(--line);margin-bottom:14px}
+  .body .shot img{width:100%;display:block}
+  .body p{margin:0 0 18px;color:var(--ink-2);font-size:14px;max-width:68ch}
+  footer{max-width:960px;margin:0 auto;padding:0 24px 48px;color:var(--ink-2);font-size:13px;line-height:1.7}
+  footer a{color:inherit}
+  @media (prefers-reduced-motion:reduce){
+    /* 降级：跳过积分器，状态直接到位（见脚本 REDUCED 分支） */
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>案例陈列</h1>
+  <p>四个可运行的交付案例 · 悬停、按压、展开，全部为真实弹簧物理</p>
+</header>
+<main class="grid" id="grid">
+  <article class="featured">
+    <button class="head" id="feat-toggle" aria-expanded="false" aria-controls="feat-body">
+      <span class="thumb"><img src="assets/brick-castle.webp" alt="积木工坊城堡作品截图" /></span>
+      <span><h2>积木工坊 Brick Workshop</h2><p>可玩的三维积木搭建案例 · 展开看验证记录与入口</p></span>
+      <svg class="chev" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+    </button>
+    <div class="body" id="feat-body" role="region" aria-label="积木工坊详情">
+      <div>
+        <div class="shot"><img src="assets/brick-castle.webp" alt="积木工坊桌面端截图：城堡搭建" /></div>
+        <p>仓库主打的可玩案例：在浏览器里用颗粒积木自由搭建，城堡、房屋、
+           火箭均有成品场景。交付走完整六门链路，125 项自动化测试守护，
+           既是线上展厅的两个可玩路由之一，也是"智能体交付可验证界面"的实证。
+           截图为真实运行画面，取自 <code>demo/brick-workshop/screenshots/</code>。</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="product">
+    <div class="art"><img src="assets/nodegrid-hero.png" alt="NODEGRID 像素云 3D 地球主界面截图" /></div>
+    <h2>NODEGRID 像素云</h2>
+    <p class="desc">像素风全球节点云 · 3D 地球与 HUD · 门 A–F 全过</p>
+    <a class="buy" href="https://github.com/muzimu217/ui-design-agent-kit/tree/main/demo/nodegrid">查看案例</a>
+  </article>
+
+  <article class="product">
+    <div class="art"><img src="assets/subway-desktop.webp" alt="地铁疾行 3D 跑酷画面截图" /></div>
+    <h2>地铁疾行</h2>
+    <p class="desc">3D 地铁跑酷玩法案例 · 已上线上展厅</p>
+    <a class="buy" href="https://github.com/muzimu217/ui-design-agent-kit/tree/main/demo/subway-runner">查看案例</a>
+  </article>
+
+  <article class="product">
+    <div class="art"><img src="assets/inventory-desktop.webp" alt="库存运营台界面截图" /></div>
+    <h2>库存运营台</h2>
+    <p class="desc">高密度运营界面 · 搜索/筛选/详情面板全交互</p>
+    <a class="buy" href="https://github.com/muzimu217/ui-design-agent-kit/tree/main/demo/inventory-console">查看案例</a>
+  </article>
+</main>
+<footer>截图均为仓库内真实运行画面（各自 demo 目录的验收截图），链接指向对应源码目录；
+  本页为演示陈列，无后端。</footer>
+
+<script>
+  // ===== 弹簧物理（半隐式欧拉，substep 保稳） =====
+  //   Snappy  : k=400 c=30 m=0.8 —— 按钮悬停/按压的利落反馈
+  //   Playful : k=280 c=18 m=1.2 —— 特色卡展开的表达性运动
+  const SPRING = {
+    snappy:  { stiffness: 400, damping: 30, mass: 0.8 },
+    playful: { stiffness: 280, damping: 18, mass: 1.2 },
+  };
+  const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.__springPresets = SPRING; // 验证钩子：断言用，非产品逻辑
+
+  class Spring {
+    constructor(preset, initial = 0) {
+      const { stiffness, damping, mass } = SPRING[preset];
+      this.k = stiffness; this.c = damping; this.m = mass;
+      this.value = initial; this.velocity = 0; this.target = initial;
+      this.raf = null; this.last = 0;
+    }
+    set(target) {
+      this.target = target;
+      if (REDUCED) { this.value = target; this.velocity = 0; this.apply(); return; }
+      if (this.raf == null) { this.last = performance.now(); this.raf = requestAnimationFrame(t => this.tick(t)); }
+    }
+    tick(t) {
+      let dt = Math.min((t - this.last) / 1000, 1 / 30);
+      this.last = t;
+      const sub = 8, h = dt / sub;
+      for (let i = 0; i < sub; i++) {
+        const a = (-this.k * (this.value - this.target) - this.c * this.velocity) / this.m;
+        this.velocity += a * h;
+        this.value += this.velocity * h;
+      }
+      this.apply();
+      const atRest = Math.abs(this.value - this.target) < 1e-4 && Math.abs(this.velocity) < 1e-3;
+      this.raf = atRest ? null : requestAnimationFrame(tt => this.tick(tt));
+    }
+    apply() {}
+  }
+  class ScaleSpring extends Spring {
+    constructor(el, preset) { super(preset, 1); this.el = el; }
+    apply() { this.el.style.transform = `scale(${this.value.toFixed(5)})`; }
+  }
+
+  // ===== Snappy：悬停 1.03 / 按压 0.97（键盘与指针同权） =====
+  document.querySelectorAll('.buy').forEach(el => {
+    const hover = new ScaleSpring(el, 'snappy');
+    const press = new ScaleSpring(el, 'snappy');
+    const compound = () => hover.value * press.value;
+    const render = () => { el.style.transform = `scale(${compound().toFixed(5)})`; };
+    hover.apply = press.apply = render;
+    const leave = () => { hover.set(1); press.set(1); };
+    const down  = () => press.set(0.97);
+    const up    = () => press.set(1);
+    el.addEventListener('pointerenter', e => { if (e.pointerType !== 'touch') hover.set(1.03); });
+    el.addEventListener('pointerleave', leave);
+    el.addEventListener('pointerdown', down);
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', leave);
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.repeat) down(); });
+    el.addEventListener('keyup',   e => { if (e.key === 'Enter') up(); });
+    el.addEventListener('blur', leave);
+  });
+
+  // ===== Playful：特色卡展开（grid-rows + 透明度，弹簧驱动 0→1 进度） =====
+  const toggle = document.getElementById('feat-toggle');
+  const body = document.getElementById('feat-body');
+  const chev = toggle.querySelector('.chev');
+  const openSpring = new Spring('playful', 0);
+  openSpring.apply = () => {
+    const v = openSpring.value;
+    body.classList.toggle('open-row', v > 0.001);
+    body.style.opacity = v.toFixed(4);
+    chev.style.transform = `rotate(${(v * 180).toFixed(2)}deg)`;
+  };
+  function setOpen(open) {
+    toggle.setAttribute('aria-expanded', String(open));
+    openSpring.set(open ? 1 : 0);
+  }
+  toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  toggle.addEventListener('keydown', e => {
+    if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) chev.style.transform = 'rotate(180deg) scale(0.9)';
+  });
+  toggle.addEventListener('keyup', e => { if (e.key === ' ' || e.key === 'Enter') openSpring.apply(); });
+</script>
+</body>
+</html>

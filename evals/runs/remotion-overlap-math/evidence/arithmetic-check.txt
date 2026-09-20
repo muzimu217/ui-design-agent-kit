@@ -1,0 +1,4 @@
+scene sum: 300 overlap sum: 42 timeline frames: 258 seconds: 8.6
+wrong answers: naive 300 double-subtract 216
+transition 18 vs adjacent scenes 90/120: fits: true
+transition 24 vs adjacent scenes 120/90: fits: true

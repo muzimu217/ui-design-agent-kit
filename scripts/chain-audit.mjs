@@ -5,23 +5,22 @@ import { ROOT } from "./verify.mjs";
 
 // Mechanical floor for the gate protocol (references/gate-protocol.md §5):
 // a task workspace that already contains implementation artifacts must carry
-// a GATES.md record with the gate verdicts, so a skipped chain is machine-
+// a gate record with the gate verdicts, so a skipped chain is machine-
 // checkable instead of prose-arguable. The audit proves record presence and
 // verdicts, not authenticity — real verdicts still come from the user.
 //
-// GATES.md format (bilingual headings accepted, one section per gate):
+// Two record locations are accepted (root first):
+//   GATES.md          minimal per-workspace record
+//   docs/gates.md     the kit's ledger convention, as used by delegated runs
 //
-//   分级: M
-//   ## 门A · 方向稿
-//   裁决: passed
-//   ## 门B · 素材清单
-//   裁决: passed
-//   ...
-//   ## 门E · 验收
-//   裁决: passed
-//
-// `分级: S` (narrow repair inside an approved design) skips gates A-D but
-// still requires a passed 门E acceptance record.
+// Two record formats are parsed:
+// 1. Heading format:
+//      ## 门A · 方向稿        (or ## Gate A · Direction)
+//      裁决: passed            (or verdict: approved | 通过)
+//      分级: S                 (S repairs skip gates A-D but need 门E passed)
+// 2. Ledger table rows (dated rows as in the kit's docs/gates.md; the gate
+//    token and a known status token are located per row, latest row wins):
+//      | 2026-09-20 | A | brief | passed | 首稿 … | 用户：过 |
 //
 // Usage:
 //   npm run chain:audit -- <workspace>    exit 1 when violations are found
@@ -31,6 +30,11 @@ const IGNORED_DIRS = new Set([
 ]);
 const UI_EXTENSIONS = new Set([".html", ".tsx", ".jsx", ".vue", ".svelte", ".astro"]);
 const PASSED = new Set(["passed", "approved", "通过"]);
+const STATUSES = new Set([
+  "passed", "approved", "通过", "gated", "pending", "blocked", "active",
+  "merged", "open", "declined", "failed",
+]);
+const RECORD_FILES = ["GATES.md", path.join("docs", "gates.md")];
 
 async function collectArtifacts(dir, base = dir, found = []) {
   let entries;
@@ -66,25 +70,52 @@ async function hasDependencies(workspace) {
   }
 }
 
+function parseGateLine(line, record) {
+  const tier = line.match(/^分级\s*[：:]\s*(S|M|L)\b/);
+  if (tier) {
+    record.tier = tier[1];
+    return;
+  }
+  const heading = line.match(/^##\s*(?:门([A-F])|Gate\s+([A-F]))\b/i);
+  if (heading) {
+    record.gates[(heading[1] ?? heading[2]).toUpperCase()] = { present: true, verdict: undefined };
+    return;
+  }
+  const verdict = line.match(/^(?:裁决|verdict)\s*[：:]\s*(\S+)/i);
+  const current = Object.keys(record.gates).at(-1);
+  if (current && verdict) {
+    record.gates[current].verdict = verdict[1];
+    return;
+  }
+  const cells = line.split("|").map((cell) => cell.trim());
+  if (cells.length < 4 || !/^\d{4}-\d{2}-\d{2}$/.test(cells[1] ?? "")) return;
+  const gateIndex = cells.findIndex((cell, index) => index > 1
+    && (/^门[A-F]$/i.test(cell)
+      || /^Gate\s+[A-F]$/i.test(cell)
+      || /^[A-F]$/.test(cell)));
+  if (gateIndex === -1) return;
+  const status = cells.slice(gateIndex + 1).find((cell) => STATUSES.has(cell.toLowerCase()));
+  if (status) {
+    const letter = cells[gateIndex].match(/[A-F]/i)[0].toUpperCase();
+    record.gates[letter] = { present: true, verdict: status.toLowerCase() };
+  }
+}
+
 export function parseGatesRecord(source) {
   const record = { tier: undefined, gates: {} };
-  let current;
-  for (const line of source.split(/\r?\n/)) {
-    const tier = line.match(/^分级\s*[：:]\s*(S|M|L)\b/);
-    if (tier) {
-      record.tier = tier[1];
-      continue;
-    }
-    const heading = line.match(/^##\s*(?:门([A-F])|Gate\s+([A-F]))\b/i);
-    if (heading) {
-      current = (heading[1] ?? heading[2]).toUpperCase();
-      record.gates[current] = { present: true, verdict: undefined };
-      continue;
-    }
-    const verdict = line.match(/^(?:裁决|verdict)\s*[：:]\s*(\S+)/i);
-    if (current && verdict) record.gates[current].verdict = verdict[1];
-  }
+  for (const line of source.split(/\r?\n/)) parseGateLine(line, record);
   return record;
+}
+
+async function loadRecord(workspace) {
+  for (const name of RECORD_FILES) {
+    try {
+      return parseGatesRecord(await readFile(path.join(workspace, name), "utf8"));
+    } catch {
+      continue;
+    }
+  }
+  return null;
 }
 
 export async function auditWorkspace(input, root = ROOT) {
@@ -103,19 +134,13 @@ export async function auditWorkspace(input, root = ROOT) {
   const artifacts = await collectArtifacts(workspace);
   const hasPackage = await hasDependencies(workspace);
   const implemented = artifacts.length > 0 || hasPackage;
-
-  let record = null;
-  try {
-    record = parseGatesRecord(await readFile(path.join(workspace, "GATES.md"), "utf8"));
-  } catch {
-    record = null;
-  }
+  const record = implemented ? await loadRecord(workspace) : (await loadRecord(workspace));
 
   const violations = [];
   if (implemented && !record) {
     violations.push({
       id: "missing-gates-record",
-      detail: `${artifacts.length} implementation artifact(s)${hasPackage ? " + package.json" : ""} but no GATES.md gate record`,
+      detail: `${artifacts.length} implementation artifact(s)${hasPackage ? " + package.json" : ""} but no gate record in ${RECORD_FILES.join(" or ")}`,
     });
   } else if (record) {
     const gateA = record.gates.A;
@@ -128,7 +153,7 @@ export async function auditWorkspace(input, root = ROOT) {
         });
       }
     } else if (!gateA) {
-      violations.push({ id: "missing-gate-a", detail: "no 门A direction-draft record in GATES.md" });
+      violations.push({ id: "missing-gate-a", detail: "no 门A direction-draft record in the gate ledger" });
     } else if (!gateA.verdict || !PASSED.has(gateA.verdict)) {
       violations.push({ id: "gate-a-not-passed", detail: `门A verdict is ${gateA.verdict ?? "missing"}, not passed` });
     }

@@ -112,6 +112,22 @@ test("English headings and verdicts parse bilingually", async (t) => {
   assert.equal((await auditWorkspace(dir)).ok, true);
 });
 
+test("the kit ledger table format in docs/gates.md is discovered and parsed", async (t) => {
+  const dir = await makeWorkspace(t, {
+    "index.html": "<!doctype html>\n",
+    "docs/gates.md": [
+      "| 日期 | 门 | 阶段 | 状态 | 呈交物 / 事件 | 裁决 |",
+      "| --- | --- | --- | --- | --- | --- |",
+      "| 2026-09-20 | A | brief | passed | 首稿方向 | 用户：改后过 |",
+      "| 2026-09-20 | E | verify | gated | 第一轮清单 | 待裁决 |",
+    ].join("\n"),
+  });
+  const report = await auditWorkspace(dir);
+  assert.equal(report.ok, true, JSON.stringify(report.violations));
+  assert.equal(report.gates.A.verdict, "passed");
+  assert.equal(report.gates.E.verdict, "gated");
+});
+
 test("missing or non-directory workspaces are errors, not violations", async (t) => {
   const missing = await auditWorkspace(path.join(tmpdir(), "chain-audit-does-not-exist"));
   assert.equal(missing.ok, false);

@@ -208,7 +208,7 @@ prompt — don't build anything yet.
 | Aurelis X1（曜时 X1） | Fictional smartwatch showcase | [view](demo/product-demo/README.md) |
 | 一舟札记 | Fictional author & reading demo | [view](demo/blog-demo/README.md) |
 | 竹与墨 (Zhu-Mo) | Ink-style tech blog demo | [view](demo/zhumu-blog/README.md) |
-| AURELIS M2 | Early watch material & dial concept | [view](showcase/README.md) |
+| AURELIS M2 | Early watch material & dial concept (build failing, see showcase/README.md note) | [view](showcase/README.md) |
 
 Generated products live in workspaces outside the repository by default; only
 explicitly accepted cases are kept here. The repo root does not import product

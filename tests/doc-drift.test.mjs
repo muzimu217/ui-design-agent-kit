@@ -45,3 +45,11 @@ test("stale coverage claims are gone from scorekeeping documents", async () => {
     );
   }
 });
+
+test("bilingual README case tables carry matching annotations", async () => {
+  const zh = await read("README.md");
+  const en = await read("README.en.md");
+  const zhNote = zh.includes("AURELIS M2") && /AURELIS M2[^|]*构建失败待修/.test(zh);
+  const enNote = en.includes("AURELIS M2") && /AURELIS M2[^|]*build failing/.test(en);
+  assert.equal(zhNote, enNote, "AURELIS M2 annotation must exist in both README languages");
+});

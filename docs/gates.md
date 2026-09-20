@@ -63,6 +63,8 @@
 | # | 事项 | 当前处理 |
 | --- | --- | --- |
 | D4 | React Bits 个案采纳流程 | 等用户决定是否固定核查步骤；无决定前按普通候选，逐次读当前 `LICENSE.md` + 门B 选择 |
+| D7 | 大师评审挂起项包：六卡证据截图重截（8 项已发布 vs 6 卡旧图）、结构性建议立项（五类 anti-slop 校准清单 / 方向稿三旋钮 / 规则密度扩容 / 门C 多变体 / demo README status+构建硬校验 / 发布前截图回归 / GATES↔账本回填一致性机检） | 2026-09-20 起挂起，等用户逐项定夺是否立项；每小时复审持续跟踪不重复登记 |
+| D8 | p-habit-2 记账口径（大师第 3 轮"二选一"） | 已裁决：non-corpus 标记（`evals/runs/p-habit-2/NON-CORPUS.md`）+ doc-drift "runs 目录必须有台账键或标记"断言；不回溯造场景打分 |
 ## 五、论文门禁（UAK paper，2026-09-16 起）
 
 > 论文是本仓库的一等门禁公民：按 `docs/superpowers/specs/2026-09-16-uak-paper-design.md` §7，

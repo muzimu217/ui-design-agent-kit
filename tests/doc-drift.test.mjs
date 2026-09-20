@@ -1,4 +1,5 @@
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -52,4 +53,18 @@ test("bilingual README case tables carry matching annotations", async () => {
   const zhNote = zh.includes("AURELIS M2") && /AURELIS M2[^|]*构建失败待修/.test(zh);
   const enNote = en.includes("AURELIS M2") && /AURELIS M2[^|]*build failing/.test(en);
   assert.equal(zhNote, enNote, "AURELIS M2 annotation must exist in both README languages");
+});
+
+test("every evals/runs directory is accounted for by the ledger or a marker", async () => {
+  const runsDir = path.join(ROOT, "evals/runs");
+  const entries = await readdir(runsDir, { withFileTypes: true });
+  const results = JSON.parse(await read("evals/results.json"));
+  const unaccounted = [];
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+    const scored = Array.isArray(results.runs[entry.name]) && results.runs[entry.name].length > 0;
+    const marked = existsSync(path.join(runsDir, entry.name, "NON-CORPUS.md"));
+    if (!scored && !marked) unaccounted.push(entry.name);
+  }
+  assert.deepEqual(unaccounted, [], "run directories must have a results.json key or a NON-CORPUS.md marker");
 });

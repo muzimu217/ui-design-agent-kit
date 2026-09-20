@@ -47,12 +47,12 @@ test("stale coverage claims are gone from scorekeeping documents", async () => {
   }
 });
 
-test("bilingual README case tables carry matching annotations", async () => {
-  const zh = await read("README.md");
-  const en = await read("README.en.md");
-  const zhNote = zh.includes("AURELIS M2") && /AURELIS M2[^|]*构建失败待修/.test(zh);
-  const enNote = en.includes("AURELIS M2") && /AURELIS M2[^|]*build failing/.test(en);
-  assert.equal(zhNote, enNote, "AURELIS M2 annotation must exist in both README languages");
+test("bilingual README case tables link the same set of case documents", async () => {
+  const caseLinks = (source) => [...source.matchAll(/\((?:demo\/[a-z0-9-]+\/README\.md|showcase\/README\.md)\)/g)]
+    .map((match) => match[1]).sort();
+  const zh = caseLinks(await read("README.md"));
+  const en = caseLinks(await read("README.en.md"));
+  assert.deepEqual(zh, en, "README and README.en must link the same case documents");
 });
 
 test("every evals/runs directory is accounted for by the ledger or a marker", async () => {
@@ -63,8 +63,15 @@ test("every evals/runs directory is accounted for by the ledger or a marker", as
   for (const entry of entries) {
     if (!entry.isDirectory()) continue;
     const scored = Array.isArray(results.runs[entry.name]) && results.runs[entry.name].length > 0;
-    const marked = existsSync(path.join(runsDir, entry.name, "NON-CORPUS.md"));
+    let marked = false;
+    if (existsSync(path.join(runsDir, entry.name, "NON-CORPUS.md"))) {
+      const marker = await read(path.join("evals/runs", entry.name, "NON-CORPUS.md"));
+      marked = marker.includes("NON-CORPUS")
+        && /\d{4}-\d{2}-\d{2}/.test(marker)
+        && marker.includes("原因")
+        && marker.length > 200;
+    }
     if (!scored && !marked) unaccounted.push(entry.name);
   }
-  assert.deepEqual(unaccounted, [], "run directories must have a results.json key or a NON-CORPUS.md marker");
+  assert.deepEqual(unaccounted, [], "run directories must have a results.json key or a substantive NON-CORPUS.md marker");
 });

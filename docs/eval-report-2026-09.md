@@ -1,5 +1,14 @@
 # 评测扩量报告（2026-09-20 · W1 批次）
 
+> **附言（同日加硬后）**：本批评测执行于门径加固**之前**。其中 5 条 UI 产物
+> （offline-fallback、reduced-motion-over-style、physical-motion-presets、
+> long-list-choreography、web3d-hud-viewport-choreography）当时按"S 档夹具"
+> 自分类跳过了门 A/B/C 呈交——这正是后来被用户判定为流程缺陷、催生
+> `gate-protocol.md`（§1 反豁免、§2 自绘默认禁止、抄 proven > 模仿、§4 停点
+> 规则）的行为。台账保留该批记录作为整改前基线；此后批次一律按协议走门，
+> 新增的 `fixture-no-gate-exemption` 与 `copy-proven-over-improvise` 两条
+> 场景即本裁决的行为契约。
+
 > 回应产品评审 D5（60 契约 / 5 执行的对称性缺口）：本批真实执行 10 条新场景，
 > 覆盖率 5/60 → **15/60（25%）**；台账 `evals/results.json` 经 `npm run eval -- --check`
 > 全量校验通过。本报告同步给出**失败与整改分析**——失败数据比全过更可信。

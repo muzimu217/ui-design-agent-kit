@@ -5,8 +5,8 @@ import { theme } from "../theme";
 import { Counter, Entrance, SceneExit, Stack } from "../components";
 
 const STATS = [
-  { target: 8, suffix: "", label: "showcase 案例" },
-  { target: 29, suffix: "", label: "测试全绿", hero: true },
+  { target: 9, suffix: "", label: "showcase 案例" },
+  { target: 58, suffix: "", label: "测试全绿", hero: true },
   { target: 6, suffix: "", label: "确认门" },
 ];
 

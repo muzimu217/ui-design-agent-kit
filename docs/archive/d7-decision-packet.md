@@ -19,8 +19,8 @@
 | B1 | 五类"AI 默认味"校准清单（D7②） | 替换 SKILL.md 一句话 slop test：奶油底+赤陶 accent、SaaS 卡片套件、眉标 chrome 等 | open |
 | B2 | 方向稿三旋钮（D7③） | DESIGN_VARIANCE 8 / MOTION_INTENSITY 6 / VISUAL_DENSITY 4 式可记录档位 | open |
 | B3 | 规则密度扩容（D7④） | 对标 ui-ux-pro-max 192 条推理规则的知识层扩容 | open |
-| B4 | **showcase 任务优先入口**（2026-09-21 用户调研 awesome-ui-design 后拍板吸收） | 新增"你想做什么"首屏入口（如"验收 AI 生成的界面"→3 步路线：prompt:build 导出注入→过门→chain:audit），每步带可复制提示词；把作品集改成可用指南。视觉实现走门径（D6） | open |
-| B5 | **展示层门面工艺升级**（同上来源） | 统一卡片解剖（图标+一句话价值+标签）、分类计数 chips、诚实外显（数据新鲜度日期、来源参考文档如 toools-reference 式"参考与有意差异"页）；站点级 test:browser 覆盖。视觉实现走门径（D6） | open |
+| B4 | ~~showcase 任务优先入口~~ | **搁置**（用户 2026-09-21 改向：先吸收 awesome-ui-design 素材入知识库+方法论拆解，页面方向暂缓） | 搁置 |
+| B5 | ~~展示层门面工艺升级~~ | **搁置**（同上） | 搁置 |
 
 ## 包 C · 机制升级轮
 

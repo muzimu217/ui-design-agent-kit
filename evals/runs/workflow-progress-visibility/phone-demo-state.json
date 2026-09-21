@@ -1,0 +1,47 @@
+{
+  "task": "曜石 12 Pro 单页产品页（phone-demo）",
+  "revision": "P-phone-demo（按目录名回填；验收记录中无正式编号，如实注明）",
+  "updatedOn": "2026-09-20",
+  "note": "回放而非实时监控：状态取自 demo/phone-demo 真实验收记录（ACCEPTANCE.md/DESIGN.md/research-notes.md）；用户确认与 MCP 调用痕迹在记录中缺失的，如实标为未记录，不补拍。",
+  "stages": {
+    "brief": {
+      "status": "passed",
+      "evidence": "demo/phone-demo/DESIGN.md",
+      "note": "需求与使命见契约 Mission 节"
+    },
+    "reference": {
+      "status": "passed",
+      "evidence": "demo/phone-demo/research-notes.md",
+      "note": "ui-ux-pro-max landing 域三模式检索留痕；未采用外部素材，门B 未触发"
+    },
+    "contract": {
+      "status": "passed",
+      "evidence": "demo/phone-demo/DESIGN.md",
+      "note": "设计契约完整；契约的用户确认记录缺失（门D 见下）"
+    },
+    "build": {
+      "status": "passed",
+      "evidence": "demo/phone-demo/ACCEPTANCE.md",
+      "note": "Implemented 节 + A/B/C 子代理隔离分工；但记录自认 MCP 工具本体调用为缺项（门F 未过）"
+    },
+    "verify": {
+      "status": "gated",
+      "evidence": "demo/phone-demo/ACCEPTANCE.md",
+      "note": "静态渲染与自动检查已过（tsc/vite/kit verify 13 测试）；键盘全旅程与交互动态实测未执行——Unverified 节原文留痕，停在本门"
+    },
+    "deliver": {
+      "status": "pending",
+      "evidence": null,
+      "note": "前序验证门未过，未声明交付"
+    }
+  },
+  "gates": {
+    "A": "pending",
+    "B": "pending",
+    "C": "pending",
+    "D": "pending",
+    "E": "gated",
+    "F": "pending"
+  },
+  "blockedReason": null
+}

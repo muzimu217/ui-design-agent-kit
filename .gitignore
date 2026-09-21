@@ -38,3 +38,8 @@ demo/inventory-console/coverage/
 demo/forma-phone-ui/dist/
 demo/forma-phone-ui/artifacts/
 demo/tempo-day/artifacts/
+intro-video/out/
+intro-video/node_modules/
+intro-video/public/sfx/
+showcase/products/node_modules/
+.zcode/

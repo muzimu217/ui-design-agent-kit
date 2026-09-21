@@ -29,6 +29,9 @@ const TEMPO_URL = `${BASE}demos/tempo-day/`;
 const RUIEAR_URL = `${BASE}demos/ruiear/`;
 const PLAYABLE_URLS: Record<string, string> = { nodegrid: NODEGRID_URL, subway: SUBWAY_URL, forma: FORMA_URL, tempo: TEMPO_URL, ruiear: RUIEAR_URL };
 const REPOSITORY_URL = 'https://github.com/muzimu217/ui-design-agent-kit';
+const EXPERIMENT_BRANCH = 'experiment/workflow-visualization';
+const EXPERIMENT_URL = `${REPOSITORY_URL}/tree/${EXPERIMENT_BRANCH}`;
+const EXPERIMENT_FEEDBACK_URL = `${REPOSITORY_URL}/issues/new`;
 const SHOWCASE_REPOSITORY_URL = 'https://github.com/muzimu217/ui-design-agent-showcase';
 const FEEDBACK_URL = 'https://github.com/muzimu217/ui-design-agent-showcase/issues/new/choose';
 const RELEASE = import.meta.env.VITE_RELEASE_ID || 'local-preview';
@@ -36,7 +39,7 @@ const SNAPPY = { type: 'spring', stiffness: 400, damping: 30, mass: 0.8 } as con
 const ELEGANT = { type: 'spring', stiffness: 100, damping: 20, mass: 1 } as const;
 const PROJECTS = [
   { id: 'inventory', name: '库存运营台', category: '运营工具', image: inventory, icon: Monitor, status: '可体验 demo', kind: '演示库存数据', alt: '库存运营台截图，包含演示数据提示、筛选控件与库存表格', description: '从既有工作流案例整理为在线体验，覆盖库存列表、筛选、排序与详情。所有库存都是演示数据，不连接真实业务系统。' },
-  { id: 'obsidian', name: '曜石 X1', category: '产品展示', image: obsidian, icon: Smartphone, status: '历史截图', kind: '虚构产品', alt: '曜石 X1 虚构手机产品展示的历史截图', description: '虚构手机产品的展示案例。品牌、型号与规格均为演示设定，不构成真实产品或购买信息。' },
+  { id: 'obsidian', name: '曜石 X1（历史截图）', category: '产品展示', image: obsidian, icon: Smartphone, status: '历史截图', kind: '虚构产品', alt: '曜石 X1 虚构手机产品展示的历史截图', description: '虚构手机产品的展示案例（旧版截图，与现行 demo「曜石 12 Pro」是不同代产物）。品牌、型号与规格均为演示设定，不构成真实产品或购买信息。' },
   { id: 'blog', name: '一舟札记', category: '内容站点', image: blog, icon: NotebookPen, status: '历史截图', kind: '虚构博客', alt: '一舟札记虚构个人博客的历史截图，包含作者介绍与文章入口', description: '以作者介绍与文章阅读为核心的内容站点案例。博客人物与内容为演示设定。' },
   { id: 'brick', name: '积木小工坊', category: '3D 交互', image: desktop, icon: Blocks, status: '可试玩 demo', kind: '浏览器交互', alt: '积木小工坊的 3D 搭建工作区和多彩积木盒', description: '本次发布包中的可试玩 3D 交互案例。实时作品与截图来自同一套工坊实现。' },
   { id: 'nodegrid', name: 'NODEGRID', category: '3D 交互', image: nodegrid, icon: Globe, status: '可试玩 demo', kind: '地理数据可视化', alt: 'NODEGRID 世界地图节点可视化首页，深色底与地球网络连线', description: '全球云节点网络的世界地图可视化。拖动、缩放查看 21 座城市的节点分布与演示延迟，节点详情包含机房演示配图与规格。' },
@@ -522,6 +525,20 @@ function App() {
       </div></section>
       <section className="verification-band" id="verification" aria-labelledby="verification-heading"><div className="content-width"><div className="section-heading"><div><h2 id="verification-heading">验证，有据可查。</h2><p>四种证据层级，不能相互替代。</p></div><ScanEye size={28} strokeWidth={1.5} aria-hidden="true" /></div><dl className="evidence-definitions">{EVIDENCE.map((item) => { const Icon = item.icon; return <div key={item.name}><dt><Icon size={22} strokeWidth={1.6} />{item.name}</dt><dd>{item.meaning}</dd></div>; })}</dl><p className="evidence-disclaimer">以上为证据定义，不是所有项目均已通过的状态声明。历史截图与可试玩成果已分别标注。</p><p className="evidence-paper">这套验收方法论已整理为公开论文预印本：<a href="https://doi.org/10.5281/zenodo.22804947" target="_blank" rel="noreferrer">UAK: A Gated, Evidence-Driven UI Design Agent Workflow（DOI 10.5281/zenodo.22804947）<ArrowUpRight size={13} aria-hidden="true" /></a>。论文正文与全部评测数据在 <a href={REPOSITORY_URL} target="_blank" rel="noreferrer">kit 仓库</a> 的 <code>paper/</code> 目录。</p></div></section>
       <InstallSection />
+      <section className="experiment-band" id="experiment" aria-labelledby="experiment-heading"><div className="content-width">
+        <div className="section-heading"><div><h2 id="experiment-heading">实验分支：工作流可视化</h2><p>正在测试中，欢迎试用并反馈。</p></div><Layers3 size={28} strokeWidth={1.5} aria-hidden="true" /></div>
+        <p className="experiment-lead">当前有一条独立实验分支，把设计与交付流程渲染成一张可交互的 HTML：每个阶段走到哪、停在哪道确认门、每步产出了什么证据，都能直接看到。分支不并入主线，改动只在该分支上迭代。</p>
+        <dl className="experiment-facts">
+          <div><dt>分支</dt><dd><code>{EXPERIMENT_BRANCH}</code></dd></div>
+          <div><dt>内容</dt><dd>工作流状态图渲染器、任务状态记录格式、链路接线</dd></div>
+          <div><dt>状态</dt><dd>可试用，接口与输出仍可能变动</dd></div>
+        </dl>
+        <p className="experiment-note">反馈请注明分支名、复现步骤与期望结果。若只想看效果，克隆后运行 <code>npm run diagram</code> 即可生成一张自包含的 HTML。</p>
+        <div className="experiment-actions">
+          <ActionLink href={EXPERIMENT_URL} external>查看实验分支</ActionLink>
+          <ActionLink href={EXPERIMENT_FEEDBACK_URL} external className="secondary-action">提交测试反馈</ActionLink>
+        </div>
+      </div></section>
       <section className="closing-band" id="testing" aria-labelledby="closing-heading"><div className="content-width closing-content"><div><h2 id="closing-heading">参与公开测试</h2><p>成果与源码已公开。反馈请注明版本、复现步骤，以及 demo 体验或工作流执行测试。</p></div><ActionLink href={FEEDBACK_URL} external>提交测试反馈</ActionLink></div></section>
     </main>
     <footer className="site-footer content-width"><a href={BASE}>UI 设计智能体工作流</a><span>{RELEASE}</span><a href={FEEDBACK_URL} target="_blank" rel="noreferrer">测试反馈<ArrowUpRight size={14} /></a><a href={`${BASE}THIRD_PARTY_LICENSES.txt`}>依赖许可</a><a href={SHOWCASE_REPOSITORY_URL} target="_blank" rel="noreferrer">公开展示仓库<ArrowUpRight size={14} /></a><a href={REPOSITORY_URL} target="_blank" rel="noreferrer">Agent 源码<ArrowUpRight size={14} /></a></footer><CaseDialog project={project} onClose={closeProject} />

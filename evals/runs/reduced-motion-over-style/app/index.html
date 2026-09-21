@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>拾贰幅 · 开放授权画作陈列</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23262626'/%3E%3Ccircle cx='8' cy='8' r='4' fill='%23c96f4a'/%3E%3C/svg%3E" />
+<style>
+  :root{
+    --wall:#f4f1ea; --frame:#ffffff; --ink:#26241f; --ink-2:#6d675c;
+    --line:#ddd6c8; --accent:#c96f4a; --focus:#8a4b2f;
+    --dur-in: 420ms; --stagger: 60ms;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--wall);color:var(--ink);
+    font:15px/1.6 -apple-system,"PingFang SC","Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased}
+  header{max-width:1080px;margin:0 auto;padding:48px 24px 8px}
+  header h1{font-size:26px;margin:0;letter-spacing:.02em}
+  header p{margin:6px 0 0;color:var(--ink-2);font-size:14px}
+  header p a{color:inherit}
+  .grid{max-width:1080px;margin:24px auto 0;padding:0 24px 24px;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;
+    list-style:none}
+  .card{margin:0}
+  .card button{display:block;width:100%;height:100%;padding:10px 10px 12px;text-align:left;
+    background:var(--frame);border:1px solid var(--line);border-radius:8px;
+    font:inherit;color:inherit;cursor:pointer;
+    box-shadow:0 1px 2px rgba(38,36,31,.05);
+    transition:box-shadow 140ms var(--ease-out)}
+  .card button:hover{box-shadow:0 4px 14px rgba(38,36,31,.10)}
+  .card button:active{transform:translateY(1px)}
+  .card button:focus-visible{outline:none;box-shadow:0 0 0 2px var(--wall),0 0 0 4px var(--focus)}
+  .art{aspect-ratio:4/3;border-radius:4px;overflow:hidden;background:#e8e2d4}
+  .art img{width:100%;height:100%;object-fit:cover;display:block}
+  .cap{display:block;margin-top:10px;font-size:13px;color:var(--ink-2);letter-spacing:.02em;line-height:1.45}
+  .cap b{color:var(--ink);font-weight:600}
+  html.fx .card{
+    animation:card-in var(--dur-in) var(--ease-out) both;
+    animation-delay:calc(var(--i) * var(--stagger));
+  }
+  @keyframes card-in{
+    from{opacity:0;transform:perspective(600px) rotateX(4deg) translateY(10px);filter:blur(6px)}
+    60%{filter:blur(0)}
+    to{opacity:1;transform:none;filter:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html.fx .card{animation:none}
+    .card button,.card button:active{transition:none;transform:none}
+    dialog{transition:none}
+  }
+  dialog{border:1px solid var(--line);border-radius:12px;padding:20px;
+    max-width:640px;width:calc(100% - 48px);background:var(--frame);color:var(--ink);
+    opacity:0;transform:translateY(8px) scale(.985);
+    transition:opacity 160ms var(--ease-out),transform 160ms var(--ease-out),display 160ms allow-discrete,overlay 160ms allow-discrete}
+  dialog[open]{opacity:1;transform:none}
+  dialog::backdrop{background:rgba(38,36,31,.35)}
+  dialog .big{border-radius:6px;overflow:hidden;margin-bottom:14px;background:#e8e2d4;
+    display:grid;place-items:center;max-height:52vh}
+  dialog .big img{max-width:100%;max-height:52vh;object-fit:contain;display:block}
+  dialog h2{margin:0 0 4px;font-size:18px}
+  dialog .meta{margin:0 0 10px;color:var(--ink-2);font-size:14px}
+  dialog .credit{margin:0 0 16px;color:var(--ink-2);font-size:12.5px;line-height:1.6}
+  dialog .credit a{color:var(--focus)}
+  .close{padding:8px 16px;border-radius:6px;border:1px solid var(--line);
+    background:transparent;font:inherit;font-weight:600;cursor:pointer}
+  .close:hover{background:var(--wall)}
+  .close:focus-visible{outline:none;box-shadow:0 0 0 2px var(--frame),0 0 0 4px var(--focus)}
+  footer{max-width:1080px;margin:0 auto;padding:0 24px 48px;color:var(--ink-2);font-size:13px;line-height:1.7}
+  footer a{color:inherit}
+</style>
+</head>
+<body>
+<header>
+  <h1>拾贰幅</h1>
+  <p>十二幅开放授权画作的常设陈列 · 点按或回车看馆藏信息</p>
+</header>
+<ul class="grid" id="grid">
+  <li class="card" style="--i:0"><button type="button" aria-haspopup="dialog" data-idx="0"><span class="art"><img src="art/459016.jpg" alt="The Annunciation（Botticelli (Alessandro di Mariano Filipepi)，ca. 1490）· 大都会艺术馆藏，CC0" loading="lazy" /></span><span class="cap"><b>The Annunciation</b> · Botticelli (Alessandro di Mariano Filipepi) · ca. 1490</span></button></li>
+  <li class="card" style="--i:1"><button type="button" aria-haspopup="dialog" data-idx="1"><span class="art"><img src="art/438821.jpg" alt="Ia Orana Maria (Hail Mary)（Paul Gauguin，1891）· 大都会艺术馆藏，CC0" loading="lazy" /></span><span class="cap"><b>Ia Orana Maria (Hail Mary)</b> · Paul Gauguin · 1891</span></button></li>
+  <li class="card" style="--i:2"><button type="button" aria-haspopup="dialog" data-idx="2"><span class="art"><img src="art/458967.jpg" alt="Saint Anthony the Abbot in the Wilderness（Sano di Pietro (Ansano di Pietro di Mencio)，ca. 1440）· 大都会艺术馆藏，CC0" loading="lazy" /></span><span class="cap"><b>Saint Anthony the Abbot in the Wilderness</b> · Sano di Pietro (Ansano di Pietro di Mencio) · ca. 1440</span></button></li>
+  <li class="card" style="--i:3"><button type="button" aria-haspopup="dialog" data-idx="3"><span class="art"><img src="art/438816.jpg" alt="The Forest in Winter at Sunset（Théodore Rousseau，ca. 1846–67）· 大都会艺术馆藏，CC0" loading="lazy" /></span><span class="cap"><b>The Forest in Winter at Sunset</b> · Théodore Rousseau · ca. 1846–67</span></button></li>
+  <li class="card" style="--i:4"><button type="button" aria-haspopup="dialog" data-idx="4"><span class="art"><img src="art/437508.jpg" alt="Self-Portrait（Salvator Rosa，ca. 1647）· 大都会艺术馆藏，CC0" loading="lazy" /></span><span class="cap"><b>Self-Portrait</b> · Salvator Rosa · ca. 1647</span></button></li>
+  <li class="card" style="--i:5"><button type="button" aria-haspopup="dialog" data-idx="5"><span class="art"><img src="art/436176.jpg" alt="Christ Asleep during the Tempest（Eugène Delacroix，ca. 1853）· 大都会艺术馆藏，CC0" loading="lazy" /></span><span class="cap"><b>Christ Asleep during the Tempest</b> · Eugène Delacroix · ca. 1853</span></button></li>
+  <li class="card" style="--i:6"><button type="button" aria-haspopup="dialog" data-idx="6"><span class="art"><img src="art/437202.jpg" alt="Christ Bearing the Cross（North Netherlandish (Bruges) Painter，）· 大都会艺术馆藏，CC0" loading="lazy" /></span><span class="cap"><b>Christ Bearing the Cross</b> · North Netherlandish (Bruges) Painter · </span></button></li>
+  <li class="card" style="--i:7"><button type="button" aria-haspopup="dialog" data-idx="7"><span class="art"><img src="art/436282.jpg" alt="The Crucifixion; The Last Judgment（Jan van Eyck，ca. 1436–38）· 大都会艺术馆藏，CC0" loading="lazy" /></span><span class="cap"><b>The Crucifixion; The Last Judgment</b> · Jan van Eyck · ca. 1436–38</span></button></li>
+  <li class="card" style="--i:8"><button type="button" aria-haspopup="dialog" data-idx="8"><span class="art"><img src="art/435651.jpg" alt="The Lamentation（Ambrosius Benson，ca. 1520–25）· 大都会艺术馆藏，CC0" loading="lazy" /></span><span class="cap"><b>The Lamentation</b> · Ambrosius Benson · ca. 1520–25</span></button></li>
+  <li class="card" style="--i:9"><button type="button" aria-haspopup="dialog" data-idx="9"><span class="art"><img src="art/438688.jpg" alt="Saint Francis（Federico Barocci，ca. 1600–1604）· 大都会艺术馆藏，CC0" loading="lazy" /></span><span class="cap"><b>Saint Francis</b> · Federico Barocci · ca. 1600–1604</span></button></li>
+  <li class="card" style="--i:10"><button type="button" aria-haspopup="dialog" data-idx="10"><span class="art"><img src="art/436098.jpg" alt="The Crucifixion（Gerard David，ca. 1495）· 大都会艺术馆藏，CC0" loading="lazy" /></span><span class="cap"><b>The Crucifixion</b> · Gerard David · ca. 1495</span></button></li>
+  <li class="card" style="--i:11"><button type="button" aria-haspopup="dialog" data-idx="11"><span class="art"><img src="art/438779.jpg" alt="A Peasant Family（Antoine Le Nain，ca. 1640–48）· 大都会艺术馆藏，CC0" loading="lazy" /></span><span class="cap"><b>A Peasant Family</b> · Antoine Le Nain · ca. 1640–48</span></button></li>
+</ul>
+<footer>画作均来自 <a href="https://www.metmuseum.org/art/collection" target="_blank" rel="noopener">大都会艺术博物馆开放授权计划（Met Open Access）</a>，CC0 授权，逐幅来源与元数据见 <a href="art/MANIFEST.json" target="_blank" rel="noopener">MANIFEST.json</a>。页面为演示陈列。</footer>
+
+<dialog id="detail" aria-labelledby="d-title">
+  <div class="big"><img id="d-img" alt="" /></div>
+  <h2 id="d-title"></h2>
+  <p class="meta" id="d-meta"></p>
+  <p class="credit" id="d-credit"></p>
+  <button type="button" class="close" id="d-close">关闭</button>
+</dialog>
+
+<script>
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches === false) {
+    document.documentElement.classList.add("fx");
+  }
+  const MANIFEST = [{"objectID":459016,"title":"The Annunciation","artist":"Botticelli (Alessandro di Mariano Filipepi)","year":"ca. 1490","credit":"Robert Lehman Collection, 1975","license":"CC0 (Met Open Access)","source":"https://www.metmuseum.org/art/collection/search/459016","file":"art/459016.jpg"},{"objectID":438821,"title":"Ia Orana Maria (Hail Mary)","artist":"Paul Gauguin","year":"1891","credit":"Bequest of Sam A. Lewisohn, 1951","license":"CC0 (Met Open Access)","source":"https://www.metmuseum.org/art/collection/search/438821","file":"art/438821.jpg"},{"objectID":458967,"title":"Saint Anthony the Abbot in the Wilderness","artist":"Sano di Pietro (Ansano di Pietro di Mencio)","year":"ca. 1440","credit":"Robert Lehman Collection, 1975","license":"CC0 (Met Open Access)","source":"https://www.metmuseum.org/art/collection/search/458967","file":"art/458967.jpg"},{"objectID":438816,"title":"The Forest in Winter at Sunset","artist":"Théodore Rousseau","year":"ca. 1846–67","credit":"Gift of P. A. B. Widener, 1911","license":"CC0 (Met Open Access)","source":"https://www.metmuseum.org/art/collection/search/438816","file":"art/438816.jpg"},{"objectID":437508,"title":"Self-Portrait","artist":"Salvator Rosa","year":"ca. 1647","credit":"Bequest of Mary L. Harrison, 1921","license":"CC0 (Met Open Access)","source":"https://www.metmuseum.org/art/collection/search/437508","file":"art/437508.jpg"},{"objectID":436176,"title":"Christ Asleep during the Tempest","artist":"Eugène Delacroix","year":"ca. 1853","credit":"H. O. Havemeyer Collection, Bequest of Mrs. H. O. Havemeyer, 1929","license":"CC0 (Met Open Access)","source":"https://www.metmuseum.org/art/collection/search/436176","file":"art/436176.jpg"},{"objectID":437202,"title":"Christ Bearing the Cross","artist":"North Netherlandish (Bruges) Painter","year":"","credit":"Bequest of George D. Pratt, 1935","license":"CC0 (Met Open Access)","source":"https://www.metmuseum.org/art/collection/search/437202","file":"art/437202.jpg"},{"objectID":436282,"title":"The Crucifixion; The Last Judgment","artist":"Jan van Eyck","year":"ca. 1436–38","credit":"Fletcher Fund, 1933","license":"CC0 (Met Open Access)","source":"https://www.metmuseum.org/art/collection/search/436282","file":"art/436282.jpg"},{"objectID":435651,"title":"The Lamentation","artist":"Ambrosius Benson","year":"ca. 1520–25","credit":"The Jack and Belle Linsky Collection, 1982","license":"CC0 (Met Open Access)","source":"https://www.metmuseum.org/art/collection/search/435651","file":"art/435651.jpg"},{"objectID":438688,"title":"Saint Francis","artist":"Federico Barocci","year":"ca. 1600–1604","credit":"Purchase, Lila Acheson Wallace Gift and 2002 Benefit Fund, 2003","license":"CC0 (Met Open Access)","source":"https://www.metmuseum.org/art/collection/search/438688","file":"art/438688.jpg"},{"objectID":436098,"title":"The Crucifixion","artist":"Gerard David","year":"ca. 1495","credit":"Rogers Fund, 1909","license":"CC0 (Met Open Access)","source":"https://www.metmuseum.org/art/collection/search/436098","file":"art/436098.jpg"},{"objectID":438779,"title":"A Peasant Family","artist":"Antoine Le Nain","year":"ca. 1640–48","credit":"Gift of Michel David-Weill, 2023","license":"CC0 (Met Open Access)","source":"https://www.metmuseum.org/art/collection/search/438779","file":"art/438779.jpg"}];
+  const grid = document.getElementById("grid");
+  const dialog = document.getElementById("detail");
+  let lastTrigger = null;
+  grid.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-idx]");
+    if (!btn) return;
+    lastTrigger = btn;
+    const m = MANIFEST[Number(btn.dataset.idx)];
+    document.getElementById("d-img").src = m.file;
+    document.getElementById("d-img").alt = m.title + "（" + m.artist + "，" + m.year + "）";
+    document.getElementById("d-title").textContent = m.title;
+    document.getElementById("d-meta").textContent = m.artist + " · " + m.year;
+    document.getElementById("d-credit").innerHTML = m.credit + " · " + m.license +
+      " · <a href=" + JSON.stringify(m.source) + " target=_blank rel=noopener>馆藏页</a>";
+    dialog.showModal();
+  });
+  document.getElementById("d-close").addEventListener("click", () => dialog.close());
+  dialog.addEventListener("close", () => { if (lastTrigger) lastTrigger.focus(); });
+</script>
+</body>
+</html>

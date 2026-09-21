@@ -96,6 +96,14 @@ install or redistribute Remotion runtime packages.
   analyses of publicly visible CSS on brand websites, provided "as is"; they
   are not official brand assets, and no brand affiliation is claimed. Only the
   fetch script and catalog index facts are authored here.
+- The `promotion-playbook` skill is authored for this kit from public research
+  into how developer tools and agent skills spread: published repository
+  metadata, public release and discussion threads, and publicly visible growth
+  statistics. No upstream project's text, assets, branding, or code is copied,
+  and no upstream project is named or affiliated. Findings are recorded as
+  generalized, anonymized patterns — measured channel behavior, conversion
+  structure, and documented reputation failures — not as content reproduced from
+  any source. The skill carries this kit's own MIT license.
 
 ## Demo assets (demo/subway-runner)
 

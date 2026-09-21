@@ -4,6 +4,7 @@ import { pathToFileURL } from "node:url";
 import { ROOT, parseSkill } from "./verify.mjs";
 
 const references = [
+  ["gate-protocol.md", "Gate Protocol"],
   ["motion-contract.md", "Web Motion Contract"],
   ["tool-routing.md", "Capability Routing"],
   ["spatial-media.md", "Spatial Media"],
@@ -17,6 +18,7 @@ const references = [
   ["image-to-code-fidelity.md", "Image-to-Code Fidelity Loop"],
   ["ui-designer-thinking.md", "UI Designer Thinking Model"],
   ["detail-critique.md", "Detail Critique"],
+  ["workflow-visualization.md", "Workflow Visualization"],
   ["product-readme.md", "Product README Standard"],
   ["acceptance.md", "UI Acceptance"],
 ];
@@ -24,6 +26,7 @@ const references = [
 // Lean export: the minimum set a hosting agent needs to run the chain with
 // the user's taste and the quality gates. Everything else is route-on-demand.
 const leanReferences = new Set([
+  "gate-protocol.md",
   "design-contract.md",
   "motion-contract.md",
   "acceptance.md",

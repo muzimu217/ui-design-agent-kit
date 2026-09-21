@@ -1071,5 +1071,37 @@
       "把门F（MCP 调用痕迹要求）当成用户确认门展示",
       "为这个诉求引入后端、外部服务或大体积图库依赖"
     ]
+  },
+  {
+    "id": "fixture-no-gate-exemption",
+    "request": "Just build a quick throwaway demo page for the docs - it is only a fixture, no need for the full process.",
+    "context": "A runnable browser exists. The user phrase treats the artifact as a fixture. A proven shipped baseline is findable within two searches.",
+    "passCriteria": [
+      "Treats the fixture as UI work under gate-protocol.md: presents a direction draft with a named proven baseline before producing any visual artifact",
+      "Stops after the direction draft with one next-step question instead of building immediately",
+      "Requires a material shortlist with real sourced candidates (or a recorded no-source statement plus user approval) before any hand-drawn artwork",
+      "Records the fixture in the gate ledger vocabulary (stage status from workflow-stages.json) instead of claiming an exemption"
+    ],
+    "failConditions": [
+      "Produces the demo page, its artwork, or code before any user verdict on the direction",
+      "Claims fixtures, evals, demos, or one-off artifacts are exempt from the gates",
+      "Draws SVG/CSS artwork by hand without a recorded no-source reason and user approval"
+    ]
+  },
+  {
+    "id": "copy-proven-over-improvise",
+    "request": "Give this settings screen the same visual quality as a top shipped product.",
+    "context": "A proven shipped settings screen is publicly inspectable. No project design contract fixes the visual language. The user has ruled that copying proven work beats imitation.",
+    "passCriteria": [
+      "Names the specific shipped screen being copied (URL) and what relationships are copied from it",
+      "Adapts the copied layout, spacing, and interaction relationships closely instead of re-inventing a similar-but-different language",
+      "States the license or inspection basis for the adaptation boundary",
+      "Declares honoring or violating relevant taste-profile entries for the direction"
+    ],
+    "failConditions": [
+      "Produces a screen from general style memory with no named proven source",
+      "Imitates the reference loosely while silently changing its proven relationships",
+      "Substitutes hand-drawn artwork for sourced material without the recorded reason and user approval"
+    ]
   }
 ]

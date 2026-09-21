@@ -575,3 +575,220 @@
 | 适用类型 | 企业级设计系统 / Enterprise design systems |
 | 可达性与授权 | 浏览器正常加载（2026-09-11 实测）；仓库许可 GitHub 识别为 NOASSERTION（Elastic 系双许可），**作为代码依赖前必须核对 LICENSE**，参考研究不受限 |
 | 加入日期 / 来源 | 2026-09-11 / AI 发现（企业级批次） |
+
+---
+
+## 案例样板批次（2026-09-21，awesome-ui-design 66 条策展清单第一批）
+
+> 13 个具体已上线站点（非资源门户）：每站学一个已验证的视觉/交互关系，
+> 是"抄 proven"的直接原料。统一来源：chrichuang218/awesome-ui-design
+> （MIT，含 Linux.do 溯源帖）+ 用户拍板分批入册。截图均为 Playwright 实拍
+> 参考数据，版权归原站，不进生产。
+
+### Radar Laboratory（案例样板 / Case studies）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://radarlaboratory.com |
+| 功效分析·提供什么 | 科教互动站：暗底绿光雷达扫描界面、参数化交互与字体系统 |
+| 功效分析·适合任务 | 科技工业风产品页/HUD 界面的方向基线；数据可视化主视觉 |
+| 功效分析·视觉特征 | 暗底单色荧光 + 仪表质感，完成度高 |
+| 功效分析·内容形态 | 可交互整站（参考研究，非素材） |
+| 使用场景示例 | "要一个雷达/遥测主题的 HUD 页" → 抄其扫描节奏、网格与发光层级 → 门A 带此基线 |
+| 截图示例 | screenshots/awesome-radar-lab.jpeg（2026-09-21，Playwright 实拍） |
+| 镜像替代 | Awwwards 同类获奖案例 |
+| 适用类型 | 案例样板 / Case studies、创意 / Creativity |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-21 实测）；参考研究用途 |
+| 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次（用户拍板） |
+
+### Good Fella（案例样板 / Case studies）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://good-fella.com |
+| 功效分析·提供什么 | 数字工作室地标站：黑底橙字、ASCII 粒子人像大排版、序号微动画 |
+| 功效分析·适合任务 | 品牌工作室页的强视觉指纹；大字排版+单强调色的对比关系 |
+| 功效分析·视觉特征 | 高对比双色、粗野与现代混排 |
+| 功效分析·内容形态 | 可交互整站 |
+| 使用场景示例 | "工作室首页要一眼记住" → 抄其序号导航微动画与橙色线索用法 |
+| 截图示例 | screenshots/awesome-good-fella.jpeg（2026-09-21，Playwright 实拍） |
+| 镜像替代 | Awwwards 工作室类 |
+| 适用类型 | 案例样板 / Case studies、创意 / Creativity |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-21 实测） |
+| 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次 |
+
+### AVA SRG（案例样板 / Case studies）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://srg.ava-digital.site/en |
+| 功效分析·提供什么 | 获奖站点：米灰大字报编辑排版、加载动画、3D 主视觉与撞色 |
+| 功效分析·适合任务 | 编辑风营销页的排版层级；加载动画参考 |
+| 功效分析·视觉特征 | 大字报编辑风+克制撞色 |
+| 功效分析·内容形态 | 可交互整站 |
+| 使用场景示例 | "营销页要杂志感" → 抄其字号阶梯与留白节奏 → 门A 基线 |
+| 截图示例 | screenshots/awesome-ava-srg.jpeg（2026-09-21，Playwright 实拍） |
+| 镜像替代 | Awwwards 编辑风类 |
+| 适用类型 | 案例样板 / Case studies、动效 / Motion |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-21 实测） |
+| 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次 |
+
+### Nfinite Paper（案例样板 / Case studies）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://nfinitepaper.com |
+| 功效分析·提供什么 | 工业产品站：全屏视频 Hero、白色大字、粒子扩散聚合动画 |
+| 功效分析·适合任务 | 制造/材料类产品页；视频大图 Hero 的文字压印关系 |
+| 功效分析·视觉特征 | 工业质感、视频驱动 |
+| 功效分析·内容形态 | 可交互整站 |
+| 使用场景示例 | "重工业产品页要有分量" → 抄其视频 Hero+白字对比与滚动节奏 |
+| 截图示例 | screenshots/awesome-nfinite-paper.jpeg（2026-09-21，Playwright 实拍） |
+| 镜像替代 | Landing Love 同类录像案例 |
+| 适用类型 | 案例样板 / Case studies、创意 / Creativity |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-21 实测） |
+| 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次 |
+
+### Follow Art（案例样板 / Case studies）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://follow.art |
+| 功效分析·提供什么 | 多套页面配色衔接、统一转场、橙底白巨字与倾斜 3D 卡片 |
+| 功效分析·适合任务 | 多页面产品的配色系统与页面间转场一致性参考 |
+| 功效分析·视觉特征 | 高饱和单色底 + 立体卡片 |
+| 功效分析·内容形态 | 可交互整站 |
+| 使用场景示例 | "多页产品每页不同主色但像一家人" → 抄其跨页配色衔接规则 |
+| 截图示例 | screenshots/awesome-follow-art.jpeg（2026-09-21，Playwright 实拍） |
+| 镜像替代 | Digilab（跨页衔接同类） |
+| 适用类型 | 案例样板 / Case studies、配色 / Color |
+| 可达性与授权 | curl HEAD 403（bot 防护）、**浏览器正常**（2026-09-21 实测）——取证用浏览器通道 |
+| 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次 |
+
+### Max Milkin（案例样板 / Case studies）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://maxmilkin.com |
+| 功效分析·提供什么 | Creative Developer 作品集：小字号、大留白、环形散字加载动画 |
+| 功效分析·适合任务 | 个人作品集排版基线；克制的加载动画 |
+| 功效分析·视觉特征 | 灰绿极简、字距呼吸感强 |
+| 功效分析·内容形态 | 可交互整站 |
+| 使用场景示例 | "作品集要高级不花哨" → 抄其字号/留白比例与单点加载动效 |
+| 截图示例 | screenshots/awesome-max-milkin.jpeg（2026-09-21，Playwright 实拍） |
+| 镜像替代 | Stefan Vitasović（同建档期） |
+| 适用类型 | 案例样板 / Case studies、审美 / Aesthetics |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-21 实测） |
+| 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次 |
+
+### Digilab（案例样板 / Case studies）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://digilab.co |
+| 功效分析·提供什么 | 跨页面动画衔接与背景配色过渡、米白手绘纹理、紫药丸按钮 |
+| 功效分析·适合任务 | 多页站点的页面间动效衔接参考 |
+| 功效分析·视觉特征 | 柔和米白+手绘肌理 |
+| 功效分析·内容形态 | 可交互整站 |
+| 使用场景示例 | "页面切换不要硬切" → 抄其跨页背景色过渡与转场关系 |
+| 截图示例 | screenshots/awesome-digilab.jpeg（2026-09-21，Playwright 实拍） |
+| 镜像替代 | Follow Art |
+| 适用类型 | 案例样板 / Case studies、动效 / Motion |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-21 实测） |
+| 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次 |
+
+### Stefan Vitasović（案例样板 / Case studies）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://stefanvitasovic.dev |
+| 功效分析·提供什么 | Creative Developer 作品集 Hero：浅底蓝色大字、黑蓝故障条块 |
+| 功效分析·适合任务 | Hero 区块的字体大字处理与故障点缀用法 |
+| 功效分析·视觉特征 | 浅底高对比、点缀克制的 glitch |
+| 功效分析·内容形态 | 可交互整站 |
+| 使用场景示例 | "Hero 要有记忆点但别过火" → 抄其大字+单条故障块的比例 |
+| 截图示例 | screenshots/awesome-stefan-v.jpeg（2026-09-21，Playwright 实拍） |
+| 镜像替代 | Max Milkin |
+| 适用类型 | 案例样板 / Case studies、创意 / Creativity |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-21 实测） |
+| 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次 |
+
+### Bürocratik 18（案例样板 / Case studies）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://18.burocratik.com |
+| 功效分析·提供什么 | 周年纪念站：白底线稿螺旋年表、横向滚动叙事、引导线与鼠标轨迹 |
+| 功效分析·适合任务 | 滚动叙事/时间线页的引导线与指针跟随关系 |
+| 功效分析·视觉特征 | 线稿手绘感+精密动效 |
+| 功效分析·内容形态 | 可交互整站 |
+| 使用场景示例 | "公司历程页" → 抄其横向滚动+引导线的叙事节奏 |
+| 截图示例 | screenshots/awesome-burocratik-18.jpeg（2026-09-21，Playwright 实拍） |
+| 镜像替代 | Awwwards 滚动叙事类 |
+| 适用类型 | 案例样板 / Case studies、动效 / Motion |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-21 实测） |
+| 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次 |
+
+### Shyi（案例样板 / Case studies）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://shyi.net |
+| 功效分析·提供什么 | 白格纸底黑框粗野主义极简站（论坛推荐案例） |
+| 功效分析·适合任务 | 粗野主义/极简方向的结构参考 |
+| 功效分析·视觉特征 | 格纸底、黑框、无装饰 |
+| 功效分析·内容形态 | 可交互整站 |
+| 使用场景示例 | "内省/文档气质站点" → 抄其边框系统与格纸肌理 |
+| 截图示例 | screenshots/awesome-shyi.jpeg（2026-09-21，Playwright 实拍） |
+| 镜像替代 | Siteinspire（极简画廊） |
+| 适用类型 | 案例样板 / Case studies、审美 / Aesthetics |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-21 实测） |
+| 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次 |
+
+### Yamds Blog（案例样板 / Case studies）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://blog.yamds.cafe |
+| 功效分析·提供什么 | 中文博客视觉与排版案例：粉白衬线、中文导航 |
+| 功效分析·适合任务 | 中文内容站排版基线（竹与墨类任务的近亲参考） |
+| 功效分析·视觉特征 | 柔和粉白、衬线中文 |
+| 功效分析·内容形态 | 可交互整站 |
+| 使用场景示例 | "中文博客要文学气" → 抄其衬线字号/行高与粉白配色 |
+| 截图示例 | screenshots/awesome-yamds-blog.jpeg（2026-09-21，Playwright 实拍） |
+| 镜像替代 | Typewolf（字体搭配） |
+| 适用类型 | 案例样板 / Case studies、审美 / Aesthetics |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-21 实测） |
+| 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次 |
+
+### Stripe（案例样板 / Case studies）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://stripe.com |
+| 功效分析·提供什么 | 成熟品牌设计系统：渐变立体飘带、多语言 SaaS 大字、文档体系 |
+| 功效分析·适合任务 | 支付/金融类产品的信任感视觉；品牌系统级采样 |
+| 功效分析·视觉特征 | 渐变+几何、克制专业 |
+| 功效分析·内容形态 | 可交互整站+公开设计文档 |
+| 使用场景示例 | "金融产品要可信" → 抄其渐变飘带的层级用法与文案密度 |
+| 截图示例 | screenshots/awesome-stripe.jpeg（2026-09-21，Playwright 实拍 /zh-us 落地） |
+| 镜像替代 | Polaris、Lightning（系统级参考） |
+| 适用类型 | 案例样板 / Case studies、设计系统 / Design systems |
+| 可达性与授权 | curl 307→/zh-us 正常、浏览器正常（2026-09-21 实测）；**商标与品牌资产不可复用**，仅参考关系 |
+| 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次 |
+
+### daijinfeng.top（案例样板 / Case studies）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://daijinfeng.top |
+| 功效分析·提供什么 | Stitch+AI 工具制作的个人站成品案例：纯黑暗卡、大字+紫点缀（作者自荐） |
+| 功效分析·适合任务 | 评估"AI 全链路产出能达到的水位"对照样本 |
+| 功效分析·视觉特征 | 纯黑、暗卡、单点缀色 |
+| 功效分析·内容形态 | 可交互整站 |
+| 使用场景示例 | "对比 AI 生成与手工边界" → 作为同类产出的水位参照 |
+| 截图示例 | screenshots/awesome-daijinfeng.jpeg（2026-09-21，Playwright 实拍） |
+| 镜像替代 | —（自荐案例，独一条目） |
+| 适用类型 | 案例样板 / Case studies、创意 / Creativity |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-21 实测）；作者自荐，注意自荐偏差 |
+| 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次 |

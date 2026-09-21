@@ -141,6 +141,7 @@ way; blocked entries need a real browser.
 | 企业级设计系统 / Enterprise design systems | [Blueprint](https://blueprintjs.com) | Palantir's toolkit for data-dense desktop apps (Apache-2.0) | Direct https OK (2026-09-11) |
 | 企业级设计系统 / Enterprise design systems | [React Spectrum](https://react-spectrum.adobe.com) | Adobe's system; behavior/style split via React Aria/Stately (Apache-2.0) | Direct https OK (2026-09-11) |
 | 企业级设计系统 / Enterprise design systems | [Elastic EUI](https://eui.elastic.co) | Kibana's framework for observability and data-viz products | Browser OK (2026-09-11); license NOASSERTION — check LICENSE |
+| 案例样板 / Case studies | [Radar Laboratory](https://radarlaboratory.com) · [Good Fella](https://good-fella.com) · [Bürocratik 18](https://18.burocratik.com) · [Stripe](https://stripe.com) 等 | 13 个具体已上线站点，每站学一个已验证的视觉/交互关系；全 13 条见 source-catalog「案例样板批次」 | Browser OK (2026-09-21，Playwright 实拍 13/13)；follow.art curl HEAD 403 用浏览器通道 |
 
 Routing rule: look up the need type here first, go to the matched website,
 search by product type plus the specific interaction or material, then bring

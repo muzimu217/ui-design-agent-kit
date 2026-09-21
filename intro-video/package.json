@@ -1,0 +1,20 @@
+{
+  "name": "uia-intro-video",
+  "private": true,
+  "scripts": {
+    "gen-audio": "node scripts/gen-track.mjs && node scripts/gen-sfx.mjs",
+    "render": "npm run gen-audio && remotion render src/index.ts UIAIntro out/intro.mp4 --codec h264 --crf 16",
+    "studio": "npm run gen-audio && remotion studio src/index.ts"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.519",
+    "@remotion/transitions": "4.0.519",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "remotion": "4.0.519"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "typescript": "^5.6.0"
+  }
+}

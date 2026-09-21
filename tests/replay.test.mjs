@@ -13,10 +13,13 @@ test("blog demo replay package has anchored inputs and evidence", async () => {
 
 test("evolution report selects the next uncovered scenario without inventing scores", async () => {
   const scenarios = JSON.parse(await readFile(new URL("../evals/scenarios.json", import.meta.url), "utf8"));
+  const ledger = JSON.parse(await readFile(new URL("../evals/results.json", import.meta.url), "utf8"));
+  const executedCount = Object.keys(ledger.runs).length;
+  const nextUncovered = scenarios.find((item) => !ledger.runs[item.id]);
   const report = await buildEvolutionReport();
   assert.equal(report.coverage.total, scenarios.length);
-  assert.equal(report.coverage.executed, 5);
-  assert.equal(report.nextScenario, "remotion-brand-animation");
+  assert.equal(report.coverage.executed, executedCount);
+  assert.equal(report.nextScenario, nextUncovered ? nextUncovered.id : null);
   assert.equal(report.regressions.length, 0);
   assert.ok(report.recommendations.some((item) => item.includes("不自动升级")));
 });

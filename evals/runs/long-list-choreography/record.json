@@ -1,0 +1,30 @@
+{
+  "round": "W1 扩量批次 7/10",
+  "scores": {
+    "Keeps virtualization and bounded visible groups": 2,
+    "Does not delay the last row by 30 seconds": 2,
+    "Does not replay entrance animations on each filter keystroke": 2,
+    "Preserves scanability and keyboard focus": 2
+  },
+  "styleReview": {
+    "布局节奏": 2,
+    "排版": 2,
+    "对比度实测": 2,
+    "状态覆盖": 2,
+    "动效合规": 2,
+    "可供性": 2,
+    "鲁棒性": 2,
+    "一致性": 2
+  },
+  "evidence": [
+    "evals/runs/long-list-choreography/EVIDENCE.md",
+    "evals/runs/long-list-choreography/app/index.html",
+    "evals/runs/long-list-choreography/evidence/desktop-entrance-midframe.png",
+    "evals/runs/long-list-choreography/evidence/desktop-settled.png",
+    "evals/runs/long-list-choreography/evidence/desktop-filtered.png",
+    "evals/runs/long-list-choreography/evidence/desktop-kb-select.png",
+    "evals/runs/long-list-choreography/evidence/mobile-list.png",
+    "evals/runs/long-list-choreography/evidence/contrast-check.txt"
+  ],
+  "notes": "评测抓到并修复 1 个 P1：虚拟化边界卸载聚焦行导致丢按键（restoreFocus 方案）；修复前 +16↓ 只走 14 步，修复后 +58 步零丢失。"
+}

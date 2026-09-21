@@ -10,19 +10,25 @@
 
 | # | 门 | 事项 | 证据位置 | 首次提出 | 轮空 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 门A | 山径基线方向（国家公园预约 × 现代预订台） | evals/runs/direction-draft-gate/DIRECTION.md §7 | 2026-09-06 冲刺6 | 0 | open |
-| 2 | 门A | 四屏结构草案 | 同上 | 2026-09-06 冲刺6 | 0 | open |
-| 3 | 门A | 地图是否纳入范围 | 同上 | 2026-09-06 冲刺6 | 0 | open |
-| 4 | 门A | 演示文案口径 | 同上 | 2026-09-06 冲刺6 | 0 | open |
-| 5 | 门B | 运营台 Enterprise 彩板追认（素材临时采用） | evals/runs/operations-not-marketing/DESIGN.md | 2026-09-06 冲刺3 | 0 | open |
-| 6 | 门B | 运营台字体降级追认（素材临时采用） | 同上 | 2026-09-06 冲刺3 | 0 | open |
-| 7 | 门B | shadcn Card 结构是否采纳 | evals/runs/material-confirmation-gate/MATERIAL-CANDIDATES.md §四 | 2026-09-06 冲刺7 | 0 | open |
-| 8 | 门B | 原生 KPI 指标卡行是否保留 | 同上 | 2026-09-06 冲刺7 | 0 | open |
-| 9 | 门C | step1/step2 生图提示词可用性 | evals/runs/prototype-before-code/PROTOTYPE.md §七 | 2026-09-06 冲刺8 | 0 | open |
-| 10 | 门C | step3（第 3 屏）是否现出 | 同上 | 2026-09-06 冲刺8 | 0 | open |
-| 11 | 门E | 库存台 P2：行双 onClick 冗余 | evals/runs/operations-not-marketing/EVIDENCE.md | 2026-09-06 冲刺2 | 0 | open |
-| 12 | 门E | 库存台 P2：移动端底部门背景滚动 | 同上 | 2026-09-06 冲刺2 | 0 | open |
-| 13 | 门E | 运营台 v2.3 整体验收（RELEASE.md 验证矩阵） | evals/runs/operations-not-marketing/RELEASE.md | 2026-09-07 收口轮 | 0 | open |
+| 1 | 门A | 山径基线方向（国家公园预约 × 现代预订台） | evals/runs/direction-draft-gate/DIRECTION.md §7 | 2026-09-06 冲刺6 | ≥5 | open |
+| 2 | 门A | 四屏结构草案 | 同上 | 2026-09-06 冲刺6 | ≥5 | open |
+| 3 | 门A | 地图是否纳入范围 | 同上 | 2026-09-06 冲刺6 | ≥5 | open |
+| 4 | 门A | 演示文案口径 | 同上 | 2026-09-06 冲刺6 | ≥5 | open |
+| 5 | 门B | 运营台 Enterprise 彩板追认（素材临时采用） | evals/runs/operations-not-marketing/DESIGN.md | 2026-09-06 冲刺3 | ≥5 | open |
+| 6 | 门B | 运营台字体降级追认（素材临时采用） | 同上 | 2026-09-06 冲刺3 | ≥5 | open |
+| 7 | 门B | shadcn Card 结构是否采纳 | evals/runs/material-confirmation-gate/MATERIAL-CANDIDATES.md §四 | 2026-09-06 冲刺7 | ≥5 | open |
+| 8 | 门B | 原生 KPI 指标卡行是否保留 | 同上 | 2026-09-06 冲刺7 | ≥5 | open |
+| 9 | 门C | step1/step2 生图提示词可用性 | evals/runs/prototype-before-code/PROTOTYPE.md §七 | 2026-09-06 冲刺8 | ≥5 | open |
+| 10 | 门C | step3（第 3 屏）是否现出 | 同上 | 2026-09-06 冲刺8 | ≥5 | open |
+| 11 | 门E | 库存台 P2：行双 onClick 冗余 | evals/runs/operations-not-marketing/EVIDENCE.md | 2026-09-06 冲刺2 | ≥5 | open |
+| 12 | 门E | 库存台 P2：移动端底部门背景滚动 | 同上 | 2026-09-06 冲刺2 | ≥5 | open |
+| 13 | 门E | 运营台 v2.3 整体验收（RELEASE.md 验证矩阵） | evals/runs/operations-not-marketing/RELEASE.md | 2026-09-07 收口轮 | ≥5 | open |
+
+> **轮空补记（2026-09-20，大师评审 P1 整改）**：建账以来轮空计数未逐窗累计，
+> 属流程执行缺陷。保守回填：存量 13 项记 `≥5`（2026-09-07 收口、09-11、
+> 09-12、09-13、09-16、09-20 均构成裁决窗口）；论文 P3/P4/P5 记 `≥2`。
+> 方向类事项不衰减；门E P2 三项按 D1 不追溯。批量裁决载体
+> `docs/archive/gate-decision-packet.md` 持续有效（D5），各项仍需逐项裁决。
 
 ## 二、登记与衰减规则
 
@@ -50,12 +56,15 @@
 | D2 | 批量裁决触发阈值 | open ≥8 项 | 2026-09-07 |
 | D3 | S/M/L 骑墙边界 | 每个页面由用户逐页明确确认；确认前不得特批或缩减门 | 2026-09-07 |
 | D5 | 存量事项的批量裁决 | 用户批准生成批量裁决包；包内每项仍需逐项裁决，未选择即保持 open | 2026-09-07 |
+| D6 | 评测/夹具/demo 产物豁免、自绘素材默认地位、"抄 vs 模仿" | 三连裁决（2026-09-20）：① 任何可视化产物（含评测执行、夹具）**无门径豁免**；② 自绘 SVG/CSS 默认禁止，需书面记录检索无果 + 门B 用户批准；③ **抄 proven 成品 > 凭记忆模仿**，无 named source 的视觉产出即流程缺陷——全部固化于 `gate-protocol.md`，违规记 P0 | 2026-09-20 |
 
 ## 四、待定责项
 
 | # | 事项 | 当前处理 |
 | --- | --- | --- |
 | D4 | React Bits 个案采纳流程 | 等用户决定是否固定核查步骤；无决定前按普通候选，逐次读当前 `LICENSE.md` + 门B 选择 |
+| D7 | 大师评审挂起项包（行内子项状态化，2026-09-20 第 4 轮整改；**裁决载体：`docs/archive/d7-decision-packet.md` 包 A/B/C，2026-09-21 建立并含第 16 轮线上站新发现 A1 命名混拼/A4 线上站合回 main**；各项独立定夺）：①六卡证据截图重截=挂起（=A2）；②五类 anti-slop 校准清单=挂起（=B1）；③方向稿三旋钮（方差/动效/密度 8/6/4）=挂起（=B2）；④规则密度扩容=挂起（=B3）；⑤门C 多变体并排=挂起（=C1）；⑥demo README status 字段+构建硬校验=挂起（并入 C2 相关）；⑦发布前截图回归+GATES↔账本回填一致性机检=挂起（=C2）；⑧showcase/dist 旧版残留=本机核查已不存在（2026-09-20），证据轮复核即可；⑨drift 守护变异冒烟自检=挂起（=C3）；A1 命名混拼/A4 线上站合回 main=包 A 新增（2026-09-21 第 16 轮发现） | 2026-09-20 起挂起，等用户按裁决包逐项勾选；每小时复审跟踪 |
+| D8 | p-habit-2 记账口径（大师第 3 轮"二选一"） | 已裁决：non-corpus 标记（`evals/runs/p-habit-2/NON-CORPUS.md`）+ doc-drift "runs 目录必须有台账键或标记"断言（第 4 轮升级为内容校验）；不回溯造场景打分 |
 ## 五、论文门禁（UAK paper，2026-09-16 起）
 
 > 论文是本仓库的一等门禁公民：按 `docs/superpowers/specs/2026-09-16-uak-paper-design.md` §7，
@@ -66,10 +75,10 @@
 | # | 门 | 事项 | 证据位置 | 首次提出 | 轮空 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- |
 | P1 | 论文P1 | 全文手稿内容冻结追认（9 节、数据口径、声明边界） | `paper/uak-paper.md` | 2026-09-16 | 0 | approved |
-| P2 | 论文P3 | 成品裁决：PDF+DOCX 视觉验收通过后，是否入库 `paper/` 并授权推送 | `paper/out/uak-paper.pdf`（本地构建） | 2026-09-16 | 0 | open |
-| P3 | 论文P3 | arXiv 分类选择（cs.HC vs cs.SE，规范预留的用户决定） | 设计稿 §9 | 2026-09-16 | 0 | open |
-| P4 | 论文P3 | 各预印本/自出版平台发布（arXiv 背书、Zenodo DOI 等） | `paper/submission/SUBMIT.md` | 2026-09-16 | 0 | open |
-| P5 | 论文P3 | arXiv 背书人联系（用户登录后从候选名单发信） | `paper/submission/ENDORSERS.md` | 2026-09-17 | 0 | open |
+| P2 | 论文P3 | 成品裁决：PDF+DOCX 视觉验收通过后，是否入库 `paper/` 并授权推送 | `paper/out/uak-paper.pdf`（本地构建） | 2026-09-16 | ≥2 | approved |
+| P3 | 论文P3 | arXiv 分类选择（cs.HC vs cs.SE，规范预留的用户决定） | 设计稿 §9 | 2026-09-16 | ≥2 | open |
+| P4 | 论文P3 | 各预印本/自出版平台发布（arXiv 背书、Zenodo DOI 等） | `paper/submission/SUBMIT.md` | 2026-09-16 | ≥2 | open |
+| P5 | 论文P3 | arXiv 背书人联系（用户登录后从候选名单发信） | `paper/submission/ENDORSERS.md` | 2026-09-17 | ≥2 | open |
 
 - 回填（2026-09-16）：P1 approved——用户指示"符合专业论坛格式后发布到对应社区"，视为内容追认；
   随即入库 commit 706aea5（当时仅本地）。

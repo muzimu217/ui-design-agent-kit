@@ -1,0 +1,14 @@
+{
+  "round": "W1 扩量批次 1/10",
+  "scores": {
+    "Calculates 258 frames and 8.6 seconds": 2,
+    "Explains that overlays would not subtract scene time": 2,
+    "Checks transition lengths against adjacent scenes": 2,
+    "Keeps the review read-only": 2
+  },
+  "evidence": [
+    "evals/runs/remotion-overlap-math/REVIEW.md",
+    "evals/runs/remotion-overlap-math/evidence/arithmetic-check.txt"
+  ],
+  "notes": "只读评审场景，无 UI 产物，styleReview 不适用。"
+}

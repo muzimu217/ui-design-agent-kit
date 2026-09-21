@@ -21,6 +21,20 @@ state changes legible. Do not mistake more effects or tool calls for better work
   Planning and review do not authorize code changes. A narrow fix is not a redesign.
   Self-critique and severity never expand that authority: a read-only review can
   finish with an open P0, but the implementation must remain unaccepted.
+- **Follow [gate-protocol.md](references/gate-protocol.md) mechanically on any
+  task that produces a visually rendering artifact** — pages, components, demos,
+  fixtures, eval executions, document illustrations included. There is no
+  fixture/demo/eval/one-off exemption, and the agent must not classify its way
+  out of a gate: when unsure whether a gate applies, ask the user. Each gate
+  ends with exactly one proposed next step and waits for that user verdict;
+  producing the next stage's output while a gate is pending is a process P0.
+- **First-turn contract for any new-UI request**: the first response may only
+  contain requirement understanding, a proposed first-version scope, clarifying
+  questions, or the gate A direction-draft submission — never code, scaffolds,
+  dependency installs, or asset downloads. Before submitting any gate or
+  producing any UI artifact, gate-protocol.md must have been actually read in
+  this session (references load on demand; assuming its rules from memory is
+  the exact failure mode this rule exists to close).
 - Scale the chain to the task and state the tier with the plan: S (narrow
   repair of one existing component or defect — no direction or material gates,
   one evidence-driven verification round, MCP gate scaled to the checks
@@ -28,10 +42,13 @@ state changes legible. Do not mistake more effects or tool calls for better work
   direction note with a named baseline, material gate only when external
   material is adopted, a baseline screenshot or montage may stand in for a
   generated prototype), L (a new product, multi-surface work, or a
-  brand-defining direction — the full chain with gates A through F). The user
-  explicitly confirms the tier and boundary **for each page** before any
-  special-case route or gate reduction is used; a narrow repair never uses
-  tiering as a license to expand into a redesign.
+  brand-defining direction — the full chain with gates A through F). Tiers
+  scale artifact depth only; per gate-protocol.md they never remove user
+  verdicts for new visual work, and S applies solely to repairs inside an
+  existing approved design with no new visual decisions. The user explicitly
+  confirms the tier and boundary **for each page** before any special-case
+  route or gate reduction is used; a narrow repair never uses tiering as a
+  license to expand into a redesign.
 - Read the target repository's instructions, dependencies, routes, components,
   tokens, assets, and current states before choosing libraries or visual direction.
 - Preserve the user's brand, content, stack, and chosen references. Established
@@ -50,7 +67,9 @@ state changes legible. Do not mistake more effects or tool calls for better work
   into the site, present the shortlist to the user with sources and adaptation
   boundaries and obtain explicit selection first; material the user did not
   select must not enter implementation. Replicating a proven example is
-  preferred over inventing a new visual language or interaction pattern.
+  preferred over inventing a new visual language or interaction pattern; gate A
+  requires this named baseline, and per gate-protocol.md §2 adapting closely
+  from the named source is the rule — memory-imitation without one is a defect.
 - When the task needs outside material, read [material-scouting.md](references/material-scouting.md).
   Classify each candidate as a reference, component, asset, or prompt; search a
   small first-pass budget; rank by task relevance, inspectable evidence, rights
@@ -65,7 +84,9 @@ state changes legible. Do not mistake more effects or tool calls for better work
   assembly-first rule and the default baseline matrix in
   [material-scouting.md](references/material-scouting.md): adapting a named
   baseline or a pre-cleared component is the default path, and a hand-drawn
-  CSS treatment needs a recorded reason. Pre-cleared sources carry verified
+  CSS treatment is an exception that needs both a recorded reason why nothing
+  can be assembled from existing sources and explicit user approval at gate B
+  (gate-protocol.md §2). Pre-cleared sources carry verified
   license facts only; user selection still gates every adoption.
 - When the request starts from an image, screenshot, Figma handoff, or asks for
   higher visual fidelity, follow [image-to-code-fidelity.md](references/image-to-code-fidelity.md).
@@ -79,11 +100,24 @@ state changes legible. Do not mistake more effects or tool calls for better work
   code and licensed assets; do not present a close copy as original work. If no
   suitable baseline can be found, or the user explicitly requests originality,
   state that constraint and then create the smallest justified new direction.
+- **Copy proven work; do not imitate from memory**（用户裁定 2026-09-20："更擅长
+  是抄而不是去模仿"）. For every new visual surface, first find proven shipped
+  implementations and adapt the best one closely — named URL, what is copied,
+  license boundary. "I saw the style and re-created it" does not qualify: a
+  visual output with no named proven source is a process defect. Inventing a
+  new visual language is the exception and needs a searched-and-ruled-out
+  statement plus user approval at gate A. Hand-drawn SVG/CSS artwork is never
+  the default substitute for real sourced material: it requires both a recorded
+  reason why nothing can be assembled from existing sources and explicit user
+  approval at gate B (gate-protocol.md §2).
 - Do not invent customer claims, testimonials, metrics, working integrations, or
   backend persistence. Label fixture data as demo data when that distinction matters.
 - Ask only for choices that materially change the outcome. Otherwise state a
-  reasonable assumption and proceed within scope. Do not make the user choose
-  between libraries when the existing project already answers that question.
+  reasonable assumption and proceed within scope — and in UI work "within
+  scope" never includes skipping a gate: gates are always outcome-changing
+  user verdicts, so no scope reading authorizes proceeding past one. Do not
+  make the user choose between libraries when the existing project already
+  answers that question.
 - Keep commentary and handoff in the user's language. Never put agent-process
   explanations, tool names, or implementation instructions into the product UI.
 
@@ -140,6 +174,10 @@ fix a universal feature set, visual style, or technology stack:
    existing prototype, contract, implementation, and acceptance gates. Resume
    from the first affected unresolved step when the user changes requirements;
    preserve valid approvals and do not restart intake for a narrow repair.
+   Gate mechanics — per-gate artifacts, the one-gate-one-presentation stop
+   rule, the mandatory "next step + question" ending, and the no-fixture-
+   exemption scope — are defined in [gate-protocol.md](references/gate-protocol.md)
+   and are followed mechanically, not by agent discretion.
 
 The first reply contains a short understanding, proposed first-version scope,
 and only the current assumptions or decisions that matter. Later replies state
@@ -188,6 +226,13 @@ repair self-caught defects only within authorized edits, and present the remaini
 with their severity. The user judges direction at the gates; you judge craft
 before the gates. An unfixed P0 blocks implementation acceptance, not delivery
 of a review or a blocker report.
+
+At a gate presentation, or whenever the user asks where the work stands, produce
+the workflow diagram per [workflow-visualization.md](references/workflow-visualization.md):
+record the task's real stage statuses and evidence in a state file, render it to
+one self-contained HTML the user can open, and check it before handing it over.
+It reports the record, never an optimistic version of it. A narrow repair that
+touches no gate does not need one.
 
 Identify the audience, primary job, target surface, critical states, and technical
 constraints. Choose the surface's mode, not a stereotype for the entire company:

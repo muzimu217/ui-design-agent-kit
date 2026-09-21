@@ -1,0 +1,30 @@
+{
+  "round": "W1 扩量批次 5/10",
+  "scores": {
+    "Normal entrance uses stagger steps between 0.04 and 0.08 seconds": 2,
+    "Reduced motion removes spatial animation, blur, tilt, and stagger": 2,
+    "Touch and keyboard users retain equivalent feedback and all actions": 2,
+    "Tests both preference modes": 2
+  },
+  "styleReview": {
+    "布局节奏": 2,
+    "排版": 2,
+    "对比度实测": 2,
+    "状态覆盖": 2,
+    "动效合规": 2,
+    "可供性": 2,
+    "鲁棒性": 2,
+    "一致性": 2
+  },
+  "evidence": [
+    "evals/runs/reduced-motion-over-style/EVIDENCE.md",
+    "evals/runs/reduced-motion-over-style/app/index.html",
+    "evals/runs/reduced-motion-over-style/evidence/desktop-entrance-midframe.png",
+    "evals/runs/reduced-motion-over-style/evidence/desktop-entrance-settled.png",
+    "evals/runs/reduced-motion-over-style/evidence/desktop-reduced-motion.png",
+    "evals/runs/reduced-motion-over-style/evidence/desktop-dialog-open.png",
+    "evals/runs/reduced-motion-over-style/evidence/mobile-gallery.png",
+    "evals/runs/reduced-motion-over-style/evidence/contrast-check.txt"
+  ],
+  "notes": "双偏好模式 Playwright emulateMedia 实测；动画为增强而非可见性闸门（无 JS 亦完整可见）。触屏路径未做真机试验，已在 EVIDENCE 局限节声明。"
+}

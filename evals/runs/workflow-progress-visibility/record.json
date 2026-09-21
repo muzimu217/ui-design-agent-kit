@@ -1,0 +1,28 @@
+{
+  "round": "W1 扩量批次 9/10",
+  "scores": {
+    "区分两件事：展示站只能呈现已记录的交付回放或构建期快照，不能呈现实时任务状态；用户要的'当前进度'落在他自己的项目目录里的状态记录": 2,
+    "用 tooling/workflow-stages.json 的阶段与门作为唯一真相源，而不是在页面或文档里另写一份流程定义": 2,
+    "状态用已定义的枚举（pending/active/gated/passed/blocked）表达，门是停点而普通阶段不是": 2,
+    "演示数据取自真实交付记录（如 demo/ 下的 PLAN.md、DESIGN.md、验收记录），没有证据的阶段如实标注为未记录": 2,
+    "明确标注这是回放而非实时监控，不暗示存在后端或实时数据源": 2
+  },
+  "styleReview": {
+    "布局节奏": 2,
+    "排版": 2,
+    "对比度实测": 1,
+    "状态覆盖": 2,
+    "动效合规": 1,
+    "可供性": 2,
+    "鲁棒性": 2,
+    "一致性": 2
+  },
+  "evidence": [
+    "evals/runs/workflow-progress-visibility/EVIDENCE.md",
+    "evals/runs/workflow-progress-visibility/phone-demo-state.json",
+    "evals/runs/workflow-progress-visibility/replay.html",
+    "evals/runs/workflow-progress-visibility/evidence/replay-desktop.png",
+    "evals/runs/workflow-progress-visibility/evidence/replay-mobile.png"
+  ],
+  "notes": "状态全部回放自 phone-demo 真实验收记录；记录缺失的门（A/C/D/F）如实 pending，E gated 停在验证门。styleReview 两维诚实扣分（对比度与动效未对该 CLI 产物重跑测量/断言）。"
+}

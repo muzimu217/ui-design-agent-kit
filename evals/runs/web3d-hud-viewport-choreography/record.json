@@ -1,0 +1,30 @@
+{
+  "round": "W1 扩量批次 10/10",
+  "scores": {
+    "界面文本、标尺与面板全部由 DOM/SVG 承载，通过逐帧投影吸附到 3D 锚点（或采用 CSS2DRenderer/Drei Html 等现成实现并说明改编边界）": 2,
+    "机位切换由命名状态机驱动，相机位置与视线目标成对补间，中途切换从当前值续接而不是回跳": 2,
+    "HUD 入场与滑入遵循 web 动效契约，reduced motion 下自动巡弋改为硬切且信息全部可达": 2,
+    "标签在背对相机或出视锥时隐藏或收拢，移动端重排不与模型主体脱节": 2,
+    "用真实像素、投影联动和状态切换验证，记录闲置降频与 teardown 资源释放": 2
+  },
+  "styleReview": {
+    "布局节奏": 2,
+    "排版": 2,
+    "对比度实测": 2,
+    "状态覆盖": 2,
+    "动效合规": 2,
+    "可供性": 2,
+    "鲁棒性": 2,
+    "一致性": 2
+  },
+  "evidence": [
+    "evals/runs/web3d-hud-viewport-choreography/EVIDENCE.md",
+    "evals/runs/web3d-hud-viewport-choreography/app/index.html",
+    "evals/runs/web3d-hud-viewport-choreography/evidence/v2-overview.png",
+    "evals/runs/web3d-hud-viewport-choreography/evidence/v2-focus-led.png",
+    "evals/runs/web3d-hud-viewport-choreography/evidence/v2-focus-lid.png",
+    "evals/runs/web3d-hud-viewport-choreography/evidence/v2-mobile-reduced-focus.png",
+    "evals/runs/web3d-hud-viewport-choreography/evidence/contrast-check.txt"
+  ],
+  "notes": "真实授权 GLB（Jed Falcone, CC BY 4.0）从仓库原位加载；CSS2DRenderer 现成实现+视锥/背向裁剪改编边界已声明；中途反转连续性、出视锥隐藏、闲置 1/4 降频、teardown 全部实测。自抓修复 2 个 P1（机位构图+部件命名对齐真实模型 / 三级文字对比度 3.86）。"
+}

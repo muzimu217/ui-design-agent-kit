@@ -1,0 +1,30 @@
+{
+  "round": "W1 扩量批次 6/10",
+  "scores": {
+    "Uses stiffness 400, damping 30, mass 0.8 for crisp feedback": 2,
+    "Uses stiffness 280, damping 18, mass 1.2 for the expressive card": 2,
+    "Hover response starts within 150ms without promising spring settlement in 150ms": 2,
+    "Press feedback includes keyboard active state and preserves the hit area": 2,
+    "Rapid reversal leaves the state and focus correct": 2
+  },
+  "styleReview": {
+    "布局节奏": 2,
+    "排版": 2,
+    "对比度实测": 2,
+    "状态覆盖": 2,
+    "动效合规": 2,
+    "可供性": 2,
+    "鲁棒性": 2,
+    "一致性": 2
+  },
+  "evidence": [
+    "evals/runs/physical-motion-presets/EVIDENCE.md",
+    "evals/runs/physical-motion-presets/app/index.html",
+    "evals/runs/physical-motion-presets/evidence/desktop-hover.png",
+    "evals/runs/physical-motion-presets/evidence/desktop-kb-press.png",
+    "evals/runs/physical-motion-presets/evidence/desktop-card-open.png",
+    "evals/runs/physical-motion-presets/evidence/mobile-showcase.png",
+    "evals/runs/physical-motion-presets/evidence/contrast-check.txt"
+  ],
+  "notes": "沙箱无 motion/react，降级为页内半隐式欧拉积分器（参数即常量，运行时断言原值）；过冲 210.1°、21ms 响应、中途反转零残留均为实测。"
+}

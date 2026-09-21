@@ -1,0 +1,10 @@
+PASS 正文/纸底 #1C1E21 on #F6F6F3 = 15.43:1
+PASS 正文/卡面 #1C1E21 on #FFFFFF = 16.71:1
+PASS 次级文字/卡面 #5C6167 on #FFFFFF = 6.25:1
+PASS 提示文字/卡面 #6A7076 on #FFFFFF = 5.01:1
+PASS 提示文字/纸底 #6A7076 on #F6F6F3 = 4.63:1
+PASS 主色文字/卡面 #2557A7 on #FFFFFF = 7.00:1
+PASS 警示文字/警示底 #9A5B00 on #FDF1DD = 4.86:1
+PASS 危险文字/危险底 #B3372E on #FBEAE8 = 5.15:1
+PASS 按钮文字/主色底 #FFFFFF on #2557A7 = 7.00:1
+ALL 9 TEXT PAIRS PASS AA (>=4.5:1)

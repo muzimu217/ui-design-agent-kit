@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>库存检索 · 500 行演示</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%231a2b3c'/%3E%3Crect x='4' y='4' width='8' height='8' rx='1.5' fill='%23e8a13c'/%3E%3C/svg%3E" />
+<style>
+  :root{
+    --bg:#f7f6f3; --panel:#ffffff; --ink:#1b2430; --ink-2:#5d6673; --ink-3:#707a87;
+    --line:#e4e2dc; --line-2:#d5d2ca; --accent:#1a5bb5; --accent-soft:#e7eff9;
+    --ok:#19703d; --ok-soft:#e3f2e8; --warn:#9a5b00; --warn-soft:#fbf0dc;
+    --zero:#b3372e; --zero-soft:#faeae8; --focus:#0f62d6;
+    --row-h:36px;
+    --ease-out:cubic-bezier(0.22,1,0.36,1);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:14px/1.5 -apple-system,"PingFang SC","Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:40px 24px 56px}
+  h1{font-size:20px;margin:0 0 2px}
+  .sub{margin:0 0 16px;color:var(--ink-2);font-size:13px}
+  .toolbar{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+  .toolbar input{
+    flex:1;max-width:320px;padding:8px 12px;font:inherit;color:var(--ink);
+    border:1px solid var(--line-2);border-radius:8px;background:var(--panel)}
+  .toolbar input:focus-visible{outline:none;border-color:var(--focus);
+    box-shadow:0 0 0 2px var(--panel),0 0 0 4px var(--focus)}
+  .count{color:var(--ink-2);font-size:13px;font-variant-numeric:tabular-nums}
+  .hint{color:var(--ink-3);font-size:12px;margin-left:auto}
+  .tablebox{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .thead{display:grid;grid-template-columns:110px 1fr 96px 80px 88px;
+    padding:0 14px;height:34px;align-items:center;
+    font-size:12px;color:var(--ink-2);border-bottom:1px solid var(--line);background:#fbfaf7}
+  .scroller{height:432px;overflow-y:auto;position:relative;outline:none}
+  .scroller:focus-visible{box-shadow:inset 0 0 0 2px var(--accent-soft)}
+  .spacer{position:relative}
+  .row{position:absolute;left:0;right:0;height:var(--row-h);
+    display:grid;grid-template-columns:110px 1fr 96px 80px 88px;align-items:center;
+    padding:0 14px;border-bottom:1px solid var(--line);cursor:pointer;
+    font-variant-numeric:tabular-nums}
+  .row:hover{background:#f6f8fb}
+  .row.selected{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+  .row:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--panel),inset 0 0 0 4px var(--focus);border-radius:4px;z-index:1}
+  .sku{color:var(--ink-2);font-size:13px}
+  .qty{text-align:right}
+  .chip{justify-self:start;padding:1px 8px;border-radius:99px;font-size:12px}
+  .chip.ok{color:var(--ok);background:var(--ok-soft)}
+  .chip.warn{color:var(--warn);background:var(--warn-soft)}
+  .chip.zero{color:var(--zero);background:var(--zero-soft)}
+  .empty{padding:40px;text-align:center;color:var(--ink-2)}
+  /* 入场：仅对"本次窗口新挂载且从未出现过"的行生效；延迟按窗口内序号
+     有界封顶（12×40ms=480ms），与全表 500 行的全局序号无关 */
+  @keyframes row-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+  .row.anim{animation:row-in 240ms var(--ease-out) both;animation-delay:var(--d,0ms)}
+  .statusline{margin-top:10px;color:var(--ink-3);font-size:12px;
+    font-variant-numeric:tabular-nums}
+  @media (prefers-reduced-motion:reduce){.row.anim{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>库存检索</h1>
+  <p class="sub">500 条演示记录 · 虚拟化渲染，仅挂载视口行 · ↑↓ 巡行，回车选中</p>
+  <div class="toolbar">
+    <input id="q" type="search" placeholder="按名称或 SKU 过滤…" aria-label="过滤库存" />
+    <span class="count" id="count"></span>
+    <span class="hint">演示数据，无后端</span>
+  </div>
+  <div class="tablebox">
+    <div class="thead" aria-hidden="true">
+      <span>SKU</span><span>名称</span><span>库位</span><span class="qty">数量</span><span>状态</span>
+    </div>
+    <div class="scroller" id="scroller" tabindex="0" role="listbox" aria-label="库存列表">
+      <div class="spacer" id="spacer"></div>
+    </div>
+  </div>
+  <p class="statusline" id="statusline">已挂载 0 行 / 共 500 行 · 入场节奏只作用于当前视口组</p>
+</div>
+
+<script>
+  // ===== 确定性演示数据（500 行，无随机） =====
+  const NOUNS = ['轴承','螺栓','垫圈','密封圈','滤芯','皮带','齿轮','销轴','卡簧','油封','接头','阀门','电机','传感器','继电器','保险丝','线束','管夹','法兰','链轮'];
+  const SPECS = ['6204','M8×40','M10','A-25','HF-30','B-90','Z-12','Φ12','C-08','S-20','G1/2','DN15','Y2-90','Q-03','JD-1','BS-5','W-16','K-40','FL-8','L-10'];
+  const ROWS = Array.from({ length: 500 }, (_, i) => {
+    const name = NOUNS[i % NOUNS.length] + '-' + SPECS[(i * 7) % SPECS.length];
+    const qty = (i * 37) % 240;
+    const status = qty === 0 ? 'zero' : qty < 40 ? 'warn' : 'ok';
+    return { id: i, sku: 'SKU-' + String(10000 + i * 3).slice(0, 5), name,
+             bin: String.fromCharCode(65 + i % 6) + '-' + String(1 + i % 24).padStart(2, '0'),
+             qty, status };
+  });
+  const STATUS_LABEL = { ok: '在库', warn: '低库存', zero: '缺货' };
+
+  // ===== 虚拟化：只挂载视口 + overscan 行 =====
+  const ROW_H = 36, OVERSCAN = 5, MAX_GROUP = 12, STEP_MS = 40;
+  const scroller = document.getElementById('scroller');
+  const spacer = document.getElementById('spacer');
+  const q = document.getElementById('q');
+  const count = document.getElementById('count');
+  const statusline = document.getElementById('statusline');
+  let visible = ROWS;                 // 过滤后的可见集合
+  let seen = new Set();               // 已入过场的行 id：入场动画每人只一次
+  let selected = new Set();
+  let focusId = null;
+  spacer.style.height = visible.length * ROW_H + 'px';
+
+  function applyFilter() {
+    const s = q.value.trim().toLowerCase();
+    visible = s ? ROWS.filter(r => r.name.toLowerCase().includes(s) || r.sku.toLowerCase().includes(s)) : ROWS;
+    spacer.style.height = visible.length * ROW_H + 'px';
+    render(true); // 保持滚动位置重新挂载窗口
+  }
+
+  function render(keepScroll) {
+    const top = scroller.scrollTop;
+    const start = Math.max(0, Math.floor(top / ROW_H) - OVERSCAN);
+    const end = Math.min(visible.length, Math.ceil((top + scroller.clientHeight) / ROW_H) + OVERSCAN);
+    const frag = document.createDocumentFragment();
+    let mountedAnim = 0;
+    for (let i = start; i < end; i++) {
+      const r = visible[i];
+      const row = document.createElement('div');
+      row.className = 'row' + (selected.has(r.id) ? ' selected' : '');
+      row.style.top = i * ROW_H + 'px';
+      row.setAttribute('role', 'option');
+      row.dataset.id = r.id;
+      row.tabIndex = focusId === r.id ? 0 : -1;
+      // 有界节奏：延迟按"窗口内序号"封顶 MAX_GROUP×STEP_MS，绝不随全表序号增长
+      if (!seen.has(r.id)) {
+        seen.add(r.id);
+        row.classList.add('anim');
+        row.style.setProperty('--d', Math.min(i - start, MAX_GROUP) * STEP_MS + 'ms');
+        mountedAnim++;
+      }
+      row.innerHTML = `<span class="sku">${r.sku}</span><span>${r.name}</span>` +
+        `<span>${r.bin}</span><span class="qty">${r.qty}</span>` +
+        `<span class="chip ${r.status}">${STATUS_LABEL[r.status]}</span>`;
+      frag.appendChild(row);
+    }
+    spacer.replaceChildren(frag);
+    count.textContent = visible.length + ' 条';
+    statusline.textContent = `已挂载 ${end - start} 行 / 共 ${visible.length} 行 · 本次入场 ${mountedAnim} 行（节奏封顶 ${Math.min(MAX_GROUP, end - start) * STEP_MS}ms）`;
+    restoreFocus();
+  }
+
+  // 虚拟化卸载聚焦行后焦点会掉到 body——渲染后把焦点还回去；行不在窗口内时
+  // 把焦点交给 scroller 本体，保证下一次方向键仍能从 focusId 续行。
+  function restoreFocus() {
+    if (focusId == null) return;
+    const el = [...spacer.children].find(x => Number(x.dataset.id) === focusId);
+    if (el) {
+      if (document.activeElement !== el) { el.tabIndex = 0; el.focus({ preventScroll: true }); }
+    } else if (document.activeElement === document.body) {
+      scroller.focus({ preventScroll: true });
+    }
+  }
+
+  scroller.addEventListener('scroll', () => requestAnimationFrame(() => render()));
+  let qtoken = 0;
+  q.addEventListener('input', () => { const t = ++qtoken; requestAnimationFrame(() => { if (t === qtoken) applyFilter(); }); });
+
+  // ===== 键盘巡行 + 选择（roving focus） =====
+  function focusRow(id, scroll = true) {
+    focusId = id;
+    const el = [...spacer.children].find(x => Number(x.dataset.id) === id);
+    if (!el) {
+      // 目标行未挂载：把窗口滚到它附近再试一次（只递归一层）
+      const vi = visible.findIndex(r => r.id === id);
+      if (scroll && vi !== -1) {
+        scroller.scrollTop = Math.max(0, vi * ROW_H - scroller.clientHeight / 2);
+        render();
+        return focusRow(id, false);
+      }
+      return false;
+    }
+    for (const x of spacer.children) {
+      x.tabIndex = Number(x.dataset.id) === id ? 0 : -1;
+    }
+    if (scroll) el.scrollIntoView({ block: 'nearest' });
+    el.focus();
+    return true;
+  }
+  scroller.addEventListener('keydown', (e) => {
+    const idx = visible.findIndex(r => r.id === focusId);
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const base = idx === -1 ? (e.key === 'ArrowDown' ? -1 : visible.length) : idx;
+      const next = visible[Math.max(0, Math.min(visible.length - 1, base + (e.key === 'ArrowDown' ? 1 : -1)))];
+      if (next) focusRow(next.id);
+    } else if (e.key === 'Enter' && idx !== -1) {
+      e.preventDefault();
+      const r = visible[idx];
+      selected.has(r.id) ? selected.delete(r.id) : selected.add(r.id);
+      render();
+      focusRow(r.id);
+    }
+  });
+  scroller.addEventListener('click', (e) => {
+    const row = e.target.closest('.row');
+    if (!row) return;
+    const id = Number(row.dataset.id);
+    selected.has(id) ? selected.delete(id) : selected.add(id);
+    render();
+    focusRow(id);
+  });
+
+  render();
+</script>
+</body>
+</html>

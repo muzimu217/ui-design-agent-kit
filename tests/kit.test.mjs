@@ -15,6 +15,7 @@ test("installed skills, references, and pinned MCP config are complete", async (
     "gsap-core", "gsap-frameworks", "gsap-performance", "gsap-plugins",
     "gsap-react", "gsap-scrolltrigger", "gsap-timeline", "gsap-utils",
     "impeccable", "jiejoe-design", "motion", "pick-ui-library",
+    "promotion-playbook",
     "remotion-best-practices", "remotion-create", "remotion-docs",
     "remotion-markup", "remotion-render", "remotion-studio",
     "remotion-video-agent", "ui-design-agent", "ui-ux-pro-max",
@@ -147,7 +148,7 @@ test("single-file prompt embeds its references and uses working in-document link
   const links = [...prompt.matchAll(/\]\(#([^)]+)\)/g)];
   assert.ok(links.length >= 3);
   for (const [, anchor] of links) assert.ok(headingAnchors.has(anchor), `Broken prompt anchor: ${anchor}`);
-  for (const name of ["motion-contract.md", "tool-routing.md", "spatial-media.md", "stitch-mcp.md", "material-scouting.md", "plan-execute.md", "image-to-code-fidelity.md", "product-readme.md", "acceptance.md"]) {
+  for (const name of ["motion-contract.md", "tool-routing.md", "spatial-media.md", "stitch-mcp.md", "material-scouting.md", "plan-execute.md", "image-to-code-fidelity.md", "product-readme.md", "acceptance.md", "workflow-visualization.md"]) {
     const source = await readFile(path.join(ROOT, ".agents/skills/ui-design-agent/references", name), "utf8");
     assert.equal(prompt.split(source.trim()).length - 1, 1, `Reference must be embedded exactly once: ${name}`);
   }

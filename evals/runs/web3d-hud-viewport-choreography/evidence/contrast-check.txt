@@ -1,0 +1,7 @@
+PASS 正文/背景 15.64:1
+PASS 次级/面板 7.20:1
+PASS 三级/面板 5.08:1
+PASS 三级/背景 5.23:1
+PASS 强调/面板 9.30:1
+PASS 正文/面板 15.19:1
+ALL 6 PASS (shipped values)

@@ -7,10 +7,10 @@
 
 | # | 事项 | 说明与建议改法 | 状态 |
 | --- | --- | --- | --- |
-| A1 | **"曜石 X1" 命名混拼** | 线上站三名字并存：历史截图卡"曜石 X1" vs `demo/phone-demo`=曜石 12 Pro vs `demo/product-demo`=曜时 X1。建议：历史卡片统一加后缀"（历史截图）"，不改正案产品名；**需你定改法**。改源在 main 侧 showcase，须随 A4 上线 | open |
-| A2 | 六卡截图重截（D7①） | `showcase/evidence/` 仅 showcase-six-cards.png，PUBLIC_APPS 已 8 项；需起服务+浏览器实拍 8 卡版 | open |
+| A1 | **"曜石 X1" 命名混拼** | 线上站三名字并存：历史截图卡"曜石 X1" vs `demo/phone-demo`=曜石 12 Pro vs `demo/product-demo`=曜时 X1。建议：历史卡片统一加后缀"（历史截图）"，不改正案产品名；**需你定改法**。改源在 main 侧 showcase，须随 A4 上线 | **passed（2026-09-21）**：showcase/products/src/main.tsx obsidian 卡 name→"曜石 X1（历史截图）"，description 注明与现行 demo「曜石 12 Pro」为不同代产物；展示边界测试 9/9。随 A4 上线生效 |
+| A2 | 六卡截图重截（D7①） | `showcase/evidence/` 仅 showcase-six-cards.png，PUBLIC_APPS 已 8 项；需起服务+浏览器实拍 8 卡版 | **进行中**：本地 build（--base "/"）+4191 服务成功、HTML 正常加载，但 assets 404 致 SPA 空白（未收口）——下轮定时任务按此线索排查（试默认 PAGES_BASE 子路径部署/核对 404 资源路径）后实拍 |
 | A3 | intro.mp4 过期数字 | 视频内测试计数 16/16，现 58/58；需 Remotion 改字幕重渲染 | open |
-| A4 | **线上站合回 main** | 页脚 SHA `aa38774` = main 的 09-17 快照；实验分支 20+ 笔整改（链路加固/漂移整改/P-habit-2 归档）对线上零影响。合并 main 会触发 Pages 自动部署；**须你明确授权合并** | open |
+| A4 | **线上站合回 main** | 页脚 SHA `aa38774` = main 的 09-17 快照；实验分支 20+ 笔整改（链路加固/漂移整改/P-habit-2 归档）对线上零影响。合并 main 会触发 Pages 自动部署；**须你明确授权合并** | **有条件批准（用户 2026-09-21）**："先在本地完成，行完之后下一次自动运行再合并"——即本地 A1/A2/A3 收口 + 下一次自动运行验证后，定时任务执行合并 main（本轮已获批准，届时无需再问） |
 
 ## 包 B · 知识密度轮（1-2 天）
 

@@ -39,7 +39,7 @@ const SNAPPY = { type: 'spring', stiffness: 400, damping: 30, mass: 0.8 } as con
 const ELEGANT = { type: 'spring', stiffness: 100, damping: 20, mass: 1 } as const;
 const PROJECTS = [
   { id: 'inventory', name: '库存运营台', category: '运营工具', image: inventory, icon: Monitor, status: '可体验 demo', kind: '演示库存数据', alt: '库存运营台截图，包含演示数据提示、筛选控件与库存表格', description: '从既有工作流案例整理为在线体验，覆盖库存列表、筛选、排序与详情。所有库存都是演示数据，不连接真实业务系统。' },
-  { id: 'obsidian', name: '曜石 X1', category: '产品展示', image: obsidian, icon: Smartphone, status: '历史截图', kind: '虚构产品', alt: '曜石 X1 虚构手机产品展示的历史截图', description: '虚构手机产品的展示案例。品牌、型号与规格均为演示设定，不构成真实产品或购买信息。' },
+  { id: 'obsidian', name: '曜石 X1（历史截图）', category: '产品展示', image: obsidian, icon: Smartphone, status: '历史截图', kind: '虚构产品', alt: '曜石 X1 虚构手机产品展示的历史截图', description: '虚构手机产品的展示案例（旧版截图，与现行 demo「曜石 12 Pro」是不同代产物）。品牌、型号与规格均为演示设定，不构成真实产品或购买信息。' },
   { id: 'blog', name: '一舟札记', category: '内容站点', image: blog, icon: NotebookPen, status: '历史截图', kind: '虚构博客', alt: '一舟札记虚构个人博客的历史截图，包含作者介绍与文章入口', description: '以作者介绍与文章阅读为核心的内容站点案例。博客人物与内容为演示设定。' },
   { id: 'brick', name: '积木小工坊', category: '3D 交互', image: desktop, icon: Blocks, status: '可试玩 demo', kind: '浏览器交互', alt: '积木小工坊的 3D 搭建工作区和多彩积木盒', description: '本次发布包中的可试玩 3D 交互案例。实时作品与截图来自同一套工坊实现。' },
   { id: 'nodegrid', name: 'NODEGRID', category: '3D 交互', image: nodegrid, icon: Globe, status: '可试玩 demo', kind: '地理数据可视化', alt: 'NODEGRID 世界地图节点可视化首页，深色底与地球网络连线', description: '全球云节点网络的世界地图可视化。拖动、缩放查看 21 座城市的节点分布与演示延迟，节点详情包含机房演示配图与规格。' },

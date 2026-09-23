@@ -21,7 +21,7 @@ abstract: |
   ladder that only ends at a visually verified rendered page. A gate ledger
   records every decision the user still owes, with decay rules for stale items
   and batch adjudication. Behavior is pinned by a 60-scenario evaluation
-  corpus at the release snapshot (65 scenarios, 15 executed as of
+  corpus at the release snapshot (65 scenarios, 16 executed as of
   2026-09-23); five scenarios had been executed over ten recorded rounds
   under a
   deterministic 0--2 rubric with fail-zeroing, and a separate eight-dimension
@@ -341,7 +341,7 @@ condition zeroes the scenario; the scenario score is
 $100 \times \mathrm{earned} / (2 \times \mathrm{criteria})$, rounded. At the release snapshot, five
 scenarios had been executed, over ten recorded rounds, on the inventory
 operations console (an internal dashboard demo) and on four workflow-behavior
-probes (15 scenarios across 22 recorded rounds as of 2026-09-23);
+probes (16 scenarios across 23 recorded rounds as of 2026-09-23);
 Table 2 summarizes. All executed rounds scored 100 on their functional
 criteria — unsurprising for scenarios designed alongside the system — and the
 informative signal is elsewhere.

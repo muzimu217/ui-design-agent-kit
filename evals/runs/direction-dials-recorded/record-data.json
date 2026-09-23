@@ -1,0 +1,14 @@
+{
+  "round": "R061-01-debt-clearing",
+  "scores": {
+    "Records all three dials (DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY) with 1-10 values in the portal direction draft": 2,
+    "Portal dial values fall in or near the trust-first inference row and the choice is stated, not guessed silently": 2,
+    "The preserve-mode console redesign matches current dial values with motion +1 instead of re-inventing values": 2,
+    "States that surface type and dials are chosen together, with dials present in the gate A submission format": 2
+  },
+  "failHits": [],
+  "evidence": [
+    "evals/runs/direction-dials-recorded/EVIDENCE.md"
+  ],
+  "notes": "R061-01 清偿第 1/3 场景。纯文本交付物（三旋钮记录），逐判据自评 100，单评分者局限见 eval-report 诚实边界。"
+}

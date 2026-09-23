@@ -605,6 +605,23 @@
         ],
         "notes": "真实授权 GLB（Jed Falcone, CC BY 4.0）从仓库原位加载；CSS2DRenderer 现成实现+视锥/背向裁剪改编边界已声明；中途反转连续性、出视锥隐藏、闲置 1/4 降频、teardown 全部实测。自抓修复 2 个 P1（机位构图+部件命名对齐真实模型 / 三级文字对比度 3.86）。"
       }
+    ],
+    "direction-dials-recorded": [
+      {
+        "date": "2026-09-23",
+        "round": "R061-01-debt-clearing",
+        "scores": {
+          "Records all three dials (DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY) with 1-10 values in the portal direction draft": 2,
+          "Portal dial values fall in or near the trust-first inference row and the choice is stated, not guessed silently": 2,
+          "The preserve-mode console redesign matches current dial values with motion +1 instead of re-inventing values": 2,
+          "States that surface type and dials are chosen together, with dials present in the gate A submission format": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/direction-dials-recorded/EVIDENCE.md"
+        ],
+        "notes": "R061-01 清偿第 1/3 场景。纯文本交付物（三旋钮记录），逐判据自评 100，单评分者局限见 eval-report 诚实边界。"
+      }
     ]
   }
 }

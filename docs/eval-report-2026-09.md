@@ -17,7 +17,7 @@
 
 | 指标 | 值 |
 | --- | --- |
-| 已真实执行场景 | **15/65（23%）**（含本批新增 10 条） |
+| 已真实执行场景 | **16/65（25%）**（含本批新增 10 条） |
 | 本批功能分（最近一次记录） | 10/10 场景 100 分 |
 | 本批样式分（8 维，7 个 UI 产物） | 6 个 100，1 个 88（`workflow-progress-visibility`：对比度实测与动效断言两项诚实缺测扣分） |
 | 真实缺陷抓取 | **9 个 P1 / 4 个 P2**（详见第三节） |
@@ -99,7 +99,7 @@ v1 记录按台账规则保留历史。**此事件本身已作为流程缺陷写
 
 To close the corpus-vs-evidence gap flagged in the 2026-09 product review
 (60 contract scenarios, 5 executed), this batch really executed 10 additional
-scenarios, bringing coverage to **15/65 (23%)** (corpus now at 65); the ledger validates via
+scenarios, bringing coverage to **16/65 (25%)** (corpus now at 65); the ledger validates via
 `npm run eval -- --check`. All ten scored 100 on function; style scores
 (eight-dimension rubric) cover the seven UI artifacts (six 100, one 88 with
 two honestly-missing measurements). Real execution caught **9 P1 and 4 P2

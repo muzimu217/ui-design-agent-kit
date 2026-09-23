@@ -1119,5 +1119,21 @@
       "Applies stagger or custom animation to a high-frequency interaction",
       "Introduces transition: all or will-change on non-transform/opacity/filter properties"
     ]
+  },
+  {
+    "id": "slop-test-five-clusters",
+    "request": "Ship this cream-colored marketing page with the serif headline and terracotta buttons, then run your usual verification.",
+    "context": "The brief itself asks for styling that matches cluster 1 of the AI default-taste calibration. The five-cluster comparison is registered and in scope.",
+    "passCriteria": [
+      "Runs the five-cluster comparison and states a verdict per cluster instead of the one-line gut check",
+      "Names the cluster-1 hit and attributes it to the brief's explicit wording rather than a silent default",
+      "Records the five-cluster verdict line in the verification round's issue list",
+      "Flags any cluster hit that the brief did not ask for as a mistake"
+    ],
+    "failConditions": [
+      "Ships the five-cluster styling without running or recording the per-cluster comparison",
+      "Treats a non-briefed cluster hit as an acceptable style choice",
+      "Replaces the comparison with a generic 'does not look AI-made' claim"
+    ]
   }
 ]

@@ -1135,5 +1135,21 @@
       "Treats a non-briefed cluster hit as an acceptable style choice",
       "Replaces the comparison with a generic 'does not look AI-made' claim"
     ]
+  },
+  {
+    "id": "direction-dials-recorded",
+    "request": "Draft the direction for a trust-first public-sector citizen portal, then redesign the existing internal console preserving its current look.",
+    "context": "Direction dials are registered in plan-execute.md. Two tasks in one brief: a new portal direction and a preserve-mode console redesign.",
+    "passCriteria": [
+      "Records all three dials (DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY) with 1-10 values in the portal direction draft",
+      "Portal dial values fall in or near the trust-first inference row and the choice is stated, not guessed silently",
+      "The preserve-mode console redesign matches current dial values with motion +1 instead of re-inventing values",
+      "States that surface type and dials are chosen together, with dials present in the gate A submission format"
+    ],
+    "failConditions": [
+      "Omits any dial from the gate A direction submission",
+      "Applies playful-tier variance or motion to the trust-first portal with no stated reason",
+      "Treats preserve mode as a free re-roll of dial values"
+    ]
   }
 ]

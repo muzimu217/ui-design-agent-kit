@@ -21,7 +21,7 @@ abstract: |
   ladder that only ends at a visually verified rendered page. A gate ledger
   records every decision the user still owes, with decay rules for stale items
   and batch adjudication. Behavior is pinned by a 60-scenario evaluation
-  corpus at the release snapshot (64 scenarios, 15 executed as of
+  corpus at the release snapshot (65 scenarios, 15 executed as of
   2026-09-23); five scenarios had been executed over ten recorded rounds
   under a
   deterministic 0--2 rubric with fail-zeroing, and a separate eight-dimension
@@ -327,7 +327,7 @@ contract corpus*, which specifies what the agent should do, and *executed
 runs*, which record what it actually did under a deterministic rubric.
 
 **Corpus.** `evals/scenarios.json` holds 60 scenarios at the release snapshot
-(64 as of 2026-09-23), each a natural-language
+(65 as of 2026-09-23), each a natural-language
 request with context, pass criteria, and fail conditions — covering product
 types (dashboard, 3D scene, marketing page, blog), motion-parameter
 compliance, degraded and unavailable tools, reduced-motion behavior, long-list

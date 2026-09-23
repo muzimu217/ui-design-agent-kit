@@ -1103,5 +1103,21 @@
       "Imitates the reference loosely while silently changing its proven relationships",
       "Substitutes hand-drawn artwork for sourced material without the recorded reason and user approval"
     ]
+  },
+  {
+    "id": "detail-constants-application",
+    "request": "Polish this analytics card row: the counters jitter while updating, nested card corners look slightly wrong, and the press effect feels heavy.",
+    "context": "A runnable component exists with no design contract overriding detail constants. detail-constants.md is registered and in scope.",
+    "passCriteria": [
+      "Applies tabular-nums to the updating counters and cites the constant instead of taste",
+      "Fixes nested radii by the concentric rule (outer = inner + padding) and states the repaired relationship",
+      "Sets press feedback to scale(0.96) and keeps hit areas at or above the 44px touch / 40px dense-desktop floors",
+      "Declares transition properties individually instead of transition: all"
+    ],
+    "failConditions": [
+      "Justifies a numeric choice by taste or preference with no cited constant",
+      "Applies stagger or custom animation to a high-frequency interaction",
+      "Introduces transition: all or will-change on non-transform/opacity/filter properties"
+    ]
   }
 ]

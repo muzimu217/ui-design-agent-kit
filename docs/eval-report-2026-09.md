@@ -10,14 +10,14 @@
 > 场景即本裁决的行为契约。
 
 > 回应产品评审 D5（60 契约 / 5 执行的对称性缺口）：本批真实执行 10 条新场景，
-> 覆盖率 5/60 → **15/62（24%；corpus 同日扩至 62 条后的口径）**；台账 `evals/results.json` 经 `npm run eval -- --check`
+> 覆盖率 5/60 → **15/63（24%；corpus 现为 63 条口径）**；台账 `evals/results.json` 经 `npm run eval -- --check`
 > 全量校验通过。本报告同步给出**失败与整改分析**——失败数据比全过更可信。
 
 ## 一、总览
 
 | 指标 | 值 |
 | --- | --- |
-| 已真实执行场景 | **15/62（24%）**（含本批新增 10 条） |
+| 已真实执行场景 | **15/63（24%）**（含本批新增 10 条） |
 | 本批功能分（最近一次记录） | 10/10 场景 100 分 |
 | 本批样式分（8 维，7 个 UI 产物） | 6 个 100，1 个 88（`workflow-progress-visibility`：对比度实测与动效断言两项诚实缺测扣分） |
 | 真实缺陷抓取 | **9 个 P1 / 4 个 P2**（详见第三节） |
@@ -99,8 +99,7 @@ v1 记录按台账规则保留历史。**此事件本身已作为流程缺陷写
 
 To close the corpus-vs-evidence gap flagged in the 2026-09 product review
 (60 contract scenarios, 5 executed), this batch really executed 10 additional
-scenarios, bringing coverage to **15/62 (24%)** (corpus grew to 62 the same
-day); the ledger validates via
+scenarios, bringing coverage to **15/63 (24%)** (corpus now at 63); the ledger validates via
 `npm run eval -- --check`. All ten scored 100 on function; style scores
 (eight-dimension rubric) cover the seven UI artifacts (six 100, one 88 with
 two honestly-missing measurements). Real execution caught **9 P1 and 4 P2

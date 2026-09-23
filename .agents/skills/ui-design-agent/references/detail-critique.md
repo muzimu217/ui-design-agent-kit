@@ -40,6 +40,11 @@ supplies the threshold; never invent one here.
 | Robustness | Long content, empty data, no network, zoom or text scaling, touch parity for hover-only feedback |
 | Consistency | The same problem is solved the same way as the established system; deviations are named decisions, not drift |
 
+These dimensions say what to evaluate; the numeric standards — concentric
+radii, press scale, hit areas, icon-swap constants, tabular numerals — live in
+[detail-constants.md](detail-constants.md). When a finding needs "what good
+looks like" as a number, cite the constant, not taste.
+
 A finding without an evidence anchor — screenshot, measured value, code
 location, or contract rule — is a suspicion. Label it as one or verify it.
 

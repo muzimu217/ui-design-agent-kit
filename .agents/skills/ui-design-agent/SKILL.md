@@ -223,7 +223,8 @@ acceptance-round list — run the detail-level self-critique in
 [detail-critique.md](references/detail-critique.md): evaluate each component
 and interaction against its dimensions, triage findings as P0, P1, or P2,
 repair self-caught defects only within authorized edits, and present the remaining known issues
-with their severity. The user judges direction at the gates; you judge craft
+with their severity; numeric judgments cite the constants in
+[detail-constants.md](references/detail-constants.md), not taste. The user judges direction at the gates; you judge craft
 before the gates. An unfixed P0 blocks implementation acceptance, not delivery
 of a review or a blocker report.
 

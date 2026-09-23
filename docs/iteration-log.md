@@ -5,6 +5,7 @@
 
 | 日期 | 类型 | 做了什么 | 分数 / 证据 | 下一步 |
 | --- | --- | --- | --- | --- |
+| 2026-09-23 | 工单执行 | **R050-01 detail-constants 收口**（发件箱协议首轮）：新建 `references/detail-constants.md`（同心圆角/光学对齐/阴影与边框分工/动效常数/字号平滑/tabular-nums/描边配字重/44px 命中区等 19 条恒定值军规，每条=规则+数值+反例）；detail-critique.md 维度表挂接"数值标准引此文件"；SKILL.md 门E 段补一句引用；build-prompt 注册新引用；按仓库规矩配 eval 场景 `detail-constants-application`（语料 62→63，doc-drift 跳闸后三份文档口径同步 15/63——跳闸即设计意图） | 三连全绿 58/58；eval --check 过（15 执行/63 语料） | 回填 done-pending-verify 待大师核销；队列余 7 张 open + 2 张新增（R058） |
 | 2026-09-21 | A包收官 | **A4 执行**：大师轮 25 核实 A1/A2/A3 全部收口并"正式放行"后，执行用户批准的定向合并 `aa38774..0976476 main`（--no-ff、不夹带，194 文件 +14843），Pages 工作流随即触发（run 35643944180 in_progress）。**裁决包 A 包 A1-A4 全部 passed**，线上站将从 09-17 旧快照更新至最新（命名修正/新证据图/新视频/全部整改上线） | merge commit 0976476；Pages run 触发留痕 | 部署完成后核对线上页脚 SHA；B/C 包与论文 P3/P5 仍待用户 |
 | 2026-09-21 | A包收口 | **A3 收口**：Scene4Numbers 计数器 8/29/6→**9/58/6**，Remotion 全量重渲 604/604 帧成功（npm render 首跑崩溃系 npm 链式 flake，分步执行+完整日志重跑通过），`showcase/products/media/intro.mp4` 已替换；旧证据图改名 `showcase-six-cards-archived.png` 留档（大师备忘落实）。**A 包 A1/A2/A3 全部收口**，按批准时序：下轮整点确认大师侧无阻塞后执行定向合并 main | intro.mp4 5.3MB 新增渲染（render.log 604/604）；旧图 -archived | 下轮整点：确认无阻塞→执行 A4 定向合并 main→核对 Pages 部署与页脚 SHA |
 | 2026-09-21 | A包收口 | **A2 收口**：`--base=./` 重建（被规范化为根相对路径）+服务根指 `site/` 后站点完整渲染（18 图、9 卡含 A1 改名卡"曜石 X1（历史截图）"），全页实拍 `showcase/evidence/showcase-eight-cards.jpeg`（2560×15204）。三轮排查链留痕裁决包：①子路径+符号链接 404 ②父目录服务根空白 ③根因=资产烧成根相对路径。服务已关。A3（intro.mp4 重渲）未开工，合并 main 按批准时序等 A3 收口+下轮确认 | showcase-eight-cards.jpeg；展示边界测试 9/9 | 下轮：A3 评估重渲成本→收口→再下轮执行获批准的定向合并 |

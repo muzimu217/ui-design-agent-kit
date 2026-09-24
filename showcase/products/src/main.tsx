@@ -37,6 +37,18 @@ const FEEDBACK_URL = 'https://github.com/muzimu217/ui-design-agent-showcase/issu
 const RELEASE = import.meta.env.VITE_RELEASE_ID || 'local-preview';
 const SNAPPY = { type: 'spring', stiffness: 400, damping: 30, mass: 0.8 } as const;
 const ELEGANT = { type: 'spring', stiffness: 100, damping: 20, mass: 1 } as const;
+type Page = 'home' | 'evidence' | 'workflow';
+const PAGE_TITLES: Record<Page, string> = { home: '首页', evidence: '证据与验证', workflow: '工作流' };
+const pageFromHash = (): Page => (location.hash === '#/evidence' ? 'evidence' : location.hash === '#/workflow' ? 'workflow' : 'home');
+const usePage = (): [Page] => {
+  const [page, setPage] = useState<Page>(pageFromHash);
+  useEffect(() => {
+    const onHash = () => { setPage(pageFromHash); window.scrollTo(0, 0); };
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+  return [page];
+};
 const PROJECTS = [
   { id: 'inventory', name: '库存运营台', category: '运营工具', image: inventory, icon: Monitor, status: '可体验 demo', kind: '演示库存数据', alt: '库存运营台截图，包含演示数据提示、筛选控件与库存表格', description: '从既有工作流案例整理为在线体验，覆盖库存列表、筛选、排序与详情。所有库存都是演示数据，不连接真实业务系统。' },
   { id: 'obsidian', name: '曜石 X1（历史截图）', category: '产品展示', image: obsidian, icon: Smartphone, status: '历史截图', kind: '虚构产品', alt: '曜石 X1 虚构手机产品展示的历史截图', description: '虚构手机产品的展示案例（旧版截图，与现行 demo「曜石 12 Pro」是不同代产物）。品牌、型号与规格均为演示设定，不构成真实产品或购买信息。' },
@@ -195,7 +207,7 @@ function ActionLink({ children, className = '', href, external = false }: { chil
   const reducedMotion = useReducedMotion();
   return <motion.a className={`action-link ${className}`} href={href} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined}
     whileHover={reducedMotion ? undefined : { y: -2 }} whileTap={reducedMotion ? undefined : { scale: 0.98 }} transition={SNAPPY}>
-    {children}{href.startsWith('#') ? <ArrowDown size={18} aria-hidden="true" /> : <ArrowUpRight size={18} aria-hidden="true" />}
+    {children}{href.startsWith('#/') ? <ArrowRight size={18} aria-hidden="true" /> : href.startsWith('#') ? <ArrowDown size={18} aria-hidden="true" /> : <ArrowUpRight size={18} aria-hidden="true" />}
   </motion.a>;
 }
 
@@ -494,15 +506,11 @@ function CaseDialog({ project, onClose }: { project: Project | null; onClose: ()
   </dialog>;
 }
 
-function App() {
+function HomePage({ onOpen }: { onOpen: (item: Project, opener: HTMLButtonElement) => void }) {
   const reducedMotion = useReducedMotion();
   const [filter, setFilter] = useState<Filter>('全部');
-  const [project, setProject] = useState<Project | null>(null);
-  const openerRef = useRef<HTMLButtonElement | null>(null);
   const filterRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const projects = PROJECTS.filter((item) => filter === '全部' || item.category === filter);
-  const openProject = (item: Project, opener: HTMLButtonElement) => { openerRef.current = opener; setProject(item); };
-  const closeProject = () => { setProject(null); openerRef.current?.focus(); };
   const onFilterKey = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     let next: number | null = null;
     if (event.key === 'ArrowRight') next = (index + 1) % FILTERS.length;
@@ -512,36 +520,57 @@ function App() {
     if (next === null) return;
     event.preventDefault(); setFilter(FILTERS[next]); filterRefs.current[next]?.focus();
   };
+  return <main id="main">
+    <section className="hero" aria-labelledby="hero-heading"><div className="hero-title content-width"><h1 id="hero-heading"><motion.span initial={reducedMotion ? false : { y: 16, opacity: 0.8 }} animate={{ y: 0, opacity: 1 }} transition={ELEGANT}>UI Design</motion.span><motion.span initial={reducedMotion ? false : { y: 16, opacity: 0.8 }} animate={{ y: 0, opacity: 1, transition: { ...ELEGANT, delay: 0.06 } }}>Agent Kit<span className="title-stop">.</span></motion.span></h1><p className="hero-descriptor">UI 设计智能体工作流</p><p className="hero-description">从需求与参考，到交互实现与浏览器验证。</p><div className="hero-actions"><a className="action-link" href="#projects">浏览成果<ArrowDown size={18} aria-hidden="true" /></a><a className="action-link secondary-action" href="#/workflow">查看工作流<ArrowRight size={18} aria-hidden="true" /></a><a className="action-link secondary-action" href="#/evidence">证据与验证<ArrowRight size={18} aria-hidden="true" /></a></div></div>
+      <div className="hero-strip content-width" aria-label="工作流成果预览">{PROJECTS.map((item, index) => <motion.button key={item.id} type="button" className="hero-preview" onClick={(event) => onOpen(item, event.currentTarget)} aria-label={`查看${item.name}案例`} initial={reducedMotion ? false : { y: 18, opacity: 0.8 }} animate={{ y: 0, opacity: 1, transition: { ...ELEGANT, delay: index * 0.06 } }} whileHover={reducedMotion ? undefined : { y: -5, transition: SNAPPY }} whileTap={reducedMotion ? undefined : { scale: 0.99, transition: SNAPPY }} transition={ELEGANT}><img src={item.image} alt={item.alt} width={item.id === 'blog' || item.id === 'brick' ? 1440 : 1280} height={item.id === 'blog' || item.id === 'brick' ? 900 : 800} /><span><span>{item.category}</span><ArrowUpRight size={16} aria-hidden="true" /></span></motion.button>)}</div>
+    </section>
+    <section className="projects-band" id="projects" aria-labelledby="projects-heading"><div className="content-width"><div className="section-heading"><div><h2 id="projects-heading">工作流成果</h2><p>不同的任务，不同的界面表达。</p></div><Layers3 size={28} strokeWidth={1.5} aria-hidden="true" /></div><div className="project-filters" role="tablist" aria-label="成果项目类型">{FILTERS.map((item, index) => <button key={item} id={`filter-${index}`} type="button" role="tab" aria-selected={filter === item} aria-controls="projects-panel" className={filter === item ? 'is-active' : ''} tabIndex={filter === item ? 0 : -1} onClick={() => setFilter(item)} ref={(element) => { filterRefs.current[index] = element; }} onKeyDown={(event) => onFilterKey(event, index)}><span>{item}</span>{filter === item && <motion.span className="filter-selection" layoutId="project-filter" transition={reducedMotion ? { duration: 0 } : SNAPPY} />}</button>)}</div>
+      <div className="projects-grid" id="projects-panel" role="tabpanel" aria-labelledby={`filter-${FILTERS.indexOf(filter)}`} tabIndex={0}>{projects.map((item) => { const Icon = item.icon; return <motion.article key={item.id} className="project-item" layout transition={reducedMotion ? { duration: 0 } : ELEGANT}><button type="button" className="project-image" onClick={(event) => onOpen(item, event.currentTarget)} aria-label={`查看${item.name}案例`}><img src={item.image} alt={item.alt} loading="lazy" width={1440} height={900} /><span className="project-open"><Maximize2 size={19} aria-hidden="true" /></span></button><div className="project-meta"><span><Icon size={16} />{item.category}</span><span>{item.status}</span></div><div className="project-title"><div><h3>{item.name}</h3><p>{item.kind}</p></div><button type="button" onClick={(event) => onOpen(item, event.currentTarget)} className="case-open-link">{item.id === 'brick' || item.id === 'inventory' || item.id in PLAYABLE_URLS ? '查看 demo' : '查看截图'}<ArrowUpRight size={17} /></button></div></motion.article>; })}</div>
+    </div></section>
+    <InstallSection />
+    <section className="closing-band" id="testing" aria-labelledby="closing-heading"><div className="content-width closing-content"><div><h2 id="closing-heading">参与公开测试</h2><p>成果与源码已公开。反馈请注明版本、复现步骤，以及 demo 体验或工作流执行测试。</p></div><ActionLink href={FEEDBACK_URL} external>提交测试反馈</ActionLink></div></section>
+  </main>;
+}
+
+function EvidencePage() {
+  return <main id="main">
+    <section className="verification-band" id="verification" aria-labelledby="verification-heading"><div className="content-width"><div className="section-heading"><div><h2 id="verification-heading">验证，有据可查。</h2><p>五种证据层级，不能相互替代。</p></div><ScanEye size={28} strokeWidth={1.5} aria-hidden="true" /></div><dl className="evidence-definitions">{EVIDENCE.map((item) => { const Icon = item.icon; return <div key={item.name}><dt><Icon size={22} strokeWidth={1.6} />{item.name}</dt><dd>{item.meaning}</dd></div>; })}</dl><p className="evidence-disclaimer">以上为证据定义，不是所有项目均已通过的状态声明。历史截图与可试玩成果已分别标注。</p><div className="evidence-paper"><FileText size={17} aria-hidden="true" /><p>这套验收方法论已整理为公开论文预印本：<a href="https://doi.org/10.5281/zenodo.22804947" target="_blank" rel="noreferrer">UAK: A Gated, Evidence-Driven UI Design Agent Workflow（DOI 10.5281/zenodo.22804947）</a>。论文正文与全部评测数据见 <a href={REPOSITORY_URL} target="_blank" rel="noreferrer">kit 仓库</a>的 <code>paper/</code> 目录。</p></div></div></section>
+  </main>;
+}
+
+function WorkflowPage() {
+  return <main id="main">
+    <IntroVideoSection />
+    <WorkflowSection />
+    <section className="experiment-band" id="experiment" aria-labelledby="experiment-heading"><div className="content-width">
+      <div className="section-heading"><div><h2 id="experiment-heading">实验分支：工作流可视化</h2><p>正在测试中，欢迎试用并反馈。</p></div><Layers3 size={28} strokeWidth={1.5} aria-hidden="true" /></div>
+      <p className="experiment-lead">当前有一条独立实验分支，把设计与交付流程渲染成一张可交互的 HTML：每个阶段走到哪、停在哪道确认门、每步产出了什么证据，都能直接看到。分支不并入主线，改动只在该分支上迭代。</p>
+      <dl className="experiment-facts">
+        <div><dt>分支</dt><dd><code>{EXPERIMENT_BRANCH}</code></dd></div>
+        <div><dt>内容</dt><dd>工作流状态图渲染器、任务状态记录格式、链路接线</dd></div>
+        <div><dt>状态</dt><dd>可试用，接口与输出仍可能变动</dd></div>
+      </dl>
+      <p className="experiment-note">反馈请注明分支名、复现步骤与期望结果。若只想看效果，克隆后运行 <code>npm run diagram</code> 即可生成一张自包含的 HTML。</p>
+      <div className="experiment-actions">
+        <ActionLink href={EXPERIMENT_URL} external>查看实验分支</ActionLink>
+        <ActionLink href={EXPERIMENT_FEEDBACK_URL} external className="secondary-action">提交测试反馈</ActionLink>
+      </div>
+    </div></section>
+  </main>;
+}
+
+function App() {
+  const [page] = usePage();
+  const [project, setProject] = useState<Project | null>(null);
+  const openerRef = useRef<HTMLButtonElement | null>(null);
+  const openProject = (item: Project, opener: HTMLButtonElement) => { openerRef.current = opener; setProject(item); };
+  const closeProject = () => { setProject(null); openerRef.current?.focus(); };
   return <>
-    <a className="skip-link" href="#projects">跳到成果项目</a>
-    <header className="site-header content-width"><a className="brand" href={BASE} aria-label="UI Design Agent Kit 首页"><Workflow size={24} strokeWidth={1.8} /><span>UI Design<br />Agent Kit</span></a><nav aria-label="主导航"><a href="#workflow">工作流</a><a href="#projects">成果项目</a><a href="#install">获取 kit</a><a href="#verification">验证</a><a className="github-link" href={REPOSITORY_URL} target="_blank" rel="noreferrer" aria-label="kit 源码仓库"><FolderGit2 size={17} /><span>仓库</span></a></nav></header>
-    <main>
-      <section className="hero" aria-labelledby="hero-heading"><div className="hero-title content-width"><h1 id="hero-heading"><motion.span initial={reducedMotion ? false : { y: 16, opacity: 0.8 }} animate={{ y: 0, opacity: 1 }} transition={ELEGANT}>UI Design</motion.span><motion.span initial={reducedMotion ? false : { y: 16, opacity: 0.8 }} animate={{ y: 0, opacity: 1 }} transition={{ ...ELEGANT, delay: 0.06 }}>Agent Kit<span className="title-stop">.</span></motion.span></h1><p className="hero-descriptor">UI 设计智能体工作流</p><p className="hero-description">从需求与参考，到交互实现与浏览器验证。</p><div className="hero-actions"><ActionLink href="#projects">浏览成果</ActionLink><ActionLink href="#workflow" className="secondary-action">查看工作流</ActionLink></div></div>
-        <div className="hero-strip content-width" aria-label="工作流成果预览">{PROJECTS.map((item, index) => <motion.button key={item.id} type="button" className="hero-preview" onClick={(event) => openProject(item, event.currentTarget)} aria-label={`查看${item.name}案例`} initial={reducedMotion ? false : { y: 18, opacity: 0.8 }} animate={{ y: 0, opacity: 1, transition: { ...ELEGANT, delay: index * 0.06 } }} whileHover={reducedMotion ? undefined : { y: -5, transition: SNAPPY }} whileTap={reducedMotion ? undefined : { scale: 0.99, transition: SNAPPY }} transition={ELEGANT}><img src={item.image} alt={item.alt} width={item.id === 'blog' || item.id === 'brick' ? 1440 : 1280} height={item.id === 'blog' || item.id === 'brick' ? 900 : 800} /><span><span>{item.category}</span><ArrowUpRight size={16} aria-hidden="true" /></span></motion.button>)}</div>
-      </section>
-      <IntroVideoSection />
-      <WorkflowSection />
-      <section className="projects-band" id="projects" aria-labelledby="projects-heading"><div className="content-width"><div className="section-heading"><div><h2 id="projects-heading">工作流成果</h2><p>不同的任务，不同的界面表达。</p></div><Layers3 size={28} strokeWidth={1.5} aria-hidden="true" /></div><div className="project-filters" role="tablist" aria-label="成果项目类型">{FILTERS.map((item, index) => <button key={item} id={`filter-${index}`} type="button" role="tab" aria-selected={filter === item} aria-controls="projects-panel" className={filter === item ? 'is-active' : ''} tabIndex={filter === item ? 0 : -1} onClick={() => setFilter(item)} ref={(element) => { filterRefs.current[index] = element; }} onKeyDown={(event) => onFilterKey(event, index)}><span>{item}</span>{filter === item && <motion.span className="filter-selection" layoutId="project-filter" transition={reducedMotion ? { duration: 0 } : SNAPPY} />}</button>)}</div>
-        <div className="projects-grid" id="projects-panel" role="tabpanel" aria-labelledby={`filter-${FILTERS.indexOf(filter)}`} tabIndex={0}>{projects.map((item) => { const Icon = item.icon; return <motion.article key={item.id} className="project-item" layout transition={reducedMotion ? { duration: 0 } : ELEGANT}><button type="button" className="project-image" onClick={(event) => openProject(item, event.currentTarget)} aria-label={`查看${item.name}案例`}><img src={item.image} alt={item.alt} loading="lazy" width={1440} height={900} /><span className="project-open"><Maximize2 size={19} aria-hidden="true" /></span></button><div className="project-meta"><span><Icon size={16} />{item.category}</span><span>{item.status}</span></div><div className="project-title"><div><h3>{item.name}</h3><p>{item.kind}</p></div><button type="button" onClick={(event) => openProject(item, event.currentTarget)} className="case-open-link">{item.id === 'brick' || item.id === 'inventory' || item.id in PLAYABLE_URLS ? '查看 demo' : '查看截图'}<ArrowUpRight size={17} /></button></div></motion.article>; })}</div>
-      </div></section>
-      <section className="verification-band" id="verification" aria-labelledby="verification-heading"><div className="content-width"><div className="section-heading"><div><h2 id="verification-heading">验证，有据可查。</h2><p>五种证据层级，不能相互替代。</p></div><ScanEye size={28} strokeWidth={1.5} aria-hidden="true" /></div><dl className="evidence-definitions">{EVIDENCE.map((item) => { const Icon = item.icon; return <div key={item.name}><dt><Icon size={22} strokeWidth={1.6} />{item.name}</dt><dd>{item.meaning}</dd></div>; })}</dl><p className="evidence-disclaimer">以上为证据定义，不是所有项目均已通过的状态声明。历史截图与可试玩成果已分别标注。</p><div className="evidence-paper"><FileText size={17} aria-hidden="true" /><p>这套验收方法论已整理为公开论文预印本：<a href="https://doi.org/10.5281/zenodo.22804947" target="_blank" rel="noreferrer">UAK: A Gated, Evidence-Driven UI Design Agent Workflow（DOI 10.5281/zenodo.22804947）</a>。论文正文与全部评测数据见 <a href={REPOSITORY_URL} target="_blank" rel="noreferrer">kit 仓库</a>的 <code>paper/</code> 目录。</p></div></div></section>
-      <InstallSection />
-      <section className="experiment-band" id="experiment" aria-labelledby="experiment-heading"><div className="content-width">
-        <div className="section-heading"><div><h2 id="experiment-heading">实验分支：工作流可视化</h2><p>正在测试中，欢迎试用并反馈。</p></div><Layers3 size={28} strokeWidth={1.5} aria-hidden="true" /></div>
-        <p className="experiment-lead">当前有一条独立实验分支，把设计与交付流程渲染成一张可交互的 HTML：每个阶段走到哪、停在哪道确认门、每步产出了什么证据，都能直接看到。分支不并入主线，改动只在该分支上迭代。</p>
-        <dl className="experiment-facts">
-          <div><dt>分支</dt><dd><code>{EXPERIMENT_BRANCH}</code></dd></div>
-          <div><dt>内容</dt><dd>工作流状态图渲染器、任务状态记录格式、链路接线</dd></div>
-          <div><dt>状态</dt><dd>可试用，接口与输出仍可能变动</dd></div>
-        </dl>
-        <p className="experiment-note">反馈请注明分支名、复现步骤与期望结果。若只想看效果，克隆后运行 <code>npm run diagram</code> 即可生成一张自包含的 HTML。</p>
-        <div className="experiment-actions">
-          <ActionLink href={EXPERIMENT_URL} external>查看实验分支</ActionLink>
-          <ActionLink href={EXPERIMENT_FEEDBACK_URL} external className="secondary-action">提交测试反馈</ActionLink>
-        </div>
-      </div></section>
-      <section className="closing-band" id="testing" aria-labelledby="closing-heading"><div className="content-width closing-content"><div><h2 id="closing-heading">参与公开测试</h2><p>成果与源码已公开。反馈请注明版本、复现步骤，以及 demo 体验或工作流执行测试。</p></div><ActionLink href={FEEDBACK_URL} external>提交测试反馈</ActionLink></div></section>
-    </main>
+    <a className="skip-link" href={page === 'home' ? '#projects' : '#main'}>{page === 'home' ? '跳到成果项目' : '跳到正文'}</a>
+    <header className="site-header content-width"><a className="brand" href={BASE} aria-label="UI Design Agent Kit 首页"><Workflow size={24} strokeWidth={1.8} /><span>UI Design<br />Agent Kit</span></a><nav aria-label="主导航">{(Object.keys(PAGE_TITLES) as Page[]).map((key) => <a key={key} href={key === 'home' ? '#/' : `#/${key}`} className={page === key ? 'is-active' : ''} aria-current={page === key ? 'page' : undefined}>{PAGE_TITLES[key]}</a>)}<a className="github-link" href={REPOSITORY_URL} target="_blank" rel="noreferrer" aria-label="kit 源码仓库"><FolderGit2 size={17} /><span>仓库</span></a></nav></header>
+    {page === 'home' && <HomePage onOpen={openProject} />}
+    {page === 'evidence' && <EvidencePage />}
+    {page === 'workflow' && <WorkflowPage />}
     <footer className="site-footer content-width"><a href={BASE}>UI 设计智能体工作流</a><span>{RELEASE}</span><a href={FEEDBACK_URL} target="_blank" rel="noreferrer">测试反馈<ArrowUpRight size={14} /></a><a href={`${BASE}THIRD_PARTY_LICENSES.txt`}>依赖许可</a><a href={SHOWCASE_REPOSITORY_URL} target="_blank" rel="noreferrer">公开展示仓库<ArrowUpRight size={14} /></a><a href={REPOSITORY_URL} target="_blank" rel="noreferrer">Agent 源码<ArrowUpRight size={14} /></a></footer><CaseDialog project={project} onClose={closeProject} />
   </>;
 }

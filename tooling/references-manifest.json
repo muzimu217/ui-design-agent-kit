@@ -1,0 +1,196 @@
+{
+  "$comment": "Reference 注册表（agentUniverse 吸收 2026-09-25，S2）：每个 reference 文件登记用途、加载时机、所属门、依赖与导出层级。tests/references-manifest.test.mjs 强制本清单与 references/ 目录、build-prompt 导出清单、SKILL.md 链接四方一致——新增/删除 reference 必须先改这里。export: \"full\"=进 npm run prompt:build 单文件导出；false=按需读取不入导出（须写 exportReason）。leanCore=true 的五份构成 lean 导出。",
+  "references": [
+    {
+      "file": "gate-protocol.md",
+      "title": "Gate Protocol",
+      "purpose": "机械门径契约：反豁免适用范围、抄 proven 总则、门A-F 各门契约、停点规则、违规即 P0、评测场景特别条款",
+      "loadWhen": "任何会产生可视化产物的任务；呈交任何门前本会话必须已实际读取",
+      "gate": "all",
+      "dependsOn": ["plan-execute.md"],
+      "export": "full",
+      "leanCore": true
+    },
+    {
+      "file": "plan-execute.md",
+      "title": "Plan and Execute Modes",
+      "purpose": "Plan/Execute 双模式、状态迁移、协作模式卡（PEE/PEER/GRR/IS）、handoff 记录、方向三旋钮、开发提示词模板",
+      "loadWhen": "实质性 UI 任务确定模式与计划锁定时；门A 方向稿撰写前",
+      "gate": "A",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "ui-designer-thinking.md",
+      "title": "UI Designer Thinking Model",
+      "purpose": "设计师思维模型：从用户视角推演布局、层级与交互取舍",
+      "loadWhen": "方向探索与原型设计阶段",
+      "gate": "A",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "material-scouting.md",
+      "title": "Material Scouting and Ranking",
+      "purpose": "素材侦察与排序：需求分型（参考/组件/素材/提示词）、来源优先级、候选评分",
+      "loadWhen": "任务需要外部素材或参考时，素材检索第一步",
+      "gate": "B",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "inspiration-library.md",
+      "title": "Inspiration Library",
+      "purpose": "灵感库：类型路由索引（motion/aesthetics/creativity/refinement/bold/ready-made/design quality）、可达性信号、素材确认门",
+      "loadWhen": "按需求类型路由灵感来源时；source-catalog 的索引入口",
+      "gate": "B",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "source-catalog.md",
+      "title": "Source Catalog",
+      "purpose": "条目库：32+ 已验证素材源逐条登记（截图/使用场景/镜像替代/授权），含案例样板批次",
+      "loadWhen": "已按灵感库路由确定来源后，查该源的具体用法、截图与镜像替代",
+      "gate": "B",
+      "dependsOn": ["material-scouting.md", "inspiration-library.md"],
+      "export": false,
+      "exportReason": "794 行条目库；单文件导出以行为指令为主，条目按需读取，整包内联会让导出膨胀三倍",
+      "leanCore": false
+    },
+    {
+      "file": "tool-routing.md",
+      "title": "Capability Routing",
+      "purpose": "能力路由：素材管线四层（读取/加工/路由/后置）、3D 与动效工具路由、可选工具链候选与已否决项、浏览器取证",
+      "loadWhen": "选择工具或 MCP 前；需要判定某能力是否已验证可用时",
+      "gate": "B",
+      "dependsOn": ["design-contract.md"],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "image-to-code-fidelity.md",
+      "title": "Image-to-Code Fidelity Loop",
+      "purpose": "图生码保真回路：把设计图当视觉证据、命名区域对比、有界批量修复、禁止虚构保真百分比",
+      "loadWhen": "以截图或设计图为起点实现时，实现前强制读取",
+      "gate": "C",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "design-contract.md",
+      "title": "Design Contract",
+      "purpose": "可测试设计契约：Mission/品牌/风格基础/无障碍/语气/Do-Don't/组件期望/质量门",
+      "loadWhen": "实现前或契约门（门D）撰写设计契约时",
+      "gate": "D",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": true
+    },
+    {
+      "file": "motion-contract.md",
+      "title": "Web Motion Contract",
+      "purpose": "动效契约：预设选择、时长/缓动/stagger 参数、打断语义、reduced-motion 结果",
+      "loadWhen": "实现任何非平凡动效前",
+      "gate": "D",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": true
+    },
+    {
+      "file": "detail-constants.md",
+      "title": "Detail Constants",
+      "purpose": "细节恒定值军规：圆角/按压/命中区/图标替换/表格数字/stagger 等数值标准",
+      "loadWhen": "实现与自我批评需要具体数值标准时；发现需要 what-good-looks-like 时引用",
+      "gate": "E",
+      "dependsOn": ["motion-contract.md"],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "detail-critique.md",
+      "title": "Detail Critique",
+      "purpose": "细节级自我批评内环：八维评价、AI 默认味五类校准、PEER 七维映射、P0/P1/P2 分诊、证据锚点与记录格式",
+      "loadWhen": "呈交任何门产物前；实现中每个组件完成后；验收轮作为发现生成器",
+      "gate": "E",
+      "dependsOn": ["detail-constants.md"],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "acceptance.md",
+      "title": "UI Acceptance",
+      "purpose": "验收规程：逐页检查面、证据要求、验收轮循环、交付记录",
+      "loadWhen": "验收阶段（门E）开始前强制读取",
+      "gate": "E",
+      "dependsOn": ["detail-critique.md"],
+      "export": "full",
+      "leanCore": true
+    },
+    {
+      "file": "product-readme.md",
+      "title": "Product README Standard",
+      "purpose": "产品 README 标准：真实产品身份、运行方法、真实截图、测试证据的交付要求",
+      "loadWhen": "交付可运行产品时",
+      "gate": "E",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "user-taste-profile.md",
+      "title": "User Taste Profile",
+      "purpose": "品味档案：T-001 起的品味裁定条目、honoring/violating 声明机制、方向三旋钮的个人校准",
+      "loadWhen": "整理候选清单前；门A 方向稿对照声明时；会话中收集到新品味裁定即记录",
+      "gate": "all",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": true
+    },
+    {
+      "file": "spatial-media.md",
+      "title": "Spatial Media",
+      "purpose": "空间媒体路由：自然语言→场景/素材契约、Blender 制作、刚体物理、web/视频交付",
+      "loadWhen": "3D/空间内容需求出现时，web3d-hud-architecture 之前",
+      "gate": "B",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "web3d-hud-architecture.md",
+      "title": "Web 3D HUD Architecture",
+      "purpose": "密集科技 HUD 蓝图：投影 DOM 标签、相机巡览状态机、素材命名契约",
+      "loadWhen": "做 3D HUD 类场景时，读 spatial-media.md 之后",
+      "gate": "D",
+      "dependsOn": ["spatial-media.md"],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "stitch-mcp.md",
+      "title": "Stitch MCP Call Logic",
+      "purpose": "Stitch MCP 实战调用逻辑：生成/读取/下载的正确调用面、反模式表、提示词清单",
+      "loadWhen": "启用并调用 Stitch MCP 生成原型候选时",
+      "gate": "C",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "workflow-visualization.md",
+      "title": "Workflow Visualization",
+      "purpose": "工作流图管线：每次任务生成门禁图、回放只走已走过的路、视觉自检",
+      "loadWhen": "任务收尾生成流程图，或需要向用户展示门径进度时",
+      "gate": "F",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": false
+    }
+  ]
+}

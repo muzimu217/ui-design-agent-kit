@@ -70,6 +70,23 @@ test("quality-monitor metric rows stay current with the corpus and the test coun
   );
 });
 
+test("eval-report §4.1 lists exactly the executed scenarios in the ledger", async () => {
+  // R111-01: the representativeness disclosure itself carried wrong numbers
+  // because no check recomputed them. The disclosure's scenario list is now
+  // machine-locked to results.json: a new --record trips here until §4.1 is
+  // updated in the same change.
+  const results = JSON.parse(await read("evals/results.json"));
+  const executed = new Set(
+    Object.entries(results.runs).filter(([, runs]) => runs.length > 0).map(([id]) => id),
+  );
+  const report = await read("docs/eval-report-2026-09.md");
+  const section = report.split("### 4.1")[1]?.split("## 五、")[0];
+  assert.ok(section, "eval-report must keep a §4.1 disclosure section");
+  const listed = new Set([...section.matchAll(/`([a-z0-9-]+)`/g)].map((m) => m[1]));
+  assert.deepEqual([...listed].sort(), [...executed].sort(),
+    "§4.1 scenario list must equal the ledger's executed set");
+});
+
 test("bilingual README case tables link the same set of case documents", async () => {
   const caseLinks = (source) => [...source.matchAll(/\((?:demo\/[a-z0-9-]+\/README\.md|showcase\/README\.md)\)/g)]
     .map((match) => match[1]).sort();

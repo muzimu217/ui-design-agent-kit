@@ -1,7 +1,11 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { access, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import { pathToFileURL } from "node:url";
 import { ROOT } from "./verify.mjs";
+
+const execFileAsync = promisify(execFile);
 
 // Execution-scoring ledger for evals/scenarios.json (G1 in docs/goal.md).
 // `npm run eval:e3` prepares blind decision-only packets and runs no grader;
@@ -78,7 +82,7 @@ async function loadResults() {
   return parsed;
 }
 
-function validateRun(run, scenario) {
+async function validateRun(run, scenario, { enforceAnchored = false } = {}) {
   const problems = [];
   const criteria = scenario.passCriteria;
   const scoreKeys = Object.keys(run?.scores ?? {});
@@ -96,6 +100,23 @@ function validateRun(run, scenario) {
   if (!Array.isArray(run?.evidence) || run.evidence.length === 0
     || run.evidence.some((item) => typeof item !== "string" || item.trim() === "")) {
     problems.push("evidence must be a nonempty array of paths or URLs (no score without evidence)");
+    return problems;
+  }
+  // R103-01：路径形态的 evidence 必须真实存在（相对 ROOT）；URL 与自由文本跳过存在性检查。
+  // 新机制对 --record 入参与带 recordedAt 锚点的存量记录生效——历史记录不回填不破坏（--check 不追溯）。
+  const pathShaped = run.evidence.filter((item) => !item.includes("://") && item.includes("/") && !/\s/.test(item));
+  if (enforceAnchored || run.recordedAt) {
+    for (const item of pathShaped) {
+      try { await access(path.resolve(ROOT, item)); }
+      catch { problems.push(`evidence file does not exist: ${item}`); }
+    }
+    // R103-01：满分记录必须证据更厚（≥3 条且至少 1 条为真实文件路径），防"自报满分一张嘴"。
+    const score = Math.round((100 * scenario.passCriteria.reduce((sum, c) => sum + (run.scores[c] ?? 0), 0)) / (2 * scenario.passCriteria.length));
+    const failZeroed = Array.isArray(run.failHits) && run.failHits.length > 0;
+    if (!failZeroed && score === 100) {
+      if (run.evidence.length < 3) problems.push(`full-score records need at least 3 evidence items (got ${run.evidence.length})`);
+      if (pathShaped.length < 1) problems.push("full-score records need at least one file-path evidence item");
+    }
   }
   if (run?.styleReview !== undefined) {
     const keys = Object.keys(run.styleReview);
@@ -154,8 +175,8 @@ async function main() {
         problems.push(`${id}: ledger references a scenario that no longer exists`);
         continue;
       }
-      runs.forEach((run, index) => {
-        for (const problem of validateRun(run, scenario)) problems.push(`${id}[${index}]: ${problem}`);
+      for (const [index, run] of runs.entries()) {
+        for (const problem of await validateRun(run, scenario, { enforceAnchored: Boolean(run.recordedAt) })) problems.push(`${id}[${index}]: ${problem}`);
         const expected = computeScore(run, scenario);
         if (run.score !== expected) problems.push(`${id}[${index}]: stored score ${run.score} != recomputed ${expected}`);
         if (run.styleReview) {
@@ -164,7 +185,7 @@ async function main() {
             problems.push(`${id}[${index}]: stored styleScore ${run.styleScore} != recomputed ${expectedStyle}`);
           }
         }
-      });
+      }
     }
     if (problems.length > 0) {
       console.error(problems.map((line) => `✗ ${line}`).join("\n"));
@@ -196,14 +217,29 @@ async function main() {
       throw new Error("--record requires an existing scenario id and --data <jsonFile>");
     }
     const run = JSON.parse(await readFile(dataFile, "utf8"));
-    const problems = validateRun(run, scenario);
+    const rerun = args.includes("--rerun");
+    const date = new Date().toISOString().slice(0, 10);
+    const priorSameDay = (results.runs[id] ?? []).filter((item) => item.date === date).length;
+    if (priorSameDay > 0 && !rerun) {
+      console.error(`✗ ${id} already has ${priorSameDay} record(s) dated ${date}; pass --rerun to record a deliberate re-execution`);
+      process.exitCode = 1;
+      return;
+    }
+    const problems = await validateRun(run, scenario, { enforceAnchored: true });
     if (problems.length > 0) {
       console.error(problems.map((line) => `✗ ${line}`).join("\n"));
       process.exitCode = 1;
       return;
     }
+    let commit;
+    try {
+      commit = (await execFileAsync("git", ["rev-parse", "HEAD"], { cwd: ROOT })).stdout.trim();
+    } catch { commit = undefined; }
     const record = {
-      date: new Date().toISOString().slice(0, 10),
+      date,
+      recordedAt: new Date().toISOString(),
+      ...(commit ? { commit } : {}),
+      ...(rerun && priorSameDay > 0 ? { rerun: priorSameDay + 1 } : {}),
       ...(run.round ? { round: run.round } : {}),
       scores: run.scores,
       ...(Array.isArray(run.failHits) && run.failHits.length > 0 ? { failHits: run.failHits } : {}),

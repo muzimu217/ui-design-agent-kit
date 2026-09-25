@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-09-16",
+  "updatedOn": "2026-09-25",
   "source": "docs/chain-flow.md",
   "note": "Single source of truth for the delivery pipeline shown to users. docs/chain-flow.md carries the prose and the gate definitions; the showcase stage rail holds its own TS constant (icons and copy need React components) and tests/kit.test.mjs enforces that its ids, names, and decision markers match this file. Add a stage or gate here first, then update both consumers in the same change.",
   "decisionPointNote": "decisionPoint records whether the rail marks this stage as ending in a user decision the visitor must see. It is a presentation decision, not a restatement of gates: build carries the MCP call gate (F), which is a trace requirement rather than a user stop, and verify carries the per-round acceptance gate (E), which is shown inside the verification panel rather than as a separate rail marker.",
@@ -159,7 +159,7 @@
       "name": "设计稿",
       "stage": "brief",
       "mandatory": "always",
-      "artifact": "方向稿（视觉基调、页面结构草案、动效意图，不写代码）",
+      "artifact": "方向稿（named proven baseline：真实成品 URL 与拟抄关系、视觉基调、页面结构草案、动效意图、品味档案 honoring/violating 声明，不写代码）",
       "kind": "user",
       "mandatoryLabel": "强制"
     },
@@ -177,7 +177,7 @@
       "name": "原型",
       "stage": "contract",
       "mandatory": "always for a substantial new UI",
-      "artifact": "无代码原型（生成图或生图提示词）",
+      "artifact": "无代码原型（生成图、生图提示词，或所选素材的蒙太奇/拼板；生图不可用时记录降级路径）",
       "kind": "user",
       "mandatoryLabel": "实质性新 UI 强制"
     },
@@ -213,20 +213,24 @@
     {
       "id": "S",
       "name": "窄修复",
-      "gates": [],
-      "note": "一个既有组件或缺陷的窄修复；不过方向与素材门，一轮有证据的验证。"
+      "gates": [
+        "E"
+      ],
+      "note": "一个既有组件或缺陷的窄修复；不过方向与素材门，仍须一轮有证据的门E 验收。"
     },
     {
       "id": "M",
       "name": "页面级",
       "gates": [
         "A",
-        "B",
         "C",
         "D",
         "E"
       ],
-      "note": "一个新页面或一组实质组件；门D 按需。"
+      "note": "一个新页面或一组实质组件；门B 条件式（仅采用外部素材时，与 gates[B].mandatory 一致）；门D 按需。",
+      "conditionalGates": [
+        "B"
+      ]
     },
     {
       "id": "L",

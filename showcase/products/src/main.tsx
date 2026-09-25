@@ -42,8 +42,17 @@ const PAGE_TITLES: Record<Page, string> = { home: '首页', evidence: '证据与
 const pageFromHash = (): Page => (location.hash === '#/evidence' ? 'evidence' : location.hash === '#/workflow' ? 'workflow' : 'home');
 const usePage = (): [Page] => {
   const [page, setPage] = useState<Page>(pageFromHash);
+  const pageRef = useRef<Page>(page);
   useEffect(() => {
-    const onHash = () => { setPage(pageFromHash); window.scrollTo(0, 0); };
+    const onHash = () => {
+      const next = pageFromHash();
+      // 仅跨页导航回顶；同页 hash 变化（页内锚点/skip-link）交还浏览器原生滚动
+      if (next !== pageRef.current) {
+        pageRef.current = next;
+        window.scrollTo(0, 0);
+      }
+      setPage(next);
+    };
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
   }, []);

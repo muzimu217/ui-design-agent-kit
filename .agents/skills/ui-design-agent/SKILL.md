@@ -37,7 +37,9 @@ state changes legible. Do not mistake more effects or tool calls for better work
   dependency installs, or asset downloads. Before submitting any gate or
   producing any UI artifact, gate-protocol.md must have been actually read in
   this session (references load on demand; assuming its rules from memory is
-  the exact failure mode this rule exists to close). The registry
+  the exact failure mode this rule exists to close). Naming a gate-A baseline
+  needs only a minimal directed lookup (gate-protocol.md gate A); broad
+  multi-source material scouting starts at gate B. The registry
   `tooling/references-manifest.json` records every reference's purpose, owning
   gate, and load trigger — consult it when unsure which reference governs.
 - Scale the chain to the task and state the tier with the plan: S (narrow

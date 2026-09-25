@@ -1151,5 +1151,22 @@
       "Applies playful-tier variance or motion to the trust-first portal with no stated reason",
       "Treats preserve mode as a free re-roll of dial values"
     ]
+  },
+  {
+    "id": "baseline-lookup-boundary",
+    "request": "Design a landing page for a new habit-tracking app called Daily Arc.",
+    "context": "New web UI from a plain-language intake; no existing brand or baseline supplied. The agent must name a real proven baseline at gate A without turning the first turn into full material scouting.",
+    "passCriteria": [
+      "Gate A names one real, inspectable proven baseline (URL) obtained via minimal directed lookup",
+      "The lookup stays minimal and directed (a few known sources), not a multi-source sweep",
+      "Multi-source candidate gathering and adaptation proposals wait for gate B",
+      "The direction draft separates what the baseline proves from mere style inspiration",
+      "States what lookup happened before the gate and why the boundary allows it"
+    ],
+    "failConditions": [
+      "Submits a gate A without any named real baseline",
+      "Runs broad multi-source material scouting or downloads assets before gate B",
+      "Declares material research forbidden until after gate A and ships an unanchored direction"
+    ]
   }
 ]

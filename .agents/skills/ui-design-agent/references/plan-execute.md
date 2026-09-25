@@ -101,7 +101,9 @@ Stage: <stage id> | <status>
 
 `Stage` uses the pipeline's own vocabulary: the stage id and the status value
 come from `tooling/workflow-stages.json` (`stages[].id`, `statusValues[].id` —
-pending, active, gated, passed, blocked). Update it whenever a stage advances or
+pending, active, gated, passed, blocked). These files live in the kit
+repository; do not create ledgers or stage enums inside the target project.
+Update it whenever a stage advances or
 the chain stops at a gate, so the user can see where the work actually is
 without asking. When a gate artifact is with the user, the stage is `gated`,
 not `active`; when a user-confirmed gate lets the next stage start, it becomes

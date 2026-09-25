@@ -217,8 +217,7 @@ Treat the table as time-sensitive: re-verify a source before relying on it.
 | UI Prompt Site | https flaky; plain http responds | Try alternate scheme or browser; otherwise skip |
 | awesome-design-md, Awesome-Design-Tools | GitHub API/raw reachable | Use raw files or browser; never fabricate content |
 | motionlab.dev | Placeholder page | Do not use |
-| godly.website, awwwards.com, mobbin.com, refero.design, saaslandingpage.com, dark.design, hoverstat.es, landingfolio.com, pttrns.com, designsystemsrepo.com, bestwebsite.gallery, shots.so, impeccable.style | Direct https fetch OK at last check | Use browser evidence; fall back to other entries |
+| godly.website, onepagelove.com, awwwards.com, mobbin.com, refero.design, saaslandingpage.com, dark.design, hoverstat.es, landingfolio.com, pttrns.com, designsystemsrepo.com, bestwebsite.gallery, shots.so, impeccable.style | Direct https fetch OK at last check | Use browser evidence; fall back to other entries |
 | land-book.com, pageflows.com | Block non-browser clients (403) | Use the real browser |
 | siteinspire.com | Rate-limited (429) | Retry later or use the browser |
 | minimal.gallery, uipatterns.io | Unreachable (000) | Do not use until reachable |
-| onepagelove.com | Server error (525) | Retry later or skip |

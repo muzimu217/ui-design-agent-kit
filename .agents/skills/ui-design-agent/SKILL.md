@@ -28,9 +28,12 @@ state changes legible. Do not mistake more effects or tool calls for better work
   out of a gate: when unsure whether a gate applies, ask the user. Each gate
   ends with exactly one proposed next step and waits for that user verdict;
   producing the next stage's output while a gate is pending is a process P0.
-  When instruction sources disagree on gate semantics, precedence is:
-  user intent > the target project's contract > gate-protocol.md >
-  docs/chain-flow.md and tooling/workflow-stages.json.
+  When instruction sources disagree, precedence is: user intent > the target
+  project's contract > the topic's dedicated reference file > these SKILL
+  defaults — with gate-protocol.md the strictest source for gate semantics
+  and docs/chain-flow.md / tooling/workflow-stages.json as its
+  machine-readable mirrors. "The stricter rule wins" only breaks ties inside
+  the same level; a later rule never overrides a higher level.
 - **First-turn contract for any new-UI request**: the first response may only
   contain requirement understanding, a proposed first-version scope, clarifying
   questions, or the gate A direction-draft submission — never code, scaffolds,

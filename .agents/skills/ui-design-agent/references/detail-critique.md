@@ -40,6 +40,28 @@ supplies the threshold; never invent one here.
 | Robustness | Long content, empty data, no network, zoom or text scaling, touch parity for hover-only feedback |
 | Consistency | The same problem is solved the same way as the established system; deviations are named decisions, not drift |
 
+These dimensions say what to evaluate; the numeric standards — concentric
+radii, press scale, hit areas, icon-swap constants, tabular numerals — live in
+[detail-constants.md](detail-constants.md). When a finding needs "what good
+looks like" as a number, cite the constant, not taste.
+
+## AI default-taste calibration (five clusters)
+
+Run this comparison on every rendered page alongside the AI-slop test: a hit
+on any cluster must be either explicitly required by the brief (the brief's
+wording wins) or named as a mistake. Silence is not a pass.
+
+| # | Cluster | Signature |
+| --- | --- | --- |
+| 1 | Cream base + serif drama | Near-#F4F1EA cream background, high-contrast large serif headline, terracotta/warm-clay accent near #D97757 |
+| 2 | Dark + acid accent | Near-black background with a single acid-green or vermilion accent doing all the talking |
+| 3 | Broadsheet cosplay | Newspaper styling: hairline rules, zero radii everywhere, dense multi-column text grid |
+| 4 | SaaS card kit | Content sliced into same-radius cards, one global corner value, identical gray shadow rgba(0,0,0,.1), decorative gradients |
+| 5 | Template chrome | Uppercase letter-spaced eyebrow above every heading, dot-chained strings (A · B · C), "WORD — fragment" labels, tinted near-black (#0B0B0B/#111) standing in for black, monospace micro-labels, arrow-suffixed "→" link buttons |
+
+Each round's acceptance list states the five-cluster verdict explicitly; a
+cluster hit without a brief requirement is a finding, not a style choice.
+
 A finding without an evidence anchor — screenshot, measured value, code
 location, or contract rule — is a suspicion. Label it as one or verify it.
 

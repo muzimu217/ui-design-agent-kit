@@ -1103,5 +1103,53 @@
       "Imitates the reference loosely while silently changing its proven relationships",
       "Substitutes hand-drawn artwork for sourced material without the recorded reason and user approval"
     ]
+  },
+  {
+    "id": "detail-constants-application",
+    "request": "Polish this analytics card row: the counters jitter while updating, nested card corners look slightly wrong, and the press effect feels heavy.",
+    "context": "A runnable component exists with no design contract overriding detail constants. detail-constants.md is registered and in scope.",
+    "passCriteria": [
+      "Applies tabular-nums to the updating counters and cites the constant instead of taste",
+      "Fixes nested radii by the concentric rule (outer = inner + padding) and states the repaired relationship",
+      "Sets press feedback to scale(0.96) and keeps hit areas at or above the 44px touch / 40px dense-desktop floors",
+      "Declares transition properties individually instead of transition: all"
+    ],
+    "failConditions": [
+      "Justifies a numeric choice by taste or preference with no cited constant",
+      "Applies stagger or custom animation to a high-frequency interaction",
+      "Introduces transition: all or will-change on non-transform/opacity/filter properties"
+    ]
+  },
+  {
+    "id": "slop-test-five-clusters",
+    "request": "Ship this cream-colored marketing page with the serif headline and terracotta buttons, then run your usual verification.",
+    "context": "The brief itself asks for styling that matches cluster 1 of the AI default-taste calibration. The five-cluster comparison is registered and in scope.",
+    "passCriteria": [
+      "Runs the five-cluster comparison and states a verdict per cluster instead of the one-line gut check",
+      "Names the cluster-1 hit and attributes it to the brief's explicit wording rather than a silent default",
+      "Records the five-cluster verdict line in the verification round's issue list",
+      "Flags any cluster hit that the brief did not ask for as a mistake"
+    ],
+    "failConditions": [
+      "Ships the five-cluster styling without running or recording the per-cluster comparison",
+      "Treats a non-briefed cluster hit as an acceptable style choice",
+      "Replaces the comparison with a generic 'does not look AI-made' claim"
+    ]
+  },
+  {
+    "id": "direction-dials-recorded",
+    "request": "Draft the direction for a trust-first public-sector citizen portal, then redesign the existing internal console preserving its current look.",
+    "context": "Direction dials are registered in plan-execute.md. Two tasks in one brief: a new portal direction and a preserve-mode console redesign.",
+    "passCriteria": [
+      "Records all three dials (DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY) with 1-10 values in the portal direction draft",
+      "Portal dial values fall in or near the trust-first inference row and the choice is stated, not guessed silently",
+      "The preserve-mode console redesign matches current dial values with motion +1 instead of re-inventing values",
+      "States that surface type and dials are chosen together, with dials present in the gate A submission format"
+    ],
+    "failConditions": [
+      "Omits any dial from the gate A direction submission",
+      "Applies playful-tier variance or motion to the trust-first portal with no stated reason",
+      "Treats preserve mode as a free re-roll of dial values"
+    ]
   }
 ]

@@ -223,7 +223,8 @@ acceptance-round list — run the detail-level self-critique in
 [detail-critique.md](references/detail-critique.md): evaluate each component
 and interaction against its dimensions, triage findings as P0, P1, or P2,
 repair self-caught defects only within authorized edits, and present the remaining known issues
-with their severity. The user judges direction at the gates; you judge craft
+with their severity; numeric judgments cite the constants in
+[detail-constants.md](references/detail-constants.md), not taste. The user judges direction at the gates; you judge craft
 before the gates. An unfixed P0 blocks implementation acceptance, not delivery
 of a review or a blocker report.
 
@@ -536,6 +537,10 @@ then re-verify; repeat until the user confirms.
 Prefer adopting a proven market implementation over writing a novel one.
 Run the AI-slop test on each page: would a viewer instantly believe an AI
 made it? A distinctive page makes people ask "how was this made", not "which
-AI made this"; surface that judgment in each verification round's list.
+AI made this"; surface that judgment in each verification round's list. The
+five-cluster calibration in [detail-critique.md](references/detail-critique.md)
+replaces the one-line gut check: compare the page against all five clusters
+and state the per-cluster verdict — a hit must be either brief-required or a
+named mistake.
 Never claim accessibility compliance, visual parity, performance grades, or
 test success on the strength of generated code or a tool connection alone.

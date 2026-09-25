@@ -155,6 +155,9 @@ AI, but actual tools, files, access, and authorization must be checked there.
 实现与验收
 现有项目与技术约束：【沿用已检查的栈、组件、设计系统和资产】
 视觉与交互方向：【已确认方向及适用的动效/减少动效约束】
+设计方差 DESIGN_VARIANCE：【1-10，场景推断见下表】
+动效强度 MOTION_INTENSITY：【1-10】
+视觉密度 VISUAL_DENSITY：【1-10】
 实施顺序：【与当前授权阶段一致，不跨过原型或契约确认】
 验收方法：【主流程、异常状态、必要的权限/数据检查；桌面、手机、键盘等适用检查】
 交付物：【提示词、原型或代码的实际范围；可运行产品的 README、真实截图、运行方法与测试证据】
@@ -164,3 +167,21 @@ AI, but actual tools, files, access, and authorization must be checked there.
 用户确认与执行请求：【沿用同一计划的原消息记录；缺失写未授权】
 下一步允许做什么：【只推进当前已授权阶段；提示词不是自动执行许可】
 ```
+
+## 方向三旋钮（Direction Dials）
+
+方向稿（门A 呈交）必含三个 1-10 连续旋钮，与表面类型四档**正交共存**：先选
+表面类型定语境，再定旋钮量化档位。旋钮让方向可量化、可回放、可比较；
+重设计时 preserve=匹配现值且动效 +1，overhaul=方差 +2 且动效 +2。
+
+| 场景推断 | DESIGN_VARIANCE | MOTION_INTENSITY | VISUAL_DENSITY |
+| --- | --- | --- | --- |
+| minimalist / Linear 式编辑感 | 5-6 | 3-4 | 2-3 |
+| premium consumer / Apple 味 | 7-8 | 5-7 | 3-4 |
+| playful / Awwwards / agency | 9-10 | 8-10 | 3-4 |
+| 营销页默认 | 7-9 | 6-8 | 3-5 |
+| trust-first / 公共部门 / 受监管 | 3-4 | 2-3 | 4-5 |
+| operational 密集工具 | 方差压低 | — | 5-7 |
+
+门A 呈交格式必须含三值（缺失即为不完整呈交）；用户改向时旋钮值随裁决
+更新，旧值留痕可回放。

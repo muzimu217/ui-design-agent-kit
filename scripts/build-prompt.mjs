@@ -18,6 +18,7 @@ const references = [
   ["image-to-code-fidelity.md", "Image-to-Code Fidelity Loop"],
   ["ui-designer-thinking.md", "UI Designer Thinking Model"],
   ["detail-critique.md", "Detail Critique"],
+  ["detail-constants.md", "Detail Constants"],
   ["workflow-visualization.md", "Workflow Visualization"],
   ["product-readme.md", "Product README Standard"],
   ["acceptance.md", "UI Acceptance"],

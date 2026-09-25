@@ -10,15 +10,15 @@
 | A1 | **"曜石 X1" 命名混拼** | 线上站三名字并存：历史截图卡"曜石 X1" vs `demo/phone-demo`=曜石 12 Pro vs `demo/product-demo`=曜时 X1。建议：历史卡片统一加后缀"（历史截图）"，不改正案产品名；**需你定改法**。改源在 main 侧 showcase，须随 A4 上线 | **passed（2026-09-21）**：showcase/products/src/main.tsx obsidian 卡 name→"曜石 X1（历史截图）"，description 注明与现行 demo「曜石 12 Pro」为不同代产物；展示边界测试 9/9。随 A4 上线生效 |
 | A2 | 六卡截图重截（D7①） | `showcase/evidence/` 仅 showcase-six-cards.png，PUBLIC_APPS 已 8 项；需起服务+浏览器实拍 8 卡版 | **passed（2026-09-21）**：`showcase/evidence/showcase-eight-cards.jpeg`（2560×15204 全页实拍，9 卡齐含 A1 改名卡）。根因笔记：build-pages 默认把资产烧成根相对路径 `/assets/*`，服务根必须指 `site/` 本身（父目录+符号链接都会 404/空白）；`--base "./"` 被规范化为 `/`，无需再用 |
 | A3 | intro.mp4 过期数字 | 视频内测试计数 16/16，现 58/58；需 Remotion 改字幕重渲染 | **passed（2026-09-21）**：Scene4Numbers 计数器更新为 9 showcase 案例 / **58 测试全绿** / 6 确认门，Remotion 全量重渲 604/604 帧，`showcase/products/media/intro.mp4` 已替换（5.3MB，随 A4 上线生效）。旧图 six-cards.png 已改名 `-archived` 留档 |
-| A4 | **线上站合回 main** | 页脚 SHA `aa38774` = main 的 09-17 快照；实验分支 20+ 笔整改（链路加固/漂移整改/P-habit-2 归档）对线上零影响。合并 main 会触发 Pages 自动部署；**须你明确授权合并** | **有条件批准（用户 2026-09-21）**："先在本地完成，行完之后下一次自动运行再合并"——即本地 A1/A2/A3 收口 + 下一次自动运行验证后，定时任务执行合并 main（本轮已获批准，届时无需再问） |
+| A4 | **线上站合回 main** | 页脚 SHA `aa38774` = main 的 09-17 快照；实验分支 20+ 笔整改（链路加固/漂移整改/P-habit-2 归档）对线上零影响。合并 main 会触发 Pages 自动部署；**须你明确授权合并** | **passed（2026-09-21）**：大师轮 25 确认"无阻塞，正式放行"后执行定向合并 `aa38774..0976476 main`（--no-ff，不夹带），Pages 工作流随即触发（run 35643944180）；线上站与页脚 SHA 将随部署更新 |
 
 ## 包 B · 知识密度轮（1-2 天）
 
 | # | 事项 | 说明 | 状态 |
 | --- | --- | --- | --- |
-| B1 | 五类"AI 默认味"校准清单（D7②） | 替换 SKILL.md 一句话 slop test：奶油底+赤陶 accent、SaaS 卡片套件、眉标 chrome 等 | open |
-| B2 | 方向稿三旋钮（D7③） | DESIGN_VARIANCE 8 / MOTION_INTENSITY 6 / VISUAL_DENSITY 4 式可记录档位 | open |
-| B3 | 规则密度扩容（D7④） | 对标 ui-ux-pro-max 192 条推理规则的知识层扩容 | open |
+| B1 | 五类"AI 默认味"校准清单（D7②） | 替换 SKILL.md 一句话 slop test：奶油底+赤陶 accent、SaaS 卡片套件、眉标 chrome 等 | **passed（2026-09-23，工单 R050-02）** |
+| B2 | 方向稿三旋钮（D7③） | DESIGN_VARIANCE 8 / MOTION_INTENSITY 6 / VISUAL_DENSITY 4 式可记录档位 | **passed（2026-09-23，工单 R050-03）** |
+| B3 | 规则密度扩容（D7④） | 对标 ui-ux-pro-max 192 条推理规则的知识层扩容 | **passed（2026-09-23，工单 R050-01 detail-constants 19 条军规，已 verified）** |
 | B4 | ~~showcase 任务优先入口~~ | **搁置**（用户 2026-09-21 改向：先吸收 awesome-ui-design 素材入知识库+方法论拆解，页面方向暂缓） | 搁置 |
 | B5 | ~~展示层门面工艺升级~~ | **搁置**（同上） | 搁置 |
 

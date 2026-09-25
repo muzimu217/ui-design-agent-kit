@@ -32,9 +32,9 @@
 
 覆盖规则：**每个环节至少一个专属或强相关场景**；新增/大改环节时同步补场景。
 
-### 确认门覆盖（chain-flow v7.1）
+### 确认门覆盖（chain-flow v7.2）
 
-完整产品流程见 `docs/chain-flow.md`（v7.1 = Plan/Execute 模式 + 六阶段思维内核 + 六道确认门 +
+完整产品流程见 `docs/chain-flow.md`（v7.2 = Plan/Execute 模式 + 六阶段思维内核 + 六道确认门 +
 细节级自我批评内环 + 门账本 + 任务分级，其中门F 为 MCP 调用门禁）。思维内核：
 `references/ui-designer-thinking.md`（六阶段：问题→场景→架构→视觉→交互→
 验证 + 通用清单 + 各阶段专属自检问题）。确认门是强制闸门，验收记录必须

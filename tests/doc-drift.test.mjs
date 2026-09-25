@@ -87,6 +87,29 @@ test("eval-report §4.1 lists exactly the executed scenarios in the ledger", asy
     "§4.1 scenario list must equal the ledger's executed set");
 });
 
+test("every gate section in gate-protocol carries its contract elements", async () => {
+  // R104-03: the protocol's own meta-definition says a gate = entry criteria
+  // + required artifact + submission format + valid verdicts, but gates D/E/F
+  // were missing elements and F's nature was defined differently in three
+  // places. The section-level keywords are locked here.
+  const source = await read(".agents/skills/ui-design-agent/references/gate-protocol.md");
+  const sectionOf = (gate) => {
+    const match = source.match(new RegExp(`### 门${gate} ·[^#]*`));
+    return match ? match[0] : "";
+  };
+  for (const gate of ["A", "B", "C", "D", "E"]) {
+    const section = sectionOf(gate);
+    assert.ok(section, `gate ${gate} section missing from gate-protocol.md`);
+    for (const keyword of ["进入条件", "必交产物", "呈交", "有效裁决"]) {
+      assert.ok(section.includes(keyword), `gate ${gate} section misses ${keyword}`);
+    }
+  }
+  const traceGate = sectionOf("F");
+  assert.ok(traceGate, "gate F section missing from gate-protocol.md");
+  assert.ok(traceGate.includes("留痕"), "gate F must be defined as a trace gate (not a user stop)");
+  assert.ok(traceGate.includes("必交产物"), "gate F section misses its artifact requirement");
+});
+
 test("bilingual README case tables link the same set of case documents", async () => {
   const caseLinks = (source) => [...source.matchAll(/\((?:demo\/[a-z0-9-]+\/README\.md|showcase\/README\.md)\)/g)]
     .map((match) => match[1]).sort();

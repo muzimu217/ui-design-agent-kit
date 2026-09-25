@@ -1,0 +1,33 @@
+name: Kit Self Test
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kit-self-test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27b97cf1a5ea76c # v4
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5a9 # v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install kit dependencies
+        run: npm ci --ignore-scripts
+      - name: Structural verification
+        run: npm run verify
+      - name: Kit test suite (61)
+        run: npm test
+      - name: Eval ledger check
+        run: npm run eval -- --check
+      - name: Prompt export rebuild
+        run: npm run prompt:build && npm run prompt:build:lean

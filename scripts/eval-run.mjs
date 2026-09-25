@@ -259,6 +259,7 @@ async function main() {
     return;
   }
   usage();
+  process.exitCode = 1;
 }
 
 function usage() {

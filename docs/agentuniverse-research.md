@@ -79,21 +79,39 @@
 | 配置落库（复杂 issue 4） | output/ 工单发件箱 + git 台账 | 本地 git 足够，不建议落库 |
 | 服务化/平台/向量库/K8S | — | **不适用**：UAK 是 prompt kit，遵守「不引入上游运行时」裁决，不吸收 |
 
-## 四、改进建议清单（全部待用户裁决，未批不动）
+## 四、改进建议清单（2026-09-25 用户批准，六条全部落地）
 
-| # | 建议 | 级别 | 预估 | 吸收自 |
+| # | 建议 | 级别 | 落地位置 | 状态 |
 | --- | --- | --- | --- | --- |
-| S1 | **协同模式卡**：在 plan-execute.md 增"协作模式"节，把 PEE/PEER/GRR/IS 写成四张模式卡（角色分工/对应门/退出条件），UAK 现行流程显式命名挂靠 | P2 | 2-3h | Pattern Factory |
-| S2 | **reference 注册表**：新建 `tooling/references-manifest.json`，每个 reference 文件登记用途/加载时机/依赖/所属门，SKILL.md 引用；结构性回应 R104"门径三处分写"类漂移 | P2 | 3-4h | ComponentManager + py+yaml 分离 |
-| S3 | **素材管线四层显式化**：tool-routing.md 素材步骤改用 reader/加工/路由/后置处理四层语言，与 source-catalog 条目字段（截图/场景/镜像替代）对齐 | P3 | 2h | knowledge 管线 |
-| S4 | **prompt-refine 工具**：eval 失败场景→定位失效的指令段落→产出修改建议稿；建议稿走门径等用户裁决后才改指令 | P2 | 4-6h | 复杂 issue 5 |
-| S5 | **chain-audit 修复指引**：违规输出追加一行"缺哪道门记录→去哪个模板补、格式是什么" | P3 | 1h | 简单 issue 7 |
-| S6 | 评测维度映射表：detail-critique 八维与 PEER 论文七维建映射，标注"逻辑连贯"是否补维 | P3 | 1h | PEER 论文 |
+| S1 | **协同模式卡**：四张模式卡（PEE/PEER/GRR/IS）+ handoff 记录 Pattern 字段 | P2 | `references/plan-execute.md` "Collaboration patterns" 节 | **已落地** |
+| S2 | **reference 注册表**：用途/加载时机/所属门/依赖/导出层级，四方一致性漂移测试 | P2 | `tooling/references-manifest.json` + `tests/references-manifest.test.mjs` + SKILL.md 指针 | **已落地** |
+| S3 | **素材管线四层显式化**：读取/加工/路由/后置处理 | P3 | `references/tool-routing.md` Reference-first 节 | **已落地** |
+| S4 | **prompt-refine 工具**：失效场景→指令归属定位→修订建议草稿（只出稿不改指令） | P2 | `scripts/prompt-refine.mjs` + `npm run prompt:refine` + `tests/prompt-refine.test.mjs` | **已落地** |
+| S5 | **chain-audit 修复指引**：每条违规带 mechanical guidance | P3 | `scripts/chain-audit.mjs` GUIDANCE 表 | **已落地** |
+| S6 | **评测维度映射表**：八维↔PEER 七维，裁定不补第九维（附理由） | P3 | `references/detail-critique.md` "Mapping to the PEER evaluation axes" | **已落地** |
 
 明确不建议吸收：Python 运行时/Flask 服务化/Docker/K8S/平台产品层/向量库/
 Embedding/数据库层（与「不引入上游运行时」及 UAK prompt kit 定位冲突）。
 
-## 五、比赛本身要不要打？
+## 五、落地证据（2026-09-25 实测留档）
+
+- 全链守门：`npm run verify` 0 错误；`npm test` **71/71 绿**（新增 10 条：
+  chain-audit 指引 1、注册表四方一致性 4、prompt-refine 5）；
+  `npm run prompt:build` 双导出正常；`npm run eval -- --check` Ledger OK
+  （16 executed / 65 scenarios）。
+- chain:audit 实测：真实交付工作区 `evals/runs/p-habit-2` → ok=true，
+  门 A-F 记录齐全，0 违规；违规夹具（src/ 有实现、无门记录）→
+  violations[0].guidance 输出完整补法（建哪个文件、两种记录格式、缺失期间
+  不得推进）。
+- prompt:refine 实测：真实台账 16/65 全满分 → 诚实输出"0 个存在失效点"；
+  注入合成失败（对比度 0 分）→ 草稿正确定位
+  `references/detail-constants.md — 对比度实测与数值军规`，且结尾声明
+  "任何指令修订在用户裁决后才能落盘"。
+- S2 附带收益：source-catalog.md 不进 prompt:build 导出从"静默缺席"变为
+  "注册表记录理由（794 行按需读取）+ 测试强制"——结构上消解 R107-03 的
+  静默性。
+
+## 六、比赛本身要不要打？
 
 - 形式上与 UAK 完全兼容的只有 issue 8"案例提供"与 issue 9"文档/注释补充"
   类贡献（用 UAK 产出反哺 agentUniverse 文档），其余 issue 需要写 Python

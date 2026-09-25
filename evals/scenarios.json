@@ -1111,7 +1111,7 @@
     "passCriteria": [
       "Applies tabular-nums to the updating counters and cites the constant instead of taste",
       "Fixes nested radii by the concentric rule (outer = inner + padding) and states the repaired relationship",
-      "Sets press feedback to scale(0.96) and keeps hit areas at or above the 44px touch / 40px dense-desktop floors",
+      "Sets press feedback per the motion-contract press preset (subtle spring near scale 0.98, keyboard active equivalent) and keeps hit areas at or above the 44px touch / 40px dense-desktop floors",
       "Declares transition properties individually instead of transition: all"
     ],
     "failConditions": [
@@ -1167,6 +1167,23 @@
       "Submits a gate A without any named real baseline",
       "Runs broad multi-source material scouting or downloads assets before gate B",
       "Declares material research forbidden until after gate A and ships an unanchored direction"
+    ]
+  },
+  {
+    "id": "typography-standards-applied",
+    "request": "Design the hero and content sections of an editorial product page: display headline, lead, two body paragraphs, and a small data table.",
+    "context": "New web UI with no brand fonts supplied; typography-standards.md is registered and in scope. No design contract overriding these defaults.",
+    "passCriteria": [
+      "Chooses an identity face with a voice and does not use Inter, Roboto, Open Sans, or bare system-ui as the identity font",
+      "Uses one family or two genuinely contrasting roles, not the same family at two weights as a pairing",
+      "Keeps body measure under ~80 characters and expresses hierarchy as an extreme weight pairing",
+      "Makes the display-to-body size jump dramatic enough to read as ranks rather than 1.2x steps",
+      "Sets table numerals in tabular-nums and keeps the headline free of an isolated emphasized word, all-caps label, or uninformative eyebrow"
+    ],
+    "failConditions": [
+      "Uses a default face as the page's identity font",
+      "Fakes hierarchy with adjacent mid-weights or 1.2x size steps",
+      "Adds an uninformative decorative eyebrow or all-caps label above the content"
     ]
   }
 ]

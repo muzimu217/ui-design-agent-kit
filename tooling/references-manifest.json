@@ -183,6 +183,16 @@
       "leanCore": false
     },
     {
+      "file": "typography-standards.md",
+      "title": "Typography Standards",
+      "purpose": "排版构造侧军规：身份字体（禁默认字体作主身份）、字族配对、标题构图、层级字重极端与字号跳差、行长、中西文混排、标题禁清单",
+      "loadWhen": "选择字体与排版层级时；detail-critique 排版维需要构造侧标准时",
+      "gate": "E",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": false
+    },
+    {
       "file": "workflow-visualization.md",
       "title": "Workflow Visualization",
       "purpose": "工作流图管线：每次任务生成门禁图、回放只走已走过的路、视觉自检",

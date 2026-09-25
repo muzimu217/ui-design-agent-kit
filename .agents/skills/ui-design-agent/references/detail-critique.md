@@ -42,8 +42,11 @@ supplies the threshold; never invent one here.
 
 These dimensions say what to evaluate; the numeric standards — concentric
 radii, press scale, hit areas, icon-swap constants, tabular numerals — live in
-[detail-constants.md](detail-constants.md). When a finding needs "what good
-looks like" as a number, cite the constant, not taste.
+[detail-constants.md](detail-constants.md), and typographic construction
+standards (identity face, pairing, hierarchy jumps, banned headline
+constructions) live in
+[typography-standards.md](typography-standards.md). When a finding needs "what
+good looks like" as a number, cite the constant, not taste.
 
 ### Mapping to the PEER evaluation axes
 

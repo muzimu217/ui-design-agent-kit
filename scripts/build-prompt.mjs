@@ -22,6 +22,7 @@ export const references = [
   ["ui-designer-thinking.md", "UI Designer Thinking Model"],
   ["detail-critique.md", "Detail Critique"],
   ["detail-constants.md", "Detail Constants"],
+  ["typography-standards.md", "Typography Standards"],
   ["workflow-visualization.md", "Workflow Visualization"],
   ["product-readme.md", "Product README Standard"],
   ["acceptance.md", "UI Acceptance"],

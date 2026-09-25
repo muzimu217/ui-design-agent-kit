@@ -497,6 +497,9 @@ APIs and the repository's state management rather than creating a parallel syste
   section. Keep the actual product, content, or work visually inspectable.
 - Keep typography legible and proportionate to its container. Use semantic color
   tokens, not one accent hue applied to every surface. Respect established systems.
+  When choosing identity faces and type hierarchy, follow
+  [typography-standards.md](references/typography-standards.md) unless the
+  contract or a recorded taste entry overrides it.
 - Add motion according to [motion-contract.md](references/motion-contract.md).
   Do not add a dependency for a simple CSS state transition, install competing
   animation runtimes, or migrate an existing runtime outside the task's scope.

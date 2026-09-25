@@ -8,7 +8,7 @@
   `evals/runs/operations-not-marketing/`，同仓同栈）——抄的行卡结构关系：
   数字列布局、行内状态徽标、hover 行为。
 - 修复项映射 detail-constants：计数器 `tabular-nums`；嵌套圆角
-  外=内+padding；按压 scale(0.96)；transition 逐属性。
+  外=内+padding；按压按 motion-contract press preset（near 0.98；2026-09-25 勘误：R104-01 已裁 motion-contract 为动效数值唯一权威，本稿原 scale(0.96) 表述作废）；transition 逐属性。
 - 旋钮（operational 密集工具）：方差 4 / 动效 4 / 密度 6。
 - 无新增外部素材；基线为仓内已验证实现，无授权新增。
 

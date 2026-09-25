@@ -110,6 +110,22 @@ test("every gate section in gate-protocol carries its contract elements", async 
   assert.ok(traceGate.includes("必交产物"), "gate F section misses its artifact requirement");
 });
 
+test("detail-constants defers motion values to motion-contract (no rival numbers)", async () => {
+  // R104-01: detail-constants once carried its own press scale and spring
+  // duration, contradicting the canonical motion contract — the second
+  // such conflict after stagger (R101-02). The enumerated rival pairs stay
+  // locked out.
+  const constants = await read(".agents/skills/ui-design-agent/references/detail-constants.md");
+  assert.ok(constants.includes("Precedence meta-rule (R104-01)"),
+    "detail-constants must carry the motion-contract precedence meta-rule");
+  assert.doesNotMatch(constants, /scale\(0\.96\)|below 0\.95/,
+    "detail-constants must not set its own press scale (motion-contract governs, near 0.98)");
+  assert.doesNotMatch(constants, /duration:\s*0\.3/,
+    "detail-constants must not pair a spring with duration (motion-contract forbids it)");
+  const contract = await read(".agents/skills/ui-design-agent/references/motion-contract.md");
+  assert.match(contract, /near scale 0\.98/, "motion-contract must keep the canonical press scale");
+});
+
 test("bilingual README case tables link the same set of case documents", async () => {
   const caseLinks = (source) => [...source.matchAll(/\((?:demo\/[a-z0-9-]+\/README\.md|showcase\/README\.md)\)/g)]
     .map((match) => match[1]).sort();

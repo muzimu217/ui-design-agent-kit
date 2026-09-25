@@ -202,7 +202,7 @@ npm run prompt:build:lean  # 重建精简导出（契约/动效/验收/品味四
 | --- | --- | --- |
 | 评测场景数 | 65（doc-drift 测试锁口径，quality-monitor 本行已入守卫） | ≥ 每环节 1 个，共 ≥ 9 |
 | verify 错误数 | 0 | 0 |
-| 测试通过数 | 74/74（doc-drift 守护：与 tests/*.test.mjs 静态 test() 计数一致，加测试须同笔更新本行） | 全过 |
+| 测试通过数 | 75/75（doc-drift 守护：与 tests/*.test.mjs 静态 test() 计数一致，加测试须同笔更新本行） | 全过 |
 | 已装 skill 锁定率 | 21/25 锁定；未锁 4 = ui-design-agent、remotion-video-agent、promotion-playbook（三者本 kit 自有，无需 pin）+ jiejoe-design（第三方，补锁需改 sources.lock.json，等用户批准；verify 反向警告已在位列示） | 上游第三方 skill 100% 锁定（当前缺 jiejoe-design 一项） |
 | 素材库检查日期 | 灵感库 2026-09-21（案例样板批次 13 站 curl+浏览器实拍入册）/ 预清组件源表 2026-09-07 | 每次抽查后更新 |
 

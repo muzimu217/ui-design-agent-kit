@@ -36,6 +36,29 @@ const STATUSES = new Set([
 ]);
 const RECORD_FILES = ["GATES.md", path.join("docs", "gates.md")];
 
+// Fix guidance per violation (agentUniverse absorption, 2026-09-25): an
+// audit that only names a failure makes the reader re-derive the repair;
+// each violation carries the pointer to what record is missing and the
+// exact record shape it must take. Guidance is mechanical; the verdict
+// itself still only comes from the user.
+const GUIDANCE = {
+  "missing-gates-record":
+    "补法：在工作区根建 GATES.md（或 docs/gates.md）。标题格式按门分段：" +
+    "『## 门A · 方向稿』+『裁决: passed』；表格格式用带日期行：" +
+    "『| 2026-09-25 | A | brief | passed | 呈交物 | 裁决 |』。" +
+    "裁决记录缺失期间产物不得推进（gate-protocol.md §5）。",
+  "missing-gate-a":
+    "补法：GATES.md 增加『## 门A · 方向稿』段。方向稿必含 named proven " +
+    "baseline（真实成品 URL）、结构草图、动效意图与三旋钮（plan-execute.md），" +
+    "呈交用户等待裁决。",
+  "gate-a-not-passed":
+    "补法：门A 呈交在用户侧等待裁决；pending/gated 不是通过。用户裁决后把" +
+    "裁决行更新为 passed / 调整（附改法）/ 否（换向），再推进下一阶段。",
+  "s-tier-missing-acceptance":
+    "补法：S 档窄修复不豁免验收——补『## 门E · 验收』段并裁决: passed，" +
+    "附逐页问题清单（P0/P1/P2 + 证据）与用户确认记录。",
+};
+
 async function collectArtifacts(dir, base = dir, found = []) {
   let entries;
   try {
@@ -137,25 +160,29 @@ export async function auditWorkspace(input, root = ROOT) {
   const record = implemented ? await loadRecord(workspace) : (await loadRecord(workspace));
 
   const violations = [];
+  const withGuidance = (id, detail) => ({ id, detail, guidance: GUIDANCE[id] });
   if (implemented && !record) {
-    violations.push({
-      id: "missing-gates-record",
-      detail: `${artifacts.length} implementation artifact(s)${hasPackage ? " + package.json" : ""} but no gate record in ${RECORD_FILES.join(" or ")}`,
-    });
+    violations.push(withGuidance(
+      "missing-gates-record",
+      `${artifacts.length} implementation artifact(s)${hasPackage ? " + package.json" : ""} but no gate record in ${RECORD_FILES.join(" or ")}`,
+    ));
   } else if (record) {
     const gateA = record.gates.A;
     if (record.tier === "S") {
       const acceptance = record.gates.E;
       if (!acceptance?.verdict || !PASSED.has(acceptance.verdict)) {
-        violations.push({
-          id: "s-tier-missing-acceptance",
-          detail: "S repairs still need a passed 门E acceptance record",
-        });
+        violations.push(withGuidance(
+          "s-tier-missing-acceptance",
+          "S repairs still need a passed 门E acceptance record",
+        ));
       }
     } else if (!gateA) {
-      violations.push({ id: "missing-gate-a", detail: "no 门A direction-draft record in the gate ledger" });
+      violations.push(withGuidance("missing-gate-a", "no 门A direction-draft record in the gate ledger"));
     } else if (!gateA.verdict || !PASSED.has(gateA.verdict)) {
-      violations.push({ id: "gate-a-not-passed", detail: `门A verdict is ${gateA.verdict ?? "missing"}, not passed` });
+      violations.push(withGuidance(
+        "gate-a-not-passed",
+        `门A verdict is ${gateA.verdict ?? "missing"}, not passed`,
+      ));
     }
   }
 

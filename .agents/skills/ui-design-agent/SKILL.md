@@ -34,7 +34,9 @@ state changes legible. Do not mistake more effects or tool calls for better work
   dependency installs, or asset downloads. Before submitting any gate or
   producing any UI artifact, gate-protocol.md must have been actually read in
   this session (references load on demand; assuming its rules from memory is
-  the exact failure mode this rule exists to close).
+  the exact failure mode this rule exists to close). The registry
+  `tooling/references-manifest.json` records every reference's purpose, owning
+  gate, and load trigger — consult it when unsure which reference governs.
 - Scale the chain to the task and state the tier with the plan: S (narrow
   repair of one existing component or defect — no direction or material gates,
   one evidence-driven verification round, MCP gate scaled to the checks

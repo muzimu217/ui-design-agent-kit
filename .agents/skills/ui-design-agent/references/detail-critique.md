@@ -45,6 +45,28 @@ radii, press scale, hit areas, icon-swap constants, tabular numerals — live in
 [detail-constants.md](detail-constants.md). When a finding needs "what good
 looks like" as a number, cite the constant, not taste.
 
+### Mapping to the PEER evaluation axes
+
+The PEER multi-agent pattern (Wang et al., arXiv:2407.06985) scores task
+output on seven axes: completeness, relevance, conciseness, factual accuracy,
+logical coherence, structure, comprehensiveness. A review written in either
+vocabulary must land on the same findings, so the mapping is fixed here.
+
+| PEER axis | Covered by |
+| --- | --- |
+| completeness | State coverage + Robustness — a missing state or untested edge is a completeness failure |
+| relevance | Owned upstream by the contract (design-contract.md Mission); spot-checked here as Consistency |
+| conciseness | Layout and spacing — density discipline, no decorative repetition |
+| factual accuracy | The evidence-anchor rule: measured values, screenshots, file:line — never assertions |
+| logical coherence | Motion conformance (interruption keeps semantic state) + state-machine coverage; **no ninth dimension is added for it** |
+| structure | Typography + Layout and spacing |
+| comprehensiveness | The walk rule: every touched dimension is evaluated; a skipped one is stated, never silent |
+
+Recorded 2026-09-25 (agentUniverse architecture absorption): the eight
+dimensions stay as they are. PEER's axes describe task-output quality; visual
+craft is already fully partitioned above, and adding a ninth dimension would
+double-count coherence that motion-contract and state coverage own.
+
 ## AI default-taste calibration (five clusters)
 
 Run this comparison on every rendered page alongside the AI-slop test: a hit

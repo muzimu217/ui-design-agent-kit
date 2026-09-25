@@ -7,7 +7,9 @@
       "purpose": "机械门径契约：反豁免适用范围、抄 proven 总则、门A-F 各门契约、停点规则、违规即 P0、评测场景特别条款",
       "loadWhen": "任何会产生可视化产物的任务；呈交任何门前本会话必须已实际读取",
       "gate": "all",
-      "dependsOn": ["plan-execute.md"],
+      "dependsOn": [
+        "plan-execute.md"
+      ],
       "export": "full",
       "leanCore": true
     },
@@ -57,7 +59,10 @@
       "purpose": "条目库：32+ 已验证素材源逐条登记（截图/使用场景/镜像替代/授权），含案例样板批次",
       "loadWhen": "已按灵感库路由确定来源后，查该源的具体用法、截图与镜像替代",
       "gate": "B",
-      "dependsOn": ["material-scouting.md", "inspiration-library.md"],
+      "dependsOn": [
+        "material-scouting.md",
+        "inspiration-library.md"
+      ],
       "export": false,
       "exportReason": "794 行条目库；单文件导出以行为指令为主，条目按需读取，整包内联会让导出膨胀三倍",
       "leanCore": false
@@ -68,7 +73,9 @@
       "purpose": "能力路由：素材管线四层（读取/加工/路由/后置）、3D 与动效工具路由、可选工具链候选与已否决项、浏览器取证",
       "loadWhen": "选择工具或 MCP 前；需要判定某能力是否已验证可用时",
       "gate": "B",
-      "dependsOn": ["design-contract.md"],
+      "dependsOn": [
+        "design-contract.md"
+      ],
       "export": "full",
       "leanCore": false
     },
@@ -108,7 +115,9 @@
       "purpose": "细节恒定值军规：圆角/按压/命中区/图标替换/表格数字/stagger 等数值标准",
       "loadWhen": "实现与自我批评需要具体数值标准时；发现需要 what-good-looks-like 时引用",
       "gate": "E",
-      "dependsOn": ["motion-contract.md"],
+      "dependsOn": [
+        "motion-contract.md"
+      ],
       "export": "full",
       "leanCore": false
     },
@@ -118,7 +127,9 @@
       "purpose": "细节级自我批评内环：八维评价、AI 默认味五类校准、PEER 七维映射、P0/P1/P2 分诊、证据锚点与记录格式",
       "loadWhen": "呈交任何门产物前；实现中每个组件完成后；验收轮作为发现生成器",
       "gate": "E",
-      "dependsOn": ["detail-constants.md"],
+      "dependsOn": [
+        "detail-constants.md"
+      ],
       "export": "full",
       "leanCore": false
     },
@@ -128,7 +139,9 @@
       "purpose": "验收规程：逐页检查面、证据要求、验收轮循环、交付记录",
       "loadWhen": "验收阶段（门E）开始前强制读取",
       "gate": "E",
-      "dependsOn": ["detail-critique.md"],
+      "dependsOn": [
+        "detail-critique.md"
+      ],
       "export": "full",
       "leanCore": true
     },
@@ -168,7 +181,9 @@
       "purpose": "密集科技 HUD 蓝图：投影 DOM 标签、相机巡览状态机、素材命名契约",
       "loadWhen": "做 3D HUD 类场景时，读 spatial-media.md 之后",
       "gate": "D",
-      "dependsOn": ["spatial-media.md"],
+      "dependsOn": [
+        "spatial-media.md"
+      ],
       "export": "full",
       "leanCore": false
     },
@@ -187,6 +202,16 @@
       "title": "Typography Standards",
       "purpose": "排版构造侧军规：身份字体（禁默认字体作主身份）、字族配对、标题构图、层级字重极端与字号跳差、行长、中西文混排、标题禁清单",
       "loadWhen": "选择字体与排版层级时；detail-critique 排版维需要构造侧标准时",
+      "gate": "E",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "copy-contract.md",
+      "title": "Copy Contract",
+      "purpose": "界面文案契约：用户视角命名、主动语态 CTA、动作全程同名、错误态三律、空态行动邀请、before/after 对照",
+      "loadWhen": "撰写或评审界面文案时；验收轮做文案契约比对时",
       "gate": "E",
       "dependsOn": [],
       "export": "full",

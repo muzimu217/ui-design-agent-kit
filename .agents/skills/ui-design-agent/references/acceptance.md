@@ -62,7 +62,9 @@ Automated accessibility tools complement, but do not replace, these checks.
 
 Review the visual result against its design contract: task clarity, hierarchy,
 useful density, coherent typography and color, domain fit, and motion restraint.
-Triage every finding as P0, P1, or P2 per detail-critique.md before reporting
+Compare the interface copy against copy-contract.md (naming, CTA outcomes,
+action vocabulary, error and empty states) in the same pass. Triage every
+finding as P0, P1, or P2 per detail-critique.md before reporting
 it; an unfixed P0 blocks implementation acceptance, not completion of a read-only
 review. In a review, report the blocker without repairing it. Do not mark an arbitrary
 aesthetic score as an objective pass. Any claimed visual

@@ -37,6 +37,7 @@ supplies the threshold; never invent one here.
 | State coverage | Per interactive element, the states its workflow needs: default, hover/press, focus-visible, disabled, selected, loading, error, empty |
 | Motion conformance | Preset chosen by role; hover onset within 150ms; stagger 0.04-0.08s on bounded groups; interruption keeps semantic state; reduced-motion result defined |
 | Affordance and semantics | Links navigate, buttons act; labels and accessible names present; icon-only controls named; a keyboard path exists |
+| Interface copy | User-perspective naming, active-voice CTAs, one word per action across the flow, errors that explain cause and repair, empty states that invite action — per [copy-contract.md](copy-contract.md); P0/P1/P2 triage applies unchanged |
 | Robustness | Long content, empty data, no network, zoom or text scaling, touch parity for hover-only feedback |
 | Consistency | The same problem is solved the same way as the established system; deviations are named decisions, not drift |
 
@@ -85,7 +86,10 @@ wording wins) or named as a mistake. Silence is not a pass.
 | 5 | Template chrome | Uppercase letter-spaced eyebrow above every heading, dot-chained strings (A · B · C), "WORD — fragment" labels, tinted near-black (#0B0B0B/#111) standing in for black, monospace micro-labels, arrow-suffixed "→" link buttons |
 
 Each round's acceptance list states the five-cluster verdict explicitly; a
-cluster hit without a brief requirement is a finding, not a style choice.
+cluster hit without a brief requirement is a finding, not a style choice. The
+same round states the copy-contract verdict explicitly alongside it
+([copy-contract.md](copy-contract.md)); interface copy is judged with the
+same severity triage as visual findings.
 
 A finding without an evidence anchor — screenshot, measured value, code
 location, or contract rule — is a suspicion. Label it as one or verify it.

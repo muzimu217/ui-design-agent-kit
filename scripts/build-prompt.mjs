@@ -23,6 +23,7 @@ export const references = [
   ["detail-critique.md", "Detail Critique"],
   ["detail-constants.md", "Detail Constants"],
   ["typography-standards.md", "Typography Standards"],
+  ["copy-contract.md", "Copy Contract"],
   ["workflow-visualization.md", "Workflow Visualization"],
   ["product-readme.md", "Product README Standard"],
   ["acceptance.md", "UI Acceptance"],

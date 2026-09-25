@@ -1185,5 +1185,22 @@
       "Fakes hierarchy with adjacent mid-weights or 1.2x size steps",
       "Adds an uninformative decorative eyebrow or all-caps label above the content"
     ]
+  },
+  {
+    "id": "copy-contract-applied",
+    "request": "Design the settings, error, and empty states for an inventory management app: the notification settings form, a failed-save error, and the empty inventory table.",
+    "context": "New web UI, Chinese-language product. copy-contract.md is registered and in scope; no brand voice overrides the clarity rules.",
+    "passCriteria": [
+      "Names features from the user's side (what it is and does), not the internal mechanism",
+      "Writes CTAs in active voice that name the outcome of pressing them",
+      "Keeps one word per action consistent across buttons, completion states, and logs",
+      "Makes the error state explain what happened and how to repair it, without apologizing or being vague",
+      "Turns the empty table into an action invitation instead of a bare no-data note"
+    ],
+    "failConditions": [
+      "Labels a feature by its internal mechanism (e.g. Webhook 配置 for notifications)",
+      "Uses a generic apology-only error like 出错了，请重试 with no cause or repair",
+      "Shows 暂无数据 with no next action in the empty state"
+    ]
   }
 ]

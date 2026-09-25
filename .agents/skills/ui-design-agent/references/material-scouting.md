@@ -150,24 +150,46 @@ Adapt within license boundaries and the target stack.
 
 ## Candidate record
 
-The input to `scripts/material-rank.mjs` uses this minimal shape:
+`scripts/material-rank.mjs --input <file>` takes a **file path** (not inline
+JSON) to a file whose top level is a `candidates` array. The single-object
+shape is a ranker error, not a valid input. Minimal working example — save as
+`output/candidates.json`:
 
 ```json
 {
-  "id": "react-bits-text-effects",
-  "name": "React Bits",
-  "url": "https://reactbits.dev",
-  "kind": "component",
-  "access": "reachable",
-  "relevance": 5,
-  "evidence": 5,
-  "rights": 3,
-  "fit": 5,
-  "efficiency": 4,
-  "proposedPart": "text entrance treatment",
-  "adaptationBoundary": "project-owned component and tokens; inspect license first"
+  "candidates": [
+    {
+      "id": "react-bits-text-effects",
+      "name": "React Bits",
+      "url": "https://reactbits.dev",
+      "kind": "component",
+      "access": "reachable",
+      "relevance": 5,
+      "evidence": 5,
+      "rights": 3,
+      "fit": 5,
+      "efficiency": 4,
+      "proposedPart": "text entrance treatment",
+      "adaptationBoundary": "project-owned component and tokens; inspect license first"
+    }
+  ]
 }
 ```
+
+Run it end to end:
+
+```text
+node scripts/material-rank.mjs --input output/candidates.json
+```
+
+The candidate above scores 91 (relevance 5×8 + evidence 5×5 + rights 3×4 +
+fit 5×2 + efficiency 4×1), so with `access: "reachable"` and `rights ≥ 3` it
+lands in the `primary` bucket of the tool's JSON output. Field contract:
+`id`/`name`/`url`/`kind` are nonempty strings with distinct ids; `access` is
+`reachable|partial|blocked|unknown`; the five dimensions take integers 0–5;
+`rights < 3`, non-reachable access, a score under 70, or an explicit
+`rightsStatus: "prohibited"` / `trust: "untrusted"` / `placeholder: true`
+moves the candidate to `secondary` or `excluded`.
 
 This JSON is only the ranker's sorting input. The complete user-facing shortlist
 must also record:

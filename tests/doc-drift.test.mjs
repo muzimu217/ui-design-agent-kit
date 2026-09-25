@@ -47,6 +47,29 @@ test("stale coverage claims are gone from scorekeeping documents", async () => {
   }
 });
 
+test("quality-monitor metric rows stay current with the corpus and the test count", async () => {
+  // R106-02 (round 110 escalation): quality-monitor cited stale numbers and
+  // sat outside every drift guard. Both machine-derivable rows are locked
+  // now — a corpus or test-suite change trips here until the table is
+  // updated in the same change.
+  const scenarios = JSON.parse(await read("evals/scenarios.json"));
+  const monitor = await read("docs/quality-monitor.md");
+  assert.ok(
+    monitor.includes(`| 评测场景数 | ${scenarios.length}（doc-drift 测试锁口径`),
+    `quality-monitor 评测场景数 row must cite the current corpus size (${scenarios.length})`,
+  );
+
+  const testFiles = (await readdir(path.join(ROOT, "tests"))).filter((name) => name.endsWith(".test.mjs"));
+  let testCount = 0;
+  for (const name of testFiles) {
+    testCount += (await read(path.join("tests", name))).match(/^\s*test\(/gm)?.length ?? 0;
+  }
+  assert.ok(
+    monitor.includes(`| 测试通过数 | ${testCount}/${testCount}`),
+    `quality-monitor 测试通过数 row must cite the current test count (${testCount}/${testCount})`,
+  );
+});
+
 test("bilingual README case tables link the same set of case documents", async () => {
   const caseLinks = (source) => [...source.matchAll(/\((?:demo\/[a-z0-9-]+\/README\.md|showcase\/README\.md)\)/g)]
     .map((match) => match[1]).sort();

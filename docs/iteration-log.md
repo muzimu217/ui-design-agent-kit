@@ -5,6 +5,7 @@
 
 | 日期 | 类型 | 做了什么 | 分数 / 证据 | 下一步 |
 | --- | --- | --- | --- | --- |
+| 2026-09-25 | 工单执行 | **R106-02 quality-monitor 指标表修复+入守护**（轮 110 升级版）：场景数 62→65、测试数 58/58→72/72、锁定率 23/25→如实口径（21 锁定；未锁 4=3 自有+1 第三方 jiejoe-design 待用户批准补锁，锁文件按硬边界不动）；doc-drift 新增守护测试锁住场景数与测试数两行（测试数=tests/*.test.mjs 静态计数，本笔曾自指跳闸 71→72 当场同笔更新——守护按设计工作）；verify.mjs 增反向警告（装了未锁列 warnings，不致命） | 三连全绿 72/72；verify warnings 4 条实测输出 | jiejoe-design 补锁待用户批准；R103-02 §4.1 数字修正挂 R106-03 |
 | 2026-09-25 | 工单执行 | **R106-01 断档补记收口（本行即防复发实证）**：09-23 晚以来 17 笔一次性补记（R074-01 保全 2、三页重构 2、R101-02×2、R103-01/02、R107-01×3、R107-02、agentUniverse 调研与 S1-S6 吸收 5），并自此执行"台账行与改动同笔提交"硬顺序 | 三连全绿 71/71；本笔 SHA 留痕 | **当前真实状态**：两场景门A 待用户裁决（detail-constants-application / slop-test-five-clusters）；agentUniverse 吸收版+三页待用户验收；推文待用户发布→社团测试邀请；队列 R106-02（quality-monitor 纳入漂移守护）下一张 |
 | 2026-09-25 | 用户指令 | 9212172：S1-S6 落地证据写回调研文档第五节；社区推文草稿（长/短版，配 main 上 p-habit-2 三张实拍）；社团测试邀请稿——全部待用户动作（发布/邀请） | docs/agentuniverse-research.md §五；docs/community-post-2026-09.md；docs/invite-test-club.md | 用户发布推文后开社团 issue 邀请测试 |
 | 2026-09-25 | 用户指令 | 6fb5f2f：S4 `prompt:refine` 修订建议工具——失效判据/禁区命中机械映射到指令归属文件（12 条 OWNERS 表），草稿落 output/prompt-refine/ 只出稿不改指令；5 条纯函数测试 | npm run prompt:refine 实跑"0 失效点"诚实输出+合成失败定位 detail-constants | 真实失败场景出现时首用 |

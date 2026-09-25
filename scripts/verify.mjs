@@ -115,6 +115,14 @@ export async function verify(root = ROOT) {
     try { await access(path.join(root, item.notice)); }
     catch { errors.push(`Missing upstream notice: ${item.name}`); }
   }
+  // Reverse check (R106-02): lock→installed was already enforced above; this
+  // direction lists anything installed but absent from sources.lock.json.
+  // Warnings, not errors: self-developed entrypoints are legitimately
+  // unpinned, and pinning a third-party skill needs a user ruling.
+  const locked = new Set(lock.skills.map((item) => item.name));
+  const warnings = skills
+    .filter((name) => !locked.has(name))
+    .map((name) => `Installed but not pinned in sources.lock.json: ${name}`);
   // Keep the bundled Remotion router usable without requiring extra downloads.
   const remotionRoot = path.join(skillRoot, "remotion-best-practices");
   const remotionRouter = await readFile(path.join(remotionRoot, "SKILL.md"), "utf8");
@@ -143,7 +151,7 @@ export async function verify(root = ROOT) {
       errors.push(`${agentName} discovery is disabled`);
     }
   }
-  return { ok: errors.length === 0, skills, errors };
+  return { ok: errors.length === 0, skills, errors, warnings };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {

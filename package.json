@@ -16,6 +16,7 @@
     "evolve": "node scripts/evolution-report.mjs",
     "loop": "node scripts/loop-check.mjs",
     "material:rank": "node scripts/material-rank.mjs",
+    "prompt:refine": "node scripts/prompt-refine.mjs",
     "contrast": "node scripts/contrast-check.mjs",
     "chain:audit": "node scripts/chain-audit.mjs",
     "diagram": "node scripts/workflow-diagram/cli.mjs build",

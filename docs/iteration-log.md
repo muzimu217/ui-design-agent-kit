@@ -5,6 +5,24 @@
 
 | 日期 | 类型 | 做了什么 | 分数 / 证据 | 下一步 |
 | --- | --- | --- | --- | --- |
+| 2026-09-25 | 工单执行 | **R106-01 断档补记收口（本行即防复发实证）**：09-23 晚以来 17 笔一次性补记（R074-01 保全 2、三页重构 2、R101-02×2、R103-01/02、R107-01×3、R107-02、agentUniverse 调研与 S1-S6 吸收 5），并自此执行"台账行与改动同笔提交"硬顺序 | 三连全绿 71/71；本笔 SHA 留痕 | **当前真实状态**：两场景门A 待用户裁决（detail-constants-application / slop-test-five-clusters）；agentUniverse 吸收版+三页待用户验收；推文待用户发布→社团测试邀请；队列 R106-02（quality-monitor 纳入漂移守护）下一张 |
+| 2026-09-25 | 用户指令 | 9212172：S1-S6 落地证据写回调研文档第五节；社区推文草稿（长/短版，配 main 上 p-habit-2 三张实拍）；社团测试邀请稿——全部待用户动作（发布/邀请） | docs/agentuniverse-research.md §五；docs/community-post-2026-09.md；docs/invite-test-club.md | 用户发布推文后开社团 issue 邀请测试 |
+| 2026-09-25 | 用户指令 | 6fb5f2f：S4 `prompt:refine` 修订建议工具——失效判据/禁区命中机械映射到指令归属文件（12 条 OWNERS 表），草稿落 output/prompt-refine/ 只出稿不改指令；5 条纯函数测试 | npm run prompt:refine 实跑"0 失效点"诚实输出+合成失败定位 detail-constants | 真实失败场景出现时首用 |
+| 2026-09-25 | 用户指令 | 291187f：S2 reference 注册表——tooling/references-manifest.json 19 文件全登记（用途/加载时机/所属门/依赖/导出层级）+ tests/references-manifest.test.mjs 四方一致性（注册表↔磁盘↔build-prompt 导出↔SKILL.md 链接）；source-catalog 不进导出从静默变登记理由（794 行按需读取）——**结构性消解 R107-03** | 新测试 4 条全绿；build-prompt 导出 references/leanReferences 转正式导出 | R107-03 待大师按新事实核销 |
+| 2026-09-25 | 用户指令 | 56ad48b：S1/S3/S5/S6 吸收——plan-execute.md 协同模式卡（PEE/PEER/GRR/IS+handoff Pattern 字段）；tool-routing.md 素材管线四层语言；chain-audit 违规带 GUIDANCE 补法；detail-critique.md PEER 七维映射（裁定不补第九维） | 引用 arXiv:2407.06985；chain-audit 指引测试 1 条 | — |
+| 2026-09-25 | 调研 | c059885：agentUniverse（蚂蚁开源多智能体框架）架构调研——PEER 与 UAK 门径同构判定，六条建议 S1-S6 登记（docs/agentuniverse-research.md） | SPA 反推 API+GitHub 仓库一手阅读 | S1-S6 经用户批准后落地（见上四行） |
+| 2026-09-25 | CI 修复 | 3ff5e70：kit-self-test checkout 加 fetch-depth:0——replay 测试哨兵提交需完整历史，三轮后 CI 绿 | CI run 绿 | — |
+| 2026-09-25 | CI 修复 | 0bad40a：kit-self-test action SHA 凭记忆写错致"unable to resolve"，改用仓库 product-pages.yml 已核实 SHA | CI run 绿 | — |
+| 2026-09-25 | 工单执行 | 57ac9b6：R107-01 CI 补 kit-self-test 全分支自测门（verify/测试/eval --check/prompt 双导出，不部署）+ eval 退出码微修；大师轮 107 核销 verified（以三笔真实 CI 运行替代植入证明） | .github/workflows/kit-self-test.yml | — |
+| 2026-09-25 | 工单执行 | 93179f2：R107-02 usage() 未定义实修（--bogus 崩溃→Usage 输出+exitCode 1）+ eval-run 失败路径测试 3 条（usage 存在性/不存在 evidence 拦截/满分证据过薄拦截，零台账污染） | 大师核销 verified | — |
+| 2026-09-25 | 工单执行 | dac8871：R103-02 执行选择如实化——goal.md 改口"族群分批+硬场景专项"并加跳过留痕与代表性披露要求；eval-report 增 §4.1 代表性披露 | 大师核销 verified（轮 110 发现 §4.1 数字失实，待修正复核） | §4.1 族群分布数字修正（挂 R106-03 同修） |
+| 2026-09-25 | 工单执行 | 90868c0：R103-01 台账独立性加固——evidence 路径 fs.access 存在性校验、满分须 ≥3 证据含文件路径、commit/recordedAt 锚点、同日 --rerun 防重（历史不追溯） | 大师核销 verified | — |
+| 2026-09-25 | 工单执行 | aa163fe：R101-02 收敛完成——goal.md/quality-monitor.md 版本号对齐 chain-flow v7.2 | 大师核销 verified | — |
+| 2026-09-25 | 工单执行 | b687306：R101-02 部分——detail-constants stagger 0.04-0.08s 对齐 motion-contract（消除自引冲突）；iteration-log 两处坏路径修正 | 大师核销 verified | — |
+| 2026-09-24 | 用户指令 | 46d230d：介绍视频移回首页 hero 下（用户可见位），工作流页回归纯流程 | def40dc+46d230d 随 534ff57 合并 main 上线 | — |
+| 2026-09-24 | 用户指令 | def40dc：showcase 单页拆三页导航（首页产品/证据与验证/工作流）——吸收 R074-01 的验证带转正为证据页，hash 路由+激活态 | 同上 | 三页待用户最终验收 |
+| 2026-09-23 | 工单执行 | 1f14c3d：两场景门A 方向稿（detail-constants-application/slop-test-five-clusters）标 NON-CORPUS 出语料口径，语料回到 63；D6 门径停在用户裁决点 | evals/runs/*/NON-CORPUS.md | 两门A 仍待用户裁决 |
+| 2026-09-23 | 工单执行 | c4cb69a：R074-01 代码保全——第五证据阶梯与论文卡在实验分支转正（后被 534ff57 合并上线，R074-01 改判 resolved） | 大师轮 85 改判 | 已消解 |
 | 2026-09-23 | 工单执行 | **R061-01 领取+清偿 1/3**：`direction-dials-recorded` 真实执行——trust-first 门户方向稿（4/3/4，含选择陈述）+ preserve 运营台（5/3/5→5/4/5），逐判据 4/4×2=100，`--record` 入账（台账 16/65，doc-drift 三份文档同步 16/65）。另：R050-04 按大师轮 63 裁决"阻塞不占队"转 blocked 待用户批准 @axe-core/playwright，改领本工单；余 2 场景（detail-constants-application/slop-test-five-clusters，需产出 UI 产物走门径）+准入规则随后轮次 | `evals/runs/direction-dials-recorded/`（EVIDENCE.md+record-data.json）；--check "16 executed / 65 scenarios"；58/58 | 余 2 场景清偿+准入规则入 eval-run.mjs；R050-04 等用户批准依赖 |
 | 2026-09-23 | 工单执行 | **R050-03 方向稿三旋钮收口 = B 包全落地**：plan-execute.md 方向稿模板追加三行必填（DESIGN_VARIANCE/MOTION_INTENSITY/VISUAL_DENSITY 1-10）+「方向三旋钮」节（六行场景推断表、与表面类型正交共存、preserve=匹配现值动效+1 / overhaul=方差+2 动效+2、门A 呈交必含三值）；配 eval 场景 `direction-dials-recorded`（语料 64→65，doc-drift 跳闸后三份文档同步 15/65）。**裁决包 B1/B2/B3 与 gates.md D7 ②③④ 全部回填 passed/verified**（R050-01 verified、R050-02/03 done-pending-verify 待大师核销）；INDEX 双更 | 三连全绿 58/58；提交 c0d540d 已推 | 下轮按队首优先级领 P2 工单（R050-04 axe 巡检）；R050-02/03 待大师核销 |
 | 2026-09-23 | 工单执行 | **R050-02 五类 AI 默认味校准清单收口**：detail-critique.md 新增五类签名表（奶油底+赤陶/暗底酸绿/报纸 broadsheet/SaaS 卡片套件/模板 chrome）+ 规则正文（brief 用词优先、静默非通过、命中归类）；SKILL.md AI-slop test 保留名与验收要求、一句话替换为五类逐裁；配 eval 场景 `slop-test-five-clusters`（语料 63→64，doc-drift 跳闸后三份文档同步 15/64）。R050-01 已获大师 verified；INDEX 双更纪律已落实 | 三连全绿 58/58；提交 00e3b8c 已推；工单状态 done-pending-verify | 下轮领 R050-03（三旋钮，P1）——完成即 B 包全落地，回填裁决包与 D7 行 |

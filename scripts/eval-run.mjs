@@ -261,6 +261,14 @@ async function main() {
   usage();
 }
 
+function usage() {
+  console.error(`Usage: npm run eval
+  npm run eval -- --check                       台账与语料校验（rubric 漂移、分数复算、evidence 存在性）
+  npm run eval -- --next                        提示文件序首个未执行场景（仅参考）
+  npm run eval -- --record <id> --data <file> [--rerun]
+                                                记录一次真实执行；同场景同日重复需 --rerun`);
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   try {
     await main();

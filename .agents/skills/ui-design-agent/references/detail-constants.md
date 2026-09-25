@@ -23,8 +23,9 @@ governing design contract states different values, the contract wins.
 4. **CSS `transition` for interactive state changes** (interruptible);
    `keyframes` only for one-shot sequences. Counter-example: an exit animation
    on `animation` cannot be interrupted mid-flight.
-5. **Low-frequency entrances stagger ~100ms per batch**; high-frequency
-   interactions never stagger. Counter-example: hover items cascading.
+5. **Low-frequency entrances stagger 0.04–0.08s per batch** (per
+   motion-contract.md, which governs); high-frequency interactions never
+   stagger. Counter-example: hover items cascading.
 6. **Exits are softer than entrances**: small `translateY` + ease-out, shorter
    distance. Counter-example: elements flying out harder than they came in.
 7. **Icon swap animation**: opacity 0→1, scale 0.25→1, blur 4px→0;

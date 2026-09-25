@@ -126,6 +126,25 @@ test("detail-constants defers motion values to motion-contract (no rival numbers
   assert.match(contract, /near scale 0\.98/, "motion-contract must keep the canonical press scale");
 });
 
+test("gate A submission lists agree across gate-protocol and plan-execute (dials included)", async () => {
+  // R104-04: plan-execute required the three direction dials in every gate A
+  // submission while gate-protocol's own required list omitted them — an
+  // agent following the protocol alone submitted "compliant" drafts without
+  // dials. Both lists stay aligned here, and the operational row keeps a
+  // real motion range instead of a dash.
+  const protocol = await read(".agents/skills/ui-design-agent/references/gate-protocol.md");
+  const section = protocol.split("### 门A ·")[1]?.split("### 门B ·")[0];
+  assert.ok(section, "gate A section missing from gate-protocol.md");
+  assert.match(section, /三旋钮值/, "gate A required artifacts must include the three direction dials");
+  assert.match(section, /plan-execute\.md/, "gate A must cite the dials inference table in plan-execute.md");
+
+  const plan = await read(".agents/skills/ui-design-agent/references/plan-execute.md");
+  assert.match(plan, /门A 呈交格式必须含三值/, "plan-execute must keep the three-dial submission rule");
+  const operational = plan.split("| operational 密集工具 |")[1]?.split("\n")[0];
+  assert.ok(operational, "operational scenario row missing from the dials table");
+  assert.doesNotMatch(operational, /\|\s*—\s*\|/, "operational MOTION_INTENSITY must have a value range, not a dash");
+});
+
 test("bilingual README case tables link the same set of case documents", async () => {
   const caseLinks = (source) => [...source.matchAll(/\((?:demo\/[a-z0-9-]+\/README\.md|showcase\/README\.md)\)/g)]
     .map((match) => match[1]).sort();

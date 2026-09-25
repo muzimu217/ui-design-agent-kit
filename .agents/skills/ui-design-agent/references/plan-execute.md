@@ -203,7 +203,7 @@ AI, but actual tools, files, access, and authorization must be checked there.
 | playful / Awwwards / agency | 9-10 | 8-10 | 3-4 |
 | 营销页默认 | 7-9 | 6-8 | 3-5 |
 | trust-first / 公共部门 / 受监管 | 3-4 | 2-3 | 4-5 |
-| operational 密集工具 | 方差压低 | — | 5-7 |
+| operational 密集工具 | 方差压低 | 2-4 | 5-7 |
 
 门A 呈交格式必须含三值（缺失即为不完整呈交）；用户改向时旋钮值随裁决
 更新，旧值留痕可回放。

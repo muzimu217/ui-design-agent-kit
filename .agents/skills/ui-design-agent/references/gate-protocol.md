@@ -44,8 +44,11 @@
 ### 门A · 方向稿
 - 进入条件：需求已整理（口语摄取或既有简报）。
 - 必交产物：方向稿——**named proven baseline**（真实成品 URL + 打算抄哪些
-  关系）+ 结构草图 + 动效意图；对照品味档案声明 honoring/violating 条目。
-  未实机检视的 baseline 必须标 `unverified`，过门后第一步就是实机校验。
+  关系）+ 结构草图 + 动效意图 + **三旋钮值**（DESIGN_VARIANCE /
+  MOTION_INTENSITY / VISUAL_DENSITY，各 1-10，场景推断表见 plan-execute.md
+  "方向三旋钮"节；缺旋钮即为不完整呈交）；对照品味档案声明
+  honoring/violating 条目。未实机检视的 baseline 必须标 `unverified`，
+  过门后第一步就是实机校验。
 - 基线查找与素材采挖的边界（R110-02）：为命名 baseline 所需的**最小定向
   检索**（少量已知来源，回答"真实成品是什么、长什么样"）允许在门A 前进行，
   不构成跳门或"重首轮"；**素材采挖**（多路候选搜集、截图对比、拟采用与

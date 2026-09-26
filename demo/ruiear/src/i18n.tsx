@@ -13,6 +13,7 @@ const zh = {
     buy: '购买',
     drag: '拖拽旋转',
     scroll: '向下滚动',
+    modelLoading: '正在加载耳机模型…',
   },
   color: {
     eyebrow: '五种表达',
@@ -137,6 +138,7 @@ const en: Dict = {
     buy: 'Buy',
     drag: 'Drag to rotate',
     scroll: 'Scroll',
+    modelLoading: 'Loading the earbuds model…',
   },
   color: {
     eyebrow: 'Five ways to say it',

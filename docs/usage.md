@@ -131,3 +131,13 @@ contracts. The Motion AI Kit is the source for web Motion docs and CSS easing.
 The deprecated Remotion MCP is intentionally not configured.
 The animation ecosystem references are candidates for research and routing; they
 are not automatically installed, connected, or licensed for code and media reuse.
+
+## Detail lint
+
+`npm run lint:detail` statically scans `demo/*/src` and `showcase/products/src`
+for the mechanically checkable detail-constants rules: no `transition: all`
+(rule 10) and the `will-change` whitelist — transform, opacity, filter only
+(rule 11). The first run records existing hits as the baseline in
+`output/detail-lint-report/baseline.json`; later runs fail only on new hits
+(`--update-baseline` re-records deliberately). Advisory before a release, not
+a CI gate.

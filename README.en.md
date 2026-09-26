@@ -110,6 +110,10 @@ staying in code.
 
 ## Research context
 
+> Scope note (R106-05): this English README is the **condensed, research-facing** edition. The Chinese README
+> (README.md) is the full edition and additionally covers capability configuration, material scouting,
+> contributing, and community channels.
+
 The methodology behind this kit — six gates (five human-adjudicated plus one agent-side trace gate), a five-level
 evidence ladder, and a gate ledger for "AI Definition of Done" — is documented
 in a systems paper:

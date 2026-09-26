@@ -4,6 +4,9 @@
 
 # UI Design Agent Kit
 
+> 语言说明（R106-05）：本 README 为**完整版**（含能力配置、素材检索、贡献与社区节）；
+> [README.en.md](README.en.md) 是面向研究者的**精简英文版**，仅保留方法论、证据与论文入口。
+
 简体中文 | [English](README.en.md)
 
 ### 从口语需求到可验证界面的项目级 AI 设计工作流。

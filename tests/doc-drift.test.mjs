@@ -145,6 +145,31 @@ test("gate A submission lists agree across gate-protocol and plan-execute (dials
   assert.doesNotMatch(operational, /\|\s*—\s*\|/, "operational MOTION_INTENSITY must have a value range, not a dash");
 });
 
+test("demo READMEs declare a lifecycle status and published demos are live", async () => {
+  // R050-06 / D7⑥: demos were live/local/archived/broken by tribal memory.
+  // Every demo README now carries frontmatter status, and the showcase build
+  // (assertPublicAppsLive) refuses published-pipeline entries that are not
+  // live.
+  const statuses = new Set(["live", "local", "archived", "broken"]);
+  const { PUBLIC_APPS } = await import("../showcase/scripts/build-pages.mjs");
+  const demoDirs = (await readdir(path.join(ROOT, "demo"), { withFileTypes: true }))
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => `demo/${entry.name}`);
+  const statusOf = {};
+  for (const dir of demoDirs) {
+    const source = await read(path.join(dir, "README.md"));
+    const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    const status = frontmatter?.[1].match(/^status:\s*(\S+)/m)?.[1];
+    assert.ok(status, `${dir}/README.md missing status frontmatter`);
+    assert.ok(statuses.has(status), `${dir} has unknown demo status ${status}`);
+    statusOf[dir] = status;
+  }
+  for (const { project } of PUBLIC_APPS) {
+    if (!project.startsWith("demo/")) continue;
+    assert.equal(statusOf[project], "live", `${project} is in the published pipeline and must be status: live`);
+  }
+});
+
 test("bilingual README case tables link the same set of case documents", async () => {
   const caseLinks = (source) => [...source.matchAll(/\((?:demo\/[a-z0-9-]+\/README\.md|showcase\/README\.md)\)/g)]
     .map((match) => match[1]).sort();

@@ -86,11 +86,27 @@ export async function runtimeLicenses(projects) {
   return `Third-party runtime licenses\nGenerated from Vite's actual bundled module inventory and checked license supplements.\n\n${[...sections.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([, text]) => text).join('\n\n========================================\n\n')}\n`;
 }
 
+// D7⑥ (R050-06): a demo enters the published pipeline only if its README
+// declares status: live. The frontmatter is the single place a demo's
+// lifecycle is recorded — no tribal memory for live/local/archived/broken.
+export async function assertPublicAppsLive(root = ROOT) {
+  for (const { project } of PUBLIC_APPS) {
+    if (!project.startsWith('demo/')) continue;
+    const source = await readFile(path.join(root, project, 'README.md'), 'utf8');
+    const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    const status = frontmatter?.[1].match(/^status:\s*(\S+)/m)?.[1];
+    if (status !== 'live') {
+      throw new Error(`${project}/README.md status must be "live" before publishing (got ${status ?? 'missing'}); fix or downgrade the showcase entry (D7⑥)`);
+    }
+  }
+}
+
 export async function assemblePages({ root = ROOT, basePath = '/', licenseText }) {
   const base = normalizeBase(basePath);
   const releaseId = process.env.VITE_RELEASE_ID || null;
   if (releaseId && !/^[A-Za-z0-9._-]{1,64}$/.test(releaseId)) throw new Error('Invalid public release identifier');
   if (typeof licenseText !== 'string' || !licenseText.trim()) throw new Error('Runtime license bundle is required');
+  await assertPublicAppsLive(root);
   const inputs = PUBLIC_APPS.map(({ project, prefix }) => ({ directory: path.join(root, project, 'dist'), prefix }));
   const inventory = [];
   for (const input of inputs) inventory.push({ ...input, files: await publicFiles(input.directory) });

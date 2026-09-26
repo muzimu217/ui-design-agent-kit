@@ -157,7 +157,7 @@ export async function auditWorkspace(input, root = ROOT) {
   const artifacts = await collectArtifacts(workspace);
   const hasPackage = await hasDependencies(workspace);
   const implemented = artifacts.length > 0 || hasPackage;
-  const record = implemented ? await loadRecord(workspace) : (await loadRecord(workspace));
+  const record = await loadRecord(workspace);
 
   const violations = [];
   const withGuidance = (id, detail) => ({ id, detail, guidance: GUIDANCE[id] });

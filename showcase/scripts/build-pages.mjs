@@ -76,8 +76,13 @@ export async function runtimeLicenses(projects) {
       const identity = `${entry.name}@${entry.version}`;
       if (sections.has(identity)) continue;
       let notice = entry.text;
-      if (!notice && identity === '@react-three/fiber@9.7.0') {
-        notice = await readFile(new URL('../licenses/react-three-fiber-9.7.0.txt', import.meta.url), 'utf8');
+      if (!notice && entry.name === '@react-three/fiber') {
+        // License supplement is version-pinned; read the actual version from
+        // the demo lockfiles instead of hardcoding it (R107-04).
+        const fiberVersion = await bundledFiberVersion(projects);
+        if (fiberVersion && identity === `@react-three/fiber@${fiberVersion}`) {
+          notice = await readFile(new URL(`../licenses/react-three-fiber-${fiberVersion}.txt`, import.meta.url), 'utf8');
+        }
       }
       if (typeof notice !== 'string' || !notice.trim()) throw new Error(`No license text found for bundled dependency: ${identity}`);
       sections.set(identity, `${identity}\nDeclared license: ${entry.identifier ?? 'See notice below'}\n\n${notice}`);
@@ -99,6 +104,18 @@ export async function assertPublicAppsLive(root = ROOT) {
       throw new Error(`${project}/README.md status must be "live" before publishing (got ${status ?? 'missing'}); fix or downgrade the showcase entry (D7⑥)`);
     }
   }
+}
+
+async function bundledFiberVersion(projectDirs) {
+  for (const dir of projectDirs) {
+    try {
+      const lock = JSON.parse(await readFile(path.join(dir, 'package-lock.json'), 'utf8'));
+      for (const [key, info] of Object.entries(lock.packages ?? {})) {
+        if (key.endsWith('node_modules/@react-three/fiber') && info.version) return info.version;
+      }
+    } catch { /* project without a lockfile contributes nothing */ }
+  }
+  return null;
 }
 
 export async function assemblePages({ root = ROOT, basePath = '/', licenseText }) {

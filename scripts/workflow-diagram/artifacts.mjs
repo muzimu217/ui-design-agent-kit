@@ -50,9 +50,10 @@ export function splitEvidence(value) {
     .filter((part) => part && /^[\w./-]+\.(md|html|json|tsx?|css)$/i.test(part));
 }
 
-async function loadArtifact(rawPath, workspace) {
-  const abs = path.resolve(workspace, rawPath);
-  if (!abs.startsWith(path.resolve(workspace))) {
+export async function loadArtifact(rawPath, workspace) {
+  const root = path.resolve(workspace);
+  const abs = path.resolve(root, rawPath);
+  if (abs !== root && !abs.startsWith(`${root}${path.sep}`)) {
     return { path: rawPath, status: "blocked", reason: "路径超出任务工作区，未读取" };
   }
   try {

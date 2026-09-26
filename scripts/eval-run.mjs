@@ -24,6 +24,7 @@ const execFileAsync = promisify(execFile);
 //   npm run eval -- --check                   validate ledger vs scenarios
 //   npm run eval -- --next                    next unexecuted scenario (rotation order)
 //   npm run eval -- --record <id> --data <f>  record one real execution
+//                                             (same-day re-record needs --rerun)
 //
 // The --data file: { "round"?: string, "scores": { "<passCriteria text>": 0|1|2 },
 // "failHits"?: string[], "evidence": string[], "notes"?: string,
@@ -86,7 +87,7 @@ async function loadResults() {
   return parsed;
 }
 
-async function validateRun(run, scenario, { enforceAnchored = false } = {}) {
+export async function validateRun(run, scenario, { enforceAnchored = false } = {}) {
   const problems = [];
   const criteria = scenario.passCriteria;
   const scoreKeys = Object.keys(run?.scores ?? {});
@@ -166,6 +167,16 @@ function printOverview(list, results) {
   console.log(`\n已真实执行 ${executed.length}/${list.length} 个场景；最近分数均值 ${avg}；rubric：${results.rubric}`);
 }
 
+// Same-day re-record guard (R108-03): a scenario already recorded today may
+// only be re-recorded deliberately via --rerun. Exported pure so the CLI
+// branch is testable without touching the real ledger.
+export function sameDayRejection(priorSameDay, rerun) {
+  if (priorSameDay > 0 && !rerun) {
+    return `already has ${priorSameDay} record(s) dated today; pass --rerun to record a deliberate re-execution`;
+  }
+  return null;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const list = await loadScenarios();
@@ -224,8 +235,9 @@ async function main() {
     const rerun = args.includes("--rerun");
     const date = new Date().toISOString().slice(0, 10);
     const priorSameDay = (results.runs[id] ?? []).filter((item) => item.date === date).length;
-    if (priorSameDay > 0 && !rerun) {
-      console.error(`✗ ${id} already has ${priorSameDay} record(s) dated ${date}; pass --rerun to record a deliberate re-execution`);
+    const rejection = sameDayRejection(priorSameDay, rerun);
+    if (rejection) {
+      console.error(`✗ ${id} ${rejection.replace("today", date)}`);
       process.exitCode = 1;
       return;
     }

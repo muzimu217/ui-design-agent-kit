@@ -58,3 +58,37 @@ test("--record rejects thin full-score evidence", async (t) => {
   assert.notEqual(result.code, 0);
   assert.match(result.stdout, /full-score records need at least 3 evidence items/);
 });
+
+import { validateRun, sameDayRejection } from "../scripts/eval-run.mjs";
+import { readFile } from "node:fs/promises";
+
+test("same-day re-record without --rerun is rejected; --rerun and clean slate pass", () => {
+  assert.match(sameDayRejection(1, false), /--rerun/);
+  assert.equal(sameDayRejection(2, false)?.includes("2 record(s)"), true);
+  assert.equal(sameDayRejection(1, true), null);
+  assert.equal(sameDayRejection(0, false), null);
+});
+
+test("--check anchor branch: recordedAt records get evidence existence checks, plain records do not", async (t) => {
+  const dir = await mkdtemp(path.join(tmpdir(), "eval-run-anchor-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
+  const scenarios = JSON.parse(await readFile(path.join(ROOT, "evals/scenarios.json"), "utf8"));
+  const scenario = scenarios.find((item) => item.id === "direction-dials-recorded");
+  const run = {
+    recordedAt: "2026-09-26T00:00:00.000Z",
+    scores: VALID_SCORES,
+    evidence: ["evals/runs/direction-dials-recorded/EVIDENCE.md", "evals/runs/direction-dials-recorded/GONE.md"],
+  };
+  const anchored = await validateRun(run, scenario, { enforceAnchored: true });
+  assert.ok(anchored.some((problem) => problem.includes("evidence file does not exist: evals/runs/direction-dials-recorded/GONE.md")),
+    "anchored records must get existence checks");
+  const plain = await validateRun({ scores: run.scores, evidence: run.evidence }, scenario, {});
+  assert.equal(plain.filter((problem) => problem.includes("does not exist")).length, 0,
+    "plain legacy records must not trip the existence branch (no retroactive fill)");
+});
+
+test("--check passes on the real ledger (anchored branch exercised end to end)", () => {
+  const result = runCli(["--check"]);
+  assert.equal(result.code, 0, result.stdout);
+  assert.match(result.stdout, /Ledger OK/);
+});

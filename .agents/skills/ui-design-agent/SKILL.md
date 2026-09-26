@@ -330,7 +330,10 @@ and no compatible example was found.
 
 Read [motion-contract.md](references/motion-contract.md) before implementing web
 motion. It defines the canonical Snappy, Playful, and Elegant spring presets,
-stagger range, hover/press feedback, and reduced-motion exceptions.
+stagger range, hover/press feedback, and reduced-motion exceptions. Motion
+values (stagger, durations, spring parameters) always follow
+motion-contract.md; numeric values in upstream skill examples (GSAP, Motion
+docs) are syntax demonstrations only.
 
 Spring physics is the default for stateful movement. Preserve position and
 velocity when interrupted rather than restarting a decorative entrance. Never

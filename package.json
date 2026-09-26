@@ -18,6 +18,7 @@
     "material:rank": "node scripts/material-rank.mjs",
     "prompt:refine": "node scripts/prompt-refine.mjs",
     "lint:detail": "node scripts/detail-lint.mjs",
+    "visual:check": "node scripts/visual-regression.mjs",
     "contrast": "node scripts/contrast-check.mjs",
     "chain:audit": "node scripts/chain-audit.mjs",
     "diagram": "node scripts/workflow-diagram/cli.mjs build",

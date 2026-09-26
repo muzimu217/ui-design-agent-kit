@@ -141,3 +141,16 @@ for the mechanically checkable detail-constants rules: no `transition: all`
 `output/detail-lint-report/baseline.json`; later runs fail only on new hits
 (`--update-baseline` re-records deliberately). Advisory before a release, not
 a CI gate.
+
+## Visual regression (release-time, manual)
+
+`npm run visual:check` compares the 16 full-page screenshots in
+`test-artifacts/regression/current/` (`<project>-<width>.png`, 1440 + 390 per
+PUBLIC_APPS entry) against `test-artifacts/regression/baseline/` by bytes and
+dimensions — any change fails. Capture the shots with the browser tooling
+(reduced-motion emulated so 3D turntables freeze and captures stay deterministic)
+against the assembled site (`node showcase/scripts/build-pages.mjs --base /`
+then serve `test-artifacts/pages/site/`), run `--init` once to establish the
+baseline, and re-run the check before publishing or merging to main.
+Per-pixel diffing needs the `pixelmatch` dependency — installing it is a user
+ruling; until then strictness is byte+size. Advisory, not a CI gate.

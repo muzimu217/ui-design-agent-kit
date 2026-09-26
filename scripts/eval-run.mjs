@@ -30,6 +30,10 @@ const execFileAsync = promisify(execFile);
 // "styleReview"?: { "<dimension>": 0|1|2, ... } }.
 // Score keys must match the scenario's passCriteria verbatim so rubric drift
 // fails loudly instead of silently rescaling history.
+// failHits incidence (R111-02): as of 2026-09-26 the ledger holds 23 records
+// across 16 executed scenarios, none with a non-empty failHits — the field is
+// real but has not occurred yet. Record it truthfully on the first genuine
+// fail-condition hit; do not fabricate one to exercise the path.
 
 const RUBRIC =
   "每条 passCriteria 0-2 分（0 未做 / 1 做了但不完整 / 2 有证据地做到）；" +

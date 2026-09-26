@@ -5,6 +5,12 @@ version: 4.0.520
 ---
 
 This skill teaches you how to discover and read current Remotion documentation.
+> Note: the Algolia search credentials in this document (api key / application id)
+> are Remotion's **public client-side search key**, published on the official Remotion
+> docs site and vendored verbatim with this upstream skill. They are not secrets;
+> they appear here so secret scanners classify them as known-public rather than
+> unexplained key-shaped strings.
+
 If this is not relevant, load [Remotion Best Practices](../SKILL.md) instead.
 
 ## Searching the docs

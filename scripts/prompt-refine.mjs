@@ -111,20 +111,24 @@ async function main() {
   const failing = pickFailing(list, results);
 
   if (args[0] === "--scenario" || args[0] === "--all") {
-    const targets = args[0] === "--all"
-      ? failing
-      : failing.filter((item) => item.scenario.id === args[1]);
     const idArg = args[0] === "--scenario" ? args[1] : undefined;
     if (args[0] === "--scenario" && (!idArg || !list.some((item) => item.id === idArg))) {
       throw new Error("--scenario requires an existing scenario id");
     }
+    const outIndex = args.indexOf("--out");
+    if (outIndex !== -1 && (!args[outIndex + 1] || args[outIndex + 1].startsWith("--"))) {
+      usage();
+      throw new Error("--out requires a directory path argument");
+    }
+    const targets = args[0] === "--all"
+      ? failing
+      : failing.filter((item) => item.scenario.id === idArg);
     if (targets.length === 0) {
       console.log(idArg
         ? `${idArg} 最近一次执行无失效点，不需要修订建议。`
         : "当前台账没有失败或低分场景，无需修订建议。");
       return;
     }
-    const outIndex = args.indexOf("--out");
     const outDir = path.resolve(ROOT, outIndex === -1 ? "output/prompt-refine" : args[outIndex + 1]);
     await mkdir(outDir, { recursive: true });
     for (const item of targets) {

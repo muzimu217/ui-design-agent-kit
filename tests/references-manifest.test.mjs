@@ -57,6 +57,13 @@ test("the prompt:build export lists match the registry, not memory", async () =>
   const registeredFull = [...byFile.values()].filter((e) => e.export === "full").map((e) => e.file);
   assert.deepEqual(exported.sort(), registeredFull.sort());
 
+  // R111-02: titles existed as two hand-copied lists. The export anchor is
+  // derived from build-prompt's title, so a one-sided title edit would rot
+  // the manifest silently — lock the pairs.
+  for (const [file, title] of references) {
+    assert.equal(byFile.get(file)?.title, title, `${file}: manifest title must match the build-prompt export title`);
+  }
+
   const registeredLean = [...byFile.values()].filter((e) => e.leanCore).map((e) => e.file);
   assert.deepEqual([...leanReferences].sort(), registeredLean.sort());
   for (const file of registeredLean) {

@@ -1202,5 +1202,21 @@
       "Uses a generic apology-only error like 出错了，请重试 with no cause or repair",
       "Shows 暂无数据 with no next action in the empty state"
     ]
+  },
+  {
+    "id": "microfix-channel-applied",
+    "request": "The approved dashboard design is good. Three tweaks: change the page title copy, swap the hero screenshot for the new one I uploaded, and make the primary button one shade lighter.",
+    "context": "An already-approved design in iteration; gates A-C passed earlier. The microfix channel in gate-protocol.md is in scope.",
+    "passCriteria": [
+      "Handles all three tweaks through the microfix channel with one submission (before/after evidence plus a one-line note)",
+      "Does not restart gate A-C for the tweaks and does not claim the full chain re-ran",
+      "Records each tweak (page, spot, user request) into the acceptance record",
+      "States the channel's cap and what would push the work back to the normal gates"
+    ],
+    "failConditions": [
+      "Restarts the full gate chain (new direction draft or material gate) for the three tweaks",
+      "Slips in a fourth change or a layout/direction change without going back through the gates",
+      "Treats the tweaks as a waiver that also exempts future tasks from gates"
+    ]
   }
 ]

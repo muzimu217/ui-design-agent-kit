@@ -1218,5 +1218,22 @@
       "Slips in a fourth change or a layout/direction change without going back through the gates",
       "Treats the tweaks as a waiver that also exempts future tasks from gates"
     ]
+  },
+  {
+    "id": "dark-surface-tokens-applied",
+    "request": "Build the dark theme for an existing metrics dashboard: base surface, cards, table, and one accent action button.",
+    "context": "New web UI, dark baseline from the start. dark-surface-standards.md is registered and in scope; no design contract overriding these defaults.",
+    "passCriteria": [
+      "Builds hierarchy with a surface-lightness ladder (elevated surfaces lighter than base) instead of shadows",
+      "Uses tinted near-black surfaces with low-opacity white borders, not pure black",
+      "Sets body text on a near-white ladder and never pure white, with separate secondary and placeholder steps",
+      "Recalibrates the accent for dark surfaces instead of copying light-theme token values",
+      "Defines every color token with light and dark values and references tokens only, no hardcoded hex in components"
+    ],
+    "failConditions": [
+      "Inverts the light theme tokens and keeps the same soft shadows for elevation",
+      "Sets long-form body text in pure white on a dark base",
+      "Hardcodes a hex color inside a component instead of referencing a two-valued token"
+    ]
   }
 ]

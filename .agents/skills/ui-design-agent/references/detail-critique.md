@@ -43,11 +43,14 @@ supplies the threshold; never invent one here.
 
 These dimensions say what to evaluate; the numeric standards — concentric
 radii, press scale, hit areas, icon-swap constants, tabular numerals — live in
-[detail-constants.md](detail-constants.md), and typographic construction
+[detail-constants.md](detail-constants.md), typographic construction
 standards (identity face, pairing, hierarchy jumps, banned headline
 constructions) live in
-[typography-standards.md](typography-standards.md). When a finding needs "what
-good looks like" as a number, cite the constant, not taste.
+[typography-standards.md](typography-standards.md), and dark-surface
+construction (surface ladder, near-white text ladder, accent recalibration,
+two-valued tokens) lives in
+[dark-surface-standards.md](dark-surface-standards.md). When a finding needs
+"what good looks like" as a number, cite the constant, not taste.
 
 ### Mapping to the PEER evaluation axes
 
@@ -81,6 +84,12 @@ wording wins) or named as a mistake. Silence is not a pass.
 | --- | --- | --- |
 | 1 | Cream base + serif drama | Near-#F4F1EA cream background, high-contrast large serif headline, terracotta/warm-clay accent near #D97757 |
 | 2 | Dark + acid accent | Near-black background with a single acid-green or vermilion accent doing all the talking |
+
+A hit on cluster 2 does not condemn dark themes — it condemns undirected dark
+themes. Build dark surfaces by
+[dark-surface-standards.md](dark-surface-standards.md) (surface-lightness
+ladder, near-white text ladder, recalibrated accent); a dark page following
+that construction is not a cluster-2 hit.
 | 3 | Broadsheet cosplay | Newspaper styling: hairline rules, zero radii everywhere, dense multi-column text grid |
 | 4 | SaaS card kit | Content sliced into same-radius cards, one global corner value, identical gray shadow rgba(0,0,0,.1), decorative gradients |
 | 5 | Template chrome | Uppercase letter-spaced eyebrow above every heading, dot-chained strings (A · B · C), "WORD — fragment" labels, tinted near-black (#0B0B0B/#111) standing in for black, monospace micro-labels, arrow-suffixed "→" link buttons |

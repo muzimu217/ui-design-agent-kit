@@ -21,7 +21,7 @@ abstract: |
   ladder that only ends at a visually verified rendered page. A gate ledger
   records every decision the user still owes, with decay rules for stale items
   and batch adjudication. Behavior is pinned by a 60-scenario evaluation
-  corpus at the release snapshot (69 scenarios, 16 executed as of
+  corpus at the release snapshot (70 scenarios, 16 executed as of
   2026-09-23); five scenarios had been executed over ten recorded rounds
   under a
   deterministic 0--2 rubric with fail-zeroing, and a separate eight-dimension
@@ -378,8 +378,8 @@ built artifact, 63.8 kB gzipped.
 **What the numbers do not show.** The runs are self-graded inside the same
 co-design loop that built the system, by a single human adjudicator; scenarios
 were authored with the system's behavior in view; and five executed scenarios
-is a small sample of the 60-scenario corpus (release snapshot; 69 scenarios,
-16 executed as of 2026-09-25). We therefore present the rubric
+is a small sample of the 60-scenario corpus (release snapshot; 70 scenarios,
+16 executed as of 2026-09-26). We therefore present the rubric
 and the evidence trail — every score links to its screenshots, contrast logs,
 and regression records — as the primary artifact, and the scores as
 instruments of iteration, not as benchmark results.

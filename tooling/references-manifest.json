@@ -218,6 +218,16 @@
       "leanCore": false
     },
     {
+      "file": "dark-surface-standards.md",
+      "title": "Dark Surface Standards",
+      "purpose": "暗色表面构造军规：表面亮度阶梯、低透明白描边、禁纯黑 surface、近白文字阶梯、accent 暗底重校准、语义 token 双值、reduced-transparency 降级",
+      "loadWhen": "深色基线或双主题任务的构造与实现阶段；detail-critique 五类校准第 2 类命中时对照",
+      "gate": "E",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": false
+    },
+    {
       "file": "workflow-visualization.md",
       "title": "Workflow Visualization",
       "purpose": "工作流图管线：每次任务生成门禁图、回放只走已走过的路、视觉自检",

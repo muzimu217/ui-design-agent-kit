@@ -17,7 +17,7 @@
 
 | 指标 | 值 |
 | --- | --- |
-| 已真实执行场景 | **16/69（23%）**（含本批新增 10 条） |
+| 已真实执行场景 | **16/70（23%）**（含本批新增 10 条） |
 | 本批功能分（最近一次记录） | 10/10 场景 100 分 |
 | 本批样式分（8 维，7 个 UI 产物） | 6 个 100，1 个 88（`workflow-progress-visibility`：对比度实测与动效断言两项诚实缺测扣分） |
 | 真实缺陷抓取 | **9 个 P1 + 8 项 P2 级发现**（P1=7 产品+2 流程；P2=5 产品+3 测试侧；2026-09-25 勘误：原"4 P2"系漏计，全表见 §3.1） |
@@ -128,16 +128,16 @@ v1 记录按台账规则保留历史。**此事件本身已作为流程缺陷写
 
 族群汇总：动效 **3**、门径流程行为 **4**、口语摄取 2、方向三旋钮 / README
 证据边界 / 降级边界 / 3D-HUD / Remotion 算术 / 素材参考优先 / 运营台各 **1**。
-语料 69 条中 **material 族、e3 族、spatial 族、dispatch 族等尚未覆盖**；
+语料 70 条中 **material 族、e3 族、spatial 族、dispatch 族等尚未覆盖**；
 16 条中 7 条为纯文本交付物（逐判据自评，弱于浏览器断言一档，见上文）。
-因此「16/69、均分 100」**不可外推**为整体质量结论，仅代表已执行族群的
+因此「16/70、均分 100」**不可外推**为整体质量结论，仅代表已执行族群的
 记录。硬场景跳过原因：Motion MCP 未配置（G4 未解锁）→ motion 重场景
 延后；Stitch MCP 不可达 → 相关场景延后；需浏览器交付的场景按门径待用户
 过门后执行——以上均记录在本节，不无声跳过。
 
 ## 五、下一步
 
-1. 剩余 53 条：按族群轮转继续（当前最大空洞：material 族、e3-修复边界族、
+1. 剩余 54 条：按族群轮转继续（当前最大空洞：material 族、e3-修复边界族、
    spatial 其余 4 条、dispatch/readme-collection 等）。
 2. 把本批抓到的 9 个 P1 写成回归检查项（对比度入 verify、键盘边界走查入
    验收清单模板），让失败数据变成工具的防回归资产。
@@ -149,7 +149,7 @@ v1 记录按台账规则保留历史。**此事件本身已作为流程缺陷写
 
 To close the corpus-vs-evidence gap flagged in the 2026-09 product review
 (60 contract scenarios, 5 executed), this batch really executed 10 additional
-scenarios, bringing coverage to **16/69 (23%)** (corpus now at 69); the ledger validates via
+scenarios, bringing coverage to **16/70 (23%)** (corpus now at 70); the ledger validates via
 `npm run eval -- --check`. All ten scored 100 on function; style scores
 (eight-dimension rubric) cover the seven UI artifacts (six 100, one 88 with
 two honestly-missing measurements). Real execution caught **9 P1 defects and

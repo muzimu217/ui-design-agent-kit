@@ -93,3 +93,11 @@
   快照 SWHID `swh:1:snp:c25e3b9c9f537f1f5f6351ffc4dd9f2c17c680af`。
   P5 待用户登录 arXiv 后从 ENDORSERS.md 候选名单发信。
 
+
+## 六、eval 执行门记录（R061-01 工单制，2026-09-26 起）
+
+| 日期 | 场景 | 门 | 状态 | 呈交物 / 事件 | 裁决 |
+| --- | --- | --- | --- | --- | --- |
+| 2026-09-26 | detail-constants-application | A | passed | 方向稿：proven baseline=仓内 operations-not-marketing 行卡；旋钮 4/4/6；无外部素材 | 用户："门禁通过"（会话 2026-09-26） |
+| 2026-09-26 | slop-test-five-clusters | A | passed | 方向稿：brief 要求 cluster-1 奶油底+衬线+赤陶；基线 unverified 待门B 实检；旋钮 7/6/3 | 用户："门禁通过"（会话 2026-09-26） |
+| 2026-09-26 | 合并 main 授权 | — | blocked | 三页+锚点修复+抛光+截图基线堆叠于实验分支 | 用户裁决（2026-09-26）："目前都不合并"——冻结，待后续指令 |

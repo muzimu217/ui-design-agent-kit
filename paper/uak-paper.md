@@ -21,7 +21,7 @@ abstract: |
   ladder that only ends at a visually verified rendered page. A gate ledger
   records every decision the user still owes, with decay rules for stale items
   and batch adjudication. Behavior is pinned by a 60-scenario evaluation
-  corpus at the release snapshot (71 scenarios, 16 executed as of
+  corpus at the release snapshot (71 scenarios, 18 executed as of
   2026-09-23); five scenarios had been executed over ten recorded rounds
   under a
   deterministic 0--2 rubric with fail-zeroing, and a separate eight-dimension

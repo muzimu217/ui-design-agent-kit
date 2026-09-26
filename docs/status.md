@@ -31,7 +31,7 @@
 
 - 两场景门A 方向稿（detail-constants-application / slop-test-five-clusters，
   自 2026-09-23 停在用户裁决点）。
-- 合并 main 授权（三页 + 锚点修复 + 抛光已堆叠在实验分支）。
+- 合并 main：**用户裁决（2026-09-26）"目前都不合并"**——三页 + 锚点修复 + 抛光 + 截图基线继续堆叠在实验分支，等后续指令。
 - 依赖裁决：`@axe-core/playwright`（R050-04）、pixelmatch（视觉回归升级）。
 - 口径裁决：「六道门」最终称谓；jiejoe-design 补锁（需改 sources.lock.json）。
 - B/C 包剩余项与论文门 P3/P5（Zenodo DOI 已达成）。

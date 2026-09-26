@@ -170,6 +170,23 @@ test("demo READMEs declare a lifecycle status and published demos are live", asy
   }
 });
 
+test("showcase README states the same evidence-level count the page renders", async () => {
+  // R102-01: the README said four evidence levels while the page rendered
+  // five. The count is locked to the EVIDENCE array, not to a string.
+  const main = await read("showcase/products/src/main.tsx");
+  const block = main.match(/const EVIDENCE = \[([\s\S]*?)\] as const;/);
+  assert.ok(block, "EVIDENCE array not found in main.tsx");
+  const levels = (block[1].match(/^\s*\{ name:/gm) ?? []).length;
+  assert.ok(levels >= 4, "EVIDENCE array unexpectedly small");
+
+  const readme = await read("showcase/products/README.md");
+  const numerals = { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8 };
+  const stated = readme.match(/区分(.)种证据层级/);
+  assert.ok(stated, "showcase README must state its evidence-level count");
+  assert.equal(numerals[stated[1]], levels,
+    `showcase README says ${stated[1]} levels but main.tsx renders ${levels}`);
+});
+
 test("bilingual README case tables link the same set of case documents", async () => {
   const caseLinks = (source) => [...source.matchAll(/\((?:demo\/[a-z0-9-]+\/README\.md|showcase\/README\.md)\)/g)]
     .map((match) => match[1]).sort();

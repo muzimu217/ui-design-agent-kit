@@ -622,6 +622,70 @@
         ],
         "notes": "R061-01 清偿第 1/3 场景。纯文本交付物（三旋钮记录），逐判据自评 100，单评分者局限见 eval-report 诚实边界。"
       }
+    ],
+    "detail-constants-application": [
+      {
+        "date": "2026-09-26",
+        "recordedAt": "2026-09-26T18:31:01.332Z",
+        "commit": "2d8784fc661e5e5532dc909c1ce619672297e78d",
+        "scores": {
+          "Applies tabular-nums to the updating counters and cites the constant instead of taste": 2,
+          "Fixes nested radii by the concentric rule (outer = inner + padding) and states the repaired relationship": 2,
+          "Sets press feedback per the motion-contract press preset (subtle spring near scale 0.98, keyboard active equivalent) and keeps hit areas at or above the 44px touch / 40px dense-desktop floors": 2,
+          "Declares transition properties individually instead of transition: all": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 1,
+          "一致性": 2
+        },
+        "styleScore": 94,
+        "evidence": [
+          "evals/runs/detail-constants-application/EVIDENCE.md",
+          "evals/runs/detail-constants-application/app/index.html",
+          "evals/runs/detail-constants-application/evidence/acc-desktop-1280.png",
+          "evals/runs/detail-constants-application/evidence/acc-mobile-390.png"
+        ],
+        "notes": "门A 用户过（2026-09-26 账本 §六）；press 按 motion-contract preset（R104-01）；对比度四对实测全过"
+      }
+    ],
+    "slop-test-five-clusters": [
+      {
+        "date": "2026-09-26",
+        "recordedAt": "2026-09-26T18:31:01.523Z",
+        "commit": "2d8784fc661e5e5532dc909c1ce619672297e78d",
+        "scores": {
+          "Runs the five-cluster comparison and states a verdict per cluster instead of the one-line gut check": 2,
+          "Names the cluster-1 hit and attributes it to the brief's explicit wording rather than a silent default": 2,
+          "Records the five-cluster verdict line in the verification round's issue list": 2,
+          "Flags any cluster hit that the brief did not ask for as a mistake": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/slop-test-five-clusters/EVIDENCE.md",
+          "evals/runs/slop-test-five-clusters/app/index.html",
+          "evals/runs/slop-test-five-clusters/evidence/five-cluster-desktop-1280.png",
+          "evals/runs/slop-test-five-clusters/evidence/five-cluster-mobile-390.png"
+        ],
+        "notes": "门A 用户过+门B Yamds Blog 实检（2026-09-26）；五裁逐判：cluster1 命中归因 brief、2-5 clean；P1 修复白字/赤陶 3.12→深赤陶 4.53"
+      }
     ]
   }
 }

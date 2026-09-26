@@ -55,7 +55,7 @@ Regions: [hero, navigation, media, controls, content, footer]
 Typography: [family source, size, weight, line-height, confidence]
 Components: [states and interaction contracts]
 Assets: [path, license/permission, alt text, fallback]
-Responsive: [375/768/1024/1440 or product-specific matrix]
+Responsive: [viewport matrix per acceptance.md (375 x 812, 768 x 1024, 1440 x 900 as the base set) or the product-specific matrix]
 Acceptance: [observable visual and behavioral checks]
 ```
 

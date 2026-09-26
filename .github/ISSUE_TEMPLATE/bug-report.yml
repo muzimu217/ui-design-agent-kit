@@ -1,0 +1,35 @@
+name: 🐞 Bug 反馈 / Bug report
+description: kit 指令、脚本或管线的行为与预期不符
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: host
+    attributes:
+      label: AI 宿主 / Host
+      options: ["Codex", "Claude Code", "Cursor", "其他 / other"]
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 发生了什么 / What happened
+      description: 预期行为 vs 实际行为；如涉及页面，附截图
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现步骤 / Repro steps
+      placeholder: |
+        1. npm ci ...
+        2. 提示词/命令 ...
+        3. 输出与报错 ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Node / commit
+      placeholder: "node v22.x @ commit 7c7d01c"
+    validations:
+      required: true

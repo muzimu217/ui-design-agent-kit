@@ -306,6 +306,9 @@ Then describe a need in the session. Network, browser, and image-generation
 capabilities depend on the host's actual tools; installing instructions does
 not grant them.
 
+FAQ (host wiring, MCP example, why the first turn ships a direction draft):
+[docs/faq.md](docs/faq.md).
+
 ---
 
 ## Verification

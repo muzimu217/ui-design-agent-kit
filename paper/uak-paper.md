@@ -378,8 +378,8 @@ built artifact, 63.8 kB gzipped.
 **What the numbers do not show.** The runs are self-graded inside the same
 co-design loop that built the system, by a single human adjudicator; scenarios
 were authored with the system's behavior in view; and five executed scenarios
-is a small sample of the 60-scenario corpus (release snapshot; 62 scenarios,
-15 executed as of 2026-09-20). We therefore present the rubric
+is a small sample of the 60-scenario corpus (release snapshot; 69 scenarios,
+16 executed as of 2026-09-25). We therefore present the rubric
 and the evidence trail — every score links to its screenshots, contrast logs,
 and regression records — as the primary artifact, and the scores as
 instruments of iteration, not as benchmark results.
@@ -435,7 +435,7 @@ case (contrast, §6) where the discipline caught a concrete defect.
 
 **Small, self-graded sample.** Five executed scenarios and ten recorded
 rounds are a small fraction of the 60-scenario corpus (release snapshot;
-15 scenarios across 22 recorded rounds as of 2026-09-20), and all scores were
+69 scenarios across 23 recorded rounds as of 2026-09-25), and all scores were
 recorded by the system's single maintainer inside the co-design loop. There is
 no inter-annotator agreement study; the rubric is deterministic per criterion,
 but criterion selection and adjudication are not. The numbers should be read
@@ -472,7 +472,7 @@ measure what the current single-loop numbers cannot.
 
 UAK treats LLM-driven UI generation as a workflow-governance problem. Its
 contribution is not a better generator but a control plane around generators:
-six human-adjudicated gates with an agent-side critique inner loop, a
+six gates — five human-adjudicated plus one agent-side trace gate — with an agent-side critique inner loop, a
 five-level evidence ladder that ends only at a visually verified page, a gate
 ledger that turns decision debt into a visible, decaying, batch-adjudicable
 queue, and an evaluation apparatus that separates what is specified, what is

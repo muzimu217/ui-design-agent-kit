@@ -246,16 +246,34 @@ flowchart TB
 
 ## 快速开始
 
-需要 Node.js 20.18.1+、npm，以及能读取项目指令和技能的 AI 宿主。
+需要 Node.js 20.18.1+、npm，以及一个能读取项目指令的 AI 宿主。
 
 ```bash
-git clone git@github.com:muzimu217/ui-design-agent-kit.git
+git clone https://github.com/muzimu217/ui-design-agent-kit.git
 cd ui-design-agent-kit
 
 npm ci --ignore-scripts
 npm run verify
 npm test
 ```
+
+### 宿主支持矩阵
+
+| 宿主 | 接线方式 |
+| --- | --- |
+| Codex | 开箱即用：`.codex/config.toml` 随仓库生效（含 MCP 配置） |
+| Claude Code / Cursor / 其他 | 宿主不读 `.codex`——运行 `npm run prompt:build` 生成单文件指令（含全部规则），粘进宿主的系统提示或项目指令即可；MCP 工具需按 `.codex/config.toml` 自行配置 |
+
+### 第一次使用会发生什么
+
+首轮**不会直接写代码**：agent 会先整理需求、检索真实参考素材，然后呈交一份
+"方向稿"（布局关系 + 参考来源 + 三个风格旋钮）等你确认；你确认后才进入
+原型与实现，每轮产出都附浏览器实测证据。想要更轻的起步，直接说"先出一版
+再改"也可——协议内有微修通道与显式弃权条款。
+
+> 许可现状：仓库当前按内部工具维护，根 LICENSE 文件整理中（自研指令层拟
+> 开源许可）；上游 vendored skills 各自带许可，边界见
+> [来源锁定](tooling/sources.lock.json)与[第三方声明](THIRD_PARTY_NOTICES.md)。
 
 然后在项目会话中描述需求。联网、浏览器和生图能力取决于当前宿主的实际工具，不因安装指令而自动获得。
 

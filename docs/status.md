@@ -29,6 +29,10 @@
 
 ## 长期账（等用户裁决，详见各文档）
 
+- **根 LICENSE**（战略报告 #1 增长归零点）：自研指令层拟 MIT/Apache 开源、
+  上游 vendored skills 维持 sources.lock 隔离——**许可选择属用户法务裁决**，
+  README 已如实标注现状。前瞻路线全文：output/review-reports/2026-09-26-strategy-synthesis.md
+
 - 两场景门A 方向稿（detail-constants-application / slop-test-five-clusters，
   自 2026-09-23 停在用户裁决点）。
 - 合并 main：**用户裁决（2026-09-26）"目前都不合并"**——三页 + 锚点修复 + 抛光 + 截图基线继续堆叠在实验分支，等后续指令。

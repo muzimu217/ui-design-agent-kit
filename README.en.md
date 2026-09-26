@@ -274,13 +274,33 @@ Requires Node.js 20.18.1+, npm, and an AI host that can read project
 instructions and skills.
 
 ```bash
-git clone git@github.com:muzimu217/ui-design-agent-kit.git
+git clone https://github.com/muzimu217/ui-design-agent-kit.git
 cd ui-design-agent-kit
 
 npm ci --ignore-scripts
 npm run verify
 npm test
 ```
+
+### Host matrix
+
+| Host | Wiring |
+| --- | --- |
+| Codex | Works out of the box: `.codex/config.toml` ships with the repo (incl. MCP config) |
+| Claude Code / Cursor / others | The host does not read `.codex` — run `npm run prompt:build` to emit a single-file instruction bundle and paste it into the system/project prompt; configure MCP tools per `.codex/config.toml` yourself |
+
+### What the first run looks like
+
+The first turn will **not** write code: the agent gathers requirements, scouts
+real references, and submits a direction draft (layout relations, named
+sources, three style dials) for your confirmation. Implementation starts only
+after you approve, and every round ships browser-measured evidence.
+
+> License status: the repository is currently maintained as an internal tool;
+> a root LICENSE for the self-authored instruction layer is being prepared.
+> Vendored upstream skills carry their own licenses — see
+> [sources.lock.json](tooling/sources.lock.json) and
+> [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 Then describe a need in the session. Network, browser, and image-generation
 capabilities depend on the host's actual tools; installing instructions does

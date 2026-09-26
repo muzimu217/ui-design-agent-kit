@@ -228,6 +228,16 @@
       "leanCore": false
     },
     {
+      "file": "data-dense-surfaces.md",
+      "title": "Data-Dense Surfaces",
+      "purpose": "数据密集表面构造军规：行高/sticky 表头/数字右对齐/列宽防抖/行区分单一系统/状态三通道/密度两档/空态与加载/工具栏安静/批量操作逐条反馈",
+      "loadWhen": "表格、台账、控制台类 operational 表面的构造与实现阶段",
+      "gate": "E",
+      "dependsOn": [],
+      "export": "full",
+      "leanCore": false
+    },
+    {
       "file": "workflow-visualization.md",
       "title": "Workflow Visualization",
       "purpose": "工作流图管线：每次任务生成门禁图、回放只走已走过的路、视觉自检",

@@ -46,10 +46,13 @@ radii, press scale, hit areas, icon-swap constants, tabular numerals — live in
 [detail-constants.md](detail-constants.md), typographic construction
 standards (identity face, pairing, hierarchy jumps, banned headline
 constructions) live in
-[typography-standards.md](typography-standards.md), and dark-surface
+[typography-standards.md](typography-standards.md), dark-surface
 construction (surface ladder, near-white text ladder, accent recalibration,
 two-valued tokens) lives in
-[dark-surface-standards.md](dark-surface-standards.md). When a finding needs
+[dark-surface-standards.md](dark-surface-standards.md), and data-dense
+construction (tables, ledgers, consoles — row mechanics, density modes,
+bulk-action honesty) lives in
+[data-dense-surfaces.md](data-dense-surfaces.md). When a finding needs
 "what good looks like" as a number, cite the constant, not taste.
 
 ### Mapping to the PEER evaluation axes

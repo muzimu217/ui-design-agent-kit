@@ -1235,5 +1235,22 @@
       "Sets long-form body text in pure white on a dark base",
       "Hardcodes a hex color inside a component instead of referencing a two-valued token"
     ]
+  },
+  {
+    "id": "data-dense-standards-applied",
+    "request": "Build the inventory ledger table for an operations console: 12 columns, hundreds of rows, per-row status, column filters, and a bulk-archive action.",
+    "context": "New web UI, operational surface. data-dense-surfaces.md is registered and in scope; no design contract overriding these defaults.",
+    "passCriteria": [
+      "Uses compact row heights with sticky headers and right-aligned tabular-nums for numeric columns",
+      "Keeps column widths stable so rows do not reflow when values refresh",
+      "Marks row status with three channels (color plus shape plus text) instead of colored dots alone",
+      "Provides an empty state with a first-record action and skeleton rows matching real columns while loading",
+      "Implements bulk archive with visible per-row selection, tri-state select-all, and a per-record result report after the operation"
+    ],
+    "failConditions": [
+      "Shrinks font size to reach a compact density",
+      "Shows a bare 暂无数据 empty state or a centered spinner over the table",
+      "Reports a bulk operation as a single silent done without per-record outcomes"
+    ]
   }
 ]

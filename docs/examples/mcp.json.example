@@ -1,5 +1,5 @@
 {
-  "$comment": "Claude Code 项目级 MCP 示例（R135 压力测试崩点 4）：复制到仓库根并改名为 .mcp.json 即可在 Claude Code 中获得与 .codex/config.toml 等价的服务器。仅需下述三项即可跑通主链路；motion_plus/figma/stitch 为可选服务，保持注释状态不启用。带 env 的字段请用你自己的 key，勿提交真实密钥。",
+  "$comment": "Claude Code 项目级 MCP 示例（R135 压力测试崩点 4）：复制到仓库根并改名为 .mcp.json 即可在 Claude Code 中接入与 .codex/config.toml 对应的服务器。主链路四项（context7/motion/shadcn/playwright）与 config.toml 同参同版；motion_plus/figma/stitch 为可选服务未启用，见文件末尾 $commentOptional，启用时移入 mcpServers 并补 type 字段。带 env 的字段请用你自己的 key，勿提交真实密钥。",
   "mcpServers": {
     "context7": {
       "type": "http",
@@ -11,17 +11,12 @@
     },
     "shadcn": {
       "command": "npx",
-      "args": ["shadcn@latest", "mcp"],
-      "env": {}
+      "args": ["-y", "shadcn@4.21.0", "mcp"]
     },
-    "_motion_plus（可选，未启用）": {
-      "url": "https://mcp.motion.dev/plus"
-    },
-    "_figma（可选，未启用）": {
-      "url": "https://mcp.figma.com/mcp"
-    },
-    "_stitch（可选，未启用）": {
-      "url": "https://stitch.googleapis.com/mcp"
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@0.0.80", "--headless", "--isolated"]
     }
-  }
+  },
+  "$commentOptional": "未启用的可选服务（启用时移入 mcpServers 并补 type: http）：motion_plus → https://mcp.motion.dev/plus；figma → https://mcp.figma.com/mcp；stitch → https://stitch.googleapis.com/mcp（config.toml 中 stitch 另带 http_headers 认证头，用你自己的 key）。"
 }

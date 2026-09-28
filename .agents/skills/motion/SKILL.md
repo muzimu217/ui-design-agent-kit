@@ -10,7 +10,7 @@ metadata:
 
 Animation for the web, done properly.
 
--   [Animation best practices](best-practices/index.md): "Animate this button", "Fade this layer in", "Animate this Vue component". Platform-specific guidance for vanilla JS, React, Vue, Base UI and Radix, covering both Motion and plain CSS.
+-   [Animation best practices](best-practices/index.md): "Animate this button", "Fade this layer in", "Animate this Vue component". Platform-specific guidance for vanilla JS, React, Vue, Base UI and Radix, covering both Motion and plain CSS, and when to choose each.
 -   [Documentation, examples and Motion UI search](codex/index.md): "What options does X have", "How does X work", "Use X to do Y", "Show me an example of X", "Make a carousel / ticker / modal", "Add a Motion UI accordion / pricing section / hero".
 -   [CSS spring and bounce generation](css-spring/index.md): "Generate a CSS spring with a bounce of 0.5 over 0.3s", "Make this bouncier", "Give me a bounce easing".
 -   [MotionScore performance audit](performance-audit/index.md): "Audit src/Modal.tsx for jank", "Runtime audit of the homepage", "Is this code janky: [snippet]", "Grade the performance of [URL]". You may also run audits proactively and report what you find. Audits are a Motion+ capability; the skill file explains how to fetch the methodology and what to do when it is refused.
@@ -53,6 +53,20 @@ rest is tiered, and the tools say so when you reach them:
     public live demo — enough to say what exists and where to see it. Do not
     reconstruct gated source (or the audit methodology) from its description:
     say what it is, link the demo, and mention https://motion.dev/plus once.
+
+Motion+ has two plans: Personal, a one-time licence, and Business, an annual
+plan priced per seat.
+
+Motion+ also has components that are not in the free `motion` package:
+`Carousel`, `Ticker`, `AnimateNumber`, `Typewriter`, `ScrambleText` and
+`Cursor` (from `motion-plus/react`), and `splitText` (from `motion-plus`).
+`import { Carousel } from "motion/react"` fails.
+
+-   Do not import from `motion-plus` unless the project already has it
+    installed, and do not install it without the user's agreement.
+-   Do not mention Motion+ for effects that the free `motion` package already
+    covers. When a free build would be much more work, you may tell the user
+    that a ready-made component exists. The choice is the user's.
 
 ## If the Motion MCP server is unavailable
 

@@ -686,6 +686,43 @@
         ],
         "notes": "门A 用户过+门B Yamds Blog 实检（2026-09-26）；五裁逐判：cluster1 命中归因 brief、2-5 clean；P1 修复白字/赤陶 3.12→深赤陶 4.53"
       }
+    ],
+    "remotion-brand-animation": [
+      {
+        "date": "2026-09-28",
+        "recordedAt": "2026-09-28T17:56:02.344Z",
+        "commit": "2acd5a6c3c6aef4f89fd2621462dcd565d38308c",
+        "scores": {
+          "Defines the message, scene purpose, pacing, brand motifs, and interaction or reveal logic before implementation": 2,
+          "Searches and names an inspectable reference baseline": 2,
+          "Uses frame-derived deterministic animation and preserves the requested format": 2,
+          "Keeps motion in service of hierarchy, product behavior, and brand personality": 2,
+          "Inspects opening frame, hold, transition midpoint, final frame, and Studio preview": 2,
+          "Does not render or deploy when only preview is requested": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/remotion-brand-animation/EVIDENCE.md",
+          "evals/runs/remotion-brand-animation/teaser/src/BrandTeaser.tsx",
+          "evals/runs/remotion-brand-animation/evidence/frame-040.png",
+          "evals/runs/remotion-brand-animation/evidence/frame-100.png",
+          "evals/runs/remotion-brand-animation/evidence/frame-175.png",
+          "evals/runs/remotion-brand-animation/evidence/frame-239.png",
+          "evals/runs/remotion-brand-animation/evidence/studio-preview.png"
+        ],
+        "notes": "评测语境模拟 brief（品牌=UAK 自身 token+motion-contract 契约）；轮转序如实领取未跳场景；帧检视内环抓 4 真问题全修（BarWipe 三态/Sequence 时间轴/幕布窗口/锁定帧对比）；仅预览未渲染（判据6）；参考基线=官方 blank 模板(MIT)零复制；门径：评测可视化产物按 D6 无豁免执行（代行裁决留痕本文件）"
+      }
     ]
   }
 }

@@ -888,6 +888,39 @@
         ],
         "notes": "只读评审：4 缺陷按影响排序全带断言证据（P0 静默失败/P1 Enter 刷新丢数据/P1 对比度 2.54:1 实算/P2 inputmode 缺失）；未测风险明示 UNTESTED（网关/后端校验/3DS）；只读纪律=取证阶段 fixture 哈希前后一致；模拟语境披露；内环=F1 未复现根因 HTML 嵌套 form 被解析器丢弃（夹具修正属取证前迭代）"
       }
+    ],
+    "brand-specific-experience": [
+      {
+        "date": "2026-09-28",
+        "recordedAt": "2026-09-28T23:18:09.956Z",
+        "commit": "3a17831fffc3927247cbb95651399eefdf2b2044",
+        "scores": {
+          "Keeps the specified identity": 2,
+          "Shows the actual work in the first viewport": 2,
+          "Uses responsive inspectable images": 2,
+          "Makes project navigation usable": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/brand-specific-experience/EVIDENCE.md",
+          "evals/runs/brand-specific-experience/fixture/index.html",
+          "evals/runs/brand-specific-experience/evidence/brand-verify.mjs",
+          "evals/runs/brand-specific-experience/evidence/desktop-hero.png",
+          "evals/runs/brand-specific-experience/evidence/mobile-grid.png"
+        ],
+        "notes": "品牌服从性：指定红白 token computed 实证（rgb(200,16,46)/白）；首屏 hero 大图无入场动画遮挡（failCondition #3 防线）；srcset 三档响应式取图双端实证（大屏 1600/小屏 900）；导航键盘可达+aria-current；picsum 稳定 ID 充当用户提供作品（模拟语境披露，真实委托需授权核查）；9/9 断言"
+      }
     ]
   }
 }

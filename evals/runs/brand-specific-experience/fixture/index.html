@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>林间 LENS — 风光摄影</title>
+<style>
+  /* 指定身份：红 #C8102E × 白，克制使用（wordmark/激活态/细节），不替换为默认调色板 */
+  :root { --red: #C8102E; --white: #ffffff; --ink: #1a1a1a; --line: #e8e8e8; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "PingFang SC", "Helvetica Neue", sans-serif; background: var(--white); color: var(--ink); }
+  .top { display: flex; align-items: baseline; justify-content: space-between; padding: 18px 24px; }
+  .wordmark { font-size: 20px; font-weight: 800; letter-spacing: 0.06em; color: var(--red); }
+  .wordmark small { color: var(--ink); font-weight: 500; margin-left: 8px; font-size: 12px; letter-spacing: 0.2em; }
+  nav[aria-label="作品分类"] { display: flex; gap: 6px; }
+  .tab { padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: var(--ink); font-size: 13px; cursor: pointer; }
+  .tab:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+  .tab[aria-current="true"] { background: var(--red); border-color: var(--red); color: var(--white); }
+  /* 首屏即作品：hero 大图直接进入第一 viewport，无入场动画遮挡 */
+  .hero img { width: 100%; height: min(72vh, 720px); object-fit: cover; display: block; }
+  .hero figcaption { padding: 10px 24px; font-size: 13px; color: #666; }
+  figcaption b { color: var(--red); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; padding: 14px 24px 48px; }
+  .grid figure { margin: 0; }
+  .grid img { width: 100%; height: 200px; object-fit: cover; display: block; border-radius: 6px; }
+  .grid figcaption { font-size: 12px; color: #666; padding: 6px 2px; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wordmark">林间 LENS<small>风光摄影作品集</small></div>
+  <nav aria-label="作品分类" id="tabs"></nav>
+</header>
+<figure class="hero">
+  <img id="hero-img"
+       srcset="https://picsum.photos/id/1018/900/1100 900w, https://picsum.photos/id/1018/1600/900 1600w, https://picsum.photos/id/1018/2400/1350 2400w"
+       sizes="100vw"
+       src="https://picsum.photos/id/1018/1600/900"
+       alt="山脊云海：晨光中的连绵山脉（代表作品《山脊》）">
+  <figcaption>《山脊》—— <b>晨光系列</b> · 高海拔风光 · 2025</figcaption>
+</figure>
+<main>
+  <div class="grid" id="grid" role="list"></div>
+</main>
+<script type="module">
+  // 模拟"用户提供的作品"（评测语境）：picsum 稳定 ID 充当摄影师成片，可检视 URL
+  const WORKS = [
+    { id: 1016, cat: '峡谷', title: '《裂谷》 峡谷系列 · 2024' },
+    { id: 1015, cat: '河谷', title: '《溯源》 河谷系列 · 2024' },
+    { id: 1039, cat: '瀑布', title: '《垂落》 水系列 · 2025' },
+    { id: 1043, cat: '夜色', title: '《灯熄之后》 夜色系列 · 2025' },
+    { id: 1044, cat: '湖泊', title: '《镜面》 湖泊系列 · 2023' },
+    { id: 1050, cat: '峡谷', title: '《层岩》 峡谷系列 · 2023' },
+  ];
+  const CATS = ['全部', ...new Set(WORKS.map((w) => w.cat))];
+  const tabs = document.getElementById('tabs');
+  const grid = document.getElementById('grid');
+  let current = '全部';
+  function render() {
+    tabs.innerHTML = '';
+    CATS.forEach((c) => {
+      const b = document.createElement('button');
+      b.className = 'tab';
+      b.textContent = c;
+      b.setAttribute('aria-current', c === current ? 'true' : 'false');
+      b.onclick = () => { current = c; render(); };
+      tabs.appendChild(b);
+    });
+    grid.innerHTML = '';
+    WORKS.filter((w) => current === '全部' || w.cat === current).forEach((w) => {
+      const f = document.createElement('figure');
+      f.setAttribute('role', 'listitem');
+      const img = document.createElement('img');
+      img.src = `https://picsum.photos/id/${w.id}/640/400`;
+      img.srcset = `https://picsum.photos/id/${w.id}/400/250 400w, https://picsum.photos/id/${w.id}/640/400 640w, https://picsum.photos/id/${w.id}/960/600 960w`;
+      img.sizes = '(max-width: 600px) 92vw, 30vw';
+      img.alt = w.title;
+      img.loading = 'lazy';
+      const cap = document.createElement('figcaption');
+      cap.textContent = w.title;
+      f.append(img, cap);
+      grid.appendChild(f);
+    });
+  }
+  render();
+</script>
+</body>
+</html>

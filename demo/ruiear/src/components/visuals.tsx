@@ -330,7 +330,7 @@ export function BatteryVisual() {
   const C = 2 * Math.PI * R
   return (
     <figure className="w-full max-w-md rounded-3xl border border-black/5 bg-white p-6 shadow-[0_24px_60px_rgba(0,0,0,0.14)]">
-      <figcaption className="flex items-center justify-between text-[12px] font-medium text-[#86868b]">
+      <figcaption className="flex items-center justify-between text-[12px] font-medium text-[#6E6E73]">
         <span className="inline-flex items-center gap-1.5">
           <BatteryCharging size={13} /> {v.title}
         </span>
@@ -353,7 +353,7 @@ export function BatteryVisual() {
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-[26px] font-semibold tracking-tight">{v.hours}</span>
-            <span className="text-[11px] text-[#86868b]">{v.unit}</span>
+            <span className="text-[11px] text-[#6E6E73]">{v.unit}</span>
           </div>
         </div>
         <ul className="flex-1 space-y-2.5 text-[13px] text-[#3a3a3e]">
@@ -367,7 +367,7 @@ export function BatteryVisual() {
           </li>
         </ul>
       </div>
-      <p className="mt-5 flex items-center gap-1.5 text-[12px] text-[#86868b]">
+      <p className="mt-5 flex items-center gap-1.5 text-[12px] text-[#6E6E73]">
         <Zap size={13} className="text-[#f4633a]" />
         {v.quick}
       </p>

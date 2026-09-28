@@ -58,6 +58,8 @@ export function ProcessSection() {
     <section id="process" ref={ref} className="relative h-[260svh]">
       <div className="sticky top-0 flex h-[100svh] flex-col justify-between overflow-hidden px-6 pb-10 pt-28">
         <DragZone className="absolute inset-0" />
+        {/* 契约（DESIGN.md）定此区块为暗底白字；烘焙动画亮帧会破坏控件文字对比，用底部渐变遮罩把暗底找回来 */}
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
         <div className="pointer-events-none relative mx-auto w-full max-w-6xl text-white">
           <Reveal>
             <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-white/55">

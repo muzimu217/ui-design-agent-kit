@@ -20,10 +20,10 @@ export function Footer() {
           </button>
         </Reveal>
         <Reveal delay={0.14}>
-          <p className="mt-6 text-[12px] text-[#a1a1a6]">{t.footer.demo}</p>
+          <p className="mt-6 text-[12px] text-[#6E6E73]">{t.footer.demo}</p>
         </Reveal>
       </div>
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-1.5 border-t border-black/10 px-6 py-8 text-center text-[12px] text-[#a1a1a6]">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-1.5 border-t border-black/10 px-6 py-8 text-center text-[12px] text-[#6E6E73]">
         <p>{t.footer.brand}</p>
         <p>{t.footer.credit}</p>
       </div>

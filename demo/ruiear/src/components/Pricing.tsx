@@ -12,7 +12,7 @@ export function Pricing() {
     <section id="pricing" ref={ref} className="relative">
       <div className="mx-auto max-w-6xl px-6 py-24">
         <Reveal>
-          <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-[#86868b]">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-[#6E6E73]">
             {t.pricing.kicker}
           </p>
         </Reveal>
@@ -47,7 +47,7 @@ export function Pricing() {
                   </div>
                   <p className="mt-4 flex items-baseline gap-2">
                     <span className="text-[30px] font-semibold tracking-tight">{tier.price}</span>
-                    <span className="text-[12px] text-[#86868b]">*{t.pricing.illustrative}</span>
+                    <span className="text-[12px] text-[#6E6E73]">*{t.pricing.illustrative}</span>
                   </p>
                   <ul className="mt-6 flex flex-col gap-3 text-[14px] text-[#3a3a3e]">
                     {tier.features.map((f) => {
@@ -59,7 +59,7 @@ export function Pricing() {
                           ) : (
                             <Check size={15} className="mt-0.5 shrink-0 text-[#0071e3]" />
                           )}
-                          <span className={isLack ? 'text-[#86868b]' : ''}>{f}</span>
+                          <span className={isLack ? 'text-[#6E6E73]' : ''}>{f}</span>
                         </li>
                       )
                     })}
@@ -78,13 +78,13 @@ export function Pricing() {
         </div>
 
         <div className="mt-20 border-t border-black/10 pt-10">
-          <h3 className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#86868b]">
+          <h3 className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#6E6E73]">
             {t.pricing.specsTitle}
           </h3>
           <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-5">
             {t.pricing.specs.map(([k, v]) => (
               <div key={k}>
-                <dt className="text-[12px] uppercase tracking-wide text-[#86868b]">{k}</dt>
+                <dt className="text-[12px] uppercase tracking-wide text-[#6E6E73]">{k}</dt>
                 <dd className="mt-1 text-[14px] font-medium">{v}</dd>
               </div>
             ))}

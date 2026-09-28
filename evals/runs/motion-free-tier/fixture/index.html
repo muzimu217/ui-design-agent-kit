@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>motion-free-tier 夹具</title>
+<style>
+  body { margin: 0; font-family: "PingFang SC", "Noto Sans SC", sans-serif; color: #26343d; background: #fafcfd; }
+  button { padding: 8px 14px; border: 1px solid #d9e2e7; border-radius: 8px; background: #fff; cursor: pointer; font-size: 14px; }
+  button:focus-visible { outline: 2px solid #2566c4; outline-offset: 2px; }
+  .scrim { position: fixed; inset: 0; background: rgba(38,52,61,0.42); display: flex; align-items: center; justify-content: center; }
+  .panel { background: #fff; border-radius: 14px; padding: 22px 24px; width: min(420px, calc(100vw - 32px)); box-shadow: 0 12px 32px rgba(38,52,61,0.18); }
+  .panel h2 { margin: 0 0 8px; font-size: 18px; }
+  .panel p { margin: 0 0 18px; font-size: 14px; color: #61717d; }
+  .row { display: flex; gap: 10px; justify-content: flex-end; }
+  .primary { background: #177656; color: #fff; border-color: #177656; }
+</style>
+</head>
+<body><div id="root"></div><script type="module" src="/src/main.jsx"></script></body>
+</html>

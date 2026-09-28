@@ -29,7 +29,8 @@
     "verify": "node scripts/verify.mjs",
     "test": "node scripts/run-tests.mjs",
     "doctor": "node scripts/doctor.mjs",
-    "doctor:mcp": "node scripts/doctor.mjs --connect"
+    "doctor:mcp": "node scripts/doctor.mjs --connect",
+    "a11y:sweep": "node scripts/a11y-sweep.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

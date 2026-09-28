@@ -20,7 +20,7 @@
 [![Stars](https://img.shields.io/github/stars/muzimu217/ui-design-agent-kit?style=flat\&label=stars)](https://github.com/muzimu217/ui-design-agent-kit/stargazers)
 [![Issues](https://img.shields.io/github/issues/muzimu217/ui-design-agent-kit?label=issues)](https://github.com/muzimu217/ui-design-agent-kit/issues)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22804947.svg)](https://doi.org/10.5281/zenodo.22804947)
-[![License](https://img.shields.io/badge/license-internal-lightgrey)](#许可)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.18.1-339933)](package.json)
 [![Verify](https://img.shields.io/badge/npm%20run-verify-blue)](#验证)
 
@@ -271,8 +271,8 @@ npm test
 原型与实现，每轮产出都附浏览器实测证据。想要更轻的起步，直接说"先出一版
 再改"也可——协议内有微修通道与显式弃权条款。
 
-> 许可现状：仓库当前按内部工具维护，根 LICENSE 文件整理中（自研指令层拟
-> 开源许可）；上游 vendored skills 各自带许可，边界见
+> 许可：自研指令层按 Apache-2.0 发布（根 [LICENSE](LICENSE)）；上游 vendored
+> skills 各自带许可，逐条钉版见
 > [来源锁定](tooling/sources.lock.json)与[第三方声明](THIRD_PARTY_NOTICES.md)。
 
 然后在项目会话中描述需求。联网、浏览器和生图能力取决于当前宿主的实际工具，不因安装指令而自动获得。
@@ -352,7 +352,8 @@ Issues、bug 报告、功能建议、文档改进和 Pull Request 都欢迎。
 
 ## 许可
 
-这个仓库当前作为内部工具维护，没有把 Remotion skills 的整套产物宣称为可自由再分发的 MIT 项目。发布前需确认上游授权；版本和修改记录见[来源锁定](tooling/sources.lock.json)与[第三方声明](THIRD_PARTY_NOTICES.md)。
+自研指令层按 Apache-2.0 发布（根 [LICENSE](LICENSE)）。上游 vendored skills
+保留各自许可，逐条钉版（含 revision 与修改记录）见[来源锁定](tooling/sources.lock.json)与[第三方声明](THIRD_PARTY_NOTICES.md)；再分发条款以各条目为准。
 
 ---
 

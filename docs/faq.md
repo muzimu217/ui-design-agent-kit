@@ -14,8 +14,8 @@ kit 的核心价值是"每一步产出都经你确认、都有证据"。首轮�
 `references/gate-protocol.md`）。
 
 **Q3：许可证是什么？**
-仓库当前按内部工具维护；自研指令层的开源许可（MIT/Apache）在整理中。上游
-vendored skills 各自带许可，边界见 `tooling/sources.lock.json` 与
+自研指令层按 Apache-2.0 发布（根 `LICENSE`，2026-09 起）。上游
+vendored skills 各自带许可，逐条钉版见 `tooling/sources.lock.json` 与
 `THIRD_PARTY_NOTICES.md`。
 
 **Q4：评测分数是自评还是客观？**

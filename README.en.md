@@ -17,7 +17,7 @@ This is not a standalone AI client, and not an application scaffold.
 [![Stars](https://img.shields.io/github/stars/muzimu217/ui-design-agent-kit?style=flat\&label=stars)](https://github.com/muzimu217/ui-design-agent-kit/stargazers)
 [![Issues](https://img.shields.io/github/issues/muzimu217/ui-design-agent-kit?label=issues)](https://github.com/muzimu217/ui-design-agent-kit/issues)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22804947.svg)](https://doi.org/10.5281/zenodo.22804947)
-[![License](https://img.shields.io/badge/license-internal-lightgrey)](#license)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.18.1-339933)](package.json)
 [![Verify](https://img.shields.io/badge/npm%20run-verify-blue)](#verification)
 
@@ -296,9 +296,9 @@ real references, and submits a direction draft (layout relations, named
 sources, three style dials) for your confirmation. Implementation starts only
 after you approve, and every round ships browser-measured evidence.
 
-> License status: the repository is currently maintained as an internal tool;
-> a root LICENSE for the self-authored instruction layer is being prepared.
-> Vendored upstream skills carry their own licenses — see
+> License: the self-authored instruction layer is released under Apache-2.0
+> (root [LICENSE](LICENSE)). Vendored upstream skills carry their own licenses —
+> pinned per entry in
 > [sources.lock.json](tooling/sources.lock.json) and
 > [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
@@ -331,11 +331,12 @@ application passed visual acceptance.
 
 ## License
 
-This repository is maintained as an internal tool. It does not claim the
-Remotion skill artifacts are freely redistributable under MIT. Upstream
-licensing must be confirmed before any release; see
+The self-authored instruction layer is released under Apache-2.0 (root
+[LICENSE](LICENSE)). Vendored upstream skills keep their own licenses, pinned
+per entry with revisions and notices in
 [`tooling/sources.lock.json`](tooling/sources.lock.json) and
-[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md); redistribution terms follow
+each entry.
 
 ---
 

@@ -857,6 +857,37 @@
         ],
         "notes": "Motion MCP 不可达如实披露（failCondition #2 防线）；Motion+ 未启用不索 premium 不报 MotionScore（#1/#3）；文档基线=vendored motion skill d1c5c26f（react.md:42-52 MotionConfig reducedMotion + base-ui.md AnimatePresence）；转场公共 API 原创单一 spring 族；内环抓真缺陷=缺打开聚焦 effect 致 Esc 链全断，补后 7/7（reduced motion ty=0.00 实证+快速开关×10 无残留）"
       }
+    ],
+    "review-stays-read-only": [
+      {
+        "date": "2026-09-28",
+        "recordedAt": "2026-09-28T22:19:03.351Z",
+        "commit": "497b660ea6dcc4d19cfa0ebc310de6a2e9012b79",
+        "scores": {
+          "Reports evidence-backed findings ordered by impact": 2,
+          "Distinguishes verified issues from untested risks": 2,
+          "Keeps files unchanged": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/review-stays-read-only/EVIDENCE.md",
+          "evals/runs/review-stays-read-only/evidence/readonly-review.mjs",
+          "evals/runs/review-stays-read-only/evidence/f1-after-enter.png",
+          "evals/runs/review-stays-read-only/fixture/index.html"
+        ],
+        "notes": "只读评审：4 缺陷按影响排序全带断言证据（P0 静默失败/P1 Enter 刷新丢数据/P1 对比度 2.54:1 实算/P2 inputmode 缺失）；未测风险明示 UNTESTED（网关/后端校验/3DS）；只读纪律=取证阶段 fixture 哈希前后一致；模拟语境披露；内环=F1 未复现根因 HTML 嵌套 form 被解析器丢弃（夹具修正属取证前迭代）"
+      }
     ]
   }
 }

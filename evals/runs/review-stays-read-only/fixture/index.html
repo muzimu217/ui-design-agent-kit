@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acme 结账</title>
+<style>
+  :root { --brand: #177656; --ink: #26343d; --line: #d9e2e7; --paper: #fafcfd; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "PingFang SC", sans-serif; background: var(--paper); color: var(--ink); }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
+  h1 { font-size: 22px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  label { display: block; font-size: 13px; color: var(--ink); margin: 12px 0 6px; }
+  input { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 15px; }
+  .err { font-size: 12px; color: #9aa4ab; margin-top: 4px; } /* 缺陷：错误提示低对比 */
+  .row { display: flex; gap: 12px; }
+  .row > div { flex: 1; }
+  .summary { font-size: 15px; }
+  .summary .total { font-size: 20px; font-weight: 700; }
+  .pay { width: 100%; padding: 13px; border: 0; border-radius: 10px; background: var(--brand); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 16px; }
+  .pay[disabled] { opacity: 0.5; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>结账</h1>
+  <div id="checkout" class="card">
+    <label for="cardnum">卡号</label>
+    <!-- 缺陷：无 inputmode/autocomplete，移动端不弹数字键盘且无自动填充 -->
+    <input id="cardnum" placeholder="1234 5678 9012 3456">
+    <div class="err" id="card-err"></div>
+    <div class="row">
+      <div>
+        <label for="exp">有效期</label>
+        <input id="exp" placeholder="MM/YY">
+      </div>
+      <div>
+        <label for="cvc">CVC</label>
+        <input id="cvc" placeholder="123">
+      </div>
+    </div>
+  </div>
+  <form id="promo-form" class="card">
+      <label for="promo">优惠码</label>
+      <input id="promo" placeholder="输入优惠码后按回车">
+    </form>
+  <div class="card summary">
+    <div>小计 ¥198.00　运费 ¥12.00</div>
+    <!-- 缺陷：主按钮在表单校验未实现时即可点击，点击后无任何反馈（静默失败） -->
+    <button class="pay" id="pay">确认购买 ¥210.00</button>
+    <div class="err" id="pay-err"></div>
+  </div>
+</div>
+<script>
+  // 主按钮：未接线（真实缺陷模拟——点击静默无动作）
+  document.getElementById('pay').addEventListener('click', function () {});
+  // 优惠码 Enter：原生 submit 刷新页面（真实缺陷模拟）
+  document.getElementById('promo-form').addEventListener('submit', function () {});
+</script>
+</body>
+</html>

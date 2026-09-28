@@ -64,6 +64,27 @@ contract after lock, mark the plan stale and return to the first affected plan
 decision. Do not silently execute an old plan. If only an implementation defect
 changes, keep the plan locked and use the narrow repair path.
 
+## Collaboration patterns
+
+A pattern names who plans, executes, expresses, and reviews inside one task.
+Pick one, note it in the handoff record (`Pattern:`), and keep the gate chain
+as the only source of user decision points — a pattern divides agent-side
+labor; it never bypasses or shrinks a gate (gate-protocol.md §1). Vocabulary
+adapted from agentUniverse's pattern factory; PEER itself is Wang et al.,
+arXiv:2407.06985.
+
+| Pattern | Roles | UAK mapping | Use when | Exit condition |
+| --- | --- | --- | --- | --- |
+| PEE | Plan / Execute / Express | Plan lock → implementation → delivery writeup | Single-round S/M deliverable with no separate review pass | Delivery writeup accepted at the closing gate |
+| PEER | Plan / Execute / Express / Review | Plan lock → implementation → 门E acceptance loop | Default for M/L and any user-facing visual work | 门E passes and the user confirms acceptance |
+| GRR | Generate / Review / Rewrite | 门E repair rounds on one artifact | Iterating a single deliverable against a finding list | Every finding fixed with re-check evidence, or declined by the user |
+| IS | Implementation / Supervision | Delegated sub-agent run + a zero-context independent reviewer (master-review shape) | The executor is a delegated agent and oversight is required | Supervisor findings resolved; the user still owns every gate verdict |
+
+Two rules hold across all four: the IS supervisor must hold no shared context
+with the executor (shared context turns oversight into rubber-stamping), and
+choosing a narrower pattern than the artifact warrants is a process defect,
+not an optimization.
+
 ## Required handoff record
 
 ```text
@@ -73,13 +94,16 @@ User confirmation: exact message + timestamp
 Execution request: exact message + timestamp
 First prototype: path/URL or explicit fallback prompt
 Blocked gate: C / D / E, if any
+Pattern: PEE / PEER / GRR / IS / none
 Plan change reason: scope/material/contract/evidence or none
 Stage: <stage id> | <status>
 ```
 
 `Stage` uses the pipeline's own vocabulary: the stage id and the status value
 come from `tooling/workflow-stages.json` (`stages[].id`, `statusValues[].id` —
-pending, active, gated, passed, blocked). Update it whenever a stage advances or
+pending, active, gated, passed, blocked). These files live in the kit
+repository; do not create ledgers or stage enums inside the target project.
+Update it whenever a stage advances or
 the chain stops at a gate, so the user can see where the work actually is
 without asking. When a gate artifact is with the user, the stage is `gated`,
 not `active`; when a user-confirmed gate lets the next stage start, it becomes
@@ -181,7 +205,7 @@ AI, but actual tools, files, access, and authorization must be checked there.
 | playful / Awwwards / agency | 9-10 | 8-10 | 3-4 |
 | 营销页默认 | 7-9 | 6-8 | 3-5 |
 | trust-first / 公共部门 / 受监管 | 3-4 | 2-3 | 4-5 |
-| operational 密集工具 | 方差压低 | — | 5-7 |
+| operational 密集工具 | 方差压低 | 2-4 | 5-7 |
 
 门A 呈交格式必须含三值（缺失即为不完整呈交）；用户改向时旋钮值随裁决
 更新，旧值留痕可回放。

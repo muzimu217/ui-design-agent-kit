@@ -16,9 +16,14 @@ import { ROOT } from "./verify.mjs";
 // Nonexistent tokens referenced by PAIRS throw loudly, so token drift fails
 // instead of silently skipping a pair.
 
-const DEFAULT_CSS = path.join(ROOT, "evals/runs/operations-not-marketing/app/src/styles.css");
 const cssArgIndex = process.argv.indexOf("--css");
-const cssPath = cssArgIndex === -1 ? DEFAULT_CSS : path.resolve(process.argv[cssArgIndex + 1]);
+if (cssArgIndex !== -1 && (!process.argv[cssArgIndex + 1] || process.argv[cssArgIndex + 1].startsWith("--"))) {
+  console.error("Usage: npm run contrast [--css <path-to-styles.css>]  # --css needs a file path argument");
+  process.exit(1);
+}
+const cssPath = cssArgIndex === -1
+  ? path.join(ROOT, "evals/runs/operations-not-marketing/app/src/styles.css") // historical default target, parametrizable via --css
+  : path.resolve(process.argv[cssArgIndex + 1]);
 
 function parseTokenBlock(css) {
   const rootMatch = css.match(/:root\s*\{([^}]*)\}/);

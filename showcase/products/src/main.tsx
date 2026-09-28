@@ -42,8 +42,17 @@ const PAGE_TITLES: Record<Page, string> = { home: '首页', evidence: '证据与
 const pageFromHash = (): Page => (location.hash === '#/evidence' ? 'evidence' : location.hash === '#/workflow' ? 'workflow' : 'home');
 const usePage = (): [Page] => {
   const [page, setPage] = useState<Page>(pageFromHash);
+  const pageRef = useRef<Page>(page);
   useEffect(() => {
-    const onHash = () => { setPage(pageFromHash); window.scrollTo(0, 0); };
+    const onHash = () => {
+      const next = pageFromHash();
+      // 仅跨页导航回顶；同页 hash 变化（页内锚点/skip-link）交还浏览器原生滚动
+      if (next !== pageRef.current) {
+        pageRef.current = next;
+        window.scrollTo(0, 0);
+      }
+      setPage(next);
+    };
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
@@ -427,7 +436,7 @@ function WorkflowSection() {
   };
 
   return <section className="workflow-band" id="workflow" aria-labelledby="workflow-heading"><div className="content-width">
-    <div className="section-heading"><div><h2 id="workflow-heading">从需求，到交付。</h2><p>一条有确认节点的 UI 设计与实现流程。</p></div><Workflow size={28} strokeWidth={1.5} aria-hidden="true" /></div>
+    <div className="section-heading"><div><h1 id="workflow-heading">从需求，到交付。</h1><p>一条有确认节点的 UI 设计与实现流程。</p></div><Workflow size={28} strokeWidth={1.5} aria-hidden="true" /></div>
     <div className="workflow-replay">
       <div className="replay-copy">
         <p className="replay-kicker">一次真实交付的记录 · 演示回放</p>
@@ -535,7 +544,7 @@ function HomePage({ onOpen }: { onOpen: (item: Project, opener: HTMLButtonElemen
 
 function EvidencePage() {
   return <main id="main">
-    <section className="verification-band" id="verification" aria-labelledby="verification-heading"><div className="content-width"><div className="section-heading"><div><h2 id="verification-heading">验证，有据可查。</h2><p>五种证据层级，不能相互替代。</p></div><ScanEye size={28} strokeWidth={1.5} aria-hidden="true" /></div><dl className="evidence-definitions">{EVIDENCE.map((item) => { const Icon = item.icon; return <div key={item.name}><dt><Icon size={22} strokeWidth={1.6} />{item.name}</dt><dd>{item.meaning}</dd></div>; })}</dl><p className="evidence-disclaimer">以上为证据定义，不是所有项目均已通过的状态声明。历史截图与可试玩成果已分别标注。</p><div className="evidence-paper"><FileText size={17} aria-hidden="true" /><p>这套验收方法论已整理为公开论文预印本：<a href="https://doi.org/10.5281/zenodo.22804947" target="_blank" rel="noreferrer">UAK: A Gated, Evidence-Driven UI Design Agent Workflow（DOI 10.5281/zenodo.22804947）</a>。论文正文与全部评测数据见 <a href={REPOSITORY_URL} target="_blank" rel="noreferrer">kit 仓库</a>的 <code>paper/</code> 目录。</p></div></div></section>
+    <section className="verification-band" id="verification" aria-labelledby="verification-heading"><div className="content-width"><div className="section-heading"><div><h1 id="verification-heading">验证，有据可查。</h1><p>五种证据层级，不能相互替代。</p></div><ScanEye size={28} strokeWidth={1.5} aria-hidden="true" /></div><dl className="evidence-definitions">{EVIDENCE.map((item) => { const Icon = item.icon; return <div key={item.name}><dt><Icon size={22} strokeWidth={1.6} />{item.name}</dt><dd>{item.meaning}</dd></div>; })}</dl><p className="evidence-disclaimer">以上为证据定义，不是所有项目均已通过的状态声明。历史截图与可试玩成果已分别标注。</p><div className="evidence-paper"><FileText size={17} aria-hidden="true" /><p>这套验收方法论已整理为公开论文预印本：<a href="https://doi.org/10.5281/zenodo.22804947" target="_blank" rel="noreferrer">UAK: A Gated, Evidence-Driven UI Design Agent Workflow（DOI 10.5281/zenodo.22804947）</a>。论文正文与全部评测数据见 <a href={REPOSITORY_URL} target="_blank" rel="noreferrer">kit 仓库</a>的 <code>paper/</code> 目录。</p></div></div></section>
   </main>;
 }
 

@@ -5,7 +5,12 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { verifyLinkedModules } from "../scripts/verify.mjs";
 
-test("dependency-symlink verification flags only dangling links", async () => {
+test(
+  "dependency-symlink verification flags only dangling links",
+  // Windows 非管理员/开发者模式下 fs.symlink 报 EPERM（R155-01 压测复检 N2），
+  // 语义属平台能力而非被测逻辑，故 win32 跳过。
+  { skip: process.platform === "win32" && "symlink needs admin/developer mode on Windows" },
+  async () => {
   const root = await mkdtemp(path.join(tmpdir(), "kit-verify-links-"));
   const modules = path.join(root, "demo", "sample-app", "node_modules");
   await mkdir(path.join(modules, "real-pkg"), { recursive: true });

@@ -17,7 +17,7 @@ This is not a standalone AI client, and not an application scaffold.
 [![Stars](https://img.shields.io/github/stars/muzimu217/ui-design-agent-kit?style=flat\&label=stars)](https://github.com/muzimu217/ui-design-agent-kit/stargazers)
 [![Issues](https://img.shields.io/github/issues/muzimu217/ui-design-agent-kit?label=issues)](https://github.com/muzimu217/ui-design-agent-kit/issues)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22804947.svg)](https://doi.org/10.5281/zenodo.22804947)
-[![License](https://img.shields.io/badge/license-internal-lightgrey)](#license)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.18.1-339933)](package.json)
 [![Verify](https://img.shields.io/badge/npm%20run-verify-blue)](#verification)
 
@@ -110,7 +110,11 @@ staying in code.
 
 ## Research context
 
-The methodology behind this kit — six human-confirmation gates, a five-level
+> Scope note (R106-05): this English README is the **condensed, research-facing** edition. The Chinese README
+> (README.md) is the full edition and additionally covers capability configuration, material scouting,
+> contributing, and community channels.
+
+The methodology behind this kit — six gates (five human-adjudicated plus one agent-side trace gate), a five-level
 evidence ladder, and a gate ledger for "AI Definition of Done" — is documented
 in a systems paper:
 
@@ -270,7 +274,7 @@ Requires Node.js 20.18.1+, npm, and an AI host that can read project
 instructions and skills.
 
 ```bash
-git clone git@github.com:muzimu217/ui-design-agent-kit.git
+git clone https://github.com/muzimu217/ui-design-agent-kit.git
 cd ui-design-agent-kit
 
 npm ci --ignore-scripts
@@ -278,9 +282,32 @@ npm run verify
 npm test
 ```
 
+### Host matrix
+
+| Host | Wiring |
+| --- | --- |
+| Codex | Works out of the box: `.codex/config.toml` ships with the repo (incl. MCP config) |
+| Claude Code / Cursor / others | The host does not read `.codex` — run `npm run prompt:build` to emit a single-file instruction bundle and paste it into the system/project prompt; configure MCP tools per `.codex/config.toml` yourself |
+
+### What the first run looks like
+
+The first turn will **not** write code: the agent gathers requirements, scouts
+real references, and submits a direction draft (layout relations, named
+sources, three style dials) for your confirmation. Implementation starts only
+after you approve, and every round ships browser-measured evidence.
+
+> License: the self-authored instruction layer is released under Apache-2.0
+> (root [LICENSE](LICENSE)). Vendored upstream skills carry their own licenses —
+> pinned per entry in
+> [sources.lock.json](tooling/sources.lock.json) and
+> [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
 Then describe a need in the session. Network, browser, and image-generation
 capabilities depend on the host's actual tools; installing instructions does
 not grant them.
+
+FAQ (host wiring, MCP example, why the first turn ships a direction draft):
+[docs/faq.md](docs/faq.md).
 
 ---
 
@@ -304,11 +331,12 @@ application passed visual acceptance.
 
 ## License
 
-This repository is maintained as an internal tool. It does not claim the
-Remotion skill artifacts are freely redistributable under MIT. Upstream
-licensing must be confirmed before any release; see
+The self-authored instruction layer is released under Apache-2.0 (root
+[LICENSE](LICENSE)). Vendored upstream skills keep their own licenses, pinned
+per entry with revisions and notices in
 [`tooling/sources.lock.json`](tooling/sources.lock.json) and
-[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md); redistribution terms follow
+each entry.
 
 ---
 

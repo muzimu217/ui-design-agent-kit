@@ -36,7 +36,7 @@ Install one of:
 Then add the acmart class:  tlmgr install acmart
 Or point TEXBIN at a directory containing pdflatex.`
   );
-  process.exit(1);
+  process.exitCode = 1;
 }
 
 function pandoc(args, env) {
@@ -46,7 +46,7 @@ function pandoc(args, env) {
 const texbin = findTex();
 if (!existsSync(join(ROOT, 'paper', 'uak-paper.md'))) {
   console.error('paper/uak-paper.md is missing; nothing to build.');
-  process.exit(1);
+  process.exitCode = 1;
 }
 mkdirSync(OUT, { recursive: true });
 
@@ -91,4 +91,4 @@ for (const t of TARGETS) {
   }
 }
 
-process.exit(failed ? 1 : 0);
+process.exitCode = failed ? 1 : 0;

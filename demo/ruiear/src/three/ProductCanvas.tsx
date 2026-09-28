@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { ContactShadows, useGLTF } from '@react-three/drei'
+import { ContactShadows, useGLTF, useProgress } from '@react-three/drei'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { PRODUCT_COLORS, useApp } from '../store'
+import { useLang } from '../i18n'
 
 const MODEL_URL = `${import.meta.env.BASE_URL}models/airpods_pro.glb`
 const CLIP_DURATION = 6
@@ -169,6 +170,33 @@ function SceneRig() {
   )
 }
 
+/** right-side placeholder while the GLB streams in (subway-gate wording) */
+function ModelLoadVeil() {
+  const { active, progress } = useProgress()
+  const { t } = useLang()
+  const [seen, setSeen] = useState(false)
+  useEffect(() => {
+    if (active || progress > 0) setSeen(true)
+  }, [active, progress])
+  const settled = seen && !active && progress >= 100
+  return (
+    <div
+      aria-hidden
+      className={`pointer-events-none absolute right-0 top-1/2 hidden w-[38vw] -translate-y-1/2 flex-col items-center gap-3 text-white/80 transition-opacity duration-700 [transition-timing-function:var(--ease-elegant)] lg:flex ${
+        settled ? 'opacity-0' : 'opacity-100'
+      }`}
+    >
+      <div className="h-1 w-40 overflow-hidden rounded-full bg-white/15">
+        <div
+          className="h-full rounded-full bg-white/70 transition-[width] duration-300"
+          style={{ width: `${Math.min(100, Math.round(progress))}%` }}
+        />
+      </div>
+      <span className="text-[12px] tracking-wide">{t.hero.modelLoading}</span>
+    </div>
+  )
+}
+
 export function ProductCanvas() {
   const { theme } = useApp()
   const visible = theme === 'hero' || theme === 'color' || theme === 'process'
@@ -191,6 +219,7 @@ export function ProductCanvas() {
         <directionalLight position={[0, -3, 6]} intensity={0.25} />
         <SceneRig />
       </Canvas>
+      <ModelLoadVeil />
     </div>
   )
 }

@@ -196,6 +196,19 @@ test("the delivery pipeline has one source of truth that matches its consumers",
     assert.ok(gate.name && gate.artifact && gate.mandatory, `gate ${gate.id} needs name, artifact, and mandatory`);
   }
 
+  // Semantic locks (R110-01): the machine-readable source once carried the
+  // loosest gate wording and quietly undercut the protocol's anti-exemption
+  // core. gate-protocol.md is the strictest source; these assertions keep
+  // the JSON from drifting back below it.
+  const gateById = (id) => pipeline.gates.find((gate) => gate.id === id);
+  assert.match(gateById("A").artifact, /baseline/i, "gate A artifact must require a named proven baseline");
+  assert.match(gateById("A").artifact, /品味/, "gate A artifact must require the taste-profile declaration");
+  assert.match(gateById("C").artifact, /蒙太奇|拼板/, "gate C artifact must admit montage boards as a valid path");
+  const tierById = (id) => pipeline.tiers.find((tier) => tier.id === id);
+  assert.ok(tierById("S").gates.includes("E"), "S repairs still pass a gate-E acceptance round");
+  assert.ok(!tierById("M").gates.includes("B"), "gate B must not be unconditional for tier M");
+  assert.ok((tierById("M").conditionalGates ?? []).includes("B"), "tier M must list gate B as conditional");
+
   // chain-flow.md carries the prose; every gate it defines must exist in the JSON.
   const chain = await readFile(path.join(ROOT, "docs/chain-flow.md"), "utf8");
   for (const gate of pipeline.gates) {

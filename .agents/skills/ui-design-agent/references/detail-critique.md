@@ -37,13 +37,45 @@ supplies the threshold; never invent one here.
 | State coverage | Per interactive element, the states its workflow needs: default, hover/press, focus-visible, disabled, selected, loading, error, empty |
 | Motion conformance | Preset chosen by role; hover onset within 150ms; stagger 0.04-0.08s on bounded groups; interruption keeps semantic state; reduced-motion result defined |
 | Affordance and semantics | Links navigate, buttons act; labels and accessible names present; icon-only controls named; a keyboard path exists |
+| Interface copy | User-perspective naming, active-voice CTAs, one word per action across the flow, errors that explain cause and repair, empty states that invite action — per [copy-contract.md](copy-contract.md); P0/P1/P2 triage applies unchanged |
 | Robustness | Long content, empty data, no network, zoom or text scaling, touch parity for hover-only feedback |
 | Consistency | The same problem is solved the same way as the established system; deviations are named decisions, not drift |
 
 These dimensions say what to evaluate; the numeric standards — concentric
 radii, press scale, hit areas, icon-swap constants, tabular numerals — live in
-[detail-constants.md](detail-constants.md). When a finding needs "what good
-looks like" as a number, cite the constant, not taste.
+[detail-constants.md](detail-constants.md), typographic construction
+standards (identity face, pairing, hierarchy jumps, banned headline
+constructions) live in
+[typography-standards.md](typography-standards.md), dark-surface
+construction (surface ladder, near-white text ladder, accent recalibration,
+two-valued tokens) lives in
+[dark-surface-standards.md](dark-surface-standards.md), and data-dense
+construction (tables, ledgers, consoles — row mechanics, density modes,
+bulk-action honesty) lives in
+[data-dense-surfaces.md](data-dense-surfaces.md). When a finding needs
+"what good looks like" as a number, cite the constant, not taste.
+
+### Mapping to the PEER evaluation axes
+
+The PEER multi-agent pattern (Wang et al., arXiv:2407.06985) scores task
+output on seven axes: completeness, relevance, conciseness, factual accuracy,
+logical coherence, structure, comprehensiveness. A review written in either
+vocabulary must land on the same findings, so the mapping is fixed here.
+
+| PEER axis | Covered by |
+| --- | --- |
+| completeness | State coverage + Robustness — a missing state or untested edge is a completeness failure |
+| relevance | Owned upstream by the contract (design-contract.md Mission); spot-checked here as Consistency |
+| conciseness | Layout and spacing — density discipline, no decorative repetition |
+| factual accuracy | The evidence-anchor rule: measured values, screenshots, file:line — never assertions |
+| logical coherence | Motion conformance (interruption keeps semantic state) + state-machine coverage; **no ninth dimension is added for it** |
+| structure | Typography + Layout and spacing |
+| comprehensiveness | The walk rule: every touched dimension is evaluated; a skipped one is stated, never silent |
+
+Recorded 2026-09-25 (agentUniverse architecture absorption): the eight
+dimensions stay as they are. PEER's axes describe task-output quality; visual
+craft is already fully partitioned above, and adding a ninth dimension would
+double-count coherence that motion-contract and state coverage own.
 
 ## AI default-taste calibration (five clusters)
 
@@ -55,12 +87,21 @@ wording wins) or named as a mistake. Silence is not a pass.
 | --- | --- | --- |
 | 1 | Cream base + serif drama | Near-#F4F1EA cream background, high-contrast large serif headline, terracotta/warm-clay accent near #D97757 |
 | 2 | Dark + acid accent | Near-black background with a single acid-green or vermilion accent doing all the talking |
+
+A hit on cluster 2 does not condemn dark themes — it condemns undirected dark
+themes. Build dark surfaces by
+[dark-surface-standards.md](dark-surface-standards.md) (surface-lightness
+ladder, near-white text ladder, recalibrated accent); a dark page following
+that construction is not a cluster-2 hit.
 | 3 | Broadsheet cosplay | Newspaper styling: hairline rules, zero radii everywhere, dense multi-column text grid |
 | 4 | SaaS card kit | Content sliced into same-radius cards, one global corner value, identical gray shadow rgba(0,0,0,.1), decorative gradients |
 | 5 | Template chrome | Uppercase letter-spaced eyebrow above every heading, dot-chained strings (A · B · C), "WORD — fragment" labels, tinted near-black (#0B0B0B/#111) standing in for black, monospace micro-labels, arrow-suffixed "→" link buttons |
 
 Each round's acceptance list states the five-cluster verdict explicitly; a
-cluster hit without a brief requirement is a finding, not a style choice.
+cluster hit without a brief requirement is a finding, not a style choice. The
+same round states the copy-contract verdict explicitly alongside it
+([copy-contract.md](copy-contract.md)); interface copy is judged with the
+same severity triage as visual findings.
 
 A finding without an evidence anchor — screenshot, measured value, code
 location, or contract rule — is a suspicion. Label it as one or verify it.

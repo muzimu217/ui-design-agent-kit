@@ -16,6 +16,9 @@
     "evolve": "node scripts/evolution-report.mjs",
     "loop": "node scripts/loop-check.mjs",
     "material:rank": "node scripts/material-rank.mjs",
+    "prompt:refine": "node scripts/prompt-refine.mjs",
+    "lint:detail": "node scripts/detail-lint.mjs",
+    "visual:check": "node scripts/visual-regression.mjs",
     "contrast": "node scripts/contrast-check.mjs",
     "chain:audit": "node scripts/chain-audit.mjs",
     "diagram": "node scripts/workflow-diagram/cli.mjs build",
@@ -24,12 +27,14 @@
     "diagram:visual": "node scripts/workflow-diagram/cli.mjs visual",
     "paper:build": "node scripts/paper-build.mjs",
     "verify": "node scripts/verify.mjs",
-    "test": "node --test tests/*.test.mjs",
+    "test": "node scripts/run-tests.mjs",
     "doctor": "node scripts/doctor.mjs",
     "doctor:mcp": "node scripts/doctor.mjs --connect"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@modelcontextprotocol/sdk": "1.30.0",
+    "pixelmatch": "^7.2.0",
     "smol-toml": "1.8.0",
     "yaml": "2.9.0"
   }

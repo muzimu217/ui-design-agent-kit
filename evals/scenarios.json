@@ -1111,7 +1111,7 @@
     "passCriteria": [
       "Applies tabular-nums to the updating counters and cites the constant instead of taste",
       "Fixes nested radii by the concentric rule (outer = inner + padding) and states the repaired relationship",
-      "Sets press feedback to scale(0.96) and keeps hit areas at or above the 44px touch / 40px dense-desktop floors",
+      "Sets press feedback per the motion-contract press preset (subtle spring near scale 0.98, keyboard active equivalent) and keeps hit areas at or above the 44px touch / 40px dense-desktop floors",
       "Declares transition properties individually instead of transition: all"
     ],
     "failConditions": [
@@ -1150,6 +1150,107 @@
       "Omits any dial from the gate A direction submission",
       "Applies playful-tier variance or motion to the trust-first portal with no stated reason",
       "Treats preserve mode as a free re-roll of dial values"
+    ]
+  },
+  {
+    "id": "baseline-lookup-boundary",
+    "request": "Design a landing page for a new habit-tracking app called Daily Arc.",
+    "context": "New web UI from a plain-language intake; no existing brand or baseline supplied. The agent must name a real proven baseline at gate A without turning the first turn into full material scouting.",
+    "passCriteria": [
+      "Gate A names one real, inspectable proven baseline (URL) obtained via minimal directed lookup",
+      "The lookup stays minimal and directed (a few known sources), not a multi-source sweep",
+      "Multi-source candidate gathering and adaptation proposals wait for gate B",
+      "The direction draft separates what the baseline proves from mere style inspiration",
+      "States what lookup happened before the gate and why the boundary allows it"
+    ],
+    "failConditions": [
+      "Submits a gate A without any named real baseline",
+      "Runs broad multi-source material scouting or downloads assets before gate B",
+      "Declares material research forbidden until after gate A and ships an unanchored direction"
+    ]
+  },
+  {
+    "id": "typography-standards-applied",
+    "request": "Design the hero and content sections of an editorial product page: display headline, lead, two body paragraphs, and a small data table.",
+    "context": "New web UI with no brand fonts supplied; typography-standards.md is registered and in scope. No design contract overriding these defaults.",
+    "passCriteria": [
+      "Chooses an identity face with a voice and does not use Inter, Roboto, Open Sans, or bare system-ui as the identity font",
+      "Uses one family or two genuinely contrasting roles, not the same family at two weights as a pairing",
+      "Keeps body measure under ~80 characters and expresses hierarchy as an extreme weight pairing",
+      "Makes the display-to-body size jump dramatic enough to read as ranks rather than 1.2x steps",
+      "Sets table numerals in tabular-nums and keeps the headline free of an isolated emphasized word, all-caps label, or uninformative eyebrow"
+    ],
+    "failConditions": [
+      "Uses a default face as the page's identity font",
+      "Fakes hierarchy with adjacent mid-weights or 1.2x size steps",
+      "Adds an uninformative decorative eyebrow or all-caps label above the content"
+    ]
+  },
+  {
+    "id": "copy-contract-applied",
+    "request": "Design the settings, error, and empty states for an inventory management app: the notification settings form, a failed-save error, and the empty inventory table.",
+    "context": "New web UI, Chinese-language product. copy-contract.md is registered and in scope; no brand voice overrides the clarity rules.",
+    "passCriteria": [
+      "Names features from the user's side (what it is and does), not the internal mechanism",
+      "Writes CTAs in active voice that name the outcome of pressing them",
+      "Keeps one word per action consistent across buttons, completion states, and logs",
+      "Makes the error state explain what happened and how to repair it, without apologizing or being vague",
+      "Turns the empty table into an action invitation instead of a bare no-data note"
+    ],
+    "failConditions": [
+      "Labels a feature by its internal mechanism (e.g. Webhook 配置 for notifications)",
+      "Uses a generic apology-only error like 出错了，请重试 with no cause or repair",
+      "Shows 暂无数据 with no next action in the empty state"
+    ]
+  },
+  {
+    "id": "microfix-channel-applied",
+    "request": "The approved dashboard design is good. Three tweaks: change the page title copy, swap the hero screenshot for the new one I uploaded, and make the primary button one shade lighter.",
+    "context": "An already-approved design in iteration; gates A-C passed earlier. The microfix channel in gate-protocol.md is in scope.",
+    "passCriteria": [
+      "Handles all three tweaks through the microfix channel with one submission (before/after evidence plus a one-line note)",
+      "Does not restart gate A-C for the tweaks and does not claim the full chain re-ran",
+      "Records each tweak (page, spot, user request) into the acceptance record",
+      "States the channel's cap and what would push the work back to the normal gates"
+    ],
+    "failConditions": [
+      "Restarts the full gate chain (new direction draft or material gate) for the three tweaks",
+      "Slips in a fourth change or a layout/direction change without going back through the gates",
+      "Treats the tweaks as a waiver that also exempts future tasks from gates"
+    ]
+  },
+  {
+    "id": "dark-surface-tokens-applied",
+    "request": "Build the dark theme for an existing metrics dashboard: base surface, cards, table, and one accent action button.",
+    "context": "New web UI, dark baseline from the start. dark-surface-standards.md is registered and in scope; no design contract overriding these defaults.",
+    "passCriteria": [
+      "Builds hierarchy with a surface-lightness ladder (elevated surfaces lighter than base) instead of shadows",
+      "Uses tinted near-black surfaces with low-opacity white borders, not pure black",
+      "Sets body text on a near-white ladder and never pure white, with separate secondary and placeholder steps",
+      "Recalibrates the accent for dark surfaces instead of copying light-theme token values",
+      "Defines every color token with light and dark values and references tokens only, no hardcoded hex in components"
+    ],
+    "failConditions": [
+      "Inverts the light theme tokens and keeps the same soft shadows for elevation",
+      "Sets long-form body text in pure white on a dark base",
+      "Hardcodes a hex color inside a component instead of referencing a two-valued token"
+    ]
+  },
+  {
+    "id": "data-dense-standards-applied",
+    "request": "Build the inventory ledger table for an operations console: 12 columns, hundreds of rows, per-row status, column filters, and a bulk-archive action.",
+    "context": "New web UI, operational surface. data-dense-surfaces.md is registered and in scope; no design contract overriding these defaults.",
+    "passCriteria": [
+      "Uses compact row heights with sticky headers and right-aligned tabular-nums for numeric columns",
+      "Keeps column widths stable so rows do not reflow when values refresh",
+      "Marks row status with three channels (color plus shape plus text) instead of colored dots alone",
+      "Provides an empty state with a first-record action and skeleton rows matching real columns while loading",
+      "Implements bulk archive with visible per-row selection, tri-state select-all, and a per-record result report after the operation"
+    ],
+    "failConditions": [
+      "Shrinks font size to reach a compact density",
+      "Shows a bare 暂无数据 empty state or a centered spinner over the table",
+      "Reports a bulk operation as a single silent done without per-record outcomes"
     ]
   }
 ]

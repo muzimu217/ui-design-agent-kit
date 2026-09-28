@@ -18,7 +18,7 @@
 | --- | --- | --- | --- |
 | B1 | 五类"AI 默认味"校准清单（D7②） | 替换 SKILL.md 一句话 slop test：奶油底+赤陶 accent、SaaS 卡片套件、眉标 chrome 等 | **passed（2026-09-23，工单 R050-02）** |
 | B2 | 方向稿三旋钮（D7③） | DESIGN_VARIANCE 8 / MOTION_INTENSITY 6 / VISUAL_DENSITY 4 式可记录档位 | **passed（2026-09-23，工单 R050-03）** |
-| B3 | 规则密度扩容（D7④） | 对标 ui-ux-pro-max 192 条推理规则的知识层扩容 | **passed（2026-09-23，工单 R050-01 detail-constants 19 条军规，已 verified）** |
+| B3 | 规则密度扩容（D7④） | 对标 ui-ux-pro-max 192 条推理规则的知识层扩容 | **passed（2026-09-23，工单 R050-01 detail-constants 18 条军规（上游 19，末条并入），已 verified）** |
 | B4 | ~~showcase 任务优先入口~~ | **搁置**（用户 2026-09-21 改向：先吸收 awesome-ui-design 素材入知识库+方法论拆解，页面方向暂缓） | 搁置 |
 | B5 | ~~展示层门面工艺升级~~ | **搁置**（同上） | 搁置 |
 

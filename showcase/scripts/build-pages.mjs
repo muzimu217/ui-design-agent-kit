@@ -76,8 +76,13 @@ export async function runtimeLicenses(projects) {
       const identity = `${entry.name}@${entry.version}`;
       if (sections.has(identity)) continue;
       let notice = entry.text;
-      if (!notice && identity === '@react-three/fiber@9.7.0') {
-        notice = await readFile(new URL('../licenses/react-three-fiber-9.7.0.txt', import.meta.url), 'utf8');
+      if (!notice && entry.name === '@react-three/fiber') {
+        // License supplement is version-pinned; read the actual version from
+        // the demo lockfiles instead of hardcoding it (R107-04).
+        const fiberVersion = await bundledFiberVersion(projects);
+        if (fiberVersion && identity === `@react-three/fiber@${fiberVersion}`) {
+          notice = await readFile(new URL(`../licenses/react-three-fiber-${fiberVersion}.txt`, import.meta.url), 'utf8');
+        }
       }
       if (typeof notice !== 'string' || !notice.trim()) throw new Error(`No license text found for bundled dependency: ${identity}`);
       sections.set(identity, `${identity}\nDeclared license: ${entry.identifier ?? 'See notice below'}\n\n${notice}`);
@@ -86,11 +91,39 @@ export async function runtimeLicenses(projects) {
   return `Third-party runtime licenses\nGenerated from Vite's actual bundled module inventory and checked license supplements.\n\n${[...sections.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([, text]) => text).join('\n\n========================================\n\n')}\n`;
 }
 
+// D7⑥ (R050-06): a demo enters the published pipeline only if its README
+// declares status: live. The frontmatter is the single place a demo's
+// lifecycle is recorded — no tribal memory for live/local/archived/broken.
+export async function assertPublicAppsLive(root = ROOT) {
+  for (const { project } of PUBLIC_APPS) {
+    if (!project.startsWith('demo/')) continue;
+    const source = await readFile(path.join(root, project, 'README.md'), 'utf8');
+    const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    const status = frontmatter?.[1].match(/^status:\s*(\S+)/m)?.[1];
+    if (status !== 'live') {
+      throw new Error(`${project}/README.md status must be "live" before publishing (got ${status ?? 'missing'}); fix or downgrade the showcase entry (D7⑥)`);
+    }
+  }
+}
+
+async function bundledFiberVersion(projectDirs) {
+  for (const dir of projectDirs) {
+    try {
+      const lock = JSON.parse(await readFile(path.join(dir, 'package-lock.json'), 'utf8'));
+      for (const [key, info] of Object.entries(lock.packages ?? {})) {
+        if (key.endsWith('node_modules/@react-three/fiber') && info.version) return info.version;
+      }
+    } catch { /* project without a lockfile contributes nothing */ }
+  }
+  return null;
+}
+
 export async function assemblePages({ root = ROOT, basePath = '/', licenseText }) {
   const base = normalizeBase(basePath);
   const releaseId = process.env.VITE_RELEASE_ID || null;
   if (releaseId && !/^[A-Za-z0-9._-]{1,64}$/.test(releaseId)) throw new Error('Invalid public release identifier');
   if (typeof licenseText !== 'string' || !licenseText.trim()) throw new Error('Runtime license bundle is required');
+  await assertPublicAppsLive(root);
   const inputs = PUBLIC_APPS.map(({ project, prefix }) => ({ directory: path.join(root, project, 'dist'), prefix }));
   const inventory = [];
   for (const input of inputs) inventory.push({ ...input, files: await publicFiles(input.directory) });

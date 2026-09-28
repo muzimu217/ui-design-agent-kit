@@ -103,7 +103,9 @@ no per-node status. A diagram that fails it must not be presented as finished.
   recorded. Recording `passed` for a gate the user never confirmed makes the
   diagram lie, which is worse than having no diagram.
 - Do not ship the state file or the HTML as a product deliverable unless the user
-  asks. It is a communication aid during the task.
+  asks. It is a communication aid during the task. The gate ledger
+  (`docs/gates.md`) and stage enums stay in the kit repository; the target
+  project only ever holds the transient task-state JSON.
 - A rendered diagram is not evidence that a stage was verified. Browser
   evidence, acceptance records, and MCP call traces remain the evidence; the
   diagram only reports where the chain is.

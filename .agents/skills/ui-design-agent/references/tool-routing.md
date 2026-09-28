@@ -17,6 +17,17 @@ never send repository source to a remote audit service without authorization.
 Reference search is part of production, not optional decoration. Before choosing
 a new visual direction or interaction pattern:
 
+The seven steps below run as a four-layer pipeline (vocabulary adopted from
+agentUniverse's knowledge pipeline, 2026-09-25): **read** (steps 1–2 —
+catalog and live inspection collect raw candidates), **process** (step 3 —
+rank, deduplicate, excerpt; `material-rank.mjs` buckets and catalog entries
+are the processed form), **route** (the category index in step 2 decides
+where a need type goes; step 4 routes the shortlist to the user), and
+**post-process** (steps 4–7 — license boundary, adaptation scope, mirror
+fallback, and the recorded baseline before anything integrates). A layer
+that was skipped is named as skipped; it is not silently folded into the
+next one.
+
 1. Inspect the target repository's current UI, routes, tokens, assets, and nearby
    components. Prefer an in-repository precedent when one exists.
 2. Read `material-scouting.md`, classify the need as a reference, component,

@@ -4,6 +4,9 @@
 
 # UI Design Agent Kit
 
+> 语言说明（R106-05）：本 README 为**完整版**（含能力配置、素材检索、贡献与社区节）；
+> [README.en.md](README.en.md) 是面向研究者的**精简英文版**，仅保留方法论、证据与论文入口。
+
 简体中文 | [English](README.en.md)
 
 ### 从口语需求到可验证界面的项目级 AI 设计工作流。
@@ -17,7 +20,7 @@
 [![Stars](https://img.shields.io/github/stars/muzimu217/ui-design-agent-kit?style=flat\&label=stars)](https://github.com/muzimu217/ui-design-agent-kit/stargazers)
 [![Issues](https://img.shields.io/github/issues/muzimu217/ui-design-agent-kit?label=issues)](https://github.com/muzimu217/ui-design-agent-kit/issues)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22804947.svg)](https://doi.org/10.5281/zenodo.22804947)
-[![License](https://img.shields.io/badge/license-internal-lightgrey)](#许可)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.18.1-339933)](package.json)
 [![Verify](https://img.shields.io/badge/npm%20run-verify-blue)](#验证)
 
@@ -243,10 +246,10 @@ flowchart TB
 
 ## 快速开始
 
-需要 Node.js 20.18.1+、npm，以及能读取项目指令和技能的 AI 宿主。
+需要 Node.js 20.18.1+、npm，以及一个能读取项目指令的 AI 宿主。
 
 ```bash
-git clone git@github.com:muzimu217/ui-design-agent-kit.git
+git clone https://github.com/muzimu217/ui-design-agent-kit.git
 cd ui-design-agent-kit
 
 npm ci --ignore-scripts
@@ -254,7 +257,27 @@ npm run verify
 npm test
 ```
 
+### 宿主支持矩阵
+
+| 宿主 | 接线方式 |
+| --- | --- |
+| Codex | 开箱即用：`.codex/config.toml` 随仓库生效（含 MCP 配置） |
+| Claude Code / Cursor / 其他 | 宿主不读 `.codex`——运行 `npm run prompt:build` 生成单文件指令（含全部规则），粘进宿主的系统提示或项目指令即可；MCP 工具需按 `.codex/config.toml` 自行配置 |
+
+### 第一次使用会发生什么
+
+首轮**不会直接写代码**：agent 会先整理需求、检索真实参考素材，然后呈交一份
+"方向稿"（布局关系 + 参考来源 + 三个风格旋钮）等你确认；你确认后才进入
+原型与实现，每轮产出都附浏览器实测证据。想要更轻的起步，直接说"先出一版
+再改"也可——协议内有微修通道与显式弃权条款。
+
+> 许可：自研指令层按 Apache-2.0 发布（根 [LICENSE](LICENSE)）；上游 vendored
+> skills 各自带许可，逐条钉版见
+> [来源锁定](tooling/sources.lock.json)与[第三方声明](THIRD_PARTY_NOTICES.md)。
+
 然后在项目会话中描述需求。联网、浏览器和生图能力取决于当前宿主的实际工具，不因安装指令而自动获得。
+
+更多常见问题（宿主/MCP 示例/为什么先出方向稿/评测可信度）见 [FAQ](docs/faq.md)。
 
 ---
 
@@ -329,7 +352,8 @@ Issues、bug 报告、功能建议、文档改进和 Pull Request 都欢迎。
 
 ## 许可
 
-这个仓库当前作为内部工具维护，没有把 Remotion skills 的整套产物宣称为可自由再分发的 MIT 项目。发布前需确认上游授权；版本和修改记录见[来源锁定](tooling/sources.lock.json)与[第三方声明](THIRD_PARTY_NOTICES.md)。
+自研指令层按 Apache-2.0 发布（根 [LICENSE](LICENSE)）。上游 vendored skills
+保留各自许可，逐条钉版（含 revision 与修改记录）见[来源锁定](tooling/sources.lock.json)与[第三方声明](THIRD_PARTY_NOTICES.md)；再分发条款以各条目为准。
 
 ---
 

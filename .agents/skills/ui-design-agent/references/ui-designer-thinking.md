@@ -3,7 +3,7 @@
 Six design stages from problem to verified product, adapted for agent
 execution. Think in stages, not one silent pass: consult the user at each
 stage's decision point. The stages are the thinking kernel; the confirmation
-gates in `chain-flow.md` are the process gateways.
+gates in `docs/chain-flow.md` are the process gateways.
 
 ## Design context gate
 

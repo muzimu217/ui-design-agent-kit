@@ -25,6 +25,29 @@ test("implementation artifacts without a gate record violate the chain", async (
   assert.deepEqual(report.violations.map((item) => item.id), ["missing-gates-record"]);
 });
 
+test("every violation carries mechanical fix guidance (agentUniverse absorption)", async (t) => {
+  const cases = [
+    { files: { "src/App.tsx": "void 0;\n" }, id: "missing-gates-record" },
+    { files: { "src/main.tsx": "void 0;\n", "GATES.md": "# Gates\n\n TODO\n" }, id: "missing-gate-a" },
+    { files: { "src/main.tsx": "void 0;\n", "GATES.md": "## 门A · 方向稿\n裁决: pending\n" }, id: "gate-a-not-passed" },
+    { files: { "src/fix.css": ".a{color:red}\n", "GATES.md": "分级: S\n" }, id: "s-tier-missing-acceptance" },
+  ];
+  for (const { files, id } of cases) {
+    const dir = await makeWorkspace(t, files);
+    const report = await auditWorkspace(dir);
+    const violation = report.violations.find((item) => item.id === id);
+    assert.ok(violation, `${id} should be produced`);
+    assert.match(violation.guidance, /补法：/);
+    assert.match(violation.guidance, /(GATES\.md|docs\/gates\.md|裁决|呈交)/);
+  }
+  // The passing path carries no guidance because there is nothing to fix.
+  const clean = await makeWorkspace(t, {
+    "src/App.tsx": "void 0;\n",
+    "GATES.md": PASSED_RECORD,
+  });
+  assert.deepEqual((await auditWorkspace(clean)).violations, []);
+});
+
 test("a compliant workspace passes with gate A passed and artifacts inventoried", async (t) => {
   const dir = await makeWorkspace(t, {
     "src/App.tsx": "export default () => null;\n",

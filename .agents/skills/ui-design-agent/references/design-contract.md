@@ -73,7 +73,9 @@ The contract's Component expectations and Quality gates should cover:
   selected, plus empty and error states where relevant).
 - Text scaling: the layout survives browser text scaling up to 200%.
 - Breakpoints: a stated strategy, for example base 320px, 640px, 1024px,
-  1280px, with component behavior per range.
+  1280px, with component behavior per range. Acceptance verification uses the
+  acceptance.md viewport matrix (375 x 812, 768 x 1024, 1440 x 900); state a
+  different strategy only as an addition to it.
 - QA protocol: a same-viewport parity comparison against the reference or
   contract, plus the acceptance record from acceptance.md.
 

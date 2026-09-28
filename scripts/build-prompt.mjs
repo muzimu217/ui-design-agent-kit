@@ -3,7 +3,10 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { ROOT, parseSkill } from "./verify.mjs";
 
-const references = [
+// Exported for tests/references-manifest.test.mjs: the manifest registry,
+// the on-disk references/, and these export lists must stay four-way
+// consistent (tooling/references-manifest.json is the registry of record).
+export const references = [
   ["gate-protocol.md", "Gate Protocol"],
   ["motion-contract.md", "Web Motion Contract"],
   ["tool-routing.md", "Capability Routing"],
@@ -19,6 +22,10 @@ const references = [
   ["ui-designer-thinking.md", "UI Designer Thinking Model"],
   ["detail-critique.md", "Detail Critique"],
   ["detail-constants.md", "Detail Constants"],
+  ["typography-standards.md", "Typography Standards"],
+  ["copy-contract.md", "Copy Contract"],
+  ["dark-surface-standards.md", "Dark Surface Standards"],
+  ["data-dense-surfaces.md", "Data-Dense Surfaces"],
   ["workflow-visualization.md", "Workflow Visualization"],
   ["product-readme.md", "Product README Standard"],
   ["acceptance.md", "UI Acceptance"],
@@ -26,7 +33,7 @@ const references = [
 
 // Lean export: the minimum set a hosting agent needs to run the chain with
 // the user's taste and the quality gates. Everything else is route-on-demand.
-const leanReferences = new Set([
+export const leanReferences = new Set([
   "gate-protocol.md",
   "design-contract.md",
   "motion-contract.md",

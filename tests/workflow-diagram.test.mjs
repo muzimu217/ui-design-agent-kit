@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
@@ -279,4 +279,22 @@ test("the rendered task diagram exposes status and stays self-contained", async 
   // Gate detail must name the artifact to be confirmed and where it lives.
   assert.match(html, /本门需要确认的稿件/);
   assert.match(html, /稿件位置/);
+});
+
+import { loadArtifact } from "../scripts/workflow-diagram/artifacts.mjs";
+
+test("artifact loading blocks sibling-directory traversal, allows in-workspace files (R107-04)", async (t) => {
+  const workspace = await mkdtemp(path.join(tmpdir(), "artifact-ws-"));
+  const sibling = await mkdtemp(path.join(tmpdir(), "artifact-sibling-"));
+  t.after(() => { rm(workspace, { recursive: true, force: true }); rm(sibling, { recursive: true, force: true }); });
+  await writeFile(path.join(workspace, "ok.md"), "# inside\n");
+  await writeFile(path.join(sibling, "secret.md"), "outside\n");
+  const escapePath = `../${path.basename(sibling)}/secret.md`;
+
+  const blocked = await loadArtifact(escapePath, workspace);
+  assert.equal(blocked.status, "blocked", "sibling traversal must be blocked, not leaked by a startsWith prefix bug");
+
+  const inside = await loadArtifact("ok.md", workspace);
+  assert.equal(inside.status, "ok");
+  assert.match(inside.text, /inside/);
 });

@@ -63,7 +63,7 @@
 | # | 事项 | 当前处理 |
 | --- | --- | --- |
 | D4 | React Bits 个案采纳流程 | 等用户决定是否固定核查步骤；无决定前按普通候选，逐次读当前 `LICENSE.md` + 门B 选择 |
-| D7 | 大师评审挂起项包（行内子项状态化，2026-09-20 第 4 轮整改；**裁决载体：`docs/archive/d7-decision-packet.md` 包 A/B/C，2026-09-21 建立并含第 16 轮线上站新发现 A1 命名混拼/A4 线上站合回 main**；各项独立定夺）：①六卡证据截图重截=挂起（=A2）；②五类 anti-slop 校准清单=done-pending-verify（=B1，工单 R050-02）；③方向稿三旋钮=done-pending-verify（=B2，工单 R050-03）；④规则密度扩容=verified（=B3，工单 R050-01 detail-constants 19 条）；⑤门C 多变体并排=挂起（=C1）；⑥demo README status 字段+构建硬校验=挂起（并入 C2 相关）；⑦发布前截图回归+GATES↔账本回填一致性机检=挂起（=C2）；⑧showcase/dist 旧版残留=本机核查已不存在（2026-09-20），证据轮复核即可；⑨drift 守护变异冒烟自检=挂起（=C3）；A1 命名混拼/A4 线上站合回 main=包 A 新增（2026-09-21 第 16 轮发现） | 2026-09-20 起挂起，等用户按裁决包逐项勾选；每小时复审跟踪 |
+| D7 | 大师评审挂起项包（行内子项状态化，2026-09-20 第 4 轮整改；**裁决载体：`docs/archive/d7-decision-packet.md` 包 A/B/C，2026-09-21 建立并含第 16 轮线上站新发现 A1 命名混拼/A4 线上站合回 main**；各项独立定夺）：①六卡证据截图重截=挂起（=A2）；②五类 anti-slop 校准清单=done-pending-verify（=B1，工单 R050-02）；③方向稿三旋钮=done-pending-verify（=B2，工单 R050-03）；④规则密度扩容=verified（=B3，工单 R050-01 detail-constants 18 条（上游 19，末条并入））；⑤门C 多变体并排=挂起（=C1）；⑥demo README status 字段+构建硬校验=挂起（并入 C2 相关）；⑦发布前截图回归+GATES↔账本回填一致性机检=挂起（=C2）；⑧showcase/dist 旧版残留=本机核查已不存在（2026-09-20），证据轮复核即可；⑨drift 守护变异冒烟自检=挂起（=C3）；A1 命名混拼/A4 线上站合回 main=包 A 新增（2026-09-21 第 16 轮发现） | 2026-09-20 起挂起，等用户按裁决包逐项勾选；每小时复审跟踪 |
 | D8 | p-habit-2 记账口径（大师第 3 轮"二选一"） | 已裁决：non-corpus 标记（`evals/runs/p-habit-2/NON-CORPUS.md`）+ doc-drift "runs 目录必须有台账键或标记"断言（第 4 轮升级为内容校验）；不回溯造场景打分 |
 ## 五、论文门禁（UAK paper，2026-09-16 起）
 
@@ -93,3 +93,11 @@
   快照 SWHID `swh:1:snp:c25e3b9c9f537f1f5f6351ffc4dd9f2c17c680af`。
   P5 待用户登录 arXiv 后从 ENDORSERS.md 候选名单发信。
 
+
+## 六、eval 执行门记录（R061-01 工单制，2026-09-26 起）
+
+| 日期 | 场景 | 门 | 状态 | 呈交物 / 事件 | 裁决 |
+| --- | --- | --- | --- | --- | --- |
+| 2026-09-26 | detail-constants-application | A | passed | 方向稿：proven baseline=仓内 operations-not-marketing 行卡；旋钮 4/4/6；无外部素材 | 用户："门禁通过"（会话 2026-09-26） |
+| 2026-09-26 | slop-test-five-clusters | A | passed | 方向稿：brief 要求 cluster-1 奶油底+衬线+赤陶；基线 unverified 待门B 实检；旋钮 7/6/3 | 用户："门禁通过"（会话 2026-09-26） |
+| 2026-09-26 | 合并 main 授权 | — | blocked | 三页+锚点修复+抛光+截图基线堆叠于实验分支 | 用户裁决（2026-09-26）："目前都不合并"——冻结，待后续指令 |

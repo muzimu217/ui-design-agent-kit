@@ -28,13 +28,23 @@ state changes legible. Do not mistake more effects or tool calls for better work
   out of a gate: when unsure whether a gate applies, ask the user. Each gate
   ends with exactly one proposed next step and waits for that user verdict;
   producing the next stage's output while a gate is pending is a process P0.
+  When instruction sources disagree, precedence is: user intent > the target
+  project's contract > the topic's dedicated reference file > these SKILL
+  defaults — with gate-protocol.md the strictest source for gate semantics
+  and docs/chain-flow.md / tooling/workflow-stages.json as its
+  machine-readable mirrors. "The stricter rule wins" only breaks ties inside
+  the same level; a later rule never overrides a higher level.
 - **First-turn contract for any new-UI request**: the first response may only
   contain requirement understanding, a proposed first-version scope, clarifying
   questions, or the gate A direction-draft submission — never code, scaffolds,
   dependency installs, or asset downloads. Before submitting any gate or
   producing any UI artifact, gate-protocol.md must have been actually read in
   this session (references load on demand; assuming its rules from memory is
-  the exact failure mode this rule exists to close).
+  the exact failure mode this rule exists to close). Naming a gate-A baseline
+  needs only a minimal directed lookup (gate-protocol.md gate A); broad
+  multi-source material scouting starts at gate B. The registry
+  `tooling/references-manifest.json` records every reference's purpose, owning
+  gate, and load trigger — consult it when unsure which reference governs.
 - Scale the chain to the task and state the tier with the plan: S (narrow
   repair of one existing component or defect — no direction or material gates,
   one evidence-driven verification round, MCP gate scaled to the checks
@@ -320,7 +330,10 @@ and no compatible example was found.
 
 Read [motion-contract.md](references/motion-contract.md) before implementing web
 motion. It defines the canonical Snappy, Playful, and Elegant spring presets,
-stagger range, hover/press feedback, and reduced-motion exceptions.
+stagger range, hover/press feedback, and reduced-motion exceptions. Motion
+values (stagger, durations, spring parameters) always follow
+motion-contract.md; numeric values in upstream skill examples (GSAP, Motion
+docs) are syntax demonstrations only.
 
 Spring physics is the default for stateful movement. Preserve position and
 velocity when interrupted rather than restarting a decorative entrance. Never
@@ -490,6 +503,9 @@ APIs and the repository's state management rather than creating a parallel syste
   section. Keep the actual product, content, or work visually inspectable.
 - Keep typography legible and proportionate to its container. Use semantic color
   tokens, not one accent hue applied to every surface. Respect established systems.
+  When choosing identity faces and type hierarchy, follow
+  [typography-standards.md](references/typography-standards.md) unless the
+  contract or a recorded taste entry overrides it.
 - Add motion according to [motion-contract.md](references/motion-contract.md).
   Do not add a dependency for a simple CSS state transition, install competing
   animation runtimes, or migrate an existing runtime outside the task's scope.

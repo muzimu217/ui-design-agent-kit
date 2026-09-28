@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>陶白 TAOBAI — 手作陶瓷工作室</title>
+<style>
+  /* Brief 明确要求：奶油底 #F4F1EA + 衬线大标题 + 赤陶 #D97757 按钮。
+     = AI 默认味校准 cluster 1 命中，归因 brief（验收记录逐裁，见 EVIDENCE）。 */
+  :root {
+    --cream: #f4f1ea; --ink: #2b2620; --muted: #6f6558;
+    --terra: #d97757; --terra-deep: #b85c3e; --terra-deeper: #a04a2c; --line: #e3ddd0;
+    --serif-display: "Cormorant Garamond", "Songti SC", "STSong", Georgia, serif;
+    --serif-body: "Songti SC", "STSong", Georgia, serif;
+    --ease: cubic-bezier(.16, 1, .3, 1);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--serif-body); color: var(--ink); background: var(--cream); }
+  a { color: inherit; text-decoration: none; }
+
+  header { display: flex; align-items: center; justify-content: space-between; max-width: 1080px; margin: 0 auto; padding: 28px 24px; }
+  .logo { font-family: var(--serif-display); font-size: 22px; letter-spacing: .06em; }
+  nav a { margin-left: 22px; font-size: 14px; color: var(--muted); }
+  nav a:hover { color: var(--ink); }
+
+  .hero { max-width: 1080px; margin: 0 auto; padding: 64px 24px 88px; text-align: center; }
+  .hero h1 { font-family: var(--serif-display); font-weight: 500; font-size: clamp(52px, 8vw, 96px); line-height: 1.04; letter-spacing: -0.015em; margin: 0 0 18px; }
+  .hero .lede { font-size: 17px; color: var(--muted); max-width: 34em; margin: 0 auto 34px; line-height: 1.9; }
+  .cta { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 12px 30px; border-radius: 999px; background: var(--terra-deep); color: #fff; font-size: 15px; letter-spacing: .04em; transition: background-color 160ms var(--ease), transform 160ms var(--ease); }
+  .cta:hover { background: var(--terra-deeper); }
+  .cta:active { transform: scale(0.98); }
+
+  section { max-width: 1080px; margin: 0 auto; padding: 56px 24px; border-top: 1px solid var(--line); }
+  section h2 { font-family: var(--serif-display); font-weight: 500; font-size: 34px; margin: 0 0 14px; }
+  section p { color: var(--muted); line-height: 2; max-width: 36em; margin: 0; }
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  @media (max-width: 720px) { .duo { grid-template-columns: 1fr; } }
+
+  footer { border-top: 1px solid var(--line); padding: 30px 24px 44px; text-align: center; color: var(--muted); font-size: 13px; }
+  footer .brand { font-family: var(--serif-display); font-size: 16px; color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta, .cta:hover, .cta:active { transition: none; transform: none; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <span class="logo">陶白 TAOBAI</span>
+    <nav><a href="#work">作品</a><a href="#studio">工作室</a></nav>
+  </header>
+
+  <div class="hero">
+    <h1>泥土记得<br>每一双手。</h1>
+    <p class="lede">陶白是一间手作陶瓷工作室。我们相信器物有脾气——拉坯的圈纹、釉色的呼吸、出窑那一下的凉，都是机器给不了的。</p>
+    <a class="cta" href="#work">看看这批新出窑的</a>
+  </div>
+
+  <section id="work">
+    <h2>这季的两件东西</h2>
+    <div class="duo">
+      <div class="reveal">
+        <h2 style="font-size:22px">晨雾青釉杯</h2>
+        <p>杯口外撇三度，喝的时候嘴唇不会碰到釉厚处。青釉在杯底积出一圈，像早晨的雾没散干净。每只 120ml，手作允许彼此略有不同。</p>
+      </div>
+      <div class="reveal">
+        <h2 style="font-size:22px">粗陶芝麻釉盘</h2>
+        <p>盘心撒了铁斑，窑火里爆成芝麻点。装什么都压得住，素的一碗白粥也好看。直径 22cm，可以进洗碗机，但你大概舍不得。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="studio">
+    <h2>工作室与两三句话</h2>
+    <p>我们在景德镇湖田边上，两间老瓦房、三只气窑、四个手艺人。周二到周六开门，欢迎来看失败的碎片堆——那才是我们最诚实的展品。</p>
+  </section>
+
+  <footer>
+    <div class="brand">陶白 TAOBAI</div>
+    景德镇 · 湖田 · 周二至周六 10:00–18:00 · 概念演示页
+  </footer>
+</body>
+</html>

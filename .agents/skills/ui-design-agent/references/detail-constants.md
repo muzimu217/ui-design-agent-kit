@@ -7,6 +7,12 @@ verified practice (make-interfaces-feel-better 19 rules, read in full during
 the 2026-09 master armament) plus this kit's motion contract. Where the
 governing design contract states different values, the contract wins.
 
+**Precedence meta-rule (R104-01)**: [motion-contract.md](motion-contract.md)
+is the sole authority for motion values (springs, press scale, stagger,
+durations). Where the two files conflict, motion-contract wins; this file only
+records surface/typography constants that motion-contract does not cover, and
+cites motion values by reference.
+
 ## Surfaces and structure
 
 1. **Concentric radii**: outer radius = inner radius + padding. Nested radii
@@ -23,13 +29,15 @@ governing design contract states different values, the contract wins.
 4. **CSS `transition` for interactive state changes** (interruptible);
    `keyframes` only for one-shot sequences. Counter-example: an exit animation
    on `animation` cannot be interrupted mid-flight.
-5. **Low-frequency entrances stagger ~100ms per batch**; high-frequency
-   interactions never stagger. Counter-example: hover items cascading.
+5. **Low-frequency entrances stagger 0.04–0.08s per batch** (per
+   motion-contract.md, which governs); high-frequency interactions never
+   stagger. Counter-example: hover items cascading.
 6. **Exits are softer than entrances**: small `translateY` + ease-out, shorter
    distance. Counter-example: elements flying out harder than they came in.
-7. **Icon swap animation**: opacity 0→1, scale 0.25→1, blur 4px→0;
-   motion/react `{ type: "spring", duration: 0.3, bounce: 0 }` — bounce is
-   always 0 for icon swaps. Counter-example: icons boinging on toggle.
+7. **Icon swap animation**: opacity 0→1, scale 0.25→1, blur 4px→0; motion
+   values follow the motion-contract's spring preset (no `duration` on a
+   physical spring; bounce stays 0 for icon swaps). Counter-example: icons
+   boinging on toggle.
 8. **First load gets no entrance animations** (`AnimatePresence
    initial={false}`); animate responses, not the initial paint.
 9. **High-frequency interactions get no custom animation**; motion is never
@@ -61,6 +69,7 @@ governing design contract states different values, the contract wins.
 
 ## Interaction mechanics
 
-18. **Press feedback is `scale(0.96)`**, never below 0.95 (it reads as
-    breakage); hit areas ≥44×44 touch / ≥40×40 dense desktop, expandable via
-    pseudo-element, never overlapping.
+18. **Press feedback follows the motion-contract press preset** (subtle
+    spring press near scale 0.98, keyboard active equivalent; this file does
+    not set its own scale value); hit areas ≥44×44 touch / ≥40×40 dense
+    desktop, expandable via pseudo-element, never overlapping.

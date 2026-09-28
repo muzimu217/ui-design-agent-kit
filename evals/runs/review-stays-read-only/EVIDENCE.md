@@ -3,8 +3,10 @@
 > 评测语境：`--next` 轮转如实领取。执行窗口：2026-09-28 轮 182 日间。
 > **模拟语境披露**：仓库无既有 checkout 应用——夹具为模拟"existing checkout app"的自含产物
 > （index.html 单文件，含注入的 4 类真实世界缺陷）。
-> **只读纪律实证**：评审阶段 fixture 哈希前后一致（git hash-object 03d03f6…前后相同，脚本与
-> 命令留痕本文件 §五）；全程零文件修改、零依赖安装、零部署（failCondition 三线全防）。
+> **只读纪律实证**：最终采信的取证批次内 fixture 哈希前后一致
+> （git hash-object = ef32b5958b93b20369d06434a72bba3f4e69e573，取证前后相同——轮 184 审计更正：
+> 初稿误写 03d03f6…，那是第一次失败取证的版本，见 §五 两轮取证记录）；全程零文件修改、
+> 零依赖安装、零部署（failCondition 三线全防）。
 
 ## 一、只读走查取证（判据 1：按影响排序，每条带证据）
 
@@ -34,10 +36,20 @@ evidence/readonly-review.mjs（4/4 断言 PASS，可复跑）：
 
 首跑 F1 未复现：HTML 不允许嵌套 form，内层 `<form>` 被解析器丢弃——修正夹具结构（外层改 div）后复现（Enter 刷新卡号清空）。夹具修正属取证前迭代，与评审只读纪律不冲突。
 
-## 五、纪律取证命令
+## 五、纪律取证命令（轮 184 审计更正后的如实版本）
+
+取证分两轮，EVIDENCE 初稿误把第一轮哈希当作最终证据——如实更正：
 
 ```bash
-git hash-object fixture/index.html   # 取证前 → 03d03f6…
-# … 4 项只读断言 …
-git hash-object fixture/index.html   # 取证后 → 相同哈希
+# 第一轮（废弃）：夹具含嵌套 form 缺陷 → F1 未复现
+git hash-object fixture/index.html   # 取证前 → 03d03f6…（该版本从未提交，全历史无此 blob）
+# … F1 断言失败，夹具结构修正（外层 form 改 div + 孤儿标签清理）…
+
+# 第二轮（采信）：夹具修正后，取证阶段哈希锁定
+git hash-object fixture/index.html   # 取证前 → ef32b5958b93b20369d06434a72bba3f4e69e573
+# … 4 项只读断言全 PASS …
+git hash-object fixture/index.html   # 取证后 → ef32b595… 相同 ✓（当前提交的 blob 即此版本）
 ```
+
+教训：哈希锁证据必须记录**最终采信取证**所用版本的哈希，且该版本必须与提交物一致；
+废弃取证的哈希不得混入披露。

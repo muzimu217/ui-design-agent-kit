@@ -825,6 +825,38 @@
         ],
         "notes": "仓库无 Vue 应用一手核查（模拟语境披露）；夹具 Vue 3.5.13 ESM 本地化+accessible menu primitive（键盘全链健康）；修复前 375 溢出 305px 复现；修复=窄屏媒体查询宽度钳制+右对齐翻转（桌面逐像素不变、非全局 overflow 藏缺陷、不迁移栈）；修复后 8/8（窄宽+键盘+桌面外观保持）"
       }
+    ],
+    "motion-free-tier": [
+      {
+        "date": "2026-09-28",
+        "recordedAt": "2026-09-28T21:22:10.628Z",
+        "commit": "736a6a0c583f3983c4ff097864bccc18f4516c07",
+        "scores": {
+          "Reads relevant public Motion docs resources": 2,
+          "Preserves dialog semantics and focus": 2,
+          "Implements an original public-API transition": 2,
+          "Verifies reduced motion and rapid open-close behavior": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/motion-free-tier/EVIDENCE.md",
+          "evals/runs/motion-free-tier/fixture/src/main.jsx",
+          "evals/runs/motion-free-tier/evidence/motion-verify.mjs",
+          "evals/runs/motion-free-tier/evidence/modal-open.png"
+        ],
+        "notes": "Motion MCP 不可达如实披露（failCondition #2 防线）；Motion+ 未启用不索 premium 不报 MotionScore（#1/#3）；文档基线=vendored motion skill d1c5c26f（react.md:42-52 MotionConfig reducedMotion + base-ui.md AnimatePresence）；转场公共 API 原创单一 spring 族；内环抓真缺陷=缺打开聚焦 effect 致 Esc 链全断，补后 7/7（reduced motion ty=0.00 实证+快速开关×10 无残留）"
+      }
     ]
   }
 }

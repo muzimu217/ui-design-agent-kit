@@ -290,3 +290,5 @@ progress::-moz-progress-bar { background: #397f9f; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0s !important; transition-duration: 0s !important; }
 }
+
+.brick-scene canvas:focus-visible { outline: 2px solid #2566c4; outline-offset: 2px; }

@@ -24,6 +24,7 @@ import {
   PCFShadowMap,
   Plane,
   Raycaster,
+  Spherical,
   TOUCH,
   Vector2,
   Vector3,
@@ -260,6 +261,46 @@ function SceneRuntime(props: RuntimeProps) {
   if (initialIds.current.key !== props.sceneKey) {
     initialIds.current = { key: props.sceneKey, ids: new Set(props.bricks.map((brick) => brick.id)) };
   }
+  // 键盘轨道控制：基线 = three.js 官方 OrbitControls 键盘模式（misc_controls_orbit
+  // 的 listenToKeyEvents）。官方键位是平移，本产品为拼搭台（禁 pan），适配为旋转+缩放；
+  // 仅在画布 domElement 聚焦时响应，不劫持页面滚动与按钮焦点。
+  useEffect(() => {
+    const el = gl.domElement;
+    const apply = (dAzimuth: number, dPolar: number, zoomFactor: number) => {
+      const c = controls.current;
+      if (!c) return;
+      if (dAzimuth !== 0 || dPolar !== 0) {
+        const offset = camera.position.clone().sub(c.target);
+        const sph = new Spherical().setFromVector3(offset);
+        sph.theta += dAzimuth;
+        sph.phi = Math.min(Math.max(sph.phi + dPolar, c.minPolarAngle), c.maxPolarAngle);
+        sph.radius = offset.length();
+        camera.position.setFromSpherical(sph).add(c.target);
+        camera.lookAt(c.target);
+      }
+      if (zoomFactor !== 1 && camera instanceof OrthographicCamera) {
+        camera.zoom = Math.min(Math.max(camera.zoom * zoomFactor, 6), 60);
+        camera.updateProjectionMatrix();
+      }
+      c.update();
+      invalidate();
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (document.activeElement !== el) return;
+      switch (event.key) {
+        case 'ArrowLeft': apply(-Math.PI / 12, 0, 1); break;
+        case 'ArrowRight': apply(Math.PI / 12, 0, 1); break;
+        case 'ArrowUp': apply(0, -Math.PI / 15, 1); break;
+        case 'ArrowDown': apply(0, Math.PI / 15, 1); break;
+        case '+': case '=': apply(0, 0, 1.15); break;
+        case '-': case '_': apply(0, 0, 1 / 1.15); break;
+        default: return;
+      }
+      event.preventDefault();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [camera, gl, invalidate]);
 
   const subjectBounds = useCallback((includeTargets = true) => {
     let top = 0.8;
@@ -627,7 +668,8 @@ const Scene = forwardRef<SceneHandle, SceneProps>(function Scene(props, ref) {
       resize={{ debounce: 0 }}
       fallback={<div role="status">此设备暂时无法显示 3D 画布，作品数据仍保留。</div>}
       onCreated={({ gl }) => {
-        gl.domElement.setAttribute('aria-label', '积木搭建画布');
+        gl.domElement.setAttribute('aria-label', '积木搭建画布：聚焦后方向键旋转、加号减号缩放，鼠标拖拽旋转');
+        gl.domElement.tabIndex = 0;
         gl.domElement.style.touchAction = 'none';
       }}
     >

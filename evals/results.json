@@ -723,6 +723,42 @@
         ],
         "notes": "评测语境模拟 brief（品牌=UAK 自身 token+motion-contract 契约）；轮转序如实领取未跳场景；帧检视内环抓 4 真问题全修（BarWipe 三态/Sequence 时间轴/幕布窗口/锁定帧对比）；仅预览未渲染（判据6）；参考基线=官方 blank 模板(MIT)零复制；门径：评测可视化产物按 D6 无豁免执行（代行裁决留痕本文件）"
       }
+    ],
+    "threejs-open-source-baseline": [
+      {
+        "date": "2026-09-28",
+        "recordedAt": "2026-09-28T18:23:59.804Z",
+        "commit": "e921a4a20311366b8dad73e838318e1e2cacf2c6",
+        "scores": {
+          "Inspects the existing scene, camera, controls, assets, and interaction model first": 2,
+          "Names an inspectable official or open-source baseline": 2,
+          "Checks versions, dependencies, license, asset provenance, and runtime cost": 2,
+          "Adapts the baseline to the existing product instead of replacing the stack for preference": 2,
+          "Verifies pixels, framing, movement, pointer or keyboard interaction, and asset loading on desktop and mobile": 2,
+          "Provides a fallback or clear limitation when WebGL is unavailable": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/threejs-open-source-baseline/EVIDENCE.md",
+          "evals/runs/threejs-open-source-baseline/evidence/brick-keyboard-verify.mjs",
+          "evals/runs/threejs-open-source-baseline/evidence/desktop-keyboard-rotated.png",
+          "evals/runs/threejs-open-source-baseline/evidence/mobile-touch-rotated.png",
+          "evals/runs/threejs-open-source-baseline/evidence/brick-fallback-verify.mjs",
+          "demo/brick-workshop/src/Scene.tsx"
+        ],
+        "notes": "目标=已发布 brick-workshop；缺口=键盘路径；基线=官方 OrbitControls 键盘模式适配为旋转+缩放（判pan 语义）；画布聚焦才响应不劫持页面；双端像素差分实证（旋转 5.29%/缩放 9.29%/触控 1.86%/未聚焦 0.000%）；WebGL fallback 用 getContext 覆盖实证（旗标式禁用假阴性教训）；零新依赖；微修通道 a11y 扩展代行裁决披露于 EVIDENCE §六"
+      }
     ]
   }
 }

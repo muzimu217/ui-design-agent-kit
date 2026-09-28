@@ -759,6 +759,40 @@
         ],
         "notes": "目标=已发布 brick-workshop；缺口=键盘路径；基线=官方 OrbitControls 键盘模式适配为旋转+缩放（判pan 语义）；画布聚焦才响应不劫持页面；双端像素差分实证（旋转 5.29%/缩放 9.29%/触控 1.86%/未聚焦 0.000%）；WebGL fallback 用 getContext 覆盖实证（旗标式禁用假阴性教训）；零新依赖；微修通道 a11y 扩展代行裁决披露于 EVIDENCE §六"
       }
+    ],
+    "animation-ecosystem-routing": [
+      {
+        "date": "2026-09-28",
+        "recordedAt": "2026-09-28T19:19:11.480Z",
+        "commit": "5ec08a1bb01eef1504d203ddd6fb9773ea752def",
+        "scores": {
+          "Maps the requested medium and delivery to an appropriate primary route": 2,
+          "Uses Remotion for React/frame-accurate composition when that is the actual task": 2,
+          "Considers Manim for mathematical or scientific animation and editor projects for multi-track workflows": 2,
+          "Treats Vibe Video and VibeFrame as verified agent-workflow references rather than assumed tools": 2,
+          "Checks current repository/docs, version, dependencies, data handling, and license before reuse": 2,
+          "Keeps brand, interaction purpose, and deterministic timing explicit": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/animation-ecosystem-routing/ROUTING.md",
+          "evals/runs/animation-ecosystem-routing/evidence/brandloop-090.png",
+          "evals/runs/animation-ecosystem-routing/evidence/brandloop-179.png",
+          "evals/runs/remotion-brand-animation/teaser/src/BrandLoop.tsx"
+        ],
+        "notes": "决策类场景：brief=React 品牌循环视频→主路线 Remotion（已装已验证 4.0.370 MIT 复用批次一运行时零新工具链）；Manim/编辑器逐项评估排除（medium 不符+未安装一手核查）；Vibe Video/VibeFrame 仅名录不假设连接（failCondition #2/#3 防线全设）；preview=BrandLoop 180 帧循环（进度环+门杠三划+字标，loop-safe 端点帧检视）；仅预览未渲染"
+      }
     ]
   }
 }

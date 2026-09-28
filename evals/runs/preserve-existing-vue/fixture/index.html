@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acme 控制台（Vue 夹具）</title>
+<style>
+  /* 品牌 token（模拟 established app 的既有 token，场景要求保持现状） */
+  :root { --brand: #177656; --ink: #26343d; --paper: #fafcfd; --line: #d9e2e7; --focus: #2566c4; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "PingFang SC", "Noto Sans SC", sans-serif; background: var(--paper); color: var(--ink); overflow-x: hidden; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 0 16px; height: 56px; background: #fff; border-bottom: 1px solid var(--line); position: relative; }
+  .brand { font-weight: 700; letter-spacing: 0.04em; }
+  .menu-wrap { position: relative; }
+  .menu-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); font-size: 14px; cursor: pointer; }
+  .menu-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  /* 菜单面板（accessible primitive：role=menu / aria）——缺陷：固定宽 420px，375px 视口下右缘溢出被裁 */
+  .menu-panel { position: absolute; top: calc(100% + 6px); left: 0; width: 420px; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 24px rgba(38,52,61,0.12); padding: 6px; }
+  /* 窄屏修复：面板收入视口（宽度钳制+右对齐翻转）；桌面左对齐外观不变；不动全局 overflow */
+  @media (max-width: 480px) {
+    .menu-panel { width: min(420px, calc(100vw - 24px)); left: auto; right: 0; }
+  }
+  .menu-panel[hidden] { display: none; }
+  .menu-item { display: block; width: 100%; text-align: left; padding: 10px 12px; border: 0; border-radius: 6px; background: none; font-size: 14px; color: var(--ink); cursor: pointer; }
+  .menu-item:hover, .menu-item:focus-visible { background: #f0f4f6; outline: none; }
+  .menu-item:focus-visible { outline: 2px solid var(--focus); }
+  main { padding: 24px 16px; font-size: 15px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <span class="brand">ACME 控制台</span>
+    <div class="menu-wrap">
+      <button class="menu-btn" ref="btn" @click="toggle" @keydown="onBtnKey"
+              :aria-expanded="open ? 'true' : 'false'" aria-haspopup="menu" aria-controls="main-menu">
+        项目菜单 ▾
+      </button>
+      <div class="menu-panel" id="main-menu" role="menu" v-show="open" :hidden="!open">
+        <button class="menu-item" role="menuitem" v-for="(it, i) in items" :key="it" ref="items"
+                @keydown="onItemKey($event, i)" @click="open = false">{{ it }}</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <p>工作区概览：本周 12 个任务进行中，3 个待审。</p>
+  </main>
+</div>
+<script type="module">
+  import { createApp } from './vue.esm-browser.js';
+  createApp({
+    data() {
+      return {
+        open: false,
+        items: ['项目总览与季度指标', '成员与权限分配', '部署流水线状态', '审计日志与证据归档', '通知偏好设置'],
+      };
+    },
+    methods: {
+      toggle() { this.open = !this.open; if (this.open) this.$nextTick(() => this.$refs.items[0]?.focus()); },
+      close() { this.open = false; this.$refs.btn?.focus(); },
+      onBtnKey(e) {
+        if (e.key === 'ArrowDown' && !this.open) { e.preventDefault(); this.toggle(); }
+      },
+      onItemKey(e, i) {
+        const items = this.$refs.items;
+        if (e.key === 'Escape') { e.preventDefault(); this.close(); }
+        else if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length]?.focus(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length]?.focus(); }
+        else if (e.key === 'Tab') { this.open = false; }
+      },
+    },
+  }).mount('#app');
+</script>
+</body>
+</html>

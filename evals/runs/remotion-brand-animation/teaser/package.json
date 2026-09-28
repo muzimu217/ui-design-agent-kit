@@ -1,0 +1,16 @@
+{
+  "name": "uak-brand-teaser",
+  "private": true,
+  "version": "0.1.0",
+  "description": "remotion-brand-animation 评测交付物：UAK 品牌 teaser（仅预览，不渲染）",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "still": "remotion still"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.370",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.370"
+  }
+}

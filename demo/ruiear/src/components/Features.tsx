@@ -53,7 +53,7 @@ export function Features() {
               <Reveal>
                 <p
                   className={`text-[13px] font-semibold uppercase tracking-[0.2em] ${
-                    it.light ? 'text-[#86868b]' : 'text-white/60'
+                    it.light ? 'text-[#6E6E73]' : 'text-white/60'
                   }`}
                 >
                   {it.d.kicker}

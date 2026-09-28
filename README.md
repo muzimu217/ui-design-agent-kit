@@ -38,6 +38,12 @@
 
 <br />
 
+![六道门工作流把控界面：真实交付记录的逐步回放](showcase/products/screenshots/workflow-desktop.webp)
+
+<sub>工作流把控：一条有确认节点的 UI 设计与实现流程——真实交付记录逐步回放（睿耳案例 18 步骤），每个节点有状态、有产物、有证据路径，未过门不前进。</sub>
+
+<br />
+
 <video src="showcase/products/media/intro.mp4" controls muted loop playsInline preload="metadata"></video>
 
 <sub>产品介绍视频（20 秒）：由仓库 <code>intro-video/</code> 的 Remotion 管线渲染，先学最好的界面，再交付有证据的产品。</sub>

@@ -96,7 +96,7 @@ function PhoneRender({ finish }: { finish: Finish }) {
             </div>
             <span className="screen-time">09:41</span>
           </div>
-          <div className="phone-camera" aria-label="双摄像头">
+          <div className="phone-camera" aria-hidden="true">
             <span className="lens lens-a" />
             <span className="lens lens-b" />
             <span className="lens lens-c" />

@@ -12,6 +12,13 @@ async function fixture(t) {
     await mkdir(path.join(root, directory, 'assets'), { recursive: true });
     await writeFile(path.join(root, directory, 'index.html'), '<!doctype html><title>fixture</title>');
     await writeFile(path.join(root, directory, 'assets/app.js'), 'console.log("fixture")');
+    if (directory.startsWith('demo/')) {
+      // R050-06 生产契约：demo 只有项目根 README 声明 status: live 才可入发布
+      // 管线（注意读的是项目根而非 dist/）；夹具须满足该契约，否则
+      // assertPublicAppsLive 先抛 ENOENT 而非被测错误。
+      const project = directory.replace(/\/dist$/, '');
+      await writeFile(path.join(root, project, 'README.md'), '---\nstatus: live\n---\n');
+    }
   }
   return root;
 }

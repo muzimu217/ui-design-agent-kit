@@ -29,12 +29,14 @@
     "verify": "node scripts/verify.mjs",
     "test": "node scripts/run-tests.mjs",
     "doctor": "node scripts/doctor.mjs",
-    "doctor:mcp": "node scripts/doctor.mjs --connect"
+    "doctor:mcp": "node scripts/doctor.mjs --connect",
+    "a11y:sweep": "node scripts/a11y-sweep.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@modelcontextprotocol/sdk": "1.30.0",
     "pixelmatch": "^7.2.0",
+    "playwright": "^1.63.0",
     "smol-toml": "1.8.0",
     "yaml": "2.9.0"
   }

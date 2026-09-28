@@ -35,6 +35,12 @@ This is not a standalone AI client, and not an application scaffold.
 
 <br />
 
+![Gate workflow control UI: step-by-step replay of a real delivery record](showcase/products/screenshots/workflow-desktop.webp)
+
+<sub>Workflow control: a UI design & implementation flow with confirmation gates — step-by-step replay of a real delivery record (RuiEar case, 18 steps). Every node carries a status, an artifact, and an evidence path; no advancing past an unpassed gate.</sub>
+
+<br />
+
 <video src="showcase/products/media/intro.mp4" controls muted loop playsInline preload="metadata"></video>
 
 <sub>20-second intro video, rendered by the Remotion pipeline in this repository.</sub>

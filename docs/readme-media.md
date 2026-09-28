@@ -27,6 +27,7 @@
 | 产品 | 本机采集地址 | 持久图片 |
 | --- | --- | --- |
 | 工作流成果展厅 | `http://127.0.0.1:4350/` | [桌面](../showcase/products/screenshots/readme-desktop.webp) |
+| 工作流把控页（#/workflow，含真实交付回放条） | `https://agent.kcos.club/#/workflow`（2026-09-28，Playwright 1440x900） | [桌面](../showcase/products/screenshots/workflow-desktop.webp) |
 | 积木小工坊 | `http://127.0.0.1:4351/` | [桌面](../demo/brick-workshop/screenshots/readme-desktop.webp) |
 | 库存运营台 | `http://127.0.0.1:4352/` | [桌面](../demo/inventory-console/screenshots/readme-desktop.webp) |
 | NODEGRID | `http://127.0.0.1:4353/` | [桌面](../demo/nodegrid/screenshots/readme-desktop.webp) |

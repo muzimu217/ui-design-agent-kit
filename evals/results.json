@@ -793,6 +793,38 @@
         ],
         "notes": "决策类场景：brief=React 品牌循环视频→主路线 Remotion（已装已验证 4.0.370 MIT 复用批次一运行时零新工具链）；Manim/编辑器逐项评估排除（medium 不符+未安装一手核查）；Vibe Video/VibeFrame 仅名录不假设连接（failCondition #2/#3 防线全设）；preview=BrandLoop 180 帧循环（进度环+门杠三划+字标，loop-safe 端点帧检视）；仅预览未渲染"
       }
+    ],
+    "preserve-existing-vue": [
+      {
+        "date": "2026-09-28",
+        "recordedAt": "2026-09-28T20:21:55.138Z",
+        "commit": "6fa7646f7e3fa60edbd1e16e31ab6f0be299c9dd",
+        "scores": {
+          "Inspects clipping, stacking, viewport, and existing menu behavior": 2,
+          "Keeps Vue and current tokens": 2,
+          "Tests the affected menu at narrow width and with keyboard": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/preserve-existing-vue/EVIDENCE.md",
+          "evals/runs/preserve-existing-vue/fixture/index.html",
+          "evals/runs/preserve-existing-vue/evidence/vue-verify.mjs",
+          "evals/runs/preserve-existing-vue/evidence/before-375.png",
+          "evals/runs/preserve-existing-vue/evidence/after-375.png"
+        ],
+        "notes": "仓库无 Vue 应用一手核查（模拟语境披露）；夹具 Vue 3.5.13 ESM 本地化+accessible menu primitive（键盘全链健康）；修复前 375 溢出 305px 复现；修复=窄屏媒体查询宽度钳制+右对齐翻转（桌面逐像素不变、非全局 overflow 藏缺陷、不迁移栈）；修复后 8/8（窄宽+键盘+桌面外观保持）"
+      }
     ]
   }
 }

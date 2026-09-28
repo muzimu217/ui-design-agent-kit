@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedOn": "2026-09-06",
+  "checkedOn": "2026-09-28",
   "skills": [
     {
       "name": "motion",
@@ -268,5 +268,6 @@
       "usage": "Fetched on demand via tooling/design-md.mjs; files are never committed to this repository",
       "notice": "THIRD_PARTY_NOTICES.md"
     }
-  ]
+  ],
+  "checkedOnSemantics": "全量复核日：对全部锁定条目做上游 HEAD diff 分级（升级/缓升/保持）后更新；语义依据 R164-01 审查批"
 }

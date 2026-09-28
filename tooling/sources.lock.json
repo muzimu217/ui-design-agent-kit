@@ -9,7 +9,9 @@
       "sourcePath": "plugins/motion/skills/motion",
       "license": "MIT declared by motion-ai package; repository has no standalone LICENSE",
       "notice": ".agents/skills/motion/UPSTREAM_PACKAGE.json",
-      "adaptations": ["Moved argument-hint to metadata for the local skill validator; content preserved"]
+      "adaptations": [
+        "Moved argument-hint to metadata for the local skill validator; content preserved"
+      ]
     },
     {
       "name": "impeccable",
@@ -19,7 +21,9 @@
       "sourcePath": ".agents/skills/impeccable",
       "license": "Apache-2.0",
       "notice": ".agents/skills/impeccable/LICENSE",
-      "adaptations": ["No hooks installed; upstream launcher retained"]
+      "adaptations": [
+        "No hooks installed; upstream launcher retained"
+      ]
     },
     {
       "name": "ui-ux-pro-max",
@@ -28,7 +32,9 @@
       "sourcePath": ".claude/skills/ui-ux-pro-max",
       "license": "MIT",
       "notice": ".agents/skills/ui-ux-pro-max/LICENSE",
-      "adaptations": ["Resolve search.py from the loaded skill directory instead of CLAUDE_PLUGIN_ROOT"]
+      "adaptations": [
+        "Resolve search.py from the loaded skill directory instead of CLAUDE_PLUGIN_ROOT"
+      ]
     },
     {
       "name": "remotion-best-practices",
@@ -37,7 +43,9 @@
       "sourcePath": "skills/remotion-best-practices",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
-      "adaptations": ["Normalized unsupported version frontmatter for Codex skill metadata"]
+      "adaptations": [
+        "Normalized unsupported version frontmatter for Codex skill metadata"
+      ]
     },
     {
       "name": "remotion-create",
@@ -46,7 +54,9 @@
       "sourcePath": "skills/remotion-create",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
-      "adaptations": ["Normalized unsupported version frontmatter for Codex skill metadata"]
+      "adaptations": [
+        "Normalized unsupported version frontmatter for Codex skill metadata"
+      ]
     },
     {
       "name": "remotion-docs",
@@ -55,7 +65,9 @@
       "sourcePath": "skills/remotion-docs",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
-      "adaptations": ["Normalized unsupported version frontmatter for Codex skill metadata"]
+      "adaptations": [
+        "Normalized unsupported version frontmatter for Codex skill metadata"
+      ]
     },
     {
       "name": "remotion-markup",
@@ -64,7 +76,9 @@
       "sourcePath": "skills/remotion-markup",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
-      "adaptations": ["Normalized unsupported version frontmatter for Codex skill metadata"]
+      "adaptations": [
+        "Normalized unsupported version frontmatter for Codex skill metadata"
+      ]
     },
     {
       "name": "remotion-render",
@@ -73,7 +87,9 @@
       "sourcePath": "skills/remotion-render",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
-      "adaptations": ["Normalized unsupported version frontmatter for Codex skill metadata"]
+      "adaptations": [
+        "Normalized unsupported version frontmatter for Codex skill metadata"
+      ]
     },
     {
       "name": "remotion-studio",
@@ -82,7 +98,9 @@
       "sourcePath": "skills/remotion-studio",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
-      "adaptations": ["Normalized unsupported version frontmatter for Codex skill metadata"]
+      "adaptations": [
+        "Normalized unsupported version frontmatter for Codex skill metadata"
+      ]
     },
     {
       "name": "emil-design-eng",
@@ -109,7 +127,9 @@
       "sourcePath": "skills/pick-ui-library",
       "license": "MIT",
       "notice": ".agents/skills/pick-ui-library/LICENSE",
-      "adaptations": ["Removed disable-model-invocation frontmatter key for the local skill validator; body unchanged"]
+      "adaptations": [
+        "Removed disable-model-invocation frontmatter key for the local skill validator; body unchanged"
+      ]
     },
     {
       "name": "baoyu-design",
@@ -118,7 +138,9 @@
       "sourcePath": "skills/baoyu-design",
       "license": "MIT",
       "notice": ".agents/skills/baoyu-design/LICENSE",
-      "adaptations": ["Vendored SKILL.md only; agents/ helper scripts and gen-pptx package excluded as execution helpers outside the kit's scope"]
+      "adaptations": [
+        "Vendored SKILL.md only; agents/ helper scripts and gen-pptx package excluded as execution helpers outside the kit's scope"
+      ]
     },
     {
       "name": "gsap-core",
@@ -191,15 +213,50 @@
       "license": "MIT",
       "notice": ".agents/skills/gsap-utils/LICENSE",
       "adaptations": []
+    },
+    {
+      "name": "jiejoe-design",
+      "repository": "https://github.com/JIEJOE-WEB-Tutorial",
+      "revision": "57fa1d99caaf45f6775571eff3cd8d4ecdd480a1",
+      "sourcePath": "org-wide tutorial repositories (latest push 007-03-horizontal-scrolling-scrolltrigger, 2025-07-02)",
+      "license": "MIT declared by each JIEJOE-WEB-Tutorial repository",
+      "notice": ".agents/skills/jiejoe-design/NOTICE.md",
+      "adaptations": [
+        "Distilled: interaction-motion patterns re-authored for this kit from the org's MIT tutorial repositories; no upstream code copied"
+      ]
     }
   ],
   "mcp": [
-    { "name": "motion", "url": "https://mcp.motion.dev", "defaultEnabled": true },
-    { "name": "context7", "url": "https://mcp.context7.com/mcp", "defaultEnabled": true },
-    { "name": "shadcn", "package": "shadcn@4.21.0", "defaultEnabled": true },
-    { "name": "playwright", "package": "@playwright/mcp@0.0.80", "defaultEnabled": true },
-    { "name": "motion_plus", "url": "https://mcp.motion.dev/plus", "defaultEnabled": false },
-    { "name": "figma", "url": "https://mcp.figma.com/mcp", "defaultEnabled": false }
+    {
+      "name": "motion",
+      "url": "https://mcp.motion.dev",
+      "defaultEnabled": true
+    },
+    {
+      "name": "context7",
+      "url": "https://mcp.context7.com/mcp",
+      "defaultEnabled": true
+    },
+    {
+      "name": "shadcn",
+      "package": "shadcn@4.21.0",
+      "defaultEnabled": true
+    },
+    {
+      "name": "playwright",
+      "package": "@playwright/mcp@0.0.80",
+      "defaultEnabled": true
+    },
+    {
+      "name": "motion_plus",
+      "url": "https://mcp.motion.dev/plus",
+      "defaultEnabled": false
+    },
+    {
+      "name": "figma",
+      "url": "https://mcp.figma.com/mcp",
+      "defaultEnabled": false
+    }
   ],
   "designContracts": [
     {

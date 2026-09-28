@@ -32,7 +32,9 @@
     "doctor:mcp": "node scripts/doctor.mjs --connect"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@modelcontextprotocol/sdk": "1.30.0",
+    "pixelmatch": "^7.2.0",
     "smol-toml": "1.8.0",
     "yaml": "2.9.0"
   }

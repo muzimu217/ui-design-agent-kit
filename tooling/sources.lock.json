@@ -5,7 +5,7 @@
     {
       "name": "motion",
       "repository": "https://github.com/motiondivision/ai-kit",
-      "revision": "1140efe9ad5e03c689ea6bb19d9d3850a4dae5f7",
+      "revision": "d1c5c26f424adfd47c112d894e9d424b57338c7e",
       "sourcePath": "plugins/motion/skills/motion",
       "license": "MIT declared by motion-ai package; repository has no standalone LICENSE",
       "notice": ".agents/skills/motion/UPSTREAM_PACKAGE.json",
@@ -16,7 +16,7 @@
     {
       "name": "impeccable",
       "repository": "https://github.com/pbakaus/impeccable",
-      "revision": "e74a311e40770dc458d631e146b4ea1f0b53804f",
+      "revision": "9d715cc4f5564a990ca8345abfdd5df6dc9b41c8",
       "tag": "skill-v4.2.0",
       "sourcePath": ".agents/skills/impeccable",
       "license": "Apache-2.0",

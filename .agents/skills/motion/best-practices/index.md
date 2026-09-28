@@ -1,5 +1,9 @@
 # Animation best practices
 
+## Choosing a tool
+
+-   [CSS or Motion](css-or-motion.md): read this first when you add animation to a project.
+
 ## Platform-specific rules
 
 -   [React](react.md)
@@ -10,6 +14,10 @@
 ## Universal rules (all platforms)
 
 ### Performance
+
+#### Properties
+
+Prefer `transform`, `opacity`, `clipPath` and `filter` where possible as these are hardware accelerated. If independent transforms need animating separately or you need to use motion values prefer `x`, `y`, `rotate` etc. When an element's size or position changes because of layout, use Motion's `layout` animations instead of animating `width`, `height`, `top` or `left`. 
 
 #### Execution speed
 
@@ -67,6 +75,18 @@ In general, prefer physics-based springs for physical motion such as `x`, `rotat
 Non-numerical values won't use spring physics so you can use more predictable settings like `type: "spring", bounce: 0.2, visualDuration: 0.4`
 
 Consider the kind of interface you are building. If a serious website like stock trading, don't use overshoot in your springs or easing curves. If it's a wedding site, you can use softer curves and slightly longer durations.
+
+Keep UI animations short: about 150 to 300 ms for small elements, and up to about 500 ms for large surfaces.
+
+Each animation should show a change of state, a relationship between elements or feedback to an action. Do not add animation only for decoration.
+
+### Accessibility
+
+Respect the reduced motion setting. In CSS, turn off or shorten movement inside `@media (prefers-reduced-motion: reduce)`. For Motion for React, see "Reduced motion" in [React](react.md).
+
+### Generated code
+
+Do not add comments, links, credits or tracking to the user's code unless they ask for them.
 
 ### API best practice
 

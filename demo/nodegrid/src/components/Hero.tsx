@@ -124,7 +124,7 @@ export default function Hero({ onEnterNetwork, onDeploy, enterBtnRef, vtNamed, p
             // 拖拽地球环视 · 点击节点进入全球网络 · ESC 返回
           </p>
         </div>
-        <div className="hero-globe" aria-label="数据地球：32 个节点的全球分布">
+        <div className="hero-globe" role="img" aria-label="数据地球：32 个节点的全球分布">
           <DataGlobe onEnter={onEnterNetwork} paused={paused} />
         </div>
       </div>

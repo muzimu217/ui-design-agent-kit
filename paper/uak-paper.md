@@ -151,7 +151,16 @@ shows design quality is partially measurable automatically, but an opaque
 learned score offers no criterion-level accountability or provenance.
 Functional benchmarks move evaluation toward rendered behavior: WebGen-Bench
 [@lu2025webgenbench] assesses LLM agents that build multi-file websites by
-executing and inspecting the results, including visual design. UAK adopts the
+executing and inspecting the results, including visual design. Adjacent
+evaluation work targets the skills themselves: Shaposhnikov et al.
+[@shaposhnikov2026evaluating] generate realistic tasks to measure a skill's
+utility at scale, an axis orthogonal to UAK's delivery-quality corpus — the
+question there is whether a skill helps, here whether the produced interface
+is verifiably good. Industry practice converges on guideline-driven review:
+Vercel's Web Interface Guidelines [@vercel2026interface] are consumed at review
+time by an agent skill that reports file:line compliance findings, a
+deterministic-checklist stance UAK shares, without a scored evidence ledger or
+human-adjudicated gates. UAK adopts the
 same functional stance — claims must survive contact with a rendered page — but
 pairs it with a transparent rubric: each criterion is scored 0–2 by a human
 adjudicator, a failing criterion zeroes the total, and screenshots at defined

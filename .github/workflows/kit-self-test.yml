@@ -27,7 +27,7 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Structural verification
         run: npm run verify
-      - name: Kit test suite (61)
+      - name: Kit test suite (root + showcase, count grows with the suite)
         run: npm test
       - name: Eval ledger check
         run: npm run eval -- --check

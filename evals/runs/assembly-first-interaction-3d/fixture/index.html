@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Acme · 装配优先 3D hero</title>
+<style>
+  body { margin: 0; font-family: "PingFang SC", sans-serif; color: #e8eef2; background: #0c1116; }
+  .hero { position: relative; height: 100vh; overflow: hidden; }
+  .hero canvas { display: block; }
+  /* 环境动画背景（手绘 CSS 例外：环境背景非 3D 对象，理由记录于 EVIDENCE §三） */
+  .ambient { position: fixed; inset: 0; z-index: -1;
+    background: linear-gradient(135deg, #0c1116, #12202b 55%, #0c1116);
+    background-size: 300% 300%; animation: drift 18s ease-in-out infinite; }
+  @keyframes drift { 0%,100% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } }
+  @media (prefers-reduced-motion: reduce) { .ambient { animation: none; } }
+  .copy { position: absolute; top: 18%; left: 8%; max-width: 460px; }
+  .copy h1 { font-size: clamp(30px, 4.5vw, 52px); font-weight: 800; letter-spacing: -0.01em; margin: 0 0 12px; }
+  .copy p { color: #9db0bc; font-size: 15px; line-height: 1.75; margin: 0 0 22px; }
+  .copy .cta { display: inline-block; padding: 11px 22px; border-radius: 9px; background: #177656; color: #fff; text-decoration: none; font-weight: 600; }
+  .copy .cta:focus-visible { outline: 2px solid #4d9fff; outline-offset: 2px; }
+  .hint { position: absolute; bottom: 22px; left: 8%; font-size: 12px; color: #64798a; }
+</style>
+</head>
+<body>
+<div class="ambient" aria-hidden="true"></div>
+<div class="hero">
+  <div class="copy">
+    <h1>把复杂留在后台</h1>
+    <p>拖一拖上面的几何体——真实 WebGL，不是贴图。装配优先：MIT 组件 × 自有内容。</p>
+    <a class="cta" href="#">了解方案</a>
+  </div>
+  <div id="three-root"></div>
+  <div class="hint">拖拽旋转 · 滚轮缩放 · reduced motion 自动停转</div>
+</div>
+<script type="module" src="/src/main.jsx"></script>
+</body>
+</html>

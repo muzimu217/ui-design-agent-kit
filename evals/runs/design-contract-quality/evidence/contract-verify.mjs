@@ -22,18 +22,25 @@ const check = (name, ok, detail = "") => { results.push(ok); console.log(`${ok ?
   }));
   check("Gate5 token：字标 --brand #177656", tokens.brandH1 === "rgb(23, 118, 86)", tokens.brandH1);
   check("Gate5 token：body 底 = --paper #fafcfd", tokens.bodyBg === "rgb(250, 252, 253)", tokens.bodyBg);
-  // 低库存行淡黄底（Do 项）与 warn 前景对比度（#A05A00 on #fdf6ec 实算）
-  const warnRatio = await page.evaluate(() => {
+  // 低库存行淡黄底（Do 项）+ warn 对比度——断言绑定页面 pill 的 computed 色（轮 192 二轮审计：
+  // 纯常量计算不读 DOM，曾放过实现仍渲染旧色 #b4690e 的假闭合）
+  const lowRow = page.locator("tbody tr", { hasText: "低库存" }).first();
+  const lowRowBg = await lowRow.evaluate((el) => getComputedStyle(el).backgroundColor);
+  check("Gate6+ 低库存行淡黄底 #fdf6ec（Do 项落地）", lowRowBg === "rgb(253, 246, 236)", lowRowBg);
+  const warnRatio = await lowRow.evaluate((el) => {
+    const pill = el.querySelector("td:last-child span");
+    const rgb = getComputedStyle(pill).color;
     const lum = (r, g, b) => {
-      const c = [r, g, b].map((x) => { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
+      const c = [r, g, b].map(Number).map((x) => { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
       return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
     };
-    const fg = lum(160, 90, 0), bg = lum(253, 246, 236);
-    return ((Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05)).toFixed(2);
+    const nums = rgb.match(/\d+/g).map(Number);
+    const fg = lum(nums[0], nums[1], nums[2]), bg = lum(253, 246, 236);
+    return { ratio: ((Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05)).toFixed(2), rgb };
   });
-  const lowRowBg = await page.locator("tbody tr", { hasText: "低库存" }).first().evaluate((el) => getComputedStyle(el).backgroundColor);
-  check("Gate6+ 低库存行淡黄底 #fdf6ec（Do 项落地）", lowRowBg === "rgb(253, 246, 236)", lowRowBg);
-  check("Gate6+ warn 前景 on 淡黄底 ≥4.5", parseFloat(warnRatio) >= 4.5, `${warnRatio}:1`);
+  check("Gate6+ pill computed 色 = #A05A00 且 on 淡黄底 ≥4.5",
+    warnRatio.rgb === "rgb(160, 90, 0)" && parseFloat(warnRatio.ratio) >= 4.5,
+    `computed=${warnRatio.rgb} ratio=${warnRatio.ratio}:1`);
   const focusRing = await page.evaluate(() => {
     const st = [...document.styleSheets].flatMap((ss) => { try { return [...ss.cssRules].map((r) => r.cssText); } catch { return []; } });
     return st.some((t) => t.includes(":focus-visible") && (t.includes("#2566c4") || t.includes("rgb(37, 102, 196)")));

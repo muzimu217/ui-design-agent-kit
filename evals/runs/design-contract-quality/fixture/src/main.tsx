@@ -41,7 +41,7 @@ const FILTERS = ['全部', '低库存', '缺货'] as const;
 function StatusPill({ s }: { s: Status }) {
   const map: Record<Status, [string, string]> = {
     '充足': ['#177656', '充足'],
-    '低库存': ['#b4690e', '低库存'],
+    '低库存': ['#A05A00', '低库存'],
     '缺货': ['#b3261e', '缺货'],
   };
   const [color, label] = map[s];

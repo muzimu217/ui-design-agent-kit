@@ -826,3 +826,19 @@
 | 适用类型 | 动态影像 / Motion reference、工程起点 / Templates |
 | 可达性与授权 | curl 200、浏览器正常（2026-09-28 实测）；模板各自带许可（Blank 等 MIT 起步），**fork 前逐一核许可** |
 | 加入日期 / 来源 | 2026-09-28 / 用户令「视频没有美感」批次 |
+
+### Typewolf（平面视觉 / Graphic reference）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://www.typewolf.com |
+| 功效分析·提供什么 | 字体编排水位画廊（What's Trending in Type）：每张作品卡标注实际字体组合（如 Grenette+Styrene、Cardinal+Sweet Sans+Baskerville），含 Lookbooks/字体趋势/免费字体资源 |
+| 功效分析·适合任务 | 平面视觉专家的字体编排参考——「海报/封面用什么字体组合与层级」→ 按风格挑卡抄搭配关系（非抄素材） |
+| 功效分析·视觉特征 | 编辑设计向：serif/sans 混排层级、暖纸色系、克制的插画点缀 |
+| 功效分析·内容形态 | 画廊页（字体组合元数据公开） |
+| 使用场景示例 | 「封面字体怎么搭」→ 找同气质卡，取其字族对比与字距节奏 |
+| 截图示例 | screenshots/graphic-typewolf.png（2026-09-29，Playwright 实拍 1440×900） |
+| 镜像替代 | fontpair.co（未实拍待核）；Fonts In Use（同类，待实查） |
+| 适用类型 | 平面视觉 / Graphic reference |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-29 实测）；作品版权归各自作者，**参考搭配关系非复用素材** |
+| 加入日期 / 来源 | 2026-09-29 / R194-01 平面专家知识库首批收纳（用户令：cover design scale） |

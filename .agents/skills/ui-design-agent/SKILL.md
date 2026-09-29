@@ -390,6 +390,37 @@ is not proof of a connection, and a connection is not proof of a successful call
   If image generation is available, produce example imagery; if it is not, say so
   once and proceed with placeholders or licensed assets instead of blocking the
   task. The final deliverable is driven by the design prompt and implementation
+
+### Expert-team activation (attention focus)
+
+Identify the design domain first, then activate exactly one expert branch per
+task. The inactive branches and their references stay silent — do not load,
+cross-read, or blend them into the current work. Record the routing decision
+in the acceptance record so it can be audited.
+
+- **Web UI expert** (default): responsive product UI in React/Vue. References:
+  detail-constants, anti-slop clusters, typography standards, copy contract;
+  skills: `impeccable`, `ui-ux-pro-max`, `pick-ui-library`.
+- **3D & motion expert** (a UI subtype): Three.js/R3F scenes, Motion/GSAP
+  choreography. References: motion-contract, css-spring, animation-vocabulary,
+  dark-surface standards; skills: `motion`, `gsap-*`, `jiejoe-design`.
+- **Video expert** (code-rendered motion graphics): Remotion compositions.
+  Skills: `remotion-video-agent` + official Remotion skills. Known limits:
+  imagery assets, camera language, sound, and narrative pacing are weak —
+  disclose them when the brief demands them (2026-09-28 aesthetics audit).
+- **Graphic/cover expert** (under construction): poster, cover, and editorial
+  layout via SVG/typography engines. Reference seeding has started
+  (the Typewolf entry in the source catalog); no dedicated skill or corpus
+  scenarios yet — disclose that a graphic task runs without the kit's usual
+  evidence depth until this branch matures.
+
+Explicitly out of scope by owner decision: photo editing, photography
+retouching, and image post-production — these sit outside the code-rendered
+paradigm, so the evidence chain cannot assert them.
+
+Whatever the branch, the acceptance floor is shared: the six gates, the scored
+ledger, and the triple verification apply identically. Adding an expert
+widens coverage without diluting credibility.
   pass, not by the image tool.
 - When a Google Stitch or equivalent prototyping MCP is available and enabled,
   use it to generate UI prototype candidates for the confirmation gate; treat

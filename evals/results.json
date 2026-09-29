@@ -1304,6 +1304,37 @@
         ],
         "notes": "纯对话评审场景（e3 族首条）：P0 键盘阻断单列（主任务阻断非瑕疵）/间距偏好另档不占修复排序/实现显式声明未接受/scoped repair 三条提议全部提议语气零完成时态；只读纪律=被评对象零改动（语境无文件，git clean 佐证）；styleReview 8 维 N/A 场景按满分记录并在 notes 声明（对话交付物无样式维度）——诚实说明：8 维不适用的对话场景维持记录格式一致性，评分实质在 4 判据"
       }
+    ],
+    "e3-resume-approved-direction": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T12:20:02.318Z",
+        "commit": "5bce1298f5461a5004d0ae719ca4347c4c823474",
+        "scores": {
+          "Reuses the supplied valid A-D confirmations without reopening them": 2,
+          "Limits the proposed work to phone validation and affected states": 2,
+          "Plans an empty-input and valid-input check without reporting execution": 2,
+          "Leaves future material, scope, or contract changes subject to the affected confirmation gate": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/e3-resume-approved-direction/EVIDENCE.md",
+          "evals/runs/e3-resume-approved-direction/response.md",
+          "evals/runs/e3-resume-approved-direction/gates-status.txt"
+        ],
+        "notes": "e3 族第二条（已批准方向续作纪律）：A-D 四门显式复用零重开（重开触发条件五项核验全未变）/范围严格限定手机号校验+受影响状态（旧批准≠任意重设计许可）/三步计划零代码零运行声称（空输入路径/有效路径保持/验证计划）/后续变更闸门约束显式保留；纯对话交付物三真实工件（计划全文/门状态表/元记录）"
+      }
     ]
   }
 }

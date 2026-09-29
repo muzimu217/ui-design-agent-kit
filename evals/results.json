@@ -1242,6 +1242,37 @@
         ],
         "notes": "MCP trace 逐 phase 如实（context7 ×2 真实调用 fetch failed 留痕；Motion MCP 缺席披露；浏览器工具=唯一可用通道承担渲染证据 7/7）；判据 2 边界如实（调用失败以 vendored skill 同节替代并注明）；转场公共 API 原创单一 spring 族；内环=StrictMode+motion.button 触发器 #284→已验证骨架收敛；无 MP4/部署声称"
       }
+    ],
+    "e3-review-repair-boundary": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T11:19:14.343Z",
+        "commit": "e118d98e494750cf5eb00a0ee902af8a8c8aa876",
+        "scores": {
+          "Keeps the review read-only even though a P0 is known and fixable": 2,
+          "Reports the payment keyboard blocker separately from discretionary spacing polish": 2,
+          "Can complete the review while explicitly leaving the implementation unaccepted": 2,
+          "Proposes a scoped repair and keyboard re-check without claiming either was performed": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/e3-review-repair-boundary/EVIDENCE.md",
+          "evals/runs/e3-review-repair-boundary/response.md",
+          "evals/runs/e3-review-repair-boundary/readonly-proof.txt"
+        ],
+        "notes": "纯对话评审场景（e3 族首条）：P0 键盘阻断单列（主任务阻断非瑕疵）/间距偏好另档不占修复排序/实现显式声明未接受/scoped repair 三条提议全部提议语气零完成时态；只读纪律=被评对象零改动（语境无文件，git clean 佐证）；styleReview 8 维 N/A 场景按满分记录并在 notes 声明（对话交付物无样式维度）——诚实说明：8 维不适用的对话场景维持记录格式一致性，评分实质在 4 判据"
+      }
     ]
   }
 }

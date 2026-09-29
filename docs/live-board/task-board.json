@@ -1,22 +1,22 @@
 {
-  "updatedAt": "2026-09-29T10:40:00-07:00",
-  "updatedBy": "轮 204 · 每小时评审循环",
+  "updatedAt": "2026-09-29T11:30:00-07:00",
+  "updatedBy": "轮 205 · 每小时评审循环",
   "stats": {
-    "corpus": "40/71",
-    "corpusPercent": 56,
-    "streak100": 22,
+    "corpus": "42/71",
+    "corpusPercent": 59,
+    "streak100": 24,
     "tests": "94/94",
     "a11y": "0 违规",
-    "audits": "10 批零上下文回归审计"
+    "audits": "11 批零上下文回归审计"
   },
   "activeTask": {
     "id": "R149-01",
     "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "已触 40/71 达标线 · 英文渠道发布前置满足",
+    "status": "已越 40/71 达标线 · 超额场景继续积累",
     "startedAt": "2026-09-28",
     "currentGate": "门E 验收——每批走完执行+验证+入账+级联+合并上线全链",
-    "lastArtifact": "批次二十二 design-md-baseline-adaptation 100 分（7ae0719）",
-    "next": "续批推进（余 31 条）+ Show HN/r/ClaudeCode 证据包准备"
+    "lastArtifact": "批次二十四 execute-requires-plan-lock 100 分（0ac3515）",
+    "next": "批次二十五续批（余 29 条超额）"
   },
   "gates": [
     {
@@ -64,6 +64,16 @@
   ],
   "recentFlow": [
     {
+      "time": "09-29 10:16",
+      "event": "批次二十三入账：计划锁定纪律 100 分（四问带影响面/五假设显式待确认）——41/71",
+      "type": "eval"
+    },
+    {
+      "time": "09-29 11:16",
+      "event": "批次二十四入账：执行授权门禁 100 分（PLAN_DRAFT 缺锁定计划拒绝执行，五项授权链反证留痕）",
+      "type": "eval"
+    },
+    {
       "time": "09-29 08:40",
       "event": "批次二十一入账：竞品模仿边界 100 分（五维拆解+六要素重做清单）",
       "type": "eval"
@@ -102,16 +112,6 @@
       "time": "09-29 03:16",
       "event": "R194-01 开工：SKILL 专家团路由节+Typewolf 平面参考收纳",
       "type": "skill"
-    },
-    {
-      "time": "09-29 02:16",
-      "event": "warn 色传导闭合：二轮审计抓出假闭合→断言绑定页面 computed 色",
-      "type": "audit"
-    },
-    {
-      "time": "09-29 01:16",
-      "event": "批次十三/十四入账：截图重建保真度+契约先行库存台",
-      "type": "eval"
     }
   ]
 }

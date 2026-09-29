@@ -1431,6 +1431,38 @@
         ],
         "notes": "403 桶管理：Unsplash/Pexels/Openverse 进 secondary 待复验（附注=本机 200 vs 隔离 403——可达性是环境属性不是来源属性，复验须同环境）；零重试；可读源继续（React Bits/Mobbin/Refero 200 进 primary，Wikimedia 分类 404 如实记录待查）；四独立边界显式化（页面可读≠许可≠下载≠MCP）；截图图库不下载作生产素材；确认前零下载零整合"
       }
+    ],
+    "reference-to-adaptation-boundary": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T16:18:31.696Z",
+        "commit": "d0316947779a99db5a2398fcf1431ab80b104b58",
+        "scores": {
+          "把可模仿内容拆成布局关系、信息层级、组件状态、动效意图和视觉节奏": 2,
+          "明确不直接复制 Logo、图片、文案、私有源码或完整 CSS": 2,
+          "提出用目标项目自己的代码、token、内容和有授权资产重建": 2,
+          "先给出来源、拟采用部分、改编边界和权限状态，等待用户确认": 2,
+          "把截图当作视觉证据，不声称它证明隐藏状态、CSS 数值或资产权利": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/reference-to-adaptation-boundary/EVIDENCE.md",
+          "evals/runs/reference-to-adaptation-boundary/imitation-breakdown.md",
+          "evals/runs/reference-to-adaptation-boundary/rights-status.txt"
+        ],
+        "notes": "竞品模仿边界：五维可执行拆解（布局/层级/状态/动效意图/视觉节奏，每维给出从截图可拆的具体决策）+六项必须重做清单（Logo/图片/文案/私有源码/配色体系）+权限状态表（截图仅视觉证据不证明隐藏状态/CSS 数值/资产权利）+确认后才实现（公开 URL 不当授权）；拒绝像素级复制承诺与抽象高级感描述（failCondition #1/#5 防线）；模拟语境=Linear 风格管理页"
+      }
     ]
   }
 }

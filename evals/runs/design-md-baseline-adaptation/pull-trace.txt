@@ -1,0 +1,6 @@
+取用脚本原始输出（2026-09-29 轮 203 · node tooling/design-md.mjs pull linear.app）
+
+Saved /tmp/design-md-linear.app-8147538b4226/DESIGN.md (24354 bytes, upstream revision 8147538b4226ae41e2487a9179e3bcc1f68e8554)
+Treat it as reference material: adapt relationships into the design contract; never ship it or its tokens without the user's material confirmation.
+
+取用物留痕：pulled-linear-DESIGN.md（548 行）——按 failCondition #4 选择性 git add 排除，不提交进仓库。

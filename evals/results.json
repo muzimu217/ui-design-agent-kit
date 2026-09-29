@@ -1491,8 +1491,7 @@
         "evidence": [
           "evals/runs/design-md-baseline-adaptation/EVIDENCE.md",
           "evals/runs/design-md-baseline-adaptation/design-direction.md",
-          "evals/runs/design-md-baseline-adaptation/pull-trace.txt",
-          "evals/runs/design-md-baseline-adaptation/pulled-linear-DESIGN.md"
+          "evals/runs/design-md-baseline-adaptation/pull-trace.txt"
         ],
         "notes": "品牌基线取用与改编：真实调用 design-md.mjs pull linear.app（24354 bytes/revision 8147538b/MIT 取用物 548 行留痕但选择性 add 排除不进仓库）；token 全部来自取用物抽样零杜撰（#010102/#f7f8f8/#5e6ad2/#0f1011）；自撰上游没有段落（Mission/Accessibility/Writing tone/Do-Don't/Quality gates）；第三方分析非官方声明+不声称 Linear 关联（failCondition #3 防线）；方向稿等确认零实现代码（#5）；不直接 ship 上游 token（#4，选择性 add）"
       },

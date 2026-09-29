@@ -1,0 +1,32 @@
+{
+  "updatedAt": "2026-09-29T08:30:00-07:00",
+  "updatedBy": "轮 200 · 每小时评审循环",
+  "stats": { "corpus": "38/71", "corpusPercent": 54, "streak100": 20, "tests": "94/94", "a11y": "0 违规", "audits": "9 批零上下文回归审计" },
+  "activeTask": {
+    "id": "R149-01",
+    "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
+    "status": "进行中 · 距达标差 2 条",
+    "startedAt": "2026-09-28",
+    "currentGate": "门E 验收——每批走完执行+验证+入账+级联+合并上线全链",
+    "lastArtifact": "批次二十 material-access-secondary-bucket 100 分（bd6696d）",
+    "next": "批次二十一触 40/71 达标线"
+  },
+  "gates": [
+    { "id": "A", "name": "设计稿", "status": "passed", "note": "方向由用户战略令定（设计大师/专家团/cover design scale）", "at": "09-29" },
+    { "id": "B", "name": "素材选择", "status": "active", "note": "批次十九/二十：GOV.UK+shadcn 进 primary；403 三站入 secondary 桶待复验", "at": "09-29" },
+    { "id": "C", "name": "原型", "status": "passed", "note": "工作流页六道门总览+两层架构已上线（f7a93e3）", "at": "09-29" },
+    { "id": "D", "name": "实现契约", "status": "passed", "note": "SKILL.md 专家团路由节+共享验收底座不变", "at": "09-29" },
+    { "id": "E", "name": "每轮验收", "status": "active", "note": "二十批连续 100 分，每批 Playwright 断言/帧检视/实查取证", "at": "进行中" },
+    { "id": "F", "name": "证据留痕", "status": "passed", "note": "results.json 锚点台账+doc-drift 机器锁+零上下文审计", "at": "持续" }
+  ],
+  "recentFlow": [
+    { "time": "09-29 08:16", "event": "批次二十入账：不可达来源桶管理 100 分（八源实查：可达性是环境属性）", "type": "eval" },
+    { "time": "09-29 07:16", "event": "批次十九入账：素材寻源纪律 100 分（四类分类/多维排序非热度）", "type": "eval" },
+    { "time": "09-29 06:16", "event": "批次十八入账：证据驱动优先级 100 分（三档分离/便宜核查先行）", "type": "eval" },
+    { "time": "09-29 05:16", "event": "e3 族两条入账：对话评审纪律+已批准方向续作 100 分", "type": "eval" },
+    { "time": "09-29 04:16", "event": "批次十五入账：MCP 门禁留痕（context7 真实调用 fetch failed 如实记录）", "type": "eval" },
+    { "time": "09-29 03:16", "event": "R194-01 开工：SKILL 专家团路由节+Typewolf 平面参考收纳", "type": "skill" },
+    { "time": "09-29 02:16", "event": "warn 色传导闭合：二轮审计抓出假闭合→断言绑定页面 computed 色", "type": "audit" },
+    { "time": "09-29 01:16", "event": "批次十三/十四入账：截图重建保真度+契约先行库存台", "type": "eval" }
+  ]
+}

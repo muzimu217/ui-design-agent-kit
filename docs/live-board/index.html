@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UAK · 实时任务板</title>
+<style>
+  :root {
+    --ink: #e8eef2; --muted: #9db0bc; --faint: #64798a;
+    --line: rgba(141,176,196,0.16);
+    --bg0: #0c1116;
+    --green: #2fbf8f; --blue: #4d9fff; --amber: #e8a33d; --red: #e05d5d; --violet: #8f7bf5;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    font-family: "PingFang SC", "Noto Sans SC", sans-serif;
+    background: var(--bg0); color: var(--ink);
+    background-image:
+      radial-gradient(1100px 520px at 78% -8%, rgba(47,191,143,0.12), transparent 62%),
+      radial-gradient(900px 480px at 8% 12%, rgba(77,159,255,0.09), transparent 60%);
+    background-attachment: fixed;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 26px 80px; }
+  header { padding: 56px 0 8px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }
+  .kicker { font-size: 12px; letter-spacing: 0.34em; color: var(--green); font-weight: 800; }
+  h1 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; margin: 10px 0 8px; }
+  .sub { color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 620px; }
+  .live-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--faint); }
+  .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 30px 0 0; }
+  .stat { background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012)); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .stat b { display: block; font-size: 22px; font-weight: 800; }
+  .stat span { font-size: 11.5px; color: var(--faint); }
+  .stat.g b { color: var(--green); } .stat.b b { color: var(--blue); } .stat.v b { color: var(--violet); } .stat.a b { color: var(--amber); }
+
+  h2 { font-size: 12px; letter-spacing: 0.3em; color: var(--faint); font-weight: 800; margin: 44px 0 16px; }
+
+  .now { background: linear-gradient(180deg, rgba(77,159,255,0.08), rgba(77,159,255,0.02)); border: 1px solid rgba(77,159,255,0.4); border-radius: 14px; padding: 20px 22px; }
+  .now .tag { font-size: 11px; font-weight: 800; letter-spacing: 0.14em; color: var(--blue); }
+  .now h3 { font-size: 19px; margin: 8px 0 4px; }
+  .now .status { font-size: 13px; color: var(--green); font-weight: 700; }
+  .now dl { display: grid; gap: 8px; margin-top: 14px; font-size: 13px; }
+  .now dl > div { display: flex; gap: 10px; }
+  .now dt { color: var(--faint); flex-shrink: 0; width: 84px; }
+  .now dd { color: var(--muted); }
+
+  .gates { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .gate { border-radius: 11px; padding: 13px 12px; border: 1px solid var(--line); background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); position: relative; }
+  .gate .gid { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; }
+  .gate .gname { font-size: 14px; font-weight: 700; margin: 5px 0 7px; }
+  .gate .gnote { font-size: 11px; line-height: 1.6; color: var(--faint); }
+  .gate .gat { font-size: 10.5px; margin-top: 8px; color: var(--faint); }
+  .gate.s-passed { border-top: 3px solid var(--green); } .gate.s-passed .gid { color: var(--green); }
+  .gate.s-active { border-top: 3px solid var(--amber); box-shadow: 0 0 0 1px rgba(232,163,61,0.25); } .gate.s-active .gid { color: var(--amber); }
+  .gate.s-gated { border-top: 3px solid var(--blue); } .gate.s-gated .gid { color: var(--blue); }
+  .gate.s-blocked { border-top: 3px solid var(--red); } .gate.s-blocked .gid { color: var(--red); }
+  .gate.s-pending { border-top: 3px solid #3a4750; } .gate.s-pending .gid { color: var(--faint); }
+
+  .flow { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .flow-item { display: grid; grid-template-columns: 110px 52px 1fr; gap: 14px; padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 13px; align-items: baseline; }
+  .flow-item:last-child { border-bottom: 0; }
+  .flow-item .t { color: var(--faint); font-size: 12px; }
+  .flow-item .k { font-size: 10.5px; font-weight: 800; letter-spacing: 0.08em; }
+  .k.eval { color: var(--green); } .k.audit { color: var(--violet); } .k.skill { color: var(--blue); } .k.gate { color: var(--amber); }
+  .flow-item .e { color: var(--muted); line-height: 1.65; }
+
+  footer { margin-top: 60px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  footer a { color: var(--muted); text-decoration: none; }
+
+  @media (max-width: 900px) { .gates { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px) { .gates { grid-template-columns: repeat(2, 1fr); } .flow-item { grid-template-columns: 1fr; gap: 4px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="kicker">UI DESIGN AGENT KIT</div>
+      <h1>实时任务板</h1>
+      <p class="sub">AI 不是黑盒——这里展示每个任务此刻走到哪道门、每道门的产物是什么。数据由每小时评审循环自动更新。</p>
+    </div>
+    <div class="live-badge"><span class="live-dot"></span><span id="updated">加载中…</span></div>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <h2>当前任务 · 进行到哪了</h2>
+  <div class="now" id="now"></div>
+
+  <h2>六道门 · 实时状态</h2>
+  <div class="gates" id="gates"></div>
+
+  <h2>最近产物流 · 一步步实现的痕迹</h2>
+  <div class="flow" id="flow"></div>
+
+  <footer>
+    <span>数据源：docs/live-board/task-board.json（每小时评审循环更新）· 本页单文件无依赖</span>
+    <span><a href="https://github.com/muzimu217/ui-design-agent-kit">GitHub</a> · <a href="https://agent.kcos.club">线上站</a> · <a href="https://agent.kcos.club/#/workflow">六道门详解</a></span>
+  </footer>
+</div>
+
+<script>
+const STATUS_LABEL = { passed: "已通过", active: "进行中", gated: "等裁决", blocked: "受阻", pending: "未开始" };
+const render = (d) => {
+  document.getElementById("updated").textContent = `更新于 ${d.updatedAt} · ${d.updatedBy}`;
+  document.getElementById("stats").innerHTML = [
+    ["g", d.stats.corpus, "评测语料 " + d.stats.corpusPercent + "%"],
+    ["b", d.stats.streak100 + " 批", "连续 100 分"],
+    ["v", d.stats.tests, "守护测试"],
+    ["a", d.stats.a11y, "线上无障碍"],
+    ["", d.stats.audits, "零上下文审计"],
+  ].map(([c, b, s]) => `<div class="stat ${c}"><b>${b}</b><span>${s}</span></div>`).join("");
+  const n = d.activeTask;
+  document.getElementById("now").innerHTML = `
+    <span class="tag">当前任务 ${n.id}</span>
+    <h3>${n.name}</h3>
+    <div class="status">${n.status}</div>
+    <dl>
+      <div><dt>开始于</dt><dd>${n.startedAt}</dd></div>
+      <div><dt>此刻在哪</dt><dd>${n.currentGate}</dd></div>
+      <div><dt>最新产物</dt><dd>${n.lastArtifact}</dd></div>
+      <div><dt>下一步</dt><dd>${n.next}</dd></div>
+    </dl>`;
+  document.getElementById("gates").innerHTML = d.gates.map((g) => `
+    <div class="gate s-${g.status}">
+      <div class="gid">门${g.id} · ${STATUS_LABEL[g.status] || g.status}</div>
+      <div class="gname">${g.name}</div>
+      <div class="gnote">${g.note}</div>
+      <div class="gat">${g.at}</div>
+    </div>`).join("");
+  document.getElementById("flow").innerHTML = d.recentFlow.map((f) => `
+    <div class="flow-item">
+      <span class="t">${f.time}</span>
+      <span class="k ${f.type}">${f.type.toUpperCase()}</span>
+      <span class="e">${f.event}</span>
+    </div>`).join("");
+};
+fetch("task-board.json").then((r) => r.json()).then(render)
+  .catch(() => document.getElementById("updated").textContent = "数据加载失败（task-board.json 与本页需同源部署或本地服务器打开）");
+</script>
+</body>
+</html>

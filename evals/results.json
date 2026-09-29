@@ -1463,6 +1463,39 @@
         ],
         "notes": "竞品模仿边界：五维可执行拆解（布局/层级/状态/动效意图/视觉节奏，每维给出从截图可拆的具体决策）+六项必须重做清单（Logo/图片/文案/私有源码/配色体系）+权限状态表（截图仅视觉证据不证明隐藏状态/CSS 数值/资产权利）+确认后才实现（公开 URL 不当授权）；拒绝像素级复制承诺与抽象高级感描述（failCondition #1/#5 防线）；模拟语境=Linear 风格管理页"
       }
+    ],
+    "design-md-baseline-adaptation": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T17:19:10.913Z",
+        "commit": "52e0e96797345f3276897b7e6b91c06ccbb0808b",
+        "scores": {
+          "先用取用脚本把 linear.app 的 DESIGN.md 拉到任务本地目录作为可证伪 token 对照源，并说明 revision 与 MIT 授权": 2,
+          "把上游 token 关系与组件规则改写进本 kit 契约结构，自行撰写上游没有的段落（Mission、Accessibility、Writing tone、Rules: Do/Don't、Quality gates）": 2,
+          "在方向稿中把该品牌分析列为具名参考基线，标注改编边界与授权状态": 2,
+          "说明该文档是第三方分析非官方品牌资产，不声称与 Linear 的关联": 2,
+          "在用户确认方向与素材前不写实现代码": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/design-md-baseline-adaptation/EVIDENCE.md",
+          "evals/runs/design-md-baseline-adaptation/design-direction.md",
+          "evals/runs/design-md-baseline-adaptation/pull-trace.txt",
+          "evals/runs/design-md-baseline-adaptation/pulled-linear-DESIGN.md"
+        ],
+        "notes": "品牌基线取用与改编：真实调用 design-md.mjs pull linear.app（24354 bytes/revision 8147538b/MIT 取用物 548 行留痕但选择性 add 排除不进仓库）；token 全部来自取用物抽样零杜撰（#010102/#f7f8f8/#5e6ad2/#0f1011）；自撰上游没有段落（Mission/Accessibility/Writing tone/Do-Don't/Quality gates）；第三方分析非官方声明+不声称 Linear 关联（failCondition #3 防线）；方向稿等确认零实现代码（#5）；不直接 ship 上游 token（#4，选择性 add）"
+      }
     ]
   }
 }

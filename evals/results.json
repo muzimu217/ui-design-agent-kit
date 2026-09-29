@@ -1495,6 +1495,37 @@
           "evals/runs/design-md-baseline-adaptation/pulled-linear-DESIGN.md"
         ],
         "notes": "品牌基线取用与改编：真实调用 design-md.mjs pull linear.app（24354 bytes/revision 8147538b/MIT 取用物 548 行留痕但选择性 add 排除不进仓库）；token 全部来自取用物抽样零杜撰（#010102/#f7f8f8/#5e6ad2/#0f1011）；自撰上游没有段落（Mission/Accessibility/Writing tone/Do-Don't/Quality gates）；第三方分析非官方声明+不声称 Linear 关联（failCondition #3 防线）；方向稿等确认零实现代码（#5）；不直接 ship 上游 token（#4，选择性 add）"
+      },
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T17:21:23.938Z",
+        "commit": "7ae0719d0ea45222fdf72782d2d627702a965b29",
+        "rerun": 2,
+        "scores": {
+          "先用取用脚本把 linear.app 的 DESIGN.md 拉到任务本地目录作为可证伪 token 对照源，并说明 revision 与 MIT 授权": 2,
+          "把上游 token 关系与组件规则改写进本 kit 契约结构，自行撰写上游没有的段落（Mission、Accessibility、Writing tone、Rules: Do/Don't、Quality gates）": 2,
+          "在方向稿中把该品牌分析列为具名参考基线，标注改编边界与授权状态": 2,
+          "说明该文档是第三方分析非官方品牌资产，不声称与 Linear 的关联": 2,
+          "在用户确认方向与素材前不写实现代码": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/design-md-baseline-adaptation/EVIDENCE.md",
+          "evals/runs/design-md-baseline-adaptation/design-direction.md",
+          "evals/runs/design-md-baseline-adaptation/pull-trace.txt"
+        ],
+        "notes": "品牌基线取用与改编：真实调用 design-md.mjs pull linear.app（24354 bytes/revision 8147538b/MIT 取用物 548 行留痕但选择性 add 排除不进仓库）；token 全部来自取用物抽样零杜撰（#010102/#f7f8f8/#5e6ad2/#0f1011）；自撰上游没有段落（Mission/Accessibility/Writing tone/Do-Don't/Quality gates）；第三方分析非官方声明+不声称 Linear 关联（failCondition #3 防线）；方向稿等确认零实现代码（#5）；不直接 ship 上游 token（#4，选择性 add）"
       }
     ]
   }

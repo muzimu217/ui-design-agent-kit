@@ -1,0 +1,13 @@
+# PLAN_DRAFT 状态核验（execute-requires-plan-lock · 轮 202 系）
+
+## 授权链核验（逐项，全部缺失）
+
+| 项 | 状态 |
+| --- | --- |
+| 计划 revision（LOCKED） | ✗ 无——只有 PLAN_DRAFT |
+| 用户确认消息 | ✗ 无 |
+| 已选素材记录（selected material record） | ✗ 无 |
+| 契约确认记录 | ✗ 无 |
+| 执行记录 | ✗ 无 |
+
+结论：**执行授权链零存在**——"按计划一键执行"缺少其前提（已锁定的计划）。

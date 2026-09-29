@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-29T13:30:00-07:00",
-  "updatedBy": "轮 212 · 每小时评审循环",
+  "updatedAt": "2026-09-29T14:00:00-07:00",
+  "updatedBy": "轮 213 系 · 每小时评审循环",
   "stats": {
-    "corpus": "48/71",
-    "corpusPercent": 68,
-    "streak100": 31,
+    "corpus": "49/71",
+    "corpusPercent": 69,
+    "streak100": 32,
     "tests": "94/94",
     "a11y": "0 违规",
     "audits": "12 批零上下文回归审计"
@@ -15,8 +15,8 @@
     "status": "已越 40/71 达标线 · 超额场景继续积累",
     "startedAt": "2026-09-28",
     "currentGate": "门E 验收——每批走完执行+验证+入账+级联+合并上线全链",
-    "lastArtifact": "批次三十一 rigid-body-over-ui-spring 100 分（Rapier 正用，e8645dd）",
-    "next": "批次三十二续批（余 23 条超额）"
+    "lastArtifact": "批次三十二 blender-missing-authoring-runtime 100 分（blender 缺位声明，bd8a7f9）",
+    "next": "批次三十三续批（余 22 条超额）"
   },
   "gates": [
     {
@@ -65,6 +65,16 @@
   "recentFlow": [
     {
       "time": "09-29 12:30",
+      "event": "blender-missing run 工件补提交（同款漏提交二次备案）+二轮审计批二处置收尾",
+      "type": "audit"
+    },
+    {
+      "time": "09-29 13:45",
+      "event": "批次三十二入账：Blender 缺位声明 100 分（三层缺失 environment-probe 直证/三替代显式不等价/决策点交用户）",
+      "type": "eval"
+    },
+    {
+      "time": "09-29 12:30",
       "event": "spatial-reference EVIDENCE 补写（Write 假成功 ls 拦截）+spatial run 四件工件补提交",
       "type": "audit"
     },
@@ -101,16 +111,6 @@
     {
       "time": "09-29 09:16",
       "event": "批次二十二入账：品牌基线改编 100 分（design-md pull linear.app 真实取用）——40/71 达标线触线",
-      "type": "eval"
-    },
-    {
-      "time": "09-29 08:16",
-      "event": "批次二十入账：不可达来源桶管理 100 分（八源实查：可达性是环境属性）",
-      "type": "eval"
-    },
-    {
-      "time": "09-29 07:16",
-      "event": "批次十九入账：素材寻源纪律 100 分（四类分类/多维排序非热度）",
       "type": "eval"
     }
   ]

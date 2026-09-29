@@ -1526,6 +1526,38 @@
         ],
         "notes": "品牌基线取用与改编：真实调用 design-md.mjs pull linear.app（24354 bytes/revision 8147538b/MIT 取用物 548 行留痕但选择性 add 排除不进仓库）；token 全部来自取用物抽样零杜撰（#010102/#f7f8f8/#5e6ad2/#0f1011）；自撰上游没有段落（Mission/Accessibility/Writing tone/Do-Don't/Quality gates）；第三方分析非官方声明+不声称 Linear 关联（failCondition #3 防线）；方向稿等确认零实现代码（#5）；不直接 ship 上游 token（#4，选择性 add）"
       }
+    ],
+    "plan-lock-before-prototype": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T17:36:00.699Z",
+        "commit": "d82143962eadb564c2b1466a07c414fc879053ff",
+        "scores": {
+          "识别为 Plan Mode，并只询问会改变结果的缺失信息": 2,
+          "产出可审阅的计划记录，包含范围、非目标、素材、原型 brief、约束和验收条件": 2,
+          "在用户明确确认计划 revision 前不生成图片、不写实现代码、不启动 dev server": 2,
+          "明确说明下一步执行请求会从冻结计划生成第一版无代码原型并停在门 C": 2,
+          "保留未解决假设和用户需要做的决定，而不是把沉默当作确认": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/plan-lock-before-prototype/EVIDENCE.md",
+          "evals/runs/plan-lock-before-prototype/plan-record.md",
+          "evals/runs/plan-lock-before-prototype/open-questions.txt"
+        ],
+        "notes": "Plan Mode 纪律：识别计划模式+只问会改变结果的四问（Q1 服务粒度/Q2 登录/Q3 失败兜底/Q4 品牌色，每问标注影响面）；计划记录 v0.1 全字段（范围+非目标显式排除登录支付短信后台+素材边界零图片+brief 三态双视口+约束占位规则+五条可断言验收）；确认 revision 前零生图零代码零 dev server；下一步显式声明停在门C；五项假设 A1-A5 显式待确认（沉默不视为确认）"
+      }
     ]
   }
 }

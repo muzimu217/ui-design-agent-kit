@@ -149,6 +149,7 @@ v1 记录按台账规则保留历史。**此事件本身已作为流程缺陷写
 | 38 | `material-access-secondary-bucket` | 不可达来源桶管理 |
 | 39 | `reference-to-adaptation-boundary` | 竞品模仿边界 |
 | 40 | `design-md-baseline-adaptation` | 品牌基线取用改编 |
+| 41 | `plan-lock-before-prototype` | 计划锁定纪律 |
 
 族群汇总：动效 **3**、门径流程行为 **4**、口语摄取 2、方向三旋钮 / 细节
 常数 / 五类校准 / README 证据边界 / 降级边界 / 3D-HUD / Remotion 算术 /

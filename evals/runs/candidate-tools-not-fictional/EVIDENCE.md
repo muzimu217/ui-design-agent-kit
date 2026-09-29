@@ -18,7 +18,7 @@
 
 ## 二、有边界 fallback（判据 2：库内真实技能，不声称等同外部输出）
 
-库内可用的真实技能：impeccable（视觉批评）、motion、css-spring（均 sources.lock 在册）。
+库内可用的真实技能：impeccable（视觉批评）、motion（均 sources.lock 在册）+ css-spring（motion 技能文档内收录的主题，非独立在册技能——轮 188 审计更正：初稿误写"均 sources.lock 在册"）。
 按 impeccable 批评维度对 screen 做 4 项具体改进（fixture/screen-after.html）：
 
 1. **层次**：卡片加 brand 左边条 + 1px 描边（信息分组可感知）

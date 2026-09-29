@@ -1015,6 +1015,38 @@
         ],
         "notes": "四点名工具逐一核查全部不可用（skills 目录+PATH+会话 MCP 三路一手实证）如实披露；fallback=库内 impeccable 批评维度 4 项具体改进（层次/状态覆盖/可供性/间距对比），边界声明不声称等同外部工具输出；零安装（猜测 URL 不进 shell）/零私有上传/零全局设置；before/after 截图证据"
       }
+    ],
+    "remotion-seeking-and-assets": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T03:19:26.089Z",
+        "commit": "f081ab4790a38680d8932c14b3973a608e87f81d",
+        "scores": {
+          "Derives visible animation from frame and fps": 2,
+          "Allows necessary documented DOM measurement with scale correction and font readiness": 2,
+          "Checks a repeated out-of-order frame for determinism": 2,
+          "Preserves the requested format and existing content": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/remotion-seeking-and-assets/EVIDENCE.md",
+          "evals/runs/remotion-brand-animation/teaser/src/TitleCard.tsx",
+          "evals/runs/remotion-seeking-and-assets/evidence/title-frame-060-23093.png",
+          "evals/runs/remotion-seeking-and-assets/evidence/title-frame-119.png"
+        ],
+        "notes": "修复三原则：全帧数学（零 setTimeout/CSS transition grep 实证）/DOM 测量保留带 scale 校正+delayRender 字体就绪（不误禁 DOM）/格式内容保持；乱序确定性 md5 硬实证（frame60 双导+乱序回追 frame30 复导均逐字节一致）；不承诺渲染对等（仅 still 验证）；复用批次一运行时零新依赖"
+      }
     ]
   }
 }

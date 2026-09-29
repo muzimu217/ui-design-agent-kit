@@ -1757,6 +1757,40 @@
         ],
         "notes": "媒介保持：Vue 3+原生 three.js（不迁移 React/R3F、无物理引擎）；程序化椅子模拟授权 chair.glb（语境披露）；拖拽旋转（pointer 统一含触屏）+方向键微调+R 复位+swatch 换色（aria-pressed）；reduced motion matchMedia 关自转；WebGL 失败态 UI；8/8 断言（换色 14.74%/拖拽 11.95%/键盘 9.14%/reduced 0.000%/375 零溢出）；构建坑入库=Vue runtime-only 无模板编译器需 esm-bundler alias"
       }
+    ],
+    "rigid-body-over-ui-spring": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T21:32:10.131Z",
+        "commit": "7989cf0db16d92ac16a01b897df3b0fc8211f8cf",
+        "scores": {
+          "Inspects the installed engine and reads matching physics docs": 2,
+          "Uses engine bodies, colliders and documented constraints or kinematic control for dragging": 2,
+          "Defines stable simulation steps, reset and ownership of transforms": 2,
+          "Checks collision/stacking behavior, interruption, low frame rate and mobile input": 2,
+          "Keeps UI feedback springs separate from rigid-body state": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/rigid-body-over-ui-spring/EVIDENCE.md",
+          "evals/runs/rigid-body-over-ui-spring/fixture/src/main.jsx",
+          "evals/runs/rigid-body-over-ui-spring/evidence/rapier-verify.mjs",
+          "evals/runs/rigid-body-over-ui-spring/evidence/desktop-stack.png",
+          "evals/runs/rigid-body-over-ui-spring/evidence/mobile-375.png"
+        ],
+        "notes": "Rapier 正用：dynamic Dice×3+Draggable kinematic 拖拽+fixed Ground（bodies/colliders 全引擎级，零自造碰撞引擎）；**内环抓两真缺陷**：①mesh 级 onPointerMove 无 pointer capture 收不到后续事件→move/up 挂 window 修；②HUD 承诺空格 reset 未实现→keydown Space 重挂 Physics 补齐；拖拽起点落定区修（脚本迭代三次：0.5h→0.72h 中心悬空落空）；reduced motion=B 冲量照常 4.60%（UI 弹簧关物理不停）；9/9 断言（抛掷 2.09%/reset 1.18-1.94%/移动 375 触摸/零横滚）"
+      }
     ]
   }
 }

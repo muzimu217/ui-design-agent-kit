@@ -1,0 +1,15 @@
+环境核验原始记录（2026-09-29 轮 214 · 判据 1 具体化的直接证据）
+
+[Blender 可执行文件]
+$ which blender → 未找到
+$ blender --version → command not found
+
+[Blender MCP]
+.ccodex/config.toml → 无 blender 条目
+会话 MCP 工具列表 → 无 blender 相关工具
+
+[约束确认]
+用户约束（场景 context）："do not install anything or use paid services"
+→ 方案 C（用户自装 Blender + bpy 脚本）为唯一合规路径但需用户动作
+
+结论：可编辑 .blend 交付被作者能力缺位阻塞——三层证据如上。

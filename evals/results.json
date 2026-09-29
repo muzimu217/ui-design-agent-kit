@@ -1080,6 +1080,41 @@
         ],
         "notes": "竖屏 1080×1920 可编辑预览：官方 vendored skills 一手使用+废弃 MCP 不装+Motion+ 无关联（failCondition #1/#2 防线）；转场端点/中点四帧检视（clipPath 斜切 45-72 帧，零 Motion hover 替代帧时钟——#4）；Studio URL 实机截图（localhost:3011/portrait-story）；全程未导出未部署零 MP4（#3）；版本对齐 4.0.370 复用运行时；媒体图形卡模拟披露"
       }
+    ],
+    "image-to-code-fidelity-loop": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T05:21:26.711Z",
+        "commit": "8e7fb35281bd4707f5ed75bf1ddc9fcfb649a309",
+        "scores": {
+          "Classifies the input as screenshot-only and lists unknown values": 2,
+          "Creates a compact fidelity brief with viewport, regions, typography, assets, and responsive assumptions": 2,
+          "Uses the supplied image as visual evidence without claiming it proves CSS or hidden states": 2,
+          "Renders the same viewport in a browser and compares named regions": 2,
+          "Runs one bounded repair pass and reports remaining inferred or unverified details": 2,
+          "Keeps generated files in the target workspace and does not alter the agent-kit root": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/image-to-code-fidelity-loop/EVIDENCE.md",
+          "evals/runs/image-to-code-fidelity-loop/supplies/supplied-shot.png",
+          "evals/runs/image-to-code-fidelity-loop/fixture/rebuild.html",
+          "evals/runs/image-to-code-fidelity-loop/evidence/fidelity-compare.mjs",
+          "evals/runs/image-to-code-fidelity-loop/evidence/rebuild-900.png"
+        ],
+        "notes": "诚实保真度：screenshot-only 分类+未知值清单（字体/间距/断点/hover 全标推断）；保真简报五要素；同视口 900×700 双渲染四区域对比（0px 差）+375 零溢出；修复轮如实记录未触发；**同源偏差风险披露**（重建者可见 mock 源，0px 不代表典型难度，不作像素 parity 声明）；80%/95% 帖子数字全程不复述为保证；零 kit 根改动"
+      }
     ]
   }
 }

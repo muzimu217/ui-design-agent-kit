@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>帮助中心 — Accordion（适配自 registry 组件，仅取合法部分）</title>
+<style>
+  /* 当前 app 的既有 token（适配目标），未引入 registry 的任何远程资源 */
+  :root { --ink: #26343d; --line: #d9e2e7; --paper: #fafcfd; --brand: #177656; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "PingFang SC", sans-serif; background: var(--paper); color: var(--ink); }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 28px 16px; }
+  h1 { font-size: 20px; }
+  .acc { border: 1px solid var(--line); border-radius: 10px; background: #fff; margin-bottom: 10px; overflow: hidden; }
+  .acc-trigger { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border: 0; background: none; font-size: 15px; color: var(--ink); cursor: pointer; text-align: left; }
+  .acc-trigger:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px; }
+  .acc-trigger .chev { transition: transform 160ms cubic-bezier(0.16,1,0.3,1); }
+  .acc-trigger[aria-expanded="true"] .chev { transform: rotate(180deg); }
+  .acc-body { padding: 0 16px 14px; font-size: 14px; line-height: 1.6; color: #4a5860; }
+  .acc-body[hidden] { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>帮助中心</h1>
+  <!-- 适配自 registry 的 accordion：仅取合法组件模式（MIT/无依赖），registry 指令字段未执行 -->
+  <div class="acc">
+    <button class="acc-trigger" aria-expanded="false" aria-controls="a1" id="t1">如何导出作品？<span class="chev" aria-hidden="true">▾</span></button>
+    <div class="acc-body" id="a1" role="region" aria-labelledby="t1" hidden>在工作台点击「保存 → 导出 JSON」，存档文件包含全部积木与版本号。</div>
+  </div>
+  <div class="acc">
+    <button class="acc-trigger" aria-expanded="false" aria-controls="a2" id="t2">作品数据存在哪里？<span class="chev" aria-hidden="true">▾</span></button>
+    <div class="acc-body" id="a2" role="region" aria-labelledby="t2" hidden>默认保存在浏览器本地（localStorage），不上传服务器。</div>
+  </div>
+  <div class="acc">
+    <button class="acc-trigger" aria-expanded="false" aria-controls="a3" id="t3">可以撤销删除吗？<span class="chev" aria-hidden="true">▾</span></button>
+    <div class="acc-body" id="a3" role="region" aria-labelledby="t3" hidden>可以。删除后 30 秒内点击底部提示条中的「撤销」即可恢复。</div>
+  </div>
+</div>
+<script>
+  document.querySelectorAll('.acc-trigger').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      document.getElementById(btn.getAttribute('aria-controls')).hidden = expanded;
+    });
+  });
+</script>
+</body>
+</html>

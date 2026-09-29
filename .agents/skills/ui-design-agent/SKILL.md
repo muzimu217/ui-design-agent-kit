@@ -421,7 +421,6 @@ paradigm, so the evidence chain cannot assert them.
 Whatever the branch, the acceptance floor is shared: the six gates, the scored
 ledger, and the triple verification apply identically. Adding an expert
 widens coverage without diluting credibility.
-  pass, not by the image tool.
 - When a Google Stitch or equivalent prototyping MCP is available and enabled,
   use it to generate UI prototype candidates for the confirmation gate; treat
   the output as a visual candidate, not a shipped implementation. Its API key

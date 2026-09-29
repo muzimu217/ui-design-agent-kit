@@ -794,3 +794,35 @@
 | 适用类型 | 案例样板 / Case studies、创意 / Creativity |
 | 可达性与授权 | curl 200、浏览器正常（2026-09-21 实测）；作者自荐，注意自荐偏差 |
 | 加入日期 / 来源 | 2026-09-21 / awesome-ui-design 批次 |
+
+### Remotion Showcase（动态影像 / Motion reference）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://www.remotion.dev/showcase |
+| 功效分析·提供什么 | Remotion 官方精选画廊：GitHub Unwrapped（太空场景+角色+数据个性化campaign）、Fluidmotion（紫罗兰流体渐变背景）、Submagic（橙白强对比字幕工具）、Electricity Mapped（点阵数据可视化）等产品级动态影像 |
+| 功效分析·适合任务 | 「视频没有美感」的水位对照与技法采样——每支视频有独立美术指导（场景纵深/角色或流体资产/专属配色），反衬平涂 token 卡+孤立文字的差距 |
+| 功效分析·视觉特征 | 影像化（非纯平涂）：场景纵深、粒子/流体/角色资产、强对比专属配色、数据个性化 |
+| 功效分析·内容形态 | 官方画廊页（卡片含视频预览） |
+| 使用场景示例 | 「重做 UAK intro/品牌视频」→ 抄 GitHub Unwrapped 的数据个性化叙事与场景纵深、Fluidmotion 的流体渐变氛围底 |
+| 截图示例 | screenshots/remotion-showcase.png（2026-09-28，Playwright 实拍 1440×900） |
+| 镜像替代 | remotion.dev/templates（同生态模板库） |
+| 适用类型 | 动态影像 / Motion reference、案例样板 / Case studies |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-28 实测）；各作品版权归各自作者，**仅参考美术指导方向，素材不可复用** |
+| 加入日期 / 来源 | 2026-09-28 / 用户令「视频没有美感，调用 MCP 搜索收纳优秀案例」批次 |
+
+### Remotion Templates（动态影像 / Motion reference）
+
+| 字段 | 内容 |
+| --- | --- |
+| 站点 URL | https://www.remotion.dev/templates |
+| 功效分析·提供什么 | 官方模板库：Blank/Hello World/Next.js/Recorder/**Prompt to Motion Graphics SaaS Starter Kit**/Render Server/Electron/React Router 7 等（免费+付费分区） |
+| 功效分析·适合任务 | 视频重做的工程起点——「Prompt to Motion Graphics」SaaS Starter 与 AI 生成动效方向直接相关；Recorder 模板=纯 JS 视频生产工具先例 |
+| 功效分析·视觉特征 | 工程化模板（非视觉参照）；视觉参照请配合 Showcase 条目使用 |
+| 功效分析·内容形态 | 官方模板库页（免费/付费分区，GitHub 仓直达） |
+| 使用场景示例 | 「重建 UAK 视频工程」→ 从最接近的模板 fork 起步（许可核验后），避免裸 Blank 自造轮 |
+| 截图示例 | screenshots/remotion-templates.png（2026-09-28，Playwright 实拍 1440×900） |
+| 镜像替代 | github.com/remotion-dev/templates（同名仓库） |
+| 适用类型 | 动态影像 / Motion reference、工程起点 / Templates |
+| 可达性与授权 | curl 200、浏览器正常（2026-09-28 实测）；模板各自带许可（Blank 等 MIT 起步），**fork 前逐一核许可** |
+| 加入日期 / 来源 | 2026-09-28 / 用户令「视频没有美感」批次 |

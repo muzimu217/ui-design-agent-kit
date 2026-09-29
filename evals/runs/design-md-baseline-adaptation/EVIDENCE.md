@@ -39,10 +39,11 @@
 
 - design-direction.md——方向稿全文（场景交付物本体）
 - pull-trace.txt——取用脚本原始输出（判据 1 直接痕迹：revision+授权警示）
-- pulled-linear-DESIGN.md——取用物留痕（548 行，不提交进仓库）
 - EVIDENCE.md——本元记录
 
-四件均为该场景真实产物，非凑数。
+三件提交进仓库；取用物 pulled-linear-DESIGN.md（548 行）按 failCondition #4 留痕本地
+不提交。**轮 204 更正**：首跑误将取用物列入台账 evidence（4 件），线上 self-test 路径
+校验失败暴露矛盾——evidence 收敛为三件树内真实工件；非凑数原则不变。
 
 ## 七、工件清单（旧）
 

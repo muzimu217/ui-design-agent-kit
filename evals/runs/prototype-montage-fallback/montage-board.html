@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>预约产品 · 无代码原型拼贴板 v1（生图降级：真实截图蒙太奇）</title>
+<style>
+  :root { --ink: #26343d; --line: #d9e2e7; --paper: #fafcfd; --brand: #177656; --muted: #61717d; --amber: #b4690e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "PingFang SC", sans-serif; background: var(--paper); color: var(--ink); }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 30px 20px 60px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .degrade { display: inline-block; background: #fdf6ec; color: var(--amber); border: 1px solid #ecd9b8; border-radius: 8px; padding: 8px 14px; font-size: 13px; margin: 10px 0 22px; line-height: 1.6; }
+  .gate { background: #f0f4f6; border-left: 3px solid var(--brand); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; margin-bottom: 26px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+  figure { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  img { width: 100%; height: 200px; object-fit: cover; object-position: top; display: block; }
+  figcaption { padding: 10px 14px 12px; }
+  figcaption b { font-size: 14px; display: block; margin-bottom: 4px; }
+  figcaption .src { font-size: 11px; color: var(--muted); word-break: break-all; display: block; margin-top: 4px; }
+  .status { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-top: 6px; }
+  .st-ref { background: #e8f2ee; color: var(--brand); }
+  .st-own { background: #e8f2ee; color: var(--brand); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>预约产品 · 无代码原型拼贴板 v1</h1>
+  <div class="degrade">⚡ 降级路径声明：图片生成能力不可用（尝试一次即降级，未反复重试）。本板改用<strong>真实截图蒙太奇</strong>——每图标注来源 URL 与参考状态；画廊/参考截图<strong>不作为生产素材</strong>。</div>
+  <div class="gate">🔒 <strong>停在原型门（门C）</strong>：本板为无代码原型，等你裁决。未写任何实现代码；你确认拼贴方向后，下一轮才进入实现。</div>
+  <div class="grid">
+    <figure>
+      <img src="montage-assets/ref-govuk-error-message.png" alt="GOV.UK 错误提示组件参考">
+      <figcaption>
+        <b>参考 1 · 表单校验与错误提示模式</b>
+        <span>GOV.UK Design System（OGL-3.0，规则可直译）</span>
+        <span class="src">design-system.service.gov.uk/components/error-message/</span>
+        <span class="status st-ref">参考用 · 非生产素材</span>
+      </figcaption>
+    </figure>
+    <figure>
+      <img src="montage-assets/ref-shadcn-form.png" alt="shadcn/ui Form 组件参考">
+      <figcaption>
+        <b>参考 2 · 表单组件结构与状态</b>
+        <span>shadcn/ui（MIT，源码可检）</span>
+        <span class="src">ui.shadcn.com/docs/components/form</span>
+        <span class="status st-ref">参考用 · 非生产素材</span>
+      </figcaption>
+    </figure>
+    <figure>
+      <img src="montage-assets/own-operations.png" alt="库内自有交付物运营台水位对照">
+      <figcaption>
+        <b>水位对照 · 自有交付物（运营台）</b>
+        <span>库内资产（自有，零授权问题）</span>
+        <span class="src">evals/runs/operations-not-marketing/evidence/</span>
+        <span class="status st-own">自有资产 · 水位对照</span>
+      </figcaption>
+    </figure>
+  </div>
+</div>
+</body>
+</html>

@@ -1624,6 +1624,39 @@
         ],
         "notes": "细节批评先行：四条发现分诊带证据锚（P1 disabled 态/P1 对比度实测 2.49:1 比语境预估更差如实记录/P2 装饰倾斜裁量权交用户/P0 顺带闭合）；修自捕两项+复检断言（4.90:1 页面实算）；未修项显式（倾斜裁量权）；无 P0 未修不声称全部完成；断言修正过程如实（Tab 首停 BODY 属正常行为循环可达修正）"
       }
+    ],
+    "assembly-first-interaction-3d": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T18:02:39.363Z",
+        "commit": "80faa244f75abce275714f425928d69f044b9ee7",
+        "scores": {
+          "Selects the route from the default baseline matrix before writing any effect code": 2,
+          "Names an inspectable baseline or pre-cleared component and records the adapted part and license status": 2,
+          "Treats hand-drawn CSS as the exception and states a recorded reason if used": 2,
+          "Presents external material for user selection before integration": 2,
+          "Verifies real pixels, framing, pointer or keyboard interaction, reduced motion, and mobile output": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/assembly-first-interaction-3d/EVIDENCE.md",
+          "evals/runs/assembly-first-interaction-3d/fixture/src/main.jsx",
+          "evals/runs/assembly-first-interaction-3d/evidence/assembly-verify.mjs",
+          "evals/runs/assembly-first-interaction-3d/evidence/desktop-hero.png"
+        ],
+        "notes": "装配优先 3D hero：基线矩阵选路 R3F+组件库（MIT 与 brick-workshop 组合同族）/手绘 CSS 例外记录（环境背景非 3D 对象）/零外部素材整合；**取证教训（failCondition #3 活教材）**：R3F preserveDrawingBuffer=false 帧后 readPixels 假黑——真实像素断言改合成器截图 PNG 解码比像素（拖拽 2.39%/reduced 0.000%/移动渲染）；键盘旋转未实现如实记录已知边界（指针已实证）"
+      }
     ]
   }
 }

@@ -1691,6 +1691,72 @@
         ],
         "notes": "生图降级路径：不可用声明一次即降级（未反复重试）；真实截图蒙太奇三面板（GOV.UK error-message OGL-3.0/shadcn Form MIT/库内自有运营台）每图来源 URL+参考状态标注（画廊截图不当生产素材）；停在原型门零 script 实证；8/8 断言（三图加载/来源标注/状态标注/降级声明/门声明/375/console）"
       }
+    ],
+    "spatial-reference-evidence": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T19:20:00.359Z",
+        "commit": "2670b69459ff99f40edd5559ec7099ba5fc2a31f",
+        "scores": {
+          "States the mismatch between the described restaurant and the actual URL": 2,
+          "Separates live observations, source facts and unverified authoring inferences": 2,
+          "Explains transferable subject, lighting, camera, interaction and state patterns": 2,
+          "Does not infer a toolchain merely from 3D appearance": 2,
+          "Keeps research read-only and records source revision and reuse boundaries": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/spatial-reference-evidence/EVIDENCE.md",
+          "evals/runs/spatial-reference-evidence/analysis.md",
+          "evals/runs/spatial-reference-evidence/browser-live.png",
+          "evals/runs/spatial-reference-evidence/browser-live-verify.mjs"
+        ],
+        "notes": "空间参考证据（模拟语境披露：以库内 subway-runner 作 3D 骑行游戏替身）：错配声明先行/三分离（Live observations 浏览器 4/4 断言/Source facts 源码 grep 带行号/Unverified authoring 推断显式标注）/五维可迁移模式（程序化几何+皮肤解耦/三点光照/追尾相机/离散变道+连续运动解耦/AABB 简化碰撞）/工具链不从 3D 外观推断（Blender 声称需溯源证据）/只读+本地 build 替代线上取证（curl 000 差异边界如实）"
+      }
+    ],
+    "spatial-medium-preserve-stack": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T20:24:07.834Z",
+        "commit": "b51d975861dec0e42cb2e7135df1670d7b0a45eb",
+        "scores": {
+          "Uses the existing live Three.js scene and maps plain-language intent to rotation and material state": 2,
+          "Keeps Vue and the licensed asset": 2,
+          "Provides bounded camera controls, reset and keyboard/touch alternatives": 2,
+          "Checks subject framing, variant changes, loading failure and reduced motion": 2,
+          "Does not require the user to select library names": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/spatial-medium-preserve-stack/EVIDENCE.md",
+          "evals/runs/spatial-medium-preserve-stack/fixture/src/main.ts",
+          "evals/runs/spatial-medium-preserve-stack/evidence/vue-verify.mjs",
+          "evals/runs/spatial-medium-preserve-stack/evidence/desktop-chair.png"
+        ],
+        "notes": "媒介保持：Vue 3+原生 three.js（不迁移 React/R3F、无物理引擎）；程序化椅子模拟授权 chair.glb（语境披露）；拖拽旋转（pointer 统一含触屏）+方向键微调+R 复位+swatch 换色（aria-pressed）；reduced motion matchMedia 关自转；WebGL 失败态 UI；8/8 断言（换色 14.74%/拖拽 11.95%/键盘 9.14%/reduced 0.000%/375 零溢出）；构建坑入库=Vue runtime-only 无模板编译器需 esm-bundler alias"
+      }
     ]
   }
 }

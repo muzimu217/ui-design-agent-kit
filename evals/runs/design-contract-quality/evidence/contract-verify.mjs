@@ -16,10 +16,29 @@ const check = (name, ok, detail = "") => { results.push(ok); console.log(`${ok ?
 
   // Gate 5：token 断言
   const tokens = await page.evaluate(() => ({
-    body: getComputedStyle(document.body).fontFamily.includes("PingFang"),
+    bodyBg: getComputedStyle(document.body).backgroundColor,
     brandH1: getComputedStyle(document.querySelector("h1")).color,
+    paper: getComputedStyle(document.body).backgroundColor === "rgb(250, 252, 253)",
   }));
   check("Gate5 token：字标 --brand #177656", tokens.brandH1 === "rgb(23, 118, 86)", tokens.brandH1);
+  check("Gate5 token：body 底 = --paper #fafcfd", tokens.bodyBg === "rgb(250, 252, 253)", tokens.bodyBg);
+  // 低库存行淡黄底（Do 项）与 warn 前景对比度（#A05A00 on #fdf6ec 实算）
+  const warnRatio = await page.evaluate(() => {
+    const lum = (r, g, b) => {
+      const c = [r, g, b].map((x) => { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
+      return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+    };
+    const fg = lum(160, 90, 0), bg = lum(253, 246, 236);
+    return ((Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05)).toFixed(2);
+  });
+  const lowRowBg = await page.locator("tbody tr", { hasText: "低库存" }).first().evaluate((el) => getComputedStyle(el).backgroundColor);
+  check("Gate6+ 低库存行淡黄底 #fdf6ec（Do 项落地）", lowRowBg === "rgb(253, 246, 236)", lowRowBg);
+  check("Gate6+ warn 前景 on 淡黄底 ≥4.5", parseFloat(warnRatio) >= 4.5, `${warnRatio}:1`);
+  const focusRing = await page.evaluate(() => {
+    const st = [...document.styleSheets].flatMap((ss) => { try { return [...ss.cssRules].map((r) => r.cssText); } catch { return []; } });
+    return st.some((t) => t.includes(":focus-visible") && (t.includes("#2566c4") || t.includes("rgb(37, 102, 196)")));
+  });
+  check("Gate5+: focus-visible 2px #2566c4 规则在册", focusRing);
 
   // Gate 3：筛选行数变化
   const allRows = await page.locator("tbody tr").count();

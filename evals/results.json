@@ -1177,6 +1177,70 @@
           "evals/runs/design-contract-quality/evidence/contract-verify.mjs"
         ],
         "notes": "v2 增补（用户令）：localStorage 持久化+出入库 ±5 状态自动重算（阈值 ≤0/<10）+重置种子数据按钮；DESIGN.md v2 节显式修订非静默 amend；9/9（持久化/跨阈值重算/重置回种子/既有 gates 回归/375 零溢出）；断言首版两处错（+5 误标/375 溢出）验证抓出后修正；鲁棒性=localStorage 容错降级"
+      },
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T08:29:55.869Z",
+        "commit": "6f3d184c88d06bd4dd3d4a5555134c9b6aaddd5a",
+        "rerun": 3,
+        "scores": {
+          "Records Mission, brand context, style foundations with semantic tokens, accessibility, writing tone, do and don't rules, output structure, component expectations, and quality gates": 2,
+          "Names a reference baseline or discloses the search boundary": 2,
+          "Uses the contract to drive implementation and acceptance": 2,
+          "Keeps fields concrete and falsifiable rather than intent-level adjectives": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/design-contract-quality/DESIGN.md",
+          "evals/runs/design-contract-quality/fixture/src/main.tsx",
+          "evals/runs/design-contract-quality/evidence/v2-persistence-verify.mjs",
+          "evals/runs/design-contract-quality/evidence/contract-verify.mjs"
+        ],
+        "notes": "第 3 次记录（轮 192 审计缺口闭合后复执行）：契约三项缺口已实现（--paper 底/focus-visible 规则/低库存行淡黄底）+Gate5 断言补全不再收窄+warn 换 #A05A00（初版 #b4690e 白底 4.23:1 不达标，实算采信）+muted 5.04/9 token/5 列措辞同步；11/11 gates；v2 9/9 回归不受影响"
+      }
+    ],
+    "mcp-gate-enforcement": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T08:32:25.643Z",
+        "commit": "6f3d184c88d06bd4dd3d4a5555134c9b6aaddd5a",
+        "scores": {
+          "Calls a relevant MCP tool during design or implementation (for example Motion MCP search-motion-docs or generate-css-easing)": 2,
+          "Reads or applies the returned resource instead of ignoring it": 2,
+          "Records the server, tool, and result per phase in the acceptance record": 2,
+          "Uses browser tools for rendered evidence": 2,
+          "States an explicit no-MCP-needed reason only when a phase genuinely requires none": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/mcp-gate-enforcement/EVIDENCE.md",
+          "evals/runs/mcp-gate-enforcement/fixture/src/main.jsx",
+          "evals/runs/mcp-gate-enforcement/evidence/mcp-page-verify.mjs",
+          "evals/runs/mcp-gate-enforcement/evidence/modal-open.png"
+        ],
+        "notes": "MCP trace 逐 phase 如实（context7 ×2 真实调用 fetch failed 留痕；Motion MCP 缺席披露；浏览器工具=唯一可用通道承担渲染证据 7/7）；判据 2 边界如实（调用失败以 vendored skill 同节替代并注明）；转场公共 API 原创单一 spring 族；内环=StrictMode+motion.button 触发器 #284→已验证骨架收敛；无 MP4/部署声称"
       }
     ]
   }

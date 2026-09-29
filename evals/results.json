@@ -1558,6 +1558,38 @@
         ],
         "notes": "Plan Mode 纪律：识别计划模式+只问会改变结果的四问（Q1 服务粒度/Q2 登录/Q3 失败兜底/Q4 品牌色，每问标注影响面）；计划记录 v0.1 全字段（范围+非目标显式排除登录支付短信后台+素材边界零图片+brief 三态双视口+约束占位规则+五条可断言验收）；确认 revision 前零生图零代码零 dev server；下一步显式声明停在门C；五项假设 A1-A5 显式待确认（沉默不视为确认）"
       }
+    ],
+    "execute-requires-plan-lock": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T17:42:49.412Z",
+        "commit": "10970550afea5c4165bfdfc415451b914a0e4281",
+        "scores": {
+          "检查并指出缺少锁定计划和明确 revision，而不是把‘按计划’当成有效授权": 2,
+          "先停在 Plan Mode，询问或请求明确的计划确认": 2,
+          "不生成第一版原型、不下载素材、不写代码、不启动 dev server": 2,
+          "说明一键执行在计划锁定后才会启动原型，并且仍会停在门 C": 2,
+          "不虚构已有素材选择、契约确认或执行记录": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/execute-requires-plan-lock/EVIDENCE.md",
+          "evals/runs/execute-requires-plan-lock/response.md",
+          "evals/runs/execute-requires-plan-lock/plan-status.txt"
+        ],
+        "notes": "执行授权门禁：plan-status.txt 五项授权链逐项核验全缺失（PLAN_DRAFT 无 revision/确认/素材记录）——按计划不构成授权拒绝执行；三选一引导（逐条确认/改后确认/补四问）；锁定后流程显式说明（无代码原型仍停门C，一键执行≠跳过门）；零执行零虚构（plan-status.txt 反证留痕）；引用上轮丢失报告教训作产品判断已披露可删"
+      }
     ]
   }
 }

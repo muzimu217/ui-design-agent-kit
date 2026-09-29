@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>结算页（detail-critique 夹具）</title>
+<style>
+  :root { --ink: #26343d; --line: #d9e2e7; --paper: #fafcfd; --brand: #177656; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "PingFang SC", sans-serif; background: var(--paper); color: var(--ink); }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 32px 20px; }
+  h1 { font-size: 22px; margin-bottom: 18px; }
+  .field { margin-bottom: 16px; }
+  label { display: block; font-size: 13px; margin-bottom: 6px; }
+  input { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 15px; }
+  .hint { font-size: 12px; color: #9aa3aa; margin-top: 5px; } /* 已知缺陷：低对比次要标签（实测约 2.8:1） */
+  .tilt-card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px; transform: rotate(-2.5deg); margin-bottom: 18px; } /* 已知缺陷：装饰倾斜（agent 执念） */
+  .tilt-card b { font-size: 14px; }
+  .tilt-card p { font-size: 13px; color: #61717d; margin: 6px 0 0; }
+  .pay { width: 100%; padding: 13px; border: 0; border-radius: 10px; background: var(--brand); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; }
+  /* 已知缺陷：按钮缺 disabled 态（处理中/余额不足时应禁用但样式与行为均缺失） */
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>结算</h1>
+  <div class="tilt-card">
+    <b>订单摘要</b>
+    <p>年度会员 × 1 · ¥210.00 · 含税</p>
+  </div>
+  <div class="field">
+    <label for="cardnum">卡号</label>
+    <input id="cardnum" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456">
+    <div class="hint">我们将通过加密通道处理您的卡片信息</div>
+  </div>
+  <button class="pay" id="pay">确认支付 ¥210.00</button>
+</div>
+<script>
+  document.getElementById('pay').addEventListener('click', function () { /* 处理中应禁用按钮但未实现 */ });
+</script>
+</body>
+</html>

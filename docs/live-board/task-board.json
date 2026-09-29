@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-29T12:30:00-07:00",
-  "updatedBy": "轮 209 · 每小时评审循环",
+  "updatedAt": "2026-09-29T13:30:00-07:00",
+  "updatedBy": "轮 212 · 每小时评审循环",
   "stats": {
-    "corpus": "45/71",
-    "corpusPercent": 63,
-    "streak100": 27,
+    "corpus": "48/71",
+    "corpusPercent": 68,
+    "streak100": 31,
     "tests": "94/94",
     "a11y": "0 违规",
     "audits": "12 批零上下文回归审计"
@@ -15,8 +15,8 @@
     "status": "已越 40/71 达标线 · 超额场景继续积累",
     "startedAt": "2026-09-28",
     "currentGate": "门E 验收——每批走完执行+验证+入账+级联+合并上线全链",
-    "lastArtifact": "批次二十八 plan-lock-before-prototype 100 分（0ac3515 系）",
-    "next": "批次二十九续批（余 26 条超额）"
+    "lastArtifact": "批次三十一 rigid-body-over-ui-spring 100 分（Rapier 正用，e8645dd）",
+    "next": "批次三十二续批（余 23 条超额）"
   },
   "gates": [
     {
@@ -65,6 +65,16 @@
   "recentFlow": [
     {
       "time": "09-29 12:30",
+      "event": "spatial-reference EVIDENCE 补写（Write 假成功 ls 拦截）+spatial run 四件工件补提交",
+      "type": "audit"
+    },
+    {
+      "time": "09-29 13:16",
+      "event": "批次三十一入账：刚体物理正用 100 分（Rapier 拖拽/碰撞/堆叠；内环抓 pointer capture+空格 reset 两真缺陷）",
+      "type": "eval"
+    },
+    {
+      "time": "09-29 12:30",
       "event": "审计批处置：批次十七~廿二+v2+R194-01 PASS（2 轻度口径对齐）+§4.1 全表程序化重建（45 行连续编号）+三处陈旧声称修正+SKILL 孤行残片清理",
       "type": "audit"
     },
@@ -101,16 +111,6 @@
     {
       "time": "09-29 07:16",
       "event": "批次十九入账：素材寻源纪律 100 分（四类分类/多维排序非热度）",
-      "type": "eval"
-    },
-    {
-      "time": "09-29 06:16",
-      "event": "批次十八入账：证据驱动优先级 100 分（三档分离/便宜核查先行）",
-      "type": "eval"
-    },
-    {
-      "time": "09-29 05:16",
-      "event": "e3 族两条入账：对话评审纪律+已批准方向续作 100 分",
       "type": "eval"
     }
   ]

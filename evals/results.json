@@ -1399,6 +1399,38 @@
         ],
         "notes": "素材寻源纪律：四类分类（生产图片资产判定为本场景零图片——硬塞即反模式）；主意图=表单校验与错误提示（预约产品第一失败点）；首轮 1 意图 3 primary 2 secondary 封顶；多维排序非热度（GOV.UK OGL-3.0 规则可直译/shadcn MIT 源码可检/unDraw 条件项）；GOV.UK 首选路径 404→修正记录未硬凑；Behance 403 即排除未反复消耗；确认前零下载零整合零代码"
       }
+    ],
+    "material-access-secondary-bucket": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T15:19:24.557Z",
+        "commit": "489445321603616a4295c92b742af86126c4d1b2",
+        "scores": {
+          "把 403 来源记录为 secondary/待复验，而不是报告为已使用或直接删除": 2,
+          "优先从当前可读且与任务匹配的来源继续检索": 2,
+          "区分 Wikimedia 的可读页面与每个图片文件仍需单独核对许可证": 2,
+          "说明页面可访问不等于资源许可、下载成功或 MCP 已连接": 2,
+          "不重复调用被阻断来源来追求表面上的完整性": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/material-access-secondary-bucket/EVIDENCE.md",
+          "evals/runs/material-access-secondary-bucket/candidate-list-v2.md",
+          "evals/runs/material-access-secondary-bucket/access-probe.txt"
+        ],
+        "notes": "403 桶管理：Unsplash/Pexels/Openverse 进 secondary 待复验（附注=本机 200 vs 隔离 403——可达性是环境属性不是来源属性，复验须同环境）；零重试；可读源继续（React Bits/Mobbin/Refero 200 进 primary，Wikimedia 分类 404 如实记录待查）；四独立边界显式化（页面可读≠许可≠下载≠MCP）；截图图库不下载作生产素材；确认前零下载零整合"
+      }
     ]
   }
 }

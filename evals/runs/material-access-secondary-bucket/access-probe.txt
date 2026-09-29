@@ -1,0 +1,12 @@
+八源可达性实查原始记录（2026-09-29 轮 200 · curl -sL 实测）
+
+200 https://unsplash.com            ← 本机直查 200：隔离环境 403 vs 直连 200 = 可达性是环境属性
+403 https://www.pexels.com          ← 隔离环境语境 403（场景给定），进 secondary 待复验
+403 https://openverse.org           ← 同上
+200 https://www.reactbits.dev       ← 可读，进 primary 组件参考
+200 https://mobbin.com              ← 可读，进 primary 流程参考
+200 https://refero.design           ← 可读，primary 备选
+200 https://commons.wikimedia.org/wiki/Main_Page  ← 页面可读 ≠ 文件许可
+404 https://commons.wikimedia.org/wiki/Category:Form_(documents)  ← 分类路径待查，不硬凑
+
+纪律：403 三站零重试；用户确认前零下载零整合零实现代码。

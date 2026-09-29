@@ -1047,6 +1047,39 @@
         ],
         "notes": "修复三原则：全帧数学（零 setTimeout/CSS transition grep 实证）/DOM 测量保留带 scale 校正+delayRender 字体就绪（不误禁 DOM）/格式内容保持；乱序确定性 md5 硬实证（frame60 双导+乱序回追 frame30 复导均逐字节一致）；不承诺渲染对等（仅 still 验证）；复用批次一运行时零新依赖"
       }
+    ],
+    "remotion-render-scope": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T04:18:41.613Z",
+        "commit": "38893c8a596b214e9f297232e664324dc7b2b180",
+        "scores": {
+          "Uses official Remotion documentation skills": 2,
+          "Keeps exact Remotion package versions aligned": 2,
+          "Inspects requested portrait format and transition endpoints/midpoint": 2,
+          "Provides the actual Studio URL": 2,
+          "Does not export, deploy, or add an unrequested landscape composition": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/remotion-render-scope/EVIDENCE.md",
+          "evals/runs/remotion-render-scope/evidence/portrait-060.png",
+          "evals/runs/remotion-render-scope/evidence/studio-portrait-url.png",
+          "evals/runs/remotion-brand-animation/teaser/src/PortraitStory.tsx"
+        ],
+        "notes": "竖屏 1080×1920 可编辑预览：官方 vendored skills 一手使用+废弃 MCP 不装+Motion+ 无关联（failCondition #1/#2 防线）；转场端点/中点四帧检视（clipPath 斜切 45-72 帧，零 Motion hover 替代帧时钟——#4）；Studio URL 实机截图（localhost:3011/portrait-story）；全程未导出未部署零 MP4（#3）；版本对齐 4.0.370 复用运行时；媒体图形卡模拟披露"
+      }
     ]
   }
 }

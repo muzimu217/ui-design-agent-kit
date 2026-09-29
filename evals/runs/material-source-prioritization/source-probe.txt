@@ -1,0 +1,19 @@
+素材来源实查记录（2026-09-29 轮 199 · curl -L 实测，判据 5 前置证据）
+
+[Primary]
+200 https://design-system.service.gov.uk/patterns/
+200 https://design-system.service.gov.uk/components/text-input/
+200 https://design-system.service.gov.uk/components/error-message/
+200 https://ui.shadcn.com/docs/components/form
+200 https://undraw.co/illustrations
+
+[探查修正]
+404 https://design-system.service.gov.uk/patterns/form-validation/  ← 首选路径不存在
+  → 修正为 patterns/ 与 text-input/error-message 组件页（未硬凑）
+
+[Secondary]
+202 https://dribbble.com/tags/appointment-form  ← 可达但授权模糊，不进候选
+403 https://www.behance.net/galleries/graphic-design  ← 不可达，即排除未重试
+（pages.xyz 域名过期——2026-09-29 实拍拦截，见轮 195）
+
+纪律：用户确认前零下载、零整合、零实现代码。

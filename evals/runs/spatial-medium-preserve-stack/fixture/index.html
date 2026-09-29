@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>椅子检视 · Vue + Three.js</title>
+<style>
+  body { margin: 0; font-family: "PingFang SC", sans-serif; color: #26343d; background: #fafcfd; }
+  .stage { position: relative; height: 100vh; overflow: hidden; }
+  .stage canvas { display: block; touch-action: none; }
+  .panel { position: absolute; top: 20px; left: 20px; background: rgba(255,255,255,0.92); border: 1px solid #d9e2e7; border-radius: 10px; padding: 14px 16px; }
+  .panel h1 { font-size: 17px; margin: 0 0 10px; }
+  .swatches { display: flex; gap: 8px; }
+  .sw { width: 30px; height: 30px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; }
+  .sw[aria-pressed="true"] { border-color: #26343d; }
+  .hint { position: absolute; bottom: 18px; left: 20px; font-size: 12px; color: #61717d; }
+  .reset { position: absolute; top: 20px; right: 20px; padding: 8px 14px; border-radius: 8px; border: 1px solid #d9e2e7; background: #fff; cursor: pointer; font-size: 13px; }
+  .reset:focus-visible, .sw:focus-visible { outline: 2px solid #2566c4; outline-offset: 2px; }
+</style>
+</head>
+<body><div id="app"></div><script type="module" src="/src/main.ts"></script></body>
+</html>

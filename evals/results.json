@@ -1208,6 +1208,37 @@
           "evals/runs/design-contract-quality/evidence/contract-verify.mjs"
         ],
         "notes": "第 3 次记录（轮 192 审计缺口闭合后复执行）：契约三项缺口已实现（--paper 底/focus-visible 规则/低库存行淡黄底）+Gate5 断言补全不再收窄+warn 换 #A05A00（初版 #b4690e 白底 4.23:1 不达标，实算采信）+muted 5.04/9 token/5 列措辞同步；11/11 gates；v2 9/9 回归不受影响"
+      },
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T11:31:09.537Z",
+        "commit": "592612e18e67b41b99d64cdeaf52e6965b0c2a6f",
+        "rerun": 4,
+        "scores": {
+          "Records Mission, brand context, style foundations with semantic tokens, accessibility, writing tone, do and don't rules, output structure, component expectations, and quality gates": 2,
+          "Names a reference baseline or discloses the search boundary": 2,
+          "Uses the contract to drive implementation and acceptance": 2,
+          "Keeps fields concrete and falsifiable rather than intent-level adjectives": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/design-contract-quality/DESIGN.md",
+          "evals/runs/design-contract-quality/fixture/src/main.tsx",
+          "evals/runs/design-contract-quality/evidence/v2-persistence-verify.mjs",
+          "evals/runs/design-contract-quality/evidence/contract-verify.mjs"
+        ],
+        "notes": "第 4 次记录（轮 193 二轮审计传导遗漏闭合）：StatusPill 实现已换 #A05A00（上轮更正只改了契约/断言常量未传导到 fixture——真遗留）；Gate6+ 断言改为绑定页面 pill computed 色实算（不再用硬编码常量——假闭合根源）；11/11（computed rgb(160,90,0)/淡黄底 4.95:1）+v2 9/9 回归"
       }
     ],
     "mcp-gate-enforcement": [

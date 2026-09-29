@@ -1146,6 +1146,37 @@
           "evals/runs/design-contract-quality/evidence/desktop-dashboard.png"
         ],
         "notes": "契约先行全字段（8 token 精确 HEX/间距网格/对比度预计算/do&don't/6 项可断言 quality gates）零 intent 词；基线=库内 run 先例披露（不虚构外部检索）；实现零静默修订（契约与首版同步落盘）；gates 验证 7/7（token computed/筛选行数/aria-pressed/键盘/对比度 12.80:1/375 零溢出/console 0）；状态 pill 透明度叠底对比标注推断项"
+      },
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T07:22:23.452Z",
+        "commit": "f225ad59348a9ef31204a3bc0460cee2704f1b0c",
+        "rerun": 2,
+        "scores": {
+          "Records Mission, brand context, style foundations with semantic tokens, accessibility, writing tone, do and don't rules, output structure, component expectations, and quality gates": 2,
+          "Names a reference baseline or discloses the search boundary": 2,
+          "Uses the contract to drive implementation and acceptance": 2,
+          "Keeps fields concrete and falsifiable rather than intent-level adjectives": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/design-contract-quality/DESIGN.md",
+          "evals/runs/design-contract-quality/fixture/src/main.tsx",
+          "evals/runs/design-contract-quality/evidence/v2-persistence-verify.mjs",
+          "evals/runs/design-contract-quality/evidence/contract-verify.mjs"
+        ],
+        "notes": "v2 增补（用户令）：localStorage 持久化+出入库 ±5 状态自动重算（阈值 ≤0/<10）+重置种子数据按钮；DESIGN.md v2 节显式修订非静默 amend；9/9（持久化/跨阈值重算/重置回种子/既有 gates 回归/375 零溢出）；断言首版两处错（+5 误标/375 溢出）验证抓出后修正；鲁棒性=localStorage 容错降级"
       }
     ]
   }

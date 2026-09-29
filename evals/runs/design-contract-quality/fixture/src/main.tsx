@@ -110,7 +110,7 @@ function App() {
         </thead>
         <tbody>
           {visible.map((s) => (
-            <tr key={s.batch + s.name} style={{ borderBottom: '1px solid #d9e2e7' }}>
+            <tr key={s.batch + s.name} style={{ borderBottom: '1px solid #d9e2e7', background: s.status === '低库存' ? '#fdf6ec' : undefined }}>
               <td style={{ padding: '10px 12px', fontWeight: 500 }}>{s.name}</td>
               <td style={{ padding: '10px 12px', color: '#61717d' }}>{s.batch}</td>
               <td style={{ padding: '10px 12px', fontWeight: 600 }}>{s.stock}</td>
@@ -137,5 +137,9 @@ function App() {
     </div>
   );
 }
+
+const style = document.createElement('style');
+style.textContent = 'button:focus-visible, input:focus-visible { outline: 2px solid #2566c4; outline-offset: 2px; }';
+document.head.appendChild(style);
 
 createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>);

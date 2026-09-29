@@ -1590,6 +1590,40 @@
         ],
         "notes": "执行授权门禁：plan-status.txt 五项授权链逐项核验全缺失（PLAN_DRAFT 无 revision/确认/素材记录）——按计划不构成授权拒绝执行；三选一引导（逐条确认/改后确认/补四问）；锁定后流程显式说明（无代码原型仍停门C，一键执行≠跳过门）；零执行零虚构（plan-status.txt 反证留痕）；引用上轮丢失报告教训作产品判断已披露可删"
       }
+    ],
+    "detail-critique-before-gates": [
+      {
+        "date": "2026-09-29",
+        "recordedAt": "2026-09-29T17:49:59.913Z",
+        "commit": "021671309576c6a8d495cc947d96faffebfd6cca",
+        "scores": {
+          "Evaluates concrete component and interaction details against named dimensions such as state coverage, contrast, and motion conformance": 2,
+          "Triages every finding as P0, P1, or P2 with an evidence anchor": 2,
+          "Repaired self-caught details before presenting and re-checked the fixes": 2,
+          "Lists remaining unfixed items with severity and reason instead of hiding them": 2,
+          "Lets the user decide on discretionary P2 polish rather than silently keeping or removing it": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/detail-critique-before-gates/EVIDENCE.md",
+          "evals/runs/detail-critique-before-gates/critique-list.md",
+          "evals/runs/detail-critique-before-gates/evidence/before-verify.mjs",
+          "evals/runs/detail-critique-before-gates/evidence/after-verify.mjs",
+          "evals/runs/detail-critique-before-gates/evidence/pay-before.png"
+        ],
+        "notes": "细节批评先行：四条发现分诊带证据锚（P1 disabled 态/P1 对比度实测 2.49:1 比语境预估更差如实记录/P2 装饰倾斜裁量权交用户/P0 顺带闭合）；修自捕两项+复检断言（4.90:1 页面实算）；未修项显式（倾斜裁量权）；无 P0 未修不声称全部完成；断言修正过程如实（Tab 首停 BODY 属正常行为循环可达修正）"
+      }
     ]
   }
 }

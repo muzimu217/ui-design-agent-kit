@@ -97,6 +97,15 @@ const STATUS_LEGEND = [
   { id: 'blocked', meaning: '未解决的 P0、缺失能力或检查失败阻断了推进。' },
 ] as const satisfies readonly { id: StatusId; meaning: string }[];
 type StageId = (typeof STAGES)[number]['id'];
+// 六道门总览（与 docs/chain-flow.md §五同源）：门是第一公民——呈交/裁决/停行语义。
+const GATES_OVERVIEW = [
+  { id: 'A', name: '设计稿', icon: NotebookPen, ask: '视觉基调、结构草案、动效意图——先对齐方向，不写代码。', artifact: '方向稿 / 结构草案', by: '用户裁决' },
+  { id: 'B', name: '素材选择', icon: FolderGit2, ask: '候选素材清单供勾选；未选素材不得进入原型与实现。', artifact: '候选清单 + 授权核查', by: '用户裁决' },
+  { id: 'C', name: '原型', icon: PanelsTopLeft, ask: '不写代码的原型（成品参照 / 线框拼板），锁定计划与素材用法。', artifact: '原型板', by: '用户裁决' },
+  { id: 'D', name: '实现契约', icon: FileText, ask: 'DESIGN.md + 动效方案确认：token 与曲线先写下来、可证伪。', artifact: 'DESIGN.md + 动效契约', by: '大项目强制' },
+  { id: 'E', name: '每轮验收', icon: ScanEye, ask: '逐轮走查：问题清单带 P0/P1/P2 严重度与替换建议，直到通过。', artifact: '问题清单 + 复验记录', by: '每轮强制' },
+  { id: 'F', name: '证据留痕', icon: Compass, ask: '设计与实现阶段的真实调用与实测记录入库——声称必须有证据。', artifact: 'MCP / 实测留痕表', by: '全程留痕' },
+] as const;
 type StageRecord = {
   artifacts: readonly { label: string; path: string }[];
   evidence: readonly { label: string; path: string }[];
@@ -437,6 +446,40 @@ function WorkflowSection() {
 
   return <section className="workflow-band" id="workflow" aria-labelledby="workflow-heading"><div className="content-width">
     <div className="section-heading"><div><h1 id="workflow-heading">从需求，到交付。</h1><p>一条有确认节点的 UI 设计与实现流程。</p></div><Workflow size={28} strokeWidth={1.5} aria-hidden="true" /></div>
+    <div className="gate-overview" aria-labelledby="gate-overview-heading">
+      <div className="gate-overview-heading">
+        <h2 id="gate-overview-heading">六道门 · 主流程</h2>
+        <p>门是链条上的停行点：呈交物到位 → <strong>用户裁决</strong> → 才进入下一段。未过门的产物不算交付。</p>
+      </div>
+      <ol className="gate-track">
+        {GATES_OVERVIEW.map((gate) => {
+          const GateIcon = gate.icon;
+          return <li key={gate.id} className="gate-card">
+            <span className="gate-id"><GateIcon size={18} strokeWidth={1.8} aria-hidden="true" />门{gate.id}</span>
+            <strong>{gate.name}</strong>
+            <p>{gate.ask}</p>
+            <dl>
+              <div><dt>呈交</dt><dd>{gate.artifact}</dd></div>
+              <div><dt>裁决</dt><dd>{gate.by}</dd></div>
+            </dl>
+          </li>;
+        })}
+      </ol>
+    </div>
+    <div className="layer-note" aria-labelledby="layer-note-heading">
+      <h2 id="layer-note-heading">两层，各管各的</h2>
+      <div className="layer-cards">
+        <div className="layer-card is-product">
+          <span className="layer-tag">产品层 · 本仓库</span>
+          <p><strong>交付门禁</strong>管「这次做的东西对不对」：六道门 + 证据留痕，全部发生在仓库内，决定交付质量。</p>
+        </div>
+        <div className="layer-card is-meta">
+          <span className="layer-tag">元层 · 仓库外围</span>
+          <p><strong>自进化循环</strong>管「下一版做得更好」：巡检、研究、修仓库的账本都放在仓库外（本地状态与报告目录，不入库）。它开出的每一笔改动仍要<strong>走一遍六道门</strong>才进仓库——循环停了，仓库照常可用。</p>
+        </div>
+      </div>
+    </div>
+    <p className="workflow-lede-note">下面的回放是六道门在一个真实案例（睿耳 RuiEar）里的实际流转。</p>
     <div className="workflow-replay">
       <div className="replay-copy">
         <p className="replay-kicker">一次真实交付的记录 · 演示回放</p>

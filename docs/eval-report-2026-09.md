@@ -17,7 +17,7 @@
 
 | 指标 | 值 |
 | --- | --- |
-| 已真实执行场景 | **44/71（62%）**（含本批新增 10 条 + R061-01 两场景清偿 + R149-01 批次一至二十六各 1 条 + e3 族四条） |
+| 已真实执行场景 | **45/71（63%）**（含本批新增 10 条 + R061-01 两场景清偿 + R149-01 批次一至二十六各 1 条 + e3 族四条） |
 | 本批功能分（最近一次记录） | 10/10 场景 100 分 |
 | 本批样式分（8 维，7 个 UI 产物） | 6 个 100，1 个 88（`workflow-progress-visibility`：对比度实测与动效断言两项诚实缺测扣分） |
 | 真实缺陷抓取 | **9 个 P1 + 8 项 P2 级发现**（P1=7 产品+2 流程；P2=5 产品+3 测试侧；2026-09-25 勘误：原"4 P2"系漏计，全表见 §3.1） |
@@ -109,22 +109,22 @@ v1 记录按台账规则保留历史。**此事件本身已作为流程缺陷写
 
 | # | 场景 | 族群 |
 | --- | --- | --- |
-| 1 | `direction-dials-recorded` | 方向三旋钮 |
-| 2 | `direction-draft-gate` | 门径流程行为 |
-| 3 | `material-confirmation-gate` | 门径流程行为 |
-| 4 | `prototype-before-code` | 门径流程行为 |
-| 5 | `workflow-progress-visibility` | 门径流程行为 |
-| 6 | `reduced-motion-over-style` | 动效 |
-| 7 | `physical-motion-presets` | 动效 |
-| 8 | `long-list-choreography` | 动效 |
-| 9 | `plain-language-ui-intake` | 口语摄取 |
-| 10 | `intake-resume-with-scoped-change` | 口语摄取 |
-| 11 | `product-readme-evidence-boundary` | README 证据边界 |
-| 12 | `offline-fallback` | 降级边界 |
-| 13 | `web3d-hud-viewport-choreography` | 3D/HUD 视口编排 |
-| 14 | `remotion-overlap-math` | Remotion 算术 |
-| 15 | `reference-first-adaptation` | 素材参考优先 |
-| 16 | `operations-not-marketing` | 运营台 vs 营销页 |
+| 1 | `operations-not-marketing` | 运营台 vs 营销页 |
+| 2 | `reference-first-adaptation` | 素材参考优先 |
+| 3 | `direction-draft-gate` | 门径流程行为 |
+| 4 | `material-confirmation-gate` | 门径流程行为 |
+| 5 | `prototype-before-code` | 门径流程行为 |
+| 6 | `remotion-overlap-math` | Remotion 算术 |
+| 7 | `plain-language-ui-intake` | 口语摄取 |
+| 8 | `intake-resume-with-scoped-change` | 口语摄取 |
+| 9 | `offline-fallback` | 降级边界 |
+| 10 | `reduced-motion-over-style` | 动效 |
+| 11 | `physical-motion-presets` | 动效 |
+| 12 | `long-list-choreography` | 动效 |
+| 13 | `product-readme-evidence-boundary` | README 证据边界 |
+| 14 | `workflow-progress-visibility` | 门径流程行为 |
+| 15 | `web3d-hud-viewport-choreography` | 3D/HUD 视口编排 |
+| 16 | `direction-dials-recorded` | 方向三旋钮 |
 | 17 | `detail-constants-application` | 细节常数 |
 | 18 | `slop-test-five-clusters` | 五类校准 |
 | 19 | `remotion-brand-animation` | Remotion 品牌 |
@@ -147,19 +147,19 @@ v1 记录按台账规则保留历史。**此事件本身已作为流程缺陷写
 | 36 | `e3-evidence-led-priorities` | e3 证据驱动优先级 |
 | 37 | `material-source-prioritization` | 素材寻源纪律 |
 | 38 | `material-access-secondary-bucket` | 不可达来源桶管理 |
-| 39 | `assembly-first-interaction-3d` | 装配优先交互 3D |
 | 39 | `reference-to-adaptation-boundary` | 竞品模仿边界 |
 | 40 | `design-md-baseline-adaptation` | 品牌基线取用改编 |
 | 41 | `plan-lock-before-prototype` | 计划锁定纪律 |
 | 42 | `execute-requires-plan-lock` | 执行授权门禁 |
 | 43 | `detail-critique-before-gates` | 细节批评先行 |
-| 44 | `prototype-montage-fallback` | 生图降级蒙太奇 |
+| 44 | `assembly-first-interaction-3d` | 装配优先交互 3D |
+| 45 | `prototype-montage-fallback` | 生图降级蒙太奇 |
 
 族群汇总：动效 **3**、门径流程行为 **4**、口语摄取 2、方向三旋钮 / 细节
 常数 / 五类校准 / README 证据边界 / 降级边界 / 3D-HUD / Remotion 算术 /
 Remotion 品牌 / 3D 开源基线 / 动画生态路由 / 既有栈保持 / 动效免费层 / 只读评审纪律 / 品牌服从性 / 供应链投毒防御 / 诚实验证边界 / 工具真实性核查 / Remotion 寻帧 / 渲染范围纪律 / 截图重建保真度 / 设计契约先行 / MCP 门禁留痕 / e3 对话评审纪律×2 / 素材参考优先 / 运营台各 **1**。
-语料 71 条中 **material 族、e3 族、spatial 族、dispatch 族等尚未覆盖**；
-24 条中 9 条为决策/文本类交付物（逐判据自评、无浏览器断言——轮 181 审计裁定口径：有 Playwright 全链断言的场景属强证据档不计入；review-stays-read-only 的只读走查含浏览器断言，亦不计入）（逐判据自评，弱于浏览器断言一档，见上文）。
+语料 71 条中 material 族全量、spatial 族、dispatch 族等尚未覆盖（e3 族已入 3 条、素材族已入 2 条）；
+45 条中 10 条为决策/文本类交付物（逐判据自评、无浏览器断言——轮 188 审计裁定口径：有 Playwright 全链断言的场景属强证据档不计入）
 因此「45/71、均分 100」**不可外推**为整体质量结论，仅代表已执行族群的
 记录。硬场景跳过原因：Motion MCP 未配置（G4 未解锁）→ motion 重场景
 延后；Stitch MCP 不可达 → 相关场景延后；需浏览器交付的场景按门径待用户

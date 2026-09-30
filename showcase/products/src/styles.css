@@ -376,15 +376,6 @@ img { display: block; max-width: 100%; }
 .gate-card:not(:last-child)::after { content: "→"; position: absolute; right: -9px; top: 44%; color: var(--muted, #61717d); font-size: 12px; z-index: 2; }
 
 /* —— 两层架构说明 —— */
-.layer-note { display: grid; gap: 12px; margin-bottom: 10px; }
-.layer-note h2 { font-size: 19px; margin: 0; }
-.layer-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.layer-card { padding: 16px 18px; border-radius: 6px; border: 1px solid var(--line, #d9e2e7); background: var(--paper, #fafcfd); }
-.layer-card.is-product { border-left: 3px solid var(--green, #177656); }
-.layer-card.is-meta { border-left: 3px solid var(--accent, #2566c4); }
-.layer-tag { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; margin-bottom: 8px; color: var(--muted, #61717d); }
-.layer-card p { margin: 0; font-size: 13px; line-height: 1.75; color: var(--muted, #61717d); }
-.layer-card p strong { color: inherit; }
 .workflow-lede-note { margin: 0 0 18px; font-size: 13px; color: var(--muted, #61717d); }
 
 @media (max-width: 1020px) {
@@ -393,5 +384,4 @@ img { display: block; max-width: 100%; }
 }
 @media (max-width: 620px) {
   .gate-track { grid-template-columns: repeat(2, 1fr); }
-  .layer-cards { grid-template-columns: 1fr; }
 }

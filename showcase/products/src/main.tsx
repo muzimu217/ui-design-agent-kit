@@ -471,19 +471,6 @@ function WorkflowSection() {
         })}
       </ol>
     </div>
-    <div className="layer-note" aria-labelledby="layer-note-heading">
-      <h2 id="layer-note-heading">两层，各管各的</h2>
-      <div className="layer-cards">
-        <div className="layer-card is-product">
-          <span className="layer-tag">产品层 · 本仓库</span>
-          <p><strong>交付门禁</strong>管「这次做的东西对不对」：六道门 + 证据留痕，全部发生在仓库内，决定交付质量。</p>
-        </div>
-        <div className="layer-card is-meta">
-          <span className="layer-tag">元层 · 仓库外围</span>
-          <p><strong>自进化循环</strong>管「下一版做得更好」：巡检、研究、修仓库的账本都放在仓库外（本地状态与报告目录，不入库）。它开出的每一笔改动仍要<strong>走一遍六道门</strong>才进仓库——循环停了，仓库照常可用。</p>
-        </div>
-      </div>
-    </div>
     <p className="workflow-lede-note">下面的回放是六道门在一个真实案例（睿耳 RuiEar）里的实际流转。</p>
     <div className="workflow-replay">
       <div className="replay-copy">

@@ -4,7 +4,7 @@ Construction-side standards for tables, ledgers, and consoles — the
 operational surface type where the user's task is scanning many rows and
 acting on a few. This band is deliberately uncovered by external taste
 references ("not dashboards, not data tables"); these rules come from
-ui-ux-pro-max plus this kit's own delivered operations tools. Detection and
+uak-design-system plus this kit's own delivered operations tools. Detection and
 triage stay in [detail-critique.md](detail-critique.md).
 
 Precedence: the governing design contract wins; recorded

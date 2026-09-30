@@ -116,7 +116,7 @@ target project's own code.
 
 ## Local design knowledge
 
-`ui-ux-pro-max` contains a Python standard-library search tool. Resolve its base
+`uak-design-system` contains a Python standard-library search tool. Resolve its base
 directory from the loaded skill location, not from the current working directory.
 
 ```text
@@ -160,7 +160,7 @@ first matching row wins and the choice is recorded in the acceptance notes.
 
 | Task verb | Route to | Not for |
 | --- | --- | --- |
-| Look up data (palette, font pair, UX pattern, anti-pattern) | `ui-ux-pro-max` | Critique, artifacts, or motion |
+| Look up data (palette, font pair, UX pattern, anti-pattern) | `uak-design-system` | Critique, artifacts, or motion |
 | Review, critique, or targeted refinement is requested | `uak-visual-critique` | Data lookup; producing artifacts |
 | Decide polish judgment calls (component and animation details) | `uak-design-thinking` Part A | Replacing a requested review; broad redesign |
 | Expressive interaction motion (magnetic pointer, scroll choreography, loading screens) | `jiejoe-design` + the GSAP skills | General polish already covered by the Motion route |

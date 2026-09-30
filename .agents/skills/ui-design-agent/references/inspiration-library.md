@@ -54,7 +54,7 @@ and verify license or permission before adapting anything.
 
 ## Installed local knowledge
 
-- `ui-ux-pro-max` already bundles searchable style, palette, font, UX, icon,
+- `uak-design-system` already bundles searchable style, palette, font, UX, icon,
   and GSAP data. Prefer it for unresolved design-system or UX decisions before
   reaching for an external gallery.
 - `uak-visual-critique` supplies critique and refinement playbooks for review
@@ -86,7 +86,7 @@ These are starting points before the task-specific score from
 
 | Band | Sources | Why |
 | --- | --- | --- |
-| Primary | Local `ui-ux-pro-max`, React Bits, Mobbin, Refero, Wikimedia Commons | Strong task fit, inspectable evidence, or a clear per-file rights path |
+| Primary | Local `uak-design-system`, React Bits, Mobbin, Refero, Wikimedia Commons | Strong task fit, inspectable evidence, or a clear per-file rights path |
 | Secondary | Unsplash, Pexels, Openverse, Uiverse.io, UI Prompt Site, rate-limited galleries | Useful when reachable, but current isolated access or rights evidence needs another check |
 | Research-only | Awwwards, Godly, Dark Design, Best Website Gallery, Shots, MotionSites AI | Good visual direction, but normally not reusable assets or code |
 | Excluded until resolved | Placeholder, untrusted, or explicitly prohibited sources | Cannot support a production decision |
@@ -176,7 +176,7 @@ analyze first, decide second. Never add a source on a bare URL.
 Not installed in this kit; listed as candidate capabilities for hosts that
 support Agent Skills. Treat them as references for how taste is encoded, and
 verify platform fit and license before adopting their content. The kit's
-installed `ui-ux-pro-max` and `uak-visual-critique` remain the default taste sources.
+installed `uak-design-system` and `uak-visual-critique` remain the default taste sources.
 
 | Source | What it provides | Best used for | Note |
 | --- | --- | --- | --- |

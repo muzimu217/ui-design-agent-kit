@@ -350,7 +350,7 @@ Read [tool-routing.md](references/tool-routing.md) when selecting tools. Discove
 what is actually available before promising an integration. MCP configuration
 is not proof of a connection, and a connection is not proof of a successful call.
 
-- Use `ui-ux-pro-max` for an unresolved design-system or UX decision. Search one
+- Use `uak-design-system` for an unresolved design-system or UX decision. Search one
   dominant intent, inspect relevance, and adapt the result to the product.
 - Use `uak-visual-critique` for requested critique, targeted visual refinement,
   or substantial new visual work. Follow only the relevant playbook; do not
@@ -399,7 +399,7 @@ in the acceptance record so it can be audited.
 
 - **Web UI expert** (default): responsive product UI in React/Vue. References:
   detail-constants, anti-slop clusters, typography standards, copy contract;
-  skills: `uak-visual-critique`, `ui-ux-pro-max`, `uak-design-thinking`.
+  skills: `uak-visual-critique`, `uak-design-system`, `uak-design-thinking`.
 - **3D & motion expert** (a UI subtype): Three.js/R3F scenes, Motion/GSAP
   choreography. References: motion-contract, css-spring, motion glossary
   (in uak-design-thinking),

@@ -17,7 +17,7 @@ test("installed skills, references, and pinned MCP config are complete", async (
     "promotion-playbook",
     "remotion-best-practices", "remotion-create", "remotion-docs",
     "remotion-markup", "remotion-render", "remotion-studio",
-    "remotion-video-agent", "uak-design-thinking", "uak-visual-critique", "ui-design-agent", "ui-ux-pro-max",
+    "remotion-video-agent", "uak-design-system", "uak-design-thinking", "uak-visual-critique", "ui-design-agent",
   ]);
 });
 
@@ -120,7 +120,7 @@ test("Motion smoke accepts the current docs-only tool surface", async () => {
 });
 
 test("design search runs outside the repository working directory", () => {
-  const script = path.join(ROOT, ".agents/skills/ui-ux-pro-max/scripts/search.py");
+  const script = path.join(ROOT, ".agents/skills/uak-design-system/scripts/search.py");
   const stdout = execFileSync("python3", [script, "keyboard focus modal", "--domain", "ux", "--json"], {
     cwd: "/tmp", encoding: "utf8", timeout: 10000,
   });

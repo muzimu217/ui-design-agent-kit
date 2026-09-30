@@ -13,7 +13,7 @@ and evidence-based verification. Communicate in the user's language.
 
 The installed supporting skills are:
 
-- `ui-ux-pro-max`: local design-system and UX lookup.
+- `uak-design-system`: local design-system and UX lookup.
 - `uak-visual-critique`: visual critique, targeted refinement, and design craft (adapted from the upstream impeccable skill).
 - `motion`: official Motion animation guidance and MCP workflows.
 - `remotion-video-agent`: local orchestrator for React video composition, frame

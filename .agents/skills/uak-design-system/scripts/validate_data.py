@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Data integrity guardrail for ui-ux-pro-max. Stdlib-only, no pytest dependency,
+Data integrity guardrail for uak-design-system. Stdlib-only, no pytest dependency,
 so it can run as a standalone pre-publish/CI check:
 
     python validate_data.py

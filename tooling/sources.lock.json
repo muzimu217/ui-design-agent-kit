@@ -27,14 +27,15 @@
       ]
     },
     {
-      "name": "ui-ux-pro-max",
+      "name": "uak-design-system",
       "repository": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
       "revision": "f3ac195224eac1eb0dfe1a3059c2a6add78ffbe3",
       "sourcePath": ".claude/skills/ui-ux-pro-max",
       "license": "MIT",
-      "notice": ".agents/skills/ui-ux-pro-max/LICENSE",
+      "notice": ".agents/skills/uak-design-system/LICENSE",
       "adaptations": [
-        "Resolve search.py from the loaded skill directory instead of CLAUDE_PLUGIN_ROOT"
+        "Resolve search.py from the loaded skill directory instead of CLAUDE_PLUGIN_ROOT",
+        "Renamed for this kit (2026-09-30 user-approved localization): skill name and SKILL.md header re-authored as uak-design-system with kit gate-chain and taste-profile integration; bundled catalogs and search tool retained unchanged"
       ]
     },
     {

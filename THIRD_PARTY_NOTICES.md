@@ -19,10 +19,13 @@ a substitute for each upstream repository's license text.
   (2026-09-30): skill name, SKILL.md frontmatter, and intro re-authored with
   kit gate-chain and taste-profile integration; command playbooks and launcher
   retained with directory paths updated.
-- UI UX Pro Max, `nextlevelbuilder/ui-ux-pro-max-skill`, revision
+- UI UX Pro Max (renamed to `uak-design-system`), `nextlevelbuilder/ui-ux-pro-max-skill`, revision
   `f3ac195224eac1eb0dfe1a3059c2a6add78ffbe3`: MIT. Source:
   https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
-  The original LICENSE is preserved in `.agents/skills/ui-ux-pro-max/`.
+  The original LICENSE is preserved in `.agents/skills/uak-design-system/`.
+  Renamed for this kit (2026-09-30): skill name and SKILL.md header
+  re-authored as `uak-design-system` with kit gate-chain and taste-profile
+  integration; bundled catalogs and search tool retained unchanged.
 - Remotion Agent Skills, `remotion-dev/skills`, revision
   `54e9b19a612897171e0b3b242e01c2badba4a272`: source repository does not
   publish a license field in its GitHub metadata; review its current repository
@@ -52,7 +55,7 @@ a substitute for each upstream repository's license text.
 
 ## Local adaptations
 
-- UI UX Pro Max: replace the Claude-specific script root with the loaded skill's
+- UI UX Pro Max (`uak-design-system`): replace the Claude-specific script root with the loaded skill's
   absolute directory. The search implementation and datasets are unchanged.
 - Motion: move the top-level `argument-hint` to `metadata.argument-hint` for this
   kit's skill validator. The hint text and instruction body are unchanged.

@@ -2230,6 +2230,26 @@
         ],
         "notes": "文案契约落地：三态真夹具（中文库存应用）+Playwright 断言×7 全 PASS——①机制词负路径清零（Webhook/API/Token/推送配置/回调 0 命中）+用户侧名称在位（到货提醒/低库存警报/每周对账单）②CTA 结果导向（保存提醒设置）③动作词一致实测（真点击后读 aria-live 记录用同一「保存」词）④错误=原因（网络断开）+修复双通道（重试保存/复制设置内容）非纯道歉，长度 72 字符 ⑤空态=行动邀请（新建第一张采购单+引导语）+裸暂无数据负路径 0 命中；console 0+三态全页截图；脚本首写 ReferenceError（常量遮蔽全局 URL）当场修复——断言脚本本身也要过运行关；styleReview=文案专项判据即本批断言集，视觉八维不在场景范围未评已标注"
       }
+    ],
+    "microfix-channel-applied": [
+      {
+        "date": "2026-09-30",
+        "recordedAt": "2026-09-30T22:18:52.359Z",
+        "commit": "d817f2be65ea4f6f79bdd1d6eec8b40ce1657452",
+        "scores": {
+          "Handles all three tweaks through the microfix channel with one submission (before/after evidence plus a one-line note)": 2,
+          "Does not restart gate A-C for the tweaks and does not claim the full chain re-ran": 2,
+          "Records each tweak (page, spot, user request) into the acceptance record": 2,
+          "States the channel's cap and what would push the work back to the normal gates": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/microfix-channel-applied/MICROFIX.md",
+          "evals/runs/microfix-channel-applied/evidence/before.png",
+          "evals/runs/microfix-channel-applied/evidence/after.png"
+        ],
+        "notes": "微修通道纪律：三处微调一轮收口（标题文案/hero 换用户上传新图/主按钮浅一档），两步 git 历史做改前改后（32a6798 v1 基线→d817f2b 微调 v2），diff stat 恰 2 文件无第四处夹带；改前改后实测三值（title 概览→今日概览/btn #177656→#1e8062/hero v1→v2）；通道上限 ≤3/轮满额收口+回正门触发器声明（第四处/布局方向/新外部素材即出通道）；未重启门 A-C 未声称全链重跑；非弃权声明；**对比度取舍=实算三档**：首选浅档 #2b8a68 白字 4.25:1<4.5 当场拒用，改选 #1e8062 实算 4.86:1 过 AA——「浅一档」意图满足且红线不破（手写 4.9:1+ 被实算纪律当场纠正）；styleReview=微修类无新设计面，对比度已实算其余未评已标注"
+      }
     ]
   }
 }

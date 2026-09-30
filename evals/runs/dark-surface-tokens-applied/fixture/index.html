@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>节点观测台 · 深色</title>
+<style>
+/* 双值 token：每个颜色 token 同时定义 light 与 dark 值；dark 为默认基线 */
+:root, :root[data-theme="light"]{
+  --bg:#f2f5f7; --surface-card:#ffffff; --surface-raised:#ffffff;
+  --border:rgba(13,42,64,0.14);
+  --text:#26343d; --text-secondary:#5a6a75; --text-placeholder:#93a1ab;
+  --accent:#177656;
+}
+:root[data-theme="dark"]{
+  --bg:#101418; --surface-card:#171d24; --surface-raised:#1d242c;
+  --border:rgba(255,255,255,0.08);
+  --text:#e8edf2; --text-secondary:#a8b4bf; --text-placeholder:#6b7682;
+  --accent:#3fbf8a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+font:15px/1.7 'PingFang SC','Microsoft YaHei',sans-serif;padding:40px 24px 80px}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:21px;margin:0 0 24px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.card{background:var(--surface-card);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+.card h2{font-size:14px;margin:0 0 6px;color:var(--text-secondary)}
+.card b{font-size:24px;font-weight:600}
+.panel{background:var(--surface-raised);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;color:var(--text-secondary);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--border)}
+td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.btn-accent{background:var(--accent);color:#0b1210;border:none;border-radius:6px;padding:9px 18px;font-size:14px;cursor:pointer}
+.ph::placeholder{color:var(--text-placeholder)}
+.input{background:var(--surface-card);border:1px solid var(--border);border-radius:6px;
+padding:8px 12px;color:var(--text);width:220px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>节点观测台</h1>
+<div class="grid">
+  <div class="card"><h2>在线节点</h2><b>142</b></div>
+  <div class="card"><h2>今日告警</h2><b>3</b></div>
+</div>
+<div class="panel">
+  <table aria-label="节点列表">
+    <thead><tr><th>节点</th><th>区域</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr><td>edge-hkg-01</td><td>香港</td><td>正常</td></tr>
+      <tr><td>edge-sin-03</td><td>新加坡</td><td>正常</td></tr>
+      <tr><td>edge-fra-02</td><td>法兰克福</td><td>观察中</td></tr>
+    </tbody>
+  </table>
+  <p style="margin:14px 0 0;display:flex;gap:12px;align-items:center">
+    <input class="input ph" placeholder="搜索节点名称"/>
+    <button class="btn-accent">新建观测任务</button>
+  </p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+# run-dir-manifest（证明零视觉产物与单次检索边界）
+evals/runs/baseline-lookup-boundary/DIRECTION.md
+evals/runs/baseline-lookup-boundary/evidence/lookup-log.txt
+evals/runs/baseline-lookup-boundary/evidence/run-dir-manifest.txt

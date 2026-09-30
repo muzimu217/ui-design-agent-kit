@@ -1,0 +1,8 @@
+# lookup-log 2026-09-30T19:17Z
+门 A 前检索声明：恰好一次定向抓取（R110-02 最小定向边界内）
+
+1. WebFetch https://habitica.com/ — 200（JS 壳：仅标题渲染）
+   实得事实：产品定位口号 'Habitica - Gamify Your Life'（33 字符，页面 title）
+   未得：正文 hero/分节/CTA/配色（需浏览器渲染实机校验——过门后第一步）
+
+合计：1 源 1 抓 0 下载 0 候选池——多源扫荡未发生，采挖等门 B

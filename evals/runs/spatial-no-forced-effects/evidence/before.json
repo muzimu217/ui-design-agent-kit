@@ -1,0 +1,27 @@
+{
+  "capturedAt": "2026-09-30T04:03+08:00",
+  "tool": "Playwright MCP (Chromium headless)",
+  "url": "http://localhost:4200/ (修复前缺陷版 fixture)",
+  "defect1FocusInvisibility": {
+    "keyboardFocusOn": "qty (number input)",
+    "computedOutlineWidth": "3px",
+    "computedOutlineStyle": "none",
+    "computedBoxShadow": "none",
+    "finding": "全局 `:focus { outline: none; }` 干掉焦点可见性且无任何替代样式——键盘用户无法定位焦点（WCAG 2.4.7 失败）；outlineWidth 3px 是 UA 计算残留值，style=none 即不可见",
+    "screenshot": "before-focus-invisible.png"
+  },
+  "defect2ErrorFeedback": {
+    "path": "键盘路径：focus qty → focus submit → 提交非法值",
+    "focusStaysOnSubmit": true,
+    "focusAfterError": "submit",
+    "errorVisible": true,
+    "errorText": "请输入 1–12 的整数",
+    "errorRole": null,
+    "errorAriaLive": null,
+    "inputAriaInvalid": null,
+    "inputAriaDescribedby": null,
+    "finding": "错误只改视觉 DOM：无 role=alert/aria-live（读屏无感知）、无 aria-invalid/aria-describedby（字段与错误无程序关联）、焦点滞留提交按钮（键盘用户不知出错与错位）",
+    "methodologyNote": "首测用程序化 element.click() 得到 focusAfterError=qty 伪影——改用真实键盘焦点路径（focus submit → click）才拿到真实缺陷行为"
+  },
+  "consoleErrors": 0
+}

@@ -1,0 +1,52 @@
+{
+  "capturedAt": "2026-09-30T04:08+08:00",
+  "tool": "Playwright MCP (Chromium headless)，真实键盘 Tab/Enter 驱动",
+  "url": "http://localhost:4200/ (修复后)",
+  "fix1FocusVisible": {
+    "tabFocus": "qty（真实键盘 Tab）",
+    "matchesFocusVisible": true,
+    "outline": "2px solid rgb(37,102,196) (#2566c4)",
+    "outlineContrastVsPageBg": "5.08:1（WCAG 1.4.11 非文本 ≥3 达标；vs 输入框底 5.40:1）",
+    "boxShadow": "rgba(37,102,196,0.22) 0 0 0 3px（双通道）",
+    "screenshot": "after-focus-visible.png"
+  },
+  "fix2ErrorFeedback": {
+    "path": "qty=99 → Tab submit → Enter",
+    "focusMovedToField": true,
+    "focusAfterError": "qty",
+    "ariaInvalid": "true",
+    "ariaDescribedby": "error → 「请输入 1–12 的整数」",
+    "errorRole": "alert（读屏公告通道）",
+    "errorBorderApplied": "rgb(160,44,44)（aria-invalid 联动样式）",
+    "errorTextContrast": "#a02c2c on #fafcfd = 7.06:1（≥4.5 AA）",
+    "successPathResets": {
+      "ariaInvalidAfterFix": "false",
+      "errorHidden": true
+    },
+    "screenshots": [
+      "after-error-feedback.png"
+    ]
+  },
+  "restraintChecks": {
+    "mediaElements": {
+      "canvas": 0,
+      "video": 0,
+      "iframe": 0,
+      "object": 0,
+      "embed": 0
+    },
+    "bodyAnimation": "none",
+    "htmlContains3dRefs": false,
+    "packageJsonDiffVsDefectCommit": "无（零新依赖，dependencies 为空）",
+    "layoutUnchanged": {
+      "noHorizontalOverflow375": true,
+      "tableRowsIntact": 4
+    },
+    "tabOrder": [
+      "qty",
+      "submit"
+    ]
+  },
+  "consoleErrors": 0,
+  "toolLesson": "自答根路径中间件首版把 index.html 读盘缓存在启动时——HTML 编辑不热更（role=alert/describedby 首测缺失的根因），改每请求现读盘修复"
+}

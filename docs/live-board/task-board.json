@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-09-29T19:30:00+08:00",
- "updatedBy": "轮 216 · 每小时评审循环",
+ "updatedAt": "2026-09-29T20:25:00+08:00",
+ "updatedBy": "轮 217 · 每小时评审循环",
  "stats": {
-  "corpus": "53/71",
-  "corpusPercent": 75,
-  "streak100": 36,
+  "corpus": "54/71",
+  "corpusPercent": 76,
+  "streak100": 37,
   "tests": "94/94",
   "a11y": "0 违规",
   "audits": "13 批零上下文回归审计"
@@ -12,11 +12,11 @@
  "activeTask": {
   "id": "R149-01",
   "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-  "status": "75%（53/71）· 40 达标线已越，超额积累",
+  "status": "76%（54/71）· 超额积累",
   "startedAt": "2026-09-28",
   "currentGate": "门E 验收——每批走完执行+验证+入账+级联+合并上线全链",
-  "lastArtifact": "批次三十六 spatial-render-evidence 100 分（验收 FAIL 判定：GLB 404+暖色占比 0 vs 对照 0.2684 自校准）",
-  "next": "批次三十七续批（余 18 条超额）"
+  "lastArtifact": "批次三十七 spatial-no-forced-effects 100 分（注意力纪律：两步 git 历史窄修复，diff 仅三文件各一段）",
+  "next": "批次三十八续批（余 17 条超额）"
  },
  "gates": [
   {
@@ -51,7 +51,7 @@
    "id": "E",
    "name": "每轮验收",
    "status": "active",
-   "note": "三十六批连续 100 分，每批 Playwright 断言/帧检视/实查取证",
+   "note": "三十七批连续 100 分，每批 Playwright 断言/帧检视/实查取证",
    "at": "进行中"
   },
   {
@@ -63,6 +63,16 @@
   }
  ],
  "recentFlow": [
+  {
+   "time": "09-29 20:25",
+   "event": "批次三十七入账：spatial-no-forced-effects 100 分（注意力纪律——键盘焦点可见 5.08:1+错误三通道 alert/aria-invalid/焦点转移；两步 git 历史证 diff 仅三文件段）——54/71 76%",
+   "type": "eval"
+  },
+  {
+   "time": "09-29 20:15",
+   "event": "B 站第十三程：wbi 搜索配方退化（v_voucher 软拒需完整签名），popular feed 免签名可用；feed 态=故事向、工具内容走搜索长尾",
+   "type": "research"
+  },
   {
    "time": "09-29 19:30",
    "event": "批次三十六入账：spatial-render-evidence 100 分（验收者视角 FAIL 判定纪律——GLB 404 网络证据+截图像素检查暖色占比 0 vs 对照自校准 0.2684；亮度 std 被校准证伪改色相轴）——53/71 75%",
@@ -112,16 +122,6 @@
    "time": "09-29 12:30",
    "event": "审计批处置：批次十七~廿二+v2+R194-01 PASS（2 轻度口径对齐）+§4.1 全表程序化重建（45 行连续编号）+三处陈旧声称修正+SKILL 孤行残片清理",
    "type": "audit"
-  },
-  {
-   "time": "09-29 11:45",
-   "event": "批次二十五入账：细节批评先行 100 分（四发现分诊/修自捕 4.90:1/倾斜裁量权交用户）",
-   "type": "eval"
-  },
-  {
-   "time": "09-29 10:16",
-   "event": "批次二十三入账：计划锁定纪律 100 分（四问带影响面/五假设显式待确认）——41/71",
-   "type": "eval"
   }
  ]
 }

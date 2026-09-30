@@ -1,0 +1,17 @@
+{
+  "scores": {
+    "Keeps edits scoped to the table's focus and feedback": 2,
+    "Does not invoke asset generation or add 3D/video dependencies": 2,
+    "Uses existing design and interaction conventions": 2,
+    "Verifies the affected keyboard and error states": 2
+  },
+  "evidence": [
+    "evals/runs/spatial-no-forced-effects/EVIDENCE.md",
+    "evals/runs/spatial-no-forced-effects/evidence/before.json",
+    "evals/runs/spatial-no-forced-effects/evidence/after.json",
+    "evals/runs/spatial-no-forced-effects/evidence/before-focus-invisible.png",
+    "evals/runs/spatial-no-forced-effects/evidence/after-focus-visible.png",
+    "evals/runs/spatial-no-forced-effects/evidence/after-error-feedback.png"
+  ],
+  "notes": "注意力纪律场景（kit 含 3D/视频指令但需求为窄修复）：真实两步 git 历史使克制可验证——缺陷版 commit→修复 commit diff 仅三文件各一段（index.html 4 行/main.js 7 行/styles.css 16 行），package.json 零变化零新依赖；焦点修复=:focus-visible 双通道（Tab 真实键盘断言 matchesFocusVisible+2px #2566c4 环 5.08:1 过 1.4.11）；错误三通道=role=alert 公告+aria-invalid/describedby 程序关联（指向文本实读一致）+焦点移到出错字段，成功路径复位，错误文本 7.06:1；克制检查=媒体元素全 0/body animation none/375 零溢出/Tab 序不变；方法教训=程序化 click 不改焦点（before.json 伪影记录）+自答根路径中间件 HTML 缓存致改动不热更（差点误判修复无效，改每请求现读盘）；styleReview 未评（考修复纪律，对比度已实测入证据）"
+}

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23177656'/%3E%3Cpath d='M5 8h6M8 5v6' stroke='%23fafcfd' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <title>器材库存 · 调拨登记</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="head">
+        <h1>器材库存 · 调拨登记</h1>
+        <p>操作台：低库存行需在 48h 内补拨</p>
+      </header>
+
+      <table class="inv">
+        <thead>
+          <tr><th scope="col">SKU</th><th scope="col">名称</th><th scope="col">在库</th><th scope="col">在途</th><th scope="col">状态</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>UI-0417</td><td>标定色卡 A2</td><td>36</td><td>0</td><td><span class="pill ok">正常</span></td></tr>
+          <tr><td>UI-0523</td><td>雾度标准片</td><td>8</td><td>20</td><td><span class="pill warn">低库存</span></td></tr>
+          <tr><td>UI-0602</td><td>三脚架云台</td><td>17</td><td>0</td><td><span class="pill ok">正常</span></td></tr>
+          <tr><td>UI-0711</td><td>测色仪备机</td><td>3</td><td>0</td><td><span class="pill bad">告急</span></td></tr>
+        </tbody>
+      </table>
+
+      <form class="transfer" id="transfer-form" novalidate>
+        <label for="qty">调拨数量（1–12）</label>
+        <input id="qty" name="qty" type="number" min="1" max="12" aria-describedby="error" />
+        <button type="submit" id="submit">提交调拨</button>
+        <p class="error" id="error" role="alert" hidden></p>
+      </form>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -2,9 +2,9 @@
   "updatedAt": "2026-09-30",
   "updatedBy": "轮 220 · 每小时评审循环",
   "stats": {
-    "corpus": "65/71",
-    "corpusPercent": 92,
-    "streak100": 49,
+    "corpus": "66/71",
+    "corpusPercent": 93,
+    "streak100": 50,
     "tests": "94/94",
     "a11y": "0 违规",
     "audits": "18 批零上下文回归审计"
@@ -12,11 +12,11 @@
   "activeTask": {
     "id": "R149-01",
     "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "92%（65/71）· 连续 49 批 100",
+    "status": "93%（66/71）· 连续 50 批 100（里程碑）",
     "startedAt": "2026-09-28",
-    "currentGate": "批四十九已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
-    "lastArtifact": "批次四十九 baseline-lookup-boundary 100 分（基线查找边界：一次定向抓取 named Habitica unverified-partial+多源扫荡未发生+基线证明与风格灵感分离）",
-    "next": "批次五十续批（余 6 条）；第 18 批审计结论待回填"
+    "currentGate": "批五十已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
+    "lastArtifact": "批次五十 typography-standards-applied 100 分（排版标准落地：Fraunces 900×Public Sans 400 真对比+5.65x 字号跳跃+tabular-nums+零 eyebrow，实机断言×7 全 PASS+对比度 14.62:1）",
+    "next": "批次五十一续批（余 5 条）；里程碑 HISTORY 已记"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 14:3x",
+      "event": "批次五十入账（里程碑）：typography-standards-applied 100 分（排版标准落地——identity 字体 Fraunces/真对比角色/5.65x 跳跃/tabular-nums/零 eyebrow，实机断言×7）——66/71 93%，连续 50 批",
+      "type": "eval"
+    },
+    {
       "time": "09-30 13:4x",
       "event": "第 18 批审计回填：批次 47/48=CLEAN 5/5（Linear baseline token 逐字 verbatim 核验+方向稿固定格式+零视觉产物+零夹带）；建议级发现已采纳——pulled-linear 检视记录以证据副本入 run 目录（fresh-clone 可用，目录 vendor 规则不破）",
       "type": "audit"
@@ -106,11 +111,6 @@
     {
       "time": "09-30 07:2x",
       "event": "批次四十三入账：intake-network-unavailable 100 分（无网络摄取纪律——零外部调用不虚构/上轮素材标未重新验证/提示词推进 v2/缺口具体化）——59/71 83%",
-      "type": "eval"
-    },
-    {
-      "time": "09-30 06:3x",
-      "event": "批次四十二入账：agent-owned-material-research 100 分（代理自有检索纪律——6 次真实调用含 5 次降级全留痕，候选标待确认零采用，授权标待查）——58/71 82%；第 15 批审计 CLEAN",
       "type": "eval"
     }
   ]

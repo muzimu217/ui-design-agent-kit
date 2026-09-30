@@ -2188,6 +2188,27 @@
         ],
         "notes": "基线查找边界：恰好一次定向抓取（habitica.com，单一已知来源=R110-02 最小定向边界内），多源扫荡与下载未发生（run 目录清单证明）；named baseline 带 unverified-partial 检视级别标注（静态壳只证明定位口号 'Gamify Your Life'，正文需实机校验=过门后第一步，gate-protocol unverified 既定要求）；方向稿显式分离「基线证明的」与「风格灵感待验的」；门账 brief=gated；品味 honoring/T-003·T-004·T-005·T-002+T-006 张力申报（营销语境弱适用非沉默违背）；三旋钮 5/3/3；零视觉产物；styleReview 未评（方向稿类，前例口径）"
       }
+    ],
+    "typography-standards-applied": [
+      {
+        "date": "2026-09-30",
+        "recordedAt": "2026-09-30T20:23:20.604Z",
+        "commit": "28548a08bb7eaf66792f70176d637ac05eeaee75",
+        "scores": {
+          "Chooses an identity face with a voice and does not use Inter, Roboto, Open Sans, or bare system-ui as the identity font": 2,
+          "Uses one family or two genuinely contrasting roles, not the same family at two weights as a pairing": 2,
+          "Keeps body measure under ~80 characters and expresses hierarchy as an extreme weight pairing": 2,
+          "Makes the display-to-body size jump dramatic enough to read as ranks rather than 1.2x steps": 2,
+          "Sets table numerals in tabular-nums and keeps the headline free of an isolated emphasized word, all-caps label, or uninformative eyebrow": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/typography-standards-applied/NOTE.md",
+          "evals/runs/typography-standards-applied/evidence/typo-verify-result.txt",
+          "evals/runs/typography-standards-applied/evidence/typography-full.png"
+        ],
+        "notes": "排版标准落地：identity 字体=Fraunces 900（有声线，非 Inter/Roboto/OpenSans/system-ui）；双角色真对比=Fraunces 900 × Public Sans 400（异族，非同族两字重）；measure 62ch 实测约 76 字符<80；字号跳跃 96/17=5.65x（阶级行为）；表格 tabular-nums 显式；标题零 eyebrow/零 uppercase；对比度程序实算 14.62:1；实机断言×7 全 PASS（computed-style 逐项+console 0+全页截图）；首跑 1 条真 FAIL=measure 断言方法错（ch 被解析为像素）且 66ch 擦边 80——CSS 收 62ch+断言改像素折算，复跑过，断言方法整改留痕；Google Fonts OFL 许可；styleReview=排版专项判据即八维子集已逐项断言，其余维度（动效/布局节奏）未评已标注（单页无动效）"
+      }
     ]
   }
 }

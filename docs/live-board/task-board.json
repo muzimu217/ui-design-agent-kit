@@ -1,22 +1,22 @@
 {
-  "updatedAt": "2026-09-29T14:00:00-07:00",
-  "updatedBy": "轮 213 系 · 每小时评审循环",
+  "updatedAt": "2026-09-29T15:00:00-07:00",
+  "updatedBy": "轮 214 · 每小时评审循环",
   "stats": {
-    "corpus": "49/71",
-    "corpusPercent": 69,
-    "streak100": 32,
+    "corpus": "50/71",
+    "corpusPercent": 70,
+    "streak100": 33,
     "tests": "94/94",
     "a11y": "0 违规",
-    "audits": "12 批零上下文回归审计"
+    "audits": "13 批零上下文回归审计"
   },
   "activeTask": {
     "id": "R149-01",
     "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "已越 40/71 达标线 · 超额场景继续积累",
+    "status": "已破 70% 心理线（50/71）· 超额场景继续积累",
     "startedAt": "2026-09-28",
     "currentGate": "门E 验收——每批走完执行+验证+入账+级联+合并上线全链",
-    "lastArtifact": "批次三十二 blender-missing-authoring-runtime 100 分（blender 缺位声明，bd8a7f9）",
-    "next": "批次三十三续批（余 22 条超额）"
+    "lastArtifact": "批次三十三 three-remotion-deterministic-export 100 分（MP4 渲染+乱序 md5）",
+    "next": "批次三十四续批（余 21 条超额）"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-29 15:00",
+      "event": "批次三十三入账：三确定性物理 MP4 100 分（逐帧欧拉重建/乱序 md5/ffprobe 全检）——50/71 破七成",
+      "type": "eval"
+    },
+    {
       "time": "09-29 12:30",
       "event": "blender-missing run 工件补提交（同款漏提交二次备案）+二轮审计批二处置收尾",
       "type": "audit"
@@ -106,11 +111,6 @@
     {
       "time": "09-29 08:40",
       "event": "批次二十一入账：竞品模仿边界 100 分（五维拆解+六要素重做清单）",
-      "type": "eval"
-    },
-    {
-      "time": "09-29 09:16",
-      "event": "批次二十二入账：品牌基线改编 100 分（design-md pull linear.app 真实取用）——40/71 达标线触线",
       "type": "eval"
     }
   ]

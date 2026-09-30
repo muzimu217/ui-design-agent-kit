@@ -7,7 +7,7 @@
     "streak100": 51,
     "tests": "94/94",
     "a11y": "0 违规",
-    "audits": "18 批零上下文回归审计"
+    "audits": "19 批零上下文回归审计"
   },
   "activeTask": {
     "id": "R149-01",
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 15:4x",
+      "event": "第 19 批审计回填：批次 49/50+证据副本采纳笔=CLEAN 5/5（66 键/断言脚本绝对路径/证据副本来源链 PROVENANCE/零夹带）；顺手清理排版 run 的冗余结果文件（results.json 引用件保留）",
+      "type": "audit"
+    },
+    {
       "time": "09-30 15:3x",
       "event": "批次五十一入账：copy-contract-applied 100 分（文案契约落地——机制词清零/错误含因与修/空态行动邀请/动作词一致实测×7）——67/71 94%",
       "type": "eval"
@@ -106,11 +111,6 @@
     {
       "time": "09-30 09:3x",
       "event": "批次四十五入账：product-readme-collection-completeness 100 分（README 集合完整性——盘点矩阵+demo/README.md 合集入口+语境差异如实登记）——61/71 86%；第 16 批审计批次41-44+契约=CLEAN 5/5",
-      "type": "eval"
-    },
-    {
-      "time": "09-30 08:2x",
-      "event": "批次四十四入账：compiled-prompt-keeps-plan-authority 100 分（提示词编译保留计划权威——素材确认/计划锁定/执行授权三分记录，导出提示词≠执行许可）——60/71 85%",
       "type": "eval"
     }
   ]

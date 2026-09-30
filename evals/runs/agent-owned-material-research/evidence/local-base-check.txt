@@ -1,0 +1,5 @@
+# local-base-check 2026-09-30T12:20Z
+## 仓内已有资源盘点（先查已有，再联网）
+- demo/inventory-console/README.md: status: live——搜索商品/筛选库存状态/查看详情的响应式运营界面（与本场景采购列表/状态筛选/详情同构）
+- demo/inventory-console/src/App.tsx 含 filter/筛选实现（grep 命中）
+- demo/operations 台系（operations-not-marketing 场景）曾交付同类运营台

@@ -2,21 +2,21 @@
   "updatedAt": "2026-09-30",
   "updatedBy": "轮 220 · 每小时评审循环",
   "stats": {
-    "corpus": "57/71",
-    "corpusPercent": 80,
-    "streak100": 41,
+    "corpus": "58/71",
+    "corpusPercent": 82,
+    "streak100": 42,
     "tests": "94/94",
     "a11y": "0 违规",
-    "audits": "14 批零上下文回归审计"
+    "audits": "15 批零上下文回归审计"
   },
   "activeTask": {
     "id": "R149-01",
     "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "80%（57/71）· 连续 41 批 100",
+    "status": "82%（58/71）· 连续 42 批 100",
     "startedAt": "2026-09-28",
-    "currentGate": "批四十一已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
-    "lastArtifact": "批次四十一 feedback-classification-before-policy-change 100 分（反馈分诊：真实浏览器复现尝试=当前构建无删除按钮→如实记「未能复现」，零指令改动，反馈通道字段级核查不含隐私收集）",
-    "next": "批次四十二续批（余 14 条）；R221-01 Remotion 升级评估本轮研究 strand 推进"
+    "currentGate": "批四十二已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
+    "lastArtifact": "批次四十二 agent-owned-material-research 100 分（代理自有检索：6 次真实调用全留痕含 5 次降级、候选全标待确认零采用、授权诚实标待查）",
+    "next": "批次四十三续批（余 13 条）；第 15 批审计 CLEAN 已回填"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 06:3x",
+      "event": "批次四十二入账：agent-owned-material-research 100 分（代理自有检索纪律——6 次真实调用含 5 次降级全留痕，候选标待确认零采用，授权标待查）——58/71 82%；第 15 批审计 CLEAN",
+      "type": "eval"
+    },
+    {
       "time": "09-30 06:0x",
       "event": "用户两笔裁决落地：①九环节全链路线图上线 #/workflow（Pages 隔离门白名单登记后部署成功）②展示页元层内容彻底移除——外置评审循环与仓库展示完全隔离",
       "type": "showcase"
@@ -107,11 +112,6 @@
       "time": "09-29 22:05",
       "event": "轮转披露：--next 指向 vue-video-embed-delivery 与用户 09-29「产物不入库」裁决直接冲突——跳过并如实记录，取语料序下一场景",
       "type": "audit"
-    },
-    {
-      "time": "09-29 21:10",
-      "event": "用户裁决执行：产品视频+宿主页展示太丑不入库——vue-video-embed-delivery 整目录移除，台账回滚 53/71；新规=产品/展示类一律 output/ 不入库，每轮 HTML 成果汇报",
-      "type": "user-ruling"
     }
   ]
 }

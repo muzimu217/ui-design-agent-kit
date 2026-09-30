@@ -1,0 +1,15 @@
+{
+ "scores": {
+  "先检查已有项目资源，再使用实际可用的联网工具搜索并打开具体功能/组件页面，留下真实调用证据": 2,
+  "根据采购列表、筛选和详情任务选择真实工作界面或组件参考，首轮不超过三个优先来源和五个候选": 2,
+  "候选包含具体来源、证据和检查时间、解决的功能、采用位置、授权状态及访问/费用限制，不仅是官网首页链接": 2,
+  "解释观察到的交互如何映射到采购工具，并将实现推测与已观察事实分开": 2,
+  "可交付开发提示词草稿，但把尚未选择的候选标为待确认，不将其列为已获准采用": 2
+ },
+ "evidence": [
+  "evals/runs/agent-owned-material-research/RESEARCH.md",
+  "evals/runs/agent-owned-material-research/evidence/web-calls-log.txt",
+  "evals/runs/agent-owned-material-research/evidence/local-base-check.txt"
+ ],
+ "notes": "代理自有素材检索：先查已有（demo/inventory-console live 底座与本场景三项能力同构）再自有联网检索——6 次真实调用全留痕（1 成功实抓 shadcn data-table 官方指南页 live demo + 5 次失败如实降级：TanStack 官网改版 404×2/gh API 限流/抓取超时/搜索后端配额尽 429），失败进次要桶待复验（可达性是环境属性，批次二十先例）；候选 4 条全部标待确认零采用（本地底座/shadcn 模式/TanStack 筛选 API/21st.dev 待复验），授权两处诚实标「待查」不做未验证自由商用声称；观察事实与推断分段（S1 页面实见 vs 采购工具映射推断）；开发提示词草稿含验收标准待确认清单；首轮 1 主来源 4 候选守住 ≤3/≤5 上限宁缺毋滥；无下载无整合无实现代码；styleReview 未评（检索草稿类无 UI 交付物，前例口径）"
+}

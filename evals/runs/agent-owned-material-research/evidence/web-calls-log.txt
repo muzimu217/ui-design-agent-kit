@@ -1,0 +1,17 @@
+# web-calls-log（真实调用留痕，全部 UTC）
+
+1. WebFetch https://ui.shadcn.com/docs/components/data-table — 200 OK 2026-09-30 12:20 UTC
+   实抓内容：live demo 表格(Status/Email/Amount)+列筛选+分页+多选+排序；状态面签筛选与详情展开未在该页演示；许可证未在页面标注；依赖 TanStack Table v9
+
+2. WebFetch https://tanstack.com/table/latest/docs/framework/react/examples/column-filtering — 404（官网改版，路径失效）2026-09-30 12:20 UTC
+
+3. WebFetch https://tanstack.com/table/latest/docs/framework/react/examples/filtering — 404（同上）
+
+4. gh api repos/TanStack/table/contents/examples/react — 403 rate limit exceeded（GitHub API 限额）2026-09-30 12:20 UTC
+
+5. WebFetch github.com/TanStack/table/tree/main/examples/react — 60s 超时
+
+6. WebSearch「21st.dev data table status filter component React shadcn」— 搜索后端 429 weekly/monthly limit exhausted，reset 2026-10-16（后端配额，非本地网络问题）
+
+## 降级结论
+主来源 1 个实抓成功（shadcn data-table 官方指南页）；TanStack 与 21st.dev 进次要桶（可达性/配额原因，非内容否定），恢复后复验——可达性是环境属性不是来源属性（批次二十先例）

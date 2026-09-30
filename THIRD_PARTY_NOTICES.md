@@ -6,7 +6,7 @@ repositories. The source revisions are recorded in
 a substitute for each upstream repository's license text.
 
 - Motion AI Kit, `motiondivision/ai-kit`, revision
-  `1140efe9ad5e03c689ea6bb19d9d3850a4dae5f7`: MIT, as declared by the
+  `d1c5c26f424adfd47c112d894e9d424b57338c7e`: MIT, as declared by the
   `motion-ai` package. The exact upstream manifest is preserved in
   `.agents/skills/motion/UPSTREAM_PACKAGE.json`; no standalone LICENSE was found
   at this revision. Source: https://github.com/motiondivision/ai-kit
@@ -63,16 +63,12 @@ a substitute for each upstream repository's license text.
   `metadata.version` rather than discarding the version. References are unchanged.
 - Impeccable (`uak-visual-critique`): install the skill without its automatic hooks. The upstream engine
   launcher is retained; its native engine is a separate first-use download.
-- Pick UI Library: remove the upstream `disable-model-invocation` frontmatter
-  key for this kit's skill validator; invocation is governed by the kit's
-  routing. The instruction body is unchanged.
-- The three Emil Kowalski skills are vendored verbatim at a pinned revision;
-  no instruction text was modified.
-- Baoyu Design: only `SKILL.md` is vendored. The upstream `agents/` execution
-  helpers (`build-preview.mjs`, `check-design-system.mjs`,
-  `compile-design-system.mjs`, design-system checker, fork verifier) and the
-  `gen-pptx` package are excluded to keep this kit's maintenance scope; the
-  vendored instruction text is unchanged.
+- Emil Kowalski skills (merged into `uak-design-thinking`, 2026-09-30): the three
+  upstream skills are no longer vendored verbatim — they were merged and
+  re-authored with personal branding, course promotion, and vendor anecdotes
+  removed; see the main entry above and `tooling/sources.lock.json` adaptations.
+- Baoyu Design: removed from this kit entirely (2026-09-30); the upstream
+  `agents/` execution helpers and `gen-pptx` package were never vendored.
 
 The custom `ui-design-agent` and `remotion-video-agent` files in this repository
 are authored for this project. Remotion package usage remains subject to the

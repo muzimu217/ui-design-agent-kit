@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-09-29T22:20:00+08:00",
- "updatedBy": "轮 219 · 每小时评审循环",
+ "updatedAt": "2026-09-29T23:25:00+08:00",
+ "updatedBy": "轮 220 · 每小时评审循环",
  "stats": {
-  "corpus": "54/71",
-  "corpusPercent": 76,
-  "streak100": 38,
+  "corpus": "55/71",
+  "corpusPercent": 77,
+  "streak100": 39,
   "tests": "94/94",
   "a11y": "0 违规",
   "audits": "13 批零上下文回归审计"
@@ -12,11 +12,11 @@
  "activeTask": {
   "id": "R149-01",
   "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-  "status": "76%（54/71）· 超额积累",
+  "status": "77%（55/71）· 超额积累",
   "startedAt": "2026-09-28",
   "currentGate": "门E 验收——每批走完执行+验证+入账+级联+合并上线全链",
-  "lastArtifact": "批次三十八 bounded-agent-dispatch 100 分（调度纪律=可执行状态机：12 断言+7 违规拒绝留痕）",
-  "next": "批次三十九续批（余 17 条；vue-video 场景按用户裁决暂缓，待产品重做方向反馈）"
+  "lastArtifact": "批次三十九 catalog-efficacy-before-add 100 分（纳新效能前置：实测 404 拒绝入册带记录理由，知识库零改动）",
+  "next": "批次四十续批（余 16 条；vue-video 场景挂起待用户产品重做方向）"
  },
  "gates": [
   {
@@ -51,7 +51,7 @@
    "id": "E",
    "name": "每轮验收",
    "status": "active",
-   "note": "三十八批连续 100 分，每批 Playwright 断言/实查取证",
+   "note": "三十九批连续 100 分，每批实查取证",
    "at": "进行中"
   },
   {
@@ -63,6 +63,16 @@
   }
  ],
  "recentFlow": [
+  {
+   "time": "09-29 23:25",
+   "event": "批次三十九入账：catalog-efficacy-before-add 100 分（纳新先效能后书写——实测 404 与用户声称不符，拒绝入册带双记录理由+检查方法自证抽样）——55/71 77%",
+   "type": "eval"
+  },
+  {
+   "time": "09-29 23:10",
+   "event": "轮转披露：--next 仍指向挂起中的 vue-video 场景（用户裁决），继续跳过取语料序下一场景",
+   "type": "audit"
+  },
   {
    "time": "09-29 22:20",
    "event": "批次三十八入账：bounded-agent-dispatch 100 分（调度纪律=可执行状态机 12 断言，自家断言抓到 M 级生命周期闸门真漏洞）——54/71 76%",
@@ -111,16 +121,6 @@
   {
    "time": "09-29 18:30",
    "event": "台账治理：iteration-log 补录批次三十三/三十四两行（上轮漏记）+teaser 调试残留 WIP 回退+§4.1 程序化重建 52 行",
-   "type": "audit"
-  },
-  {
-   "time": "09-29 15:00",
-   "event": "批次三十四入账：三确定性物理 MP4 100 分（逐帧欧拉重建/乱序 md5/ffprobe 全检）——51/71（批次号勘误：三十三=blender-connected）",
-   "type": "eval"
-  },
-  {
-   "time": "09-29 12:30",
-   "event": "blender-missing run 工件补提交（同款漏提交二次备案）+二轮审计批二处置收尾",
    "type": "audit"
   }
  ]

@@ -1,0 +1,15 @@
+{
+ "scores": {
+  "Gate A names one real, inspectable proven baseline (URL) obtained via minimal directed lookup": 2,
+  "The lookup stays minimal and directed (a few known sources), not a multi-source sweep": 2,
+  "Multi-source candidate gathering and adaptation proposals wait for gate B": 2,
+  "The direction draft separates what the baseline proves from mere style inspiration": 2,
+  "States what lookup happened before the gate and why the boundary allows it": 2
+ },
+ "evidence": [
+  "evals/runs/baseline-lookup-boundary/DIRECTION.md",
+  "evals/runs/baseline-lookup-boundary/evidence/lookup-log.txt",
+  "evals/runs/baseline-lookup-boundary/evidence/run-dir-manifest.txt"
+ ],
+ "notes": "基线查找边界：恰好一次定向抓取（habitica.com，单一已知来源=R110-02 最小定向边界内），多源扫荡与下载未发生（run 目录清单证明）；named baseline 带 unverified-partial 检视级别标注（静态壳只证明定位口号 'Gamify Your Life'，正文需实机校验=过门后第一步，gate-protocol unverified 既定要求）；方向稿显式分离「基线证明的」与「风格灵感待验的」；门账 brief=gated；品味 honoring/T-003·T-004·T-005·T-002+T-006 张力申报（营销语境弱适用非沉默违背）；三旋钮 5/3/3；零视觉产物；styleReview 未评（方向稿类，前例口径）"
+}

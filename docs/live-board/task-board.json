@@ -2,9 +2,9 @@
   "updatedAt": "2026-09-30",
   "updatedBy": "轮 220 · 每小时评审循环",
   "stats": {
-    "corpus": "64/71",
-    "corpusPercent": 90,
-    "streak100": 48,
+    "corpus": "65/71",
+    "corpusPercent": 92,
+    "streak100": 49,
     "tests": "94/94",
     "a11y": "0 违规",
     "audits": "17 批零上下文回归审计"
@@ -12,11 +12,11 @@
   "activeTask": {
     "id": "R149-01",
     "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "90%（64/71）· 连续 48 批 100",
+    "status": "92%（65/71）· 连续 49 批 100",
     "startedAt": "2026-09-28",
-    "currentGate": "批四十八已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
-    "lastArtifact": "批次四十八 copy-proven-over-improvise 100 分（抄 proven 纪律：Linear Settings 为 named baseline、在仓检视记录引用非凭记忆、五条拟抄关系逐条列、改编边界与许可依据写明）",
-    "next": "批次四十九续批（余 7 条）"
+    "currentGate": "批四十九已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
+    "lastArtifact": "批次四十九 baseline-lookup-boundary 100 分（基线查找边界：一次定向抓取 named Habitica unverified-partial+多源扫荡未发生+基线证明与风格灵感分离）",
+    "next": "批次五十续批（余 6 条）；第 18 批审计结论待回填"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 13:2x",
+      "event": "批次四十九入账：baseline-lookup-boundary 100 分（基线查找边界——一次定向抓取 named Habitica unverified-partial+过门后实机校验承诺）——65/71 92%",
+      "type": "eval"
+    },
+    {
       "time": "09-30 12:2x",
       "event": "批次四十八入账：copy-proven-over-improvise 100 分（抄 proven 纪律——Linear Settings named baseline+在仓检视记录非凭记忆+五条拟抄关系+边界许可依据）——64/71 90%",
       "type": "eval"
@@ -107,11 +112,6 @@
       "time": "09-30 06:0x",
       "event": "用户两笔裁决落地：①九环节全链路线图上线 #/workflow（Pages 隔离门白名单登记后部署成功）②展示页元层内容彻底移除——外置评审循环与仓库展示完全隔离",
       "type": "showcase"
-    },
-    {
-      "time": "09-30 05:2x",
-      "event": "批次四十一入账：feedback-classification-before-policy-change 100 分（反馈分诊纪律——真复现尝试发现报告控件不存在于当前构建，如实记「未能复现」不瞎修不改规则）——57/71 80%",
-      "type": "eval"
     }
   ]
 }

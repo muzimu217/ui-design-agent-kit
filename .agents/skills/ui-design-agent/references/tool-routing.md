@@ -139,14 +139,17 @@ repair just because an upstream workflow mentions those actions.
 
 Vendored design skills (MIT, pinned revisions in `tooling/sources.lock.json`):
 
-- `emil-design-eng` encodes Emil Kowalski's design-engineering philosophy for
-  UI polish, component design, and animation decisions; consult it for the
-  "invisible details" pass.
-- `animation-vocabulary` is a reverse-lookup glossary: map a vague motion
-  description ("the bouncy thing when a popover opens") to its exact term.
-- `pick-ui-library` recommends a curated, opinionated library for a concrete
-  frontend task (toasts, charts, drag and drop, virtualization, and so on);
-  only run it when explicitly needed.
+- `uak-design-thinking` (merged from the Emil Kowalski skills, re-authored
+  for this kit) carries three narrow jobs in one entry point: Part A is the
+  design-engineering polish doctrine (the animation decision framework,
+  component rules, performance and a11y rules) for the "invisible details"
+  pass; `references/motion-glossary.md` is a reverse-lookup glossary that
+  maps a vague motion description ("the bouncy thing when a popover opens")
+  to its exact term; `references/library-picks.md` recommends a curated,
+  opinionated library for a concrete frontend task (toasts, charts, drag
+  and drop, virtualization, and so on). Read only the relevant part; its
+  values feed DESIGN.md and the motion contract, they do not replace a
+  user gate.
 
 ### Design-taste skill routing (overlapping triggers)
 
@@ -158,12 +161,12 @@ first matching row wins and the choice is recorded in the acceptance notes.
 | --- | --- | --- |
 | Look up data (palette, font pair, UX pattern, anti-pattern) | `ui-ux-pro-max` | Critique, artifacts, or motion |
 | Review, critique, or targeted refinement is requested | `impeccable` | Data lookup; producing artifacts |
-| Decide polish judgment calls (component and animation details) | `emil-design-eng` | Replacing a requested review; broad redesign |
+| Decide polish judgment calls (component and animation details) | `uak-design-thinking` Part A | Replacing a requested review; broad redesign |
 | Expressive interaction motion (magnetic pointer, scroll choreography, loading screens) | `jiejoe-design` + the GSAP skills | General polish already covered by the Motion route |
 
-`animation-vocabulary` (vague-motion term lookup) and `pick-ui-library`
-(library choice for a concrete component) stay narrow; resolve them first
-when their question is open, then route to the table above.
+`uak-design-thinking`'s narrow jobs (vague-motion term lookup in its motion
+glossary, library choice in its library-picks table) resolve first when
+their question is open, then route to the table above.
 
 ## Motion
 

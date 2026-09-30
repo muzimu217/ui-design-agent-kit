@@ -356,11 +356,12 @@ is not proof of a connection, and a connection is not proof of a successful call
   new visual work. Follow only the relevant playbook; do not trigger every command.
   The proactive pre-gate self-critique is the detail-critique pass, not an
   impeccable run.
-- Use `emil-design-eng` for opinionated design-engineering polish: component,
-  detail, and animation decisions informed by a senior designer's philosophy.
-- Use `animation-vocabulary` to turn a vague motion description into its exact
-  term before implementing; use `pick-ui-library` to choose a curated library
-  for a concrete component task.
+- Use `uak-design-thinking` for polish judgment calls, motion naming, and
+  library picks: its Part A decision framework informs component, detail,
+  and animation decisions; its motion glossary turns a vague motion
+  description into the exact term; its library-picks table chooses a
+  curated library for a concrete component task. Read only the relevant
+  part.
 - Use `jiejoe-design` for distinctive interaction motion: magnetic pointer
   physics, SVG stroke and wave effects, ScrollTrigger scroll choreography, and
   personality-loaded loading or transition screens. Combine it with the

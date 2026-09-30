@@ -23,12 +23,15 @@ a substitute for each upstream repository's license text.
   publish a license field in its GitHub metadata; review its current repository
   terms before redistributing beyond this local project. Source:
   https://github.com/remotion-dev/skills
-- Emil Kowalski Skills, `emilkowalski/skills`, revision
-  `d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7`: MIT. Source:
+- Emil Kowalski Skills (merged into `uak-design-thinking`), `emilkowalski/skills`,
+  revision `d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7`: MIT. Source:
   https://github.com/emilkowalski/skills
-  Vendored entries: `emil-design-eng`, `animation-vocabulary`,
-  `pick-ui-library`. The original LICENSE is preserved in each installed skill
-  directory.
+  Upstream entries `emil-design-eng`, `animation-vocabulary`, and
+  `pick-ui-library` were merged and re-authored as this kit's
+  `uak-design-thinking` skill (2026-09-30): personal branding, course
+  promotion, and vendor anecdotes removed; decision frameworks, glossary
+  entries, tables, and code recipes preserved. The original LICENSE is
+  preserved in `.agents/skills/uak-design-thinking/`.
 - GSAP AI Skills, `greensock/gsap-skills`, revision
   `aed9cfd3277740755f6bfc1155c7aa645403b760`: MIT. Source:
   https://github.com/greensock/gsap-skills

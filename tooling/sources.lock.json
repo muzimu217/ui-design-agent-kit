@@ -103,32 +103,16 @@
       ]
     },
     {
-      "name": "emil-design-eng",
+      "name": "uak-design-thinking",
       "repository": "https://github.com/emilkowalski/skills",
       "revision": "d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7",
-      "sourcePath": "skills/emil-design-eng",
+      "sourcePath": "skills/emil-design-eng + skills/animation-vocabulary + skills/pick-ui-library",
       "license": "MIT",
-      "notice": ".agents/skills/emil-design-eng/LICENSE",
-      "adaptations": []
-    },
-    {
-      "name": "animation-vocabulary",
-      "repository": "https://github.com/emilkowalski/skills",
-      "revision": "d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7",
-      "sourcePath": "skills/animation-vocabulary",
-      "license": "MIT",
-      "notice": ".agents/skills/animation-vocabulary/LICENSE",
-      "adaptations": []
-    },
-    {
-      "name": "pick-ui-library",
-      "repository": "https://github.com/emilkowalski/skills",
-      "revision": "d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7",
-      "sourcePath": "skills/pick-ui-library",
-      "license": "MIT",
-      "notice": ".agents/skills/pick-ui-library/LICENSE",
+      "notice": ".agents/skills/uak-design-thinking/LICENSE",
       "adaptations": [
-        "Removed disable-model-invocation frontmatter key for the local skill validator; body unchanged"
+        "Merged and re-authored for this kit (2026-09-30 user-approved localization): upstream emil-design-eng + animation-vocabulary + pick-ui-library combined into one three-part skill",
+        "Personal branding, course promotion, and vendor anecdotes removed; decision frameworks, glossary entries, tables, and code recipes preserved",
+        "Kit integration added: routes into gate C/D artifacts, motion-contract.md, and the user taste profile; library adoption still passes the material gate"
       ]
     },
     {

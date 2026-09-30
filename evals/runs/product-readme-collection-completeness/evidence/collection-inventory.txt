@@ -1,0 +1,27 @@
+# collection-inventory 2026-09-30T15:19Z
+## 全量盘点（ls/grep/md5 真实输出；11 个产品）
+blog-demo/ | README:Y | status: local | screenshots:1 | css:1
+brick-workshop/ | README:Y | status: live | screenshots:7 | css:2
+forma-phone-ui/ | README:Y | status: live | screenshots:2 | css:1
+inventory-console/ | README:Y | status: live | screenshots:1 | css:1
+nodegrid/ | README:Y | status: live | screenshots:1 | css:0
+phone-demo/ | README:Y | status: local | screenshots:1 | css:1
+product-demo/ | README:Y | status: local | screenshots:1 | css:1
+ruiear/ | README:Y | status: live | screenshots:0 | css:1
+subway-runner/ | README:Y | status: live | screenshots:1 | css:1
+tempo-day/ | README:Y | status: live | screenshots:2 | css:1
+zhumu-blog/ | README:Y | status: local | screenshots:1 | css:1
+
+## README 引用截图实存核查（逐条）
+OK blog-demo/screenshots/readme-desktop.webp
+OK brick-workshop/screenshots/castle.webp
+OK brick-workshop/screenshots/desktop.webp
+OK brick-workshop/screenshots/house.webp
+OK brick-workshop/screenshots/mobile.webp
+OK brick-workshop/screenshots/rocket.webp
+
+## 截图 md5 跨产品对照（计数全 1 = 无跨产品重复）
+   1 f2d5193460e4d83564745c4539f0472e
+   1 e26c3b19bc122e95e18f3b94d253c7a9
+   1 dbf80a4efdfacdfbfab1190796d77794
+   1 db5b81cadfe7f1be55975f7fce96487b

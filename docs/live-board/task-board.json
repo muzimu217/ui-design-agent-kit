@@ -2,21 +2,21 @@
   "updatedAt": "2026-09-30",
   "updatedBy": "轮 220 · 每小时评审循环",
   "stats": {
-    "corpus": "60/71",
-    "corpusPercent": 85,
-    "streak100": 44,
+    "corpus": "61/71",
+    "corpusPercent": 86,
+    "streak100": 45,
     "tests": "94/94",
     "a11y": "0 违规",
-    "audits": "15 批零上下文回归审计"
+    "audits": "16 批零上下文回归审计"
   },
   "activeTask": {
     "id": "R149-01",
     "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "85%（60/71）· 连续 44 批 100",
+    "status": "86%（61/71）· 连续 45 批 100",
     "startedAt": "2026-09-28",
-    "currentGate": "批四十四已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
-    "lastArtifact": "批次四十四 compiled-prompt-keeps-plan-authority 100 分（提示词编译纪律：三分权威状态账+单一计划一致性+7 处待确认标记+零工具调用）",
-    "next": "批次四十五续批（余 11 条）"
+    "currentGate": "批四十五已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
+    "lastArtifact": "批次四十五 product-readme-collection-completeness 100 分（README 集合完整性：全量盘点矩阵+新增合集入口 demo/README.md+语境差异如实登记+顺带清两处流浪残骸）",
+    "next": "批次四十六续批（余 10 条）；第 16 批审计 CLEAN 已回填"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 09:3x",
+      "event": "批次四十五入账：product-readme-collection-completeness 100 分（README 集合完整性——盘点矩阵+demo/README.md 合集入口+语境差异如实登记）——61/71 86%；第 16 批审计批次41-44+契约=CLEAN 5/5",
+      "type": "eval"
+    },
+    {
       "time": "09-30 08:2x",
       "event": "批次四十四入账：compiled-prompt-keeps-plan-authority 100 分（提示词编译保留计划权威——素材确认/计划锁定/执行授权三分记录，导出提示词≠执行许可）——60/71 85%",
       "type": "eval"
@@ -107,11 +112,6 @@
       "time": "09-29 23:25",
       "event": "批次三十九入账：catalog-efficacy-before-add 100 分（纳新先效能后书写——实测 404 与用户声称不符，拒绝入册带双记录理由+检查方法自证抽样）——55/71 77%",
       "type": "eval"
-    },
-    {
-      "time": "09-29 23:10",
-      "event": "轮转披露：--next 仍指向挂起中的 vue-video 场景（用户裁决），继续跳过取语料序下一场景",
-      "type": "audit"
     }
   ]
 }

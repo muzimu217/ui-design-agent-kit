@@ -2,9 +2,9 @@
   "updatedAt": "2026-09-30",
   "updatedBy": "轮 220 · 每小时评审循环",
   "stats": {
-    "corpus": "59/71",
-    "corpusPercent": 83,
-    "streak100": 43,
+    "corpus": "60/71",
+    "corpusPercent": 85,
+    "streak100": 44,
     "tests": "94/94",
     "a11y": "0 违规",
     "audits": "15 批零上下文回归审计"
@@ -12,11 +12,11 @@
   "activeTask": {
     "id": "R149-01",
     "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "83%（59/71）· 连续 43 批 100",
+    "status": "85%（60/71）· 连续 44 批 100",
     "startedAt": "2026-09-28",
-    "currentGate": "批四十三已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
-    "lastArtifact": "批次四十三 intake-network-unavailable 100 分（无网络摄取：按语境零外部调用不虚构、上轮素材标未重新验证、提示词推进 v2、缺口请求具体到张数/枚举/格式）",
-    "next": "批次四十四续批（余 12 条）"
+    "currentGate": "批四十四已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
+    "lastArtifact": "批次四十四 compiled-prompt-keeps-plan-authority 100 分（提示词编译纪律：三分权威状态账+单一计划一致性+7 处待确认标记+零工具调用）",
+    "next": "批次四十五续批（余 11 条）"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 08:2x",
+      "event": "批次四十四入账：compiled-prompt-keeps-plan-authority 100 分（提示词编译保留计划权威——素材确认/计划锁定/执行授权三分记录，导出提示词≠执行许可）——60/71 85%",
+      "type": "eval"
+    },
+    {
       "time": "09-30 07:2x",
       "event": "批次四十三入账：intake-network-unavailable 100 分（无网络摄取纪律——零外部调用不虚构/上轮素材标未重新验证/提示词推进 v2/缺口具体化）——59/71 83%",
       "type": "eval"
@@ -107,11 +112,6 @@
       "time": "09-29 23:10",
       "event": "轮转披露：--next 仍指向挂起中的 vue-video 场景（用户裁决），继续跳过取语料序下一场景",
       "type": "audit"
-    },
-    {
-      "time": "09-29 22:20",
-      "event": "批次三十八入账：bounded-agent-dispatch 100 分（调度纪律=可执行状态机 12 断言，自家断言抓到 M 级生命周期闸门真漏洞）——54/71 76%",
-      "type": "eval"
     }
   ]
 }

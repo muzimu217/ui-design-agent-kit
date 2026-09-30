@@ -21,6 +21,8 @@ const ROOT_FILES = new Set([
   'countries-110m.json', 'logo-mark.svg',
   // subway-runner：门C 视觉原型存档（纯静态单文件）
   'prototype.html',
+  // 工作流页：全链路线图（用户批准的九环节串行主链静态图，已检视）
+  'workflow-route-map.svg',
 ]);
 const ASSET_PATTERN = /^(?:assets|models|photos|Textures)\/[A-Za-z0-9_./-]+\.(?:js|css|png|jpe?g|webp|avif|svg|woff2?|ttf|fbx|glb|gltf|bin|json|mp4)$/;
 

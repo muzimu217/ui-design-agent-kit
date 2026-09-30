@@ -1,0 +1,12 @@
+PASS 表面亮度阶梯 base<card<raised — 0.0068 < 0.0119 < 0.0170
+PASS 基面非纯黑（tinted near-black） — rgb(16, 20, 24)
+PASS 描边为低不透明度白（rgba 白基） — rgba(255, 255, 255, 0.08)
+PASS 正文 near-white 非纯白 — rgb(232, 237, 242)
+PASS 三档文字独立（primary/secondary/placeholder） — rgb(232, 237, 242) / rgb(168, 180, 191) / rgb(107, 118, 130)
+PASS 强调色暗面重校准（亮度 > 浅色版 #177656） — rgb(63, 191, 138) vs rgb(23, 118, 86)
+PASS 组件规则零硬编码 hex（hex 仅存在于 token 定义块） — []
+PASS 正文对比度 >= 4.5:1（实算） — 15.70:1
+console/pageerror: 0 条
+PASS console clean — 0
+
+TOTAL FAILS: 0

@@ -47,7 +47,7 @@ Keep all allowances below development-only, including manual middleware and meta
 If `config.cspChecked === true`, skip this whole section; the user was already asked once.
 
 ```bash
-.agents/skills/impeccable/scripts/impeccable detect-csp
+.agents/skills/uak-visual-critique/scripts/impeccable detect-csp
 ```
 
 Output `{ shape, signals }`; the shape names the *patch mechanism*, so one template covers many frameworks:

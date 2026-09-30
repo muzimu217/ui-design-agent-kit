@@ -178,7 +178,7 @@ npm run prompt:build:lean  # 重建精简导出（契约/动效/验收/品味四
 
 - [ ] 改动的环节仍在本报告第二节映射表内，或映射表已同步
 - [ ] SKILL.md 未超 600 行瘦身边线；超线时把稳定细节下沉 references/，正文只留路由与触发条件（kit.test 有机械兜底）
-- [ ] 三个设计品味技能（ui-ux-pro-max/impeccable/uak-design-thinking）+ jiejoe-design 按 tool-routing 互斥触发表路由，单次最多跑一个（2026-09-30 baoyu-design 移除；Emil 三技能合并为 uak-design-thinking）
+- [ ] 三个设计品味技能（ui-ux-pro-max/uak-visual-critique/uak-design-thinking）+ jiejoe-design 按 tool-routing 互斥触发表路由，单次最多跑一个（2026-09-30 baoyu-design 移除；Emil 三技能合并为 uak-design-thinking；impeccable 改名 uak-visual-critique）
 - [ ] 新停门事项已登记 `docs/gates.md`，已裁决事项已回填（不删除行）
 - [ ] 验收记录含确认门痕迹：方向稿门/素材选择门/成品验收门至少列出通过情况
 - [ ] 验收记录含 MCP 调用痕迹：设计/实现/验收逐环节列出（服务器/工具/结果），或明确声明"本环节无需 MCP"及原因

@@ -13,11 +13,11 @@ test("installed skills, references, and pinned MCP config are complete", async (
   assert.deepEqual(result.skills.sort(), [
     "gsap-core", "gsap-frameworks", "gsap-performance", "gsap-plugins",
     "gsap-react", "gsap-scrolltrigger", "gsap-timeline", "gsap-utils",
-    "impeccable", "jiejoe-design", "motion",
+    "jiejoe-design", "motion",
     "promotion-playbook",
     "remotion-best-practices", "remotion-create", "remotion-docs",
     "remotion-markup", "remotion-render", "remotion-studio",
-    "remotion-video-agent", "uak-design-thinking", "ui-design-agent", "ui-ux-pro-max",
+    "remotion-video-agent", "uak-design-thinking", "uak-visual-critique", "ui-design-agent", "ui-ux-pro-max",
   ]);
 });
 

@@ -352,10 +352,10 @@ is not proof of a connection, and a connection is not proof of a successful call
 
 - Use `ui-ux-pro-max` for an unresolved design-system or UX decision. Search one
   dominant intent, inspect relevance, and adapt the result to the product.
-- Use `impeccable` for requested critique, targeted visual refinement, or substantial
-  new visual work. Follow only the relevant playbook; do not trigger every command.
-  The proactive pre-gate self-critique is the detail-critique pass, not an
-  impeccable run.
+- Use `uak-visual-critique` for requested critique, targeted visual refinement,
+  or substantial new visual work. Follow only the relevant playbook; do not
+  trigger every command. The proactive pre-gate self-critique is the
+  detail-critique pass, not a uak-visual-critique run.
 - Use `uak-design-thinking` for polish judgment calls, motion naming, and
   library picks: its Part A decision framework informs component, detail,
   and animation decisions; its motion glossary turns a vague motion
@@ -399,9 +399,10 @@ in the acceptance record so it can be audited.
 
 - **Web UI expert** (default): responsive product UI in React/Vue. References:
   detail-constants, anti-slop clusters, typography standards, copy contract;
-  skills: `impeccable`, `ui-ux-pro-max`, `pick-ui-library`.
+  skills: `uak-visual-critique`, `ui-ux-pro-max`, `uak-design-thinking`.
 - **3D & motion expert** (a UI subtype): Three.js/R3F scenes, Motion/GSAP
-  choreography. References: motion-contract, css-spring, animation-vocabulary,
+  choreography. References: motion-contract, css-spring, motion glossary
+  (in uak-design-thinking),
   dark-surface standards; skills: `motion`, `gsap-*`, `jiejoe-design`.
 - **Video expert** (code-rendered motion graphics): Remotion compositions.
   Skills: `remotion-video-agent` + official Remotion skills. Known limits:

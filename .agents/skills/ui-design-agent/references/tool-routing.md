@@ -131,7 +131,8 @@ Inspect relevance before applying or persisting output. Do not convert a
 landing-page recommendation into an app home screen. Its optional motion dial
 may recommend GSAP: that is not a reason to add GSAP to a Motion project.
 
-`impeccable` supplies critique and refinement playbooks. Its launcher can download
+`uak-visual-critique` (adapted from the upstream impeccable skill) supplies
+critique and refinement playbooks. Its launcher can download
 a versioned native engine into a user cache; this kit does not enable its hooks.
 When only a manual review is requested, respect the review's read-only scope.
 Do not run init, rewrite product truth, generate paid assets, or broaden a small
@@ -160,7 +161,7 @@ first matching row wins and the choice is recorded in the acceptance notes.
 | Task verb | Route to | Not for |
 | --- | --- | --- |
 | Look up data (palette, font pair, UX pattern, anti-pattern) | `ui-ux-pro-max` | Critique, artifacts, or motion |
-| Review, critique, or targeted refinement is requested | `impeccable` | Data lookup; producing artifacts |
+| Review, critique, or targeted refinement is requested | `uak-visual-critique` | Data lookup; producing artifacts |
 | Decide polish judgment calls (component and animation details) | `uak-design-thinking` Part A | Replacing a requested review; broad redesign |
 | Expressive interaction motion (magnetic pointer, scroll choreography, loading screens) | `jiejoe-design` + the GSAP skills | General polish already covered by the Motion route |
 

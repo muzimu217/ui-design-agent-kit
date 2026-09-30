@@ -5,8 +5,8 @@ or interaction detail, not the page: one control's state coverage, one measured
 contrast pair, one stagger timing, one label's reflow under long content. The
 confirmation gates in the chain flow let the user judge direction; this pass is
 where the agent judges its own craft before anyone else sees it. Defects you
-could have found yourself must not wait for the user, a requested impeccable
-run, or the final verification phase.
+could have found yourself must not wait for the user, a requested
+uak-visual-critique run, or the final verification phase.
 
 ## When it runs
 

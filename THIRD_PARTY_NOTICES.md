@@ -10,10 +10,15 @@ a substitute for each upstream repository's license text.
   `motion-ai` package. The exact upstream manifest is preserved in
   `.agents/skills/motion/UPSTREAM_PACKAGE.json`; no standalone LICENSE was found
   at this revision. Source: https://github.com/motiondivision/ai-kit
-- Impeccable, `pbakaus/impeccable`, tag `skill-v4.2.0`, revision
+- Impeccable (renamed to `uak-visual-critique`), `pbakaus/impeccable`, tag
+  `skill-v4.2.0`, revision
   `e74a311e40770dc458d631e146b4ea1f0b53804f`: Apache-2.0. Source:
   https://github.com/pbakaus/impeccable/blob/skill-v4.2.0/LICENSE
-  The original LICENSE and NOTICE.md are preserved in `.agents/skills/impeccable/`.
+  The original LICENSE and NOTICE.md are preserved in
+  `.agents/skills/uak-visual-critique/`. Renamed and re-authored for this kit
+  (2026-09-30): skill name, SKILL.md frontmatter, and intro re-authored with
+  kit gate-chain and taste-profile integration; command playbooks and launcher
+  retained with directory paths updated.
 - UI UX Pro Max, `nextlevelbuilder/ui-ux-pro-max-skill`, revision
   `f3ac195224eac1eb0dfe1a3059c2a6add78ffbe3`: MIT. Source:
   https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
@@ -53,7 +58,7 @@ a substitute for each upstream repository's license text.
   kit's skill validator. The hint text and instruction body are unchanged.
 - The six official Remotion entrypoints: move upstream `version: 4.0.520` to
   `metadata.version` rather than discarding the version. References are unchanged.
-- Impeccable: install the skill without its automatic hooks. The upstream engine
+- Impeccable (`uak-visual-critique`): install the skill without its automatic hooks. The upstream engine
   launcher is retained; its native engine is a separate first-use download.
 - Pick UI Library: remove the upstream `disable-model-invocation` frontmatter
   key for this kit's skill validator; invocation is governed by the kit's

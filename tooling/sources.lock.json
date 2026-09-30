@@ -14,15 +14,16 @@
       ]
     },
     {
-      "name": "impeccable",
+      "name": "uak-visual-critique",
       "repository": "https://github.com/pbakaus/impeccable",
       "revision": "9d715cc4f5564a990ca8345abfdd5df6dc9b41c8",
       "tag": "skill-v4.2.0",
       "sourcePath": ".agents/skills/impeccable",
       "license": "Apache-2.0",
-      "notice": ".agents/skills/impeccable/LICENSE",
+      "notice": ".agents/skills/uak-visual-critique/LICENSE",
       "adaptations": [
-        "No hooks installed; upstream launcher retained"
+        "No hooks installed; upstream launcher retained",
+        "Renamed and re-authored for this kit (2026-09-30 user-approved localization): skill name, SKILL.md frontmatter, and intro re-authored as uak-visual-critique with kit gate-chain and taste-profile integration; command playbooks and launcher retained with directory paths updated"
       ]
     },
     {

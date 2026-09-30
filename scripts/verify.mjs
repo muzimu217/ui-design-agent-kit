@@ -130,8 +130,8 @@ export async function verify(root = ROOT) {
     try { await access(path.join(remotionRoot, match[1])); }
     catch { errors.push(`Missing Remotion route: ${match[1]}`); }
   }
-  try { await access(path.join(skillRoot, "impeccable/NOTICE.md")); }
-  catch { errors.push("Missing original Impeccable NOTICE.md"); }
+  try { await access(path.join(skillRoot, "uak-visual-critique/NOTICE.md")); }
+  catch { errors.push("Missing original uak-visual-critique NOTICE.md"); }
   for (const agentName of ["ui-design-agent", "remotion-video-agent"]) {
     if (!skills.includes(agentName)) {
       errors.push(`Missing agent entrypoint: ${agentName}`);

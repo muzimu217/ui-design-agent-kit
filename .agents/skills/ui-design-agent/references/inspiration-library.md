@@ -57,11 +57,10 @@ and verify license or permission before adapting anything.
 - `ui-ux-pro-max` already bundles searchable style, palette, font, UX, icon,
   and GSAP data. Prefer it for unresolved design-system or UX decisions before
   reaching for an external gallery.
-- `impeccable` supplies critique and refinement playbooks for review passes.
-  Its official site [impeccable.style](https://impeccable.style) documents the
-  skill's vocabulary: 23 commands and curated anti-patterns for impeccable
-  frontend design, usable across Cursor, Claude Code, Copilot, Gemini CLI, and
-  Codex CLI.
+- `uak-visual-critique` supplies critique and refinement playbooks for review
+  passes; its vocabulary (24 commands and curated anti-patterns) is documented
+  in the skill's own `reference/` playbooks, upstream site
+  [impeccable.style](https://impeccable.style).
 
 ## Production image sources
 
@@ -177,7 +176,7 @@ analyze first, decide second. Never add a source on a bare URL.
 Not installed in this kit; listed as candidate capabilities for hosts that
 support Agent Skills. Treat them as references for how taste is encoded, and
 verify platform fit and license before adopting their content. The kit's
-installed `ui-ux-pro-max` and `impeccable` remain the default taste sources.
+installed `ui-ux-pro-max` and `uak-visual-critique` remain the default taste sources.
 
 | Source | What it provides | Best used for | Note |
 | --- | --- | --- | --- |

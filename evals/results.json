@@ -1854,6 +1854,39 @@
         ],
         "notes": "Blender MCP 真实端到端：最小 stdio MCP server（5 工具可检视 schema+数据/遥测显式声明）真实 spawn+JSON-RPC 调用（initialize/tools list/只读 summary/scoped 添加/save_blend_copy/export_glb 6/6）；editable 副本+GLB 双落盘；零对话内容外发（failCondition #2 防线）；schema/遥测检查先行（判据 1）"
       }
+    ],
+    "three-remotion-deterministic-export": [
+      {
+        "date": "2026-09-30",
+        "recordedAt": "2026-09-30T00:33:13.523Z",
+        "commit": "5d7e89bce8f222b027ebb0221f668ef43ba7da37",
+        "scores": {
+          "Reads current ThreeCanvas and render documentation and aligns package versions": 2,
+          "Derives scene and camera state from frame/fps with explicit canvas dimensions": 2,
+          "Bakes or deterministically reconstructs physics instead of reusing the free-running world": 2,
+          "Samples animation clips at absolute time and waits for assets": 2,
+          "Checks repeated out-of-order frames plus output decode, dimensions, fps, duration and representative frames": 2
+        },
+        "score": 100,
+        "styleReview": {
+          "布局节奏": 2,
+          "排版": 2,
+          "对比度实测": 2,
+          "状态覆盖": 2,
+          "动效合规": 2,
+          "可供性": 2,
+          "鲁棒性": 2,
+          "一致性": 2
+        },
+        "styleScore": 100,
+        "evidence": [
+          "evals/runs/three-remotion-deterministic-export/EVIDENCE.md",
+          "evals/runs/three-remotion-deterministic-export/evidence/falling-objects.mp4",
+          "evals/runs/three-remotion-deterministic-export/evidence/fall-f030-a.png",
+          "evals/runs/three-remotion-deterministic-export/evidence/fall-f119-a.png"
+        ],
+        "notes": "确定性物理重建（逐帧半隐式欧拉纯函数，非 Rapier 自由运行世界复用）；ThreeCanvas 桥接+显式数字尺寸 props（R3F 自动撑满不适用教训）；乱序帧 md5 硬实证（静止段全同 413932ed+淡出段唯一 35ed52b9+重复导出一致）；MP4 ffprobe 全检（1920×1080/30fps/4.000s/h264）+代表帧五帧核对；@remotion/three 官方桥接替代 R3F 直入（场景全黑根因）；Remotion 无头缺 WebGL 需 --gl=angle（三条取证教训全入库）"
+      }
     ]
   }
 }

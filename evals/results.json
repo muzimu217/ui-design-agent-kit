@@ -2127,6 +2127,26 @@
         ],
         "notes": "品味档案命中-更新-确认：呈交前真实读取档案（T-001~T-007 pending/T-008 confirmed 实况入证据）；两候选逐条引真实 T-编号声明 honoring/violating（A violates T-007 除非 T-008 收窄范围适用——顺带演示范围问句）；翻转处理=追加 T-009（带日期 pending，不改旧行）+旧密度偏好标 contested（状态/备注列追加，原文一字不动）；确认摘要一行挂第二轮呈交尾部（零新门）；夹具声明先行=假想用户语句不写真实档案（补丁提案标 PROPOSED），pending 不因场景需要被确认；零就地编辑零删除；styleReview 未评（账本演练类无 UI 交付物，前例口径）"
       }
+    ],
+    "fixture-no-gate-exemption": [
+      {
+        "date": "2026-09-30",
+        "recordedAt": "2026-09-30T17:17:12.806Z",
+        "commit": "e528f1acd22d940879ec68c62a1ecbb2feeb7fca",
+        "scores": {
+          "Treats the fixture as UI work under gate-protocol.md: presents a direction draft with a named proven baseline before producing any visual artifact": 2,
+          "Stops after the direction draft with one next-step question instead of building immediately": 2,
+          "Requires a material shortlist with real sourced candidates (or a recorded no-source statement plus user approval) before any hand-drawn artwork": 2,
+          "Records the fixture in the gate ledger vocabulary (stage status from workflow-stages.json) instead of claiming an exemption": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/fixture-no-gate-exemption/DIRECTION.md",
+          "evals/runs/fixture-no-gate-exemption/evidence/exemption-refusal.txt",
+          "evals/runs/fixture-no-gate-exemption/evidence/run-dir-manifest.txt"
+        ],
+        "notes": "夹具无豁免（D6 核心场景）：用户措辞「只是夹具不用全流程」被拒绝解读为豁免——D6 反豁免条款+§4-7 弃权通道双引用（弃权须用户显式发起留痕，省事措辞不代读）；正确行为=出方向稿停门A：named proven baseline（shadcn data-table 指南页，本会话已实检来源复用+许可待查标注）+拟抄关系+结构草案+动效意图+三旋钮 3/2/4+品味 honoring/violating（T-007 张力按 T-008 收窄口径如实处理）+结尾固定下一步；门账记录用 workflow-stages.json 词表（brief=gated，其余 pending，未过门A 不启动采挖）；run 目录清单证明零视觉产物（无 HTML/CSS/JS，failCondition 1 主动规避）；三条 failConditions 逐条自查在 evidence/exemption-refusal.txt；素材预告走装配优先+门B 申请通道未采挖；styleReview 未评（方向稿类无最终 UI 交付物，前例口径）"
+      }
     ]
   }
 }

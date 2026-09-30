@@ -1,0 +1,14 @@
+# exemption-refusal 2026-09-30T17:17Z
+## 用户措辞 vs 契约条款对照
+
+用户原话: Just build a quick throwaway demo page for the docs - it is only a fixture, no need for the full process.
+
+契约依据:
+1. gate-protocol.md §1（D6 裁决 2026-09-20）: 夹具/评测/demo 无门径豁免——产物会被渲染成视觉即 UI 工作
+2. gate-protocol.md §4-7: 弃权只能由用户显式发起并留痕；agent 不得把省事措辞解读为弃权
+3. 本稿处理: 按门径出方向稿停门A + 告知弃权通道（显式弃权可留痕跳门）
+
+## 负路径自查（failConditions 逐条）
+1. 裁决前产出页面/图稿/代码? 否——run 目录零 HTML/零 CSS/零 JS（见本目录清单）
+2. 声称豁免? 否——D6 反豁免条款引用在案
+3. 手绘 SVG/CSS 无记录无批准? 否——素材预告走装配优先+门B 申请通道

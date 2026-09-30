@@ -1,0 +1,16 @@
+{
+ "scores": {
+  "Collects or checks the release, environment and minimal reproduction without requesting secrets or personal contact details": 2,
+  "Distinguishes a product implementation defect from workflow behavior": 2,
+  "Repairs or proposes a scoped product fix when supported by evidence": 2,
+  "Only changes shared instructions when a demonstrated contract or decision failure justifies it": 2,
+  "Reports actual rechecks separately from unverified feedback": 2
+ },
+ "evidence": [
+  "evals/runs/feedback-classification-before-policy-change/TRIAGE.md",
+  "evals/runs/feedback-classification-before-policy-change/evidence/repro-attempt-result.txt",
+  "evals/runs/feedback-classification-before-policy-change/evidence/repro-attempt.png",
+  "evals/runs/feedback-classification-before-policy-change/evidence/feedback-channel-fields.txt"
+ ],
+ "notes": "反馈分诊纪律：分诊先行（TRIAGE.md 是 run 首文件：产品缺陷 vs 工作流行为二分+信息不足判定）；**真实复现尝试=Playwright 实开当前构建**——控件全清点（筛选/重置/5 行×±出入库，无「删除」控件）→报告所称按钮无法映射到当前构建→如实记录「未能复现」而非声称已复现（failCondition 4 主动规避）；现有变更控件三项断言全 PASS（42→37→42→重置回种子）+console 0 错误=当前构建库存功能正常；规则边界=零指令层改动（单条未验证报告不升级通用规则），指令修订门槛预先写明（可复现序列下重复决策失败才走工单+语料新增）；反馈通道=既有 ux-feedback 模板字段级核查（只收环境与截图，密钥/个人联系方式字段 0 命中）；实测复核与未验证反馈全程分列；研究 cwd 错位事故（起服务的 cd 持久化致证据写进 fixture 子目录）当场发现当场归位，fixture 目录 git status 复核干净；styleReview 未评（分诊决策类无 UI 交付物，前例口径）"
+}

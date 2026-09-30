@@ -2000,6 +2000,28 @@
         ],
         "notes": "边界纪律决策类（发布边界）：边界先行——BOUNDARY.md 是 run 首文件，公开面清单/不动清单先于任何动作；真实证据三层=①线上产物实抓（muzimu217.github.io→301→agent.kcos.club 200，本地资产恰 3 个 index-CNFjMOsW.css/index-BYDibO85.js/favicon.svg）+HTML 泄漏扫描 0 命中；②内容级扫描：370,463 字节 JS 包内 SKILL.md/gate-protocol/passCriteria/scenarios.json/references-manifest/chain-flow 六模式全 0（公开产物未夹带指令/语料/凭据）；③反馈通道实存=.github/ISSUE_TEMPLATE/bug-report.yml+ux-feedback.yml（2026-09-27 建，真实 labels），版本化反馈路径不发明渠道/收件人；场景语境与仓库实况差异如实登记（本仓指令层公开=kit 即产品，私源保私按语境内判定，检查方法可迁移）；邀请元数据 invite-metadata v1 真实三句真相（演示≠工作流评测/反馈走 issue 模板/无其他收集渠道）+发送状态=未发送（未提供具名收件人，外联唯一通道=用户本人，权限边界④同构）；failConditions 5 条逐对账全未触发；styleReview 未评（决策类无 UI 交付物，前例口径）"
       }
+    ],
+    "feedback-classification-before-policy-change": [
+      {
+        "date": "2026-09-30",
+        "recordedAt": "2026-09-30T11:19:22.771Z",
+        "commit": "e59c7e34be234ebddf115794c92f999f39de8a51",
+        "scores": {
+          "Collects or checks the release, environment and minimal reproduction without requesting secrets or personal contact details": 2,
+          "Distinguishes a product implementation defect from workflow behavior": 2,
+          "Repairs or proposes a scoped product fix when supported by evidence": 2,
+          "Only changes shared instructions when a demonstrated contract or decision failure justifies it": 2,
+          "Reports actual rechecks separately from unverified feedback": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/feedback-classification-before-policy-change/TRIAGE.md",
+          "evals/runs/feedback-classification-before-policy-change/evidence/repro-attempt-result.txt",
+          "evals/runs/feedback-classification-before-policy-change/evidence/repro-attempt.png",
+          "evals/runs/feedback-classification-before-policy-change/evidence/feedback-channel-fields.txt"
+        ],
+        "notes": "反馈分诊纪律：分诊先行（TRIAGE.md 是 run 首文件：产品缺陷 vs 工作流行为二分+信息不足判定）；**真实复现尝试=Playwright 实开当前构建**——控件全清点（筛选/重置/5 行×±出入库，无「删除」控件）→报告所称按钮无法映射到当前构建→如实记录「未能复现」而非声称已复现（failCondition 4 主动规避）；现有变更控件三项断言全 PASS（42→37→42→重置回种子）+console 0 错误=当前构建库存功能正常；规则边界=零指令层改动（单条未验证报告不升级通用规则），指令修订门槛预先写明（可复现序列下重复决策失败才走工单+语料新增）；反馈通道=既有 ux-feedback 模板字段级核查（只收环境与截图，密钥/个人联系方式字段 0 命中）；实测复核与未验证反馈全程分列；研究 cwd 错位事故（起服务的 cd 持久化致证据写进 fixture 子目录）当场发现当场归位，fixture 目录 git status 复核干净；styleReview 未评（分诊决策类无 UI 交付物，前例口径）"
+      }
     ]
   }
 }

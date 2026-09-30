@@ -1,0 +1,4 @@
+# run-dir-manifest（证明零视觉产物，方向稿类）
+evals/runs/copy-proven-over-improvise/DIRECTION.md
+evals/runs/copy-proven-over-improvise/evidence/baseline-inspection.txt
+evals/runs/copy-proven-over-improvise/evidence/run-dir-manifest.txt

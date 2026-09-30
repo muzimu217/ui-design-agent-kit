@@ -2250,6 +2250,27 @@
         ],
         "notes": "微修通道纪律：三处微调一轮收口（标题文案/hero 换用户上传新图/主按钮浅一档），两步 git 历史做改前改后（32a6798 v1 基线→d817f2b 微调 v2），diff stat 恰 2 文件无第四处夹带；改前改后实测三值（title 概览→今日概览/btn #177656→#1e8062/hero v1→v2）；通道上限 ≤3/轮满额收口+回正门触发器声明（第四处/布局方向/新外部素材即出通道）；未重启门 A-C 未声称全链重跑；非弃权声明；**对比度取舍=实算三档**：首选浅档 #2b8a68 白字 4.25:1<4.5 当场拒用，改选 #1e8062 实算 4.86:1 过 AA——「浅一档」意图满足且红线不破（手写 4.9:1+ 被实算纪律当场纠正）；styleReview=微修类无新设计面，对比度已实算其余未评已标注"
       }
+    ],
+    "dark-surface-tokens-applied": [
+      {
+        "date": "2026-09-30",
+        "recordedAt": "2026-09-30T23:17:34.113Z",
+        "commit": "f0721c0935f0fdcdea837b45ed5eb6a637c9a357",
+        "scores": {
+          "Builds hierarchy with a surface-lightness ladder (elevated surfaces lighter than base) instead of shadows": 2,
+          "Uses tinted near-black surfaces with low-opacity white borders, not pure black": 2,
+          "Sets body text on a near-white ladder and never pure white, with separate secondary and placeholder steps": 2,
+          "Recalibrates the accent for dark surfaces instead of copying light-theme token values": 2,
+          "Defines every color token with light and dark values and references tokens only, no hardcoded hex in components": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/dark-surface-tokens-applied/NOTE.md",
+          "evals/runs/dark-surface-tokens-applied/evidence/dark-verify-result.txt",
+          "evals/runs/dark-surface-tokens-applied/evidence/dark-full.png"
+        ],
+        "notes": "暗色表面 token 落地：实机断言×8 全 PASS——①表面亮度阶梯程序实算（base #101418 0.0068 < card #171d24 0.0119 < raised #1d242c 0.0170，抬升=更亮零阴影）②基面 tinted near-black 非纯黑 ③描边 rgba(255,255,255,0.08) 低不透明度白 ④文字三档独立（primary #e8edf2 near-white/secondary #a8b4bf/placeholder #6b7682）⑤强调色暗面重校准 #3fbf8a（实测亮度>浅色版 #177656，不照搬浅色 token）⑥组件规则零硬编码 hex（遍历 styleSheets 非 token 块 0 命中，hex 仅存于双值 token 定义块）⑦正文对比度 15.70:1 程序实算 ⑧console 0+全页截图；首跑 2 条断言自身缺陷（placeholder 伪元素读取/页面内亮度函数内联）当场修复——断言脚本本身也要过运行关；styleReview=暗面专项判据即断言集，其余维度未评已标注"
+      }
     ]
   }
 }

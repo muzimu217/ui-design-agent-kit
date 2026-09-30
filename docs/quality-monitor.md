@@ -178,7 +178,7 @@ npm run prompt:build:lean  # 重建精简导出（契约/动效/验收/品味四
 
 - [ ] 改动的环节仍在本报告第二节映射表内，或映射表已同步
 - [ ] SKILL.md 未超 600 行瘦身边线；超线时把稳定细节下沉 references/，正文只留路由与触发条件（kit.test 有机械兜底）
-- [ ] 五个设计品味技能（ui-ux-pro-max/impeccable/emil-design-eng/baoyu-design/jiejoe-design）按 tool-routing 互斥触发表路由，单次最多跑一个
+- [ ] 三个设计品味技能（uak-design-system/uak-visual-critique/uak-design-thinking）+ jiejoe-design 按 tool-routing 互斥触发表路由，单次最多跑一个（2026-09-30 baoyu-design 移除；Emil 三技能合并为 uak-design-thinking；impeccable 改名 uak-visual-critique）
 - [ ] 新停门事项已登记 `docs/gates.md`，已裁决事项已回填（不删除行）
 - [ ] 验收记录含确认门痕迹：方向稿门/素材选择门/成品验收门至少列出通过情况
 - [ ] 验收记录含 MCP 调用痕迹：设计/实现/验收逐环节列出（服务器/工具/结果），或明确声明"本环节无需 MCP"及原因
@@ -203,7 +203,7 @@ npm run prompt:build:lean  # 重建精简导出（契约/动效/验收/品味四
 | 评测场景数 | 71（doc-drift 测试锁口径，quality-monitor 本行已入守卫） | ≥ 每环节 1 个，共 ≥ 9 |
 | verify 错误数 | 0 | 0 |
 | 测试通过数 | 85/85（doc-drift 守护：与 tests/*.test.mjs 静态 test() 计数一致，加测试须同笔更新本行） | 全过 |
-| 已装 skill 锁定率 | 21/25 锁定；未锁 4 = ui-design-agent、remotion-video-agent、promotion-playbook（三者本 kit 自有，无需 pin）+ jiejoe-design（第三方，补锁需改 sources.lock.json，等用户批准；verify 反向警告已在位列示） | 上游第三方 skill 100% 锁定（当前缺 jiejoe-design 一项） |
+| 已装 skill 锁定率 | 19/22 锁定；未锁 3 = ui-design-agent、remotion-video-agent、promotion-playbook（三者本 kit 自有，无需 pin）；上游第三方 19/19 全锁定（含 jiejoe-design 已补锁；2026-09-30 本地化后口径 25→22） | 上游第三方 skill 100% 锁定 |
 | 素材库检查日期 | 灵感库 2026-09-21（案例样板批次 13 站 curl+浏览器实拍入册）/ 预清组件源表 2026-09-07 | 每次抽查后更新 |
 
 若某维度跌破达标线，按第三节格式补一份"审查结果"更新，并修复到通过再合入。

@@ -14,7 +14,8 @@ should feel.
 - Required context: target audience and situation; use cases and primary
   tasks; brand personality and tone.
 - Source order: an explicit context block in the request -> the project's
-  design document (such as `.impeccable.md`) -> otherwise ask the user before
+  design document (such as `PRODUCT.md` written by uak-visual-critique init)
+  -> otherwise ask the user before
   proceeding. Do not infer audience or tone from reading the codebase alone.
 - Record the confirmed context in the design contract (Brand section) and
   re-check it at each confirmation gate.

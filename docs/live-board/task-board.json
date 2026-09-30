@@ -1,127 +1,117 @@
 {
- "updatedAt": "2026-09-29T23:25:00+08:00",
- "updatedBy": "轮 220 · 每小时评审循环",
- "stats": {
-  "corpus": "55/71",
-  "corpusPercent": 77,
-  "streak100": 39,
-  "tests": "94/94",
-  "a11y": "0 违规",
-  "audits": "13 批零上下文回归审计"
- },
- "activeTask": {
-  "id": "R149-01",
-  "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-  "status": "77%（55/71）· 超额积累",
-  "startedAt": "2026-09-28",
-  "currentGate": "门E 验收——每批走完执行+验证+入账+级联+合并上线全链",
-  "lastArtifact": "批次三十九 catalog-efficacy-before-add 100 分（纳新效能前置：实测 404 拒绝入册带记录理由，知识库零改动）",
-  "next": "批次四十续批（余 16 条；vue-video 场景挂起待用户产品重做方向）"
- },
- "gates": [
-  {
-   "id": "A",
-   "name": "设计稿",
-   "status": "passed",
-   "note": "方向由用户战略令定（设计大师/专家团/cover design scale）",
-   "at": "09-29"
+  "updatedAt": "2026-09-30",
+  "updatedBy": "轮 220 · 每小时评审循环",
+  "stats": {
+    "corpus": "56/71",
+    "corpusPercent": 79,
+    "streak100": 40,
+    "tests": "94/94",
+    "a11y": "0 违规",
+    "audits": "14 批零上下文回归审计"
   },
-  {
-   "id": "B",
-   "name": "素材选择",
-   "status": "active",
-   "note": "批次十九/二十：GOV.UK+shadcn 进 primary；403 三站入 secondary 桶待复验",
-   "at": "09-29"
+  "activeTask": {
+    "id": "R149-01",
+    "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
+    "status": "79%（56/71）· 超额积累 · 连续 40 批 100",
+    "startedAt": "2026-09-28",
+    "currentGate": "批四十已入账；下一批等下轮 --next（vue-video 仍挂起跳过）",
+    "lastArtifact": "批次四十 public-beta-surface-boundary 100 分（发布边界纪律：三层真实证据=线上产物泄漏扫描/370KB JS 包六模式 0 命中/issue 模板实存，邀请元数据 v1 未发送）",
+    "next": "批次四十一续批（余 15 条）；审计代理结论待回填"
   },
-  {
-   "id": "C",
-   "name": "原型",
-   "status": "passed",
-   "note": "工作流页六道门总览+两层架构已上线（f7a93e3）",
-   "at": "09-29"
-  },
-  {
-   "id": "D",
-   "name": "实现契约",
-   "status": "passed",
-   "note": "SKILL.md 专家团路由节+共享验收底座不变",
-   "at": "09-29"
-  },
-  {
-   "id": "E",
-   "name": "每轮验收",
-   "status": "active",
-   "note": "三十九批连续 100 分，每批实查取证",
-   "at": "进行中"
-  },
-  {
-   "id": "F",
-   "name": "证据留痕",
-   "status": "passed",
-   "note": "results.json 锚点台账+doc-drift 机器锁+零上下文审计",
-   "at": "持续"
-  }
- ],
- "recentFlow": [
-  {
-   "time": "09-29 23:25",
-   "event": "批次三十九入账：catalog-efficacy-before-add 100 分（纳新先效能后书写——实测 404 与用户声称不符，拒绝入册带双记录理由+检查方法自证抽样）——55/71 77%",
-   "type": "eval"
-  },
-  {
-   "time": "09-29 23:10",
-   "event": "轮转披露：--next 仍指向挂起中的 vue-video 场景（用户裁决），继续跳过取语料序下一场景",
-   "type": "audit"
-  },
-  {
-   "time": "09-29 22:20",
-   "event": "批次三十八入账：bounded-agent-dispatch 100 分（调度纪律=可执行状态机 12 断言，自家断言抓到 M 级生命周期闸门真漏洞）——54/71 76%",
-   "type": "eval"
-  },
-  {
-   "time": "09-29 22:05",
-   "event": "轮转披露：--next 指向 vue-video-embed-delivery 与用户 09-29「产物不入库」裁决直接冲突——跳过并如实记录，取语料序下一场景",
-   "type": "audit"
-  },
-  {
-   "time": "09-29 21:10",
-   "event": "用户裁决执行：产品视频+宿主页展示太丑不入库——vue-video-embed-delivery 整目录移除，台账回滚 53/71；新规=产品/展示类一律 output/ 不入库，每轮 HTML 成果汇报",
-   "type": "user-ruling"
-  },
-  {
-   "time": "09-29 21:05",
-   "event": "output/ 清理：4 个过时 diagram HTML 删除（uak-paper-diagram/workflow-diagram×3），保留架构展示页+SVG",
-   "type": "cleanup"
-  },
-  {
-   "time": "09-29 20:25",
-   "event": "批次三十七入账：spatial-no-forced-effects 100 分（注意力纪律——键盘焦点可见 5.08:1+错误三通道 alert/aria-invalid/焦点转移；两步 git 历史证 diff 仅三文件段）——54/71 76%",
-   "type": "eval"
-  },
-  {
-   "time": "09-29 20:15",
-   "event": "B 站第十三程：wbi 搜索配方退化（v_voucher 软拒需完整签名），popular feed 免签名可用；feed 态=故事向、工具内容走搜索长尾",
-   "type": "research"
-  },
-  {
-   "time": "09-29 19:30",
-   "event": "批次三十六入账：spatial-render-evidence 100 分（验收者视角 FAIL 判定纪律——GLB 404 网络证据+截图像素检查暖色占比 0 vs 对照自校准 0.2684；亮度 std 被校准证伪改色相轴）——53/71 75%",
-   "type": "eval"
-  },
-  {
-   "time": "09-29 19:20",
-   "event": "工具发现：vite dev html fallback 把缺失资产吞成 200/HTML 污染网络证据——appType custom+根路径自答中间件修复（fixture 内）",
-   "type": "audit"
-  },
-  {
-   "time": "09-29 18:40",
-   "event": "批次三十五入账：vue-video-embed-delivery 100 分（Remotion 15s MP4 交付+Vue 宿主零迁移嵌入/自动播放拒绝真实 AbortError 回退/reduced-motion 宿主实现/375 内联/三分离证据）——52/71 73%",
-   "type": "eval"
-  },
-  {
-   "time": "09-29 18:30",
-   "event": "台账治理：iteration-log 补录批次三十三/三十四两行（上轮漏记）+teaser 调试残留 WIP 回退+§4.1 程序化重建 52 行",
-   "type": "audit"
-  }
- ]
+  "gates": [
+    {
+      "id": "A",
+      "name": "设计稿",
+      "status": "passed",
+      "note": "方向由用户战略令定（设计大师/专家团/cover design scale）",
+      "at": "09-29"
+    },
+    {
+      "id": "B",
+      "name": "素材选择",
+      "status": "active",
+      "note": "批次十九/二十：GOV.UK+shadcn 进 primary；403 三站入 secondary 桶待复验",
+      "at": "09-29"
+    },
+    {
+      "id": "C",
+      "name": "原型",
+      "status": "passed",
+      "note": "工作流页六道门总览+两层架构已上线（f7a93e3）",
+      "at": "09-29"
+    },
+    {
+      "id": "D",
+      "name": "实现契约",
+      "status": "passed",
+      "note": "SKILL.md 专家团路由节+共享验收底座不变",
+      "at": "09-29"
+    },
+    {
+      "id": "E",
+      "name": "每轮验收",
+      "status": "active",
+      "note": "三十九批连续 100 分，每批实查取证",
+      "at": "进行中"
+    },
+    {
+      "id": "F",
+      "name": "证据留痕",
+      "status": "passed",
+      "note": "results.json 锚点台账+doc-drift 机器锁+零上下文审计",
+      "at": "持续"
+    }
+  ],
+  "recentFlow": [
+    {
+      "time": "09-30 04:05",
+      "event": "第 14 批零上下文审计（5 笔本地化提交）：4 处收尾联动遗漏全数整改——README:315 能力表 6 旧名、chain-flow.md:46 门B 路由旧名、NOTICES 尾段 3 条自相矛盾 bullet、quality-monitor 锁定率 21/25→19/22；范围外顺手对齐 NOTICES Motion revision 与 lock 一致",
+      "type": "audit"
+    },
+    {
+      "time": "09-30 03:4x",
+      "event": "批次四十入账：public-beta-surface-boundary 100 分（发布边界纪律——公开产物边界清单先行+内容级泄漏扫描+真实邀请元数据不代发）——56/71 79%，连续 40 批",
+      "type": "eval"
+    },
+    {
+      "time": "09-30",
+      "event": "技能资产本地化五步落地：移除 baoyu-design；jiejoe 审查保留；Emil 三技能合并重写为 uak-design-thinking；impeccable→uak-visual-critique；ui-ux-pro-max→uak-design-system——官方技能（gsap/remotion/motion）不改名，NOTICES 全量记改编出处",
+      "type": "governance"
+    },
+    {
+      "time": "09-29 23:25",
+      "event": "批次三十九入账：catalog-efficacy-before-add 100 分（纳新先效能后书写——实测 404 与用户声称不符，拒绝入册带双记录理由+检查方法自证抽样）——55/71 77%",
+      "type": "eval"
+    },
+    {
+      "time": "09-29 23:10",
+      "event": "轮转披露：--next 仍指向挂起中的 vue-video 场景（用户裁决），继续跳过取语料序下一场景",
+      "type": "audit"
+    },
+    {
+      "time": "09-29 22:20",
+      "event": "批次三十八入账：bounded-agent-dispatch 100 分（调度纪律=可执行状态机 12 断言，自家断言抓到 M 级生命周期闸门真漏洞）——54/71 76%",
+      "type": "eval"
+    },
+    {
+      "time": "09-29 22:05",
+      "event": "轮转披露：--next 指向 vue-video-embed-delivery 与用户 09-29「产物不入库」裁决直接冲突——跳过并如实记录，取语料序下一场景",
+      "type": "audit"
+    },
+    {
+      "time": "09-29 21:10",
+      "event": "用户裁决执行：产品视频+宿主页展示太丑不入库——vue-video-embed-delivery 整目录移除，台账回滚 53/71；新规=产品/展示类一律 output/ 不入库，每轮 HTML 成果汇报",
+      "type": "user-ruling"
+    },
+    {
+      "time": "09-29 21:05",
+      "event": "output/ 清理：4 个过时 diagram HTML 删除（uak-paper-diagram/workflow-diagram×3），保留架构展示页+SVG",
+      "type": "cleanup"
+    },
+    {
+      "time": "09-29 20:25",
+      "event": "批次三十七入账：spatial-no-forced-effects 100 分（注意力纪律——键盘焦点可见 5.08:1+错误三通道 alert/aria-invalid/焦点转移；两步 git 历史证 diff 仅三文件段）——54/71 76%",
+      "type": "eval"
+    }
+  ]
 }

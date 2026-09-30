@@ -157,7 +157,7 @@
 | 功效分析·内容形态 | 交互式工具 + 导出配置，非画廊 |
 | 使用场景示例 | "产品主色定不下来" → 输入 3 组候选色板 → 在真实布局上看对比度与层级 → 导出 Tailwind 变量进设计契约 |
 | 截图示例 | screenshots/shot-realtime-colors.jpeg（2026-09-11，Playwright 实拍首页） |
-| 镜像替代 | Coolors（同类配色工具）、ui-ux-pro-max（本地色板数据） |
+| 镜像替代 | Coolors（同类配色工具）、uak-design-system（本地色板数据） |
 | 适用类型 | 配色 / Color |
 | 可达性与授权 | curl 200、浏览器正常加载（2026-09-11 实测）；站方标称核心功能免费，产出为自选色值无素材版权问题 |
 | 加入日期 / 来源 | 2026-09-11 / AI 发现（用户定向网络调研批次） |
@@ -173,7 +173,7 @@
 | 功效分析·内容形态 | 交互式工具 + 色板库 + 导出（PNG/SCSS/SVG/PDF 等） |
 | 使用场景示例 | "暗色主题要一组功能性辅助色" → 生成器锁定主色刷变体 → Contrast Checker 过 WCAG → Visualizer 上样机确认 → 记录色值进契约 |
 | 截图示例 | screenshots/shot-coolors.jpeg（2026-09-11，Playwright 实拍首页） |
-| 镜像替代 | Realtime Colors（真实站点预览更强）、ui-ux-pro-max（本地色板数据） |
+| 镜像替代 | Realtime Colors（真实站点预览更强）、uak-design-system（本地色板数据） |
 | 适用类型 | 配色 / Color |
 | 可达性与授权 | curl 403（脚本拦截）、**浏览器正常加载**（2026-09-11 实测）；免费为主，Pro 付费解锁高级功能（freemium） |
 | 加入日期 / 来源 | 2026-09-11 / AI 发现（用户定向网络调研批次） |
@@ -189,7 +189,7 @@
 | 功效分析·内容形态 | 编辑型索引 + 清单 + 付费 lookbooks/课程 |
 | 使用场景示例 | "品牌站要衬线标题+无衬线正文" → 查目标字体的 pairing 页 → 抄配对关系与字号节奏 → 免费替代列里选 Google Fonts 落地 |
 | 截图示例 | screenshots/shot-typewolf.jpeg（2026-09-11，Playwright 实拍首页） |
-| 镜像替代 | Fonts In Use（真实案例更丰富）、ui-ux-pro-max（本地字体数据） |
+| 镜像替代 | Fonts In Use（真实案例更丰富）、uak-design-system（本地字体数据） |
 | 适用类型 | 字体 / Typography |
 | 可达性与授权 | curl 200、浏览器正常加载（2026-09-11 实测）；浏览免费，lookbooks/课程为付费内容；字体本身授权归各厂牌，落地前逐字体核对 |
 | 加入日期 / 来源 | 2026-09-11 / AI 发现（用户定向网络调研批次） |

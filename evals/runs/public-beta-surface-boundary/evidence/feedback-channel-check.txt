@@ -1,0 +1,13 @@
+# feedback-channel-check 2026-09-30T10:18Z
+## .github/ISSUE_TEMPLATE contents (versioned feedback path, real files):
+total 16
+drwxr-xr-x@ 4 blackevil  staff  128 Sep 27 22:34 .
+drwxr-xr-x@ 4 blackevil  staff  128 Sep 27 22:34 ..
+-rw-r--r--@ 1 blackevil  staff  920 Sep 27 22:34 bug-report.yml
+-rw-r--r--@ 1 blackevil  staff  814 Sep 27 22:34 ux-feedback.yml
+
+## template titles (no invented recipients; channel = repo issue tracker):
+name: 💬 体验反馈 / Experience feedback
+labels: ["feedback"]
+name: 🐞 Bug 反馈 / Bug report
+labels: ["bug"]

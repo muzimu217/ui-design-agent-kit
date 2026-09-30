@@ -312,7 +312,7 @@ npm run doctor:mcp
 | Context7 文档检索 | 已配置公开 MCP |
 | shadcn 组件检索 | 固定版本本地 MCP |
 | Playwright 浏览器操作 | 固定版本、隔离无头会话 |
-| UI UX Pro Max、Impeccable、Emil Design Eng、Animation Vocabulary、Pick UI Library、Baoyu Design | 已安装项目级 skill |
+| uak-design-system、uak-visual-critique、uak-design-thinking、jiejoe-design + motion / GSAP×8 / Remotion×6 官方 skills | 22 个已安装项目级 skill；三个 uak-* 为 2026-09-30 本地化改名（原 ui-ux-pro-max / impeccable / Emil 三技能），改编范围见 THIRD_PARTY_NOTICES.md |
 | Remotion | 6 个官方 skills + 本地视频编排提示词；不安装已废弃的官方 MCP |
 | Three.js / R3F / Rapier | 按需运行库路由与验收规范；不在 kit 根目录安装运行库 |
 | Blender 建模与 GLB 导出 | 可选本地 CLI / 第三方 Blender MCP 路由；未安装或配置 Blender MCP |

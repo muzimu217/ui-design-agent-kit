@@ -1,0 +1,5 @@
+# run-dir-manifest（证明零视觉产物）
+本 run 目录文件清单（应无 .html/.css/.js 实现文件）：
+evals/runs/fixture-no-gate-exemption/DIRECTION.md
+evals/runs/fixture-no-gate-exemption/evidence/exemption-refusal.txt
+evals/runs/fixture-no-gate-exemption/evidence/run-dir-manifest.txt

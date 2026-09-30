@@ -2,9 +2,9 @@
   "updatedAt": "2026-09-30",
   "updatedBy": "轮 220 · 每小时评审循环",
   "stats": {
-    "corpus": "62/71",
-    "corpusPercent": 87,
-    "streak100": 46,
+    "corpus": "63/71",
+    "corpusPercent": 89,
+    "streak100": 47,
     "tests": "94/94",
     "a11y": "0 违规",
     "audits": "16 批零上下文回归审计"
@@ -12,11 +12,11 @@
   "activeTask": {
     "id": "R149-01",
     "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "87%（62/71）· 连续 46 批 100",
+    "status": "89%（63/71）· 连续 47 批 100",
     "startedAt": "2026-09-28",
-    "currentGate": "批四十六已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
-    "lastArtifact": "批次四十六 taste-profile-hit-update-confirm 100 分（品味档案更新纪律：逐候选引真实 T-编号声明 honoring/violating+追加不覆写+contested 标记+确认摘要挂现有检查点；假想语句不写真档案）",
-    "next": "批次四十七续批（余 9 条）"
+    "currentGate": "批四十七已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
+    "lastArtifact": "批次四十七 fixture-no-gate-exemption 100 分（夹具反豁免=D6 核心场景：拒绝豁免框架、方向稿停门A、零视觉产物清单证明、弃权通道告知）",
+    "next": "批次四十八续批（余 8 条）；第 17 批审计结论待回填"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 11:2x",
+      "event": "批次四十七入账：fixture-no-gate-exemption 100 分（夹具反豁免纪律——用户「只是夹具不用全流程」被拒读为豁免，方向稿停门A+零视觉产物清单）——63/71 89%",
+      "type": "eval"
+    },
+    {
       "time": "09-30 10:2x",
       "event": "批次四十六入账：taste-profile-hit-update-confirm 100 分（品味档案更新纪律——append-only+contested 标记+确认摘要挂现有检查点，假想语句不落真档案）——62/71 87%；轮 224 部署结论补验成功",
       "type": "eval"
@@ -107,11 +112,6 @@
       "time": "09-30 03:4x",
       "event": "批次四十入账：public-beta-surface-boundary 100 分（发布边界纪律——公开产物边界清单先行+内容级泄漏扫描+真实邀请元数据不代发）——56/71 79%，连续 40 批",
       "type": "eval"
-    },
-    {
-      "time": "09-30",
-      "event": "技能资产本地化五步落地：移除 baoyu-design；jiejoe 审查保留；Emil 三技能合并重写为 uak-design-thinking；impeccable→uak-visual-critique；ui-ux-pro-max→uak-design-system——官方技能（gsap/remotion/motion）不改名，NOTICES 全量记改编出处",
-      "type": "governance"
     }
   ]
 }

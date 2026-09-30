@@ -1,6 +1,6 @@
 # baseline-inspection 2026-09-30T18:16Z
 ## named proven baseline 的在仓检视记录（非凭记忆）
-来源文件: evals/runs/design-md-baseline-adaptation/pulled-linear-DESIGN.md（经 design-md.mjs 自 VoltAgent/awesome-design-md rev 8147538b 拉取，MIT；上一批次已检视入账）
+来源文件: 本 run evidence/pulled-linear-DESIGN-copy.md（证据副本，随本 run 入库保 fresh-clone 可用）——原件经 design-md.mjs 自 VoltAgent/awesome-design-md rev 8147538b 拉取，MIT；上一批次已检视入账（第 18 批审计建议采纳：引用件必须版本库可寻）
 
 ## 与设置界面直接相关的已检视关系（原文摘录）
 description: "A near-black product-focused marketing canvas built around #010102 (the deepest dark surface of any tool in this collection), light gray text (#f7f8f8), and the signature Linear lavender-blue (#5e6ad2) used as the single chromatic accent. The system reads as software-craft documentation: dense, technical, and quietly luxurious. Display type is set in the Linear custom sans (SF Pro Display fallback) at 500–700 with measured negative tracking. Cards live as charcoal panels (#0f1011) with hairline borders. The accent lavender appears on the brand mark, focus rings, and a few intentional CTAs — never decoratively. Page rhythm leans on product UI screenshots framed in dark panels rather than atmospheric color."

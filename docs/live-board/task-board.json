@@ -7,7 +7,7 @@
     "streak100": 49,
     "tests": "94/94",
     "a11y": "0 违规",
-    "audits": "17 批零上下文回归审计"
+    "audits": "18 批零上下文回归审计"
   },
   "activeTask": {
     "id": "R149-01",
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 13:4x",
+      "event": "第 18 批审计回填：批次 47/48=CLEAN 5/5（Linear baseline token 逐字 verbatim 核验+方向稿固定格式+零视觉产物+零夹带）；建议级发现已采纳——pulled-linear 检视记录以证据副本入 run 目录（fresh-clone 可用，目录 vendor 规则不破）",
+      "type": "audit"
+    },
+    {
       "time": "09-30 13:2x",
       "event": "批次四十九入账：baseline-lookup-boundary 100 分（基线查找边界——一次定向抓取 named Habitica unverified-partial+过门后实机校验承诺）——65/71 92%",
       "type": "eval"
@@ -107,11 +112,6 @@
       "time": "09-30 06:3x",
       "event": "批次四十二入账：agent-owned-material-research 100 分（代理自有检索纪律——6 次真实调用含 5 次降级全留痕，候选标待确认零采用，授权标待查）——58/71 82%；第 15 批审计 CLEAN",
       "type": "eval"
-    },
-    {
-      "time": "09-30 06:0x",
-      "event": "用户两笔裁决落地：①九环节全链路线图上线 #/workflow（Pages 隔离门白名单登记后部署成功）②展示页元层内容彻底移除——外置评审循环与仓库展示完全隔离",
-      "type": "showcase"
     }
   ]
 }

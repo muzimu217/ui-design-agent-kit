@@ -8,13 +8,16 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   const v = Number(qty.value);
   if (!qty.value.trim() || !Number.isInteger(v) || v < 1 || v > 12) {
-    // 缺陷：错误文本只改 DOM（无 role/aria-live 屏幕阅读器无感知），
-    // 且焦点仍留在提交按钮上——键盘/读屏用户不知道出错了、错在哪
+    // 修复 2：错误三通道——role=alert 公告（读屏）、aria-invalid+describedby 程序关联、
+    // 焦点移到出错字段（键盘用户就地看到/听到错误）
     error.textContent = "请输入 1–12 的整数";
     error.hidden = false;
+    qty.setAttribute("aria-invalid", "true");
+    qty.focus();
     return;
   }
   error.hidden = true;
   error.textContent = "";
+  qty.setAttribute("aria-invalid", "false");
   submit.textContent = "已登记 · 调拨 " + v;
 });

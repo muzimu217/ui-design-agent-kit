@@ -28,9 +28,9 @@
 
       <form class="transfer" id="transfer-form" novalidate>
         <label for="qty">调拨数量（1–12）</label>
-        <input id="qty" name="qty" type="number" min="1" max="12" />
+        <input id="qty" name="qty" type="number" min="1" max="12" aria-describedby="error" />
         <button type="submit" id="submit">提交调拨</button>
-        <p class="error" id="error" hidden></p>
+        <p class="error" id="error" role="alert" hidden></p>
       </form>
     </main>
     <script type="module" src="/src/main.js"></script>

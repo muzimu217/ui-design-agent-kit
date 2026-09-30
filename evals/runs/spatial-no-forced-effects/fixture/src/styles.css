@@ -31,5 +31,17 @@ body {
 }
 .error { width: 100%; margin: 0; font-size: 13px; color: #a02c2c; }
 
-/* 缺陷 1：全局焦点可见性被干掉（键盘用户无法定位焦点） */
-:focus { outline: none; }
+/* 修复 1：可见键盘焦点——双通道（outline+淡阴影），蓝环对页面底色 ≥3:1（WCAG 1.4.11 非文本对比） */
+:focus-visible {
+  outline: 2px solid #2566c4;
+  outline-offset: 2px;
+}
+.transfer input:focus-visible {
+  outline-offset: 0;
+  box-shadow: 0 0 0 3px rgba(37, 102, 196, 0.22);
+}
+
+/* 修复 2 配套：错误字段视觉态与错误文本的程序关联样式 */
+.transfer input[aria-invalid="true"] {
+  border-color: #a02c2c;
+}

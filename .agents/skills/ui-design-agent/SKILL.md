@@ -59,12 +59,7 @@ state changes legible. Do not mistake more effects or tool calls for better work
   confirms the tier and boundary **for each page** before any special-case
   route or gate reduction is used; a narrow repair never uses tiering as a
   license to expand into a redesign.
-- Run at the smallest token footprint that preserves the gates: plans freeze
-  **one line per field** within ~50 lines total; gate presentations reference
-  artifacts by path instead of pasting contents; a locked plan is cited by
-  revision, never restated; and each working round stays inside its one stated
-  objective — no out-of-plan exploration, research within the bounded budget
-  (plan-execute.md length budget and focus rules).
+- Keep token cost minimal: one-line-per-field plans (~50 lines), cite artifact paths and plan revisions instead of restating, one stated objective per round (plan-execute.md budget + focus rules).
 - Read the target repository's instructions, dependencies, routes, components,
   tokens, assets, and current states before choosing libraries or visual direction.
 - Preserve the user's brand, content, stack, and chosen references. Established
@@ -362,12 +357,7 @@ is not proof of a connection, and a connection is not proof of a successful call
   or substantial new visual work. Follow only the relevant playbook; do not
   trigger every command. The proactive pre-gate self-critique is the
   detail-critique pass, not a uak-visual-critique run.
-- Use `uak-design-thinking` for polish judgment calls, motion naming, and
-  library picks: its Part A decision framework informs component, detail,
-  and animation decisions; its motion glossary turns a vague motion
-  description into the exact term; its library-picks table chooses a
-  curated library for a concrete component task. Read only the relevant
-  part.
+- Use `uak-design-thinking` for polish judgment calls, motion naming, and library picks: its Part A framework informs component, detail, and animation decisions; its motion glossary turns a vague motion description into the exact term; its library-picks table chooses a curated library for a concrete component task. Read only the relevant part.
 - Use `jiejoe-design` for distinctive interaction motion: magnetic pointer
   physics, SVG stroke and wave effects, ScrollTrigger scroll choreography, and
   personality-loaded loading or transition screens. Combine it with the

@@ -1,117 +1,127 @@
 {
-  "updatedAt": "2026-09-29T15:00:00-07:00",
-  "updatedBy": "轮 214 · 每小时评审循环",
-  "stats": {
-    "corpus": "50/71",
-    "corpusPercent": 70,
-    "streak100": 33,
-    "tests": "94/94",
-    "a11y": "0 违规",
-    "audits": "13 批零上下文回归审计"
+ "updatedAt": "2026-09-29T18:40:00+08:00",
+ "updatedBy": "轮 215 · 每小时评审循环",
+ "stats": {
+  "corpus": "52/71",
+  "corpusPercent": 73,
+  "streak100": 35,
+  "tests": "94/94",
+  "a11y": "0 违规",
+  "audits": "13 批零上下文回归审计"
+ },
+ "activeTask": {
+  "id": "R149-01",
+  "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
+  "status": "73%（52/71）· 超额场景继续积累",
+  "startedAt": "2026-09-28",
+  "currentGate": "门E 验收——每批走完执行+验证+入账+级联+合并上线全链",
+  "lastArtifact": "批次三十五 vue-video-embed-delivery 100 分（Remotion 15s MP4 交付+Vue 宿主嵌入）",
+  "next": "批次三十六续批（余 19 条超额）"
+ },
+ "gates": [
+  {
+   "id": "A",
+   "name": "设计稿",
+   "status": "passed",
+   "note": "方向由用户战略令定（设计大师/专家团/cover design scale）",
+   "at": "09-29"
   },
-  "activeTask": {
-    "id": "R149-01",
-    "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "已破 70% 心理线（50/71）· 超额场景继续积累",
-    "startedAt": "2026-09-28",
-    "currentGate": "门E 验收——每批走完执行+验证+入账+级联+合并上线全链",
-    "lastArtifact": "批次三十三 three-remotion-deterministic-export 100 分（MP4 渲染+乱序 md5）",
-    "next": "批次三十四续批（余 21 条超额）"
+  {
+   "id": "B",
+   "name": "素材选择",
+   "status": "active",
+   "note": "批次十九/二十：GOV.UK+shadcn 进 primary；403 三站入 secondary 桶待复验",
+   "at": "09-29"
   },
-  "gates": [
-    {
-      "id": "A",
-      "name": "设计稿",
-      "status": "passed",
-      "note": "方向由用户战略令定（设计大师/专家团/cover design scale）",
-      "at": "09-29"
-    },
-    {
-      "id": "B",
-      "name": "素材选择",
-      "status": "active",
-      "note": "批次十九/二十：GOV.UK+shadcn 进 primary；403 三站入 secondary 桶待复验",
-      "at": "09-29"
-    },
-    {
-      "id": "C",
-      "name": "原型",
-      "status": "passed",
-      "note": "工作流页六道门总览+两层架构已上线（f7a93e3）",
-      "at": "09-29"
-    },
-    {
-      "id": "D",
-      "name": "实现契约",
-      "status": "passed",
-      "note": "SKILL.md 专家团路由节+共享验收底座不变",
-      "at": "09-29"
-    },
-    {
-      "id": "E",
-      "name": "每轮验收",
-      "status": "active",
-      "note": "二十批连续 100 分，每批 Playwright 断言/帧检视/实查取证",
-      "at": "进行中"
-    },
-    {
-      "id": "F",
-      "name": "证据留痕",
-      "status": "passed",
-      "note": "results.json 锚点台账+doc-drift 机器锁+零上下文审计",
-      "at": "持续"
-    }
-  ],
-  "recentFlow": [
-    {
-      "time": "09-29 15:00",
-      "event": "批次三十三入账：三确定性物理 MP4 100 分（逐帧欧拉重建/乱序 md5/ffprobe 全检）——50/71 破七成",
-      "type": "eval"
-    },
-    {
-      "time": "09-29 12:30",
-      "event": "blender-missing run 工件补提交（同款漏提交二次备案）+二轮审计批二处置收尾",
-      "type": "audit"
-    },
-    {
-      "time": "09-29 13:45",
-      "event": "批次三十二入账：Blender 缺位声明 100 分（三层缺失 environment-probe 直证/三替代显式不等价/决策点交用户）",
-      "type": "eval"
-    },
-    {
-      "time": "09-29 12:30",
-      "event": "spatial-reference EVIDENCE 补写（Write 假成功 ls 拦截）+spatial run 四件工件补提交",
-      "type": "audit"
-    },
-    {
-      "time": "09-29 13:16",
-      "event": "批次三十一入账：刚体物理正用 100 分（Rapier 拖拽/碰撞/堆叠；内环抓 pointer capture+空格 reset 两真缺陷）",
-      "type": "eval"
-    },
-    {
-      "time": "09-29 12:30",
-      "event": "审计批处置：批次十七~廿二+v2+R194-01 PASS（2 轻度口径对齐）+§4.1 全表程序化重建（45 行连续编号）+三处陈旧声称修正+SKILL 孤行残片清理",
-      "type": "audit"
-    },
-    {
-      "time": "09-29 11:45",
-      "event": "批次二十五入账：细节批评先行 100 分（四发现分诊/修自捕 4.90:1/倾斜裁量权交用户）",
-      "type": "eval"
-    },
-    {
-      "time": "09-29 10:16",
-      "event": "批次二十三入账：计划锁定纪律 100 分（四问带影响面/五假设显式待确认）——41/71",
-      "type": "eval"
-    },
-    {
-      "time": "09-29 11:16",
-      "event": "批次二十四入账：执行授权门禁 100 分（PLAN_DRAFT 缺锁定计划拒绝执行，五项授权链反证留痕）",
-      "type": "eval"
-    },
-    {
-      "time": "09-29 08:40",
-      "event": "批次二十一入账：竞品模仿边界 100 分（五维拆解+六要素重做清单）",
-      "type": "eval"
-    }
-  ]
+  {
+   "id": "C",
+   "name": "原型",
+   "status": "passed",
+   "note": "工作流页六道门总览+两层架构已上线（f7a93e3）",
+   "at": "09-29"
+  },
+  {
+   "id": "D",
+   "name": "实现契约",
+   "status": "passed",
+   "note": "SKILL.md 专家团路由节+共享验收底座不变",
+   "at": "09-29"
+  },
+  {
+   "id": "E",
+   "name": "每轮验收",
+   "status": "active",
+   "note": "三十五批连续 100 分，每批 Playwright 断言/帧检视/实查取证",
+   "at": "进行中"
+  },
+  {
+   "id": "F",
+   "name": "证据留痕",
+   "status": "passed",
+   "note": "results.json 锚点台账+doc-drift 机器锁+零上下文审计",
+   "at": "持续"
+  }
+ ],
+ "recentFlow": [
+  {
+   "time": "09-29 18:40",
+   "event": "批次三十五入账：vue-video-embed-delivery 100 分（Remotion 15s MP4 交付+Vue 宿主零迁移嵌入/自动播放拒绝真实 AbortError 回退/reduced-motion 宿主实现/375 内联/三分离证据）——52/71 73%",
+   "type": "eval"
+  },
+  {
+   "time": "09-29 18:30",
+   "event": "台账治理：iteration-log 补录批次三十三/三十四两行（上轮漏记）+teaser 调试残留 WIP 回退+§4.1 程序化重建 52 行",
+   "type": "audit"
+  },
+  {
+   "time": "09-29 15:00",
+   "event": "批次三十四入账：三确定性物理 MP4 100 分（逐帧欧拉重建/乱序 md5/ffprobe 全检）——51/71（批次号勘误：三十三=blender-connected）",
+   "type": "eval"
+  },
+  {
+   "time": "09-29 12:30",
+   "event": "blender-missing run 工件补提交（同款漏提交二次备案）+二轮审计批二处置收尾",
+   "type": "audit"
+  },
+  {
+   "time": "09-29 13:45",
+   "event": "批次三十二入账：Blender 缺位声明 100 分（三层缺失 environment-probe 直证/三替代显式不等价/决策点交用户）",
+   "type": "eval"
+  },
+  {
+   "time": "09-29 12:30",
+   "event": "spatial-reference EVIDENCE 补写（Write 假成功 ls 拦截）+spatial run 四件工件补提交",
+   "type": "audit"
+  },
+  {
+   "time": "09-29 13:16",
+   "event": "批次三十一入账：刚体物理正用 100 分（Rapier 拖拽/碰撞/堆叠；内环抓 pointer capture+空格 reset 两真缺陷）",
+   "type": "eval"
+  },
+  {
+   "time": "09-29 12:30",
+   "event": "审计批处置：批次十七~廿二+v2+R194-01 PASS（2 轻度口径对齐）+§4.1 全表程序化重建（45 行连续编号）+三处陈旧声称修正+SKILL 孤行残片清理",
+   "type": "audit"
+  },
+  {
+   "time": "09-29 11:45",
+   "event": "批次二十五入账：细节批评先行 100 分（四发现分诊/修自捕 4.90:1/倾斜裁量权交用户）",
+   "type": "eval"
+  },
+  {
+   "time": "09-29 10:16",
+   "event": "批次二十三入账：计划锁定纪律 100 分（四问带影响面/五假设显式待确认）——41/71",
+   "type": "eval"
+  },
+  {
+   "time": "09-29 11:16",
+   "event": "批次二十四入账：执行授权门禁 100 分（PLAN_DRAFT 缺锁定计划拒绝执行，五项授权链反证留痕）",
+   "type": "eval"
+  },
+  {
+   "time": "09-29 08:40",
+   "event": "批次二十一入账：竞品模仿边界 100 分（五维拆解+六要素重做清单）",
+   "type": "eval"
+  }
+ ]
 }

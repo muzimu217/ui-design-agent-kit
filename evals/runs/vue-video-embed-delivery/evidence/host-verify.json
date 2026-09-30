@@ -1,0 +1,73 @@
+{
+  "capturedAt": "2026-09-29T18:31+08:00",
+  "server": "vite dev @ http://localhost:4196 (Vue 3.5 + @vitejs/plugin-vue 5)",
+  "tool": "Playwright MCP (Chromium headless)",
+  "runs": [
+    {
+      "case": "desktop-autoplay",
+      "viewport": "1440x900",
+      "url": "http://localhost:4196/",
+      "assertions": {
+        "dataState": "autoplaying",
+        "playing": true,
+        "currentTimeAdvancing": true,
+        "currentTimeSample": ["8.06", "8.76"],
+        "muted": true,
+        "hasControls": true,
+        "hasPlaysinline": true,
+        "posterAttr": "/media/poster.jpg",
+        "frameRatio": 1.778,
+        "videoFillsFrame": true,
+        "overlayVisible": false,
+        "consoleErrors": 0
+      },
+      "screenshot": "host-desktop-autoplay.png"
+    },
+    {
+      "case": "autoplay-rejection-then-manual (force-block fixture)",
+      "viewport": "1440x900",
+      "url": "http://localhost:4196/?force-block=1",
+      "fixture": "?force-block=1 在 play() 后立即 pause()，使 play promise 以 AbortError 真实 reject——驱动与浏览器策略拒绝相同的 catch 分支",
+      "assertions": {
+        "beforeClick": { "dataState": "manual-wait", "paused": true, "overlayText": "▶点按播放" },
+        "afterClick": { "dataState": "manual-playing", "paused": false, "overlayGone": true, "currentTimeAdvancing": true }
+      },
+      "screenshot": "host-manual-play-overlay.png"
+    },
+    {
+      "case": "reduced-motion",
+      "viewport": "1440x900",
+      "url": "http://localhost:4196/ (emulateMedia reducedMotion=reduce)",
+      "assertions": {
+        "mediaReduced": true,
+        "dataReduced": "reduce",
+        "autoplayAttempted": false,
+        "pausedOnLoad": true,
+        "posterShown": true,
+        "overlayText": "▶已停用自动播放 · 点按播放",
+        "manualClickPlays": true,
+        "stateAfterManualClick": "manual-playing"
+      },
+      "screenshot": "host-reduced-motion.png"
+    },
+    {
+      "case": "mobile-375-inline",
+      "viewport": "375x667",
+      "url": "http://localhost:4196/",
+      "assertions": {
+        "dataState": "autoplaying",
+        "playingInline": true,
+        "currentTimeAdvancing": true,
+        "playsinlineAttr": true,
+        "muted": true,
+        "inlineRect": { "x": 20, "y": 149, "w": 335, "h": 188 },
+        "fullyInViewport": true,
+        "notFullscreen": true,
+        "noHorizontalOverflow": true,
+        "frameRatio": 1.778
+      },
+      "screenshot": "host-mobile-375.png"
+    }
+  ],
+  "consoleNote": "console 历史(all=true)中的 favicon 404 与 WebSocket 拒绝来自首轮取证时被管道误杀的第一实例（HMR 窗口）及 favicon 修复前；favicon 已改内联 SVG，修复后四条路径在第二实例上全部 0 错误（since-navigation Total 2 / Errors 0）。"
+}

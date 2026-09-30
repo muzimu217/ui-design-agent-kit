@@ -2,9 +2,9 @@
   "updatedAt": "2026-09-30",
   "updatedBy": "轮 220 · 每小时评审循环",
   "stats": {
-    "corpus": "61/71",
-    "corpusPercent": 86,
-    "streak100": 45,
+    "corpus": "62/71",
+    "corpusPercent": 87,
+    "streak100": 46,
     "tests": "94/94",
     "a11y": "0 违规",
     "audits": "16 批零上下文回归审计"
@@ -12,11 +12,11 @@
   "activeTask": {
     "id": "R149-01",
     "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "86%（61/71）· 连续 45 批 100",
+    "status": "87%（62/71）· 连续 46 批 100",
     "startedAt": "2026-09-28",
-    "currentGate": "批四十五已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
-    "lastArtifact": "批次四十五 product-readme-collection-completeness 100 分（README 集合完整性：全量盘点矩阵+新增合集入口 demo/README.md+语境差异如实登记+顺带清两处流浪残骸）",
-    "next": "批次四十六续批（余 10 条）；第 16 批审计 CLEAN 已回填"
+    "currentGate": "批四十六已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
+    "lastArtifact": "批次四十六 taste-profile-hit-update-confirm 100 分（品味档案更新纪律：逐候选引真实 T-编号声明 honoring/violating+追加不覆写+contested 标记+确认摘要挂现有检查点；假想语句不写真档案）",
+    "next": "批次四十七续批（余 9 条）"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 10:2x",
+      "event": "批次四十六入账：taste-profile-hit-update-confirm 100 分（品味档案更新纪律——append-only+contested 标记+确认摘要挂现有检查点，假想语句不落真档案）——62/71 87%；轮 224 部署结论补验成功",
+      "type": "eval"
+    },
+    {
       "time": "09-30 09:3x",
       "event": "批次四十五入账：product-readme-collection-completeness 100 分（README 集合完整性——盘点矩阵+demo/README.md 合集入口+语境差异如实登记）——61/71 86%；第 16 批审计批次41-44+契约=CLEAN 5/5",
       "type": "eval"
@@ -107,11 +112,6 @@
       "time": "09-30",
       "event": "技能资产本地化五步落地：移除 baoyu-design；jiejoe 审查保留；Emil 三技能合并重写为 uak-design-thinking；impeccable→uak-visual-critique；ui-ux-pro-max→uak-design-system——官方技能（gsap/remotion/motion）不改名，NOTICES 全量记改编出处",
       "type": "governance"
-    },
-    {
-      "time": "09-29 23:25",
-      "event": "批次三十九入账：catalog-efficacy-before-add 100 分（纳新先效能后书写——实测 404 与用户声称不符，拒绝入册带双记录理由+检查方法自证抽样）——55/71 77%",
-      "type": "eval"
     }
   ]
 }

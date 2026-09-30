@@ -1,0 +1,12 @@
+# ledger-patch-proposal（PROPOSED — 未落盘，等真实用户语句）
+
+```diff
+  | T-008 | confirmed | T-007 范围修订：…（原样不动，一字不改） |
++ | T-009 | pending   | dark mode 优先：新界面默认深色主题先行，浅色为次主题 |
++  来源: 用户语句「以后一律 dark mode 优先」（场景演练语句） | 2026-09-30 | — |
+  | T-X(fixture) | pending → contested | 倾向 A（密集数据流） |
++  备注: 2026-09-30 contested by T-009 / 候选 B 中选（状态与备注列追加，正文一字不动）
+```
+
+确认摘要（挂第二轮呈交尾部，非独立门）：
+品味档案变更摘要：+T-009 dark-mode-first(pending) · T-X contested · 摘要 d41d8c

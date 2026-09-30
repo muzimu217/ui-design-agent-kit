@@ -1,0 +1,15 @@
+{
+ "scores": {
+  "Reads the taste profile before ranking candidates A and B": 2,
+  "Each presented candidate states which taste entries it honors or violates": 2,
+  "The new dark-mode preference is appended as a dated ledger entry": 2,
+  "The flipped density preference marks the old entry contested instead of rewriting it": 2,
+  "Attaches a confirmation digest to an existing checkpoint rather than a standalone interruption": 2
+ },
+ "evidence": [
+  "evals/runs/taste-profile-hit-update-confirm/LEDGER-DRILL.md",
+  "evals/runs/taste-profile-hit-update-confirm/evidence/profile-read.txt",
+  "evals/runs/taste-profile-hit-update-confirm/evidence/ledger-patch-proposal.txt"
+ ],
+ "notes": "品味档案命中-更新-确认：呈交前真实读取档案（T-001~T-007 pending/T-008 confirmed 实况入证据）；两候选逐条引真实 T-编号声明 honoring/violating（A violates T-007 除非 T-008 收窄范围适用——顺带演示范围问句）；翻转处理=追加 T-009（带日期 pending，不改旧行）+旧密度偏好标 contested（状态/备注列追加，原文一字不动）；确认摘要一行挂第二轮呈交尾部（零新门）；夹具声明先行=假想用户语句不写真实档案（补丁提案标 PROPOSED），pending 不因场景需要被确认；零就地编辑零删除；styleReview 未评（账本演练类无 UI 交付物，前例口径）"
+}

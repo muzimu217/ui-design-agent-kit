@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 06:0x",
+      "event": "用户两笔裁决落地：①九环节全链路线图上线 #/workflow（Pages 隔离门白名单登记后部署成功）②展示页元层内容彻底移除——外置评审循环与仓库展示完全隔离",
+      "type": "showcase"
+    },
+    {
       "time": "09-30 05:2x",
       "event": "批次四十一入账：feedback-classification-before-policy-change 100 分（反馈分诊纪律——真复现尝试发现报告控件不存在于当前构建，如实记「未能复现」不瞎修不改规则）——57/71 80%",
       "type": "eval"
@@ -107,11 +112,6 @@
       "time": "09-29 21:10",
       "event": "用户裁决执行：产品视频+宿主页展示太丑不入库——vue-video-embed-delivery 整目录移除，台账回滚 53/71；新规=产品/展示类一律 output/ 不入库，每轮 HTML 成果汇报",
       "type": "user-ruling"
-    },
-    {
-      "time": "09-29 21:05",
-      "event": "output/ 清理：4 个过时 diagram HTML 删除（uak-paper-diagram/workflow-diagram×3），保留架构展示页+SVG",
-      "type": "cleanup"
     }
   ]
 }

@@ -1,0 +1,19 @@
+{
+  "scores": {
+    "Checks asset requests and screenshot subject regions rather than only canvas presence or changing background pixels": 2,
+    "Uses screenshot pixel inspection when direct readback is unsupported": 2,
+    "Reports the missing subject as a failed acceptance check": 2,
+    "Checks framing, input-linked state change and the failed-load fallback": 2,
+    "Does not infer mobile GPU performance from headless desktop checks": 2
+  },
+  "evidence": [
+    "evals/runs/spatial-render-evidence-not-canvas-presence/EVIDENCE.md",
+    "evals/runs/spatial-render-evidence-not-canvas-presence/evidence/pixel-analysis.json",
+    "evals/runs/spatial-render-evidence-not-canvas-presence/evidence/network-log.json",
+    "evals/runs/spatial-render-evidence-not-canvas-presence/evidence/analyze-subject.mjs",
+    "evals/runs/spatial-render-evidence-not-canvas-presence/evidence/shot-desktop-1.png",
+    "evals/runs/spatial-render-evidence-not-canvas-presence/evidence/shot-control-subject.png",
+    "evals/runs/spatial-render-evidence-not-canvas-presence/evidence/shot-mobile-375.png"
+  ],
+  "notes": "验收者视角场景，verdict=FAIL（被检主体缺失）但验收行为满分：资产请求检查抓到 GLB 404 且 decodedBodySize=163B（错误页非模型二进制）；readback 不可靠（preserveDrawingBuffer=false 缓冲清空）改合成器截图像素检查，主体区暖色占比 0 vs 对照 0.2684（?control=1 自校准夹具证明方法区分力+统计区覆盖正确）；亮度 std 首选指标被对照校准当场证伪（展示台/雾纹理抬基线，ratio 0.754 落拍脑袋阈值外）改色相轴主判据——校准失败全程留痕 pixel-analysis.json；背景动性 9.27% 单列为'背景层活着'不构成通过依据；构图/拖拽 HUD 联动（0°→183°）/fallback 三项正常均标注不挽回主体缺失；移动 375 仅报存在性零性能表述；工具发现=vite dev html fallback 把缺失资产吞成 200/HTML 污染网络证据，appType custom+根路径自答中间件修复。styleReview 未评：场景考验收行为，被检 fixture 为道具非 UI 交付物"
+}

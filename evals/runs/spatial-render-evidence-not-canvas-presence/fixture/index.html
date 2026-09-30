@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>产品场景 · 待验收</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; overflow: hidden; font-family: "PingFang SC", Helvetica, sans-serif; }
+      #stage { position: fixed; inset: 0; }
+      canvas { display: block; width: 100%; height: 100%; }
+      .hud {
+        position: fixed; left: 16px; bottom: 16px; z-index: 5;
+        padding: 8px 14px; border-radius: 10px;
+        background: rgba(15, 22, 30, 0.72); color: #d7e2ea;
+        font-size: 13px; letter-spacing: 0.02em;
+      }
+      .fallback {
+        position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 6;
+        display: none; align-items: center; gap: 12px;
+        padding: 10px 16px; border-radius: 12px;
+        background: rgba(60, 24, 24, 0.92); color: #ffe1e1; font-size: 14px;
+        border: 1px solid rgba(255, 130, 130, 0.4);
+      }
+      .fallback[data-visible="true"] { display: flex; }
+      .fallback button {
+        border: 0; border-radius: 8px; padding: 6px 14px; cursor: pointer;
+        background: #ffe1e1; color: #5a1f1f; font: inherit; font-size: 13px;
+      }
+      .hint {
+        position: fixed; right: 16px; bottom: 16px; z-index: 5;
+        color: rgba(215, 226, 234, 0.6); font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage"></div>
+    <div class="hud" id="hud" data-azimuth="0">方位角 0° · 产品展示台</div>
+    <div class="fallback" id="fallback" data-visible="false" role="alert">
+      <span>产品模型加载失败（/models/product-chair.glb）</span>
+      <button id="retry" type="button">重试</button>
+    </div>
+    <div class="hint">拖拽旋转视角</div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

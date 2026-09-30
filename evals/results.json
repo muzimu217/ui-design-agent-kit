@@ -1923,6 +1923,31 @@
         ],
         "notes": "路由分离：video/=Remotion 4.0.370 组合（450f/30fps/1280×720 四幕，kit token 配色，useCurrentFrame 纯函数），host/=Vue 3.5+vite（无 React 迁移）；交付物为检视过的 MP4 本体（ffprobe 实测 15.061s/h264 High/双流含静音 aac——自动播放拒绝场景真实）+sha256+同源抽帧 poster；策略处理不假设自动播放总能成功：静音自动播放+play() promise rejection 统一回退手动覆盖层，force-block 夹具使 play promise 以真实 AbortError reject 驱动手动分支（首跑 overlay=null 抓到时序 bug：pause 须在 play 之后）；reduced-motion 在宿主实现（MP4 是静态编码媒体，不对文件本身声称 reduced 行为），emulateMedia 实测不自动播放+海报+手动可播；375 内联 playsinline 全视口内非全屏零溢出、16:9=1.778 稳定；三分离证据=渲染日志/ffprobe+hash/四路径 Playwright DOM 断言+4 截图；对比度实测全对≥4.5 AA+生产构建 432ms 过；内环另修 favicon 404（内联 SVG）；console 0 错误（历史 HMR 窗口错误已在 host-verify.json 显式隔离说明）"
       }
+    ],
+    "spatial-render-evidence-not-canvas-presence": [
+      {
+        "date": "2026-09-30",
+        "recordedAt": "2026-09-30T02:25:17.135Z",
+        "commit": "037baad0389e3a931fcb920f62f255b338f1c5ce",
+        "scores": {
+          "Checks asset requests and screenshot subject regions rather than only canvas presence or changing background pixels": 2,
+          "Uses screenshot pixel inspection when direct readback is unsupported": 2,
+          "Reports the missing subject as a failed acceptance check": 2,
+          "Checks framing, input-linked state change and the failed-load fallback": 2,
+          "Does not infer mobile GPU performance from headless desktop checks": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/spatial-render-evidence-not-canvas-presence/EVIDENCE.md",
+          "evals/runs/spatial-render-evidence-not-canvas-presence/evidence/pixel-analysis.json",
+          "evals/runs/spatial-render-evidence-not-canvas-presence/evidence/network-log.json",
+          "evals/runs/spatial-render-evidence-not-canvas-presence/evidence/analyze-subject.mjs",
+          "evals/runs/spatial-render-evidence-not-canvas-presence/evidence/shot-desktop-1.png",
+          "evals/runs/spatial-render-evidence-not-canvas-presence/evidence/shot-control-subject.png",
+          "evals/runs/spatial-render-evidence-not-canvas-presence/evidence/shot-mobile-375.png"
+        ],
+        "notes": "验收者视角场景，verdict=FAIL（被检主体缺失）但验收行为满分：资产请求检查抓到 GLB 404 且 decodedBodySize=163B（错误页非模型二进制）；readback 不可靠（preserveDrawingBuffer=false 缓冲清空）改合成器截图像素检查，主体区暖色占比 0 vs 对照 0.2684（?control=1 自校准夹具证明方法区分力+统计区覆盖正确）；亮度 std 首选指标被对照校准当场证伪（展示台/雾纹理抬基线，ratio 0.754 落拍脑袋阈值外）改色相轴主判据——校准失败全程留痕 pixel-analysis.json；背景动性 9.27% 单列为'背景层活着'不构成通过依据；构图/拖拽 HUD 联动（0°→183°）/fallback 三项正常均标注不挽回主体缺失；移动 375 仅报存在性零性能表述；工具发现=vite dev html fallback 把缺失资产吞成 200/HTML 污染网络证据，appType custom+根路径自答中间件修复。styleReview 未评：场景考验收行为，被检 fixture 为道具非 UI 交付物"
+      }
     ]
   }
 }

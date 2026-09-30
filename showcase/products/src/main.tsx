@@ -446,6 +446,11 @@ function WorkflowSection() {
 
   return <section className="workflow-band" id="workflow" aria-labelledby="workflow-heading"><div className="content-width">
     <div className="section-heading"><div><h1 id="workflow-heading">从需求，到交付。</h1><p>一条有确认节点的 UI 设计与实现流程。</p></div><Workflow size={28} strokeWidth={1.5} aria-hidden="true" /></div>
+    <figure className="route-map">
+      <img src="/workflow-route-map.svg" width={1400} height={1580} loading="lazy" decoding="async"
+        alt="UAK 全链路线图：用户需求 → 需求接收 → 方向稿 → 门A → 素材检索 → 素材选择 → 门B → 计划锁定 → 无代码原型 → 门C → 设计契约 → 门D → 代码开发 → 门F 留痕 → 多轮验收门E → 交付入库；红色为用户裁决停止点，灰虚线为留痕，回退箭头为不通过重做" />
+      <figcaption>全链路线图 · 九环节串行主链，六道门穿插——<strong>红色</strong>=用户裁决停止点，<strong>灰虚线</strong>=留痕不停止，<strong>回退箭头</strong>=不通过回到上一环节重做。逐门细节见下方六道门总览。</figcaption>
+    </figure>
     <div className="gate-overview" aria-labelledby="gate-overview-heading">
       <div className="gate-overview-heading">
         <h2 id="gate-overview-heading">六道门 · 主流程</h2>
@@ -465,19 +470,6 @@ function WorkflowSection() {
           </li>;
         })}
       </ol>
-    </div>
-    <div className="layer-note" aria-labelledby="layer-note-heading">
-      <h2 id="layer-note-heading">两层，各管各的</h2>
-      <div className="layer-cards">
-        <div className="layer-card is-product">
-          <span className="layer-tag">产品层 · 本仓库</span>
-          <p><strong>交付门禁</strong>管「这次做的东西对不对」：六道门 + 证据留痕，全部发生在仓库内，决定交付质量。</p>
-        </div>
-        <div className="layer-card is-meta">
-          <span className="layer-tag">元层 · 仓库外围</span>
-          <p><strong>自进化循环</strong>管「下一版做得更好」：巡检、研究、修仓库的账本都放在仓库外（本地状态与报告目录，不入库）。它开出的每一笔改动仍要<strong>走一遍六道门</strong>才进仓库——循环停了，仓库照常可用。</p>
-        </div>
-      </div>
     </div>
     <p className="workflow-lede-note">下面的回放是六道门在一个真实案例（睿耳 RuiEar）里的实际流转。</p>
     <div className="workflow-replay">

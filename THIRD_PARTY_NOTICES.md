@@ -29,12 +29,6 @@ a substitute for each upstream repository's license text.
   Vendored entries: `emil-design-eng`, `animation-vocabulary`,
   `pick-ui-library`. The original LICENSE is preserved in each installed skill
   directory.
-- Baoyu Design, `JimLiu/baoyu-design`, revision
-  `026d4ea012bdd5cada72ac8cc13f21ba4edf2245`: MIT. Source:
-  https://github.com/JimLiu/baoyu-design
-  Only the `SKILL.md` instruction is vendored; the upstream `agents/` helper
-  scripts and `gen-pptx` package are excluded. The original LICENSE is
-  preserved in `.agents/skills/baoyu-design/`.
 - GSAP AI Skills, `greensock/gsap-skills`, revision
   `aed9cfd3277740755f6bfc1155c7aa645403b760`: MIT. Source:
   https://github.com/greensock/gsap-skills

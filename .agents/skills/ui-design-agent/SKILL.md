@@ -361,8 +361,6 @@ is not proof of a connection, and a connection is not proof of a successful call
 - Use `animation-vocabulary` to turn a vague motion description into its exact
   term before implementing; use `pick-ui-library` to choose a curated library
   for a concrete component task.
-- Use `baoyu-design` for self-contained HTML design artifacts (mockups,
-  prototypes, decks, dashboards) as standalone visual deliverables.
 - Use `jiejoe-design` for distinctive interaction motion: magnetic pointer
   physics, SVG stroke and wave effects, ScrollTrigger scroll choreography, and
   personality-loaded loading or transition screens. Combine it with the

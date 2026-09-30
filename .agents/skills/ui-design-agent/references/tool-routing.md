@@ -147,10 +147,6 @@ Vendored design skills (MIT, pinned revisions in `tooling/sources.lock.json`):
 - `pick-ui-library` recommends a curated, opinionated library for a concrete
   frontend task (toasts, charts, drag and drop, virtualization, and so on);
   only run it when explicitly needed.
-- `baoyu-design` produces self-contained HTML design artifacts. Only its
-  SKILL.md is vendored here, so its upstream automated preview and PPT build
-  helpers are not available; deliver the artifact without claiming those
-  helpers ran.
 
 ### Design-taste skill routing (overlapping triggers)
 
@@ -163,7 +159,6 @@ first matching row wins and the choice is recorded in the acceptance notes.
 | Look up data (palette, font pair, UX pattern, anti-pattern) | `ui-ux-pro-max` | Critique, artifacts, or motion |
 | Review, critique, or targeted refinement is requested | `impeccable` | Data lookup; producing artifacts |
 | Decide polish judgment calls (component and animation details) | `emil-design-eng` | Replacing a requested review; broad redesign |
-| Deliver a standalone HTML design artifact | `baoyu-design` | Implementation inside the target project's app |
 | Expressive interaction motion (magnetic pointer, scroll choreography, loading screens) | `jiejoe-design` + the GSAP skills | General polish already covered by the Motion route |
 
 `animation-vocabulary` (vague-motion term lookup) and `pick-ui-library`

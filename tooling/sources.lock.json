@@ -132,17 +132,6 @@
       ]
     },
     {
-      "name": "baoyu-design",
-      "repository": "https://github.com/JimLiu/baoyu-design",
-      "revision": "026d4ea012bdd5cada72ac8cc13f21ba4edf2245",
-      "sourcePath": "skills/baoyu-design",
-      "license": "MIT",
-      "notice": ".agents/skills/baoyu-design/LICENSE",
-      "adaptations": [
-        "Vendored SKILL.md only; agents/ helper scripts and gen-pptx package excluded as execution helpers outside the kit's scope"
-      ]
-    },
-    {
       "name": "gsap-core",
       "repository": "https://github.com/greensock/gsap-skills",
       "revision": "aed9cfd3277740755f6bfc1155c7aa645403b760",

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>采购台 · 设置与状态</title>
+<style>
+:root{--ink:#26343d;--muted:#5a6a75;--paper:#fafcfd;--line:#d9e2e7;--danger:#a33d3d;--green:#177656}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);
+font:15px/1.7 'PingFang SC','Microsoft YaHei',sans-serif;padding:40px 24px 80px}
+.wrap{max-width:880px;margin:0 auto}
+h1{font-size:22px;margin:0 0 26px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px 24px;margin-bottom:26px}
+.panel h2{font-size:16px;margin:0 0 14px}
+.row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.row:last-of-type{border-bottom:none}
+.row .name b{display:block}
+.row .name span{color:var(--muted);font-size:13px}
+.switch{width:44px;height:24px;border-radius:12px;background:var(--line);border:none;cursor:pointer;position:relative}
+.switch[aria-checked="true"]{background:var(--green)}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .15s}
+.switch[aria-checked="true"]::after{left:22px}
+button.primary{background:var(--green);color:#fff;border:none;border-radius:6px;padding:9px 18px;font-size:14px;cursor:pointer}
+button.primary:active{transform:scale(0.98)}
+.error{border-left:3px solid var(--danger);background:#fbf1f1;padding:16px 18px;border-radius:0 8px 8px 0}
+.error b{color:var(--danger)}
+.error p{margin:6px 0 12px;color:var(--ink)}
+.error .actions{display:flex;gap:10px}
+.error button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:7px 14px;font-size:13.5px;cursor:pointer}
+.error button.retry{background:var(--danger);color:#fff;border-color:var(--danger)}
+.empty{text-align:center;padding:40px 20px}
+.empty .icon{width:44px;height:44px;border-radius:50%;background:var(--line);margin:0 auto 14px}
+.empty h3{margin:0 0 8px;font-size:15.5px}
+.empty p{color:var(--muted);margin:0 0 18px;font-size:14px}
+.log{font-size:12.5px;color:var(--muted);padding:10px 14px;background:var(--paper);border:1px dashed var(--line);border-radius:6px;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>采购台</h1>
+
+<!-- ① 通知设置：功能按用户视角命名（到货提醒，而非「Webhook 推送配置」） -->
+<section class="panel" aria-labelledby="settings-heading">
+  <h2 id="settings-heading">提醒设置</h2>
+  <div class="row">
+    <div class="name"><b>到货提醒</b><span>关注的商品一到货就告诉你</span></div>
+    <button class="switch" role="switch" aria-checked="true" aria-label="到货提醒开关"></button>
+  </div>
+  <div class="row">
+    <div class="name"><b>低库存警报</b><span>库存快用完时提前打招呼</span></div>
+    <button class="switch" role="switch" aria-checked="false" aria-label="低库存警报开关"></button>
+  </div>
+  <div class="row">
+    <div class="name"><b>每周对账单</b><span>每周一早上发到你的邮箱</span></div>
+    <button class="switch" role="switch" aria-checked="false" aria-label="每周对账单开关"></button>
+  </div>
+  <p style="margin:16px 0 0"><button class="primary" id="save-btn">保存提醒设置</button></p>
+  <p class="log" id="action-log" aria-live="polite">动作记录：等待操作</p>
+</section>
+
+<!-- ② 保存失败错误态：说清发生了什么 + 怎么修，不道歉式含糊 -->
+<section class="panel" aria-labelledby="error-heading">
+  <h2 id="error-heading">保存失败时</h2>
+  <div class="error" role="alert">
+    <b>提醒设置没有保存成功</b>
+    <p>网络在这时候断开了，你的更改还留在这页上，一条都没有丢。</p>
+    <div class="actions">
+      <button class="retry" id="retry-btn">重试保存</button>
+      <button>复制设置内容</button>
+    </div>
+  </div>
+</section>
+
+<!-- ③ 空表态：行动邀请，而非光秃秃的「暂无数据」 -->
+<section class="panel" aria-labelledby="empty-heading">
+  <h2 id="empty-heading">采购单列表（空态）</h2>
+  <div class="empty">
+    <div class="icon" aria-hidden="true"></div>
+    <h3>还没有采购单</h3>
+    <p>建第一张采购单后，这里会显示它的状态和进度。</p>
+    <button class="primary" id="new-btn">新建第一张采购单</button>
+  </div>
+</section>
+</div>
+<script>
+// 动作词一致性演示：同一动作（保存）在按钮/记录里用同一个词
+const logEl = document.getElementById('action-log');
+document.getElementById('save-btn').addEventListener('click', () => {
+  logEl.textContent = '动作记录：保存了提醒设置（刚刚）';
+});
+document.getElementById('retry-btn').addEventListener('click', () => {
+  logEl.textContent = '动作记录：重新保存提醒设置（刚刚）';
+});
+document.querySelectorAll('.switch').forEach((s) => s.addEventListener('click', () => {
+  s.setAttribute('aria-checked', s.getAttribute('aria-checked') === 'true' ? 'false' : 'true');
+}));
+</script>
+</body>
+</html>

@@ -2209,6 +2209,27 @@
         ],
         "notes": "排版标准落地：identity 字体=Fraunces 900（有声线，非 Inter/Roboto/OpenSans/system-ui）；双角色真对比=Fraunces 900 × Public Sans 400（异族，非同族两字重）；measure 62ch 实测约 76 字符<80；字号跳跃 96/17=5.65x（阶级行为）；表格 tabular-nums 显式；标题零 eyebrow/零 uppercase；对比度程序实算 14.62:1；实机断言×7 全 PASS（computed-style 逐项+console 0+全页截图）；首跑 1 条真 FAIL=measure 断言方法错（ch 被解析为像素）且 66ch 擦边 80——CSS 收 62ch+断言改像素折算，复跑过，断言方法整改留痕；Google Fonts OFL 许可；styleReview=排版专项判据即八维子集已逐项断言，其余维度（动效/布局节奏）未评已标注（单页无动效）"
       }
+    ],
+    "copy-contract-applied": [
+      {
+        "date": "2026-09-30",
+        "recordedAt": "2026-09-30T21:18:00.172Z",
+        "commit": "ba0a00f5158cfbd0f53f336c66fe6ca86afc33a3",
+        "scores": {
+          "Names features from the user's side (what it is and does), not the internal mechanism": 2,
+          "Writes CTAs in active voice that name the outcome of pressing them": 2,
+          "Keeps one word per action consistent across buttons, completion states, and logs": 2,
+          "Makes the error state explain what happened and how to repair it, without apologizing or being vague": 2,
+          "Turns the empty table into an action invitation instead of a bare no-data note": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/copy-contract-applied/NOTE.md",
+          "evals/runs/copy-contract-applied/evidence/copy-verify-result.txt",
+          "evals/runs/copy-contract-applied/evidence/copy-states.png"
+        ],
+        "notes": "文案契约落地：三态真夹具（中文库存应用）+Playwright 断言×7 全 PASS——①机制词负路径清零（Webhook/API/Token/推送配置/回调 0 命中）+用户侧名称在位（到货提醒/低库存警报/每周对账单）②CTA 结果导向（保存提醒设置）③动作词一致实测（真点击后读 aria-live 记录用同一「保存」词）④错误=原因（网络断开）+修复双通道（重试保存/复制设置内容）非纯道歉，长度 72 字符 ⑤空态=行动邀请（新建第一张采购单+引导语）+裸暂无数据负路径 0 命中；console 0+三态全页截图；脚本首写 ReferenceError（常量遮蔽全局 URL）当场修复——断言脚本本身也要过运行关；styleReview=文案专项判据即本批断言集，视觉八维不在场景范围未评已标注"
+      }
     ]
   }
 }

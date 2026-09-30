@@ -2106,6 +2106,27 @@
         ],
         "notes": "README 集合完整性：先全量盘点后动手——11/11 产品均有 README 与 status 字段，语境前提（部分缺 README/张冠李戴截图/缺样式历史项目）在集合中未复现，如实登记不制造缺口（发现即报告而非编造：nodegrid css 在 React 组件内非缺失、截图引用逐条实存 OK+md5 无跨产品重复）；真实缺失件=合集级入口 → 新增 demo/README.md 合集清单（11 产品索引+状态图例+标准字段说明+盘点结论），每产品身份/限制保留在各自 README 不套用统一声明；历史实现日志保留于 ACCEPTANCE/DESIGN 链接文档区分历史检查与本轮结果；缺样式判定=如实说明（无构建失败案例，不编造）；顺带清理 demo/evals 空壳残骸与仓库根 --output 流浪目录（cd 陷阱与误用旗标的遗留，发现即清）；零发布零全局配置改动；styleReview 未评（文档整理类无 UI 交付物，前例口径）"
       }
+    ],
+    "taste-profile-hit-update-confirm": [
+      {
+        "date": "2026-09-30",
+        "recordedAt": "2026-09-30T16:17:37.224Z",
+        "commit": "be484ab8e444d5a5c14e11fd6d28b8bf647d4c20",
+        "scores": {
+          "Reads the taste profile before ranking candidates A and B": 2,
+          "Each presented candidate states which taste entries it honors or violates": 2,
+          "The new dark-mode preference is appended as a dated ledger entry": 2,
+          "The flipped density preference marks the old entry contested instead of rewriting it": 2,
+          "Attaches a confirmation digest to an existing checkpoint rather than a standalone interruption": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/taste-profile-hit-update-confirm/LEDGER-DRILL.md",
+          "evals/runs/taste-profile-hit-update-confirm/evidence/profile-read.txt",
+          "evals/runs/taste-profile-hit-update-confirm/evidence/ledger-patch-proposal.txt"
+        ],
+        "notes": "品味档案命中-更新-确认：呈交前真实读取档案（T-001~T-007 pending/T-008 confirmed 实况入证据）；两候选逐条引真实 T-编号声明 honoring/violating（A violates T-007 除非 T-008 收窄范围适用——顺带演示范围问句）；翻转处理=追加 T-009（带日期 pending，不改旧行）+旧密度偏好标 contested（状态/备注列追加，原文一字不动）；确认摘要一行挂第二轮呈交尾部（零新门）；夹具声明先行=假想用户语句不写真实档案（补丁提案标 PROPOSED），pending 不因场景需要被确认；零就地编辑零删除；styleReview 未评（账本演练类无 UI 交付物，前例口径）"
+      }
     ]
   }
 }

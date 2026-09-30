@@ -1,0 +1,29 @@
+{
+  "scores": {
+    "Routes the video through Remotion and the host through its existing Vue stack": 2,
+    "Delivers an inspected encoded file and embeds it with stable aspect ratio, poster and usable controls": 2,
+    "Handles autoplay rejection, manual play and mobile inline playback": 2,
+    "Provides reduced-motion poster/manual playback in the host": 2,
+    "Separates Studio, encoded file and host-browser verification evidence": 2
+  },
+  "styleReview": {
+    "布局节奏": 2,
+    "排版": 2,
+    "对比度实测": 2,
+    "状态覆盖": 2,
+    "动效合规": 2,
+    "可供性": 2,
+    "鲁棒性": 2,
+    "一致性": 2
+  },
+  "evidence": [
+    "evals/runs/vue-video-embed-delivery/EVIDENCE.md",
+    "evals/runs/vue-video-embed-delivery/evidence/encoded-inspection.json",
+    "evals/runs/vue-video-embed-delivery/evidence/host-verify.json",
+    "evals/runs/vue-video-embed-delivery/evidence/contrast-check.txt",
+    "evals/runs/vue-video-embed-delivery/evidence/host-desktop-autoplay.png",
+    "evals/runs/vue-video-embed-delivery/evidence/host-mobile-375.png",
+    "evals/runs/vue-video-embed-delivery/video/out/product-video.mp4"
+  ],
+  "notes": "路由分离：video/=Remotion 4.0.370 组合（450f/30fps/1280×720 四幕，kit token 配色，useCurrentFrame 纯函数），host/=Vue 3.5+vite（无 React 迁移）；交付物为检视过的 MP4 本体（ffprobe 实测 15.061s/h264 High/双流含静音 aac——自动播放拒绝场景真实）+sha256+同源抽帧 poster；策略处理不假设自动播放总能成功：静音自动播放+play() promise rejection 统一回退手动覆盖层，force-block 夹具使 play promise 以真实 AbortError reject 驱动手动分支（首跑 overlay=null 抓到时序 bug：pause 须在 play 之后）；reduced-motion 在宿主实现（MP4 是静态编码媒体，不对文件本身声称 reduced 行为），emulateMedia 实测不自动播放+海报+手动可播；375 内联 playsinline 全视口内非全屏零溢出、16:9=1.778 稳定；三分离证据=渲染日志/ffprobe+hash/四路径 Playwright DOM 断言+4 截图；对比度实测全对≥4.5 AA+生产构建 432ms 过；内环另修 favicon 404（内联 SVG）；console 0 错误（历史 HMR 窗口错误已在 host-verify.json 显式隔离说明）"
+}

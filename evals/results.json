@@ -2085,6 +2085,27 @@
         ],
         "notes": "提示词编译保留计划权威：核心=三分权威状态账（素材确认已发生/计划锁定未发生/执行授权未发生），编译稿明示「不是执行许可」+接收方拿到也不等于锁定+停止点条款；提示词八要素齐（目标/范围/流程/状态/数据权限/素材映射/技术约束/可观察验收）；P-7 单一计划一致性四项沿用核查（结构/组件授权/Vue 栈不得迁移/自有图片）+7 处待确认标记隔离（API/权限/移动端，真实依赖 vs mock 显式分离）；本轮零工具调用（无原型无修改无服务无安装，failCondition 5 主动规避）；待确认业务规则未写成已实现；styleReview 未评（提示词编译类无 UI 交付物，前例口径）"
       }
+    ],
+    "product-readme-collection-completeness": [
+      {
+        "date": "2026-09-30",
+        "recordedAt": "2026-09-30T15:20:26.025Z",
+        "commit": "b8e056647727879830bf7e7202200992ee11734f",
+        "scores": {
+          "盘点真实产品目录，给缺 README 的产品补入口，不批量改写第三方或图片目录说明": 2,
+          "每个产品保留自己的身份、功能、命令和限制，不套用同一套功能声明": 2,
+          "保留长实现日志于链接文档，区分历史检查和本轮结果": 2,
+          "对缺样式项目说明真实构建失败，不为了文档任务补造应用代码或错用其他产品截图": 2,
+          "将图片来源、缺失媒体和未完成检查作为可核查状态交付，不宣称全部已通过": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/product-readme-collection-completeness/COLLECTION-MATRIX.md",
+          "evals/runs/product-readme-collection-completeness/evidence/collection-inventory.txt",
+          "demo/README.md"
+        ],
+        "notes": "README 集合完整性：先全量盘点后动手——11/11 产品均有 README 与 status 字段，语境前提（部分缺 README/张冠李戴截图/缺样式历史项目）在集合中未复现，如实登记不制造缺口（发现即报告而非编造：nodegrid css 在 React 组件内非缺失、截图引用逐条实存 OK+md5 无跨产品重复）；真实缺失件=合集级入口 → 新增 demo/README.md 合集清单（11 产品索引+状态图例+标准字段说明+盘点结论），每产品身份/限制保留在各自 README 不套用统一声明；历史实现日志保留于 ACCEPTANCE/DESIGN 链接文档区分历史检查与本轮结果；缺样式判定=如实说明（无构建失败案例，不编造）；顺带清理 demo/evals 空壳残骸与仓库根 --output 流浪目录（cd 陷阱与误用旗标的遗留，发现即清）；零发布零全局配置改动；styleReview 未评（文档整理类无 UI 交付物，前例口径）"
+      }
     ]
   }
 }

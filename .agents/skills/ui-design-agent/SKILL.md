@@ -59,6 +59,12 @@ state changes legible. Do not mistake more effects or tool calls for better work
   confirms the tier and boundary **for each page** before any special-case
   route or gate reduction is used; a narrow repair never uses tiering as a
   license to expand into a redesign.
+- Run at the smallest token footprint that preserves the gates: plans freeze
+  **one line per field** within ~50 lines total; gate presentations reference
+  artifacts by path instead of pasting contents; a locked plan is cited by
+  revision, never restated; and each working round stays inside its one stated
+  objective — no out-of-plan exploration, research within the bounded budget
+  (plan-execute.md length budget and focus rules).
 - Read the target repository's instructions, dependencies, routes, components,
   tokens, assets, and current states before choosing libraries or visual direction.
 - Preserve the user's brand, content, stack, and chosen references. Established

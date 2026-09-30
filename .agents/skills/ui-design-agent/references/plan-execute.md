@@ -22,6 +22,28 @@ The plan record must freeze:
 - implementation sequence and acceptance checks, including the first prototype
   viewport and the user decision it needs.
 
+### Plan length budget (token economy, 2026-09-30 user direction)
+
+Plans protect decisions, not verbosity. Every frozen field is **one line**;
+the whole plan record stays within roughly **50 lines**. Gate presentations
+follow the same economy: state the conclusion and the decision needed in a few
+lines and reference the artifact by path — never paste file contents back into
+the conversation. After lock, later gates **cite the plan revision instead of
+restating it**; a field already frozen is not rewritten. Detail lives in
+artifacts (PLAN/DESIGN/EVIDENCE files), summaries live in chat. If a plan
+grows past the budget, cut aggregation, not decisions: merge related fields,
+drop restated context, keep every open decision.
+
+### One direction at a time (focus rule, 2026-09-30 user direction)
+
+After lock, each working round starts by restating the current objective in
+**one line** and stays inside it: no out-of-plan exploration, no prefetching
+references for later gates, no parallel topic threads. Research and retrieval
+keep the bounded first-pass budget from material-scouting.md; a finding that
+belongs to a later gate is written into the plan as a pending note, not
+explored now. Focus is the mechanism — attention spent on one direction is
+what keeps both quality and context cost down.
+
 For a plain-language intake, compile this record into the development prompt
 below. It is a view of the same plan revision, not a separately approved plan.
 Unanswered business decisions and unselected candidates stay explicitly pending;

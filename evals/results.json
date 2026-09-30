@@ -1935,6 +1935,28 @@
         ],
         "notes": "注意力纪律场景（kit 含 3D/视频指令但需求为窄修复）：真实两步 git 历史使克制可验证——缺陷版 commit→修复 commit diff 仅三文件各一段（index.html 4 行/main.js 7 行/styles.css 16 行），package.json 零变化零新依赖；焦点修复=:focus-visible 双通道（Tab 真实键盘断言 matchesFocusVisible+2px #2566c4 环 5.08:1 过 1.4.11）；错误三通道=role=alert 公告+aria-invalid/describedby 程序关联（指向文本实读一致）+焦点移到出错字段，成功路径复位，错误文本 7.06:1；克制检查=媒体元素全 0/body animation none/375 零溢出/Tab 序不变；方法教训=程序化 click 不改焦点（before.json 伪影记录）+自答根路径中间件 HTML 缓存致改动不热更（差点误判修复无效，改每请求现读盘）；styleReview 未评（考修复纪律，对比度已实测入证据）"
       }
+    ],
+    "bounded-agent-dispatch": [
+      {
+        "date": "2026-09-30",
+        "recordedAt": "2026-09-30T04:28:44.168Z",
+        "commit": "8e20e0efb17ca7f3976c78d71b1e42522de5473d",
+        "scores": {
+          "S 级默认由主代理直接处理且不派子代理": 2,
+          "M/L 级同一任务最多保留一个活跃子代理": 2,
+          "L 级按 A→B→C 排队，前一代理完成、失败或停止并经主代理审查后才派下一代理": 2,
+          "把理论上可并行的独立工作默认排队": 2,
+          "只有用户明确授权、范围不重叠且记录 token 代价与必要性时才允许并发例外": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/bounded-agent-dispatch/EVIDENCE.md",
+          "evals/runs/bounded-agent-dispatch/evidence/dispatch-simulator.mjs",
+          "evals/runs/bounded-agent-dispatch/evidence/simulator-run.txt",
+          "evals/runs/bounded-agent-dispatch/evidence/queue-trace.md"
+        ],
+        "notes": "调度纪律场景（决策类）：规则实现为可执行状态机而非纸面声明——dispatch/finish/review 三闸门（S 级零派发/maxActivePerTask=1+生命周期 pendingReview/并发例外三条件全齐才开闸），12 断言全绿+7 条违规尝试全部留痕拒绝；状态机首版真漏洞被自家断言抓到（M 级终结未审查仍可派下一个——生命周期闸门只写在 L 级串行检查里），修复后 M/L 通用；queue-trace 以「库存台 CSV 导出」走完整轨迹（S 直做/M 单代理/L 串行含 failed 返工补审）+六种故意违规对照；用户省 token 偏好=默认排队优先于效率假设；styleReview 未评（决策类无 UI 交付物，前例口径）"
+      }
     ]
   }
 }

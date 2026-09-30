@@ -1,0 +1,16 @@
+{
+  "scores": {
+    "S 级默认由主代理直接处理且不派子代理": 2,
+    "M/L 级同一任务最多保留一个活跃子代理": 2,
+    "L 级按 A→B→C 排队，前一代理完成、失败或停止并经主代理审查后才派下一代理": 2,
+    "把理论上可并行的独立工作默认排队": 2,
+    "只有用户明确授权、范围不重叠且记录 token 代价与必要性时才允许并发例外": 2
+  },
+  "evidence": [
+    "evals/runs/bounded-agent-dispatch/EVIDENCE.md",
+    "evals/runs/bounded-agent-dispatch/evidence/dispatch-simulator.mjs",
+    "evals/runs/bounded-agent-dispatch/evidence/simulator-run.txt",
+    "evals/runs/bounded-agent-dispatch/evidence/queue-trace.md"
+  ],
+  "notes": "调度纪律场景（决策类）：规则实现为可执行状态机而非纸面声明——dispatch/finish/review 三闸门（S 级零派发/maxActivePerTask=1+生命周期 pendingReview/并发例外三条件全齐才开闸），12 断言全绿+7 条违规尝试全部留痕拒绝；状态机首版真漏洞被自家断言抓到（M 级终结未审查仍可派下一个——生命周期闸门只写在 L 级串行检查里），修复后 M/L 通用；queue-trace 以「库存台 CSV 导出」走完整轨迹（S 直做/M 单代理/L 串行含 failed 返工补审）+六种故意违规对照；用户省 token 偏好=默认排队优先于效率假设；styleReview 未评（决策类无 UI 交付物，前例口径）"
+}

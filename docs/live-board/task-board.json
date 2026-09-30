@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-09-29T21:10:00+08:00",
- "updatedBy": "轮 218 · 用户裁决执行（产物清理）",
+ "updatedAt": "2026-09-29T22:20:00+08:00",
+ "updatedBy": "轮 219 · 每小时评审循环",
  "stats": {
-  "corpus": "53/71",
-  "corpusPercent": 75,
-  "streak100": 37,
+  "corpus": "54/71",
+  "corpusPercent": 76,
+  "streak100": 38,
   "tests": "94/94",
   "a11y": "0 违规",
   "audits": "13 批零上下文回归审计"
@@ -12,11 +12,11 @@
  "activeTask": {
   "id": "R149-01",
   "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-  "status": "75%（53/71）· 超额积累",
+  "status": "76%（54/71）· 超额积累",
   "startedAt": "2026-09-28",
   "currentGate": "门E 验收——每批走完执行+验证+入账+级联+合并上线全链",
-  "lastArtifact": "用户裁决：产品/展示类产物不入库——vue-video-embed-delivery 产物已整目录移除，台账回滚 53/71",
-  "next": "批次三十八续批（余 18 条）；产品类重做待用户看架构 HTML 后反馈"
+  "lastArtifact": "批次三十八 bounded-agent-dispatch 100 分（调度纪律=可执行状态机：12 断言+7 违规拒绝留痕）",
+  "next": "批次三十九续批（余 17 条；vue-video 场景按用户裁决暂缓，待产品重做方向反馈）"
  },
  "gates": [
   {
@@ -51,7 +51,7 @@
    "id": "E",
    "name": "每轮验收",
    "status": "active",
-   "note": "三十七批连续 100 分，每批 Playwright 断言/帧检视/实查取证",
+   "note": "三十八批连续 100 分，每批 Playwright 断言/实查取证",
    "at": "进行中"
   },
   {
@@ -63,6 +63,16 @@
   }
  ],
  "recentFlow": [
+  {
+   "time": "09-29 22:20",
+   "event": "批次三十八入账：bounded-agent-dispatch 100 分（调度纪律=可执行状态机 12 断言，自家断言抓到 M 级生命周期闸门真漏洞）——54/71 76%",
+   "type": "eval"
+  },
+  {
+   "time": "09-29 22:05",
+   "event": "轮转披露：--next 指向 vue-video-embed-delivery 与用户 09-29「产物不入库」裁决直接冲突——跳过并如实记录，取语料序下一场景",
+   "type": "audit"
+  },
   {
    "time": "09-29 21:10",
    "event": "用户裁决执行：产品视频+宿主页展示太丑不入库——vue-video-embed-delivery 整目录移除，台账回滚 53/71；新规=产品/展示类一律 output/ 不入库，每轮 HTML 成果汇报",
@@ -111,16 +121,6 @@
   {
    "time": "09-29 12:30",
    "event": "blender-missing run 工件补提交（同款漏提交二次备案）+二轮审计批二处置收尾",
-   "type": "audit"
-  },
-  {
-   "time": "09-29 13:45",
-   "event": "批次三十二入账：Blender 缺位声明 100 分（三层缺失 environment-probe 直证/三替代显式不等价/决策点交用户）",
-   "type": "eval"
-  },
-  {
-   "time": "09-29 12:30",
-   "event": "spatial-reference EVIDENCE 补写（Write 假成功 ls 拦截）+spatial run 四件工件补提交",
    "type": "audit"
   }
  ]

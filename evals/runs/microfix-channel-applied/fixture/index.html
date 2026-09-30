@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>运营台 · 概览</title>
+<style>
+:root{--ink:#26343d;--muted:#5a6a75;--paper:#fafcfd;--line:#d9e2e7;--accent:#177656}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);
+font:15px/1.7 'PingFang SC','Microsoft YaHei',sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:40px 24px 72px}
+header h1{font-size:20px;margin:0 0 20px}
+.hero{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:26px}
+.hero img{display:block;width:100%;height:auto}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px}
+.card b{display:block;font-size:20px}
+.card span{color:var(--muted);font-size:13px}
+.actions{display:flex;gap:12px;align-items:center}
+button.primary{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:9px 18px;font-size:14px;cursor:pointer}
+button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:9px 18px;font-size:14px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><h1 id="page-title">运营台 · 概览</h1></header>
+<div class="hero"><img id="hero-shot" src="hero-v1.webp" alt="运营台首屏示意（当前版本）"/></div>
+<div class="cards">
+  <div class="card"><b>128</b><span>在库 SKU</span></div>
+  <div class="card"><b>6</b><span>待补货</span></div>
+  <div class="card"><b>3</b><span>今日入库</span></div>
+</div>
+<div class="actions">
+  <button class="primary" id="primary-btn">新建采购单</button>
+  <button class="ghost">导出报表</button>
+</div>
+</div>
+</body>
+</html>

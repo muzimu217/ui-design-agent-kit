@@ -1,9 +1,9 @@
 {
- "updatedAt": "2026-09-29T20:25:00+08:00",
- "updatedBy": "轮 217 · 每小时评审循环",
+ "updatedAt": "2026-09-29T21:10:00+08:00",
+ "updatedBy": "轮 218 · 用户裁决执行（产物清理）",
  "stats": {
-  "corpus": "54/71",
-  "corpusPercent": 76,
+  "corpus": "53/71",
+  "corpusPercent": 75,
   "streak100": 37,
   "tests": "94/94",
   "a11y": "0 违规",
@@ -12,11 +12,11 @@
  "activeTask": {
   "id": "R149-01",
   "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-  "status": "76%（54/71）· 超额积累",
+  "status": "75%（53/71）· 超额积累",
   "startedAt": "2026-09-28",
   "currentGate": "门E 验收——每批走完执行+验证+入账+级联+合并上线全链",
-  "lastArtifact": "批次三十七 spatial-no-forced-effects 100 分（注意力纪律：两步 git 历史窄修复，diff 仅三文件各一段）",
-  "next": "批次三十八续批（余 17 条超额）"
+  "lastArtifact": "用户裁决：产品/展示类产物不入库——vue-video-embed-delivery 产物已整目录移除，台账回滚 53/71",
+  "next": "批次三十八续批（余 18 条）；产品类重做待用户看架构 HTML 后反馈"
  },
  "gates": [
   {
@@ -63,6 +63,16 @@
   }
  ],
  "recentFlow": [
+  {
+   "time": "09-29 21:10",
+   "event": "用户裁决执行：产品视频+宿主页展示太丑不入库——vue-video-embed-delivery 整目录移除，台账回滚 53/71；新规=产品/展示类一律 output/ 不入库，每轮 HTML 成果汇报",
+   "type": "user-ruling"
+  },
+  {
+   "time": "09-29 21:05",
+   "event": "output/ 清理：4 个过时 diagram HTML 删除（uak-paper-diagram/workflow-diagram×3），保留架构展示页+SVG",
+   "type": "cleanup"
+  },
   {
    "time": "09-29 20:25",
    "event": "批次三十七入账：spatial-no-forced-effects 100 分（注意力纪律——键盘焦点可见 5.08:1+错误三通道 alert/aria-invalid/焦点转移；两步 git 历史证 diff 仅三文件段）——54/71 76%",
@@ -111,16 +121,6 @@
   {
    "time": "09-29 12:30",
    "event": "spatial-reference EVIDENCE 补写（Write 假成功 ls 拦截）+spatial run 四件工件补提交",
-   "type": "audit"
-  },
-  {
-   "time": "09-29 13:16",
-   "event": "批次三十一入账：刚体物理正用 100 分（Rapier 拖拽/碰撞/堆叠；内环抓 pointer capture+空格 reset 两真缺陷）",
-   "type": "eval"
-  },
-  {
-   "time": "09-29 12:30",
-   "event": "审计批处置：批次十七~廿二+v2+R194-01 PASS（2 轻度口径对齐）+§4.1 全表程序化重建（45 行连续编号）+三处陈旧声称修正+SKILL 孤行残片清理",
    "type": "audit"
   }
  ]

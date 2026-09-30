@@ -1,7 +1,0 @@
-muted #61717d on paper #fafcfd: 4.90
-muted #61717d on surface #f2f5f7: 4.60
-notes #475863 on paper #fafcfd: 7.18
-ink #26343d on paper #fafcfd: 12.44
-caption #61717d on surface (caption sits on page bg f2f5f7): 4.60
-overlay text #fafcfd on scrim rgba(38,52,61,.55) over video: composited floor:
-  scrim over #808080 = #4f565b → text ratio: 7.25

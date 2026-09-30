@@ -573,6 +573,13 @@ state/timing decisions. Implement files directly in the shared workspace
 when that is the task; for a code-only request, provide self-contained modules.
 Deliver the changed files or runnable URL, what works, the checks actually run,
 and any remaining limitation. Separate verified behavior from proposed follow-up.
+For every substantial UI delivery in this kit, also produce the per-task
+workflow diagram so the user can see progress at a glance: fill one task-state
+JSON (real stage statuses, the gate currently waiting, evidence paths) and run
+the kit's workflow-diagram CLI (`node scripts/workflow-diagram/cli.mjs build
+<output.html> --state <task-state.json>`) to emit a self-contained HTML into
+output/; deliver it alongside the acceptance round, not as a replacement for
+any gate.
 For a user-facing deliverable, run multi-round interaction verification:
 per page, list the concrete motion and interaction issues, each triaged as
 P0, P1, or P2 per [detail-critique.md](references/detail-critique.md) with an

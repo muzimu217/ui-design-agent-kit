@@ -1,0 +1,50 @@
+# local-materials-inventory 2026-09-30T13:16Z
+## 本地可读素材实盘（ls/grep 真实输出）
+
+### 1) 与采购工具同构的仓内交付物
+dist
+index.html
+node_modules
+package-lock.json
+package.json
+README.md
+screenshots
+src
+
+### 2) 可读截图资产（demo 各项目 screenshots/）
+demo/blog-demo/screenshots/:
+readme-desktop.webp
+
+demo/brick-workshop/screenshots/:
+castle.webp
+desktop.webp
+house.webp
+mobile.webp
+readme-desktop.webp
+README.md
+rocket.webp
+
+demo/forma-phone-ui/screenshots/:
+desktop-1440.png
+readme-desktop.webp
+
+demo/inventory-console/screenshots/:
+readme-desktop.webp
+
+demo/nodegrid/screenshots/:
+
+### 3) 上轮已检视记录（引用需标注未重新验证）
+evidence
+rebuild-section41.py
+record-payload.json
+RESEARCH.md
+
+### 4) 项目文档
+docs/agentuniverse-research.md
+docs/architecture.md
+docs/bilibili-post-2026-09.md
+docs/chain-flow.md
+docs/community-post-2026-09.md
+docs/custom-domain.md
+docs/eval-report-2026-09.md
+docs/faq.md

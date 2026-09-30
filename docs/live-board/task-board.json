@@ -2,9 +2,9 @@
   "updatedAt": "2026-09-30",
   "updatedBy": "轮 220 · 每小时评审循环",
   "stats": {
-    "corpus": "58/71",
-    "corpusPercent": 82,
-    "streak100": 42,
+    "corpus": "59/71",
+    "corpusPercent": 83,
+    "streak100": 43,
     "tests": "94/94",
     "a11y": "0 违规",
     "audits": "15 批零上下文回归审计"
@@ -12,11 +12,11 @@
   "activeTask": {
     "id": "R149-01",
     "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "82%（58/71）· 连续 42 批 100",
+    "status": "83%（59/71）· 连续 43 批 100",
     "startedAt": "2026-09-28",
-    "currentGate": "批四十二已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
-    "lastArtifact": "批次四十二 agent-owned-material-research 100 分（代理自有检索：6 次真实调用全留痕含 5 次降级、候选全标待确认零采用、授权诚实标待查）",
-    "next": "批次四十三续批（余 13 条）；第 15 批审计 CLEAN 已回填"
+    "currentGate": "批四十三已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
+    "lastArtifact": "批次四十三 intake-network-unavailable 100 分（无网络摄取：按语境零外部调用不虚构、上轮素材标未重新验证、提示词推进 v2、缺口请求具体到张数/枚举/格式）",
+    "next": "批次四十四续批（余 12 条）"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 07:2x",
+      "event": "批次四十三入账：intake-network-unavailable 100 分（无网络摄取纪律——零外部调用不虚构/上轮素材标未重新验证/提示词推进 v2/缺口具体化）——59/71 83%",
+      "type": "eval"
+    },
+    {
       "time": "09-30 06:3x",
       "event": "批次四十二入账：agent-owned-material-research 100 分（代理自有检索纪律——6 次真实调用含 5 次降级全留痕，候选标待确认零采用，授权标待查）——58/71 82%；第 15 批审计 CLEAN",
       "type": "eval"
@@ -107,11 +112,6 @@
       "time": "09-29 22:20",
       "event": "批次三十八入账：bounded-agent-dispatch 100 分（调度纪律=可执行状态机 12 断言，自家断言抓到 M 级生命周期闸门真漏洞）——54/71 76%",
       "type": "eval"
-    },
-    {
-      "time": "09-29 22:05",
-      "event": "轮转披露：--next 指向 vue-video-embed-delivery 与用户 09-29「产物不入库」裁决直接冲突——跳过并如实记录，取语料序下一场景",
-      "type": "audit"
     }
   ]
 }

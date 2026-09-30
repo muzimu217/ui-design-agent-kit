@@ -1,0 +1,31 @@
+# feedback-channel-fields 2026-09-30T11:18Z
+## ux-feedback.yml 全文（字段级核查：收集什么、不收集什么）：
+name: 💬 体验反馈 / Experience feedback
+description: 用 kit 跑了一次真实 UI 任务后的动线观察（停门位置/素材/验收证据）
+labels: ["feedback"]
+body:
+  - type: textarea
+    id: task
+    attributes:
+      label: 你给了什么任务 / The task you gave
+    validations:
+      required: true
+  - type: textarea
+    id: stops
+    attributes:
+      label: 它停在哪/没停在哪 / Where it stopped (or didn't)
+      description: 是否先呈交方向稿？素材是否带来源与授权？交付是否附实测证据？
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境与截图 / Environment & screenshots
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: 你希望它怎么做 / What you wanted instead
+
+## 断言：不含密钥/个人联系方式收集字段
+0
+0 命中

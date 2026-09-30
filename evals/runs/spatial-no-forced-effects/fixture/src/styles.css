@@ -1,0 +1,35 @@
+/* 器材库存操作台（"既有"样式——含两处待修缺陷，修复见后续 commit） */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #f2f5f7;
+  color: #26343d;
+  font-family: "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.page { max-width: 720px; margin: 0 auto; padding: 36px 20px 60px; }
+.head h1 { margin: 0 0 6px; font-size: 24px; letter-spacing: -0.02em; }
+.head p { margin: 0 0 22px; color: #61717d; font-size: 14px; }
+
+.inv { width: 100%; border-collapse: collapse; background: #fafcfd; border: 1px solid #d9e2e7; border-radius: 12px; overflow: hidden; }
+.inv th, .inv td { padding: 10px 14px; text-align: left; font-size: 14px; border-bottom: 1px solid #e8eef2; }
+.inv thead th { background: #eef2f5; font-size: 13px; color: #475863; }
+.inv tbody tr:last-child td { border-bottom: 0; }
+.pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; }
+.pill.ok { background: #e2f3ec; color: #177656; }
+.pill.warn { background: #fbf1dc; color: #7a5200; }
+.pill.bad { background: #fbe4e4; color: #a02c2c; }
+
+.transfer { margin-top: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.transfer label { font-size: 14px; }
+.transfer input {
+  width: 110px; padding: 8px 10px; font: inherit; font-size: 14px;
+  border: 1px solid #c3cfd7; border-radius: 8px; background: #fafcfd; color: #26343d;
+}
+.transfer button {
+  padding: 9px 18px; font: inherit; font-size: 14px; cursor: pointer;
+  border: 0; border-radius: 8px; background: #177656; color: #fafcfd;
+}
+.error { width: 100%; margin: 0; font-size: 13px; color: #a02c2c; }
+
+/* 缺陷 1：全局焦点可见性被干掉（键盘用户无法定位焦点） */
+:focus { outline: none; }

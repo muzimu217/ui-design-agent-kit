@@ -1,0 +1,11 @@
+# bundle-content-check 2026-09-30T10:18Z
+$ curl -s https://agent.kcos.club/assets/index-BYDibO85.js | wc -c
+  370463
+
+## instruction-leak scan on JS bundle (patterns: SKILL.md/gate-protocol/passCriteria/scenarios.json/references-manifest; expect 0):
+SKILL.md: 0
+gate-protocol: 0
+passCriteria: 0
+scenarios.json: 0
+references-manifest: 0
+chain-flow: 0

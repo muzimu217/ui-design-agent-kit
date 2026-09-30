@@ -1,0 +1,14 @@
+# deployed-site-manifest 2026-09-30T10:18Z
+## final URL after redirects:
+$ curl -s -o /dev/null -w '%{http_code} %{url_effective}' -L https://muzimu217.github.io/ui-design-agent-kit/
+200 https://agent.kcos.club/
+
+## index.html asset refs (follow redirects):
+href="/assets/index-CNFjMOsW.css"
+href="/favicon.svg"
+href="https://agent.kcos.club/"
+src="/assets/index-BYDibO85.js"
+
+## leak scan on fetched HTML (expect no hits):
+0
+0 hits

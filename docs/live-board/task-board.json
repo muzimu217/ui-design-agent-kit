@@ -2,9 +2,9 @@
   "updatedAt": "2026-09-30",
   "updatedBy": "轮 220 · 每小时评审循环",
   "stats": {
-    "corpus": "67/71",
-    "corpusPercent": 94,
-    "streak100": 51,
+    "corpus": "68/71",
+    "corpusPercent": 96,
+    "streak100": 52,
     "tests": "94/94",
     "a11y": "0 违规",
     "audits": "19 批零上下文回归审计"
@@ -12,11 +12,11 @@
   "activeTask": {
     "id": "R149-01",
     "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "94%（67/71）· 连续 51 批 100",
+    "status": "96%（68/71）· 连续 52 批 100",
     "startedAt": "2026-09-28",
-    "currentGate": "批五十一已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
-    "lastArtifact": "批次五十一 copy-contract-applied 100 分（文案契约落地：机制词清零+CTA 结果导向+动作词一致实测+错误含因与修+空态行动邀请，实机断言×7）",
-    "next": "批次五十二续批（余 4 条）；第 19 批审计结论待回填"
+    "currentGate": "批五十二已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
+    "lastArtifact": "批次五十二 microfix-channel-applied 100 分（微修通道：恰好三处一轮收口+改前改后实测+对比度实算三档取舍 4.86:1 终选）",
+    "next": "批次五十三续批（余 3 条）；第 20 批审计节奏评估"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 16:3x",
+      "event": "批次五十二入账：microfix-channel-applied 100 分（微修通道纪律——恰好三处一轮收口+两步 git 改前改后+对比度实算三档取舍）——68/71 96%",
+      "type": "eval"
+    },
+    {
       "time": "09-30 15:4x",
       "event": "第 19 批审计回填：批次 49/50+证据副本采纳笔=CLEAN 5/5（66 键/断言脚本绝对路径/证据副本来源链 PROVENANCE/零夹带）；顺手清理排版 run 的冗余结果文件（results.json 引用件保留）",
       "type": "audit"
@@ -106,11 +111,6 @@
     {
       "time": "09-30 10:2x",
       "event": "批次四十六入账：taste-profile-hit-update-confirm 100 分（品味档案更新纪律——append-only+contested 标记+确认摘要挂现有检查点，假想语句不落真档案）——62/71 87%；轮 224 部署结论补验成功",
-      "type": "eval"
-    },
-    {
-      "time": "09-30 09:3x",
-      "event": "批次四十五入账：product-readme-collection-completeness 100 分（README 集合完整性——盘点矩阵+demo/README.md 合集入口+语境差异如实登记）——61/71 86%；第 16 批审计批次41-44+契约=CLEAN 5/5",
       "type": "eval"
     }
   ]

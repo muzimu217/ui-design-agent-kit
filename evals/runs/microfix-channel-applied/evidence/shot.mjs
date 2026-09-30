@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+import { fileURLToPath } from 'node:url';
+const outPath = process.argv[2];
+const PAGE_URL = 'file://' + fileURLToPath(new URL('../fixture/index.html', import.meta.url));
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1024, height: 760 } });
+await page.goto(PAGE_URL, { waitUntil: 'networkidle' });
+await page.screenshot({ path: outPath, fullPage: true });
+console.log('shot:', outPath, 'title=', await page.title(), 'btn-bg=', await page.$eval('#primary-btn', el => getComputedStyle(el).backgroundColor), 'hero=', await page.$eval('#hero-shot', el => el.getAttribute('src')));
+await browser.close();

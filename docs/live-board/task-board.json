@@ -2,9 +2,9 @@
   "updatedAt": "2026-09-30",
   "updatedBy": "轮 220 · 每小时评审循环",
   "stats": {
-    "corpus": "66/71",
-    "corpusPercent": 93,
-    "streak100": 50,
+    "corpus": "67/71",
+    "corpusPercent": 94,
+    "streak100": 51,
     "tests": "94/94",
     "a11y": "0 违规",
     "audits": "18 批零上下文回归审计"
@@ -12,11 +12,11 @@
   "activeTask": {
     "id": "R149-01",
     "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "93%（66/71）· 连续 50 批 100（里程碑）",
+    "status": "94%（67/71）· 连续 51 批 100",
     "startedAt": "2026-09-28",
-    "currentGate": "批五十已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
-    "lastArtifact": "批次五十 typography-standards-applied 100 分（排版标准落地：Fraunces 900×Public Sans 400 真对比+5.65x 字号跳跃+tabular-nums+零 eyebrow，实机断言×7 全 PASS+对比度 14.62:1）",
-    "next": "批次五十一续批（余 5 条）；里程碑 HISTORY 已记"
+    "currentGate": "批五十一已入账；下轮 --next 继续（vue-video 仍挂起跳过）",
+    "lastArtifact": "批次五十一 copy-contract-applied 100 分（文案契约落地：机制词清零+CTA 结果导向+动作词一致实测+错误含因与修+空态行动邀请，实机断言×7）",
+    "next": "批次五十二续批（余 4 条）；第 19 批审计结论待回填"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 15:3x",
+      "event": "批次五十一入账：copy-contract-applied 100 分（文案契约落地——机制词清零/错误含因与修/空态行动邀请/动作词一致实测×7）——67/71 94%",
+      "type": "eval"
+    },
+    {
       "time": "09-30 14:3x",
       "event": "批次五十入账（里程碑）：typography-standards-applied 100 分（排版标准落地——identity 字体 Fraunces/真对比角色/5.65x 跳跃/tabular-nums/零 eyebrow，实机断言×7）——66/71 93%，连续 50 批",
       "type": "eval"
@@ -106,11 +111,6 @@
     {
       "time": "09-30 08:2x",
       "event": "批次四十四入账：compiled-prompt-keeps-plan-authority 100 分（提示词编译保留计划权威——素材确认/计划锁定/执行授权三分记录，导出提示词≠执行许可）——60/71 85%",
-      "type": "eval"
-    },
-    {
-      "time": "09-30 07:2x",
-      "event": "批次四十三入账：intake-network-unavailable 100 分（无网络摄取纪律——零外部调用不虚构/上轮素材标未重新验证/提示词推进 v2/缺口具体化）——59/71 83%",
       "type": "eval"
     }
   ]

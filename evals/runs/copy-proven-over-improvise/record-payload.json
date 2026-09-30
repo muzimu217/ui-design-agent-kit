@@ -1,0 +1,14 @@
+{
+ "scores": {
+  "Names the specific shipped screen being copied (URL) and what relationships are copied from it": 2,
+  "Adapts the copied layout, spacing, and interaction relationships closely instead of re-inventing a similar-but-different language": 2,
+  "States the license or inspection basis for the adaptation boundary": 2,
+  "Declares honoring or violating relevant taste-profile entries for the direction": 2
+ },
+ "evidence": [
+  "evals/runs/copy-proven-over-improvise/DIRECTION.md",
+  "evals/runs/copy-proven-over-improvise/evidence/baseline-inspection.txt",
+  "evals/runs/copy-proven-over-improvise/evidence/run-dir-manifest.txt"
+ ],
+ "notes": "抄 proven 场景（用户核心裁决的方向稿执行）：named proven baseline 具体到界面（Linear Settings）且检视依据是在仓已检视记录（pulled-linear-DESIGN.md，design-md.mjs 自 rev 8147538b 拉取 MIT，上批次实检入账）非凭记忆——摘录行含四级炭黑表面阶梯/发丝线三档/单一淡紫强调非装饰/紧凑排版；拟抄关系五条逐条列（双栏骨架/表面阶梯/发丝线替代描边/强调色纪律/字重字距）；改编边界=只抄关系不搬代码图标字体（定制 sans 以系统栈近似），观察性改编许可依据写明；品味 honoring/violating 对照真实 T-001~008（T-008 收窄口径成立申报 T-007 张力非沉默违背）；零视觉产物清单在案；styleReview 未评（方向稿类，前例口径）"
+}

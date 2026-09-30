@@ -446,6 +446,11 @@ function WorkflowSection() {
 
   return <section className="workflow-band" id="workflow" aria-labelledby="workflow-heading"><div className="content-width">
     <div className="section-heading"><div><h1 id="workflow-heading">从需求，到交付。</h1><p>一条有确认节点的 UI 设计与实现流程。</p></div><Workflow size={28} strokeWidth={1.5} aria-hidden="true" /></div>
+    <figure className="route-map">
+      <img src="/workflow-route-map.svg" width={1400} height={1580} loading="lazy" decoding="async"
+        alt="UAK 全链路线图：用户需求 → 需求接收 → 方向稿 → 门A → 素材检索 → 素材选择 → 门B → 计划锁定 → 无代码原型 → 门C → 设计契约 → 门D → 代码开发 → 门F 留痕 → 多轮验收门E → 交付入库；红色为用户裁决停止点，灰虚线为留痕，回退箭头为不通过重做" />
+      <figcaption>全链路线图 · 九环节串行主链，六道门穿插——<strong>红色</strong>=用户裁决停止点，<strong>灰虚线</strong>=留痕不停止，<strong>回退箭头</strong>=不通过回到上一环节重做。逐门细节见下方六道门总览。</figcaption>
+    </figure>
     <div className="gate-overview" aria-labelledby="gate-overview-heading">
       <div className="gate-overview-heading">
         <h2 id="gate-overview-heading">六道门 · 主流程</h2>

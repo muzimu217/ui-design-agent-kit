@@ -356,6 +356,11 @@ img { display: block; max-width: 100%; }
 }
 
 /* —— 六道门总览（gate-first 主线）—— */
+.route-map { margin: 0 0 26px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #0c1116; }
+.route-map img { display: block; width: 100%; height: auto; }
+.route-map figcaption { padding: 10px 16px; font-size: 12.5px; line-height: 1.6; color: var(--muted); background: var(--paper); border-top: 1px solid var(--line); }
+.route-map figcaption strong { color: var(--ink); }
+
 .gate-overview { display: grid; gap: 14px; margin-bottom: 26px; }
 .gate-overview-heading h2 { font-size: 19px; letter-spacing: 0.01em; margin: 0 0 4px; }
 .gate-overview-heading p { margin: 0; color: var(--muted, #61717d); font-size: 14px; line-height: 1.7; }

@@ -1,0 +1,75 @@
+{
+  "capturedAt": "2026-09-30T02:23:51.724Z",
+  "method": "composer screenshot pixel inspection (pngjs)；非 WebGL readback（preserveDrawingBuffer=false 帧后缓冲清空，readback 不可靠）",
+  "subjectRegionFractions": [
+    0.36,
+    0.4,
+    0.64,
+    0.68
+  ],
+  "subjectRegion": {
+    "desktop": {
+      "region": [
+        518,
+        360,
+        921,
+        612
+      ],
+      "pixels": 101556,
+      "meanLum": 40.41,
+      "stdLum": 24.62,
+      "quantizedColors": 27,
+      "warmRatio": 0
+    },
+    "desktopSecondFrame": {
+      "region": [
+        518,
+        360,
+        921,
+        612
+      ],
+      "pixels": 101556,
+      "meanLum": 40.52,
+      "stdLum": 24.66,
+      "quantizedColors": 30,
+      "warmRatio": 0
+    },
+    "controlWithSubject": {
+      "region": [
+        518,
+        360,
+        921,
+        612
+      ],
+      "pixels": 101556,
+      "meanLum": 56.8,
+      "stdLum": 32.64,
+      "quantizedColors": 59,
+      "warmRatio": 0.2684
+    },
+    "mobile375": {
+      "region": [
+        135,
+        266,
+        240,
+        453
+      ],
+      "pixels": 19635,
+      "meanLum": 42.53,
+      "stdLum": 24,
+      "quantizedColors": 26,
+      "warmRatio": 0
+    }
+  },
+  "backgroundMotion": {
+    "twoFrameChangedRatio": 0.0927,
+    "interpretation": "背景像素持续变化（网格旋转/粒子上升）——canvas 非空且在动，但这只证明背景层活着，不构成主体存在证据"
+  },
+  "calibration": {
+    "controlNote": "shot-control-subject.png 来自 ?control=1 注入占位主体的对照夹具（validator 自校准，非被检对象功能）",
+    "stdRatioSubjectVsControl": 0.754,
+    "stdDecisionNote": "亮度 std 被展示台/雾纹理抬基线，对照校准证明单 std 无区分力（0.754）——降为佐证",
+    "warmRatioDecision": "被检 warmRatio 0 vs 对照 0.2684；规则=对照>0.05 且被检<对照×0.2 → 主体缺失"
+  },
+  "verdict": "SUBJECT MISSING"
+}

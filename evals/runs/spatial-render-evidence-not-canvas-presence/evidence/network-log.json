@@ -1,0 +1,39 @@
+{
+  "capturedAt": "2026-09-30T02:21+08:00",
+  "tool": "Playwright MCP (Chromium headless) + PerformanceResourceTiming",
+  "assetRequests": [
+    {
+      "url": "http://localhost:4197/models/product-chair.glb",
+      "httpStatus": 404,
+      "transferSize": 463,
+      "decodedBodySize": 163,
+      "durationMs": 2,
+      "finding": "请求返回 163 字节 404 错误页——不是 GLB 模型数据（真实产品模型应为数十 KB 二进制）。资产请求检查证实产品模型从未到达浏览器。"
+    }
+  ],
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found) @ /models/product-chair.glb",
+    "GLTFLoader LoaderError（对 404 HTML 响应做 GLB 解析失败）"
+  ],
+  "domState": {
+    "canvasMounted": true,
+    "canvasSize": [1440, 900],
+    "bodyModelState": "failed",
+    "fallbackVisible": true,
+    "fallbackText": "产品模型加载失败（/models/product-chair.glb） 重试"
+  },
+  "interactionCheck": {
+    "dragSequence": "pointerdown(700,450) → pointermove 700→1000 ×6 步 → pointerup",
+    "hudAzimuthBefore": "0°",
+    "hudAzimuthAfter": "183°",
+    "inputLinkedStateChange": true,
+    "note": "交互层与背景活着——这些检查通过，但不构成场景验收通过（主体缺失）"
+  },
+  "mobile375": {
+    "canvasFillsViewport": true,
+    "modelState": "failed",
+    "fallbackVisible": true,
+    "noHorizontalOverflow": true,
+    "note": "仅报告主体缺失在移动视口同样存在（存在性）；无真机测量，不作任何 GPU/性能结论（headless 桌面检查不可外推真机性能）"
+  }
+}

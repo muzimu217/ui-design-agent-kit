@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-09-29T18:40:00+08:00",
- "updatedBy": "轮 215 · 每小时评审循环",
+ "updatedAt": "2026-09-29T19:30:00+08:00",
+ "updatedBy": "轮 216 · 每小时评审循环",
  "stats": {
-  "corpus": "52/71",
-  "corpusPercent": 73,
-  "streak100": 35,
+  "corpus": "53/71",
+  "corpusPercent": 75,
+  "streak100": 36,
   "tests": "94/94",
   "a11y": "0 违规",
   "audits": "13 批零上下文回归审计"
@@ -12,11 +12,11 @@
  "activeTask": {
   "id": "R149-01",
   "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-  "status": "73%（52/71）· 超额场景继续积累",
+  "status": "75%（53/71）· 40 达标线已越，超额积累",
   "startedAt": "2026-09-28",
   "currentGate": "门E 验收——每批走完执行+验证+入账+级联+合并上线全链",
-  "lastArtifact": "批次三十五 vue-video-embed-delivery 100 分（Remotion 15s MP4 交付+Vue 宿主嵌入）",
-  "next": "批次三十六续批（余 19 条超额）"
+  "lastArtifact": "批次三十六 spatial-render-evidence 100 分（验收 FAIL 判定：GLB 404+暖色占比 0 vs 对照 0.2684 自校准）",
+  "next": "批次三十七续批（余 18 条超额）"
  },
  "gates": [
   {
@@ -51,7 +51,7 @@
    "id": "E",
    "name": "每轮验收",
    "status": "active",
-   "note": "三十五批连续 100 分，每批 Playwright 断言/帧检视/实查取证",
+   "note": "三十六批连续 100 分，每批 Playwright 断言/帧检视/实查取证",
    "at": "进行中"
   },
   {
@@ -63,6 +63,16 @@
   }
  ],
  "recentFlow": [
+  {
+   "time": "09-29 19:30",
+   "event": "批次三十六入账：spatial-render-evidence 100 分（验收者视角 FAIL 判定纪律——GLB 404 网络证据+截图像素检查暖色占比 0 vs 对照自校准 0.2684；亮度 std 被校准证伪改色相轴）——53/71 75%",
+   "type": "eval"
+  },
+  {
+   "time": "09-29 19:20",
+   "event": "工具发现：vite dev html fallback 把缺失资产吞成 200/HTML 污染网络证据——appType custom+根路径自答中间件修复（fixture 内）",
+   "type": "audit"
+  },
   {
    "time": "09-29 18:40",
    "event": "批次三十五入账：vue-video-embed-delivery 100 分（Remotion 15s MP4 交付+Vue 宿主零迁移嵌入/自动播放拒绝真实 AbortError 回退/reduced-motion 宿主实现/375 内联/三分离证据）——52/71 73%",
@@ -111,16 +121,6 @@
   {
    "time": "09-29 10:16",
    "event": "批次二十三入账：计划锁定纪律 100 分（四问带影响面/五假设显式待确认）——41/71",
-   "type": "eval"
-  },
-  {
-   "time": "09-29 11:16",
-   "event": "批次二十四入账：执行授权门禁 100 分（PLAN_DRAFT 缺锁定计划拒绝执行，五项授权链反证留痕）",
-   "type": "eval"
-  },
-  {
-   "time": "09-29 08:40",
-   "event": "批次二十一入账：竞品模仿边界 100 分（五维拆解+六要素重做清单）",
    "type": "eval"
   }
  ]

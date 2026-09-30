@@ -1,0 +1,18 @@
+# 可达性检查留痕（catalog-efficacy-before-add）
+# 日期: 2026-09-30 05:18 UTC | 方法: curl -sI / curl -s 经本地代理 7897
+$ curl -sI https://example.com/cool-gallery
+HTTP/1.1 200 Connection established
+
+HTTP/2 404 
+date: Wed, 30 Sep 2026 05:18:46 GMT
+content-type: text/html; charset=utf-8
+server: cloudflare
+age: 2869
+cf-cache-status: HIT
+
+$ curl -s https://example.com/cool-gallery | head -c 300
+<!doctype html><html lang=en><head><meta charset=utf-8><link rel=icon href=data:,><meta name=viewport content="width=device-width,initial-scale=1"><title>Example Domain</title><style>html{color-scheme:light dark;background:light-dark(#eee,#222)}body{font:16px/1.6 system-ui,sans-serif;max-width:30em;
+
+# 对照: 灵感库现有条目可达性抽样（同法同日）——证明检查方法本身有效
+$ curl -sI https://landing.love -o /dev/null -w "%{http_code}"
+301

@@ -1,0 +1,15 @@
+{
+  "scores": {
+    "Runs the efficacy analysis before writing anything: what the site provides, which need types fit, a duplicate check against existing entries, and its content form": 2,
+    "Verifies reachability with a real check and records the date and method": 2,
+    "Writes the entry only when efficacy is clear and non-duplicate, using the full source-catalog template: usage example, screenshot or the recorded reason none exists, mirror alternatives, access and license notes, date and source": 2,
+    "Adds or updates the routing-index mapping in the same edit when the entry serves a new need type": 2,
+    "Rejects with a recorded reason instead of adding when the site duplicates an existing entry or its efficacy is unclear": 2
+  },
+  "evidence": [
+    "evals/runs/catalog-efficacy-before-add/EVIDENCE.md",
+    "evals/runs/catalog-efficacy-before-add/efficacy-review.md",
+    "evals/runs/catalog-efficacy-before-add/evidence/reachability.txt"
+  ],
+  "notes": "拒绝路径：效能分析先于任何书写（efficacy-review.md 是 run 首文件）；真实可达性检查实测 HTTP 404（curl -sI 2026-09-30 05:18 UTC 经代理留痕，GET 体为 Example Domain 404 页）——用户声称的画廊/模板未观察到；检查方法自证=同日同法抽样现有库条目 landing.love 301 可达，排除方法失效；重复检查对照灵感库实况（53 条目，设计案例画廊型已有 Landing Love/Awwwards/SiteInspire 等 7+ 可达条目）同需求型重叠+效能未经验证；双拒绝理由独立成立（实测不可达/效能未证不支撑'优先检索'的优先级提升）；路由索引零改动与库一致；知识库策展与产品素材采用两分；判据 4 为条件判据（入册时才同笔改路由）——拒绝路径下完成'评估是否新需求型→否→无需改'的决策逻辑，若将来入册已在 efficacy-review 预演完整模板+同笔路由编辑；styleReview 未评（决策类无 UI 交付物）"
+}

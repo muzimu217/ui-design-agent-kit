@@ -233,6 +233,16 @@ test("the delivery pipeline has one source of truth that matches its consumers",
   assert.deepEqual(showcaseIds, stageIds, "showcase stage order or membership drifted");
 });
 
+
+test("eval-report family line keeps markdown bold stars intact (no broken-slice residue)", async () => {
+  const report = await readFile(path.join(ROOT, "docs", "eval-report-2026-09.md"), "utf8");
+  const family = report.match(/族群汇总：[^\n]*/);
+  assert.ok(family, "family summary line exists");
+  assert.equal((family[0].match(/各 \*\*1\* /g) || []).length, 0,
+    "family line must not contain broken bold stars (各 **1* )");
+  assert.ok(/各 \*\*1\*\*。$/.test(family[0].trim()), "family line ends with a closed 各 **1**。");
+});
+
 test("SKILL.md stays under the growth tripwire and the lean prompt export stays self-contained", async () => {
   const skill = await readFile(path.join(ROOT, ".agents/skills/ui-design-agent/SKILL.md"), "utf8");
   const lines = skill.split(/\r?\n/).length;

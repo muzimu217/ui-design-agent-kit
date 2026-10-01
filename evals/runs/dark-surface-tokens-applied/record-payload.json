@@ -11,5 +11,5 @@
   "evals/runs/dark-surface-tokens-applied/evidence/dark-verify-result.txt",
   "evals/runs/dark-surface-tokens-applied/evidence/dark-full.png"
  ],
- "notes": "暗色表面 token 落地：实机断言×8 全 PASS——①表面亮度阶梯程序实算（base #101418 0.0068 < card #171d24 0.0119 < raised #1d242c 0.0170，抬升=更亮零阴影）②基面 tinted near-black 非纯黑 ③描边 rgba(255,255,255,0.08) 低不透明度白 ④文字三档独立（primary #e8edf2 near-white/secondary #a8b4bf/placeholder #6b7682）⑤强调色暗面重校准 #3fbf8a（实测亮度>浅色版 #177656，不照搬浅色 token）⑥组件规则零硬编码 hex（遍历 styleSheets 非 token 块 0 命中，hex 仅存于双值 token 定义块）⑦正文对比度 15.70:1 程序实算 ⑧console 0+全页截图；首跑 2 条断言自身缺陷（placeholder 伪元素读取/页面内亮度函数内联）当场修复——断言脚本本身也要过运行关；styleReview=暗面专项判据即断言集，其余维度未评已标注"
+ "notes": "第 2 次记录（第 21 批审计整改后重录）：审计抓到证据与夹具矛盾——浏览器 cssText 把 hex 规范化成 rgb()，运行时 hexScan 对源文件级硬编码存在盲区（.btn-accent color:#0b1210 漏检而证据记 PASS）。整改=①#0b1210 改走双值 token --accent-contrast（light #ffffff/dark #0b1210）②断言增加源文件级 hex 扫描（token 块外 0 命中方 PASS）③复跑 10 项全 PASS（新增源文件扫描 0 命中）。其余判据不变：亮度阶梯实算/非纯黑白负路径/rgba 白描边/三档文字/强调色重校准/对比度 15.70:1/console 0。教训=运行时断言有规范化盲区，源级纪律必须源级扫描；styleReview 未评已标注（同前）"
 }

@@ -1,0 +1,15 @@
+PASS 骨架行与真实表列数一致（12 列） — skeleton cols=12/12
+PASS 加载期间空态不抢显 — empty display:none during load
+PASS 紧凑行高 ≤40px — 40.0px
+PASS 字号不缩水（≥13px） — 13.5px
+PASS 粘性表头（sticky + 滚动后钉在容器顶） — pos=sticky, thTop=116.5 vs boxTop=115.5
+PASS 数字列右对齐 + tabular-nums — right / tabular-nums
+PASS 列宽稳定（刷新前后一致，不回流） — 36,97,151,91,93,85,91,85,121,91,141,97 vs 36,97,151,91,93,85,91,85,121,91,141,97
+PASS 状态三通道（颜色 class + 形状 glyph + 文字标签） — {"cls":"st ok","shape":"✔","text":"✔正常"}
+PASS 空态=首条记录行动邀请（非裸暂无数据） — 新建第一张采购单
+PASS 全选=三态（全选/半选） — 全选后={"checked":true,"indeterminate":false} 取消一条后={"checked":false,"indeterminate":true}
+PASS 批量归档=逐条结果报告（含成功与跳过原因） — 报告行数=299, 含已归档=true, 含跳过原因=true
+console/pageerror: 0 条
+PASS console clean — 0
+
+TOTAL FAILS: 0

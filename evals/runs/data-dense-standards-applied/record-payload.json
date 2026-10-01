@@ -1,0 +1,15 @@
+{
+ "scores": {
+  "Uses compact row heights with sticky headers and right-aligned tabular-nums for numeric columns": 2,
+  "Keeps column widths stable so rows do not reflow when values refresh": 2,
+  "Marks row status with three channels (color plus shape plus text) instead of colored dots alone": 2,
+  "Provides an empty state with a first-record action and skeleton rows matching real columns while loading": 2,
+  "Implements bulk archive with visible per-row selection, tri-state select-all, and a per-record result report after the operation": 2
+ },
+ "evidence": [
+  "evals/runs/data-dense-standards-applied/NOTE.md",
+  "evals/runs/data-dense-standards-applied/evidence/dense-verify-result.txt",
+  "evals/runs/data-dense-standards-applied/evidence/dense-bulk-report.png"
+ ],
+ "notes": "数据密集标准落地：实机断言×10 全 PASS（骨架+主场景双程）——紧凑行高 40px 且字号 13.5px 不缩/粘性表头滚动钉顶偏差<2px/数字列右对齐 tabular-nums/列宽刷新前后 12 列逐一相等（table-layout fixed+colgroup）/状态三通道（颜色 class+形状 glyph+文字标签）/空态行动邀请+裸暂无数据 0 命中/骨架行 12 列与真实表一致（?skeleton=1 显形）/批量归档=逐行选择+全选三态（indeterminate 翻转实测）+归档后逐条结果报告（299 行含已归档与已跳过原因）；console 0+状态区截图；300 行数据本地生成演示标注；首跑 3 条 FAIL 全为真缺陷或断言不一致（行高 44 超标/骨架从未展示/条张用词）逐条整改复跑全过；教训 17 应用=结果落盘走 stdout 重定向+cp；styleReview=数据密集专项判据即断言集，色彩美学未评已标注"
+}

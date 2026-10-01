@@ -7,7 +7,7 @@
     "streak100": 54,
     "tests": "95/95",
     "a11y": "0 违规",
-    "audits": "21 批零上下文回归审计"
+    "audits": "23 批零上下文回归审计"
   },
   "activeTask": {
     "id": "R221-01",
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-01 08:0x",
+      "event": "第 23 批审计回填：并行会话 research 基础设施四笔=CLEAN 5/5（45/45 测试实跑全过/负面断言真实（篡改检出 ERR_SHA_MISMATCH 等）/冻结·防篡改·确定性机制非空壳/核心台账零触碰/零夹带）；观察=assignment seed 仅参与 ID 哈希不影响行分配（确定性不受影响）",
+      "type": "audit"
+    },
+    {
       "time": "09-30 21:4x",
       "event": "R221-01 执行批完成：Remotion 官方 6 技能重 vendoring 至上游 HEAD a9b199e（内容 4.0.531 语义）+锁/NOTICES 同笔；6 个新技能目录另开评估单",
       "type": "upgrade"
@@ -107,11 +112,6 @@
       "time": "09-30 15:4x",
       "event": "第 19 批审计回填：批次 49/50+证据副本采纳笔=CLEAN 5/5（66 键/断言脚本绝对路径/证据副本来源链 PROVENANCE/零夹带）；顺手清理排版 run 的冗余结果文件（results.json 引用件保留）",
       "type": "audit"
-    },
-    {
-      "time": "09-30 15:3x",
-      "event": "批次五十一入账：copy-contract-applied 100 分（文案契约落地——机制词清零/错误含因与修/空态行动邀请/动作词一致实测×7）——67/71 94%",
-      "type": "eval"
     }
   ]
 }

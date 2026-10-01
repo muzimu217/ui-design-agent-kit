@@ -98,16 +98,65 @@ test("package validation reports required structure errors in path order", () =>
 
   assert.equal(result.ok, false);
   assert.deepEqual(result.errors.map((error) => error.path), [
+    "conditions",
+    "eventTypes[0]",
+    "gates",
     "schemaVersion",
+    "states",
     "studyId",
     "studyVersion",
-    "conditions",
-    "states",
     "tasks[0].level",
     "tasks[0].title",
-    "gates",
-    "eventTypes[0]",
   ]);
+});
+
+test("package validation reports required errors once and sorts them by path then code", () => {
+  const result = validateStudyPackage({});
+
+  assert.equal(result.ok, false);
+  assert.deepEqual(result.errors, [
+    { code: "ERR_REQUIRED_FIELD", path: "conditions", message: "conditions is required" },
+    { code: "ERR_REQUIRED_FIELD", path: "eventTypes", message: "eventTypes is required" },
+    { code: "ERR_REQUIRED_FIELD", path: "frozen", message: "frozen is required" },
+    { code: "ERR_REQUIRED_FIELD", path: "gates", message: "gates is required" },
+    { code: "ERR_REQUIRED_FIELD", path: "schemaVersion", message: "schemaVersion is required" },
+    { code: "ERR_REQUIRED_FIELD", path: "states", message: "states is required" },
+    { code: "ERR_REQUIRED_FIELD", path: "studyId", message: "studyId is required" },
+    { code: "ERR_REQUIRED_FIELD", path: "studyVersion", message: "studyVersion is required" },
+    { code: "ERR_REQUIRED_FIELD", path: "tasks", message: "tasks is required" },
+  ]);
+});
+
+test("package validation sorts multiple errors at the same path by stable code", () => {
+  const result = validateStudyPackage({
+    ...minimalPackage,
+    conditions: ["C0", "C2"],
+    eventTypes: ["", "event", "event"],
+  });
+
+  assert.deepEqual(result.errors.map(({ code, path }) => ({ code, path })), [
+    { code: "ERR_CONDITIONS_INCOMPLETE", path: "conditions" },
+    { code: "ERR_UNKNOWN_CONDITION", path: "conditions" },
+    { code: "ERR_EVENT_TYPE", path: "eventTypes[0]" },
+    { code: "ERR_DUPLICATE_ID", path: "eventTypes[2]" },
+  ]);
+});
+
+test("package validation accepts any non-empty event type string", () => {
+  const result = validateStudyPackage({
+    ...minimalPackage,
+    eventTypes: ["Gate Decision", "事件/type.v2", "UPPER_CASE"],
+  });
+
+  assert.equal(result.ok, true, JSON.stringify(result.errors));
+});
+
+test("canonical hashes distinguish an own __proto__ key from an ordinary key", () => {
+  const first = JSON.parse('{"__proto__":{"value":1}}');
+  const second = JSON.parse('{"value":1}');
+
+  assert.notEqual(canonicalHash(first), canonicalHash(second));
+  assert.equal(stableStringify(first), '{"__proto__":{"value":1}}');
 });
 
 test("assertStudyPackage throws a stable runtime error for invalid input", () => {

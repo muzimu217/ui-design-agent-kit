@@ -10,13 +10,13 @@
     "audits": "21 批零上下文回归审计"
   },
   "activeTask": {
-    "id": "R149-01",
-    "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "收尾：done-pending-verify（70/71 99%，批次一至五十四连续 100）",
-    "startedAt": "2026-09-28",
-    "currentGate": "收尾报告已出（r236 §二）；待用户复核即 verified",
-    "lastArtifact": "唯一未录=vue-video-embed-delivery（用户 09-29 裁决挂起）；13 个新族群入册",
-    "next": "R221-01 Remotion 升级执行批；R194-01 平面专家续批；uak-visual-critique 手册中文化；第 21 批审计结论下轮回填"
+    "id": "R221-01",
+    "name": "Remotion 4.0.370→4.0.530 升级执行批",
+    "status": "claimed（评估完成+执行计划定稿；分两步执行）",
+    "startedAt": "2026-09-30",
+    "currentGate": "执行批待启动（下轮起）",
+    "lastArtifact": "gh api compare 一手证据：11 commits/152 files，上游 6→12 技能目录结构性重组（新增 captions/interactivity/maps/multimedia/saas/upgrade）",
+    "next": "①重 vendoring 既有 6 技能（新布局+frontmatter 规范化+树哈希校验）②6 个新技能许可/范围评估"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 20:2x",
+      "event": "R221-01 一手取证更新：上游 11 commits/152 files 且 6→12 技能目录结构性重组（嵌套迁移+六个新技能）——升级批分两步（既有重 vendoring+新技能评估）",
+      "type": "research"
+    },
+    {
       "time": "09-30 19:5x",
       "event": "第 21 批审计回填：批次 53 证据与夹具矛盾（浏览器 cssText 规范化盲区）→整改=夹具 token 化+断言增加源文件级 hex 扫描+--rerun 重录（第 2 次 100）；家族行切坏星号复发修复+新增守卫测试（family line stars 断言，测试总量 95）；quality-monitor 计数行同笔 86/86",
       "type": "audit"
@@ -107,11 +112,6 @@
       "time": "09-30 14:3x",
       "event": "批次五十入账（里程碑）：typography-standards-applied 100 分（排版标准落地——identity 字体 Fraunces/真对比角色/5.65x 跳跃/tabular-nums/零 eyebrow，实机断言×7）——66/71 93%，连续 50 批",
       "type": "eval"
-    },
-    {
-      "time": "09-30 13:4x",
-      "event": "第 18 批审计回填：批次 47/48=CLEAN 5/5（Linear baseline token 逐字 verbatim 核验+方向稿固定格式+零视觉产物+零夹带）；建议级发现已采纳——pulled-linear 检视记录以证据副本入 run 目录（fresh-clone 可用，目录 vendor 规则不破）",
-      "type": "audit"
     }
   ]
 }

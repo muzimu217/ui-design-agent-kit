@@ -59,7 +59,7 @@ a substitute for each upstream repository's license text.
   absolute directory. The search implementation and datasets are unchanged.
 - Motion: move the top-level `argument-hint` to `metadata.argument-hint` for this
   kit's skill validator. The hint text and instruction body are unchanged.
-- The six official Remotion entrypoints: move upstream `version: 4.0.520` to
+- The six official Remotion entrypoints: move upstream `version: 4.0.531` to
   `metadata.version` rather than discarding the version. References are unchanged.
 - Impeccable (`uak-visual-critique`): install the skill without its automatic hooks. The upstream engine
   launcher is retained; its native engine is a separate first-use download.

@@ -11,12 +11,12 @@
   },
   "activeTask": {
     "id": "R221-01",
-    "name": "Remotion 4.0.370→4.0.530 升级执行批",
-    "status": "claimed（评估完成+执行计划定稿；分两步执行）",
+    "name": "Remotion 4.0.370→4.0.531 升级执行批",
+    "status": "done-pending-verify（6 技能重 vendoring 至上游 HEAD a9b199e，内容 4.0.531 语义）",
     "startedAt": "2026-09-30",
-    "currentGate": "执行批待启动（下轮起）",
-    "lastArtifact": "gh api compare 一手证据：11 commits/152 files，上游 6→12 技能目录结构性重组（新增 captions/interactivity/maps/multimedia/saas/upgrade）",
-    "next": "①重 vendoring 既有 6 技能（新布局+frontmatter 规范化+树哈希校验）②6 个新技能许可/范围评估"
+    "currentGate": "执行完成；待下轮复核即 verified",
+    "lastArtifact": "6 技能 rsync 镜像+frontmatter 逐个规范化+树哈希复验（残差仅剩自有适配）；锁/NOTICES 同笔",
+    "next": "新 6 技能（captions/interactivity/maps/multimedia/saas/upgrade）评估单待用户裁决；R149-01 done-pending-verify 等用户复核"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 21:4x",
+      "event": "R221-01 执行批完成：Remotion 官方 6 技能重 vendoring 至上游 HEAD a9b199e（内容 4.0.531 语义）+锁/NOTICES 同笔；6 个新技能目录另开评估单",
+      "type": "upgrade"
+    },
+    {
       "time": "09-30 20:2x",
       "event": "R221-01 一手取证更新：上游 11 commits/152 files 且 6→12 技能目录结构性重组（嵌套迁移+六个新技能）——升级批分两步（既有重 vendoring+新技能评估）",
       "type": "research"
@@ -106,11 +111,6 @@
     {
       "time": "09-30 15:3x",
       "event": "批次五十一入账：copy-contract-applied 100 分（文案契约落地——机制词清零/错误含因与修/空态行动邀请/动作词一致实测×7）——67/71 94%",
-      "type": "eval"
-    },
-    {
-      "time": "09-30 14:3x",
-      "event": "批次五十入账（里程碑）：typography-standards-applied 100 分（排版标准落地——identity 字体 Fraunces/真对比角色/5.65x 跳跃/tabular-nums/零 eyebrow，实机断言×7）——66/71 93%，连续 50 批",
       "type": "eval"
     }
   ]

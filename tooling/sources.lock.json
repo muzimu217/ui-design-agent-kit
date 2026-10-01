@@ -41,67 +41,67 @@
     {
       "name": "remotion-best-practices",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "54e9b19a612897171e0b3b242e01c2badba4a272",
+      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
       "sourcePath": "skills/remotion-best-practices",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Normalized unsupported version frontmatter for Codex skill metadata"
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01 upgrade batch)"
       ]
     },
     {
       "name": "remotion-create",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "54e9b19a612897171e0b3b242e01c2badba4a272",
+      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
       "sourcePath": "skills/remotion-create",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Normalized unsupported version frontmatter for Codex skill metadata"
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01 upgrade batch)"
       ]
     },
     {
       "name": "remotion-docs",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "54e9b19a612897171e0b3b242e01c2badba4a272",
+      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
       "sourcePath": "skills/remotion-docs",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Normalized unsupported version frontmatter for Codex skill metadata"
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01 upgrade batch)"
       ]
     },
     {
       "name": "remotion-markup",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "54e9b19a612897171e0b3b242e01c2badba4a272",
+      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
       "sourcePath": "skills/remotion-markup",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Normalized unsupported version frontmatter for Codex skill metadata"
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01 upgrade batch)"
       ]
     },
     {
       "name": "remotion-render",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "54e9b19a612897171e0b3b242e01c2badba4a272",
+      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
       "sourcePath": "skills/remotion-render",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Normalized unsupported version frontmatter for Codex skill metadata"
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01 upgrade batch)"
       ]
     },
     {
       "name": "remotion-studio",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "54e9b19a612897171e0b3b242e01c2badba4a272",
+      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
       "sourcePath": "skills/remotion-studio",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Normalized unsupported version frontmatter for Codex skill metadata"
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01 upgrade batch)"
       ]
     },
     {

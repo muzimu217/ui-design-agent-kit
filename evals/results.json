@@ -2271,6 +2271,27 @@
         ],
         "notes": "暗色表面 token 落地：实机断言×8 全 PASS——①表面亮度阶梯程序实算（base #101418 0.0068 < card #171d24 0.0119 < raised #1d242c 0.0170，抬升=更亮零阴影）②基面 tinted near-black 非纯黑 ③描边 rgba(255,255,255,0.08) 低不透明度白 ④文字三档独立（primary #e8edf2 near-white/secondary #a8b4bf/placeholder #6b7682）⑤强调色暗面重校准 #3fbf8a（实测亮度>浅色版 #177656，不照搬浅色 token）⑥组件规则零硬编码 hex（遍历 styleSheets 非 token 块 0 命中，hex 仅存于双值 token 定义块）⑦正文对比度 15.70:1 程序实算 ⑧console 0+全页截图；首跑 2 条断言自身缺陷（placeholder 伪元素读取/页面内亮度函数内联）当场修复——断言脚本本身也要过运行关；styleReview=暗面专项判据即断言集，其余维度未评已标注"
       }
+    ],
+    "data-dense-standards-applied": [
+      {
+        "date": "2026-10-01",
+        "recordedAt": "2026-10-01T00:19:46.148Z",
+        "commit": "7d51d6c9e61ab71be887e5b74de1b2dd61f91fc0",
+        "scores": {
+          "Uses compact row heights with sticky headers and right-aligned tabular-nums for numeric columns": 2,
+          "Keeps column widths stable so rows do not reflow when values refresh": 2,
+          "Marks row status with three channels (color plus shape plus text) instead of colored dots alone": 2,
+          "Provides an empty state with a first-record action and skeleton rows matching real columns while loading": 2,
+          "Implements bulk archive with visible per-row selection, tri-state select-all, and a per-record result report after the operation": 2
+        },
+        "score": 100,
+        "evidence": [
+          "evals/runs/data-dense-standards-applied/NOTE.md",
+          "evals/runs/data-dense-standards-applied/evidence/dense-verify-result.txt",
+          "evals/runs/data-dense-standards-applied/evidence/dense-bulk-report.png"
+        ],
+        "notes": "数据密集标准落地：实机断言×10 全 PASS（骨架+主场景双程）——紧凑行高 40px 且字号 13.5px 不缩/粘性表头滚动钉顶偏差<2px/数字列右对齐 tabular-nums/列宽刷新前后 12 列逐一相等（table-layout fixed+colgroup）/状态三通道（颜色 class+形状 glyph+文字标签）/空态行动邀请+裸暂无数据 0 命中/骨架行 12 列与真实表一致（?skeleton=1 显形）/批量归档=逐行选择+全选三态（indeterminate 翻转实测）+归档后逐条结果报告（299 行含已归档与已跳过原因）；console 0+状态区截图；300 行数据本地生成演示标注；首跑 3 条 FAIL 全为真缺陷或断言不一致（行高 44 超标/骨架从未展示/条张用词）逐条整改复跑全过；教训 17 应用=结果落盘走 stdout 重定向+cp；styleReview=数据密集专项判据即断言集，色彩美学未评已标注"
+      }
     ]
   }
 }

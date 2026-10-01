@@ -47,7 +47,8 @@ check('三档文字独立（primary/secondary/placeholder）', distinct, `${text
 const accentDark = await page.$eval('.btn-accent', (el) => getComputedStyle(el).backgroundColor);
 check('强调色暗面重校准（亮度 > 浅色版 #177656）', lum(accentDark) > lum('rgb(23, 118, 86)'), `${accentDark} vs rgb(23, 118, 86)`);
 
-// 5) 双值 token：hex 只出现在 :root/[data-theme] 块，组件规则零硬编码
+// 5) 双值 token：hex 只出现在 token 定义块；浏览器 cssText 会把 hex 规范化成 rgb，
+//    故除运行时扫描外，必须对**源文件**做同样的块外 hex 扫描（第 21 批审计补丁）
 const hexScan = await page.evaluate(() => {
   const sheetRules = [];
   for (const sheet of document.styleSheets) {
@@ -60,7 +61,15 @@ const hexScan = await page.evaluate(() => {
   }
   return sheetRules;
 });
-check('组件规则零硬编码 hex（hex 仅存在于 token 定义块）', hexScan.length === 0, JSON.stringify(hexScan));
+check('运行时组件规则零硬编码 hex', hexScan.length === 0, JSON.stringify(hexScan));
+const fs = await import('node:fs/promises');
+const srcPath = new URL('../fixture/index.html', import.meta.url);
+const src = await fs.readFile(srcPath, 'utf8');
+const tokenBlocks = src.match(/:root[^{]*\{[^}]*\}/gs) || [];
+const srcWithoutTokens = tokenBlocks.reduce((acc, block) => acc.replace(block, ''), src);
+const srcHexHits = (srcWithoutTokens.match(/#[0-9a-fA-F]{3,8}\b/g) || []).filter((h) => !/^#\d\d\d$/.test(h) || true);
+const srcHexHits2 = (srcWithoutTokens.match(/#[0-9a-fA-F]{3,8}\b/g) || []);
+check('源文件组件区零硬编码 hex（token 块外）', srcHexHits2.length === 0, `命中 ${srcHexHits2.length}: ${srcHexHits2.slice(0,5).join(',')}`);
 
 // 6) 对比度：正文与强调按钮文字（程序实算）
 const bodyContrast = (await page.evaluate(() => {

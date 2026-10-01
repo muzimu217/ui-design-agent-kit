@@ -21,6 +21,13 @@ token 块 0 命中）**、正文对比度 15.70:1 程序实算、console 0、全
 dark-full.png。首跑 2 条断言自身缺陷（placeholder 需读 ::placeholder 伪元素、
 页面内对比度实算需内联亮度函数）当场修复——断言脚本本身也要过运行关。
 
+## 审计强化记录（第 21 批，2026-09-30）
+
+第 21 批零上下文审计发现：浏览器 cssText 会把 hex 规范化成 rgb()，运行时扫描对
+**源文件级**硬编码存在盲区（.btn-accent 的 color:#0b1210 曾漏检）。整改：
+① 该值改走双值 token --accent-contrast；② 断言增加**源文件级 hex 扫描**
+（token 块外 0 命中方 PASS）。复跑 10 项全 PASS。
+
 ## styleReview 未评声明
 
 暗色 token 专项场景：判据即暗面规则（本批逐项实机断言）；布局节奏等其余维度

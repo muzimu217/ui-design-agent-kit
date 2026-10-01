@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -26,6 +27,9 @@ import {
   isTerminalState,
   transition,
 } from "../research/runtime/state-machine.mjs";
+import { EventLog, verifyEventChain } from "../research/runtime/event-log.mjs";
+import { freezeRun, verifyRun, writeArtifact } from "../research/runtime/evidence-store.mjs";
+import { replayRun } from "../research/runtime/replay.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const fixturePath = path.join(ROOT, "research/runtime/fixtures/study-package.json");
@@ -435,4 +439,306 @@ test("session state creation validates condition and identifiers before any tran
   assert.equal(isTerminalState({ status: "done" }), true);
   assert.equal(isTerminalState(state), false);
   assert.equal(isTerminalState(null), false);
+});
+
+const FIXED_CLOCK = () => "2026-10-01T00:00:00.000Z";
+
+function makeTempDir(prefix) {
+  return mkdtemp(path.join(tmpdir(), prefix));
+}
+
+async function seedRunDir() {
+  const runDir = await makeTempDir("uak-run-");
+  const eventsPath = path.join(runDir, "events.jsonl");
+  const log = new EventLog({ filePath: eventsPath, runId: "r-freeze", clock: FIXED_CLOCK });
+  await log.append({ actor: "runner", type: "session_started", payload: { condition: "C0", participantId: "p01", taskId: "T1" } });
+  await log.append({ actor: "runner", type: "execution_completed", payload: {} });
+  await log.append({ actor: "runner", type: "session_ended", payload: {} });
+  await writeArtifact(runDir, "input/task-card.md", "T1");
+  return { runDir, eventsPath, manifestPath: path.join(runDir, "MANIFEST.sha256") };
+}
+
+async function researchMetadata(eventsPath) {
+  const fixture = JSON.parse(await readFile(fixturePath, "utf8"));
+  const studyHash = canonicalHash(fixture);
+  const assignmentHash = createAssignment({
+    study: fixture,
+    studyHash,
+    participantIds: ["p01", "p02"],
+    taskIds: ["T1", "T2"],
+    seed: "task3",
+  }).assignmentHash;
+  const eventLogHash = sha256Hex(await readFile(eventsPath));
+  return { studyHash, assignmentHash, eventLogHash };
+}
+
+test("event log chains hashes and detects a modified line", async (t) => {
+  const dir = await makeTempDir("uak-log-");
+  t.after(() => rm(dir, { recursive: true, force: true }));
+  const filePath = path.join(dir, "events.jsonl");
+
+  const log = new EventLog({ filePath, runId: "r1", clock: FIXED_CLOCK });
+  await log.append({ actor: "runner", type: "session_started", payload: {} });
+  await log.append({ actor: "runner", type: "execution_started", payload: {} });
+  assert.equal((await log.verify()).ok, true);
+
+  const lines = (await readFile(filePath, "utf8")).trim().split("\n");
+  lines[1] = lines[1].replace("execution_started", "tampered");
+  await writeFile(filePath, `${lines.join("\n")}\n`);
+
+  const broken = await verifyEventChain(filePath, "r1");
+  assert.equal(broken.ok, false);
+  assert.equal(broken.error.code, "ERR_SHA_MISMATCH");
+  assert.equal(broken.error.line, 2);
+});
+
+test("event log stamps schema version, seq, runId, and chained prevSha fields", async (t) => {
+  const dir = await makeTempDir("uak-log-");
+  t.after(() => rm(dir, { recursive: true, force: true }));
+  const filePath = path.join(dir, "events.jsonl");
+
+  const log = new EventLog({ filePath, runId: "r-stamp", clock: FIXED_CLOCK });
+  const first = await log.append({ actor: "runner", type: "session_started", payload: { condition: "C0", participantId: "p01", taskId: "T1" } });
+  const second = await log.append({ actor: "runner", type: "execution_completed", payload: {} });
+
+  assert.equal(first.schemaVersion, 1);
+  assert.equal(first.seq, 0);
+  assert.equal(first.ts, "2026-10-01T00:00:00.000Z");
+  assert.equal(first.runId, "r-stamp");
+  assert.equal(first.prevSha, "0".repeat(64));
+  assert.match(first.sha, /^[a-f0-9]{64}$/);
+  assert.equal(second.seq, 1);
+  assert.equal(second.prevSha, first.sha);
+
+  const events = await log.read();
+  assert.deepEqual(events.map((event) => event.seq), [0, 1]);
+  assert.equal((await verifyEventChain(filePath, "r-stamp")).ok, true);
+
+  const mismatch = await verifyEventChain(filePath, "someone-else");
+  assert.equal(mismatch.ok, false);
+  assert.equal(mismatch.error.code, "ERR_RUN_ID_MISMATCH");
+  assert.equal(mismatch.error.line, 1);
+});
+
+test("event log append re-verifies the file and damaged logs reject further writes", async (t) => {
+  const dir = await makeTempDir("uak-log-");
+  t.after(() => rm(dir, { recursive: true, force: true }));
+
+  const filePath = path.join(dir, "events.jsonl");
+  const log = new EventLog({ filePath, runId: "r3", clock: FIXED_CLOCK });
+  await log.append({ actor: "runner", type: "session_started", payload: {} });
+  await log.append({ actor: "runner", type: "execution_completed", payload: {} });
+  const lines = (await readFile(filePath, "utf8")).trim().split("\n");
+  lines[0] = lines[0].replace("session_started", "hijacked");
+  await writeFile(filePath, `${lines.join("\n")}\n`);
+  await assert.rejects(() => log.append({ actor: "runner", type: "session_ended", payload: {} }), /ERR_EVENT_LOG_DAMAGED/);
+
+  const garbagePath = path.join(dir, "garbage.jsonl");
+  await writeFile(garbagePath, "not-json\n");
+  const garbage = await verifyEventChain(garbagePath, "r3");
+  assert.equal(garbage.ok, false);
+  assert.equal(garbage.error.code, "ERR_MALFORMED_LINE");
+  assert.equal(garbage.error.line, 1);
+
+  const blankPath = path.join(dir, "blank.jsonl");
+  const blankLog = new EventLog({ filePath: blankPath, runId: "r3", clock: FIXED_CLOCK });
+  await blankLog.append({ actor: "runner", type: "session_started", payload: {} });
+  await blankLog.append({ actor: "runner", type: "execution_completed", payload: {} });
+  const blankLines = (await readFile(blankPath, "utf8")).trim().split("\n");
+  blankLines.splice(1, 0, "");
+  await writeFile(blankPath, `${blankLines.join("\n")}\n`);
+  const blank = await verifyEventChain(blankPath, "r3");
+  assert.equal(blank.error.code, "ERR_MALFORMED_LINE");
+  assert.equal(blank.error.line, 2);
+
+  const seqPath = path.join(dir, "seq.jsonl");
+  const seqLog = new EventLog({ filePath: seqPath, runId: "r3", clock: FIXED_CLOCK });
+  await seqLog.append({ actor: "runner", type: "session_started", payload: {} });
+  await seqLog.append({ actor: "runner", type: "execution_completed", payload: {} });
+  const seqLines = (await readFile(seqPath, "utf8")).trim().split("\n");
+  const doctored = JSON.parse(seqLines[1]);
+  doctored.seq = 7;
+  seqLines[1] = JSON.stringify(doctored);
+  await writeFile(seqPath, `${seqLines.join("\n")}\n`);
+  const seqResult = await verifyEventChain(seqPath, "r3");
+  assert.equal(seqResult.error.code, "ERR_SEQ_NOT_SEQUENTIAL");
+  assert.equal(seqResult.error.line, 2);
+});
+
+test("writeArtifact rejects traversal and absolute escapes while creating parent directories", async (t) => {
+  const runDir = await makeTempDir("uak-run-");
+  t.after(() => rm(runDir, { recursive: true, force: true }));
+
+  await assert.rejects(() => writeArtifact(runDir, "/etc/passwd", "x"), /ERR_UNSAFE_PATH/);
+  await assert.rejects(() => writeArtifact(runDir, "../escape.txt", "x"), /ERR_UNSAFE_PATH/);
+  await assert.rejects(() => writeArtifact(runDir, "input/../../escape.txt", "x"), /ERR_UNSAFE_PATH/);
+  await assert.rejects(() => writeArtifact(runDir, "", "x"), /ERR_UNSAFE_PATH/);
+
+  const written = await writeArtifact(runDir, "input/nested/task-card.md", "T1");
+  assert.equal(written, path.join(runDir, "input", "nested", "task-card.md"));
+  assert.equal(await readFile(written, "utf8"), "T1");
+});
+
+test("freeze verifies files, blocks mutation, and replay does not alter the run", async (t) => {
+  const { runDir, eventsPath, manifestPath } = await seedRunDir();
+  t.after(() => rm(runDir, { recursive: true, force: true }));
+
+  const { studyHash, assignmentHash, eventLogHash } = await researchMetadata(eventsPath);
+  const manifest = await freezeRun(runDir, { studyHash, assignmentHash, eventLogHash });
+  assert.deepEqual(manifest.files.map((file) => file.path), ["events.jsonl", "input/task-card.md"]);
+  assert.equal((await verifyRun(runDir)).ok, true);
+
+  await assert.rejects(() => writeArtifact(runDir, "new.txt", "x"), /ERR_RUN_FROZEN/);
+
+  const before = await readFile(manifestPath, "utf8");
+  const replay = await replayRun(runDir);
+  assert.equal(replay.finalState, "done");
+  assert.equal(await readFile(manifestPath, "utf8"), before);
+});
+
+test("freeze writes a sorted manifest excluding hidden and temp files and validates metadata", async (t) => {
+  const { runDir, eventsPath } = await seedRunDir();
+  t.after(() => rm(runDir, { recursive: true, force: true }));
+
+  const { studyHash, assignmentHash, eventLogHash } = await researchMetadata(eventsPath);
+  await writeArtifact(runDir, ".hidden/sneak.txt", "s");
+  await writeArtifact(runDir, "scratch.tmp", "t");
+
+  await assert.rejects(() => freezeRun(runDir, { assignmentHash, eventLogHash }), /ERR_INVALID_METADATA/);
+  await assert.rejects(() => freezeRun(runDir, { studyHash: "nothex", assignmentHash, eventLogHash }), /ERR_INVALID_METADATA/);
+  await assert.rejects(
+    () => freezeRun(runDir, { studyHash, assignmentHash, eventLogHash: "0".repeat(64) }),
+    /ERR_EVENTLOG_HASH_MISMATCH/,
+  );
+
+  const manifest = await freezeRun(runDir, { studyHash, assignmentHash, eventLogHash });
+  assert.deepEqual(manifest.files.map((file) => file.path), ["events.jsonl", "input/task-card.md"]);
+  assert.equal(manifest.metadata.eventLogHash, eventLogHash);
+  assert.ok(manifest.files.every((file) => /^[a-f0-9]{64}$/.test(file.sha256)));
+
+  await assert.rejects(() => freezeRun(runDir, { studyHash, assignmentHash, eventLogHash }), /ERR_RUN_FROZEN/);
+});
+
+test("verifyRun reports missing manifests, tampered files, and unlisted artifacts after freeze", async (t) => {
+  const emptyDir = await makeTempDir("uak-empty-");
+  t.after(() => rm(emptyDir, { recursive: true, force: true }));
+  const missing = await verifyRun(emptyDir);
+  assert.equal(missing.ok, false);
+  assert.equal(missing.errors[0].code, "ERR_MANIFEST_MISSING");
+
+  const { runDir, eventsPath } = await seedRunDir();
+  t.after(() => rm(runDir, { recursive: true, force: true }));
+  await freezeRun(runDir, await researchMetadata(eventsPath));
+
+  const artifactPath = path.join(runDir, "input", "task-card.md");
+  await writeFile(artifactPath, "T1-tampered");
+  const tampered = await verifyRun(runDir);
+  assert.equal(tampered.ok, false);
+  assert.ok(tampered.errors.some((error) => error.code === "ERR_FILE_HASH_MISMATCH"));
+
+  await writeFile(artifactPath, "T1");
+  await writeFile(path.join(runDir, "unlisted.txt"), "extra");
+  const unlisted = await verifyRun(runDir);
+  assert.ok(unlisted.errors.some((error) => error.code === "ERR_UNLISTED_FILE" && error.path === "unlisted.txt"));
+
+  await rm(path.join(runDir, "unlisted.txt"), { force: true });
+  const eventLines = (await readFile(eventsPath, "utf8")).trim().split("\n");
+  eventLines[1] = eventLines[1].replace("execution_completed", "execution_vanished");
+  await writeFile(eventsPath, `${eventLines.join("\n")}\n`);
+  const brokenChain = await verifyRun(runDir);
+  assert.ok(brokenChain.errors.some((error) => error.code === "ERR_EVENT_CHAIN_BROKEN"));
+  assert.ok(brokenChain.errors.some((error) => error.code === "ERR_FILE_HASH_MISMATCH"));
+});
+
+test("replay folds gate decisions, skips informational events, and never writes", async (t) => {
+  const runDir = await makeTempDir("uak-run-");
+  t.after(() => rm(runDir, { recursive: true, force: true }));
+  const eventsPath = path.join(runDir, "events.jsonl");
+
+  const log = new EventLog({ filePath: eventsPath, runId: "r-c1", clock: FIXED_CLOCK });
+  const script = [
+    { actor: "runner", type: "session_started", payload: { condition: "C1", participantId: "p01", taskId: "T2" } },
+    { actor: "agent", type: "intent_updated", payload: { text: "operations dashboard" } },
+    { actor: "agent", type: "gate_request", payload: { gate: "GATE1" } },
+    { actor: "user", type: "gate_decision", payload: { gate: "GATE1", decision: "reject", reason: "intent unclear" } },
+    { actor: "agent", type: "gate_request", payload: { gate: "GATE1" } },
+    { actor: "user", type: "gate_decision", payload: { gate: "GATE1", decision: "approve" } },
+    { actor: "agent", type: "material_selected", payload: { refs: ["doc-a"] } },
+    { actor: "agent", type: "gate_request", payload: { gate: "GATE2" } },
+    { actor: "user", type: "gate_decision", payload: { gate: "GATE2", decision: "approve" } },
+    { actor: "runner", type: "execution_started", payload: {} },
+    { actor: "agent", type: "artifact_saved", payload: { path: "out/app.png" } },
+    { actor: "runner", type: "execution_completed", payload: {} },
+    { actor: "agent", type: "gate_request", payload: { gate: "GATE3" } },
+    { actor: "user", type: "gate_decision", payload: { gate: "GATE3", decision: "approve" } },
+  ];
+  for (const event of script) {
+    await log.append(event);
+  }
+  const before = await readFile(eventsPath, "utf8");
+
+  const replay = await replayRun(runDir);
+  assert.equal(replay.finalState, "done");
+  assert.equal(replay.eventCount, script.length);
+  assert.deepEqual(replay.errors, []);
+  assert.deepEqual(replay.gateDecisions.map(({ gate, decision }) => ({ gate, decision })), [
+    { gate: "GATE1", decision: "reject" },
+    { gate: "GATE1", decision: "approve" },
+    { gate: "GATE2", decision: "approve" },
+    { gate: "GATE3", decision: "approve" },
+  ]);
+  assert.equal(replay.gateDecisions[0].reason, "intent unclear");
+  assert.equal(replay.gateDecisions[0].from, "GATE1_PENDING");
+  assert.equal(replay.gateDecisions[0].to, "intent_drafting");
+  assert.equal(replay.gateDecisions[3].seq, 13);
+  assert.equal(await readFile(eventsPath, "utf8"), before);
+});
+
+test("replay reports missing logs and broken chains without throwing or writing", async (t) => {
+  const emptyDir = await makeTempDir("uak-empty-");
+  t.after(() => rm(emptyDir, { recursive: true, force: true }));
+  const missing = await replayRun(emptyDir);
+  assert.equal(missing.finalState, null);
+  assert.equal(missing.eventCount, 0);
+  assert.deepEqual(missing.gateDecisions, []);
+  assert.equal(missing.errors[0].code, "ERR_EVENT_LOG_MISSING");
+
+  const { runDir, eventsPath } = await seedRunDir();
+  t.after(() => rm(runDir, { recursive: true, force: true }));
+  const tampered = (await readFile(eventsPath, "utf8")).trim().split("\n");
+  tampered[0] = tampered[0].replace("session_started", "session_hacked");
+  const tamperedContent = `${tampered.join("\n")}\n`;
+  await writeFile(eventsPath, tamperedContent);
+
+  const broken = await replayRun(runDir);
+  assert.equal(broken.finalState, null);
+  assert.equal(broken.eventCount, 3);
+  assert.equal(broken.errors[0].code, "ERR_EVENT_CHAIN_BROKEN");
+  assert.equal(broken.errors[0].line, 1);
+  assert.equal(await readFile(eventsPath, "utf8"), tamperedContent);
+});
+
+test("replay records machine violations instead of throwing and stops folding", async (t) => {
+  const runDir = await makeTempDir("uak-run-");
+  t.after(() => rm(runDir, { recursive: true, force: true }));
+  const log = new EventLog({ filePath: path.join(runDir, "events.jsonl"), runId: "r-bad", clock: FIXED_CLOCK });
+  await log.append({ actor: "runner", type: "session_started", payload: { condition: "C0", participantId: "p01", taskId: "T1" } });
+  await log.append({ actor: "user", type: "session_started", payload: {} });
+  await log.append({ actor: "runner", type: "session_ended", payload: {} });
+
+  const replay = await replayRun(runDir);
+  assert.equal(replay.eventCount, 3);
+  assert.equal(replay.finalState, "executing");
+  assert.equal(replay.errors.length, 1);
+  assert.equal(replay.errors[0].code, "ERR_ACTOR_NOT_ALLOWED");
+  assert.equal(replay.errors[0].seq, 1);
+
+  const infolessDir = await makeTempDir("uak-run-");
+  t.after(() => rm(infolessDir, { recursive: true, force: true }));
+  const infolessLog = new EventLog({ filePath: path.join(infolessDir, "events.jsonl"), runId: "r-info", clock: FIXED_CLOCK });
+  await infolessLog.append({ actor: "runner", type: "session_started", payload: {} });
+  const infoless = await replayRun(infolessDir);
+  assert.equal(infoless.finalState, null);
+  assert.equal(infoless.errors[0].code, "ERR_REPLAY_SESSION_INFO");
+  assert.equal(infoless.eventCount, 1);
 });

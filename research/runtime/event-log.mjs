@@ -1,4 +1,4 @@
-import { appendFile, mkdir, readFile } from "node:fs/promises";
+import { appendFile, mkdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
 import { sha256Hex, stableStringify } from "./package-schema.mjs";
@@ -7,6 +7,10 @@ import { ResearchRuntimeError } from "./errors.mjs";
 export const EVENT_LOG_FILENAME = "events.jsonl";
 export const EVENT_SCHEMA_VERSION = 1;
 export const GENESIS_PREV_SHA = "0".repeat(64);
+// Mirrors MANIFEST_FILENAME in evidence-store.mjs. Duplicated as a literal to
+// avoid an import cycle (evidence-store imports this module); the frozen-run
+// regression test in tests/research-runtime.test.mjs trips if the two drift.
+const FROZEN_MANIFEST_FILENAME = "MANIFEST.sha256";
 
 const HEX64 = /^[a-f0-9]{64}$/;
 
@@ -133,6 +137,15 @@ function defaultClock() {
   return new Date().toISOString();
 }
 
+async function runDirIsFrozen(filePath) {
+  try {
+    await stat(path.join(path.dirname(filePath), FROZEN_MANIFEST_FILENAME));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Append-only JSONL event log with a tamper-evident hash chain. Every append
  * re-verifies the existing file first; a damaged or externally modified log
@@ -170,6 +183,16 @@ export class EventLog {
     const payload = event.payload === undefined ? {} : event.payload;
     if (!isPlainObject(payload)) {
       throw new ResearchRuntimeError("ERR_INVALID_EVENT_FIELD", "event payload must be an object", { type: event.type });
+    }
+
+    // Freeze is enforced on write, not just on read: once the run directory
+    // carries a manifest, appending would extend a frozen chain undetected.
+    // The hash chain alone is only tamper-evident; this makes it immutable.
+    if (await runDirIsFrozen(this.filePath)) {
+      throw new ResearchRuntimeError("ERR_RUN_FROZEN", "run is frozen; event appends are disabled", {
+        filePath: this.filePath,
+        manifest: FROZEN_MANIFEST_FILENAME,
+      });
     }
 
     const existing = await verifyEventChain(this.filePath, this.runId);

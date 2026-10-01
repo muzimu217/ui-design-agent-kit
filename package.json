@@ -28,6 +28,9 @@
     "paper:build": "node scripts/paper-build.mjs",
     "verify": "node scripts/verify.mjs",
     "test": "node scripts/run-tests.mjs",
+    "research:validate": "node scripts/research-instrument.mjs validate-package research/runtime/fixtures/study-package.json",
+    "research:dry-run": "node scripts/research-instrument.mjs dry-run research/runtime/fixtures/study-package.json --out \"$(mktemp -d /tmp/uak-research-dry-run.XXXXXX)\"",
+    "research:test": "node --test tests/research-runtime.test.mjs",
     "doctor": "node scripts/doctor.mjs",
     "doctor:mcp": "node scripts/doctor.mjs --connect",
     "a11y:sweep": "node scripts/a11y-sweep.mjs"

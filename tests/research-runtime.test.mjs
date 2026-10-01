@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -30,6 +31,7 @@ import {
 import { EventLog, verifyEventChain } from "../research/runtime/event-log.mjs";
 import { freezeRun, verifyRun, writeArtifact } from "../research/runtime/evidence-store.mjs";
 import { replayRun } from "../research/runtime/replay.mjs";
+import { runDryRun } from "../research/runtime/dry-run.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const fixturePath = path.join(ROOT, "research/runtime/fixtures/study-package.json");
@@ -741,4 +743,262 @@ test("replay records machine violations instead of throwing and stops folding", 
   assert.equal(infoless.finalState, null);
   assert.equal(infoless.errors[0].code, "ERR_REPLAY_SESSION_INFO");
   assert.equal(infoless.eventCount, 1);
+});
+
+// ---------------------------------------------------------------------------
+// Task 4: dry-run, freeze hardening, and CLI
+// ---------------------------------------------------------------------------
+
+const CLI_PATH = path.join(ROOT, "scripts", "research-instrument.mjs");
+const scenariosPath = path.join(ROOT, "research/runtime/fixtures/dry-run-scenarios.json");
+const HEX64 = /^[a-f0-9]{64}$/;
+
+async function readJson(target) {
+  return JSON.parse(await readFile(target, "utf8"));
+}
+
+async function loadFixture() {
+  const fixture = JSON.parse(await readFile(fixturePath, "utf8"));
+  return { fixture, studyHash: canonicalHash(fixture) };
+}
+
+test("dry-run produces distinct C0/C1 frozen runs that replay correctly", async (t) => {
+  const outDir = await makeTempDir("uak-dry-");
+  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const { fixture, studyHash } = await loadFixture();
+
+  const report = await runDryRun({ studyPackage: fixture, studyHash, outDir, clock: FIXED_CLOCK });
+  assert.deepEqual(report.conditions.sort(), ["C0", "C1"]);
+  assert.equal(report.runs.every((run) => run.finalState === "done"), true);
+  const c0 = await readJson(path.join(outDir, "C0", "MANIFEST.sha256"));
+  const c1 = await readJson(path.join(outDir, "C1", "MANIFEST.sha256"));
+  assert.notEqual(c0.metadata.eventLogHash, c1.metadata.eventLogHash);
+  assert.equal((await replayRun(path.join(outDir, "C0"))).gateDecisions.length, 0);
+  assert.equal((await replayRun(path.join(outDir, "C1"))).gateDecisions.length, 3);
+});
+
+test("dry-run writes the full output set per condition with the required gate profile", async (t) => {
+  const outDir = await makeTempDir("uak-dry-");
+  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const { fixture, studyHash } = await loadFixture();
+  await runDryRun({ studyPackage: fixture, studyHash, outDir, clock: FIXED_CLOCK });
+
+  for (const condition of ["C0", "C1"]) {
+    const runDir = path.join(outDir, condition);
+    for (const relative of [
+      "input/task-card.md",
+      "timing.json",
+      "session.json",
+      "events.jsonl",
+      "evidence/summary.md",
+      "MANIFEST.sha256",
+    ]) {
+      const content = await readFile(path.join(runDir, relative), "utf8");
+      assert.ok(content.length > 0, `${condition}/${relative} must be non-empty`);
+    }
+    const session = await readJson(path.join(runDir, "session.json"));
+    assert.equal(session.dryRun, true);
+    assert.equal(session.condition, condition);
+    assert.match(session.studyHash, HEX64);
+    assert.match(session.assignmentHash, HEX64);
+    const timing = await readJson(path.join(runDir, "timing.json"));
+    assert.ok(Array.isArray(timing.marks) && timing.marks.length > 0);
+    const summary = await readFile(path.join(runDir, "evidence", "summary.md"), "utf8");
+    assert.match(summary, /DRY-RUN/);
+    assert.match(summary, /not participant evidence/);
+  }
+
+  const c1Lines = (await readFile(path.join(outDir, "C1", "events.jsonl"), "utf8")).trim().split("\n");
+  const gateDecisions = c1Lines.map((line) => JSON.parse(line)).filter((event) => event.type === "gate_decision");
+  assert.deepEqual(
+    gateDecisions.map(({ actor, payload }) => `${actor}:${payload.gate}:${payload.decision}`),
+    ["user:GATE1:approve", "user:GATE2:approve", "user:GATE3:approve"],
+  );
+
+  const c0Lines = (await readFile(path.join(outDir, "C0", "events.jsonl"), "utf8")).trim().split("\n");
+  assert.equal(c0Lines.some((line) => line.includes("gate_decision")), false);
+});
+
+test("dry-run is deterministic under a fixed clock and refuses non-empty output directories", async (t) => {
+  const first = await makeTempDir("uak-dry-");
+  const second = await makeTempDir("uak-dry-");
+  t.after(() => rm(first, { recursive: true, force: true }));
+  t.after(() => rm(second, { recursive: true, force: true }));
+  const { fixture, studyHash } = await loadFixture();
+
+  const one = await runDryRun({ studyPackage: fixture, studyHash, outDir: first, clock: FIXED_CLOCK });
+  const two = await runDryRun({ studyPackage: fixture, studyHash, outDir: second, clock: FIXED_CLOCK });
+  assert.equal(one.assignmentHash, two.assignmentHash);
+  for (const condition of ["C0", "C1"]) {
+    assert.equal(
+      await readFile(path.join(first, condition, "MANIFEST.sha256"), "utf8"),
+      await readFile(path.join(second, condition, "MANIFEST.sha256"), "utf8"),
+    );
+  }
+
+  await writeFile(path.join(first, "keep.txt"), "operator file");
+  await assert.rejects(
+    () => runDryRun({ studyPackage: fixture, studyHash, outDir: first, clock: FIXED_CLOCK }),
+    /ERR_OUTPUT_DIR_NOT_EMPTY/,
+  );
+  assert.equal(await readFile(path.join(first, "keep.txt"), "utf8"), "operator file");
+});
+
+test("dry-run rejects study hash mismatches and undeclared scenario events", async (t) => {
+  const outDir = await makeTempDir("uak-dry-");
+  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const { fixture, studyHash } = await loadFixture();
+
+  await assert.rejects(
+    () => runDryRun({ studyPackage: fixture, studyHash: "0".repeat(64), outDir, clock: FIXED_CLOCK }),
+    /ERR_STUDY_HASH_MISMATCH/,
+  );
+  await assert.rejects(
+    () => runDryRun({ studyPackage: { ...fixture, frozen: false }, studyHash, outDir, clock: FIXED_CLOCK }),
+    /ERR_INVALID_STUDY_PACKAGE/,
+  );
+
+  const scenarios = JSON.parse(await readFile(scenariosPath, "utf8"));
+  scenarios.runs[0].events.push({ actor: "runner", type: "undeclared_event_type", payload: {} });
+  await assert.rejects(
+    () => runDryRun({ studyPackage: fixture, studyHash, outDir, clock: FIXED_CLOCK, scenarios }),
+    /ERR_UNDECLARED_EVENT_TYPE/,
+  );
+});
+
+test("tampering with a frozen dry-run artifact fails verifyRun", async (t) => {
+  const outDir = await makeTempDir("uak-dry-");
+  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const { fixture, studyHash } = await loadFixture();
+  await runDryRun({ studyPackage: fixture, studyHash, outDir, clock: FIXED_CLOCK });
+
+  const runDir = path.join(outDir, "C0");
+  const cardPath = path.join(runDir, "input", "task-card.md");
+  const originalCard = await readFile(cardPath, "utf8");
+  await writeFile(cardPath, `${originalCard}\ntampered`);
+  const tampered = await verifyRun(runDir);
+  assert.equal(tampered.ok, false);
+  assert.ok(tampered.errors.some((error) => error.code === "ERR_FILE_HASH_MISMATCH"));
+
+  await writeFile(cardPath, originalCard);
+  const eventsPath = path.join(runDir, "events.jsonl");
+  const lines = (await readFile(eventsPath, "utf8")).trim().split("\n");
+  lines[1] = lines[1].replace("timer_started", "timer_vanished");
+  await writeFile(eventsPath, `${lines.join("\n")}\n`);
+  const broken = await verifyRun(runDir);
+  assert.equal(broken.ok, false);
+  assert.ok(broken.errors.some((error) => error.code === "ERR_EVENT_CHAIN_BROKEN"));
+  assert.ok(broken.errors.some((error) => error.code === "ERR_FILE_HASH_MISMATCH"));
+});
+
+test("event log append refuses frozen runs and leaves the log untouched", async (t) => {
+  const runDir = await makeTempDir("uak-run-");
+  t.after(() => rm(runDir, { recursive: true, force: true }));
+  const eventsPath = path.join(runDir, "events.jsonl");
+  const log = new EventLog({ filePath: eventsPath, runId: "r-frozen", clock: FIXED_CLOCK });
+  await log.append({ actor: "runner", type: "session_started", payload: { condition: "C0", participantId: "p01", taskId: "T1" } });
+  await log.append({ actor: "runner", type: "execution_completed", payload: {} });
+  await log.append({ actor: "runner", type: "session_ended", payload: {} });
+  const before = await readFile(eventsPath, "utf8");
+
+  await freezeRun(runDir, {
+    studyHash: "1".repeat(64),
+    assignmentHash: "2".repeat(64),
+    eventLogHash: sha256Hex(before),
+  });
+
+  await assert.rejects(
+    () => log.append({ actor: "runner", type: "session_ended", payload: {} }),
+    (error) => {
+      assert.ok(error instanceof ResearchRuntimeError);
+      assert.equal(error.code, "ERR_RUN_FROZEN");
+      return true;
+    },
+  );
+  assert.equal(await readFile(eventsPath, "utf8"), before);
+});
+
+test("CLI validate-package exits zero on the fixture and one on invalid input", async (t) => {
+  const dir = await makeTempDir("uak-cli-");
+  t.after(() => rm(dir, { recursive: true, force: true }));
+
+  const good = spawnSync(process.execPath, [CLI_PATH, "validate-package", fixturePath], { encoding: "utf8" });
+  assert.equal(good.status, 0, good.stderr);
+  const goodJson = JSON.parse(good.stdout);
+  assert.equal(goodJson.ok, true);
+  assert.equal(goodJson.studyId, "uak-formative-v1");
+  assert.match(goodJson.hash, HEX64);
+
+  const badPackagePath = path.join(dir, "bad-package.json");
+  await writeFile(badPackagePath, JSON.stringify({ ...minimalPackage, frozen: false }));
+  const bad = spawnSync(process.execPath, [CLI_PATH, "validate-package", badPackagePath], { encoding: "utf8" });
+  assert.equal(bad.status, 1);
+  const badJson = JSON.parse(bad.stdout);
+  assert.equal(badJson.ok, false);
+  assert.ok(badJson.errors.some((error) => error.code === "ERR_PACKAGE_NOT_FROZEN"));
+
+  const missing = spawnSync(process.execPath, [CLI_PATH, "validate-package", path.join(dir, "nope.json")], { encoding: "utf8" });
+  assert.equal(missing.status, 1);
+  assert.match(missing.stderr, /ERR_CLI_INPUT/);
+});
+
+test("CLI assign emits a balanced deterministic assignment and rejects unbalanced rosters", async (t) => {
+  const dir = await makeTempDir("uak-cli-");
+  t.after(() => rm(dir, { recursive: true, force: true }));
+  const participantsPath = path.join(dir, "participants.json");
+  const tasksPath = path.join(dir, "tasks.json");
+  await writeFile(participantsPath, JSON.stringify(["p02", "p01"]));
+  await writeFile(tasksPath, JSON.stringify({ taskIds: ["T1", "T2"] }));
+
+  const args = [CLI_PATH, "assign", fixturePath, participantsPath, tasksPath, "--seed", "demo"];
+  const first = spawnSync(process.execPath, args, { encoding: "utf8" });
+  assert.equal(first.status, 0, first.stderr);
+  const firstJson = JSON.parse(first.stdout);
+  assert.equal(firstJson.ok, true);
+  assert.equal(firstJson.balanced, true);
+  assert.equal(firstJson.assignment.rows.length, 4);
+  assert.match(firstJson.assignment.assignmentHash, HEX64);
+
+  const second = spawnSync(process.execPath, args, { encoding: "utf8" });
+  assert.equal(JSON.parse(second.stdout).assignment.assignmentHash, firstJson.assignment.assignmentHash);
+
+  const oddPath = path.join(dir, "odd.json");
+  await writeFile(oddPath, JSON.stringify(["p01"]));
+  const odd = spawnSync(
+    process.execPath,
+    [CLI_PATH, "assign", fixturePath, oddPath, tasksPath, "--seed", "demo"],
+    { encoding: "utf8" },
+  );
+  assert.equal(odd.status, 1);
+  assert.match(odd.stderr, /ERR_UNBALANCED_ASSIGNMENT/);
+});
+
+test("CLI dry-run freezes both conditions, replays, verifies, and refuses non-empty output", async (t) => {
+  const outDir = await makeTempDir("uak-cli-dry-");
+  t.after(() => rm(outDir, { recursive: true, force: true }));
+
+  const dry = spawnSync(process.execPath, [CLI_PATH, "dry-run", fixturePath, "--out", outDir], { encoding: "utf8" });
+  assert.equal(dry.status, 0, dry.stderr);
+  const report = JSON.parse(dry.stdout);
+  assert.equal(report.ok, true);
+  assert.equal(report.dryRun, true);
+  assert.deepEqual(report.conditions, ["C0", "C1"]);
+  assert.equal(report.runs.every((run) => run.finalState === "done" && run.frozen && run.verifyOk), true);
+
+  for (const condition of ["C0", "C1"]) {
+    const verify = spawnSync(process.execPath, [CLI_PATH, "verify", path.join(outDir, condition)], { encoding: "utf8" });
+    assert.equal(verify.status, 0, verify.stderr);
+    assert.equal(JSON.parse(verify.stdout).ok, true);
+  }
+
+  const replay = spawnSync(process.execPath, [CLI_PATH, "replay", path.join(outDir, "C1")], { encoding: "utf8" });
+  assert.equal(replay.status, 0, replay.stderr);
+  const replayed = JSON.parse(replay.stdout);
+  assert.equal(replayed.ok, true);
+  assert.equal(replayed.finalState, "done");
+  assert.equal(replayed.gateDecisions.length, 3);
+
+  const again = spawnSync(process.execPath, [CLI_PATH, "dry-run", fixturePath, "--out", outDir], { encoding: "utf8" });
+  assert.equal(again.status, 1);
+  assert.match(again.stderr, /ERR_OUTPUT_DIR_NOT_EMPTY/);
 });

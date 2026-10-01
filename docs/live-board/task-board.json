@@ -12,11 +12,11 @@
   "activeTask": {
     "id": "R149-01",
     "name": "评测语料扩量（≥40/71，英文渠道发布前置）",
-    "status": "99%（70/71）· 连续 54 批 100——扩量实质收尾",
+    "status": "收尾：done-pending-verify（70/71 99%，批次一至五十四连续 100）",
     "startedAt": "2026-09-28",
-    "currentGate": "批五十四已入账；唯一未录=vue-video（用户裁决挂起），扩量自然收尾",
-    "lastArtifact": "批次五十四 data-dense-standards-applied 100 分（数据密集标准：12 列 300 行台账/粘性表头/列宽稳定/三通道状态/空态行动邀请/骨架屏/批量归档逐条报告，实机断言×10）",
-    "next": "R149-01 收尾报告（唯一余项=挂起中的 vue-video，等用户产品重做方向）；R221-01 Remotion 升级执行批待排"
+    "currentGate": "收尾报告已出（r236 §二）；待用户复核即 verified",
+    "lastArtifact": "唯一未录=vue-video-embed-delivery（用户 09-29 裁决挂起）；13 个新族群入册",
+    "next": "R221-01 Remotion 升级执行批；R194-01 平面专家续批；uak-visual-critique 手册中文化；第 21 批审计结论下轮回填"
   },
   "gates": [
     {
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "09-30 19:3x",
+      "event": "R149-01 收尾报告：评测扩量 done-pending-verify（70/71 99%，批次一至五十四连续 100，唯一未录=挂起中的 vue-video）；B 站晚间漫游=国庆节点霸榜观察",
+      "type": "milestone"
+    },
+    {
       "time": "09-30 18:3x",
       "event": "批次五十四入账：data-dense-standards-applied 100 分（数据密集标准——12 列 300 行/粘性表头/列宽稳定/三通道状态/骨架屏/批量逐条报告，实机断言×10）——70/71 99%，扩量实质收尾",
       "type": "eval"
@@ -106,11 +111,6 @@
     {
       "time": "09-30 13:2x",
       "event": "批次四十九入账：baseline-lookup-boundary 100 分（基线查找边界——一次定向抓取 named Habitica unverified-partial+过门后实机校验承诺）——65/71 92%",
-      "type": "eval"
-    },
-    {
-      "time": "09-30 12:2x",
-      "event": "批次四十八入账：copy-proven-over-improvise 100 分（抄 proven 纪律——Linear Settings named baseline+在仓检视记录非凭记忆+五条拟抄关系+边界许可依据）——64/71 90%",
       "type": "eval"
     }
   ]

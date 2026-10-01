@@ -67,7 +67,6 @@ const srcPath = new URL('../fixture/index.html', import.meta.url);
 const src = await fs.readFile(srcPath, 'utf8');
 const tokenBlocks = src.match(/:root[^{]*\{[^}]*\}/gs) || [];
 const srcWithoutTokens = tokenBlocks.reduce((acc, block) => acc.replace(block, ''), src);
-const srcHexHits = (srcWithoutTokens.match(/#[0-9a-fA-F]{3,8}\b/g) || []).filter((h) => !/^#\d\d\d$/.test(h) || true);
 const srcHexHits2 = (srcWithoutTokens.match(/#[0-9a-fA-F]{3,8}\b/g) || []);
 check('源文件组件区零硬编码 hex（token 块外）', srcHexHits2.length === 0, `命中 ${srcHexHits2.length}: ${srcHexHits2.slice(0,5).join(',')}`);
 
@@ -89,6 +88,6 @@ await page.screenshot({ path: new URL('../evidence/dark-full.png', import.meta.u
 check('console clean', errors.length === 0, `${errors.length}`);
 
 await browser.close();
-(await import('node:fs/promises')).writeFile(new URL('../evidence/dark-verify-result.txt', import.meta.url), out.join('\n'));
+// 证据落盘走 stdout 重定向（教训 17）：node dark-verify.mjs > evidence/dark-verify-result.txt 2>&1
 console.log(`\nTOTAL FAILS: ${fails}`);
 process.exit(fails === 0 ? 0 : 1);

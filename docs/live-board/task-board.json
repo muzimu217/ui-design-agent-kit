@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-01 16:3x",
+      "event": "缺口 1 落地：大众化表述对照表 docs/uak-mass-audience-mapping.md——8 组核心能力映射+7 条 B 站推广标题翻译（「拯救丑 UI」「5 种丑法」「54 次全过」等），推广 playbook 可直接引用",
+      "type": "strategy"
+    },
+    {
       "time": "10-02 01:4x",
       "event": "需求→能力→缺口→路径知识资产落地 docs/uak-demand-capability-gap-roadmap.md——七项需求信号/十一项能力映射/四个缺口/近期中期远期路径，持续沉淀机制建立",
       "type": "strategy"
@@ -107,11 +112,6 @@
       "time": "09-30 19:3x",
       "event": "R149-01 收尾报告：评测扩量 done-pending-verify（70/71 99%，批次一至五十四连续 100，唯一未录=挂起中的 vue-video）；B 站晚间漫游=国庆节点霸榜观察",
       "type": "milestone"
-    },
-    {
-      "time": "09-30 18:3x",
-      "event": "批次五十四入账：data-dense-standards-applied 100 分（数据密集标准——12 列 300 行/粘性表头/列宽稳定/三通道状态/骨架屏/批量逐条报告，实机断言×10）——70/71 99%，扩量实质收尾",
-      "type": "eval"
     }
   ]
 }

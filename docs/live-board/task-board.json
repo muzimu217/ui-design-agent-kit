@@ -10,13 +10,13 @@
     "audits": "24 批零上下文回归审计"
   },
   "activeTask": {
-    "id": "R221-01",
-    "name": "Remotion 4.0.370→4.0.531 升级执行批",
-    "status": "done-pending-verify（6 技能重 vendoring 至上游 HEAD a9b199e，内容 4.0.531 语义）",
+    "id": "R239-01",
+    "name": "Remotion 上游 6 新技能收纳评估",
+    "status": "open——评估单已出，一句话即可裁决",
     "startedAt": "2026-09-30",
-    "currentGate": "执行完成；待下轮复核即 verified",
-    "lastArtifact": "6 技能 rsync 镜像+frontmatter 逐个规范化+树哈希复验（残差仅剩自有适配）；锁/NOTICES 同笔",
-    "next": "新 6 技能（captions/interactivity/maps/multimedia/saas/upgrade）评估单待用户裁决；R149-01 done-pending-verify 等用户复核"
+    "currentGate": "待用户裁决收纳范围",
+    "lastArtifact": "六技能体量/content 摸清：captions 28K/387行(视频刚需建议收)、interactivity 28K/532行(交互契合建议收)、maps 552K/1900行(小众建议不收)、multimedia 24K/214行(待定)、saas 24K/154行(范围外)、upgrade 12K/31行(低价值)",
+    "next": "用户回「收前两个」「全收」或「不收」即可"
   },
   "gates": [
     {
@@ -64,6 +64,16 @@
   ],
   "recentFlow": [
     {
+      "time": "10-02 01:3x",
+      "event": "B 站 AI UI 内容生态调研落地 docs/bilibili-ai-ui-content-landscape.md——竞品地图+「拯救丑设计」对标赛道验证+工作流包装缺失发现+五条可行动推广策略",
+      "type": "research"
+    },
+    {
+      "time": "10-01 15:2x",
+      "event": "R239-01 评估单出：六新技能 content/size 摸清，建议收 captions+interactivity（+56K），maps/saas/upgrade 不收，multimedia 待定——等用户一句话",
+      "type": "eval"
+    },
+    {
       "time": "10-02 01:2x",
       "event": "第 24 批审计回填：并行会话 research 三笔（共享常量+fail-closed/session runner+assignment store/console+verifyRun legality）=CLEAN 5/5（160/160 测试实跑/四大机制真实现含 fail-closed 只容忍 ENOENT/verifyRun 双轴分离/CLI spawnSync 实调/零台账触碰）；非阻塞观察=evidence-store pathExists fail-open 系前批遗留待后续收口",
       "type": "audit"
@@ -102,16 +112,6 @@
       "time": "09-30 17:4x",
       "event": "第 20 批审计 verdict 不 CLEAN→三项当场整改：copy/dark 结果证据 0 字节重生成（教训定稿：断言脚本结果落盘一律 stdout 重定向，脚本内 writeFile 必产 0 字节）、§4.1 家族行 3 处切坏星号清零、文案夹具注释反模式字面清零；整改笔 196ac7f/9be2bb1 已推已上主干",
       "type": "audit"
-    },
-    {
-      "time": "09-30 17:3x",
-      "event": "批次五十三入账：dark-surface-tokens-applied 100 分（暗面 token 纪律——亮度阶梯/非纯黑白负路径/rgba 白描边/三档文字/强调色重校准/组件零硬编码 hex，实机断言×8）——69/71 97%",
-      "type": "eval"
-    },
-    {
-      "time": "09-30 16:3x",
-      "event": "批次五十二入账：microfix-channel-applied 100 分（微修通道纪律——恰好三处一轮收口+两步 git 改前改后+对比度实算三档取舍）——68/71 96%",
-      "type": "eval"
     }
   ]
 }

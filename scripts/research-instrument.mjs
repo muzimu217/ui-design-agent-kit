@@ -20,6 +20,7 @@ import { verifyRun } from "../research/runtime/evidence-store.mjs";
 import { replayRun } from "../research/runtime/replay.mjs";
 import { runDryRun } from "../research/runtime/dry-run.mjs";
 import { startSession } from "../research/runtime/session-runner.mjs";
+import { scanRuns } from "../research/runtime/researcher-console.mjs";
 
 const USAGE = `usage:
   research-instrument validate-package <package.json>
@@ -28,7 +29,8 @@ const USAGE = `usage:
       --participant <id> --task <id> --out <dir> [--decisions approve,approve,approve]
   research-instrument dry-run <package.json> --out <dir>
   research-instrument replay <run-dir>
-  research-instrument verify <run-dir>`;
+  research-instrument verify <run-dir>
+  research-instrument console <runs-root>`;
 
 function usageError(message) {
   return new ResearchRuntimeError("ERR_CLI_USAGE", message, { usage: USAGE });
@@ -290,8 +292,26 @@ async function cmdReplay(positional) {
 async function cmdVerify(positional) {
   const [runDir] = expectPositional(positional, 1, "verify");
   const result = await verifyRun(runDir);
-  print({ ok: result.ok, command: "verify", runDir, errors: result.errors, manifest: result.manifest ?? null });
+  print({
+    ok: result.ok,
+    command: "verify",
+    runDir,
+    errors: result.errors,
+    legality: result.legality,
+    manifest: result.manifest ?? null,
+  });
   if (!result.ok) process.exitCode = 1;
+}
+
+// Read-only sweep over every frozen run under a root. One JSON summary; the
+// exit code reflects the worst run (any failed integrity/legality/replay
+// verdict fails the command), never the mere absence of runs.
+async function cmdConsole(positional) {
+  const [runsRoot] = expectPositional(positional, 1, "console");
+  const { runs } = await scanRuns(runsRoot);
+  const ok = runs.every((run) => run.integrityOk && run.legalityOk && run.replayOk);
+  print({ ok, command: "console", runsRoot, runs });
+  if (!ok) process.exitCode = 1;
 }
 
 async function main() {
@@ -315,6 +335,9 @@ async function main() {
       return;
     case "verify":
       await cmdVerify(positional);
+      return;
+    case "console":
+      await cmdConsole(positional);
       return;
     case undefined:
       throw usageError("missing command");

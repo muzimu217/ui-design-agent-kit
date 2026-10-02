@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readdir, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -40,6 +40,7 @@ import {
 import { STATE_CHANGING_EVENT_TYPES, replayRun } from "../research/runtime/replay.mjs";
 import { runDryRun } from "../research/runtime/dry-run.mjs";
 import { startSession } from "../research/runtime/session-runner.mjs";
+import { scanRuns } from "../research/runtime/researcher-console.mjs";
 import {
   listAssignments,
   loadAssignment,
@@ -601,7 +602,10 @@ test("freeze verifies files, blocks mutation, and replay does not alter the run"
   const { studyHash, assignmentHash, eventLogHash } = await researchMetadata(eventsPath);
   const manifest = await freezeRun(runDir, { studyHash, assignmentHash, eventLogHash });
   assert.deepEqual(manifest.files.map((file) => file.path), ["events.jsonl", "input/task-card.md"]);
-  assert.equal((await verifyRun(runDir)).ok, true);
+  const verified = await verifyRun(runDir);
+  assert.equal(verified.ok, true);
+  assert.equal(verified.legality.ok, true);
+  assert.deepEqual(verified.legality.errors, []);
 
   await assert.rejects(() => writeArtifact(runDir, "new.txt", "x"), /ERR_RUN_FROZEN/);
 
@@ -640,6 +644,10 @@ test("verifyRun reports missing manifests, tampered files, and unlisted artifact
   const missing = await verifyRun(emptyDir);
   assert.equal(missing.ok, false);
   assert.equal(missing.errors[0].code, "ERR_MANIFEST_MISSING");
+  // Legality is reported on every output shape, independently of integrity.
+  assert.ok(missing.legality && typeof missing.legality === "object");
+  assert.equal(missing.legality.ok, true);
+  assert.deepEqual(missing.legality.errors, []);
 
   const { runDir, eventsPath } = await seedRunDir();
   t.after(() => rm(runDir, { recursive: true, force: true }));
@@ -650,6 +658,9 @@ test("verifyRun reports missing manifests, tampered files, and unlisted artifact
   const tampered = await verifyRun(runDir);
   assert.equal(tampered.ok, false);
   assert.ok(tampered.errors.some((error) => error.code === "ERR_FILE_HASH_MISMATCH"));
+  // A tampered artifact taints integrity but the (intact) event chain stays
+  // legal — the two verdicts are independent axes.
+  assert.equal(tampered.legality.ok, true);
 
   await writeFile(artifactPath, "T1");
   await writeFile(path.join(runDir, "unlisted.txt"), "extra");
@@ -663,6 +674,9 @@ test("verifyRun reports missing manifests, tampered files, and unlisted artifact
   const brokenChain = await verifyRun(runDir);
   assert.ok(brokenChain.errors.some((error) => error.code === "ERR_EVENT_CHAIN_BROKEN"));
   assert.ok(brokenChain.errors.some((error) => error.code === "ERR_FILE_HASH_MISMATCH"));
+  // An unverifiable chain cannot establish legality either — fail closed.
+  assert.equal(brokenChain.legality.ok, false);
+  assert.ok(brokenChain.legality.errors.length > 0);
 });
 
 test("replay folds gate decisions, skips informational events, and never writes", async (t) => {
@@ -892,6 +906,8 @@ test("tampering with a frozen dry-run artifact fails verifyRun", async (t) => {
   const tampered = await verifyRun(runDir);
   assert.equal(tampered.ok, false);
   assert.ok(tampered.errors.some((error) => error.code === "ERR_FILE_HASH_MISMATCH"));
+  // The untouched event chain remains legal even while integrity fails.
+  assert.equal(tampered.legality.ok, true);
 
   await writeFile(cardPath, originalCard);
   const eventsPath = path.join(runDir, "events.jsonl");
@@ -902,6 +918,7 @@ test("tampering with a frozen dry-run artifact fails verifyRun", async (t) => {
   assert.equal(broken.ok, false);
   assert.ok(broken.errors.some((error) => error.code === "ERR_EVENT_CHAIN_BROKEN"));
   assert.ok(broken.errors.some((error) => error.code === "ERR_FILE_HASH_MISMATCH"));
+  assert.equal(broken.legality.ok, false);
 });
 
 test("event log append refuses frozen runs and leaves the log untouched", async (t) => {
@@ -1246,7 +1263,9 @@ test("session runner drives a C1 session from intent to a frozen, self-checked d
     replay.gateDecisions.map(({ gate, decision }) => `${gate}:${decision}`),
     ["GATE1:approve", "GATE2:approve", "GATE3:approve"],
   );
-  assert.equal((await verifyRun(runDir)).ok, true);
+  const verified = await verifyRun(runDir);
+  assert.equal(verified.ok, true);
+  assert.equal(verified.legality.ok, true);
   assert.ok(existsSync(path.join(runDir, "MANIFEST.sha256")));
 
   const events = await readEventTypes(runDir);
@@ -1348,7 +1367,9 @@ test("session runner re-enters intent drafting after a GATE1 reject and finishes
 
   const events = await readEventTypes(runDir);
   assert.equal(events.filter(({ type }) => type === "intent_updated").length, 2);
-  assert.equal((await verifyRun(runDir)).ok, true);
+  const reverified = await verifyRun(runDir);
+  assert.equal(reverified.ok, true);
+  assert.equal(reverified.legality.ok, true);
 });
 
 test("session runner refuses reasonless and unknown gate decisions before they are logged", async (t) => {
@@ -1427,7 +1448,9 @@ test("session runner drives C0 gate-free and refuses scripted decisions", async 
   const replay = await replayRun(runDir);
   assert.equal(replay.finalState, "done");
   assert.equal(replay.gateDecisions.length, 0);
-  assert.equal((await verifyRun(runDir)).ok, true);
+  const c0Verified = await verifyRun(runDir);
+  assert.equal(c0Verified.ok, true);
+  assert.equal(c0Verified.legality.ok, true);
 
   const card = await readFile(path.join(runDir, "input", "task-card.md"), "utf8");
   assert.match(card, /任务正文待 P2-1 冻结/);
@@ -1674,5 +1697,141 @@ test("CLI session enforces assignment, the C0 decision ban, and non-interactive 
   assert.equal(busy.status, 1);
   assert.match(busy.stderr, /ERR_OUTPUT_DIR_NOT_EMPTY/);
   assert.equal(await readFile(path.join(busyDir, "keep.txt"), "utf8"), "operator file");
+});
+
+// ---------------------------------------------------------------------------
+// Batch 2 · Task 3: verifyRun legality, researcher console, CLI console
+// ---------------------------------------------------------------------------
+
+test("verifyRun separates integrity from legality on a forged valid-chain gate decision", async (t) => {
+  const runDir = await makeTempDir("uak-forge-");
+  t.after(() => rm(runDir, { recursive: true, force: true }));
+  const eventsPath = path.join(runDir, "events.jsonl");
+
+  // The event log only enforces structure, so an agent-emitted gate_decision
+  // is appendable and chains perfectly — exactly what a forger would produce.
+  const log = new EventLog({ filePath: eventsPath, runId: "p01-T2-C1", clock: FIXED_CLOCK });
+  await log.append({ actor: "runner", type: "session_started", payload: { condition: "C1", participantId: "p01", taskId: "T2" } });
+  await log.append({ actor: "agent", type: "intent_updated", payload: { path: "intent/card.md" } });
+  await log.append({ actor: "agent", type: "gate_request", payload: { gate: "GATE1" } });
+  await log.append({ actor: "agent", type: "gate_decision", payload: { gate: "GATE1", decision: "approve" } });
+  await writeArtifact(runDir, "input/task-card.md", "T2");
+
+  // Freeze accepts the intact chain: tamper-evident is not forgery-proof.
+  await freezeRun(runDir, await researchMetadata(eventsPath));
+
+  const result = await verifyRun(runDir);
+  assert.equal(result.ok, true, "integrity must stay green on an unmodified forged run");
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.legality.ok, false);
+  assert.equal(result.legality.errors.length, 1);
+  const [legalityError] = result.legality.errors;
+  assert.equal(legalityError.seq, 3);
+  assert.equal(legalityError.code, "ERR_ACTOR_NOT_ALLOWED");
+  assert.match(legalityError.message, /gate_decision/);
+
+  // Replay (the runtime's own fold) reaches the same verdict at the same seq.
+  const replay = await replayRun(runDir);
+  assert.equal(replay.errors[0].code, "ERR_ACTOR_NOT_ALLOWED");
+  assert.equal(replay.errors[0].seq, 3);
+});
+
+test("scanRuns inventories dry-run runs read-only, skips symlinks, and sorts deterministically", async (t) => {
+  const outDir = await makeTempDir("uak-console-");
+  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const { fixture, studyHash } = await loadFixture();
+  await runDryRun({ studyPackage: fixture, studyHash, outDir, clock: FIXED_CLOCK });
+
+  // Clean C0/C1 runs are legal as well as intact.
+  for (const condition of ["C0", "C1"]) {
+    const verified = await verifyRun(path.join(outDir, condition));
+    assert.equal(verified.ok, true, `${condition} integrity`);
+    assert.equal(verified.legality.ok, true, `${condition} legality`);
+  }
+
+  // A symlinked run directory must never enter the scan (nor be followed).
+  await symlink(path.join(outDir, "C1"), path.join(outDir, "linked-run"), "dir");
+  // Non-run directories and loose files are invisible to the scanner.
+  await writeFile(path.join(outDir, "operator-notes.txt"), "loose file");
+  await mkdir(path.join(outDir, "not-a-run"), { recursive: true });
+
+  // Deterministic byte-level snapshot of the whole tree, used to prove the
+  // scan is strictly read-only.
+  const hashTree = async (root, prefix = "") => {
+    const entries = (await readdir(root, { withFileTypes: true })).filter((entry) => !entry.isSymbolicLink());
+    const digests = [];
+    for (const entry of entries.sort((a, b) => (a.name < b.name ? -1 : 1))) {
+      const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
+      if (entry.isDirectory()) {
+        digests.push(...(await hashTree(path.join(root, entry.name), relative)));
+      } else if (entry.isFile()) {
+        digests.push(`${relative} ${sha256Hex(await readFile(path.join(root, entry.name)))}`);
+      }
+    }
+    return digests;
+  };
+  const before = await hashTree(outDir);
+
+  const scan = await scanRuns(outDir);
+  assert.ok(scan && Array.isArray(scan.runs));
+  assert.deepEqual(scan.runs.map((run) => path.basename(run.runDir)), ["C0", "C1"]);
+
+  const [c0, c1] = scan.runs;
+  assert.equal(c0.condition, "C0");
+  assert.equal(c0.finalState, "done");
+  assert.equal(c0.eventCount > 0, true);
+  assert.equal(c0.gateDecisionCount, 0);
+  assert.equal(c0.integrityOk, true);
+  assert.equal(c0.legalityOk, true);
+  assert.equal(c0.replayOk, true);
+  assert.deepEqual(c0.errors, []);
+
+  assert.equal(c1.condition, "C1");
+  assert.equal(c1.finalState, "done");
+  assert.equal(c1.gateDecisionCount, 3);
+  assert.equal(c1.integrityOk, true);
+  assert.equal(c1.legalityOk, true);
+  assert.equal(c1.replayOk, true);
+  assert.deepEqual(c1.errors, []);
+  assert.equal(c1.eventCount, (await replayRun(path.join(outDir, "C1"))).eventCount);
+
+  const after = await hashTree(outDir);
+  assert.deepEqual(after, before);
+
+  const absent = await makeTempDir("uak-console-absent-");
+  t.after(() => rm(absent, { recursive: true, force: true }));
+  await rm(absent, { recursive: true, force: true });
+  assert.deepEqual(await scanRuns(absent).then((report) => report.runs), []);
+});
+
+test("CLI console prints one JSON summary and exits 1 when a run fails a check", async (t) => {
+  const outDir = await makeTempDir("uak-cli-console-");
+  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const { fixture, studyHash } = await loadFixture();
+  await runDryRun({ studyPackage: fixture, studyHash, outDir, clock: FIXED_CLOCK });
+
+  const clean = spawnSync(process.execPath, [CLI_PATH, "console", outDir], { encoding: "utf8" });
+  assert.equal(clean.status, 0, clean.stderr);
+  const cleanJson = JSON.parse(clean.stdout);
+  assert.equal(cleanJson.ok, true);
+  assert.equal(cleanJson.command, "console");
+  assert.equal(cleanJson.runs.length, 2);
+  assert.ok(cleanJson.runs.every((run) => run.integrityOk && run.legalityOk && run.replayOk));
+
+  const cardPath = path.join(outDir, "C0", "input", "task-card.md");
+  await writeFile(cardPath, `${await readFile(cardPath, "utf8")}\ntampered`);
+
+  const tampered = spawnSync(process.execPath, [CLI_PATH, "console", outDir], { encoding: "utf8" });
+  assert.equal(tampered.status, 1);
+  const tamperedJson = JSON.parse(tampered.stdout);
+  assert.equal(tamperedJson.ok, false);
+  const c0 = tamperedJson.runs.find((run) => run.condition === "C0");
+  const c1 = tamperedJson.runs.find((run) => run.condition === "C1");
+  assert.equal(c0.integrityOk, false);
+  assert.equal(c0.legalityOk, true);
+  assert.ok(c0.errors.some((error) => error.code === "ERR_FILE_HASH_MISMATCH"));
+  assert.equal(c1.integrityOk, true);
+  assert.equal(c1.legalityOk, true);
+  assert.equal(c1.replayOk, true);
 });
 

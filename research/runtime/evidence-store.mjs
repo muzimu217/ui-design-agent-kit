@@ -1,10 +1,12 @@
 import { mkdir, readdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import { sha256Hex, stableStringify } from "./package-schema.mjs";
+import { sha256Hex, stableStringify, CONDITIONS } from "./package-schema.mjs";
 import { ResearchRuntimeError } from "./errors.mjs";
 import { MANIFEST_FILENAME } from "./constants.mjs";
 import { EVENT_LOG_FILENAME, verifyEventChain } from "./event-log.mjs";
+import { STATE_CHANGING_EVENT_TYPES } from "./replay.mjs";
+import { createSessionState, transition } from "./state-machine.mjs";
 
 // Shared leaf constant; re-exported so existing importers (dry-run, tooling)
 // keep one canonical source and the filename cannot drift again.
@@ -139,6 +141,69 @@ async function readEventLog(runDir) {
 }
 
 /**
+ * Fold a run's event chain through the shared state machine — the exact fold
+ * replayRun performs — and report illegal transitions or actors with their
+ * seq. This is the machine expression of "tamper-evident ≠ forgery-proof":
+ * the hash chain proves nothing was edited after the fact, but nothing stops
+ * a forger from fabricating a perfectly chained event the state machine would
+ * never allow (e.g. an agent-emitted gate_decision). Integrity ok with
+ * legality not ok is therefore a valid output combination.
+ *
+ * An unverifiable chain fails closed: legality cannot be claimed for events
+ * that cannot be established. A missing event log folds zero events and is
+ * vacuously legal (integrity still fails on its own axis).
+ */
+async function foldLegality(eventsPath) {
+  const chain = await verifyEventChain(eventsPath);
+  if (!chain.ok) {
+    return {
+      ok: false,
+      errors: [{ code: chain.error.code, line: chain.error.line, message: chain.error.message }],
+    };
+  }
+
+  const errors = [];
+  let state = null;
+
+  for (const event of chain.events) {
+    if (!STATE_CHANGING_EVENT_TYPES.has(event.type)) continue;
+
+    if (state === null) {
+      const session = event.type === "session_started" ? event.payload : null;
+      if (!isPlainObject(session) || !CONDITIONS.includes(session.condition) ||
+        !isNonEmptyString(session.participantId) || !isNonEmptyString(session.taskId)) {
+        errors.push({
+          code: "ERR_REPLAY_SESSION_INFO",
+          seq: event.seq,
+          message: "the first state-changing event must be a session_started carrying condition, participantId, and taskId",
+        });
+        break;
+      }
+      state = createSessionState({
+        runId: event.runId,
+        condition: session.condition,
+        participantId: session.participantId,
+        taskId: session.taskId,
+      });
+    }
+
+    try {
+      state = transition(state, { actor: event.actor, type: event.type, payload: event.payload }).state;
+    } catch (error) {
+      errors.push({
+        code: error.code || "ERR_REPLAY_FAILED",
+        seq: event.seq,
+        type: event.type,
+        message: error.message,
+      });
+      break;
+    }
+  }
+
+  return { ok: errors.length === 0, errors };
+}
+
+/**
  * Freeze a run: verify the event log (hash chain and metadata.eventLogHash),
  * then write MANIFEST.sha256 covering every evidence file (sorted by relative
  * path, excluding the manifest itself, hidden files, and *.tmp). The manifest
@@ -194,12 +259,20 @@ export async function freezeRun(runDir, metadata = {}) {
  * Verify a frozen run: manifest shape and ordering, every listed file's hash
  * and size, no unlisted evidence files, required metadata digests,
  * metadata.eventLogHash against the actual log, and full event-chain
- * integrity. Returns {ok, errors, manifest}; never throws on data problems.
+ * integrity. Independently of integrity, `legality` folds the verified event
+ * chain through the shared state machine and reports illegal transitions or
+ * actors — integrity ok with legality not ok is a valid combination (a
+ * well-chained forged event passes integrity but fails legality). Returns
+ * {ok, errors, manifest, legality}; never throws on data problems.
  */
 export async function verifyRun(runDir) {
   if (!isNonEmptyString(runDir)) {
     throw invalidArgument("runDir", "runDir must be a non-empty string");
   }
+
+  // Folded up front so every output shape below carries the same legality
+  // verdict; the integrity path itself is untouched.
+  const legality = await foldLegality(path.join(runDir, EVENT_LOG_FILENAME));
 
   const errors = [];
   const manifestPath = path.join(runDir, MANIFEST_FILENAME);
@@ -210,6 +283,7 @@ export async function verifyRun(runDir) {
     return {
       ok: false,
       errors: [{ code: "ERR_MANIFEST_MISSING", path: MANIFEST_FILENAME, message: "run has no MANIFEST.sha256" }],
+      legality,
     };
   }
 
@@ -220,6 +294,7 @@ export async function verifyRun(runDir) {
     return {
       ok: false,
       errors: [{ code: "ERR_MANIFEST_INVALID", path: MANIFEST_FILENAME, message: "manifest is not valid JSON" }],
+      legality,
     };
   }
   if (!isPlainObject(manifest) || manifest.schemaVersion !== MANIFEST_SCHEMA_VERSION ||
@@ -231,6 +306,7 @@ export async function verifyRun(runDir) {
         path: MANIFEST_FILENAME,
         message: `manifest must carry schemaVersion ${MANIFEST_SCHEMA_VERSION}, metadata, and a files array`,
       }],
+      legality,
     };
   }
 
@@ -313,5 +389,5 @@ export async function verifyRun(runDir) {
     }
   }
 
-  return { ok: errors.length === 0, errors, manifest };
+  return { ok: errors.length === 0, errors, manifest, legality };
 }

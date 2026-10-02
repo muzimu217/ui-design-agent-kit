@@ -14,7 +14,7 @@
 | --- | --- | --- |
 | [plan-preregistration-v1.md](plan-preregistration-v1.md) | 预注册式研究计划（RQ-A 主 + RQ-B 辅） | **v1.0 已审定冻结（2026-09-30：H2/H4 通过）** |
 | [master-task-schedule.md](master-task-schedule.md) | 全阶段任务分解表 P1-P5（26 项任务+5 道门） | **P1 已放行；P3 代码仍受 P2-Gate 约束** |
-| [runtime/](runtime/) | 研究仪器内核（研究包校验/R1 分配/R2 门禁状态机/R3-R4 事件链/R5 证据冻结/只读回放/C0-C1 dry-run） | **第一批已实现并全量测试通过（2026-10-01）；仅本地自检，非实验平台** |
+| [runtime/](runtime/) | 研究仪器内核（研究包校验/R1 分配/R2 门禁状态机/R3-R4 事件链/R5 证据冻结/只读回放/C0-C1 dry-run/分配表存储/会话执行器/研究者控制台） | **第一批+第二批已实现并全量测试通过（2026-10-01）；仅本地自检，非实验平台** |
 | [platform-architecture.md](platform-architecture.md) | 平台架构规格（调度层/门禁状态机/硬 runner/条件接线/检索接口）——对应 P2-5 | **DRAFT（2026-10-01）——待用户审定** |
 | [rater-protocol.md](rater-protocol.md) | 评分者协议（四维 19 型缺陷普查+功能判据+八维样式分+κ/盲法规程）——对应 P2-2 | **DRAFT（2026-10-01）——待用户审定** |
 | [formative/interview-protocol.md](formative/interview-protocol.md) | 形成性访谈提纲（14 题+假设映射） | **P1 执行版草案，待审定** |
@@ -54,7 +54,7 @@ Phase 5 分析 + 4 页短文（周 9-12）
 
 规则：每阶段产物先过用户门再进下一阶段；**P3 前零代码**（用户 2026-09-30 指定）。
 
-## 研究仪器内核（runtime + CLI，2026-10-01 第一批）
+## 研究仪器内核（runtime + CLI，2026-10-01 第一、二批）
 
 `research/runtime/` 是纯 Node.js ESM、零新增依赖的仪器内核，只做**实验条件控制与证据完整性**，不改 UAK 主架构：
 
@@ -62,11 +62,14 @@ Phase 5 分析 + 4 页短文（周 9-12）
 | --- | --- |
 | `runtime/package-schema.mjs` | 研究包结构校验 + canonical JSON/SHA-256 哈希原语 |
 | `runtime/assignment.mjs` | R1 确定性拉丁方分配（strict 默认拒绝奇数不平衡） |
+| `runtime/assignment-store.mjs` | 分配表持久化（`--save` 防重复写入 / 加载防损坏 / 列表） |
 | `runtime/state-machine.mjs` | R2 门禁状态机；`gate_decision` 仅 `actor:"user"` 可发 |
 | `runtime/event-log.mjs` | R3/R4 带 `prevSha` 哈希链的 JSONL 事件日志；冻结后拒绝追加 |
-| `runtime/evidence-store.mjs` | R5 工件安全写入、`MANIFEST.sha256` 冻结与校验 |
+| `runtime/evidence-store.mjs` | R5 工件安全写入、`MANIFEST.sha256` 冻结与校验（含行为合法性段） |
 | `runtime/replay.mjs` | 只读回放（只折叠状态事件，永不写 run 目录） |
-| `runtime/dry-run.mjs` + `runtime/fixtures/` | 固定 C0/C1 试跑（夹具 `study-package.json`、`dry-run-scenarios.json`） |
+| `runtime/session-runner.mjs` | 单参与者×单任务×单条件真实会话执行；门决策唯一通道是注入的 `decisions` 回调；结束自动冻结+自检 |
+| `runtime/researcher-console.mjs` | `scanRuns` 只读扫描全部运行目录，输出完整性+合法性+回放三判定 |
+| `runtime/constants.mjs` + `runtime/fixtures/` | 共享常量；固定 C0/C1 dry-run 夹具（`study-package.json`、`dry-run-scenarios.json`） |
 
 CLI 入口 `scripts/research-instrument.mjs`（每次输出一个 JSON 结果，失败退出码 1）：
 
@@ -74,9 +77,15 @@ CLI 入口 `scripts/research-instrument.mjs`（每次输出一个 JSON 结果，
 npm run research:validate   # 校验并哈希冻结研究包
 npm run research:test       # 只跑 tests/research-runtime.test.mjs
 npm run research:dry-run    # 固定夹具 dry-run（写入 mktemp 临时目录并打印 JSON 报告）
+node scripts/research-instrument.mjs assign <pkg> <participants.json> <tasks.json> --seed <seed> --save <storeDir>
+node scripts/research-instrument.mjs session <pkg> --assignment <id> --store <storeDir> \
+    --participant <id> --task <id> --out <空目录> --decisions approve,approve,approve
 node scripts/research-instrument.mjs dry-run research/runtime/fixtures/study-package.json --out <空目录>
 node scripts/research-instrument.mjs replay <run-dir>   # 只读回放
-node scripts/research-instrument.mjs verify <run-dir>   # manifest + 事件链完整性校验
+node scripts/research-instrument.mjs verify <run-dir>   # manifest + 事件链完整性 + 行为合法性
+node scripts/research-instrument.mjs console <runs-root> # 只读扫描：每场运行的 integrity/legality/replay 汇总
 ```
+
+**完整性 ≠ 合法性（verify 边界）**：`verify`/`console` 的 integrity 判定证明"冻结后未被篡改"，legality 判定把事件链折过状态机——链完整但事件是伪造的（如 `actor:"agent"` 的 `gate_decision`）会得到 integrity ok + legality ok:false，即**防篡改 ≠ 防伪造**的机器表达。
 
 **Dry-run 边界（硬约束）**：dry-run 只用合成试跑标签（`dryrun-pilot-*`）、固定本地夹具，不碰网络、不调模型、不接触任何真实参与者数据；其输出目录（`input/`、`timing.json`、`session.json`、`events.jsonl`、`evidence/`、`MANIFEST.sha256`）一律是**仪器自检产物，不计入 P1/P4 研究证据**，不替代真人招募、用户 Gate 裁决或 P2-Gate 后的实验平台代码阶段。

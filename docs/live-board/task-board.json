@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-02 01:4x",
+      "event": "需求→能力→缺口→路径知识资产落地 docs/uak-demand-capability-gap-roadmap.md——七项需求信号/十一项能力映射/四个缺口/近期中期远期路径，持续沉淀机制建立",
+      "type": "strategy"
+    },
+    {
       "time": "10-02 01:3x",
       "event": "B 站 AI UI 内容生态调研落地 docs/bilibili-ai-ui-content-landscape.md——竞品地图+「拯救丑设计」对标赛道验证+工作流包装缺失发现+五条可行动推广策略",
       "type": "research"
@@ -107,11 +112,6 @@
       "time": "09-30 18:3x",
       "event": "批次五十四入账：data-dense-standards-applied 100 分（数据密集标准——12 列 300 行/粘性表头/列宽稳定/三通道状态/骨架屏/批量逐条报告，实机断言×10）——70/71 99%，扩量实质收尾",
       "type": "eval"
-    },
-    {
-      "time": "09-30 17:4x",
-      "event": "第 20 批审计 verdict 不 CLEAN→三项当场整改：copy/dark 结果证据 0 字节重生成（教训定稿：断言脚本结果落盘一律 stdout 重定向，脚本内 writeFile 必产 0 字节）、§4.1 家族行 3 处切坏星号清零、文案夹具注释反模式字面清零；整改笔 196ac7f/9be2bb1 已推已上主干",
-      "type": "audit"
     }
   ]
 }

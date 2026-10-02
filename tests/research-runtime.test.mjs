@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -38,6 +39,7 @@ import {
 } from "../research/runtime/evidence-store.mjs";
 import { STATE_CHANGING_EVENT_TYPES, replayRun } from "../research/runtime/replay.mjs";
 import { runDryRun } from "../research/runtime/dry-run.mjs";
+import { startSession } from "../research/runtime/session-runner.mjs";
 import {
   listAssignments,
   loadAssignment,
@@ -1168,5 +1170,509 @@ test("listAssignments summarizes the store sorted by assignmentId and tolerates 
   t.after(() => rm(corruptDir, { recursive: true, force: true }));
   await writeFile(path.join(corruptDir, `${"a".repeat(64)}.json`), "not-json\n");
   await assert.rejects(() => listAssignments(corruptDir), /ERR_ASSIGNMENT_CORRUPT/);
+});
+
+// ---------------------------------------------------------------------------
+// Batch 2 · Task 2: session runner + CLI session command
+// ---------------------------------------------------------------------------
+
+async function sessionSetup(t) {
+  const runDir = await makeTempDir("uak-session-");
+  t.after(() => rm(runDir, { recursive: true, force: true }));
+  const { fixture, studyHash } = await loadFixture();
+  // Rows: p01-T1 → C0, p01-T2 → C1, p02-T1 → C1, p02-T2 → C0.
+  const assignment = createAssignment({
+    study: fixture,
+    studyHash,
+    participantIds: ["p01", "p02"],
+    taskIds: ["T1", "T2"],
+    seed: "session-demo",
+  });
+  return { runDir, fixture, studyHash, assignment };
+}
+
+function decisionQueue(entries) {
+  const calls = [];
+  const pending = [...entries];
+  return {
+    calls,
+    callback: async (question) => {
+      calls.push(question);
+      if (pending.length === 0) throw new Error("decision queue exhausted");
+      return pending.shift();
+    },
+  };
+}
+
+async function readEventTypes(runDir) {
+  const lines = (await readFile(path.join(runDir, "events.jsonl"), "utf8")).trim().split("\n");
+  return lines.map((line) => JSON.parse(line));
+}
+
+test("session runner drives a C1 session from intent to a frozen, self-checked done", async (t) => {
+  const { runDir, fixture, studyHash, assignment } = await sessionSetup(t);
+  const gate = decisionQueue([
+    { decision: "approve" },
+    { decision: "approve" },
+    { decision: "approve" },
+  ]);
+
+  const result = await startSession({
+    studyPackage: fixture,
+    studyHash,
+    assignment,
+    participantId: "p01",
+    taskId: "T2",
+    condition: "C1",
+    runDir,
+    clock: FIXED_CLOCK,
+    decisions: gate.callback,
+  });
+
+  assert.equal(result.runId, "p01-T2-C1");
+  assert.equal(result.finalState, "done");
+  assert.equal(result.frozen, true);
+  assert.equal(result.verifyOk, true);
+  assert.equal(result.replayOk, true);
+  assert.equal(result.assignmentId, assignment.assignmentId);
+  assert.deepEqual(gate.calls.map(({ gate }) => gate), ["GATE1", "GATE2", "GATE3"]);
+  assert.ok(gate.calls.every(({ phase }) => typeof phase === "string" && phase.length > 0));
+
+  const replay = await replayRun(runDir);
+  assert.deepEqual(replay.errors, []);
+  assert.equal(replay.finalState, "done");
+  assert.equal(replay.eventCount, result.eventCount);
+  assert.deepEqual(
+    replay.gateDecisions.map(({ gate, decision }) => `${gate}:${decision}`),
+    ["GATE1:approve", "GATE2:approve", "GATE3:approve"],
+  );
+  assert.equal((await verifyRun(runDir)).ok, true);
+  assert.ok(existsSync(path.join(runDir, "MANIFEST.sha256")));
+
+  const events = await readEventTypes(runDir);
+  assert.deepEqual(
+    events.map(({ actor, type }) => `${actor}:${type}`),
+    [
+      "runner:session_started",
+      "agent:intent_updated",
+      "agent:gate_request",
+      "user:gate_decision",
+      "agent:material_listed",
+      "agent:gate_request",
+      "user:gate_decision",
+      "agent:plan_locked",
+      "runner:execution_started",
+      "runner:execution_completed",
+      "agent:evidence_collected",
+      "agent:gate_request",
+      "user:gate_decision",
+    ],
+  );
+  assert.deepEqual(events[0].payload, { condition: "C1", participantId: "p01", taskId: "T2" });
+  assert.equal(events[1].payload.path, "intent/card.md");
+  assert.deepEqual(
+    events.filter(({ type }) => type === "gate_decision").map(({ payload }) => payload.gate),
+    ["GATE1", "GATE2", "GATE3"],
+  );
+});
+
+test("session runner writes the C1 artifact set derived from package and task only", async (t) => {
+  const { runDir, fixture, studyHash, assignment } = await sessionSetup(t);
+  const gate = decisionQueue([
+    { decision: "approve" },
+    { decision: "approve" },
+    { decision: "approve" },
+  ]);
+  await startSession({
+    studyPackage: fixture,
+    studyHash,
+    assignment,
+    participantId: "p01",
+    taskId: "T2",
+    condition: "C1",
+    runDir,
+    clock: FIXED_CLOCK,
+    decisions: gate.callback,
+  });
+
+  const card = await readFile(path.join(runDir, "input", "task-card.md"), "utf8");
+  assert.match(card, /T2/);
+  assert.match(card, /\bM\b/);
+  assert.match(card, /任务正文待 P2-1 冻结/);
+  assert.match(card, /Build a dense standards ledger/);
+
+  for (const relative of ["intent/card.md", "material/candidates.md", "plan/locked.md", "evidence/summary.md"]) {
+    const content = await readFile(path.join(runDir, relative), "utf8");
+    assert.ok(content.trim().length > 0, `${relative} must be non-empty`);
+  }
+  const summary = await readFile(path.join(runDir, "evidence", "summary.md"), "utf8");
+  assert.match(summary, /p01-T2-C1/);
+  assert.match(summary, /GATE1/);
+  assert.match(summary, /approve/);
+});
+
+test("session runner re-enters intent drafting after a GATE1 reject and finishes on re-approval", async (t) => {
+  const { runDir, fixture, studyHash, assignment } = await sessionSetup(t);
+  const gate = decisionQueue([
+    { decision: "reject", reason: "intent unclear" },
+    { decision: "approve" },
+    { decision: "approve" },
+    { decision: "approve" },
+  ]);
+
+  const result = await startSession({
+    studyPackage: fixture,
+    studyHash,
+    assignment,
+    participantId: "p01",
+    taskId: "T2",
+    condition: "C1",
+    runDir,
+    clock: FIXED_CLOCK,
+    decisions: gate.callback,
+  });
+
+  assert.equal(result.finalState, "done");
+  assert.deepEqual(gate.calls.map(({ gate }) => gate), ["GATE1", "GATE1", "GATE2", "GATE3"]);
+
+  const replay = await replayRun(runDir);
+  assert.deepEqual(replay.errors, []);
+  assert.equal(replay.gateDecisions.length, 4);
+  assert.equal(replay.gateDecisions[0].decision, "reject");
+  assert.equal(replay.gateDecisions[0].reason, "intent unclear");
+  assert.equal(replay.gateDecisions[0].from, "GATE1_PENDING");
+  assert.equal(replay.gateDecisions[0].to, "intent_drafting");
+  assert.equal(replay.gateDecisions[1].decision, "approve");
+  assert.equal(replay.gateDecisions[1].to, "material_search");
+  assert.equal(replay.gateDecisions[3].to, "done");
+
+  const events = await readEventTypes(runDir);
+  assert.equal(events.filter(({ type }) => type === "intent_updated").length, 2);
+  assert.equal((await verifyRun(runDir)).ok, true);
+});
+
+test("session runner refuses reasonless and unknown gate decisions before they are logged", async (t) => {
+  const { runDir, fixture, studyHash, assignment } = await sessionSetup(t);
+
+  const reasonless = decisionQueue([{ decision: "reject" }]);
+  await assert.rejects(
+    () => startSession({
+      studyPackage: fixture,
+      studyHash,
+      assignment,
+      participantId: "p01",
+      taskId: "T2",
+      condition: "C1",
+      runDir,
+      clock: FIXED_CLOCK,
+      decisions: reasonless.callback,
+    }),
+    (error) => {
+      assert.ok(error instanceof ResearchRuntimeError);
+      assert.equal(error.code, "ERR_MISSING_REASON");
+      return true;
+    },
+  );
+  assert.deepEqual(reasonless.calls, [{ gate: "GATE1", phase: "intent_drafting" }]);
+  const events = await readEventTypes(runDir);
+  assert.equal(events[events.length - 1].type, "gate_request");
+  assert.equal(events.some(({ type }) => type === "gate_decision"), false);
+
+  const secondDir = await makeTempDir("uak-session-");
+  t.after(() => rm(secondDir, { recursive: true, force: true }));
+  const invalid = decisionQueue([{ decision: "maybe" }]);
+  await assert.rejects(
+    () => startSession({
+      studyPackage: fixture,
+      studyHash,
+      assignment,
+      participantId: "p01",
+      taskId: "T2",
+      condition: "C1",
+      runDir: secondDir,
+      clock: FIXED_CLOCK,
+      decisions: invalid.callback,
+    }),
+    /ERR_INVALID_DECISION/,
+  );
+});
+
+test("session runner drives C0 gate-free and refuses scripted decisions", async (t) => {
+  const { runDir, fixture, studyHash, assignment } = await sessionSetup(t);
+
+  const result = await startSession({
+    studyPackage: fixture,
+    studyHash,
+    assignment,
+    participantId: "p01",
+    taskId: "T1",
+    condition: "C0",
+    runDir,
+    clock: FIXED_CLOCK,
+  });
+
+  assert.equal(result.runId, "p01-T1-C0");
+  assert.equal(result.finalState, "done");
+  assert.equal(result.frozen, true);
+  assert.equal(result.verifyOk, true);
+  assert.equal(result.replayOk, true);
+
+  const events = await readEventTypes(runDir);
+  assert.deepEqual(events.map(({ actor, type }) => `${actor}:${type}`), [
+    "runner:session_started",
+    "runner:execution_completed",
+    "runner:evidence_collected",
+    "runner:session_ended",
+  ]);
+  const replay = await replayRun(runDir);
+  assert.equal(replay.finalState, "done");
+  assert.equal(replay.gateDecisions.length, 0);
+  assert.equal((await verifyRun(runDir)).ok, true);
+
+  const card = await readFile(path.join(runDir, "input", "task-card.md"), "utf8");
+  assert.match(card, /任务正文待 P2-1 冻结/);
+  assert.ok(existsSync(path.join(runDir, "evidence", "summary.md")));
+  assert.equal(existsSync(path.join(runDir, "intent")), false);
+
+  const refusedDir = path.join(runDir, "c0-refused");
+  await assert.rejects(
+    () => startSession({
+      studyPackage: fixture,
+      studyHash,
+      assignment,
+      participantId: "p01",
+      taskId: "T1",
+      condition: "C0",
+      runDir: refusedDir,
+      clock: FIXED_CLOCK,
+      decisions: async () => ({ decision: "approve" }),
+    }),
+    (error) => {
+      assert.ok(error instanceof ResearchRuntimeError);
+      assert.equal(error.code, "ERR_C0_DECISIONS_PROVIDED");
+      return true;
+    },
+  );
+  assert.equal(existsSync(refusedDir), false);
+});
+
+test("session runner validates assignment, study hash, and output dir before writing", async (t) => {
+  const { runDir, fixture, studyHash, assignment } = await sessionSetup(t);
+  const base = {
+    studyPackage: fixture,
+    studyHash,
+    assignment,
+    taskId: "T2",
+    condition: "C1",
+    runDir,
+    clock: FIXED_CLOCK,
+    decisions: decisionQueue([{ decision: "approve" }]).callback,
+  };
+
+  await assert.rejects(() => startSession({ ...base, participantId: "nobody" }), (error) => {
+    assert.ok(error instanceof ResearchRuntimeError);
+    assert.equal(error.code, "ERR_SESSION_UNASSIGNED");
+    return true;
+  });
+  // p01-T1 is the C0 row; asking for C1 there is unassigned, not a run.
+  await assert.rejects(() => startSession({ ...base, participantId: "p01", taskId: "T1" }), /ERR_SESSION_UNASSIGNED/);
+  await assert.rejects(() => startSession({ ...base, participantId: "p01", studyHash: "0".repeat(64) }), /ERR_STUDY_HASH_MISMATCH/);
+  await assert.rejects(() => startSession({ ...base, participantId: "p01", clock: "now" }), /ERR_INVALID_ARGUMENT/);
+  await assert.rejects(() => startSession({ ...base, participantId: "p01", decisions: "approve" }), /ERR_INVALID_ARGUMENT/);
+
+  const foreign = JSON.parse(stableStringify(assignment));
+  foreign.studyHash = "1".repeat(64);
+  foreign.assignmentHash = assignmentHash(foreign);
+  await assert.rejects(() => startSession({ ...base, participantId: "p01", assignment: foreign }), /ERR_STUDY_HASH_MISMATCH/);
+
+  const untouched = path.join(runDir, "untouched");
+  await assert.rejects(
+    () => startSession({ ...base, participantId: "nobody", runDir: untouched }),
+    /ERR_SESSION_UNASSIGNED/,
+  );
+  assert.equal(existsSync(untouched), false);
+
+  await writeFile(path.join(runDir, "keep.txt"), "operator file");
+  await assert.rejects(
+    () => startSession({
+      ...base,
+      participantId: "p01",
+      decisions: decisionQueue([
+        { decision: "approve" },
+        { decision: "approve" },
+        { decision: "approve" },
+      ]).callback,
+    }),
+    /ERR_OUTPUT_DIR_NOT_EMPTY/,
+  );
+  assert.equal(await readFile(path.join(runDir, "keep.txt"), "utf8"), "operator file");
+});
+
+test("CLI assign --save persists to the store and refuses duplicate saves", async (t) => {
+  const dir = await makeTempDir("uak-cli-");
+  t.after(() => rm(dir, { recursive: true, force: true }));
+  const storeDir = path.join(dir, "store");
+  const participantsPath = path.join(dir, "participants.json");
+  const tasksPath = path.join(dir, "tasks.json");
+  await writeFile(participantsPath, JSON.stringify(["p02", "p01"]));
+  await writeFile(tasksPath, JSON.stringify(["T1", "T2"]));
+
+  const args = [CLI_PATH, "assign", fixturePath, participantsPath, tasksPath, "--seed", "session-cli", "--save", storeDir];
+  const first = spawnSync(process.execPath, args, { encoding: "utf8" });
+  assert.equal(first.status, 0, first.stderr);
+  const firstJson = JSON.parse(first.stdout);
+  assert.equal(firstJson.ok, true);
+  assert.match(firstJson.saved.path, new RegExp(`${firstJson.saved.assignmentId}\\.json$`));
+
+  const loaded = await loadAssignment(storeDir, firstJson.saved.assignmentId);
+  assert.equal(loaded.seed, "session-cli");
+  assert.equal(loaded.rows.length, 4);
+
+  const duplicate = spawnSync(process.execPath, args, { encoding: "utf8" });
+  assert.equal(duplicate.status, 1);
+  assert.match(duplicate.stderr, /ERR_ASSIGNMENT_EXISTS/);
+});
+
+test("CLI session runs a scripted C1 session that freezes, replays, and verifies", async (t) => {
+  const dir = await makeTempDir("uak-cli-session-");
+  t.after(() => rm(dir, { recursive: true, force: true }));
+  const storeDir = path.join(dir, "store");
+  const participantsPath = path.join(dir, "participants.json");
+  const tasksPath = path.join(dir, "tasks.json");
+  await writeFile(participantsPath, JSON.stringify(["p01", "p02"]));
+  await writeFile(tasksPath, JSON.stringify(["T1", "T2"]));
+
+  const assign = spawnSync(
+    process.execPath,
+    [CLI_PATH, "assign", fixturePath, participantsPath, tasksPath, "--seed", "session-cli", "--save", storeDir],
+    { encoding: "utf8" },
+  );
+  assert.equal(assign.status, 0, assign.stderr);
+  const { assignmentId } = JSON.parse(assign.stdout).saved;
+
+  const outDir = path.join(dir, "run-p01-T2");
+  const session = spawnSync(
+    process.execPath,
+    [
+      CLI_PATH, "session", fixturePath,
+      "--assignment", assignmentId,
+      "--store", storeDir,
+      "--participant", "p01",
+      "--task", "T2",
+      "--out", outDir,
+      "--decisions", "approve,approve,approve",
+    ],
+    { encoding: "utf8" },
+  );
+  assert.equal(session.status, 0, session.stderr);
+  const report = JSON.parse(session.stdout);
+  assert.equal(report.ok, true);
+  assert.equal(report.command, "session");
+  assert.equal(report.runId, "p01-T2-C1");
+  assert.equal(report.finalState, "done");
+  assert.equal(report.frozen, true);
+  assert.equal(report.verifyOk, true);
+  assert.equal(report.replayOk, true);
+  assert.equal(report.gateDecisions.length, 3);
+
+  const verify = spawnSync(process.execPath, [CLI_PATH, "verify", outDir], { encoding: "utf8" });
+  assert.equal(verify.status, 0, verify.stderr);
+  assert.equal(JSON.parse(verify.stdout).ok, true);
+
+  const replay = spawnSync(process.execPath, [CLI_PATH, "replay", outDir], { encoding: "utf8" });
+  assert.equal(replay.status, 0, replay.stderr);
+  assert.equal(JSON.parse(replay.stdout).gateDecisions.length, 3);
+});
+
+test("CLI session reports scripted decision count mismatches", async (t) => {
+  const dir = await makeTempDir("uak-cli-mismatch-");
+  t.after(() => rm(dir, { recursive: true, force: true }));
+  const storeDir = path.join(dir, "store");
+  const participantsPath = path.join(dir, "participants.json");
+  const tasksPath = path.join(dir, "tasks.json");
+  await writeFile(participantsPath, JSON.stringify(["p01", "p02"]));
+  await writeFile(tasksPath, JSON.stringify(["T1", "T2"]));
+  const assign = spawnSync(
+    process.execPath,
+    [CLI_PATH, "assign", fixturePath, participantsPath, tasksPath, "--seed", "session-cli", "--save", storeDir],
+    { encoding: "utf8" },
+  );
+  const { assignmentId } = JSON.parse(assign.stdout).saved;
+
+  const sessionArgs = (outDir, decisions) =>
+    spawnSync(
+      process.execPath,
+      [
+        CLI_PATH, "session", fixturePath,
+        "--assignment", assignmentId,
+        "--store", storeDir,
+        "--participant", "p01",
+        "--task", "T2",
+        "--out", outDir,
+        ...(decisions === null ? [] : ["--decisions", decisions]),
+      ],
+      { encoding: "utf8" },
+    );
+
+  const tooFew = sessionArgs(path.join(dir, "run-too-few"), "approve,approve");
+  assert.equal(tooFew.status, 1);
+  assert.match(tooFew.stderr, /ERR_DECISIONS_MISMATCH/);
+
+  const tooMany = sessionArgs(path.join(dir, "run-too-many"), "approve,approve,approve,approve");
+  assert.equal(tooMany.status, 1);
+  assert.match(tooMany.stderr, /ERR_DECISIONS_MISMATCH/);
+  // The session itself completed and froze before the mismatch surfaced; the
+  // evidence is kept for inspection, not deleted.
+  assert.ok(existsSync(path.join(dir, "run-too-many", "MANIFEST.sha256")));
+});
+
+test("CLI session enforces assignment, the C0 decision ban, and non-interactive input", async (t) => {
+  const dir = await makeTempDir("uak-cli-guard-");
+  t.after(() => rm(dir, { recursive: true, force: true }));
+  const storeDir = path.join(dir, "store");
+  const participantsPath = path.join(dir, "participants.json");
+  const tasksPath = path.join(dir, "tasks.json");
+  await writeFile(participantsPath, JSON.stringify(["p01", "p02"]));
+  await writeFile(tasksPath, JSON.stringify(["T1", "T2"]));
+  const assign = spawnSync(
+    process.execPath,
+    [CLI_PATH, "assign", fixturePath, participantsPath, tasksPath, "--seed", "session-cli", "--save", storeDir],
+    { encoding: "utf8" },
+  );
+  const { assignmentId } = JSON.parse(assign.stdout).saved;
+
+  const sessionArgs = (extra) =>
+    spawnSync(
+      process.execPath,
+      [CLI_PATH, "session", fixturePath, "--assignment", assignmentId, "--store", storeDir, ...extra],
+      { encoding: "utf8" },
+    );
+
+  const unassigned = sessionArgs(["--participant", "nobody", "--task", "T2", "--out", path.join(dir, "r1"), "--decisions", "approve,approve,approve"]);
+  assert.equal(unassigned.status, 1);
+  assert.match(unassigned.stderr, /ERR_SESSION_UNASSIGNED/);
+
+  const c0Decisions = sessionArgs(["--participant", "p01", "--task", "T1", "--out", path.join(dir, "r2"), "--decisions", "approve"]);
+  assert.equal(c0Decisions.status, 1);
+  assert.match(c0Decisions.stderr, /ERR_C0_DECISIONS_PROVIDED/);
+
+  const c0 = sessionArgs(["--participant", "p01", "--task", "T1", "--out", path.join(dir, "r3")]);
+  assert.equal(c0.status, 0, c0.stderr);
+  const c0Json = JSON.parse(c0.stdout);
+  assert.equal(c0Json.runId, "p01-T1-C0");
+  assert.equal(c0Json.gateDecisions.length, 0);
+  assert.equal(c0Json.finalState, "done");
+
+  const noDecisions = sessionArgs(["--participant", "p01", "--task", "T2", "--out", path.join(dir, "r4")]);
+  assert.equal(noDecisions.status, 1);
+  assert.match(noDecisions.stderr, /ERR_CLI_USAGE/);
+
+  const busyDir = path.join(dir, "r5");
+  await mkdir(busyDir, { recursive: true });
+  await writeFile(path.join(busyDir, "keep.txt"), "operator file");
+  const busy = sessionArgs(["--participant", "p01", "--task", "T2", "--out", busyDir, "--decisions", "approve,approve,approve"]);
+  assert.equal(busy.status, 1);
+  assert.match(busy.stderr, /ERR_OUTPUT_DIR_NOT_EMPTY/);
+  assert.equal(await readFile(path.join(busyDir, "keep.txt"), "utf8"), "operator file");
 });
 

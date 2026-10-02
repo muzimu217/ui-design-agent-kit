@@ -10,17 +10,22 @@
 
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import readline from "node:readline/promises";
 
 import { assertStudyPackage, canonicalHash, validateStudyPackage } from "../research/runtime/package-schema.mjs";
 import { ResearchRuntimeError } from "../research/runtime/errors.mjs";
 import { assertAssignmentBalanced, createAssignment } from "../research/runtime/assignment.mjs";
+import { loadAssignment, saveAssignment } from "../research/runtime/assignment-store.mjs";
 import { verifyRun } from "../research/runtime/evidence-store.mjs";
 import { replayRun } from "../research/runtime/replay.mjs";
 import { runDryRun } from "../research/runtime/dry-run.mjs";
+import { startSession } from "../research/runtime/session-runner.mjs";
 
 const USAGE = `usage:
   research-instrument validate-package <package.json>
-  research-instrument assign <package.json> <participants.json> <tasks.json> --seed <seed>
+  research-instrument assign <package.json> <participants.json> <tasks.json> --seed <seed> [--save <storeDir>]
+  research-instrument session <package.json> --assignment <assignmentId> --store <dir>
+      --participant <id> --task <id> --out <dir> [--decisions approve,approve,approve]
   research-instrument dry-run <package.json> --out <dir>
   research-instrument replay <run-dir>
   research-instrument verify <run-dir>`;
@@ -136,13 +141,132 @@ async function cmdAssign(positional, options) {
   const studyHash = canonicalHash(study);
   const assignment = createAssignment({ study, studyHash, participantIds, taskIds, seed: options.seed });
   assertAssignmentBalanced(assignment);
+  let saved = null;
+  if (options.save !== undefined) {
+    if (typeof options.save !== "string" || options.save.trim() === "") {
+      throw usageError("assign --save requires a store directory");
+    }
+    saved = await saveAssignment(path.resolve(options.save), assignment);
+  }
   print({
     ok: true,
     command: "assign",
     balanced: true,
     studyHash,
     assignment,
+    ...(saved ? { saved } : {}),
   });
+}
+
+// Scripted gate decisions for tests and non-interactive runs: a comma list of
+// `approve` or `reject:<reason>` entries (reasons therefore cannot contain
+// commas). One entry is consumed per gate round, so a reject-then-retry
+// session legitimately needs more entries than there are gates.
+function parseScriptedDecisions(rawValue) {
+  const entries = rawValue.split(",").map((entry) => entry.trim()).filter((entry) => entry !== "");
+  if (entries.length === 0) {
+    throw usageError("--decisions must be a comma-separated list like approve,approve,approve");
+  }
+  return entries.map((entry) => {
+    const match = entry.match(/^(approve|reject)(?::(.*))?$/);
+    if (!match) {
+      throw usageError(`invalid --decisions entry "${entry}" (use approve or reject:<reason>)`);
+    }
+    return match[1] === "reject" ? { decision: "reject", reason: match[2] ?? "" } : { decision: "approve" };
+  });
+}
+
+function interactiveDecisionCallback() {
+  return async ({ gate, phase }) => {
+    for (;;) {
+      const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+      try {
+        const answer = (await rl.question(`[${gate} · ${phase}] approve/reject? `)).trim().toLowerCase();
+        if (answer === "approve") return { decision: "approve" };
+        if (answer === "reject") {
+          for (;;) {
+            const reason = (await rl.question("拒绝原因（必填）: ")).trim();
+            if (reason !== "") return { decision: "reject", reason };
+            process.stdout.write("a rejection requires a non-empty reason\n");
+          }
+        }
+        process.stdout.write('enter "approve" or "reject"\n');
+      } finally {
+        rl.close();
+      }
+    }
+  };
+}
+
+async function cmdSession(positional, options) {
+  const [packagePath] = expectPositional(positional, 1, "session");
+  for (const flag of ["assignment", "store", "participant", "task", "out"]) {
+    if (typeof options[flag] !== "string" || options[flag].trim() === "") {
+      throw usageError(`session requires --${flag} <value>`);
+    }
+  }
+
+  const study = await readJsonFile(packagePath, "study package");
+  const { hash: studyHash } = assertStudyPackage(study);
+  const assignment = await loadAssignment(path.resolve(options.store), options.assignment);
+  const row = assignment.rows.find((entry) =>
+    entry.participantId === options.participant && entry.taskId === options.task);
+  if (!row) {
+    throw new ResearchRuntimeError(
+      "ERR_SESSION_UNASSIGNED",
+      "the assignment has no row for this participant and task",
+      {
+        participantId: options.participant,
+        taskId: options.task,
+        assignmentId: assignment.assignmentId,
+      },
+    );
+  }
+
+  let decisions = null;
+  let pendingScripted = null;
+  if (options.decisions !== undefined) {
+    if (typeof options.decisions !== "string" || options.decisions.trim() === "") {
+      throw usageError("session --decisions requires a comma-separated list like approve,approve,approve");
+    }
+    const queue = parseScriptedDecisions(options.decisions);
+    pendingScripted = [...queue];
+    decisions = async () => {
+      if (pendingScripted.length === 0) {
+        throw new ResearchRuntimeError(
+          "ERR_DECISIONS_MISMATCH",
+          "scripted decisions ran out before the session ended",
+          { provided: queue.length, consumed: queue.length },
+        );
+      }
+      return pendingScripted.shift();
+    };
+  } else if (row.condition === "C1") {
+    if (!process.stdin.isTTY) {
+      throw usageError("session requires --decisions when stdin is not a TTY (C1 needs gate decisions)");
+    }
+    decisions = interactiveDecisionCallback();
+  }
+
+  const report = await startSession({
+    studyPackage: study,
+    studyHash,
+    assignment,
+    participantId: options.participant,
+    taskId: options.task,
+    condition: row.condition,
+    runDir: path.resolve(options.out),
+    decisions,
+  });
+
+  if (pendingScripted !== null && pendingScripted.length > 0) {
+    throw new ResearchRuntimeError(
+      "ERR_DECISIONS_MISMATCH",
+      "scripted decisions left over after the session ended",
+      { provided: pendingScripted.length + report.gateDecisions.length, consumed: report.gateDecisions.length },
+    );
+  }
+  print({ ok: true, command: "session", ...report });
 }
 
 async function cmdDryRun(positional, options) {
@@ -179,6 +303,9 @@ async function main() {
       return;
     case "assign":
       await cmdAssign(positional, options);
+      return;
+    case "session":
+      await cmdSession(positional, options);
       return;
     case "dry-run":
       await cmdDryRun(positional, options);

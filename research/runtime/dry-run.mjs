@@ -8,7 +8,7 @@ import { assertAssignmentBalanced, createAssignment } from "./assignment.mjs";
 import { createSessionState, isTerminalState, transition } from "./state-machine.mjs";
 import { EVENT_LOG_FILENAME, EventLog } from "./event-log.mjs";
 import { MANIFEST_FILENAME, freezeRun, verifyRun, writeArtifact } from "./evidence-store.mjs";
-import { replayRun } from "./replay.mjs";
+import { STATE_CHANGING_EVENT_TYPES, replayRun } from "./replay.mjs";
 
 export const DRY_RUN_SCHEMA_VERSION = 1;
 const SCENARIO_SCHEMA_VERSION = 1;
@@ -17,20 +17,6 @@ const SCENARIOS_PATH = path.join(
   "fixtures",
   "dry-run-scenarios.json",
 );
-
-// Mirrors STATE_CHANGING_TYPES in replay.mjs (kept private there): only these
-// events fold through the state machine; informational events (intents,
-// materials, artifacts, timers) are logged but never machine-legal. If the
-// two sets drift, the post-freeze replay self-check fails loudly instead of
-// producing a run that only the dry-run can explain.
-const STATE_CHANGING_EVENT_TYPES = new Set([
-  "session_started",
-  "gate_request",
-  "gate_decision",
-  "execution_started",
-  "execution_completed",
-  "session_ended",
-]);
 
 function isPlainObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);

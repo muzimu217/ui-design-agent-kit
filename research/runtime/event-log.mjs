@@ -3,14 +3,11 @@ import path from "node:path";
 
 import { sha256Hex, stableStringify } from "./package-schema.mjs";
 import { ResearchRuntimeError } from "./errors.mjs";
+import { MANIFEST_FILENAME } from "./constants.mjs";
 
 export const EVENT_LOG_FILENAME = "events.jsonl";
 export const EVENT_SCHEMA_VERSION = 1;
 export const GENESIS_PREV_SHA = "0".repeat(64);
-// Mirrors MANIFEST_FILENAME in evidence-store.mjs. Duplicated as a literal to
-// avoid an import cycle (evidence-store imports this module); the frozen-run
-// regression test in tests/research-runtime.test.mjs trips if the two drift.
-const FROZEN_MANIFEST_FILENAME = "MANIFEST.sha256";
 
 const HEX64 = /^[a-f0-9]{64}$/;
 
@@ -139,10 +136,14 @@ function defaultClock() {
 
 async function runDirIsFrozen(filePath) {
   try {
-    await stat(path.join(path.dirname(filePath), FROZEN_MANIFEST_FILENAME));
+    await stat(path.join(path.dirname(filePath), MANIFEST_FILENAME));
     return true;
-  } catch {
-    return false;
+  } catch (error) {
+    // Only a missing manifest means "not frozen". Any other stat failure
+    // (permissions, I/O) must fail closed: an unreadable filesystem state
+    // must never look like an appendable run.
+    if (error.code === "ENOENT") return false;
+    throw error;
   }
 }
 
@@ -191,7 +192,7 @@ export class EventLog {
     if (await runDirIsFrozen(this.filePath)) {
       throw new ResearchRuntimeError("ERR_RUN_FROZEN", "run is frozen; event appends are disabled", {
         filePath: this.filePath,
-        manifest: FROZEN_MANIFEST_FILENAME,
+        manifest: MANIFEST_FILENAME,
       });
     }
 

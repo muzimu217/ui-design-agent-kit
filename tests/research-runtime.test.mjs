@@ -28,10 +28,21 @@ import {
   isTerminalState,
   transition,
 } from "../research/runtime/state-machine.mjs";
+import { MANIFEST_FILENAME } from "../research/runtime/constants.mjs";
 import { EventLog, verifyEventChain } from "../research/runtime/event-log.mjs";
-import { freezeRun, verifyRun, writeArtifact } from "../research/runtime/evidence-store.mjs";
-import { replayRun } from "../research/runtime/replay.mjs";
+import {
+  MANIFEST_FILENAME as MANIFEST_FILENAME_FROM_EVIDENCE_STORE,
+  freezeRun,
+  verifyRun,
+  writeArtifact,
+} from "../research/runtime/evidence-store.mjs";
+import { STATE_CHANGING_EVENT_TYPES, replayRun } from "../research/runtime/replay.mjs";
 import { runDryRun } from "../research/runtime/dry-run.mjs";
+import {
+  listAssignments,
+  loadAssignment,
+  saveAssignment,
+} from "../research/runtime/assignment-store.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const fixturePath = path.join(ROOT, "research/runtime/fixtures/study-package.json");
@@ -1002,3 +1013,160 @@ test("CLI dry-run freezes both conditions, replays, verifies, and refuses non-em
   assert.equal(again.status, 1);
   assert.match(again.stderr, /ERR_OUTPUT_DIR_NOT_EMPTY/);
 });
+
+// ---------------------------------------------------------------------------
+// Batch 2 · Task 1: shared constants, ENOENT-only freeze tolerance, assignment store
+// ---------------------------------------------------------------------------
+
+test("constants pins the manifest filename shared by event log and evidence store", () => {
+  assert.equal(typeof MANIFEST_FILENAME, "string");
+  assert.equal(MANIFEST_FILENAME, "MANIFEST.sha256");
+  assert.equal(MANIFEST_FILENAME_FROM_EVIDENCE_STORE, MANIFEST_FILENAME);
+});
+
+test("replay exports the state-changing event vocabulary dry-run folds against", () => {
+  assert.ok(STATE_CHANGING_EVENT_TYPES instanceof Set);
+  assert.deepEqual([...STATE_CHANGING_EVENT_TYPES].sort(), [
+    "execution_completed",
+    "execution_started",
+    "gate_decision",
+    "gate_request",
+    "session_ended",
+    "session_started",
+  ]);
+});
+
+async function makeStoreAssignment(seed) {
+  const { fixture, studyHash } = await loadFixture();
+  return createAssignment({
+    study: fixture,
+    studyHash,
+    participantIds: ["p01", "p02"],
+    taskIds: ["T1", "T2"],
+    seed,
+  });
+}
+
+test("assignment store saves canonical JSON and reloads the identical assignment", async (t) => {
+  const storeDir = await makeTempDir("uak-store-");
+  t.after(() => rm(storeDir, { recursive: true, force: true }));
+  const assignment = await makeStoreAssignment("demo");
+
+  const saved = await saveAssignment(storeDir, assignment);
+  assert.equal(saved.assignmentId, assignment.assignmentId);
+  assert.equal(saved.path, path.join(storeDir, `${assignment.assignmentId}.json`));
+
+  const raw = await readFile(saved.path, "utf8");
+  assert.equal(raw, `${stableStringify(assignment)}\n`);
+
+  const loaded = await loadAssignment(storeDir, assignment.assignmentId);
+  assert.deepEqual(loaded, JSON.parse(stableStringify(assignment)));
+  assert.equal(loaded.assignmentHash, assignment.assignmentHash);
+  assert.equal(assignmentHash(loaded), assignment.assignmentHash);
+});
+
+test("assignment store refuses duplicate writes even when the content is byte-identical", async (t) => {
+  const storeDir = await makeTempDir("uak-store-");
+  t.after(() => rm(storeDir, { recursive: true, force: true }));
+  const assignment = await makeStoreAssignment("demo");
+
+  await saveAssignment(storeDir, assignment);
+  const before = await readFile(path.join(storeDir, `${assignment.assignmentId}.json`), "utf8");
+
+  await assert.rejects(
+    () => saveAssignment(storeDir, assignment),
+    (error) => {
+      assert.ok(error instanceof ResearchRuntimeError);
+      assert.equal(error.code, "ERR_ASSIGNMENT_EXISTS");
+      assert.equal(error.details.assignmentId, assignment.assignmentId);
+      return true;
+    },
+  );
+  assert.equal(await readFile(path.join(storeDir, `${assignment.assignmentId}.json`), "utf8"), before);
+  assert.equal((await listAssignments(storeDir)).length, 1);
+});
+
+test("assignment store reports missing and corrupt assignments on load", async (t) => {
+  const storeDir = await makeTempDir("uak-store-");
+  t.after(() => rm(storeDir, { recursive: true, force: true }));
+  const assignment = await makeStoreAssignment("demo");
+  await saveAssignment(storeDir, assignment);
+  const filePath = path.join(storeDir, `${assignment.assignmentId}.json`);
+
+  await assert.rejects(
+    () => loadAssignment(storeDir, "f".repeat(64)),
+    (error) => {
+      assert.ok(error instanceof ResearchRuntimeError);
+      assert.equal(error.code, "ERR_ASSIGNMENT_MISSING");
+      return true;
+    },
+  );
+
+  const tampered = JSON.parse(await readFile(filePath, "utf8"));
+  tampered.seed = "flipped";
+  await writeFile(filePath, `${stableStringify(tampered)}\n`);
+  await assert.rejects(() => loadAssignment(storeDir, assignment.assignmentId), /ERR_ASSIGNMENT_CORRUPT/);
+
+  await writeFile(filePath, "not-json\n");
+  await assert.rejects(() => loadAssignment(storeDir, assignment.assignmentId), /ERR_ASSIGNMENT_CORRUPT/);
+
+  const other = await makeStoreAssignment("other");
+  const swappedDir = await makeTempDir("uak-store-");
+  t.after(() => rm(swappedDir, { recursive: true, force: true }));
+  const otherRaw = (await saveAssignment(swappedDir, other)).path;
+  // A file stored under assignment's slot whose content claims a different id
+  // is corruption for that slot, not a missing assignment.
+  await writeFile(
+    path.join(swappedDir, `${assignment.assignmentId}.json`),
+    await readFile(otherRaw, "utf8"),
+  );
+  await assert.rejects(() => loadAssignment(swappedDir, assignment.assignmentId), /ERR_ASSIGNMENT_CORRUPT/);
+});
+
+test("assignment store rejects invalid assignments and identifiers before touching the store", async (t) => {
+  const storeDir = await makeTempDir("uak-store-");
+  t.after(() => rm(storeDir, { recursive: true, force: true }));
+  const assignment = await makeStoreAssignment("demo");
+
+  await assert.rejects(() => saveAssignment(storeDir, { assignmentId: "../escape", rows: [] }), /ERR_INVALID_ASSIGNMENT/);
+  await assert.rejects(
+    () => saveAssignment(storeDir, { ...assignment, assignmentHash: "0".repeat(64) }),
+    /ERR_INVALID_ASSIGNMENT/,
+  );
+  await assert.rejects(() => saveAssignment(storeDir, { ...assignment, rows: [] }), /ERR_INVALID_ASSIGNMENT/);
+  await assert.rejects(() => loadAssignment(storeDir, "../../etc/passwd"), /ERR_INVALID_ASSIGNMENT/);
+  assert.equal(await listAssignments(storeDir).then((entries) => entries.length), 0);
+});
+
+test("listAssignments summarizes the store sorted by assignmentId and tolerates a missing directory", async (t) => {
+  const storeDir = await makeTempDir("uak-store-");
+  t.after(() => rm(storeDir, { recursive: true, force: true }));
+  const alpha = await makeStoreAssignment("alpha");
+  const beta = await makeStoreAssignment("beta");
+  await saveAssignment(storeDir, beta);
+  await saveAssignment(storeDir, alpha);
+  await writeFile(path.join(storeDir, "notes.txt"), "operator notes");
+
+  const expected = [alpha, beta]
+    .sort((a, b) => (a.assignmentId < b.assignmentId ? -1 : 1))
+    .map((entry) => ({
+      assignmentId: entry.assignmentId,
+      studyId: entry.studyId,
+      seed: entry.seed,
+      rowCount: entry.rows.length,
+    }));
+  const listed = await listAssignments(storeDir);
+  assert.deepEqual(listed, expected);
+  assert.deepEqual(listed.map((entry) => entry.assignmentId), [...listed.map((entry) => entry.assignmentId)].sort());
+
+  const absentDir = await makeTempDir("uak-store-absent-");
+  t.after(() => rm(absentDir, { recursive: true, force: true }));
+  await rm(absentDir, { recursive: true, force: true });
+  assert.deepEqual(await listAssignments(absentDir), []);
+
+  const corruptDir = await makeTempDir("uak-store-");
+  t.after(() => rm(corruptDir, { recursive: true, force: true }));
+  await writeFile(path.join(corruptDir, `${"a".repeat(64)}.json`), "not-json\n");
+  await assert.rejects(() => listAssignments(corruptDir), /ERR_ASSIGNMENT_CORRUPT/);
+});
+

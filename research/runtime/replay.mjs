@@ -8,8 +8,9 @@ import { EVENT_LOG_FILENAME, verifyEventChain } from "./event-log.mjs";
 
 // Only these events move the session state. Everything else in the study's
 // event vocabulary (intent_updated, material_selected, artifact_saved,
-// timers, ...) is informational and must not disturb the fold.
-const STATE_CHANGING_TYPES = new Set([
+// timers, ...) is informational and must not disturb the fold. Exported so
+// dry-run folds against the exact same set instead of a mirrored copy.
+export const STATE_CHANGING_EVENT_TYPES = new Set([
   "session_started",
   "gate_request",
   "gate_decision",
@@ -80,7 +81,7 @@ export async function replayRun(runDir) {
   let state = null;
 
   for (const event of chain.events) {
-    if (!STATE_CHANGING_TYPES.has(event.type)) continue;
+    if (!STATE_CHANGING_EVENT_TYPES.has(event.type)) continue;
 
     if (state === null) {
       const session = event.type === "session_started" ? event.payload : null;

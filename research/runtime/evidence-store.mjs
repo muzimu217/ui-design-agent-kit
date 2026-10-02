@@ -3,9 +3,12 @@ import path from "node:path";
 
 import { sha256Hex, stableStringify } from "./package-schema.mjs";
 import { ResearchRuntimeError } from "./errors.mjs";
+import { MANIFEST_FILENAME } from "./constants.mjs";
 import { EVENT_LOG_FILENAME, verifyEventChain } from "./event-log.mjs";
 
-export const MANIFEST_FILENAME = "MANIFEST.sha256";
+// Shared leaf constant; re-exported so existing importers (dry-run, tooling)
+// keep one canonical source and the filename cannot drift again.
+export { MANIFEST_FILENAME };
 export const MANIFEST_SCHEMA_VERSION = 1;
 
 const HEX64 = /^[a-f0-9]{64}$/;

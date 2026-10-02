@@ -7,7 +7,7 @@
     "streak100": 54,
     "tests": "95/95",
     "a11y": "0 违规",
-    "audits": "23 批零上下文回归审计"
+    "audits": "24 批零上下文回归审计"
   },
   "activeTask": {
     "id": "R221-01",
@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-02 01:2x",
+      "event": "第 24 批审计回填：并行会话 research 三笔（共享常量+fail-closed/session runner+assignment store/console+verifyRun legality）=CLEAN 5/5（160/160 测试实跑/四大机制真实现含 fail-closed 只容忍 ENOENT/verifyRun 双轴分离/CLI spawnSync 实调/零台账触碰）；非阻塞观察=evidence-store pathExists fail-open 系前批遗留待后续收口",
+      "type": "audit"
+    },
+    {
       "time": "10-01 08:0x",
       "event": "第 23 批审计回填：并行会话 research 基础设施四笔=CLEAN 5/5（45/45 测试实跑全过/负面断言真实（篡改检出 ERR_SHA_MISMATCH 等）/冻结·防篡改·确定性机制非空壳/核心台账零触碰/零夹带）；观察=assignment seed 仅参与 ID 哈希不影响行分配（确定性不受影响）",
       "type": "audit"
@@ -107,11 +112,6 @@
       "time": "09-30 16:3x",
       "event": "批次五十二入账：microfix-channel-applied 100 分（微修通道纪律——恰好三处一轮收口+两步 git 改前改后+对比度实算三档取舍）——68/71 96%",
       "type": "eval"
-    },
-    {
-      "time": "09-30 15:4x",
-      "event": "第 19 批审计回填：批次 49/50+证据副本采纳笔=CLEAN 5/5（66 键/断言脚本绝对路径/证据副本来源链 PROVENANCE/零夹带）；顺手清理排版 run 的冗余结果文件（results.json 引用件保留）",
-      "type": "audit"
     }
   ]
 }

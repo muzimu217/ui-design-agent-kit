@@ -7,16 +7,17 @@
     "streak100": 54,
     "tests": "95/95",
     "a11y": "0 违规",
-    "audits": "24 批零上下文回归审计"
+    "audits": "24 批零上下文回归审计",
+    "e3Blind": "首跑 100/88/80（轮 282）"
   },
   "activeTask": {
-    "id": "R194-01",
-    "name": "设计尺度扩展（平面专家续批）",
-    "status": "claimed——A2 平面技能评估已完成（轮 281），收纳范围待用户裁决",
-    "startedAt": "2026-09-29",
-    "currentGate": "待用户裁决：canvas-design(P1)/algorithmic-art(P2) 收纳范围",
-    "lastArtifact": "A2 评估（轮 281）：四候选一手取证，建议收 canvas-design（Apache-2.0 海报/封面正中靶心，字体按需取用不入库）+ algorithmic-art（p5.js 最强代码范式契合）；不收 brand-guidelines/theme-factory；结论入 INDEX",
-    "next": "用户一句话定收纳范围→执行批（vendoring+改名+门链整合+三连）；A3 平面语料/B 视频五修续批排后"
+    "id": "R101-01",
+    "name": "e3 盲评双轨启动",
+    "status": "executed-pending-record——首跑完成（轮 282），--record 顺延",
+    "startedAt": "2026-10-03",
+    "currentGate": "待 results.json 并行 WIP 释放后执行三条 --record 即核销",
+    "lastArtifact": "evals/runs/e3-blind-r282/：盲评包（标准剥离）→零上下文代理盲答→批改 100/88/80（扣分=成因推断中立+核查排序）；三份 --data 预校验合规",
+    "next": "下轮查 results.json 是否释放→--record ×3→INDEX 核销；另 A2 平面技能收纳仍待用户裁决"
   },
   "gates": [
     {
@@ -64,6 +65,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-03 05:xx",
+      "event": "R101-01 e3 盲评双轨首跑（机制建成 24 天后首次运行）：零上下文代理盲答三决策案例，按隐藏标准批改 100/88/80 真实梯度；证据入库 evals/runs/e3-blind-r282/（ef0a697 已推）；--record 因并行 WIP 占用 results.json 顺延",
+      "type": "ticket"
+    },
+    {
       "time": "10-03 11:xx",
       "event": "新增 JIEJOE 学习磁带（用户令）：output/jiejoe-study/ 隔离存储+零上下文代理 R1 出 324 行 D1 笔记（原语系统/stroke-dasharray 一物五用/稳定性分级；假设=把效果还原为原语）；不回写知识库",
       "type": "research"
@@ -107,11 +113,6 @@
       "time": "10-01 08:0x",
       "event": "第 23 批审计回填：并行会话 research 基础设施四笔=CLEAN 5/5（45/45 测试实跑全过/负面断言真实（篡改检出 ERR_SHA_MISMATCH 等）/冻结·防篡改·确定性机制非空壳/核心台账零触碰/零夹带）；观察=assignment seed 仅参与 ID 哈希不影响行分配（确定性不受影响）",
       "type": "audit"
-    },
-    {
-      "time": "09-30 21:4x",
-      "event": "R221-01 执行批完成：Remotion 官方 6 技能重 vendoring 至上游 HEAD a9b199e（内容 4.0.531 语义）+锁/NOTICES 同笔；6 个新技能目录另开评估单",
-      "type": "upgrade"
     }
   ]
 }

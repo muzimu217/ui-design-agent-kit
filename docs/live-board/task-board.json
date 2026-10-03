@@ -7,7 +7,7 @@
     "streak100": 54,
     "tests": "161/161",
     "a11y": "0 违规",
-    "audits": "24 批零上下文回归审计",
+    "audits": "25 批零上下文回归审计（最新批 P0/P1 零，P2×5 三修两记档）",
     "e3Blind": "首跑 100/88/80（轮 282）",
     "guardSmoke": "四族变异全翻红（轮 283）"
   },
@@ -66,6 +66,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-03 07:xx",
+      "event": "审计批 25 完成（零上下文代理）：近五笔 P0/P1 零，P2×5 观察三条当场整改（63bf1c1：worktree 掺 PID/盲评包落库/时区统一）；日报 daily-report-2026-10-03.html 出稿；JIEJOE 磁带 D2=82/82 全量补齐",
+      "type": "audit"
+    },
+    {
       "time": "10-03 06:xx",
       "event": "R050-07 核销：drift 守护变异冒烟自检入库（17f469e）——worktree 隔离变异四族守卫全翻红；发现并修复嵌套 node --test 的 NODE_TEST_CONTEXT 静默失真坑；测试计数 151→152 级联",
       "type": "ticket"
@@ -109,11 +114,6 @@
       "time": "10-01 15:2x",
       "event": "R239-01 评估单出：六新技能 content/size 摸清，建议收 captions+interactivity（+56K），maps/saas/upgrade 不收，multimedia 待定——等用户一句话",
       "type": "eval"
-    },
-    {
-      "time": "10-02 01:2x",
-      "event": "第 24 批审计回填：并行会话 research 三笔（共享常量+fail-closed/session runner+assignment store/console+verifyRun legality）=CLEAN 5/5（160/160 测试实跑/四大机制真实现含 fail-closed 只容忍 ENOENT/verifyRun 双轴分离/CLI spawnSync 实调/零台账触碰）；非阻塞观察=evidence-store pathExists fail-open 系前批遗留待后续收口",
-      "type": "audit"
     }
   ]
 }

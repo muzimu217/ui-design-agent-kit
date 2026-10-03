@@ -5,19 +5,19 @@
     "corpus": "70/71",
     "corpusPercent": 99,
     "streak100": 54,
-    "tests": "98/98",
+    "tests": "100/100",
     "a11y": "0 违规",
-    "audits": "26 批（进行中，后台）",
-    "lintRules": "4 条（transition-all/will-change/negative-margin/tag-balance）"
+    "audits": "26 批（P1×3+P2×2 已整改）",
+    "prototypeGates": "三门全真工具：build/detail-lint 四规则/lint:spec"
   },
   "activeTask": {
-    "id": "原型交接协议配套（用户 10-03 令「完善它」）",
-    "name": "三道轻门第二道：反幻觉 lint 扩展",
-    "status": "已完成 d597a37——有效性证明闭环（基线 21 条/植入即拦/还原复绿）",
+    "id": "原型交接协议（用户 10-03 令「完善它」）",
+    "name": "三门工具化收口",
+    "status": "完成 340a5bd——三道轻门全部为真工具",
     "startedAt": "2026-10-03",
-    "currentGate": "四态 eval 场景被 results.json+eval-report 双 WIP 锁阻塞，待释放",
-    "lastArtifact": "detail-lint 4 规则：transition-all/will-change/negative-margin/tag-balance；审计批 26 后台运行中（8 笔提交+研究线边界）",
-    "next": "审计批 26 结论回填；results.json/eval-report WIP 释放后：四态场景+R101-01 --record 双批齐发"
+    "currentGate": "四态 eval 场景仍被 results.json+eval-report 双 WIP 锁阻塞",
+    "lastArtifact": "lint:spec：契约×mock 字段一致性机检（宽松匹配报真断点）；协议 §5 已接线",
+    "next": "双锁释放→四态场景批+R101-01 --record 双发；40 手册中文化顺延（4.5.0 重 vendoring 刚落地，翻译会倍增下次升级成本——建议用户裁决时机）"
   },
   "gates": [
     {
@@ -65,6 +65,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-03 13:xx",
+      "event": "规格门工具化（340a5bd）：lint:spec 契约×mock 字段机检——原型交接协议三门全为真工具（build/detail-lint/lint:spec）；三连绿 100/100",
+      "type": "ticket"
+    },
+    {
       "time": "10-03 10:xx",
       "event": "detail-lint 反幻觉扩展落地（d597a37）：负 margin+HTML 标签配平两规则，基线 21 条存量 deliberately 记入，植入即拦有效性证明闭环；三连绿 98/98",
       "type": "ticket"
@@ -108,11 +113,6 @@
       "time": "10-03 04:xx",
       "event": "R194-01 A2 平面技能评估收口：建议收 canvas-design+algorithmic-art，不收 brand-guidelines/theme-factory；收纳待用户裁决；仓库本体零提交（并行 WIP 在途避让）",
       "type": "ticket"
-    },
-    {
-      "time": "10-02 01:5x",
-      "event": "缺口 4 首个契约模板落地：docs/templates/design-contract-dark-saas-dashboard.md——暗色 SaaS 仪表盘设计契约（预填默认值+语义 token 双值+质量门槛），复制替换【】即可用",
-      "type": "docs"
     }
   ]
 }

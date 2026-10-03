@@ -257,7 +257,8 @@
         "design-contract.md",
         "copy-contract.md"
       ],
-      "export": "full"
+      "export": "full",
+      "leanCore": false
     }
   ]
 }

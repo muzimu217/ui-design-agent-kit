@@ -27,7 +27,7 @@
 
 ## 实证核验矩阵（Round 1）
 
-| 检查 | 结果 | 证据（research/ 或 docs/shots/） |
+| 检查 | 结果 | 证据（docs/shots/；原 research/ 路径已随研究线迁出至独立研究仓，见 2026-10-02 迁出裁定） |
 | --- | --- | --- |
 | 桌面 1440 主流程（Hero→换色→三屏→刮擦→价格→页脚） | 通过 | hero-desktop / color-theater-rose / pricing / process-scrub |
 | 五色换装：3D 材质+色晕+色名联动 | 通过（玫瑰红实测） | color-theater-rose |

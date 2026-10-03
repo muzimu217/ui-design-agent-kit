@@ -64,6 +64,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-02 01:5x",
+      "event": "缺口 4 首个契约模板落地：docs/templates/design-contract-dark-saas-dashboard.md——暗色 SaaS 仪表盘设计契约（预填默认值+语义 token 双值+质量门槛），复制替换【】即可用",
+      "type": "docs"
+    },
+    {
       "time": "10-01 16:3x",
       "event": "缺口 1 落地：大众化表述对照表 docs/uak-mass-audience-mapping.md——8 组核心能力映射+7 条 B 站推广标题翻译（「拯救丑 UI」「5 种丑法」「54 次全过」等），推广 playbook 可直接引用",
       "type": "strategy"
@@ -107,11 +112,6 @@
       "time": "09-30 19:5x",
       "event": "第 21 批审计回填：批次 53 证据与夹具矛盾（浏览器 cssText 规范化盲区）→整改=夹具 token 化+断言增加源文件级 hex 扫描+--rerun 重录（第 2 次 100）；家族行切坏星号复发修复+新增守卫测试（family line stars 断言，测试总量 95）；quality-monitor 计数行同笔 86/86",
       "type": "audit"
-    },
-    {
-      "time": "09-30 19:3x",
-      "event": "R149-01 收尾报告：评测扩量 done-pending-verify（70/71 99%，批次一至五十四连续 100，唯一未录=挂起中的 vue-video）；B 站晚间漫游=国庆节点霸榜观察",
-      "type": "milestone"
     }
   ]
 }

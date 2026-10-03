@@ -1,0 +1,16 @@
+PASS 数据单口：首行编号来自 mock_data.json — DOM=SV-0750 mock=SV-0750
+PASS 组件标记零硬编码业务数据 — 静态源文件（剥 script）无 mock 值
+PASS 四态可切换：normal
+PASS 四态可切换：loading
+PASS 四态可切换：empty
+PASS 四态可切换：error
+PASS URL 参数直达空态
+PASS 骨架 stats 卡数=stats 键数 — 3
+PASS 骨架行数=items.length — 4 vs 4
+PASS 空态=行动邀请非裸提示
+PASS 错误态=原因+修复
+PASS 语义 token 外零自由 hex — 无
+PASS console 零错误
+四态截图已写 state-*.png
+
+总计: 13/13 PASS

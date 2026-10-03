@@ -27,6 +27,7 @@ export function flattenMock(data, prefix = "") {
   }
   if (data !== null && typeof data === "object") {
     for (const [key, value] of Object.entries(data)) {
+      if (key.startsWith("_")) continue; // 下划线前缀=元数据注记（如 _schema），非业务字段
       const full = prefix ? `${prefix}.${key}` : key;
       paths.add(full);
       for (const sub of flattenMock(value, full)) paths.add(sub);
@@ -94,6 +95,7 @@ async function main() {
 export async function selfTest() {
   const assert = (await import("node:assert/strict")).default;
   const mock = {
+    _schema: "annotation keys are skipped",
     users: [{ id: 1, name: "a", avatar: "x.png" }],
     stats: { total: 3, change_rate: 0.2 },
   };
@@ -101,6 +103,7 @@ export async function selfTest() {
   for (const expected of ["users", "users.id", "users.name", "users.avatar", "stats", "stats.total", "stats.change_rate"]) {
     assert.ok(paths.has(expected), `flatten 应含 ${expected}`);
   }
+  assert.ok(![...paths].some((p2) => p2.includes("_schema")), "下划线元数据键不得入字段集");
   const ok = checkContract(paths, "- 用户列表：id, name, avatar ← GET /api/users\n- 统计卡：stats.total, stats.change_rate ← GET /api/stats\n");
   assert.equal(ok.length, 0, "登记齐全应零问题");
   const bad = checkContract(paths, "- 用户列表：id, name ← GET /api/users\n");

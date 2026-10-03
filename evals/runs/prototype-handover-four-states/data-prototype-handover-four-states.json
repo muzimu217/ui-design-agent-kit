@@ -1,0 +1,20 @@
+{
+  "scores": {
+    "All dynamic content binds from the single mock data port with zero hardcoded business data in components": 2,
+    "All four states (normal/loading/empty/error) are present and switchable without code edits": 2,
+    "The loading skeleton shapes match the normal-state blocks one-to-one": 2,
+    "Empty and error states carry action-inviting and cause-plus-repair copy per the copy contract": 2,
+    "API_CONTRACT.md registers every mock field and ships with the delivery": 2
+  },
+  "failHits": [],
+  "evidence": [
+    "evals/runs/prototype-handover-four-states/results.txt",
+    "evals/runs/prototype-handover-four-states/state-normal.png",
+    "evals/runs/prototype-handover-four-states/state-empty.png",
+    "evals/runs/prototype-handover-four-states/state-loading.png",
+    "evals/runs/prototype-handover-four-states/state-error.png",
+    "evals/runs/prototype-handover-four-states/fixture/mock_data.json",
+    "evals/runs/prototype-handover-four-states/fixture/API_CONTRACT.md"
+  ],
+  "notes": "四态场景预执行（轮 292，双锁下先做实执行）：13/13 实机断言 PASS+lint:spec 8 字段全登记+D10 四截图主代理复核；--record 待 results.json/eval-report 双锁释放（scenario-staged.json 为粘贴就绪稿）；内环记录=断言两处自身缺陷（渲染后 DOM 查硬编码/纯数字巧合命中）+夹具一处真缺陷（.pill.ok 自由 hex）当场全修"
+}

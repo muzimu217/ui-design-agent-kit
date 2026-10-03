@@ -3,7 +3,7 @@
 - 轮次：282（2026-10-03）
 - 代理：零上下文 general-purpose（37,427 tokens，0 工具调用，纯决策）
 - 盲评包：`output/e3/f1272ff7845c2d4851082e832e51d17359e90113336461ffdc16692feebb9784.json`
-  （eval-e3.mjs 产出，不含 passCriteria/failConditions；包哈希即文件名）
+  （eval-e3.mjs 产出，不含 passCriteria/failConditions；包哈希即文件名；在库副本 blind-packet.json）
 - 盲测边界：代理 prompt 只含 instructions + 三案例 request/context；无仓库上下文、无评分标准
 
 ---

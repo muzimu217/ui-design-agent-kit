@@ -22,7 +22,7 @@ import { ROOT } from "../scripts/verify.mjs";
 
 const exec = promisify(execFile);
 
-const WORKTREE = path.join(ROOT, "output", ".r0507-mutation-worktree");
+const WORKTREE = path.join(ROOT, "output", `.r0507-mutation-worktree-${process.pid}`);
 const DRIFT_TEST = path.join("tests", "doc-drift.test.mjs");
 
 function runTargeted(worktree, pattern) {

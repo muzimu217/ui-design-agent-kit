@@ -7,7 +7,7 @@
   },
   "failHits": [],
   "evidence": [
-    "output/e3/f1272ff7845c2d4851082e832e51d17359e90113336461ffdc16692feebb9784.json",
+    "evals/runs/e3-blind-r282/blind-packet.json",
     "evals/runs/e3-blind-r282/answers-blind-agent.md",
     "evals/runs/e3-blind-r282/grading-r282.md"
   ],

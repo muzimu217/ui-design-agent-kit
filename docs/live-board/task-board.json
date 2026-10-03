@@ -2,23 +2,22 @@
   "updatedAt": "2026-09-30",
   "updatedBy": "轮 220 · 每小时评审循环",
   "stats": {
-    "corpus": "70/71",
+    "corpus": "70/71（四态场景预执行完毕，--record 待双锁）",
     "corpusPercent": 99,
     "streak100": 54,
     "tests": "101/101",
     "a11y": "0 违规",
-    "audits": "27 批（P1×2+P2×3 已整改）",
-    "prototypeGates": "三门全真工具",
-    "references": "25 条"
+    "audits": "27 批",
+    "prototypeGates": "三门全真工具+首靶 8 字段全登记"
   },
   "activeTask": {
-    "id": "审计批 27 整改（13fa12c）",
-    "name": "计数诚实性上锁",
-    "status": "完成——README/identity 计数新锁咬住级联；JIEJOE D3 磁带回带",
+    "id": "prototype-handover-four-states 预执行",
+    "name": "四态场景预执行完毕（d98fd99），--record/级联待双锁",
+    "status": "13/13 实机断言+D10 四截图复核+规格门首靶通过；场景定义就绪稿存 run 目录",
     "startedAt": "2026-10-03",
-    "currentGate": "四态场景仍双锁阻塞；40 手册中文化待用户裁时机",
-    "lastArtifact": "audit-batch-27.md + jiejoe-study/agent-notes/r3-d3-deep-read.md（in/fill/out 时间轴原语发现）",
-    "next": "双锁释放→四态场景+R101-01 --record 双发；磁带 D5 综合报告在望"
+    "currentGate": "双锁（results.json/eval-report 并行 WIP）释放即入册+级联",
+    "lastArtifact": "evals/runs/prototype-handover-four-states/（夹具+契约+13 断言+4 截图+NON-CORPUS）",
+    "next": "双锁释放→粘贴场景→--record→级联 71→72；JIEJOE D5 综合报告（D1-D4 素材已齐，等磁带满 5 天呈用户）"
   },
   "gates": [
     {
@@ -66,6 +65,16 @@
   ],
   "recentFlow": [
     {
+      "time": "10-03 16:xx",
+      "event": "四态场景预执行（d98fd99）：夹具+13/13 实机断言+D10 复核+规格门首靶（反哺下划线键跳过）；内环三修全记录；--record 待双锁",
+      "type": "ticket"
+    },
+    {
+      "time": "10-03 16:xx",
+      "event": "JIEJOE 磁带 D4 回带：24 仓时间线审计+016 与原版 diff（库边界=时间语义）+64.8w 视频确认千问商单（剔除样本建议）；D5 交接就绪",
+      "type": "research"
+    },
+    {
       "time": "10-03 15:xx",
       "event": "审计批 27 整改（13fa12c）：README/identity 测试计数上 doc-drift 新锁（写死数字再也无法静默漂移，锁成即咬住本次级联）；spec-lint 头注释去夸大；JIEJOE D3 磁带回带（in/fill/out 原语+006 精读）",
       "type": "audit"
@@ -104,16 +113,6 @@
       "time": "10-03 07:xx",
       "event": "审计批 25 完成（零上下文代理）：近五笔 P0/P1 零，P2×5 观察三条当场整改（63bf1c1：worktree 掺 PID/盲评包落库/时区统一）；日报 daily-report-2026-10-03.html 出稿；JIEJOE 磁带 D2=82/82 全量补齐",
       "type": "audit"
-    },
-    {
-      "time": "10-03 06:xx",
-      "event": "R050-07 核销：drift 守护变异冒烟自检入库（17f469e）——worktree 隔离变异四族守卫全翻红；发现并修复嵌套 node --test 的 NODE_TEST_CONTEXT 静默失真坑；测试计数 151→152 级联",
-      "type": "ticket"
-    },
-    {
-      "time": "10-03 05:xx",
-      "event": "R101-01 e3 盲评双轨首跑（机制建成 24 天后首次运行）：零上下文代理盲答三决策案例，按隐藏标准批改 100/88/80 真实梯度；证据入库 evals/runs/e3-blind-r282/（ef0a697 已推）；--record 因并行 WIP 占用 results.json 顺延",
-      "type": "ticket"
     }
   ]
 }

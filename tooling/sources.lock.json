@@ -105,6 +105,39 @@
       ]
     },
     {
+      "name": "remotion-captions",
+      "repository": "https://github.com/remotion-dev/skills",
+      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
+      "sourcePath": "skills/remotion-captions",
+      "license": "See current repository terms",
+      "notice": "THIRD_PARTY_NOTICES.md",
+      "adaptations": [
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata"
+      ]
+    },
+    {
+      "name": "remotion-interactivity",
+      "repository": "https://github.com/remotion-dev/skills",
+      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
+      "sourcePath": "skills/remotion-interactivity",
+      "license": "See current repository terms",
+      "notice": "THIRD_PARTY_NOTICES.md",
+      "adaptations": [
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata"
+      ]
+    },
+    {
+      "name": "remotion-multimedia",
+      "repository": "https://github.com/remotion-dev/skills",
+      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
+      "sourcePath": "skills/remotion-multimedia",
+      "license": "See current repository terms",
+      "notice": "THIRD_PARTY_NOTICES.md",
+      "adaptations": [
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata"
+      ]
+    },
+    {
       "name": "uak-design-thinking",
       "repository": "https://github.com/emilkowalski/skills",
       "revision": "d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7",

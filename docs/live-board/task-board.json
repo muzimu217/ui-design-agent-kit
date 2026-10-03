@@ -5,19 +5,20 @@
     "corpus": "70/71",
     "corpusPercent": 99,
     "streak100": 54,
-    "tests": "95/95",
+    "tests": "161/161",
     "a11y": "0 违规",
     "audits": "24 批零上下文回归审计",
-    "e3Blind": "首跑 100/88/80（轮 282）"
+    "e3Blind": "首跑 100/88/80（轮 282）",
+    "guardSmoke": "四族变异全翻红（轮 283）"
   },
   "activeTask": {
     "id": "R101-01",
-    "name": "e3 盲评双轨启动",
-    "status": "executed-pending-record——首跑完成（轮 282），--record 顺延",
+    "name": "e3 盲评双轨（executed-pending-record）",
+    "status": "首跑完成待 --record；R050-07 守护冒烟已顺带核销（17f469e）",
     "startedAt": "2026-10-03",
-    "currentGate": "待 results.json 并行 WIP 释放后执行三条 --record 即核销",
-    "lastArtifact": "evals/runs/e3-blind-r282/：盲评包（标准剥离）→零上下文代理盲答→批改 100/88/80（扣分=成因推断中立+核查排序）；三份 --data 预校验合规",
-    "next": "下轮查 results.json 是否释放→--record ×3→INDEX 核销；另 A2 平面技能收纳仍待用户裁决"
+    "currentGate": "results.json 仍被并行 WIP 占用，--record 三条继续顺延",
+    "lastArtifact": "轮 283：tests/drift-mutation-smoke.test.mjs——四族 drift 守卫变异自检全翻红（worktree 隔离，NODE_TEST_CONTEXT 坑已修）；三连绿 161/161",
+    "next": "查 results.json 释放→--record ×3→核销 R101-01；审计批 25 视提交堆积；A2 技能收纳待用户裁决"
   },
   "gates": [
     {
@@ -65,6 +66,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-03 06:xx",
+      "event": "R050-07 核销：drift 守护变异冒烟自检入库（17f469e）——worktree 隔离变异四族守卫全翻红；发现并修复嵌套 node --test 的 NODE_TEST_CONTEXT 静默失真坑；测试计数 151→152 级联",
+      "type": "ticket"
+    },
+    {
       "time": "10-03 05:xx",
       "event": "R101-01 e3 盲评双轨首跑（机制建成 24 天后首次运行）：零上下文代理盲答三决策案例，按隐藏标准批改 100/88/80 真实梯度；证据入库 evals/runs/e3-blind-r282/（ef0a697 已推）；--record 因并行 WIP 占用 results.json 顺延",
       "type": "ticket"
@@ -107,11 +113,6 @@
     {
       "time": "10-02 01:2x",
       "event": "第 24 批审计回填：并行会话 research 三笔（共享常量+fail-closed/session runner+assignment store/console+verifyRun legality）=CLEAN 5/5（160/160 测试实跑/四大机制真实现含 fail-closed 只容忍 ENOENT/verifyRun 双轴分离/CLI spawnSync 实调/零台账触碰）；非阻塞观察=evidence-store pathExists fail-open 系前批遗留待后续收口",
-      "type": "audit"
-    },
-    {
-      "time": "10-01 08:0x",
-      "event": "第 23 批审计回填：并行会话 research 基础设施四笔=CLEAN 5/5（45/45 测试实跑全过/负面断言真实（篡改检出 ERR_SHA_MISMATCH 等）/冻结·防篡改·确定性机制非空壳/核心台账零触碰/零夹带）；观察=assignment seed 仅参与 ID 哈希不影响行分配（确定性不受影响）",
       "type": "audit"
     }
   ]

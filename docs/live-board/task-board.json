@@ -5,21 +5,19 @@
     "corpus": "70/71",
     "corpusPercent": 99,
     "streak100": 54,
-    "tests": "161/161",
+    "tests": "98/98",
     "a11y": "0 违规",
-    "audits": "25 批零上下文回归审计（最新批 P0/P1 零，P2×5 三修两记档）",
-    "e3Blind": "首跑 100/88/80（轮 282）",
-    "guardSmoke": "四族变异全翻红（轮 283）",
-    "upstream": "impeccable 4.5.0 取证完成（R285-01 claimed，下轮执行批）；remotion 4.0.532 搭车"
+    "audits": "26 批（进行中，后台）",
+    "lintRules": "4 条（transition-all/will-change/negative-margin/tag-balance）"
   },
   "activeTask": {
-    "id": "R285-01",
-    "name": "impeccable 4.5.0 升级执行批",
-    "status": "claimed——取证完成，执行批下轮",
+    "id": "原型交接协议配套（用户 10-03 令「完善它」）",
+    "name": "三道轻门第二道：反幻觉 lint 扩展",
+    "status": "已完成 d597a37——有效性证明闭环（基线 21 条/植入即拦/还原复绿）",
     "startedAt": "2026-10-03",
-    "currentGate": "执行：rsync HEAD 0f7311d3→重放本土化→树哈希→NOTICES/lock 同笔→三连",
-    "lastArtifact": "取证：43 commits 三分类（12 噪声/10 环境刚需修复含 proxy+worktree/11 方法论演进）；remotion 4.0.532 搭车",
-    "next": "执行批→done-pending-verify；R101-01 --record 仍等 results.json 释放；main 已冻结（ruleset 24421799）"
+    "currentGate": "四态 eval 场景被 results.json+eval-report 双 WIP 锁阻塞，待释放",
+    "lastArtifact": "detail-lint 4 规则：transition-all/will-change/negative-margin/tag-balance；审计批 26 后台运行中（8 笔提交+研究线边界）",
+    "next": "审计批 26 结论回填；results.json/eval-report WIP 释放后：四态场景+R101-01 --record 双批齐发"
   },
   "gates": [
     {
@@ -67,6 +65,16 @@
   ],
   "recentFlow": [
     {
+      "time": "10-03 10:xx",
+      "event": "detail-lint 反幻觉扩展落地（d597a37）：负 margin+HTML 标签配平两规则，基线 21 条存量 deliberately 记入，植入即拦有效性证明闭环；三连绿 98/98",
+      "type": "ticket"
+    },
+    {
+      "time": "10-03 10:xx",
+      "event": "审计批 26 已派（后台零上下文）：cc904da..9908cb0 八笔——vendoring 深审+协议批接线+研究线边界红线（research/ 不得重建）",
+      "type": "audit"
+    },
+    {
       "time": "10-03 09:xx",
       "event": "🔴 用户冻结 main：GitHub ruleset 24421799 已建（update/deletion/force 全禁、bypass 空=全员只读）；本循环只写 experiment/uak-paper；R285-01 取证批完成→claimed（43 笔三分类：12 噪声+10 环境刚需修复+11 方法论演进；执行批下轮）",
       "type": "ruling"
@@ -105,16 +113,6 @@
       "time": "10-02 01:5x",
       "event": "缺口 4 首个契约模板落地：docs/templates/design-contract-dark-saas-dashboard.md——暗色 SaaS 仪表盘设计契约（预填默认值+语义 token 双值+质量门槛），复制替换【】即可用",
       "type": "docs"
-    },
-    {
-      "time": "10-01 16:3x",
-      "event": "缺口 1 落地：大众化表述对照表 docs/uak-mass-audience-mapping.md——8 组核心能力映射+7 条 B 站推广标题翻译（「拯救丑 UI」「5 种丑法」「54 次全过」等），推广 playbook 可直接引用",
-      "type": "strategy"
-    },
-    {
-      "time": "10-02 01:4x",
-      "event": "需求→能力→缺口→路径知识资产落地 docs/uak-demand-capability-gap-roadmap.md——七项需求信号/十一项能力映射/四个缺口/近期中期远期路径，持续沉淀机制建立",
-      "type": "strategy"
     }
   ]
 }

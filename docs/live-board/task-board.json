@@ -10,13 +10,13 @@
     "audits": "24 批零上下文回归审计"
   },
   "activeTask": {
-    "id": "R239-01",
-    "name": "Remotion 上游 6 新技能收纳评估",
-    "status": "open——评估单已出，一句话即可裁决",
-    "startedAt": "2026-09-30",
-    "currentGate": "待用户裁决收纳范围",
-    "lastArtifact": "六技能体量/content 摸清：captions 28K/387行(视频刚需建议收)、interactivity 28K/532行(交互契合建议收)、maps 552K/1900行(小众建议不收)、multimedia 24K/214行(待定)、saas 24K/154行(范围外)、upgrade 12K/31行(低价值)",
-    "next": "用户回「收前两个」「全收」或「不收」即可"
+    "id": "R194-01",
+    "name": "设计尺度扩展（平面专家续批）",
+    "status": "claimed——A2 平面技能评估已完成（轮 281），收纳范围待用户裁决",
+    "startedAt": "2026-09-29",
+    "currentGate": "待用户裁决：canvas-design(P1)/algorithmic-art(P2) 收纳范围",
+    "lastArtifact": "A2 评估（轮 281）：四候选一手取证，建议收 canvas-design（Apache-2.0 海报/封面正中靶心，字体按需取用不入库）+ algorithmic-art（p5.js 最强代码范式契合）；不收 brand-guidelines/theme-factory；结论入 INDEX",
+    "next": "用户一句话定收纳范围→执行批（vendoring+改名+门链整合+三连）；A3 平面语料/B 视频五修续批排后"
   },
   "gates": [
     {
@@ -64,6 +64,16 @@
   ],
   "recentFlow": [
     {
+      "time": "10-03 11:xx",
+      "event": "新增 JIEJOE 学习磁带（用户令）：output/jiejoe-study/ 隔离存储+零上下文代理 R1 出 324 行 D1 笔记（原语系统/stroke-dasharray 一物五用/稳定性分级；假设=把效果还原为原语）；不回写知识库",
+      "type": "research"
+    },
+    {
+      "time": "10-03 11:xx",
+      "event": "R194-01 A2 平面技能评估收口：建议收 canvas-design+algorithmic-art，不收 brand-guidelines/theme-factory；收纳待用户裁决；仓库本体零提交（并行 WIP 在途避让）",
+      "type": "ticket"
+    },
+    {
       "time": "10-02 01:5x",
       "event": "缺口 4 首个契约模板落地：docs/templates/design-contract-dark-saas-dashboard.md——暗色 SaaS 仪表盘设计契约（预填默认值+语义 token 双值+质量门槛），复制替换【】即可用",
       "type": "docs"
@@ -102,16 +112,6 @@
       "time": "09-30 21:4x",
       "event": "R221-01 执行批完成：Remotion 官方 6 技能重 vendoring 至上游 HEAD a9b199e（内容 4.0.531 语义）+锁/NOTICES 同笔；6 个新技能目录另开评估单",
       "type": "upgrade"
-    },
-    {
-      "time": "09-30 20:2x",
-      "event": "R221-01 一手取证更新：上游 11 commits/152 files 且 6→12 技能目录结构性重组（嵌套迁移+六个新技能）——升级批分两步（既有重 vendoring+新技能评估）",
-      "type": "research"
-    },
-    {
-      "time": "09-30 19:5x",
-      "event": "第 21 批审计回填：批次 53 证据与夹具矛盾（浏览器 cssText 规范化盲区）→整改=夹具 token 化+断言增加源文件级 hex 扫描+--rerun 重录（第 2 次 100）；家族行切坏星号复发修复+新增守卫测试（family line stars 断言，测试总量 95）；quality-monitor 计数行同笔 86/86",
-      "type": "audit"
     }
   ]
 }

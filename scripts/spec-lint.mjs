@@ -5,8 +5,9 @@ import { pathToFileURL } from "node:url";
 import { ROOT } from "./verify.mjs";
 
 // 原型交接协议（prototype-handover.md）第三道轻门：规格门。
-// 校验 API_CONTRACT.md 与 mock_data.json 的字段一致性——
-// 契约里缺失 mock 中实际存在的字段，或提到 mock 中不存在的字段，都算断点。
+// 校验方向=单向：契约里缺失 mock 中实际存在的字段，算断点。
+// （反向——契约提到 mock 不存在的字段——不检查：契约写"计划中的接口"
+// 属合法前瞻，静默比对会误报；如需反向审计走人工。）
 // 纯静态比对，零依赖；advisory 工具，交接前必跑。
 //
 // Usage:

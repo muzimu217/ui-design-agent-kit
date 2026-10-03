@@ -37,11 +37,15 @@ export function scanLine(line) {
       findings.push({ rule: "will-change-nonwhitelist", detail: `will-change: ${willChange[1].trim()}` });
     }
   }
+  const trimmed = line.trim();
+  if (trimmed.startsWith("//") || trimmed.startsWith("/*") || trimmed.startsWith("*") || trimmed.startsWith("<!--")) {
+    return findings;
+  }
   const marginDecl = line.match(/margin[a-z-]*\s*:\s*([^;}]*)/);
   if (marginDecl && /(^|[\s(,])-\d/.test(marginDecl[1])) {
     findings.push({ rule: "negative-margin", detail: `margin 声明含负值: ${marginDecl[0].trim().slice(0, 120)}` });
   }
-  if (/(?:^|[\s"'`])-(?:m|mx|my|mt|mr|mb|ml)-\d/.test(line)) {
+  if (/(?:^|[\s"'`])-(?:m|mx|my|mt|mr|mb|ml)-(?:\d|\[)/.test(line)) {
     findings.push({ rule: "negative-margin", detail: `Tailwind 负 margin 工具类: ${line.trim().slice(0, 120)}` });
   }
   return findings;

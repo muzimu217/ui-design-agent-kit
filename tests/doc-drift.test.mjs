@@ -47,6 +47,32 @@ test("stale coverage claims are gone from scorekeeping documents", async () => {
   }
 });
 
+test("README and identity cite the current full-suite test count", async () => {
+  // 批 27 P1：README/identity 写死的计数与 quality-monitor 脱钩后即漂移
+  // （96 三处连错两轮）。锁法=与全量实数（tests/ + showcase/tests/）一致，
+  // 漂移即红——不写第二套真相。
+  const countFiles = async (dir) => {
+    const entries = await readdir(dir, { withFileTypes: true });
+    let count = 0;
+    for (const entry of entries) {
+      if (entry.isDirectory()) {
+        count += await countFiles(path.join(dir, entry.name));
+      } else if (entry.name.endsWith(".test.mjs")) {
+        count += (await readFile(path.join(dir, entry.name), "utf8")).match(/^\s*test\(/gm)?.length ?? 0;
+      }
+    }
+    return count;
+  };
+  const fullCount = (await countFiles(path.join(ROOT, "tests"))) + (await countFiles(path.join(ROOT, "showcase/tests")));
+  for (const file of ["README.md", "docs/identity-and-direction.md"]) {
+    const source = await read(file);
+    assert.ok(
+      source.includes(`${fullCount} 项`),
+      `${file} must cite the current full-suite test count (${fullCount} 项)`,
+    );
+  }
+});
+
 test("quality-monitor metric rows stay current with the corpus and the test count", async () => {
   // R106-02 (round 110 escalation): quality-monitor cited stale numbers and
   // sat outside every drift guard. Both machine-derivable rows are locked

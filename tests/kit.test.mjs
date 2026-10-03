@@ -15,8 +15,9 @@ test("installed skills, references, and pinned MCP config are complete", async (
     "gsap-react", "gsap-scrolltrigger", "gsap-timeline", "gsap-utils",
     "jiejoe-design", "motion",
     "promotion-playbook",
-    "remotion-best-practices", "remotion-create", "remotion-docs",
-    "remotion-markup", "remotion-render", "remotion-studio",
+    "remotion-best-practices", "remotion-captions", "remotion-create", "remotion-docs",
+    "remotion-interactivity", "remotion-markup", "remotion-multimedia", "remotion-render",
+    "remotion-studio",
     "remotion-video-agent", "uak-design-system", "uak-design-thinking", "uak-visual-critique", "ui-design-agent",
   ]);
 });

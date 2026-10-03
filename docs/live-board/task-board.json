@@ -7,16 +7,16 @@
     "streak100": 54,
     "tests": "95/95",
     "a11y": "0 违规",
-    "audits": "21 批零上下文回归审计"
+    "audits": "24 批零上下文回归审计"
   },
   "activeTask": {
-    "id": "R221-01",
-    "name": "Remotion 4.0.370→4.0.531 升级执行批",
-    "status": "done-pending-verify（6 技能重 vendoring 至上游 HEAD a9b199e，内容 4.0.531 语义）",
+    "id": "R239-01",
+    "name": "Remotion 上游 6 新技能收纳评估",
+    "status": "open——评估单已出，一句话即可裁决",
     "startedAt": "2026-09-30",
-    "currentGate": "执行完成；待下轮复核即 verified",
-    "lastArtifact": "6 技能 rsync 镜像+frontmatter 逐个规范化+树哈希复验（残差仅剩自有适配）；锁/NOTICES 同笔",
-    "next": "新 6 技能（captions/interactivity/maps/multimedia/saas/upgrade）评估单待用户裁决；R149-01 done-pending-verify 等用户复核"
+    "currentGate": "待用户裁决收纳范围",
+    "lastArtifact": "六技能体量/content 摸清：captions 28K/387行(视频刚需建议收)、interactivity 28K/532行(交互契合建议收)、maps 552K/1900行(小众建议不收)、multimedia 24K/214行(待定)、saas 24K/154行(范围外)、upgrade 12K/31行(低价值)",
+    "next": "用户回「收前两个」「全收」或「不收」即可"
   },
   "gates": [
     {
@@ -64,6 +64,41 @@
   ],
   "recentFlow": [
     {
+      "time": "10-02 01:5x",
+      "event": "缺口 4 首个契约模板落地：docs/templates/design-contract-dark-saas-dashboard.md——暗色 SaaS 仪表盘设计契约（预填默认值+语义 token 双值+质量门槛），复制替换【】即可用",
+      "type": "docs"
+    },
+    {
+      "time": "10-01 16:3x",
+      "event": "缺口 1 落地：大众化表述对照表 docs/uak-mass-audience-mapping.md——8 组核心能力映射+7 条 B 站推广标题翻译（「拯救丑 UI」「5 种丑法」「54 次全过」等），推广 playbook 可直接引用",
+      "type": "strategy"
+    },
+    {
+      "time": "10-02 01:4x",
+      "event": "需求→能力→缺口→路径知识资产落地 docs/uak-demand-capability-gap-roadmap.md——七项需求信号/十一项能力映射/四个缺口/近期中期远期路径，持续沉淀机制建立",
+      "type": "strategy"
+    },
+    {
+      "time": "10-02 01:3x",
+      "event": "B 站 AI UI 内容生态调研落地 docs/bilibili-ai-ui-content-landscape.md——竞品地图+「拯救丑设计」对标赛道验证+工作流包装缺失发现+五条可行动推广策略",
+      "type": "research"
+    },
+    {
+      "time": "10-01 15:2x",
+      "event": "R239-01 评估单出：六新技能 content/size 摸清，建议收 captions+interactivity（+56K），maps/saas/upgrade 不收，multimedia 待定——等用户一句话",
+      "type": "eval"
+    },
+    {
+      "time": "10-02 01:2x",
+      "event": "第 24 批审计回填：并行会话 research 三笔（共享常量+fail-closed/session runner+assignment store/console+verifyRun legality）=CLEAN 5/5（160/160 测试实跑/四大机制真实现含 fail-closed 只容忍 ENOENT/verifyRun 双轴分离/CLI spawnSync 实调/零台账触碰）；非阻塞观察=evidence-store pathExists fail-open 系前批遗留待后续收口",
+      "type": "audit"
+    },
+    {
+      "time": "10-01 08:0x",
+      "event": "第 23 批审计回填：并行会话 research 基础设施四笔=CLEAN 5/5（45/45 测试实跑全过/负面断言真实（篡改检出 ERR_SHA_MISMATCH 等）/冻结·防篡改·确定性机制非空壳/核心台账零触碰/零夹带）；观察=assignment seed 仅参与 ID 哈希不影响行分配（确定性不受影响）",
+      "type": "audit"
+    },
+    {
       "time": "09-30 21:4x",
       "event": "R221-01 执行批完成：Remotion 官方 6 技能重 vendoring 至上游 HEAD a9b199e（内容 4.0.531 语义）+锁/NOTICES 同笔；6 个新技能目录另开评估单",
       "type": "upgrade"
@@ -77,41 +112,6 @@
       "time": "09-30 19:5x",
       "event": "第 21 批审计回填：批次 53 证据与夹具矛盾（浏览器 cssText 规范化盲区）→整改=夹具 token 化+断言增加源文件级 hex 扫描+--rerun 重录（第 2 次 100）；家族行切坏星号复发修复+新增守卫测试（family line stars 断言，测试总量 95）；quality-monitor 计数行同笔 86/86",
       "type": "audit"
-    },
-    {
-      "time": "09-30 19:3x",
-      "event": "R149-01 收尾报告：评测扩量 done-pending-verify（70/71 99%，批次一至五十四连续 100，唯一未录=挂起中的 vue-video）；B 站晚间漫游=国庆节点霸榜观察",
-      "type": "milestone"
-    },
-    {
-      "time": "09-30 18:3x",
-      "event": "批次五十四入账：data-dense-standards-applied 100 分（数据密集标准——12 列 300 行/粘性表头/列宽稳定/三通道状态/骨架屏/批量逐条报告，实机断言×10）——70/71 99%，扩量实质收尾",
-      "type": "eval"
-    },
-    {
-      "time": "09-30 17:4x",
-      "event": "第 20 批审计 verdict 不 CLEAN→三项当场整改：copy/dark 结果证据 0 字节重生成（教训定稿：断言脚本结果落盘一律 stdout 重定向，脚本内 writeFile 必产 0 字节）、§4.1 家族行 3 处切坏星号清零、文案夹具注释反模式字面清零；整改笔 196ac7f/9be2bb1 已推已上主干",
-      "type": "audit"
-    },
-    {
-      "time": "09-30 17:3x",
-      "event": "批次五十三入账：dark-surface-tokens-applied 100 分（暗面 token 纪律——亮度阶梯/非纯黑白负路径/rgba 白描边/三档文字/强调色重校准/组件零硬编码 hex，实机断言×8）——69/71 97%",
-      "type": "eval"
-    },
-    {
-      "time": "09-30 16:3x",
-      "event": "批次五十二入账：microfix-channel-applied 100 分（微修通道纪律——恰好三处一轮收口+两步 git 改前改后+对比度实算三档取舍）——68/71 96%",
-      "type": "eval"
-    },
-    {
-      "time": "09-30 15:4x",
-      "event": "第 19 批审计回填：批次 49/50+证据副本采纳笔=CLEAN 5/5（66 键/断言脚本绝对路径/证据副本来源链 PROVENANCE/零夹带）；顺手清理排版 run 的冗余结果文件（results.json 引用件保留）",
-      "type": "audit"
-    },
-    {
-      "time": "09-30 15:3x",
-      "event": "批次五十一入账：copy-contract-applied 100 分（文案契约落地——机制词清零/错误含因与修/空态行动邀请/动作词一致实测×7）——67/71 94%",
-      "type": "eval"
     }
   ]
 }

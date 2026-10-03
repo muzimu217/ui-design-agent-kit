@@ -7,17 +7,18 @@
     "streak100": 54,
     "tests": "100/100",
     "a11y": "0 违规",
-    "audits": "26 批（P1×3+P2×2 已整改）",
-    "prototypeGates": "三门全真工具：build/detail-lint 四规则/lint:spec"
+    "audits": "26 批",
+    "prototypeGates": "三门全真工具",
+    "references": "25 条（+video-craft）"
   },
   "activeTask": {
-    "id": "原型交接协议（用户 10-03 令「完善它」）",
-    "name": "三门工具化收口",
-    "status": "完成 340a5bd——三道轻门全部为真工具",
-    "startedAt": "2026-10-03",
-    "currentGate": "四态 eval 场景仍被 results.json+eval-report 双 WIP 锁阻塞",
-    "lastArtifact": "lint:spec：契约×mock 字段一致性机检（宽松匹配报真断点）；协议 §5 已接线",
-    "next": "双锁释放→四态场景批+R101-01 --record 双发；40 手册中文化顺延（4.5.0 重 vendoring 刚落地，翻译会倍增下次升级成本——建议用户裁决时机）"
+    "id": "R194-01",
+    "name": "B 视频五修指令层落地（eefe03c）",
+    "status": "done-pending-verify——video-craft 军规入册；A3 语料仍双锁阻塞",
+    "startedAt": "2026-09-29",
+    "currentGate": "待用户复核；A3 平面语料等 results.json/eval-report 释放",
+    "lastArtifact": "video-craft.md：五修军规（录自家 demo/镜头语言/排版/声音声明式/叙事结构）；SKILL 视频专家行改写 597 行",
+    "next": "双锁释放→四态场景+R101-01 --record 双发；40 手册中文化待用户裁时机"
   },
   "gates": [
     {
@@ -65,6 +66,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-03 14:xx",
+      "event": "R194-01 B 视频五修指令层落地（eefe03c）：video-craft 军规入册（录自家 demo 禁平涂/镜头语言/排版/声音声明式/叙事节奏），SKILL 视频专家行改写；JIEJOE 磁带零回写",
+      "type": "ticket"
+    },
+    {
       "time": "10-03 13:xx",
       "event": "规格门工具化（340a5bd）：lint:spec 契约×mock 字段机检——原型交接协议三门全为真工具（build/detail-lint/lint:spec）；三连绿 100/100",
       "type": "ticket"
@@ -108,11 +114,6 @@
       "time": "10-03 04:xx",
       "event": "新增 JIEJOE 学习磁带（用户令）：output/jiejoe-study/ 隔离存储+零上下文代理 R1 出 324 行 D1 笔记（原语系统/stroke-dasharray 一物五用/稳定性分级；假设=把效果还原为原语）；不回写知识库",
       "type": "research"
-    },
-    {
-      "time": "10-03 04:xx",
-      "event": "R194-01 A2 平面技能评估收口：建议收 canvas-design+algorithmic-art，不收 brand-guidelines/theme-factory；收纳待用户裁决；仓库本体零提交（并行 WIP 在途避让）",
-      "type": "ticket"
     }
   ]
 }

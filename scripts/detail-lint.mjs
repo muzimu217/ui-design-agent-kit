@@ -6,16 +6,20 @@ import { ROOT } from "./verify.mjs";
 
 // R060-01: the statically checkable subset of detail-constants.md — rule 10
 // (no `transition: all`) and rule 11 (`will-change` whitelist: transform,
-// opacity, filter only). Pure grep, no new dependencies. Existing violations
-// are grandfathered through output/detail-lint-report/baseline.json; only
-// violations not in the baseline fail (tightening-baseline strategy, same
-// shape as the planned a11y sweep). Advisory before release: not a CI gate.
+// opacity, filter only). R288-anti-hallucination (2026-10-03, prototype
+// handover protocol's second light gate): negative margins (CSS declarations
+// and Tailwind-style negative utilities) and unbalanced HTML tags. Pure
+// grep/regex, no new dependencies. Existing violations are grandfathered
+// through output/detail-lint-report/baseline.json; only violations not in the
+// baseline fail (tightening-baseline strategy, same shape as the a11y sweep).
+// Advisory before release/handover: not a CI gate.
 //
 // Usage:
 //   npm run lint:detail                        scan; first run records the baseline
 //   npm run lint:detail -- --update-baseline   re-record the baseline deliberately
 
 const WILL_CHANGE_ALLOWED = new Set(["transform", "opacity", "filter"]);
+const VOID_ELEMENTS = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"]);
 const EXTENSIONS = new Set([".tsx", ".ts", ".css", ".html"]);
 const REPORT_DIR = "output/detail-lint-report";
 const BASELINE_PATH = path.join(ROOT, REPORT_DIR, "baseline.json");
@@ -33,6 +37,49 @@ export function scanLine(line) {
       findings.push({ rule: "will-change-nonwhitelist", detail: `will-change: ${willChange[1].trim()}` });
     }
   }
+  const marginDecl = line.match(/margin[a-z-]*\s*:\s*([^;}]*)/);
+  if (marginDecl && /(^|[\s(,])-\d/.test(marginDecl[1])) {
+    findings.push({ rule: "negative-margin", detail: `margin 声明含负值: ${marginDecl[0].trim().slice(0, 120)}` });
+  }
+  if (/(?:^|[\s"'`])-(?:m|mx|my|mt|mr|mb|ml)-\d/.test(line)) {
+    findings.push({ rule: "negative-margin", detail: `Tailwind 负 margin 工具类: ${line.trim().slice(0, 120)}` });
+  }
+  return findings;
+}
+
+// 规则 D：.html 文件的标签配平（stack 配对；void 元素与自闭合跳过；
+// 注释与 script/style 内部先剥除，防字符串比较符误报）。advisory 用，
+// 不追求完整 HTML 规范——只抓"未闭合/错配"这类交接断点。
+export function checkTagBalance(text, file) {
+  const findings = [];
+  const stripped = text
+    .replace(/<!--[\s\S]*?-->/g, (m) => " ".repeat(m.length))
+    .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, (m) => " ".repeat(m.length));
+  const tagRe = /<(\/?)([a-zA-Z][a-zA-Z0-9-]*)((?:"[^"]*"|'[^']*'|[^>"'])*)>/g;
+  const stack = [];
+  let match;
+  while ((match = tagRe.exec(stripped)) !== null) {
+    const closing = match[1] === "/";
+    const tag = match[2].toLowerCase();
+    if (VOID_ELEMENTS.has(tag) || match[3].trimEnd().endsWith("/")) continue;
+    const lineNo = stripped.slice(0, match.index).split(/\r?\n/).length;
+    if (!closing) {
+      stack.push({ tag, lineNo });
+      continue;
+    }
+    const openIndex = stack.map((entry) => entry.tag).lastIndexOf(tag);
+    if (openIndex === -1) {
+      findings.push({ file, line: lineNo, rule: "tag-balance", detail: `</${tag}> 无对应开标签` });
+      continue;
+    }
+    for (let i = stack.length - 1; i > openIndex; i -= 1) {
+      findings.push({ file, line: stack[i].lineNo, rule: "tag-balance", detail: `<${stack[i].tag}> 未闭合（被 </${tag}> 越过）` });
+    }
+    stack.length = openIndex;
+  }
+  for (const entry of stack) {
+    findings.push({ file, line: entry.lineNo, rule: "tag-balance", detail: `<${entry.tag}> 未闭合（文件结束）` });
+  }
   return findings;
 }
 
@@ -43,6 +90,11 @@ export function scanText(text, file) {
       findings.push({ file, line: index + 1, ...finding, key: `${file}:${finding.rule}:${finding.detail}` });
     }
   });
+  if (file.endsWith(".html")) {
+    for (const finding of checkTagBalance(text, file)) {
+      findings.push({ ...finding, key: `${file}:${finding.rule}:${finding.detail}` });
+    }
+  }
   return findings;
 }
 

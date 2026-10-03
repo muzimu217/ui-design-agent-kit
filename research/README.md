@@ -20,12 +20,15 @@
 | [formative/interview-protocol.md](formative/interview-protocol.md) | 形成性访谈提纲（14 题+假设映射） | **P1 执行版草案，待审定** |
 | [formative/recruitment-formative.md](formative/recruitment-formative.md) | 访谈招募材料（描述卡/问卷/防重叠名单表） | **P1 执行版草案，待审定；P1-3 未开始** |
 | [formative/session-runbook.md](formative/session-runbook.md) | 访谈执行手册（场前/场中/场后+回传清单） | DRAFT（2026-10-01），访谈开始即可用 |
-| [formative/p1-execution-log.md](formative/p1-execution-log.md) | P1 当前状态、证据盘点与下一步入口 | **执行台账；证据采集尚未开始** |
+| [formative/p1-execution-log.md](formative/p1-execution-log.md) | P1 当前状态、证据盘点与下一步入口 | **P1 已闭门（2026-10-02 P1-Gate 通过）** |
 | [formative/session-record-template.md](formative/session-record-template.md) | 单场访谈记录与回传清单 | **执行模板** |
-| [formative/p1-coding-template.md](formative/p1-coding-template.md) | P1-5 逐字编码、频率与假设映射表 | **执行模板；待转写** |
-| [formative/p1-hypothesis-memo-template.md](formative/p1-hypothesis-memo-template.md) | P1-6 假设校准与 P1-Gate 认证表 | **执行模板；待编码** |
+| [formative/p1-coding-v1.md](formative/p1-coding-v1.md) | **P1-5 编码 v1**（Q×2+E×3 书面语料，28 条逐条编码、频率表、新码 FM-11/12/13、反例记录） | **已完成，待用户抽验** |
+| [formative/p1-hypothesis-memo-v1-draft.md](formative/p1-hypothesis-memo-v1-draft.md) | **P1-6 校准备忘录**（H1-H4 判断 + 用户三项裁决记录） | **已认证——P1-Gate 通过（2026-10-02）** |
+| [formative/p1-coding-template.md](formative/p1-coding-template.md) ｜ [formative/p1-hypothesis-memo-template.md](formative/p1-hypothesis-memo-template.md) | 编码/备忘录空白模板（后续语料复用） | 模板保留 |
 | [formative/failure-taxonomy-skeleton.md](formative/failure-taxonomy-skeleton.md) | 失败模式编码骨架（10 条先验码+编码产出要求）——P1-5 预置 | v1（2026-10-01），待转写回传开始编码 |
-| [formative/data/README.md](formative/data/README.md) | 原始语料落盘层（Q 问卷回收 / F 访谈 / S 合成 三通道编号规范 + 拉取命令） | 已启用（2026-10-01，`Q-01` 已落盘） |
+| [formative/data/README.md](formative/data/README.md) | 原始语料落盘层（Q 问卷 / F 访谈 / E 外部书面 / S 合成 通道规范 + 拉取命令） | 已启用（Q×2 + E×3 已落盘；E 批 provenance 2026-10-02 用户裁定为真人） |
+| [task-cards-v1.md](task-cards-v1.md) | **P2-1 任务卡草案**（12 张全量：口语化 A/B 双版本+预期缺陷挂 FM 码+跨卡观测字段） | **草案——判据待评分者起草、用户冻结** |
+| [ethics-materials-v1.md](ethics-materials-v1.md) | **P2-4 伦理材料草案**（同意书+匿名化方案+数据管理声明+P1 地区记录补正） | **草案——待用户审定** |
 | [task-pool-candidates.md](task-pool-candidates.md) | 实验任务卡初选（12/71，含排除理由） | DRAFT——Phase 3 定稿冻结 |
 
 ## 已锁定决策（2026-09-30）
@@ -37,16 +40,19 @@
 - 旧语料：挑 8-12 个改标准任务卡，其余封存。
 - 旧论文：不撤回、封存引用，新论文另起。
 
-## 阶段门（当前：P1 进行中——执行模板已备，P1-1/P1-2 待审定，P1-3 招募未开始）
+## 阶段门（当前：**P1-Gate 已通过（2026-10-02）——P2 实验设计定稿进行中**）
 
 ```text
-Phase 0 定题/研究计划冻结 ✅（v1.0，2026-09-30；两步验证协议生效：代理确认 → 诚实认证）
+Phase 0 定题/研究计划冻结 ✅（v1.0，2026-09-30；v1.1 修订=书面语料判据/译文引语/H2 边界表述）
 全阶段任务分解表 ✅（2026-09-30 用户放行 P1 开工）
-Phase 1 形成性访谈 3-5 人 ← 当前
-  ├─ P1-1 访谈提纲 formative/interview-protocol.md（DRAFT 待审定）
-  ├─ P1-2 招募材料 formative/recruitment-formative.md（DRAFT 待审定，审定即可发人）
-  └─ P1-3 招募（用户）→ P1-4 访谈（用户主访）→ P1-5 编码（代理）→ P1-6 校准备忘录（代理确认→用户诚实认证）⛩
-Phase 2 实验设计定稿（任务卡+评分者协议+伦理材料+runner 规格）
+Phase 1 形成性证据 ✅（P1-Gate 2026-10-02 通过：Q×2+E×3 书面语料；编码 v1+备忘录已认证；
+  新码 FM-11/12/13；H2 维持含专业度边界）
+Phase 2 实验设计定稿 ← 当前
+  ├─ P2-1 任务卡定稿（v1 草案起草中：口语化双版本+预期缺陷标注挂 FM 码）
+  ├─ P2-2 评分者协议（v1 草案待修订：吸收 FM-11/12/13）
+  ├─ P2-3 rater-2 落实（用户）
+  ├─ P2-4 伦理材料（v1 草案起草中：同意书+匿名化+数据管理）
+  └─ P2-5 runner 规格书（platform-architecture.md，已有草案）⛩ P2-Gate=设计包整体冻结
 Phase 3 平台改造：最小硬 runner + 任务卡冻结（周 5-6）【代码执行阶段】
 Phase 4 受控实验 10 人 × 2 条件（周 6-9）
 Phase 5 分析 + 4 页短文（周 9-12）

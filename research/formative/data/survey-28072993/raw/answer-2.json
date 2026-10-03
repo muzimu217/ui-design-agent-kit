@@ -1,0 +1,189 @@
+{
+  "id": 2,
+  "survey_id": 28072993,
+  "answer_id": 2,
+  "qq": 0,
+  "respondent_id": 0,
+  "respondent_hashid": "",
+  "respondent_nickname": "",
+  "respondent_avatar": "",
+  "respondent_type": "",
+  "openid": "",
+  "weixin_openid": "",
+  "weixin_openid_hashid": "",
+  "weixin_tp_openid": "",
+  "started_at": "2026-10-01 22:30:55",
+  "started_ts": 1790865055,
+  "ended_at": "2026-10-01 22:52:59",
+  "ended_ts": 1790866379,
+  "score": 0,
+  "wechat_work_user": {
+    "corpid": "",
+    "company_name": "",
+    "user_id": "",
+    "department_ids": null,
+    "name": ""
+  },
+  "smart_campus_user": {
+    "org_id": 0,
+    "org_user_id": "",
+    "org_user_id_hashid": "",
+    "role_id": 0
+  },
+  "weixiao_user": {
+    "school_code": "",
+    "card_number": "",
+    "card_number_hashid": ""
+  },
+  "third_party_user": {
+    "respondent_id": 0,
+    "openid": "",
+    "nickname": ""
+  },
+  "phone_user": {
+    "phone": "",
+    "phone_hashid": ""
+  },
+  "oauth_user": {
+    "provider": "",
+    "openid": "",
+    "respondent_id": 0,
+    "nickname": ""
+  },
+  "answer": [
+    {
+      "id": "p-1-e226",
+      "questions": [
+        {
+          "id": "q-1-c1ee",
+          "identity": "",
+          "type": "textarea",
+          "sub_type": 0,
+          "text": "计算机类的学习，有生成过视频，前几天，市面上常用的豆包，千问，pavo",
+          "sensitive": false
+        },
+        {
+          "id": "q-2-6bf3",
+          "identity": "",
+          "type": "textarea",
+          "sub_type": 0,
+          "text": "我想要生成一个AI漫剧的分镜脚本，每条提示词只描述当前镜头真实出现的人物、场景、道具和视觉效里。当前没有出现的后续内容不要提及。 全程保持人物稳定对焦，避免虚焦和焦点呼吸。保持人物外形、服装、站位、持物手、道具数量、场景结构和光线方向一致。避免人物换边、道具换手、道具复制、肢体异常、动作跳变、错误人物开口、字幕、伪文字和水印。 输出前自行检查剧本、资产、对白、时长和镜头衔接，发现问题直接修正，只输出最终版本。",
+          "sensitive": false
+        },
+        {
+          "id": "q-3-84f8",
+          "identity": "",
+          "type": "textarea",
+          "sub_type": 0,
+          "text": "网上找的",
+          "sensitive": false
+        },
+        {
+          "id": "q-4-006e",
+          "identity": "",
+          "type": "textarea",
+          "sub_type": 0,
+          "text": "打开页面看",
+          "sensitive": false
+        },
+        {
+          "id": "q-5-1104",
+          "identity": "",
+          "type": "textarea",
+          "sub_type": 0,
+          "text": "后来发现的",
+          "sensitive": false
+        },
+        {
+          "id": "q-6-74a5",
+          "identity": "",
+          "type": "radio",
+          "sub_type": 0,
+          "options": [
+            {
+              "id": "o-105-2bb0",
+              "checked": 1,
+              "text": "记不清了",
+              "sort_no": 0
+            }
+          ],
+          "blanks": [],
+          "sensitive": false
+        },
+        {
+          "id": "q-7-7666",
+          "identity": "",
+          "type": "textarea",
+          "sub_type": 0,
+          "text": "2天，我说了算",
+          "sensitive": false
+        },
+        {
+          "id": "q-8-ad94",
+          "identity": "",
+          "type": "textarea",
+          "sub_type": 0,
+          "text": "先别改，先把方案或者步骤列清楚",
+          "sensitive": false
+        },
+        {
+          "id": "q-9-6e0f",
+          "identity": "",
+          "type": "textarea",
+          "sub_type": 0,
+          "text": "手机上，色弱的人能不能看清",
+          "sensitive": false
+        },
+        {
+          "id": "q-10-92ef",
+          "identity": "",
+          "type": "textarea",
+          "sub_type": 0,
+          "text": "重点按钮能不能点，用键盘能不能走完",
+          "sensitive": false
+        },
+        {
+          "id": "q-11-aa4d",
+          "identity": "",
+          "type": "textarea",
+          "sub_type": 0,
+          "text": "细节，做完发现的",
+          "sensitive": false
+        },
+        {
+          "id": "q-12-5a94",
+          "identity": "",
+          "type": "textarea",
+          "sub_type": 0,
+          "text": "有",
+          "sensitive": false
+        },
+        {
+          "id": "q-14-eeed",
+          "identity": "",
+          "type": "textarea",
+          "sub_type": 0,
+          "text": "重要：交活的时候给你分级证据\n跳过：先把需求整理成一张需求卡确认",
+          "sensitive": false
+        },
+        {
+          "id": "q-17-2ac6",
+          "identity": "",
+          "type": "textarea",
+          "sub_type": 0,
+          "text": "没有",
+          "sensitive": false
+        }
+      ]
+    }
+  ],
+  "country": "中国",
+  "province": "四川省",
+  "city": "成都市",
+  "ua": "Mozilla/5.0 (Linux; Android 16; AAK-AN00 Build/HONORAAK-AN00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/121.0.6167.71 MQQBrowser/6.2 TBS/047935 Mobile Safari/537.36 V1_AND_SQ_9.3.30_15390_YYB_D QQ/9.3.30.39375 NetType/WIFI WebP/0.3.0 A",
+  "referrer": "",
+  "ip": "240**********************************",
+  "coordinate": "",
+  "locale": "zhs",
+  "wd_flag": 2
+}

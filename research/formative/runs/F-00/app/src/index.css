@@ -1,0 +1,1060 @@
+@import "tailwindcss";
+
+/* ============================================================
+   语义 token（DESIGN.md 表格逐值照抄）
+   主题包 = token 集 + 背景图引用；@theme inline 让工具类直引
+   var(--*)，运行时切 html 类名即热换（Tailwind v4 官方机制）。
+   ============================================================ */
+@theme inline {
+  --color-ink: var(--bg-base);
+  --color-surface: var(--surface);
+  --color-primary: var(--text-primary);
+  --color-dim: var(--text-dim);
+  --color-accent: var(--accent);
+  --color-accent2: var(--accent-2);
+  --color-cardface: var(--card-face);
+  --color-cardedge: var(--card-edge);
+}
+
+@theme {
+  --radius-timercard: 16px;
+  --radius-taskrow: 8px;
+  --radius-btn: 10px;
+  --font-digit:
+    ui-monospace, "SF Mono", "Cascadia Mono", "JetBrains Mono", Menlo, Consolas,
+    monospace;
+}
+
+/* ---- theme-neon-city（默认） ---- */
+:root,
+.theme-neon-city {
+  --bg-base: #0b0e14;
+  --surface: rgba(18, 23, 34, 0.72);
+  --text-primary: #dbe4f0;
+  --text-dim: #8b96a8;
+  --accent: #37e0ff;
+  --accent-2: #ff3d8a;
+  --card-face: #14181f;
+  --card-edge: #05070b;
+  --glow: rgba(55, 224, 255, 0.35);
+  color-scheme: dark;
+}
+
+/* ---- theme-magenta-rain（备选） ---- */
+.theme-magenta-rain {
+  --bg-base: #0d0a16;
+  --surface: rgba(24, 17, 36, 0.72);
+  --text-primary: #e4dcf0;
+  --text-dim: #9a8fb8;
+  --accent: #b26bff;
+  --accent-2: #37e0ff;
+  --card-face: #1a1424;
+  --card-edge: #070510;
+  --glow: rgba(178, 107, 255, 0.35);
+}
+
+/* ============================================================
+   基础
+   ============================================================ */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family:
+    "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 主题切换：token 颜色 200ms 过渡（契约③） */
+body,
+.timer-card,
+.task-card,
+.toolbar,
+.btn-main,
+.btn-ghost,
+.mode-pill,
+.task-row,
+.settings-panel,
+.bg-tint {
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-base);
+}
+
+.app-shell {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+}
+
+.stack {
+  position: relative;
+  z-index: 1;
+  width: min(480px, 100%);
+  margin: 0 auto;
+  padding: 8px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ============================================================
+   工具条
+   ============================================================ */
+.toolbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 6px;
+}
+
+.brand {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+.brand-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--glow);
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ============================================================
+   按钮 / 模式切换
+   ============================================================ */
+.btn-main {
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-btn);
+  padding: 10px 44px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-indent: 4px;
+  background: var(--accent);
+  color: var(--bg-base);
+  box-shadow: 0 0 18px var(--glow);
+  transition:
+    transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.btn-main:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.btn-main:active {
+  transform: scale(0.98);
+}
+
+.btn-ghost {
+  cursor: pointer;
+  border-radius: var(--radius-btn);
+  padding: 10px 22px;
+  font-size: 14px;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--text-dim) 35%, transparent);
+  color: var(--text-dim);
+  transition:
+    transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.btn-ghost:hover {
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.btn-ghost:active {
+  transform: scale(0.98);
+}
+
+.icon-btn {
+  cursor: pointer;
+  border-radius: var(--radius-btn);
+  padding: 6px 12px;
+  font-size: 13px;
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text-dim) 30%, transparent);
+  color: var(--text-dim);
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.icon-btn:hover {
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.mode-group {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 3px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.mode-pill {
+  display: block;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--text-dim);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.mode-pill input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.mode-pill:has(input:checked) {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg-base);
+  font-weight: 600;
+}
+
+.mode-pill:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   计时卡（流光 + 耀光 + 完成脉冲）
+   ============================================================ */
+.timer-card {
+  position: relative;
+  border-radius: var(--radius-timercard);
+  background: var(--surface);
+  border: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  /* 耀光：双层 shadow 低强度常驻（外 26px + 内 inset 18px，内层再降强度） */
+  box-shadow:
+    0 0 26px var(--glow),
+    inset 0 0 18px color-mix(in srgb, var(--glow) 38%, transparent);
+  padding: 20px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  backdrop-filter: blur(6px);
+}
+
+/* border-beam 载体：mask 只显示 2px 边框环（Magic UI 模式） */
+.beam-mask {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-timercard);
+  border: 2px solid transparent;
+  pointer-events: none;
+  -webkit-mask-image:
+    linear-gradient(transparent, transparent),
+    linear-gradient(#000, #000);
+  -webkit-mask-clip: padding-box, border-box;
+  -webkit-mask-composite: xor;
+  mask-image:
+    linear-gradient(transparent, transparent),
+    linear-gradient(#000, #000);
+  mask-clip: padding-box, border-box;
+  mask-composite: intersect;
+  overflow: visible;
+}
+
+/* 光束 40×2px，accent → accent-2，沿卡片边框 6s 一周 */
+.beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent) 30%,
+    var(--accent-2) 100%
+  );
+  filter: drop-shadow(0 0 6px var(--glow));
+}
+
+/* 完成耀光脉冲：一次性 300ms Elegant */
+.pulse-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 20px;
+  pointer-events: none;
+  border: 2px solid var(--accent);
+  box-shadow:
+    0 0 44px var(--glow),
+    inset 0 0 30px var(--glow);
+}
+
+/* ============================================================
+   3D 立体翻页钟（契约①）
+   ============================================================ */
+.flip-clock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 1.4vw, 14px);
+  font-family: var(--font-digit);
+  font-size: clamp(64px, 12vw, 120px);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary); /* 读数用 text-primary，不用 accent */
+  line-height: 1;
+  user-select: none;
+}
+
+.flip-digit {
+  position: relative;
+  width: 0.76em;
+  height: 1.5em;
+  perspective: 600px; /* 容器透视；reduced-motion 下保留 */
+}
+
+.digit-card {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.09em;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); /* 悬浮投影 */
+}
+
+/* 底缘侧立面（厚度，--card-edge） */
+.digit-edge {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: -0.05em;
+  height: 0.055em;
+  background: var(--card-edge);
+  border-radius: 0 0 0.08em 0.08em;
+}
+
+.leaf {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  overflow: hidden;
+  background: var(--card-face);
+  backface-visibility: hidden;
+}
+
+.leaf > span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1.5em;
+  line-height: 1.5em;
+  text-align: center;
+}
+
+/* 下叶窗口必须显示数字的下半：span 上移半格（0.75em），否则渲染成上半的复制品（F-00 门E 返工修复） */
+.leaf-bottom > span {
+  top: -0.75em;
+}
+
+/* 上叶亮度 1.05 / 下叶 0.85 */
+.leaf-top {
+  top: 0;
+  border-radius: 0.09em 0.09em 0 0;
+  filter: brightness(1.05);
+  z-index: 1;
+}
+
+.leaf-bottom {
+  bottom: 0;
+  border-radius: 0 0 0.09em 0.09em;
+  filter: brightness(0.85);
+  z-index: 1;
+}
+
+/* 翻转叶：铰链=中缝，rotateX(-90deg → 0)，亮度随角度动态（JS 驱动） */
+.leaf-flip {
+  top: 0;
+  border-radius: 0.09em 0.09em 0 0;
+  transform-origin: 50% 100%;
+  transform: rotateX(-90deg);
+  z-index: 3;
+  will-change: transform;
+}
+
+.leaf-flip > span {
+  top: 0;
+}
+
+/* 中缝 1px 分隔线（铰链） */
+.digit-seam {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  margin-top: -0.5px;
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
+  z-index: 6;
+}
+
+.flip-colon {
+  width: 0.34em;
+  height: 1.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3em;
+}
+
+.flip-colon i {
+  width: 0.09em;
+  height: 0.09em;
+  border-radius: 50%;
+  background: var(--text-dim);
+  opacity: 0.7;
+}
+
+.cycle-dots {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.dots {
+  letter-spacing: 4px;
+  color: var(--accent);
+}
+
+/* ============================================================
+   任务卡
+   ============================================================ */
+.task-card {
+  position: relative;
+  z-index: 1;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--text-dim) 22%, transparent);
+  padding: 14px 16px;
+  backdrop-filter: blur(6px);
+}
+
+.task-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.task-head h2 {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.task-head .meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.today-chip {
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 1px 10px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.task-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: var(--radius-taskrow);
+  border: 1px solid transparent;
+  border-left: 3px solid transparent;
+  padding: 7px 10px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.task-row--active {
+  border-left-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, rgba(0, 0, 0, 0.22));
+}
+
+.task-row--done .task-name {
+  text-decoration: line-through;
+  color: var(--text-dim);
+}
+
+.task-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.task-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.task-count {
+  flex-shrink: 0;
+  border: 1px solid color-mix(in srgb, var(--text-dim) 35%, transparent);
+  background: transparent;
+  color: var(--text-dim);
+  border-radius: 999px;
+  font-size: 12px;
+  padding: 1px 9px;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.task-count:hover,
+.task-row--active .task-count {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.task-del {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 2px 6px;
+  transition: color 0.2s;
+}
+
+.task-del:hover {
+  color: var(--accent-2);
+}
+
+.empty-hint {
+  margin: 4px 0 8px;
+  padding: 14px 10px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-dim);
+  border: 1px dashed color-mix(in srgb, var(--text-dim) 30%, transparent);
+  border-radius: var(--radius-taskrow);
+}
+
+.task-add {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  border: 1px dashed color-mix(in srgb, var(--accent) 50%, transparent);
+  border-radius: var(--radius-taskrow);
+}
+
+.task-add input[name="task-name"] {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 13px;
+}
+
+.task-add input[name="task-name"]::placeholder {
+  color: var(--text-dim);
+}
+
+.task-add input[name="task-est"] {
+  width: 44px;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--text-dim) 35%, transparent);
+  border-radius: 6px;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 12px;
+  text-align: center;
+  padding: 3px 2px;
+}
+
+.task-add button {
+  flex-shrink: 0;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-btn);
+  background: var(--accent);
+  color: var(--bg-base);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 14px;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.task-add button:active {
+  transform: scale(0.97);
+}
+
+/* ============================================================
+   设置面板
+   ============================================================ */
+.settings-wrap {
+  position: relative;
+}
+
+.settings-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 30;
+  width: min(300px, calc(100vw - 32px));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--bg-base) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 20px var(--glow);
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.settings-panel h2 {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+
+.settings-panel label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.settings-panel input[type="number"] {
+  width: 64px;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--text-dim) 35%, transparent);
+  border-radius: 6px;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 13px;
+  text-align: center;
+  padding: 4px 2px;
+}
+
+.settings-panel select {
+  background: var(--bg-base);
+  border: 1px solid color-mix(in srgb, var(--text-dim) 35%, transparent);
+  border-radius: 6px;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 13px;
+  padding: 4px 6px;
+}
+
+.settings-panel input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+}
+
+/* ============================================================
+   背景层（主题包背景图 + 交叉淡入 300ms）
+   ============================================================ */
+.bg-stack {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bg-layer[data-active="true"] {
+  opacity: 1;
+}
+
+.bg-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  filter: saturate(1.15);
+  display: block;
+}
+
+.bg-tint {
+  position: absolute;
+  inset: 0;
+}
+
+.bg-layer--neon-city .bg-tint {
+  background: linear-gradient(
+    180deg,
+    rgba(4, 6, 12, 0.38),
+    rgba(4, 6, 12, 0.68)
+  );
+}
+
+.bg-layer--magenta-rain .bg-tint {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 5, 20, 0.38),
+    rgba(10, 5, 20, 0.7)
+  );
+}
+
+/* 纯渐变赛博底（背景图不可用时的降级/可选项） */
+.bg-layer--gradient.bg-layer--neon-city {
+  background:
+    radial-gradient(
+      60% 45% at 18% 12%,
+      color-mix(in srgb, var(--accent) 16%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      55% 45% at 85% 80%,
+      color-mix(in srgb, var(--accent-2) 12%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(180deg, #0b0e14 0%, #10141f 60%, #0b0e14 100%);
+}
+
+.bg-layer--gradient.bg-layer--magenta-rain {
+  background:
+    radial-gradient(
+      60% 45% at 82% 14%,
+      color-mix(in srgb, var(--accent) 16%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      55% 45% at 15% 82%,
+      color-mix(in srgb, var(--accent-2) 12%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(180deg, #0d0a16 0%, #140f22 60%, #0d0a16 100%);
+}
+
+/* ============================================================
+   reduced-motion：翻页直切（CSS 侧无动画可关，由组件逻辑接管），
+   流光关闭+边框纯色，主题/背景即时切换
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .timer-card,
+  .task-card,
+  .toolbar,
+  .btn-main,
+  .btn-ghost,
+  .mode-pill,
+  .task-row,
+  .settings-panel,
+  .bg-tint {
+    transition: none;
+  }
+
+  .btn-main,
+  .btn-ghost,
+  .task-add button {
+    transition: none;
+  }
+
+  .btn-main:hover,
+  .btn-main:active,
+  .btn-ghost:hover,
+  .btn-ghost:active,
+  .task-add button:active {
+    transform: none;
+  }
+
+  .bg-layer {
+    transition: none;
+  }
+
+  .timer-card {
+    border-color: var(--accent); /* 边框纯色，无流光 */
+  }
+}
+
+/* ============================================================
+   背景缩略图选择器 + 自定义上传（设置面板）
+   ============================================================ */
+.settings-bg {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-heading {
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.bg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.bg-tile {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--text-dim) 30%, transparent);
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.bg-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 背景图裁切显示 */
+  display: block;
+}
+
+.bg-tile-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1px 4px;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.72));
+}
+
+.bg-tile--gradient {
+  background:
+    radial-gradient(
+      80% 80% at 20% 15%,
+      color-mix(in srgb, var(--accent) 22%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(135deg, #10141f 0%, #1a2333 55%, #2a1e3f 100%);
+}
+
+.bg-tile[data-active="true"] {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--accent) 55%, transparent),
+    0 0 10px var(--glow);
+}
+
+.settings-panel .upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 10px;
+  border: 1px dashed color-mix(in srgb, var(--accent) 50%, transparent);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--accent);
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.settings-panel .upload-btn:hover {
+  border-color: var(--accent);
+}
+
+.settings-panel .bg-error {
+  margin: 0;
+  font-size: 12px;
+  color: var(--accent-2);
+}
+
+/* 每日灵感（小幽灵样式） */
+.inspire-btn {
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  background: transparent;
+  color: var(--accent);
+  border-radius: 999px;
+  font-size: 12px;
+  padding: 1px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background-color 0.2s;
+}
+
+.inspire-btn:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-color: var(--accent);
+}
+
+.inspire-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ============================================================
+   素材工坊（在线素材源选图）
+   ============================================================ */
+.workshop {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid color-mix(in srgb, var(--text-dim) 22%, transparent);
+  padding-top: 10px;
+}
+
+.workshop-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.workshop-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.workshop-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-height: 244px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.workshop-status {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.workshop-error {
+  margin: 0;
+  font-size: 12px;
+  color: var(--accent-2);
+}
+
+.workshop-source {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.workshop-source a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.workshop-source a:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-tile,
+  .settings-panel .upload-btn,
+  .inspire-btn {
+    transition: none;
+  }
+}

@@ -246,6 +246,18 @@
       "dependsOn": [],
       "export": "full",
       "leanCore": false
+    },
+    {
+      "file": "prototype-handover.md",
+      "title": "Prototype Handover Protocol",
+      "purpose": "原型交接协议：数据单口（mock_data.json 零硬编码）、语义组件与 token 绑定（shadcn/Tailwind 默认，既有栈按既有体系语义化）、四态必备（正常/加载/空/错误）、API_CONTRACT.md 交接文档、三道轻门禁（构建/反幻觉/规格）",
+      "loadWhen": "门D 契约撰写涉及原型类交付时；任何初版原型实现与交接前",
+      "gate": "D",
+      "dependsOn": [
+        "design-contract.md",
+        "copy-contract.md"
+      ],
+      "export": "full"
     }
   ]
 }

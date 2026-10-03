@@ -26,6 +26,7 @@ search was performed and no compatible example was found.
 | Rules: Don't | Anti-patterns and prohibited treatments for this direction |
 | Output structure | Required sections, components, and media of the deliverable |
 | Component expectations | Interaction and state details per core component |
+| Data and states | Prototype-class deliverables: single mock-data port (zero hardcoded business data in components), the four essential states (normal/loading/empty/error) per list-table-card surfaces, and the API_CONTRACT.md draft derived from the mock data (prototype-handover.md) |
 | Quality gates | Testable checks the finished UI must pass |
 
 ## Authoring workflow

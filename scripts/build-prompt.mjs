@@ -27,6 +27,7 @@ export const references = [
   ["dark-surface-standards.md", "Dark Surface Standards"],
   ["data-dense-surfaces.md", "Data-Dense Surfaces"],
   ["prototype-handover.md", "Prototype Handover Protocol"],
+  ["video-craft.md", "Video Craft"],
   ["workflow-visualization.md", "Workflow Visualization"],
   ["product-readme.md", "Product README Standard"],
   ["acceptance.md", "UI Acceptance"],

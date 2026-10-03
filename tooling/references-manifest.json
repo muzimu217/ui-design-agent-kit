@@ -259,6 +259,18 @@
       ],
       "export": "full",
       "leanCore": false
+    },
+    {
+      "file": "video-craft.md",
+      "title": "Video Craft",
+      "purpose": "视频质感军规（2026-09-28 美感审计五修）：影像资产录自家 demo 禁 token 平涂、镜头语言三变化、视频排版 display 级+安全区+锁定帧对比度、声音声明式处理（免版权源走门B/显式静音轨）、叙事节奏钩子-递进-收束、工程起点与证据链",
+      "loadWhen": "视频类 brief 的门D 契约撰写与 Remotion 实现前",
+      "gate": "D",
+      "dependsOn": [
+        "motion-contract.md"
+      ],
+      "export": "full",
+      "leanCore": false
     }
   ]
 }

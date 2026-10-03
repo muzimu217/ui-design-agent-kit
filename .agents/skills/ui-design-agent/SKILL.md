@@ -401,9 +401,11 @@ in the acceptance record so it can be audited.
   (in uak-design-thinking),
   dark-surface standards; skills: `motion`, `gsap-*`, `jiejoe-design`.
 - **Video expert** (code-rendered motion graphics): Remotion compositions.
-  Skills: `remotion-video-agent` + official Remotion skills. Known limits:
-  imagery assets, camera language, sound, and narrative pacing are weak —
-  disclose them when the brief demands them (2026-09-28 aesthetics audit).
+  Skills: `remotion-video-agent` + official Remotion skills; the aesthetics
+  audit's five fixes (own-demo footage, camera language, video typography,
+  declarative sound, narrative structure) are the video-craft standard in
+  the references manifest — load it at gate D for video briefs. Remaining
+  disclosed limits: licensed music and voice-over sourcing stay at gate B.
 - **Graphic/cover expert** (under construction): poster, cover, and editorial
   layout via SVG/typography engines. Reference seeding has started
   (the Typewolf entry in the source catalog); no dedicated skill or corpus

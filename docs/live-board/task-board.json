@@ -5,20 +5,20 @@
     "corpus": "70/71",
     "corpusPercent": 99,
     "streak100": 54,
-    "tests": "100/100",
+    "tests": "101/101",
     "a11y": "0 违规",
-    "audits": "26 批",
+    "audits": "27 批（P1×2+P2×3 已整改）",
     "prototypeGates": "三门全真工具",
-    "references": "25 条（+video-craft）"
+    "references": "25 条"
   },
   "activeTask": {
-    "id": "R194-01",
-    "name": "B 视频五修指令层落地（eefe03c）",
-    "status": "done-pending-verify——video-craft 军规入册；A3 语料仍双锁阻塞",
-    "startedAt": "2026-09-29",
-    "currentGate": "待用户复核；A3 平面语料等 results.json/eval-report 释放",
-    "lastArtifact": "video-craft.md：五修军规（录自家 demo/镜头语言/排版/声音声明式/叙事结构）；SKILL 视频专家行改写 597 行",
-    "next": "双锁释放→四态场景+R101-01 --record 双发；40 手册中文化待用户裁时机"
+    "id": "审计批 27 整改（13fa12c）",
+    "name": "计数诚实性上锁",
+    "status": "完成——README/identity 计数新锁咬住级联；JIEJOE D3 磁带回带",
+    "startedAt": "2026-10-03",
+    "currentGate": "四态场景仍双锁阻塞；40 手册中文化待用户裁时机",
+    "lastArtifact": "audit-batch-27.md + jiejoe-study/agent-notes/r3-d3-deep-read.md（in/fill/out 时间轴原语发现）",
+    "next": "双锁释放→四态场景+R101-01 --record 双发；磁带 D5 综合报告在望"
   },
   "gates": [
     {
@@ -66,6 +66,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-03 15:xx",
+      "event": "审计批 27 整改（13fa12c）：README/identity 测试计数上 doc-drift 新锁（写死数字再也无法静默漂移，锁成即咬住本次级联）；spec-lint 头注释去夸大；JIEJOE D3 磁带回带（in/fill/out 原语+006 精读）",
+      "type": "audit"
+    },
+    {
       "time": "10-03 14:xx",
       "event": "R194-01 B 视频五修指令层落地（eefe03c）：video-craft 军规入册（录自家 demo 禁平涂/镜头语言/排版/声音声明式/叙事节奏），SKILL 视频专家行改写；JIEJOE 磁带零回写",
       "type": "ticket"
@@ -109,11 +114,6 @@
       "time": "10-03 05:xx",
       "event": "R101-01 e3 盲评双轨首跑（机制建成 24 天后首次运行）：零上下文代理盲答三决策案例，按隐藏标准批改 100/88/80 真实梯度；证据入库 evals/runs/e3-blind-r282/（ef0a697 已推）；--record 因并行 WIP 占用 results.json 顺延",
       "type": "ticket"
-    },
-    {
-      "time": "10-03 04:xx",
-      "event": "新增 JIEJOE 学习磁带（用户令）：output/jiejoe-study/ 隔离存储+零上下文代理 R1 出 324 行 D1 笔记（原语系统/stroke-dasharray 一物五用/稳定性分级；假设=把效果还原为原语）；不回写知识库",
-      "type": "research"
     }
   ]
 }

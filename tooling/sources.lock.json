@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedOn": "2026-09-28",
+  "checkedOn": "2026-10-03",
   "skills": [
     {
       "name": "motion",
@@ -16,14 +16,14 @@
     {
       "name": "uak-visual-critique",
       "repository": "https://github.com/pbakaus/impeccable",
-      "revision": "9d715cc4f5564a990ca8345abfdd5df6dc9b41c8",
-      "tag": "skill-v4.2.0",
+      "revision": "e103efe779e2dd01274dabae83531fef00bf2563",
       "sourcePath": ".agents/skills/impeccable",
       "license": "Apache-2.0",
       "notice": ".agents/skills/uak-visual-critique/LICENSE",
       "adaptations": [
         "No hooks installed; upstream launcher retained",
-        "Renamed and re-authored for this kit (2026-09-30 user-approved localization): skill name, SKILL.md frontmatter, and intro re-authored as uak-visual-critique with kit gate-chain and taste-profile integration; command playbooks and launcher retained with directory paths updated"
+        "Renamed and re-authored for this kit (2026-09-30 user-approved localization): skill name, SKILL.md frontmatter, and intro re-authored as uak-visual-critique with kit gate-chain and taste-profile integration; command playbooks and launcher retained with directory paths updated",
+        "Re-vendored to upstream HEAD 2026-10-03 (R285-01 upgrade batch, 9d715cc4→e103efe7, upstream 4.5.0): tree-hash verified 45 identical / 16 path-replacement-only / SKILL.md re-authored+version; new upstream mode-{operate,persuade,read}.md playbooks included"
       ]
     },
     {
@@ -41,73 +41,73 @@
     {
       "name": "remotion-best-practices",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
+      "revision": "0b5db9daae40f42c73544d1cc0a8c733bd530eaa",
       "sourcePath": "skills/remotion-best-practices",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01 upgrade batch)"
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01), version strings synced to 4.0.532 2026-10-03 (R285-01 ride-along)"
       ]
     },
     {
       "name": "remotion-create",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
+      "revision": "0b5db9daae40f42c73544d1cc0a8c733bd530eaa",
       "sourcePath": "skills/remotion-create",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01 upgrade batch)"
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01), version strings synced to 4.0.532 2026-10-03 (R285-01 ride-along)"
       ]
     },
     {
       "name": "remotion-docs",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
+      "revision": "0b5db9daae40f42c73544d1cc0a8c733bd530eaa",
       "sourcePath": "skills/remotion-docs",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01 upgrade batch)"
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01), version strings synced to 4.0.532 2026-10-03 (R285-01 ride-along)"
       ]
     },
     {
       "name": "remotion-markup",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
+      "revision": "0b5db9daae40f42c73544d1cc0a8c733bd530eaa",
       "sourcePath": "skills/remotion-markup",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01 upgrade batch)"
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01), version strings synced to 4.0.532 2026-10-03 (R285-01 ride-along)"
       ]
     },
     {
       "name": "remotion-render",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
+      "revision": "0b5db9daae40f42c73544d1cc0a8c733bd530eaa",
       "sourcePath": "skills/remotion-render",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01 upgrade batch)"
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01), version strings synced to 4.0.532 2026-10-03 (R285-01 ride-along)"
       ]
     },
     {
       "name": "remotion-studio",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
+      "revision": "0b5db9daae40f42c73544d1cc0a8c733bd530eaa",
       "sourcePath": "skills/remotion-studio",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01 upgrade batch)"
+        "Normalized unsupported version frontmatter (4.0.531 → metadata.version) for Codex skill metadata; content synced to upstream HEAD 2026-09-30 (R221-01), version strings synced to 4.0.532 2026-10-03 (R285-01 ride-along)"
       ]
     },
     {
       "name": "remotion-captions",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
+      "revision": "0b5db9daae40f42c73544d1cc0a8c733bd530eaa",
       "sourcePath": "skills/remotion-captions",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
@@ -118,7 +118,7 @@
     {
       "name": "remotion-interactivity",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
+      "revision": "0b5db9daae40f42c73544d1cc0a8c733bd530eaa",
       "sourcePath": "skills/remotion-interactivity",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",
@@ -129,7 +129,7 @@
     {
       "name": "remotion-multimedia",
       "repository": "https://github.com/remotion-dev/skills",
-      "revision": "a9b199e165505267eda1ed3e0ef3dd3567c43411",
+      "revision": "0b5db9daae40f42c73544d1cc0a8c733bd530eaa",
       "sourcePath": "skills/remotion-multimedia",
       "license": "See current repository terms",
       "notice": "THIRD_PARTY_NOTICES.md",

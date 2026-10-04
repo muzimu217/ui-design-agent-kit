@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedOn": "2026-10-03",
+  "checkedOn": "2026-10-04",
   "skills": [
     {
       "name": "motion",
@@ -231,6 +231,39 @@
       "notice": ".agents/skills/jiejoe-design/NOTICE.md",
       "adaptations": [
         "Distilled: interaction-motion patterns re-authored for this kit from the org's MIT tutorial repositories; no upstream code copied"
+      ]
+    },
+    {
+      "name": "promotion-playbook",
+      "repository": "https://github.com/muzimu217/ui-design-agent-kit",
+      "revision": "9b2b8069a7eff472cb7a3e32d7e1490df62ed2d8",
+      "sourcePath": ".agents/skills/promotion-playbook",
+      "license": "Apache-2.0",
+      "notice": "THIRD_PARTY_NOTICES.md",
+      "adaptations": [
+        "Self-authored promotion playbook (own repo, git rev pinned)"
+      ]
+    },
+    {
+      "name": "remotion-video-agent",
+      "repository": "https://github.com/muzimu217/ui-design-agent-kit",
+      "revision": "9b2b8069a7eff472cb7a3e32d7e1490df62ed2d8",
+      "sourcePath": ".agents/skills/remotion-video-agent",
+      "license": "Apache-2.0",
+      "notice": "THIRD_PARTY_NOTICES.md",
+      "adaptations": [
+        "Self-authored Remotion orchestration skill (own repo, git rev pinned)"
+      ]
+    },
+    {
+      "name": "ui-design-agent",
+      "repository": "https://github.com/muzimu217/ui-design-agent-kit",
+      "revision": "9b2b8069a7eff472cb7a3e32d7e1490df62ed2d8",
+      "sourcePath": ".agents/skills/ui-design-agent",
+      "license": "Apache-2.0",
+      "notice": "THIRD_PARTY_NOTICES.md",
+      "adaptations": [
+        "Self-authored root skill (own repo, git rev pinned)"
       ]
     }
   ],

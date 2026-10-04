@@ -13,12 +13,12 @@
   },
   "activeTask": {
     "id": "V2 独立验收 CLI",
-    "name": "对外首跑完成（线上站 5 PASS/1 FAIL）",
-    "status": "e9d457c+875524d——抓线上站真缺陷：移动端 375px 溢出 7px（冻结期记录）",
+    "name": "七维验收组合（+对比度实算分布）",
+    "status": "8560490——对外靶 101 样本 0 违规最差 4.6:1（线上站对比度健康实录）",
     "startedAt": "2026-10-04",
-    "currentGate": "溢出修复排解冻合并批；审计批 30 后台进行中",
-    "lastArtifact": "output/verify-agent-kcos-external/report.html（首份对外验收报告）",
-    "next": "批 30 结论整改；WIP A/B/C、A2、npm 发包、40 手册待用户"
+    "currentGate": "移动端溢出 7px 仍记录在案（解冻批修）；多页爬取为下一增强",
+    "lastArtifact": "scripts/verify-page.mjs 七维组合 + 双靶报告（本地+对外）",
+    "next": "JIEJOE D5 筹备（10-07/08）；审计批 31 视堆积；WIP A/B/C、A2、npm、40 手册待用户"
   },
   "gates": [
     {
@@ -67,6 +67,11 @@
   "recentFlow": [
     {
       "time": "10-04 08:xx",
+      "event": "V2 增强（8560490）：对比度实算分布维度——TreeWalker 采样+WCAG 亮度实测，对外靶 101 样本 0 违规最差 4.6:1（线上站对比度健康实录）",
+      "type": "milestone"
+    },
+    {
+      "time": "10-04 08:xx",
       "event": "审计批 30 收口整改（7577678）：P1=verify-page axe 失败态假 PASS 根治（验收工具不能假绿）+P2×5；账实出入如实记录（12 笔 vs 任务书 8 笔）",
       "type": "audit"
     },
@@ -109,11 +114,6 @@
       "time": "10-04 01:xx",
       "event": "稳态深夜轮：手搓《海绵宝宝》爬坡 771k→971k（+26%）Mass 破圈再证；双锁未动；术语 02 IP 级日配额限流待白天恢复",
       "type": "steady"
-    },
-    {
-      "time": "10-03 23:xx",
-      "event": "晚间漫游第六程（整页轮换）：手搓《海绵宝宝》隔夜翻倍 376k→771k 播（赞 5.6w→9.5w，赞率 15%→12% 稀释但绝对值暴增）——大赛内容处 Mass 破圈期；情怀带复证（16%/18%）；术语 02 series API 仍限流",
-      "type": "research"
     }
   ]
 }

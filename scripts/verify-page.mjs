@@ -43,6 +43,9 @@ async function runOnce(browser, url, outDir) {
   };
   const results = { url, ranAt: new Date().toISOString(), checks: findings };
 
+  // 批 32 P1：异常绝不被 finally 的 return 吞掉——catch 记 FAIL（批次继续
+  // 下一 URL，退出码经 fail 计数正确变 1），finally 只做落盘与清理。
+  let runError = null;
   try {
     // 1. 桌面 + console
     const desktop = await browser.newPage({ viewport: { width: 1440, height: 900 } });
@@ -218,7 +221,7 @@ async function runOnce(browser, url, outDir) {
         samples.sort((a, b) => a.ratio - b.ratio);
         const large = (s) => s.size >= 24 || (s.size >= 18.66 && s.weight >= 700);
         const belowAA = samples.filter((s) => s.ratio < (large(s) ? 3 : 4.5));
-        return { sampled: samples.length, belowAA: belowAA.slice(0, 8).map((s) => ({ ratio: s.ratio, text: s.text })), worst: samples[0]?.ratio ?? null };
+        return { sampled: samples.length, skipped: skippedSamples, belowAA: belowAA.slice(0, 8).map((s) => ({ ratio: s.ratio, text: s.text })), worst: samples[0]?.ratio ?? null };
       });
       results.contrast = contrast;
       const status = contrast.sampled === 0 ? "WARN" : contrast.belowAA.length === 0 ? "PASS" : contrast.belowAA.some((s2) => s2.ratio < 3) ? "FAIL" : "WARN";
@@ -230,6 +233,10 @@ async function runOnce(browser, url, outDir) {
     }
     await axePage.close();
     await axeContext.close().catch(() => {});
+  } catch (error) {
+    runError = error;
+    findings.push({ name: "验收执行", status: "FAIL", detail: `运行中断（不产假 PASS）：${String(error).slice(0, 160)}`, evidence: "" });
+    console.log(`✗ 验收执行 — 运行中断：${String(error).slice(0, 160)}`);
   } finally {
     const pass = findings.filter((f) => f.status === "PASS").length;
     const fail = findings.filter((f) => f.status === "FAIL").length;
@@ -253,10 +260,13 @@ ${findings.map((f) => `<div class="r ${f.status}"><b>${f.status}</b> ${esc(f.nam
 <footer>pass ${pass} / fail ${fail} / warn ${warn} · 证据与报告同目录 · 由 UI Design Agent Kit 验收体系驱动</footer>
 </div></body></html>`;
     await writeFile(path.join(outDir, "report.html"), report, "utf8").catch(() => {});
-    console.log(`\n[${url}] 验收完成：${pass} PASS / ${fail} FAIL / ${warn} WARN`);
-    console.log(`报告：${path.join(outDir, "report.html")}（与截图同目录交付）`);
-    return { url, outDir, pass, fail, warn };
   }
+  const pass = findings.filter((f) => f.status === "PASS").length;
+  const fail = findings.filter((f) => f.status === "FAIL").length;
+  const warn = findings.filter((f) => f.status === "WARN").length;
+  console.log(`\n[${url}] 验收完成：${pass} PASS / ${fail} FAIL / ${warn} WARN${runError ? "（运行中断）" : ""}`);
+  console.log(`报告：${path.join(outDir, "report.html")}（与截图同目录交付）`);
+  return { url, outDir, pass, fail, warn };
 }
 
 // —— CLI 入口 ——

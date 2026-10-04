@@ -5,7 +5,7 @@
     "corpus": "70/71（四态场景预执行完毕，--record 待双锁）",
     "corpusPercent": 99,
     "streak100": 54,
-    "tests": "104/104",
+    "tests": "105/105",
     "a11y": "0 违规",
     "audits": "29 批零上下文回归审计",
     "prototypeGates": "三门全真工具+首靶 8 字段全登记"
@@ -65,6 +65,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-04 01:xx",
+      "event": "稳态深夜轮：手搓《海绵宝宝》爬坡 771k→971k（+26%）Mass 破圈再证；双锁未动；术语 02 IP 级日配额限流待白天恢复",
+      "type": "steady"
+    },
+    {
       "time": "10-03 23:xx",
       "event": "晚间漫游第六程（整页轮换）：手搓《海绵宝宝》隔夜翻倍 376k→771k 播（赞 5.6w→9.5w，赞率 15%→12% 稀释但绝对值暴增）——大赛内容处 Mass 破圈期；情怀带复证（16%/18%）；术语 02 series API 仍限流",
       "type": "research"
@@ -108,11 +113,6 @@
       "time": "10-03 15:xx",
       "event": "审计批 27 整改（13fa12c）：README/identity 测试计数上 doc-drift 新锁（写死数字再也无法静默漂移，锁成即咬住本次级联）；spec-lint 头注释去夸大；JIEJOE D3 磁带回带（in/fill/out 原语+006 精读）",
       "type": "audit"
-    },
-    {
-      "time": "10-03 14:xx",
-      "event": "R194-01 B 视频五修指令层落地（eefe03c）：video-craft 军规入册（录自家 demo 禁平涂/镜头语言/排版/声音声明式/叙事节奏），SKILL 视频专家行改写；JIEJOE 磁带零回写",
-      "type": "ticket"
     }
   ]
 }

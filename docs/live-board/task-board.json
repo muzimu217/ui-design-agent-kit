@@ -65,6 +65,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-03 20:xx",
+      "event": "晚间漫游第二程：创意二创 19% 赞率（铠甲勇士片头曲模仿 70.6w）——手搓/创意高赞模式跨三程成立（n=3：15%/19%/20%）；AI 全民制作人实时爬坡 968k→993k",
+      "type": "research"
+    },
+    {
       "time": "10-03 19:xx",
       "event": "晚间 B 站漫游（popular feed 两程）：手搓动画大赛两期进热门且赞率 15-20%（平台基线 4-5%）——赛事=高赞引擎，强化 UAK 第二条视频「爆肝建造」叙事优先级；AI 二创赛道（AI全民制作人）百万级进热门，「AI 味的解药」定位顺风",
       "type": "research"
@@ -108,11 +113,6 @@
       "time": "10-03 10:xx",
       "event": "审计批 26 已派（后台零上下文）：cc904da..9908cb0 八笔——vendoring 深审+协议批接线+研究线边界红线（research/ 不得重建）",
       "type": "audit"
-    },
-    {
-      "time": "10-03 09:xx",
-      "event": "🔴 用户冻结 main：GitHub ruleset 24421799 已建（update/deletion/force 全禁、bypass 空=全员只读）；本循环只写 experiment/uak-paper；R285-01 取证批完成→claimed（43 笔三分类：12 噪声+10 环境刚需修复+11 方法论演进；执行批下轮）",
-      "type": "ruling"
     }
   ]
 }

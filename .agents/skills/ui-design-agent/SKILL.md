@@ -406,6 +406,8 @@ in the acceptance record so it can be audited.
   declarative sound, narrative structure) are the video-craft standard in
   the references manifest — load it at gate D for video briefs. Remaining
   disclosed limits: licensed music and voice-over sourcing stay at gate B.
+- Express tier (new-user first task: one-screen gate A + bounded pre-authorization
+  via the §4-7 waiver channel): see plan-execute "Express 档" — once per project.
 - **Graphic/cover expert** (under construction): poster, cover, and editorial
   layout via SVG/typography engines. Reference seeding has started
   (the Typewolf entry in the source catalog); no dedicated skill or corpus

@@ -96,7 +96,14 @@ export function scanText(text, file) {
       return;
     }
     if (trimmed.startsWith("/*")) {
-      if (!trimmed.includes("*/")) inBlockComment = true;
+      if (!trimmed.includes("*/")) { inBlockComment = true; return; }
+      // 同行开合的块注释：剥掉全部 /*...*/ 段后扫描余量（批 29 P2-①：
+      // 整行跳过会吞掉 `/*a*/ *{margin:0 -4px}` 的尾段真违例）
+      const stripped = trimmed.replace(/\/\*[\s\S]*?\*\//g, "");
+      if (stripped.trim() === "") return;
+      for (const finding of scanLine(stripped)) {
+        findings.push({ file, line: index + 1, ...finding, key: `${file}:${finding.rule}:${finding.detail}` });
+      }
       return;
     }
     if (trimmed.startsWith("//") || trimmed.startsWith("<!--")) return;

@@ -101,11 +101,11 @@ for (const state of states) {
 say("四态截图已写 state-*.png");
 
 } finally {
+  // 批 29 P2-③：结果落盘移入 finally——异常路径也留下部分证据
+  const passCount = results.filter((r) => r.ok).length;
+  await writeFile(path.join(FIXTURE, "..", "results.txt"), lines.join("\n") + `\n\n总计: ${passCount}/${results.length} PASS\n`, "utf8").catch(() => {});
+  say(`总计 ${passCount}/${results.length} PASS`);
   await browser.close().catch(() => {});
   server.close();
 }
-
-const passCount = results.filter((r) => r.ok).length;
-await writeFile(path.join(FIXTURE, "..", "results.txt"), lines.join("\n") + `\n\n总计: ${passCount}/${results.length} PASS\n`, "utf8");
-say(`总计 ${passCount}/${results.length} PASS`);
-if (passCount !== results.length) process.exit(1);
+if (results.some((r) => !r.ok)) process.exit(1);

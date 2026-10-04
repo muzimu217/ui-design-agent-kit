@@ -31,6 +31,14 @@ test("comment lines are skipped but CSS universal selectors are scanned", () => 
   assert.match(negatives[0].detail, /-4px/);
 });
 
+test("same-line block comments do not swallow trailing code violations", () => {
+  // 批 29 P2-① 回归锁：同行开合注释剥段后扫余量
+  const findings = scanText("/*a*/ *{margin:0 -4px}\n", "a.css");
+  assert.equal(findings.filter((f) => f.rule === "negative-margin").length, 1, "*/ 后的真违例不得被整行跳过吞掉");
+  const pure = scanText("/* 纯注释 margin: -8px */\n", "a.css");
+  assert.equal(pure.length, 0, "纯注释行仍不误报");
+});
+
 test("Tailwind arbitrary-value negative utilities are violations", () => {
   assert.equal(scanLine('className="-mt-[10px]"').length, 1);
   assert.equal(scanLine('className="mt-[10px]"').length, 0);

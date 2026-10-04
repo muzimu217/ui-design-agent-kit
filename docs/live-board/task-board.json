@@ -5,20 +5,21 @@
     "corpus": "70/71",
     "corpusPercent": 99,
     "streak100": 54,
-    "tests": "110/110",
+    "tests": "113/113",
     "a11y": "0 违规",
-    "audits": "30 批（P1 验收工具假 PASS 根治 7577678）",
-    "lock": "25/25 100%（warnings 0）",
-    "roadmap": "V1 两片+V2 verify:page 首片落地；npm 发包暂缓"
+    "audits": "30 批",
+    "lock": "25/25 100%",
+    "verify": "八维验收组合（+爬取/死链）",
+    "roadmap": "V1 两片+V2 两片（verify:page 七维+爬取死链）"
   },
   "activeTask": {
     "id": "V2 独立验收 CLI",
-    "name": "七维验收组合（+对比度实算分布）",
-    "status": "8560490——对外靶 101 样本 0 违规最差 4.6:1（线上站对比度健康实录）",
+    "name": "八维组合完成（+同域爬取/死链检测）",
+    "status": "c583066——死链夹具实测恰 2 条全抓；Express 全链证据九维 9 PASS",
     "startedAt": "2026-10-04",
-    "currentGate": "移动端溢出 7px 仍记录在案（解冻批修）；多页爬取为下一增强",
-    "lastArtifact": "scripts/verify-page.mjs 七维组合 + 双靶报告（本地+对外）",
-    "next": "JIEJOE D5 筹备（10-07/08）；审计批 31 视堆积；WIP A/B/C、A2、npm、40 手册待用户"
+    "currentGate": "线上站溢出 7px 仍记录（解冻批修）；R101-03 收尾（游离脚本移 archive）",
+    "lastArtifact": "scripts/verify-page-lib.mjs+三用例；output/express-chain-evidence/report.html",
+    "next": "JIEJOE D5（10-07/08）；审计批 31 视堆积；WIP A/B/C、A2、npm、40 手册待用户"
   },
   "gates": [
     {
@@ -66,6 +67,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-04 09:xx",
+      "event": "verify:page 升八维（c583066）：同域爬取+死链检测（BFS≤5 页+探活）+lib 拆分 3 用例；R101-03 游离脚本移 archive；Express 全链证据 9 PASS；测试 113/113",
+      "type": "milestone"
+    },
+    {
       "time": "10-04 08:xx",
       "event": "V2 增强（8560490）：对比度实算分布维度——TreeWalker 采样+WCAG 亮度实测，对外靶 101 样本 0 违规最差 4.6:1（线上站对比度健康实录）",
       "type": "milestone"
@@ -109,11 +115,6 @@
       "time": "10-04 02:xx",
       "event": "双锁 WIP 定性：并行会话 10-01 的台账收尾（dark-surface 第 2 次重录+D9/D10 定责+F-00 门记录），26 小时零活动=大概率遗弃；内容完整自洽且与三轮全绿共处——提交代收尾/继续等待，待用户裁决",
       "type": "ruling"
-    },
-    {
-      "time": "10-04 01:xx",
-      "event": "稳态深夜轮：手搓《海绵宝宝》爬坡 771k→971k（+26%）Mass 破圈再证；双锁未动；术语 02 IP 级日配额限流待白天恢复",
-      "type": "steady"
     }
   ]
 }

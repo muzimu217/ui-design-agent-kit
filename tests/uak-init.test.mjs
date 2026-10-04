@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 import { detectHost, resolveUakPath, agentsSnippet, runInit, checkManagedBlock } from "../scripts/uak-init.mjs";
 
 // V1 uak-init 纯函数与守卫覆盖。夹具=临时目录，用完即删。
@@ -62,30 +63,34 @@ test("runInit dry-run: 不写盘且动作清单完整", async () => {
   rmSync(target, { recursive: true, force: true });
 });
 
-test("runInit 实跑: 孤儿 begin 标记降级重写不损坏原文前段", async () => {
-  // 批 31 P2-②：end 缺失时 indexOf+15 切片曾静默损坏原文
+test("runInit 实跑: 孤儿 begin 标记行删除、非标记行保留（批 34 策略升级）", async () => {
+  // 批 31 P2-②：end 缺失时 indexOf+15 切片曾静默损坏原文。
+  // 批 34 策略升级：全剥离重写只删标记行——被夹带的非标记行（如用户真实
+  // 内容）保留，比旧"截断至标记"策略少丢数据。
   const target = makeTarget();
   const uakRoot = uakRepoRoot();
-  writeFileSync(path.join(target, "AGENTS.md"), "# 我的项目\n\n<!-- uak:begin (孤儿标记，无 end)\n\n被夹带的残句\n");
+  writeFileSync(path.join(target, "AGENTS.md"), "# 我的项目\n\n<!-- uak:begin (孤儿标记，无 end)\n被夹带的标记行\n\n真实内容行\n");
   await runInit({ targetDir: target, uakPath: uakRoot, host: "other", dryRun: false });
   const agents = readSafe(path.join(target, "AGENTS.md"));
   assert.ok(agents.startsWith("# 我的项目"), "原文前段必须保留");
-  assert.ok(!agents.includes("被夹带的残句"), "孤儿段内容必须清除");
-  assert.ok(agents.includes("<!-- uak:begin") && agents.includes("<!-- uak:end -->"), "新标记段完整");
+  assert.ok(agents.includes("真实内容行"), "非标记行必须保留");
+  assert.ok(!agents.includes("<!-- uak:begin (孤儿"), "孤儿标记行必须删除");
+  assert.equal(agents.split("<!-- uak:begin").length - 1, 1, "begin 恰一处（新块）");
+  assert.ok(agents.includes("<!-- uak:end -->"), "新标记段完整");
   rmSync(target, { recursive: true, force: true });
 });
 
-test("runInit 实跑: 乱序标记（end 在 begin 前）降级重写不残留", async () => {
-  // 批 32 P3-1 两轮实测回归锁：截断点必须用标记起点比较
+test("runInit 实跑: 乱序标记（end 在 begin 前）收敛到唯一新块", async () => {
+  // 批 32 P3-1 回归锁（批 34 策略升级：标记行删除、非标记行保留——
+  // 旧断言"损坏区清除"会丢用户真实内容，已按新策略修订）
   const target = makeTarget();
   const uakRoot = uakRepoRoot();
   writeFileSync(path.join(target, "AGENTS.md"), "前段\n<!-- uak:end -->\n中段\n<!-- uak:begin (孤儿)\n尾段\n");
   await runInit({ targetDir: target, uakPath: uakRoot, host: "other", dryRun: false });
   const agents = readSafe(path.join(target, "AGENTS.md"));
-  assert.ok(agents.startsWith("前段"), "首个标记前原文必须保留");
-  assert.equal(agents.split("<!-- uak:begin").length - 1, 1, "begin 标记恰好一处");
-  assert.equal(agents.split("<!-- uak:end -->").length - 1, 1, "end 标记恰好一处");
-  assert.ok(!agents.includes("中段") && !agents.includes("尾段"), "损坏区内容不予保留");
+  assert.equal(agents.split("<!-- uak:begin").length - 1, 1, "begin 恰一处");
+  assert.equal(agents.split("<!-- uak:end -->").length - 1, 1, "end 恰一处");
+  assert.ok(!agents.includes("<!-- uak:begin (孤儿)"), "孤儿标记行删除");
   rmSync(target, { recursive: true, force: true });
 });
 
@@ -136,4 +141,42 @@ test("checkManagedBlock: 完整/缺产物/乱序三态判定", () => {
   const missing = checkManagedBlock("# 项目无标记", path.join(tmp, ".agents"));
   assert.equal(missing.ok, false);
   rmSync(tmp, { recursive: true, force: true });
+});
+
+test("runInit 实跑: 六态标记全收敛到唯一新块（批 34 P1-2 回归锁）", async () => {
+  const uakRoot = uakRepoRoot();
+  const cases = {
+    "有序单块": "头\n<!-- uak:begin (managed) -->\n旧\n<!-- uak:end -->\n",
+    "乱序": "前\n<!-- uak:end -->\n中\n<!-- uak:begin (孤儿)\n尾\n",
+    "孤儿begin": "头\n<!-- uak:begin (孤儿)\n尾\n",
+    "孤儿end": "损坏\n<!-- uak:end -->\n尾\n",
+    "双块": "头\n<!-- uak:begin (m) -->\n旧1\n<!-- uak:end -->\n夹带\n<!-- uak:begin (m) -->\n旧2\n<!-- uak:end -->\n",
+    "完整对尾随孤儿": "头\n<!-- uak:begin (managed) -->\n旧块\n<!-- uak:end -->\n尾随 <!-- uak:begin (孤儿) 残句\n",
+  };
+  for (const [name, init] of Object.entries(cases)) {
+    const target = makeTarget();
+    writeFileSync(path.join(target, "AGENTS.md"), init);
+    await runInit({ targetDir: target, uakPath: uakRoot, host: "other", dryRun: false });
+    const agents = readSafe(path.join(target, "AGENTS.md"));
+    assert.equal(agents.split("<!-- uak:begin").length - 1, 1, `${name}: begin 必恰一对`);
+    assert.equal(agents.split("<!-- uak:end -->").length - 1, 1, `${name}: end 必恰一对`);
+    rmSync(target, { recursive: true, force: true });
+  }
+});
+
+test("--check CLI spawnSync 真跑（批 34 P1-1 补交付）", async () => {
+  const root = uakRepoRoot();
+  // 场景一：已装目标 → 自检通过 exit 0
+  const installed = makeTarget();
+  await runInit({ targetDir: installed, uakPath: root, host: "other", dryRun: false });
+  const ok = spawnSync(process.execPath, [path.join(root, "scripts", "uak-init.mjs"), "--check"], { cwd: installed, encoding: "utf8" });
+  assert.equal(ok.status, 0, `已装自检应 exit 0：${ok.stderr?.slice(0, 200)}`);
+  assert.match(ok.stdout ?? "", /自检通过/);
+  // 场景二：未装目标 → 报错 exit 1
+  const bare = makeTarget();
+  const bad = spawnSync(process.execPath, [path.join(root, "scripts", "uak-init.mjs"), "--check"], { cwd: bare, encoding: "utf8" });
+  assert.equal(bad.status, 1, "未装自检应 exit 1");
+  assert.match(bad.stderr ?? "", /尚未 init/);
+  rmSync(installed, { recursive: true, force: true });
+  rmSync(bare, { recursive: true, force: true });
 });

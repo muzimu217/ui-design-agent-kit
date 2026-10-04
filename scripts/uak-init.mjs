@@ -105,18 +105,18 @@ async function upsertAgentsMd(targetDir, snippet) {
   const beginIdx = content.indexOf("<!-- uak:begin");
   const endIdx = content.indexOf("<!-- uak:end -->");
   if (beginIdx !== -1 || endIdx !== -1) {
-    // 批 33 P1-1：四态统一——
-    // ①完整有序（begin<end，含多块重复：first begin→last end 全域替换去重，
-    //   块间夹带内容视为损坏区）
-    if (beginIdx !== -1 && endIdx !== -1 && beginIdx < endIdx) {
-      const lastEnd = content.lastIndexOf("<!-- uak:end -->") + "<!-- uak:end -->".length;
-      return { file: agentsPath, action: "updated", write: () => writeFile(agentsPath, content.slice(0, beginIdx) + snippet + content.slice(lastEnd), "utf8") };
-    }
-    // ②乱序/孤儿 begin/孤儿 end → 最早标记【起点】截断，托管段整体重写
-    //  （Math.min 混入 -1 曾致 slice(0,-1) 假修复——批 33 P1-1 实锤）
-    const firstMarker = [beginIdx, endIdx].filter((v) => v !== -1).sort((a, b) => a - b)[0];
-    content = content.slice(0, firstMarker);
-    return { file: agentsPath, action: "repaired", write: () => writeFile(agentsPath, content.replace(/\n*$/, "\n\n") + snippet + "\n", "utf8") };
+    // 批 34 P1-2：标记处理终极形态=【全剥离重写】——
+    // 旧版逐态分支在"完整对+尾随孤儿 begin"第五态漏归（begin×2/end×1 不
+    // 自愈且 --check 假绿）。统一：①全局剥全部完整块 ②剥孤儿标记整行
+    // ③尾插新块。任何历史形态产出唯一新块。
+    let stripped = content.replace(/<!-- uak:begin[\s\S]*?<!-- uak:end -->/g, "");
+    stripped = stripped
+      .split(/\r?\n/)
+      .filter((line) => !line.includes("<!-- uak:begin") && !line.includes("<!-- uak:end"))
+      .join("\n");
+    stripped = stripped.replace(/\n{3,}/g, "\n\n").replace(/\s+$/, "\n");
+    const strippedClean = stripped.trim().length === 0 ? "" : stripped.replace(/\n*$/, "\n\n");
+    return { file: agentsPath, action: "repaired", write: () => writeFile(agentsPath, strippedClean + snippet + "\n", "utf8") };
   }
   const separator = content.trim().length === 0 ? "" : "\n\n";
   return { file: agentsPath, action: content ? "appended" : "created", write: () => writeFile(agentsPath, content + separator + snippet + "\n", "utf8") };

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { detectHost, resolveUakPath, agentsSnippet, runInit } from "../scripts/uak-init.mjs";
+import { detectHost, resolveUakPath, agentsSnippet, runInit, checkManagedBlock } from "../scripts/uak-init.mjs";
 
 // V1 uak-init 纯函数与守卫覆盖。夹具=临时目录，用完即删。
 
@@ -116,3 +116,24 @@ function uakRepoRoot() {
   // tests/uak-init.test.mjs → 仓库根（两级上）
   return path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 }
+
+test("checkManagedBlock: 完整/缺产物/乱序三态判定", () => {
+  const tmp = mkdtempSync(path.join(tmpdir(), "chk-"));
+  mkdirSync(path.join(tmp, ".agents"));
+  writeFileSync(path.join(tmp, ".agents", "uak-prompt.md"), "placeholder");
+  const okBlock = agentsSnippet("/uak", "other");
+  const ok = checkManagedBlock("# 项目\n\n" + okBlock, path.join(tmp, ".agents"));
+  assert.equal(ok.ok, true, "完整段应通过");
+
+  const noPrompt = checkManagedBlock(okBlock, path.join(tmp, "不存在"));
+  assert.equal(noPrompt.ok, false, "缺 uak-prompt.md 应判否");
+  assert.ok(noPrompt.problems.some((p) => p.includes("uak-prompt.md")));
+
+  const disorder = checkManagedBlock("前\n<!-- uak:end -->\n中\n<!-- uak:begin (孤儿)\n", path.join(tmp, ".agents"));
+  assert.equal(disorder.ok, false, "乱序标记应判否");
+  assert.ok(disorder.problems.some((p) => p.includes("乱序")));
+
+  const missing = checkManagedBlock("# 项目无标记", path.join(tmp, ".agents"));
+  assert.equal(missing.ok, false);
+  rmSync(tmp, { recursive: true, force: true });
+});

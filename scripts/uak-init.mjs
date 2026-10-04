@@ -17,8 +17,9 @@ import { pathToFileURL } from "node:url";
 // 纪律：不写目标项目的 .codex/config.toml（用户配置，只打印）；不装依赖；零外部请求。
 
 const USAGE = `用法：node uak-init.mjs [--uak <uak-repo>] [--host codex|claude|other] [--dry-run]
-  --uak   UAK 仓库路径（默认：环境变量 UAK_PATH，其次 ../ui-design-agent-kit）
-  --host  目标宿主（默认自动探测：.codex/ → codex；CLAUDE.md → claude；否则 other）`;
+  --uak     UAK 仓库路径（默认：环境变量 UAK_PATH，其次 ../ui-design-agent-kit）
+  --host    目标宿主（默认自动探测：.codex/ → codex；CLAUDE.md → claude；否则 other）
+  --check   自检模式：验证目标项目已装标记段完整性（只读，不写盘）`;
 
 export function detectHost(targetDir) {
   if (existsSync(path.join(targetDir, ".codex"))) return "codex";
@@ -34,6 +35,27 @@ export function resolveUakPath(explicit) {
     if (existsSync(path.join(candidate, "scripts", "build-prompt.mjs"))) return candidate;
   }
   return undefined;
+}
+
+// 自检（纯函数）：验证已装标记段结构与产物在位。
+// 返回 { ok, problems[] }——ok=false 时 problems 逐条说明。
+export function checkManagedBlock(agentsContent, agentsDirAbs) {
+  const problems = [];
+  const hasBegin = agentsContent.includes("<!-- uak:begin");
+  const hasEnd = agentsContent.includes("<!-- uak:end -->");
+  if (!hasBegin || !hasEnd) {
+    problems.push("AGENTS.md 缺 uak 标记段（begin/end 不齐）");
+    return { ok: false, problems };
+  }
+  const beginIdx = agentsContent.indexOf("<!-- uak:begin");
+  const endIdx = agentsContent.indexOf("<!-- uak:end -->");
+  if (endIdx < beginIdx) {
+    problems.push("标记乱序（end 在 begin 前）——上次 init 遭遇损坏区，建议重跑 init 修复");
+  }
+  const promptPath = path.join(agentsDirAbs, "uak-prompt.md");
+  if (!existsSync(promptPath)) problems.push(`缺 .agents/uak-prompt.md（${promptPath}）`);
+  if (!agentsContent.includes("uak-prompt.md")) problems.push("标记段未引用 uak-prompt.md");
+  return { ok: problems.length === 0, problems };
 }
 
 export function agentsSnippet(uakPath, host) {
@@ -141,7 +163,24 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
     try {
       const targetDir = process.cwd();
       const uakPath = resolveUakPath(get("--uak"));
-      if (!uakPath) {
+      if (argv.includes("--check")) {
+        // 自检模式（只读）：验证标记段与产物在位
+        const agentsPath = path.join(targetDir, "AGENTS.md");
+        if (!existsSync(agentsPath)) {
+          console.error(`✗ 目标项目无 AGENTS.md（${agentsPath}）——尚未 init`);
+          process.exitCode = 1;
+        } else {
+          const verdict = checkManagedBlock(await readFile(agentsPath, "utf8"), path.join(targetDir, ".agents"));
+          if (verdict.ok) {
+            console.log("✓ uak 接入自检通过：标记段完整、uak-prompt.md 在位");
+          } else {
+            console.error(`✗ 自检发现 ${verdict.problems.length} 个问题：`);
+            for (const problem of verdict.problems) console.error(`  - ${problem}`);
+            console.error("  修复：重跑 uak-init（幂等）");
+            process.exitCode = 1;
+          }
+        }
+      } else if (!uakPath) {
         console.error("✗ 未找到 UAK 仓库——用 --uak <path> 或环境变量 UAK_PATH 指定");
         process.exitCode = 1;
       } else {

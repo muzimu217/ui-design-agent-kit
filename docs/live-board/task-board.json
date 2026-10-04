@@ -9,7 +9,7 @@
     "a11y": "0 违规",
     "audits": "34 批（批 34 P1×2 整改 8d92dcb）",
     "lock": "25/25 100%",
-    "verify": "八维验收组合（+爬取/死链）",
+    "verify": "九维验收组合（+跳过披露）",
     "roadmap": "V1 三片落地（init+Express+README 接入文档）；V2 两片（verify:page 七维+批量模式）；npm 发包暂缓"
   },
   "activeTask": {
@@ -68,6 +68,11 @@
   "recentFlow": [
     {
       "time": "10-04 14:xx",
+      "event": "线上站移动端 7px 溢出根治（803e17b）：hero-actions 加 flex-wrap（375px 两行居中/桌面单行无感）落 test 分支随解冻上线；verify:page skippedSamples 声明补齐（a0d6010）九维 9 PASS/0 WARN",
+      "type": "fix"
+    },
+    {
+      "time": "10-04 14:xx",
       "event": "审计批 34 收口整改（8d92dcb）：P1×2=--check CLI 测试补交付（两次声称零交付）+第五态根治（全剥离重写，六态实测标记各恰一对）；教训 16 复发再次如实记录",
       "type": "audit"
     },
@@ -110,11 +115,6 @@
       "time": "10-04 10:xx",
       "event": "审计批 31 收口整改（417944b）：P1 真根因=爬取入队传未过滤原始 URL（hash 链接直入队列）——过滤单源化收归 lib+一行根因修，对外复跑 NAV-FAIL 清零；uak-init 孤儿标记回归测试+1；测试 115/115",
       "type": "audit"
-    },
-    {
-      "time": "10-04 09:xx",
-      "event": "爬取队列决策抽纯函数 planCrawlQueue（7606c81）+测试锁定；行为等价由死链夹具复跑证明；测试 114/114",
-      "type": "dev"
     }
   ]
 }

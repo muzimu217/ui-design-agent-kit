@@ -47,7 +47,7 @@ export function parseUrlList(text) {
   for (const raw of text.split(/\r?\n/)) {
     const line = raw.trim();
     if (!line || line.startsWith("#")) continue;
-    if (/^https?:\/\//.test(line)) urls.push(line);
+    if (/^https?:\/\//i.test(line)) urls.push(line);
     else invalid.push(line);
   }
   return { urls, invalid };

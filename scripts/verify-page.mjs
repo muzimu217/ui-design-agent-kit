@@ -125,6 +125,7 @@ async function runOnce(browser, url, outDir) {
       let queue = [new URL(url).pathname];
       const pages = [];
       const broken = [];
+      let probeTruncatedTotal = 0;
       const crawlPage = await browser.newPage({ viewport: { width: 1280, height: 800 } });
       while (queue.length > 0 && visited.size < 5) {
         const pathname = queue.shift();
@@ -152,10 +153,13 @@ async function runOnce(browser, url, outDir) {
           return { anchors: [...new Set(anchors)], images: [...new Set(images)] };
         }, url);
         const sameOrigin = links.anchors.filter((h) => isFetchableLink(h, url)).map((h) => new URL(h).pathname);
-        // 探活用全 href（保 query）；单页探活上限 60
-        const probeTargets = [...new Set([...links.anchors, ...links.images])]
-          .filter((h) => isFetchableLink(h, url))
-          .slice(0, 60);
+        const imageProbe = [...new Set(links.images)].filter((h) => isFetchableLink(h, url));
+        // 探活用全 href（保 query——批 31 P2-③）；单页上限 60，截断如实披露
+        //（批 33 P1-2 补实装：3e9f9f2 曾声称四小修但本段未落地）
+        const allTargets = [...new Set([...links.anchors.filter((h) => isFetchableLink(h, url)), ...imageProbe])];
+        const probeTruncated = Math.max(0, allTargets.length - 60);
+        probeTruncatedTotal += probeTruncated;
+        const probeTargets = allTargets.slice(0, 60);
         const probe = await crawlPage.evaluate(async (targets) => {
           const out = [];
           for (const target of targets) {
@@ -167,14 +171,17 @@ async function runOnce(browser, url, outDir) {
           return out;
         }, probeTargets);
         broken.push(...probe);
-        pages.push({ pathname, anchors: sameOrigin.length, images: links.images.length });
+        pages.push({ pathname, anchors: sameOrigin.length, images: imageProbe.length });
         queue = planCrawlQueue(queue, visited, sameOrigin, 5);
       }
       await crawlPage.close();
       results.crawl = { pagesVisited: pages.length, pages, brokenLinks: broken };
       await writeFile(path.join(outDir, "crawl-report.json"), JSON.stringify(results.crawl, null, 2) + "\n", "utf8");
       record("同域爬取（≤5 页）", pages.length > 0 ? "PASS" : "WARN", `${pages.length} 页：${pages.map((pg) => pg.pathname).join(", ").slice(0, 120)}`, "crawl-report.json");
-      record("死链检测", broken.length === 0 ? "PASS" : "FAIL", broken.length === 0 ? "全站链接探活通过" : broken.slice(0, 5).map((b) => `${b.status} ${b.href}`).join(" | "), "crawl-report.json");
+      record("死链检测", broken.length === 0 ? "PASS" : "FAIL",
+        (broken.length === 0 ? "全站链接探活通过" : broken.slice(0, 5).map((b) => `${b.status} ${b.href}`).join(" | "))
+        + (probeTruncatedTotal > 0 ? `；探活上限 60，累计截断 ${probeTruncatedTotal} 个（如实披露）` : ""),
+        "crawl-report.json");
     } catch (error) {
       record("同域爬取+死链", "WARN", `爬取失败：${String(error).slice(0, 120)}`, "");
     }

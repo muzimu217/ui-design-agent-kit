@@ -102,21 +102,19 @@ async function upsertAgentsMd(targetDir, snippet) {
   const agentsPath = path.join(targetDir, "AGENTS.md");
   let content = "";
   if (existsSync(agentsPath)) content = await readFile(agentsPath, "utf8");
-  if (content.includes("<!-- uak:begin") || content.includes("<!-- uak:end")) {
-    const start = content.indexOf("<!-- uak:begin");
-    let end = content.indexOf("<!-- uak:end -->");
-    if (end !== -1) end += "<!-- uak:end -->".length;
-    // 完整有序（begin<end）→ 原位替换
-    if (start !== -1 && end !== -1 && start < end) {
-      return { file: agentsPath, action: "updated", write: () => writeFile(agentsPath, content.slice(0, start) + snippet + content.slice(end), "utf8") };
+  const beginIdx = content.indexOf("<!-- uak:begin");
+  const endIdx = content.indexOf("<!-- uak:end -->");
+  if (beginIdx !== -1 || endIdx !== -1) {
+    // 批 33 P1-1：四态统一——
+    // ①完整有序（begin<end，含多块重复：first begin→last end 全域替换去重，
+    //   块间夹带内容视为损坏区）
+    if (beginIdx !== -1 && endIdx !== -1 && beginIdx < endIdx) {
+      const lastEnd = content.lastIndexOf("<!-- uak:end -->") + "<!-- uak:end -->".length;
+      return { file: agentsPath, action: "updated", write: () => writeFile(agentsPath, content.slice(0, beginIdx) + snippet + content.slice(lastEnd), "utf8") };
     }
-    // 乱序（end 在 begin 前）或孤儿标记 = 托管区损坏（批 32 P3-1 实测产生
-    // 重复托管区）——降级：截断至首个标记前，托管段整体重写（标记后的
-    // 内容视为损坏区，不予保留）
-    // 截断点统一用标记【起点】比较（end 已 +len 归一化，直接比会落到标记
-    // 之后——批 32 P3-1 二次实测：残留旧 end 标记）
-    const endStart = end === -1 ? Infinity : end - "<!-- uak:end -->".length;
-    const firstMarker = Math.min(start, endStart);
+    // ②乱序/孤儿 begin/孤儿 end → 最早标记【起点】截断，托管段整体重写
+    //  （Math.min 混入 -1 曾致 slice(0,-1) 假修复——批 33 P1-1 实锤）
+    const firstMarker = [beginIdx, endIdx].filter((v) => v !== -1).sort((a, b) => a - b)[0];
     content = content.slice(0, firstMarker);
     return { file: agentsPath, action: "repaired", write: () => writeFile(agentsPath, content.replace(/\n*$/, "\n\n") + snippet + "\n", "utf8") };
   }

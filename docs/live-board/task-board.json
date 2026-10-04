@@ -65,6 +65,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-03 23:xx",
+      "event": "晚间漫游第六程（整页轮换）：手搓《海绵宝宝》隔夜翻倍 376k→771k 播（赞 5.6w→9.5w，赞率 15%→12% 稀释但绝对值暴增）——大赛内容处 Mass 破圈期；情怀带复证（16%/18%）；术语 02 series API 仍限流",
+      "type": "research"
+    },
+    {
       "time": "10-03 22:xx",
       "event": "晚间漫游第五程：自制网页游戏内容 41.2w 播 11% 赞——「自己做网页」叙事有四五十万级观众盘，UAK『AI 帮你做网页+验收』定位受众已验证；手搓大赛 20%/铠甲 19% 长尾稳定；术语 02 监控 series API 限流顺延",
       "type": "research"
@@ -107,11 +112,6 @@
     {
       "time": "10-03 14:xx",
       "event": "R194-01 B 视频五修指令层落地（eefe03c）：video-craft 军规入册（录自家 demo 禁平涂/镜头语言/排版/声音声明式/叙事节奏），SKILL 视频专家行改写；JIEJOE 磁带零回写",
-      "type": "ticket"
-    },
-    {
-      "time": "10-03 13:xx",
-      "event": "规格门工具化（340a5bd）：lint:spec 契约×mock 字段机检——原型交接协议三门全为真工具（build/detail-lint/lint:spec）；三连绿 100/100",
       "type": "ticket"
     }
   ]

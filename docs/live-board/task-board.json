@@ -5,9 +5,9 @@
     "corpus": "70/71",
     "corpusPercent": 99,
     "streak100": 54,
-    "tests": "120/120",
+    "tests": "122/122",
     "a11y": "0 违规",
-    "audits": "33 批（批 33 P1×2 整改 062b1d5）",
+    "audits": "34 批（批 34 P1×2 整改 8d92dcb）",
     "lock": "25/25 100%",
     "verify": "八维验收组合（+爬取/死链）",
     "roadmap": "V1 三片落地（init+Express+README 接入文档）；V2 两片（verify:page 七维+批量模式）；npm 发包暂缓"
@@ -67,6 +67,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-04 14:xx",
+      "event": "审计批 34 收口整改（8d92dcb）：P1×2=--check CLI 测试补交付（两次声称零交付）+第五态根治（全剥离重写，六态实测标记各恰一对）；教训 16 复发再次如实记录",
+      "type": "audit"
+    },
+    {
       "time": "10-04 13:xx",
       "event": "doc-drift 计数锁子串弱点加固（includes→词边界正则+负样本测试 ×4）：'1118 项'不再误命中 118 的锁；级联 120/120",
       "type": "dev"
@@ -110,11 +115,6 @@
       "time": "10-04 09:xx",
       "event": "爬取队列决策抽纯函数 planCrawlQueue（7606c81）+测试锁定；行为等价由死链夹具复跑证明；测试 114/114",
       "type": "dev"
-    },
-    {
-      "time": "10-04 09:xx",
-      "event": "verify:page 升八维（c583066）：同域爬取+死链检测（BFS≤5 页+探活）+lib 拆分 3 用例；R101-03 游离脚本移 archive；Express 全链证据 9 PASS；测试 113/113",
-      "type": "milestone"
     }
   ]
 }

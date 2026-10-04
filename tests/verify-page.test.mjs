@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { isFetchableLink, planCrawlQueue } from "../scripts/verify-page-lib.mjs";
+import { summarizeBatch } from "../scripts/verify-page-lib.mjs";
 
 // V2 verify:page 纯函数覆盖：同域 http(s) 链接过滤（爬取与死链探活共用）。
 
@@ -43,4 +44,18 @@ test("planCrawlQueue: 总量封顶 maxPages、去重、不重访", () => {
   // 已满则不再入队
   queue = planCrawlQueue(["/a", "/b"], new Set(["/", "/1", "/2", "/3"]), ["/4"], 5);
   assert.deepEqual(queue, ["/a", "/b"], "visited 4 + queue 2 已超 5 上限语义，不再扩");
+});
+
+test("summarizeBatch: 逐行判定与总判定", () => {
+  const rows = [
+    { url: "https://a.example/", pass: 7, fail: 0, warn: 0 },
+    { url: "https://b.example/", pass: 6, fail: 1, warn: 0 },
+    { url: "https://c.example/", pass: 6, fail: 0, warn: 1 },
+  ];
+  const result = summarizeBatch(rows);
+  assert.deepEqual(result.summary.map((s) => s.verdict), ["PASS", "FAIL", "WARN"]);
+  assert.equal(result.totalFail, 1);
+  assert.equal(result.verdict, "FAIL", "任一 FAIL 则总判定 FAIL");
+  const allpass = summarizeBatch([{ url: "https://a.example/", pass: 7, fail: 0, warn: 0 }]);
+  assert.equal(allpass.verdict, "PASS");
 });

@@ -23,3 +23,18 @@ export function planCrawlQueue(queue, visited, candidates, maxPages) {
   }
   return next;
 }
+
+// 批量验收聚合（纯函数）：逐 URL 结果 → 摘要行与总判定
+// （任一 FAIL → 总 FAIL；无 FAIL 有 WARN → 总 WARN）
+export function summarizeBatch(rows) {
+  const summary = rows.map((row) => ({
+    url: row.url,
+    pass: row.pass,
+    fail: row.fail,
+    warn: row.warn,
+    verdict: row.fail > 0 ? "FAIL" : row.warn > 0 ? "WARN" : "PASS",
+  }));
+  const totalFail = summary.filter((s) => s.verdict === "FAIL").length;
+  const verdict = totalFail > 0 ? "FAIL" : summary.some((s) => s.verdict === "WARN") ? "WARN" : "PASS";
+  return { summary, totalFail, verdict };
+}

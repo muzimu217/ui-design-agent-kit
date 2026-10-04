@@ -209,6 +209,7 @@ async function runOnce(browser, url, outDir) {
         };
         const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
         const samples = [];
+        let skippedSamples = 0;
         let node;
         while ((node = walker.nextNode()) && samples.length < 400) {
           const text = node.textContent.trim();
@@ -221,7 +222,7 @@ async function runOnce(browser, url, outDir) {
           if (rect.width === 0 || rect.height === 0) continue;
           const fg = lum(style.color);
           const bg = lum(effectiveBg(el));
-          if (fg === null || bg === null) continue;
+          if (fg === null || bg === null) { skippedSamples += 1; continue; }
           const ratio = (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05);
           samples.push({ ratio: Math.round(ratio * 100) / 100, text: text.slice(0, 24), size: parseFloat(style.fontSize), weight: parseInt(style.fontWeight, 10) || 400 });
         }
@@ -233,7 +234,7 @@ async function runOnce(browser, url, outDir) {
       results.contrast = contrast;
       const status = contrast.sampled === 0 ? "WARN" : contrast.belowAA.length === 0 ? "PASS" : contrast.belowAA.some((s2) => s2.ratio < 3) ? "FAIL" : "WARN";
       record("对比度实算分布", status,
-        contrast.sampled === 0 ? "未采样到文本" : `${contrast.sampled} 个文本样本，低于 AA ${contrast.belowAA.length} 个（最差 ${contrast.worst}:1）`,
+        contrast.sampled === 0 ? "未采样到文本" : `${contrast.sampled} 个文本样本，低于 AA ${contrast.belowAA.length} 个（最差 ${contrast.worst}:1）${contrast.skipped ? `；${contrast.skipped} 个样本因颜色函数不支持跳过（如实披露）` : ""}`,
         JSON.stringify(contrast.belowAA));
     } catch (error) {
       record("对比度实算分布", "WARN", `实测失败：${String(error).slice(0, 120)}`, "");

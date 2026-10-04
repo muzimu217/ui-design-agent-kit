@@ -7,7 +7,7 @@
     "streak100": 54,
     "tests": "110/110",
     "a11y": "0 违规",
-    "audits": "29 批",
+    "audits": "30 批（P1 验收工具假 PASS 根治 7577678）",
     "lock": "25/25 100%（warnings 0）",
     "roadmap": "V1 两片+V2 verify:page 首片落地；npm 发包暂缓"
   },
@@ -66,6 +66,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-04 08:xx",
+      "event": "审计批 30 收口整改（7577678）：P1=verify-page axe 失败态假 PASS 根治（验收工具不能假绿）+P2×5；账实出入如实记录（12 笔 vs 任务书 8 笔）",
+      "type": "audit"
+    },
+    {
       "time": "10-04 07:xx",
       "event": "verify:page 对外首跑：agent.kcos.club 5 PASS/1 FAIL——抓移动端溢出 7px 真缺陷（冻结期记录）；goto 策略适配 SPA（875524d）；深色日报出稿",
       "type": "milestone"
@@ -108,11 +113,6 @@
     {
       "time": "10-03 23:xx",
       "event": "晚间漫游第六程（整页轮换）：手搓《海绵宝宝》隔夜翻倍 376k→771k 播（赞 5.6w→9.5w，赞率 15%→12% 稀释但绝对值暴增）——大赛内容处 Mass 破圈期；情怀带复证（16%/18%）；术语 02 series API 仍限流",
-      "type": "research"
-    },
-    {
-      "time": "10-03 22:xx",
-      "event": "晚间漫游第五程：自制网页游戏内容 41.2w 播 11% 赞——「自己做网页」叙事有四五十万级观众盘，UAK『AI 帮你做网页+验收』定位受众已验证；手搓大赛 20%/铠甲 19% 长尾稳定；术语 02 监控 series API 限流顺延",
       "type": "research"
     }
   ]

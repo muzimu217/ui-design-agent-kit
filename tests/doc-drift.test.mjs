@@ -62,13 +62,24 @@ test("README and identity cite the current full-suite test count", async () => {
     return count;
   };
   const fullCount = (await countTop(path.join(ROOT, "tests"))) + (await countTop(path.join(ROOT, "showcase", "tests")));
+  // 批 34 P3：includes 是子串匹配——"1118 项"会误命中 118 的锁（已复现）。
+  // 词边界正则：数字前不得有其他数字。
+  const citesCount = (source, count) => new RegExp(`(^|[^0-9])${count} 项`).test(source);
   for (const file of ["README.md", "docs/identity-and-direction.md"]) {
     const source = await read(file);
     assert.ok(
-      source.includes(`${fullCount} 项`),
+      citesCount(source, fullCount),
       `${file} must cite the current full-suite test count (${fullCount} 项)`,
     );
   }
+});
+
+test("count-citation matcher rejects substring cousins (1118 ≠ 118)", () => {
+  const citesCount = (source, count) => new RegExp(`(^|[^0-9])${count} 项`).test(source);
+  assert.equal(citesCount("本套件含 1118 项测试", 118), false, "1118 不得误命中 118 的锁");
+  assert.equal(citesCount("本套件含 118 项测试", 118), true);
+  assert.equal(citesCount("本套件含 2118 项测试", 118), false);
+  assert.equal(citesCount("开头 118 项测试", 118), true, "行首数字无前缀也命中");
 });
 
 test("quality-monitor metric rows stay current with the corpus and the test count", async () => {

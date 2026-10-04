@@ -2,6 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
 import { AxeBuilder } from "@axe-core/playwright";
+import { isFetchableLink } from "./verify-page-lib.mjs";
 
 // V2（strategy-synthesis §三.7）：`uak verify <url>` 独立验收 CLI——
 // 对任意页面跑浏览器验收组合（桌面/移动截图、console、键盘焦点、
@@ -17,6 +18,8 @@ import { AxeBuilder } from "@axe-core/playwright";
 //   3. 键盘 Tab：前 10 次聚焦必须可见（focus-visible）
 //   4. prefers-reduced-motion 渲染不崩（可访问性底线）
 //   5. axe-core A+AA 违规计数（critical/serious 列名）
+//   6. 同域爬取 ≤5 页 + 全站链接/图片探活（死链 FAIL；data:/blob: 等协议跳过）
+//   7. 对比度实算分布（TreeWalker 采样+WCAG 亮度实测）
 
 const args = process.argv.slice(2);
 const get = (flag) => {
@@ -126,6 +129,68 @@ try {
     results.axe = violations.map((v) => ({ id: v.id, impact: v.impact, nodes: v.nodes.length, help: v.help }));
     await writeFile(path.join(outDir, "axe-findings.json"), JSON.stringify(results.axe, null, 2) + "\n", "utf8");
   }
+  // 5.5 同域爬取 + 死链检测（≤5 页 BFS；链接逐个探活，4xx/5xx 记死链；
+  //     过滤语义与 verify-page-lib.isFetchableLink 一致——页面上下文无法引用
+  //     模块函数，注入 baseHref 内联同款逻辑，漂移由测试锁定）
+  try {
+    const origin = new URL(url).origin;
+    const visited = new Set();
+    const queue = [new URL(url).pathname];
+    const pages = [];
+    const broken = [];
+    const crawlPage = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+    while (queue.length > 0 && visited.size < 5) {
+      const pathname = queue.shift();
+      if (visited.has(pathname)) continue;
+      visited.add(pathname);
+      try {
+        await gotoSettled(crawlPage, origin + pathname);
+      } catch {
+        broken.push({ href: pathname, status: "NAV-FAIL" });
+        continue;
+      }
+      const links = await crawlPage.evaluate((baseHref) => {
+        const fetchable = (href) => {
+          try {
+            const u = new URL(href, baseHref);
+            return u.origin === new URL(baseHref).origin && ["http:", "https:"].includes(u.protocol);
+          } catch { return false; }
+        };
+        const anchors = [...document.querySelectorAll("a[href]")]
+          .map((a) => a.getAttribute("href"))
+          .filter((h) => h && fetchable(h))
+          .map((h) => new URL(h, location.href).pathname);
+        const images = [...document.querySelectorAll("img[src]")]
+          .map((img) => img.getAttribute("src"))
+          .filter((src) => fetchable(src))
+          .map((src) => new URL(src, location.href).pathname);
+        return { anchors: [...new Set(anchors)], images: [...new Set(images)] };
+      }, url);
+      const probe = await crawlPage.evaluate(async (targets) => {
+        const out = [];
+        for (const target of targets) {
+          try {
+            const res = await fetch(target, { method: "GET" });
+            if (res.status >= 400) out.push({ href: target, status: res.status });
+          } catch { out.push({ href: target, status: "FETCH-FAIL" }); }
+        }
+        return out;
+      }, [...links.anchors, ...links.images]);
+      broken.push(...probe);
+      pages.push({ pathname, anchors: links.anchors.length, images: links.images.length });
+      for (const candidate of links.anchors) {
+        if (!visited.has(candidate) && queue.length + visited.size < 5) queue.push(candidate);
+      }
+    }
+    await crawlPage.close();
+    results.crawl = { pagesVisited: pages.length, pages, brokenLinks: broken };
+    await writeFile(path.join(outDir, "crawl-report.json"), JSON.stringify(results.crawl, null, 2) + "\n", "utf8");
+    record("同域爬取（≤5 页）", pages.length > 0 ? "PASS" : "WARN", `${pages.length} 页：${pages.map((pg) => pg.pathname).join(", ").slice(0, 120)}`, "crawl-report.json");
+    record("死链检测", broken.length === 0 ? "PASS" : "FAIL", broken.length === 0 ? "全站链接探活通过" : broken.slice(0, 5).map((b) => `${b.status} ${b.href}`).join(" | "), "crawl-report.json");
+  } catch (error) {
+    record("同域爬取+死链", "WARN", `爬取失败：${String(error).slice(0, 120)}`, "");
+  }
+
   // 6. 对比度实算分布（axe 只报违规；这里给全页文本的前景/背景实测分布——
   //    与门E「对比度程序实算」纪律同源：不信任声明值，只信 computed）
   try {

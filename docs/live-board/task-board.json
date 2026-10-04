@@ -7,7 +7,7 @@
     "streak100": 54,
     "tests": "122/122",
     "a11y": "0 违规",
-    "audits": "35 批（批 35 P0/P1 双零）",
+    "audits": "36 进行中（批 36=8d92dcb 盲区补正审）",
     "lock": "25/25 100%",
     "verify": "九维验收组合（+跳过披露）",
     "roadmap": "V1 三片落地（init+Express+README 接入文档）；V2 两片（verify:page 七维+批量模式）；npm 发包暂缓"
@@ -67,6 +67,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-04 16:xx",
+      "event": "审计批 36 派单（8d92dcb 盲区补正审：标记处理六+病态输入实测）；千分位旁路封锁（65ed48c）：计数锁补逗号+负样本断言，122/122 三连绿；术语 02 监控 API 恢复",
+      "type": "audit"
+    },
+    {
       "time": "10-04 15:xx",
       "event": "审计批 35 收口：P0/P1 双零（803e17b Playwright 因果链实测认证/a0d6010 端到端通过）；P2-① 8d92dcb 落盲区记账批 36 补正审；P3-① 已修（a850ce0）；漫游恢复+术语 02 监控恢复",
       "type": "audit"
@@ -110,11 +115,6 @@
       "time": "10-04 10:xx",
       "event": "JIEJOE D5 素材索引完成（68 条/8 主题/H1-H5 全强化/骨架建议）；审计批 32 后台派（约 10 笔：V1/V2 两片+钉版+整改深审）",
       "type": "research"
-    },
-    {
-      "time": "10-04 10:xx",
-      "event": "V2 第二片落地：verify:page 批量模式（--urls 多 URL+runOnce 重构+summarizeBatch 聚合入 lib）+README uak init 接入文档（49800fb/9278d9e/补账笔）；教训 16 复发如实记录（;链红灯漏检）",
-      "type": "dev"
     }
   ]
 }

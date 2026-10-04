@@ -12,13 +12,13 @@
     "roadmap": "V1 两片+V2 verify:page 首片落地；npm 发包暂缓"
   },
   "activeTask": {
-    "id": "V2 独立验收 CLI（strategy-synthesis §三.7）",
-    "name": "uak verify:page 首片落地（e9d457c）",
-    "status": "真跑 6 PASS/0 WARN（本地夹具靶）；报告自包含可分享带署名",
+    "id": "V2 独立验收 CLI",
+    "name": "对外首跑完成（线上站 5 PASS/1 FAIL）",
+    "status": "e9d457c+875524d——抓线上站真缺陷：移动端 375px 溢出 7px（冻结期记录）",
     "startedAt": "2026-10-04",
-    "currentGate": "增强空间：更多验收维度（对比度实算/链接死链）、报告主题、对外演示",
-    "lastArtifact": "scripts/verify-page.mjs + output/verify-page-demo/report.html",
-    "next": "对外靶试跑（线上站/任意外页）+V3 UI-Bench 视用户；WIP A/B/C、A2、40 手册待用户"
+    "currentGate": "溢出修复排解冻合并批；审计批 30 后台进行中",
+    "lastArtifact": "output/verify-agent-kcos-external/report.html（首份对外验收报告）",
+    "next": "批 30 结论整改；WIP A/B/C、A2、npm 发包、40 手册待用户"
   },
   "gates": [
     {
@@ -66,6 +66,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-04 07:xx",
+      "event": "verify:page 对外首跑：agent.kcos.club 5 PASS/1 FAIL——抓移动端溢出 7px 真缺陷（冻结期记录）；goto 策略适配 SPA（875524d）；深色日报出稿",
+      "type": "milestone"
+    },
+    {
       "time": "10-04 06:xx",
       "event": "V2 首片落地（e9d457c）：verify:page 独立页面验收 CLI——五维组合真跑全绿，自包含署名报告；零新增依赖",
       "type": "milestone"
@@ -108,11 +113,6 @@
     {
       "time": "10-03 22:xx",
       "event": "晚间漫游第五程：自制网页游戏内容 41.2w 播 11% 赞——「自己做网页」叙事有四五十万级观众盘，UAK『AI 帮你做网页+验收』定位受众已验证；手搓大赛 20%/铠甲 19% 长尾稳定；术语 02 监控 series API 限流顺延",
-      "type": "research"
-    },
-    {
-      "time": "10-03 21:xx",
-      "event": "晚间漫游第三程：情怀内容 23% 赞率新纪录（「你回到当年的B站」23.5w）——互动层级谱系成型：情怀>手搓/创意(19-20%)>真实叙事(9-11%)>基线(3-5%)；术语 02 监控本轮限流下轮重试",
       "type": "research"
     }
   ]

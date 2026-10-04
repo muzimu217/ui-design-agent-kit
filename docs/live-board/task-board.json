@@ -5,12 +5,12 @@
     "corpus": "70/71",
     "corpusPercent": 99,
     "streak100": 54,
-    "tests": "115/115",
+    "tests": "116/116",
     "a11y": "0 违规",
     "audits": "31 批（P1 单源化真修 417944b）",
     "lock": "25/25 100%",
     "verify": "八维验收组合（+爬取/死链）",
-    "roadmap": "V1 两片+V2 两片（verify:page 七维+爬取死链）"
+    "roadmap": "V1 三片落地（init+Express+README 接入文档）；V2 两片（verify:page 七维+批量模式）；npm 发包暂缓"
   },
   "activeTask": {
     "id": "V2 独立验收 CLI",
@@ -68,6 +68,11 @@
   "recentFlow": [
     {
       "time": "10-04 10:xx",
+      "event": "V2 第二片落地：verify:page 批量模式（--urls 多 URL+runOnce 重构+summarizeBatch 聚合入 lib）+README uak init 接入文档（49800fb/9278d9e/补账笔）；教训 16 复发如实记录（;链红灯漏检）",
+      "type": "dev"
+    },
+    {
+      "time": "10-04 10:xx",
       "event": "审计批 31 收口整改（417944b）：P1 真根因=爬取入队传未过滤原始 URL（hash 链接直入队列）——过滤单源化收归 lib+一行根因修，对外复跑 NAV-FAIL 清零；uak-init 孤儿标记回归测试+1；测试 115/115",
       "type": "audit"
     },
@@ -110,11 +115,6 @@
       "time": "10-04 06:xx",
       "event": "V1 增长路线首交付：uak init（50509b3）+Express 档（9943ab5）——HISTORY 里程碑；角色澄清=开发线负责人（cron 评审提示词降为触发器）；测试基线 110/110",
       "type": "milestone"
-    },
-    {
-      "time": "10-04 05:xx",
-      "event": "凌晨漫游：情怀带最强持续样本——《对妹妹的思念》622k→828k（+33%）赞率稳守 16%；层级谱系凌晨档复证",
-      "type": "research"
     }
   ]
 }

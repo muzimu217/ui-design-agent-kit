@@ -32,7 +32,7 @@ if (!url || !/^https?:\/\//.test(url)) {
   console.error('用法：npm run verify:page -- --url https://example.com [--out output/verify-xxx]');
   process.exit(1);
 }
-const stamp = new Date().toISOString().slice(0, 16).replace(/[-:T]/g, "");
+const stamp = new Date().toISOString().slice(0, 19).replace(/[-:T]/g, "");
 const outDir = path.resolve(get("--out") || path.join("output", `verify-page-${stamp}`));
 await mkdir(outDir, { recursive: true });
 
@@ -108,20 +108,26 @@ try {
   const axePage = await axeContext.newPage();
   await gotoSettled(axePage, url);
   let violations = [];
+  let axeFailed = false;
   try {
     ({ violations } = await new AxeBuilder({ page: axePage })
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
       .analyze());
   } catch (error) {
-    record("axe A+AA 扫描", "WARN", `扫描失败：${String(error).slice(0, 120)}`, "");
+    // 批 30 P1：扫描失败必须 FAIL——空数组继续走会产假 PASS，验收工具自己不能假绿
+    axeFailed = true;
+    record("axe A+AA", "FAIL", `扫描失败（不产假 PASS）：${String(error).slice(0, 120)}`, "");
   }
-  const critical = violations.filter((v) => v.impact === "critical");
-  const serious = violations.filter((v) => v.impact === "serious");
-  record("axe A+AA", critical.length === 0 && serious.length === 0 ? "PASS" : critical.length > 0 ? "FAIL" : "WARN",
-    `critical ${critical.length} / serious ${serious.length} / 全部 ${violations.length}`, "axe-findings.json");
-  results.axe = violations.map((v) => ({ id: v.id, impact: v.impact, nodes: v.nodes.length, help: v.help }));
-  await writeFile(path.join(outDir, "axe-findings.json"), JSON.stringify(results.axe, null, 2) + "\n", "utf8");
+  if (!axeFailed) {
+    const critical = violations.filter((v) => v.impact === "critical");
+    const serious = violations.filter((v) => v.impact === "serious");
+    record("axe A+AA", critical.length === 0 && serious.length === 0 ? "PASS" : critical.length > 0 ? "FAIL" : "WARN",
+      `critical ${critical.length} / serious ${serious.length} / 全部 ${violations.length}`, "axe-findings.json");
+    results.axe = violations.map((v) => ({ id: v.id, impact: v.impact, nodes: v.nodes.length, help: v.help }));
+    await writeFile(path.join(outDir, "axe-findings.json"), JSON.stringify(results.axe, null, 2) + "\n", "utf8");
+  }
   await axePage.close();
+  await axeContext.close().catch(() => {});
 } finally {
   await browser.close();
 }
@@ -131,8 +137,9 @@ const fail = findings.filter((f) => f.status === "FAIL").length;
 const warn = findings.filter((f) => f.status === "WARN").length;
 await writeFile(path.join(outDir, "results.json"), JSON.stringify(results, null, 2) + "\n", "utf8");
 
+const esc = (value) => String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const report = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>UAK 验收报告 · ${url}</title><style>
+<title>UAK 验收报告 · ${esc(url)}</title><style>
 body{margin:0;background:#0c1116;color:#e8eef2;font:15px/1.7 'PingFang SC',sans-serif;padding:32px 20px}
 .wrap{max-width:860px;margin:0 auto}h1{font-size:21px}.sub{color:#9db0bc;font-size:13px;margin-bottom:18px}
 .r{border-left:3px solid #22303c;padding:8px 14px;margin:8px 0;background:#141d26;border-radius:0 8px 8px 0}
@@ -140,12 +147,12 @@ body{margin:0;background:#0c1116;color:#e8eef2;font:15px/1.7 'PingFang SC',sans-
 img{max-width:100%;border:1px solid #22303c;border-radius:8px;margin:8px 0}
 footer{color:#64798a;font-size:12px;margin-top:26px;border-top:1px solid #22303c;padding-top:12px}
 </style></head><body><div class="wrap">
-<h1>UAK 页面验收报告</h1><p class="sub">${url} · ${results.ranAt} · 由 UI Design Agent Kit 生成（github.com/muzimu217/ui-design-agent-kit）</p>
-${findings.map((f) => `<div class="r ${f.status}"><b>${f.status}</b> ${f.name}${f.detail ? " — " + f.detail : ""}</div>`).join("\n")}
+<h1>UAK 页面验收报告</h1><p class="sub">${esc(url)} · ${results.ranAt} · 由 UI Design Agent Kit 生成（github.com/muzimu217/ui-design-agent-kit）</p>
+${findings.map((f) => `<div class="r ${f.status}"><b>${f.status}</b> ${esc(f.name)}${f.detail ? " — " + esc(f.detail) : ""}</div>`).join("\n")}
 <h3>截图</h3><img src="desktop-1440.png" alt="桌面"/><img src="mobile-375.png" alt="移动"/>
 <footer>pass ${pass} / fail ${fail} / warn ${warn} · 证据与报告同目录 · 由 UI Design Agent Kit 验收体系驱动</footer>
 </div></body></html>`;
 await writeFile(path.join(outDir, "report.html"), report, "utf8");
 console.log(`\n验收完成：${pass} PASS / ${fail} FAIL / ${warn} WARN`);
-console.log(`报告：${path.join(outDir, "report.html")}`);
+console.log(`报告：${path.join(outDir, "report.html")}（与截图同目录交付）`);
 process.exitCode = fail > 0 ? 1 : 0;

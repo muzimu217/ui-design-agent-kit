@@ -241,7 +241,7 @@
       "license": "Apache-2.0",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Self-authored promotion playbook (own repo, git rev pinned)"
+        "Self-authored promotion playbook (own repo, git rev pinned)；同仓自引用语义：revision 为钉版时点快照，随本仓每笔提交自然过期（以 git HEAD 为实时真相）"
       ]
     },
     {
@@ -252,7 +252,7 @@
       "license": "Apache-2.0",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Self-authored Remotion orchestration skill (own repo, git rev pinned)"
+        "Self-authored Remotion orchestration skill (own repo, git rev pinned)；同仓自引用语义：revision 为钉版时点快照，随本仓每笔提交自然过期（以 git HEAD 为实时真相）"
       ]
     },
     {
@@ -263,7 +263,7 @@
       "license": "Apache-2.0",
       "notice": "THIRD_PARTY_NOTICES.md",
       "adaptations": [
-        "Self-authored root skill (own repo, git rev pinned)"
+        "Self-authored root skill (own repo, git rev pinned)；同仓自引用语义：revision 为钉版时点快照，随本仓每笔提交自然过期（以 git HEAD 为实时真相）"
       ]
     }
   ],

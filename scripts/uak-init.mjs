@@ -12,6 +12,7 @@ import { pathToFileURL } from "node:url";
 //   1. 在 UAK 仓跑 prompt:build（lean 档）并把导出拷到目标项目 .agents/uak-prompt.md
 //   2. 目标项目 AGENTS.md 追加（或更新标记段）UAK 接入说明
 //   3. 打印该宿主的手动步骤（MCP 三必配 + 首个任务建议）——不替用户改宿主配置
+// 注意：--dry-run 只对目标项目不写盘；lean 导出仍会在 UAK 源仓 output/ 再生成（gitignored）
 //
 // 纪律：不写目标项目的 .codex/config.toml（用户配置，只打印）；不装依赖；零外部请求。
 
@@ -81,7 +82,14 @@ async function upsertAgentsMd(targetDir, snippet) {
   if (existsSync(agentsPath)) content = await readFile(agentsPath, "utf8");
   if (content.includes("<!-- uak:begin")) {
     const start = content.indexOf("<!-- uak:begin");
-    const end = content.indexOf("<!-- uak:end -->") + "<!-- uak:end -->".length;
+    let end = content.indexOf("<!-- uak:end -->");
+    if (end === -1) {
+      // 孤儿 begin（有开无合）：切片拼接会静默损坏原文（批 30 P2-②）——
+      // 降级为"掐掉孤儿段整体重写"
+      content = content.slice(0, start);
+      return { file: agentsPath, action: "repaired", write: () => writeFile(agentsPath, content + "\n" + snippet + "\n", "utf8") };
+    }
+    end += "<!-- uak:end -->".length;
     return { file: agentsPath, action: "updated", write: () => writeFile(agentsPath, content.slice(0, start) + snippet + content.slice(end), "utf8") };
   }
   const separator = content.trim().length === 0 ? "" : "\n\n";

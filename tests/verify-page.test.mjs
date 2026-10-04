@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { isFetchableLink } from "../scripts/verify-page-lib.mjs";
+import { isFetchableLink, planCrawlQueue } from "../scripts/verify-page-lib.mjs";
 
 // V2 verify:page 纯函数覆盖：同域 http(s) 链接过滤（爬取与死链探活共用）。
 
@@ -25,4 +25,22 @@ test("isFetchableLink: 跨域/非 http 协议/非法串一律拒绝", () => {
 
 test("isFetchableLink: baseHref 非法时安全拒绝不抛异常", () => {
   assert.equal(isFetchableLink("/x", "not-a-url"), false);
+});
+
+test("planCrawlQueue: 总量封顶 maxPages、去重、不重访", () => {
+  // 上限：visited 1 + 队列最多再放 4
+  let queue = planCrawlQueue(["/"], new Set(["/"]), ["/a", "/b", "/c", "/d", "/e"], 5);
+  assert.equal(queue.length, 4, "visited 1 + queue 4 = 5 封顶");
+
+  // 去重：候选已在队列不重复入队
+  queue = planCrawlQueue(["/a"], new Set(["/"]), ["/a", "/a", "/b"], 5);
+  assert.deepEqual(queue, ["/a", "/b"]);
+
+  // 不重访：候选已访问过不入队
+  queue = planCrawlQueue([], new Set(["/", "/x"]), ["/x", "/y"], 5);
+  assert.deepEqual(queue, ["/y"]);
+
+  // 已满则不再入队
+  queue = planCrawlQueue(["/a", "/b"], new Set(["/", "/1", "/2", "/3"]), ["/4"], 5);
+  assert.deepEqual(queue, ["/a", "/b"], "visited 4 + queue 2 已超 5 上限语义，不再扩");
 });

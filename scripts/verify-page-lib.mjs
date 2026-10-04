@@ -10,3 +10,16 @@ export function isFetchableLink(href, baseHref) {
     return false;
   }
 }
+
+// 爬取队列决策（纯函数）：把同域候选并入 BFS 队列。
+// 上限语义：visited.size + queue.length < maxPages 才入队——
+// 出队时 visited 只增不减，总量恰好封顶 maxPages；重复/已访问候选跳过。
+export function planCrawlQueue(queue, visited, candidates, maxPages) {
+  const next = [...queue];
+  for (const candidate of candidates) {
+    if (visited.has(candidate) || next.includes(candidate)) continue;
+    if (next.length + visited.size >= maxPages) break;
+    next.push(candidate);
+  }
+  return next;
+}

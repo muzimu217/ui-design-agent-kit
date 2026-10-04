@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
 import { AxeBuilder } from "@axe-core/playwright";
-import { isFetchableLink } from "./verify-page-lib.mjs";
+import { isFetchableLink, planCrawlQueue } from "./verify-page-lib.mjs";
 
 // V2（strategy-synthesis §三.7）：`uak verify <url>` 独立验收 CLI——
 // 对任意页面跑浏览器验收组合（桌面/移动截图、console、键盘焦点、
@@ -135,7 +135,7 @@ try {
   try {
     const origin = new URL(url).origin;
     const visited = new Set();
-    const queue = [new URL(url).pathname];
+    let queue = [new URL(url).pathname];
     const pages = [];
     const broken = [];
     const crawlPage = await browser.newPage({ viewport: { width: 1280, height: 800 } });
@@ -178,9 +178,7 @@ try {
       }, [...links.anchors, ...links.images]);
       broken.push(...probe);
       pages.push({ pathname, anchors: links.anchors.length, images: links.images.length });
-      for (const candidate of links.anchors) {
-        if (!visited.has(candidate) && queue.length + visited.size < 5) queue.push(candidate);
-      }
+      queue = planCrawlQueue(queue, visited, links.anchors, 5);
     }
     await crawlPage.close();
     results.crawl = { pagesVisited: pages.length, pages, brokenLinks: broken };

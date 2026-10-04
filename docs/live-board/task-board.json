@@ -2,22 +2,22 @@
   "updatedAt": "2026-10-04",
   "updatedBy": "轮 220 · 每小时评审循环",
   "stats": {
-    "corpus": "70/71（四态场景预执行完毕，--record 待双锁）",
+    "corpus": "70/71（四态预执行待 --record）",
     "corpusPercent": 99,
     "streak100": 54,
-    "tests": "105/105",
+    "tests": "110/110",
     "a11y": "0 违规",
-    "audits": "29 批零上下文回归审计",
-    "prototypeGates": "三门全真工具+首靶 8 字段全登记"
+    "audits": "29 批",
+    "roadmap": "V1 两片落地（init+Express），剩 npm 发包待用户"
   },
   "activeTask": {
-    "id": "prototype-handover-four-states 预执行",
-    "name": "四态场景预执行完毕（d98fd99），--record/级联待双锁",
-    "status": "13/13 实机断言+D10 四截图复核+规格门首靶通过；场景定义就绪稿存 run 目录",
-    "startedAt": "2026-10-03",
-    "currentGate": "双锁（results.json/eval-report 并行 WIP）释放即入册+级联",
-    "lastArtifact": "evals/runs/prototype-handover-four-states/（夹具+契约+13 断言+4 截图+NON-CORPUS）",
-    "next": "双锁释放→粘贴场景→--record→级联 71→72；JIEJOE D5 综合报告（D1-D4 素材已齐，等磁带满 5 天呈用户）"
+    "id": "V1 增长路线（strategy-synthesis §三）",
+    "name": "uak init + Express 档",
+    "status": "两片落地（50509b3/9943ab5）；V1 剩 npm 发包待用户授权",
+    "startedAt": "2026-10-04",
+    "currentGate": "HISTORY 已记里程碑；V2 verify CLI 为下一片",
+    "lastArtifact": "scripts/uak-init.mjs（宿主探测/lean 导出/幂等标记段/自噬守卫）+ Express 档（一屏门A 卡+弃权通道预授权）",
+    "next": "V2 uak verify CLI 取证开工；WIP A/B/C、A2 收纳、40 手册时机三件仍待用户裁决"
   },
   "gates": [
     {
@@ -65,6 +65,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-04 06:xx",
+      "event": "V1 增长路线首交付：uak init（50509b3）+Express 档（9943ab5）——HISTORY 里程碑；角色澄清=开发线负责人（cron 评审提示词降为触发器）；测试基线 110/110",
+      "type": "milestone"
+    },
+    {
       "time": "10-04 05:xx",
       "event": "凌晨漫游：情怀带最强持续样本——《对妹妹的思念》622k→828k（+33%）赞率稳守 16%；层级谱系凌晨档复证",
       "type": "research"
@@ -108,11 +113,6 @@
       "time": "10-03 19:xx",
       "event": "晚间 B 站漫游（popular feed 两程）：手搓动画大赛两期进热门且赞率 15-20%（平台基线 4-5%）——赛事=高赞引擎，强化 UAK 第二条视频「爆肝建造」叙事优先级；AI 二创赛道（AI全民制作人）百万级进热门，「AI 味的解药」定位顺风",
       "type": "research"
-    },
-    {
-      "time": "10-03 17:xx",
-      "event": "B 站投稿文案刷新（a92296b）：数据口径至 101 测试/99%/54 连批；新增交接协议卖点（备选 B 标题+四件套第二条候选）；发推时点留用户",
-      "type": "promo"
     }
   ]
 }

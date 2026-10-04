@@ -47,10 +47,16 @@ export function checkManagedBlock(agentsContent, agentsDirAbs) {
     problems.push("AGENTS.md 缺 uak 标记段（begin/end 不齐）");
     return { ok: false, problems };
   }
-  const beginIdx = agentsContent.indexOf("<!-- uak:begin");
-  const endIdx = agentsContent.indexOf("<!-- uak:end -->");
-  if (endIdx < beginIdx) {
-    problems.push("标记乱序（end 在 begin 前）——上次 init 遭遇损坏区，建议重跑 init 修复");
+  const beginCount = agentsContent.split("<!-- uak:begin").length - 1;
+  const endCount = agentsContent.split("<!-- uak:end -->").length - 1;
+  if (beginCount !== 1 || endCount !== 1) {
+    problems.push(`标记段计数异常（begin×${beginCount}/end×${endCount}，须各 1）——历史形态残留，建议重跑 init 修复`);
+  } else {
+    const beginPos = agentsContent.indexOf("<!-- uak:begin");
+    const endPos = agentsContent.indexOf("<!-- uak:end -->");
+    if (endPos < beginPos) {
+      problems.push("标记乱序（end 在 begin 前）——建议重跑 init 修复");
+    }
   }
   const promptPath = path.join(agentsDirAbs, "uak-prompt.md");
   if (!existsSync(promptPath)) problems.push(`缺 .agents/uak-prompt.md（${promptPath}）`);
@@ -109,12 +115,14 @@ async function upsertAgentsMd(targetDir, snippet) {
     // 旧版逐态分支在"完整对+尾随孤儿 begin"第五态漏归（begin×2/end×1 不
     // 自愈且 --check 假绿）。统一：①全局剥全部完整块 ②剥孤儿标记整行
     // ③尾插新块。任何历史形态产出唯一新块。
+    // 批 36 P2-1：孤儿标记改为【token 删除】——旧"整行删除"把标记前后的
+    // 真实文本（尾随/残句）一起丢掉，非破坏原则下只摘除标记 token 本身
     let stripped = content.replace(/<!-- uak:begin[\s\S]*?<!-- uak:end -->/g, "");
     stripped = stripped
       .split(/\r?\n/)
-      .filter((line) => !line.includes("<!-- uak:begin") && !line.includes("<!-- uak:end"))
+      .map((line) => line.replace("<!-- uak:begin", "").replace("<!-- uak:end -->", ""))
       .join("\n");
-    stripped = stripped.replace(/\n{3,}/g, "\n\n").replace(/\s+$/, "\n");
+    stripped = stripped.replace(/\n{3,}/g, "\n\n").replace(/^[\s\n]+/, "");
     const strippedClean = stripped.trim().length === 0 ? "" : stripped.replace(/\n*$/, "\n\n");
     return { file: agentsPath, action: "repaired", write: () => writeFile(agentsPath, strippedClean + snippet + "\n", "utf8") };
   }

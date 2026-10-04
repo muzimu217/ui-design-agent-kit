@@ -149,23 +149,27 @@ try {
         broken.push({ href: pathname, status: "NAV-FAIL" });
         continue;
       }
+      // 批 31 P1：页面只收原始 href（解析+去重），过滤一律回 Node 侧走
+      // verify-page-lib.isFetchableLink 单源——内联副本曾漂移（缺 # 守卫），
+      // "同款逻辑靠测试锁定"被证伪，正解=消灭副本。
       const links = await crawlPage.evaluate((baseHref) => {
-        const fetchable = (href) => {
-          try {
-            const u = new URL(href, baseHref);
-            return u.origin === new URL(baseHref).origin && ["http:", "https:"].includes(u.protocol);
-          } catch { return false; }
+        const resolve = (href) => {
+          try { return new URL(href, baseHref).href; } catch { return null; }
         };
         const anchors = [...document.querySelectorAll("a[href]")]
-          .map((a) => a.getAttribute("href"))
-          .filter((h) => h && fetchable(h))
-          .map((h) => new URL(h, location.href).pathname);
+          .map((a) => resolve(a.getAttribute("href")))
+          .filter(Boolean);
         const images = [...document.querySelectorAll("img[src]")]
-          .map((img) => img.getAttribute("src"))
-          .filter((src) => fetchable(src))
-          .map((src) => new URL(src, location.href).pathname);
+          .map((img) => resolve(img.getAttribute("src")))
+          .filter(Boolean);
         return { anchors: [...new Set(anchors)], images: [...new Set(images)] };
       }, url);
+      const sameOrigin = links.anchors.filter((h) => isFetchableLink(h, url)).map((h) => new URL(h).pathname);
+      // 探活用全 href（保 query——批 31 P2-③：.pathname 丢 query 会漏判）；
+      // 单页探活上限 60（批 31 P3：无上限探活风险）
+      const probeTargets = [...new Set([...links.anchors, ...links.images])]
+        .filter((h) => isFetchableLink(h, url))
+        .slice(0, 60);
       const probe = await crawlPage.evaluate(async (targets) => {
         const out = [];
         for (const target of targets) {
@@ -175,10 +179,10 @@ try {
           } catch { out.push({ href: target, status: "FETCH-FAIL" }); }
         }
         return out;
-      }, [...links.anchors, ...links.images]);
+      }, probeTargets);
       broken.push(...probe);
-      pages.push({ pathname, anchors: links.anchors.length, images: links.images.length });
-      queue = planCrawlQueue(queue, visited, links.anchors, 5);
+      pages.push({ pathname, anchors: sameOrigin.length, images: links.images.length });
+      queue = planCrawlQueue(queue, visited, sameOrigin, 5); // 只入队过滤后的同域 pathname（批 31 P1 同源化收尾：原始 hash URL 曾直入队列致 NAV-FAIL×4）
     }
     await crawlPage.close();
     results.crawl = { pagesVisited: pages.length, pages, brokenLinks: broken };
@@ -227,10 +231,10 @@ try {
         const bg = lum(effectiveBg(el));
         if (fg === null || bg === null) continue;
         const ratio = (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05);
-        samples.push({ ratio: Math.round(ratio * 100) / 100, text: text.slice(0, 24), size: parseFloat(style.fontSize) });
+        samples.push({ ratio: Math.round(ratio * 100) / 100, text: text.slice(0, 24), size: parseFloat(style.fontSize), weight: parseInt(style.fontWeight, 10) || 400 });
       }
       samples.sort((a, b) => a.ratio - b.ratio);
-      const large = (s) => s.size >= 24 || (s.size >= 18.66 && true);
+      const large = (s) => s.size >= 24 || (s.size >= 18.66 && s.weight >= 700);
       const belowAA = samples.filter((s) => s.ratio < (large(s) ? 3 : 4.5));
       return { sampled: samples.length, belowAA: belowAA.slice(0, 8).map((s) => ({ ratio: s.ratio, text: s.text })), worst: samples[0]?.ratio ?? null };
     });

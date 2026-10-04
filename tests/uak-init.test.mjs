@@ -62,6 +62,19 @@ test("runInit dry-run: 不写盘且动作清单完整", async () => {
   rmSync(target, { recursive: true, force: true });
 });
 
+test("runInit 实跑: 孤儿 begin 标记降级重写不损坏原文前段", async () => {
+  // 批 31 P2-②：end 缺失时 indexOf+15 切片曾静默损坏原文
+  const target = makeTarget();
+  const uakRoot = uakRepoRoot();
+  writeFileSync(path.join(target, "AGENTS.md"), "# 我的项目\n\n<!-- uak:begin (孤儿标记，无 end)\n\n被夹带的残句\n");
+  await runInit({ targetDir: target, uakPath: uakRoot, host: "other", dryRun: false });
+  const agents = readSafe(path.join(target, "AGENTS.md"));
+  assert.ok(agents.startsWith("# 我的项目"), "原文前段必须保留");
+  assert.ok(!agents.includes("被夹带的残句"), "孤儿段内容必须清除");
+  assert.ok(agents.includes("<!-- uak:begin") && agents.includes("<!-- uak:end -->"), "新标记段完整");
+  rmSync(target, { recursive: true, force: true });
+});
+
 test("runInit 实跑: AGENTS.md 标记段幂等更新", async () => {
   const target = makeTarget();
   const uakRoot = uakRepoRoot();

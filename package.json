@@ -32,7 +32,8 @@
     "doctor:mcp": "node scripts/doctor.mjs --connect",
     "a11y:sweep": "node scripts/a11y-sweep.mjs",
     "lint:spec": "node scripts/spec-lint.mjs",
-    "init": "node scripts/uak-init.mjs"
+    "init": "node scripts/uak-init.mjs",
+    "daily-brief": "node scripts/daily-report-gen.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

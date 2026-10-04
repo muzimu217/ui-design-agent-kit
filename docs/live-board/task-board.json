@@ -5,7 +5,7 @@
     "corpus": "70/71",
     "corpusPercent": 99,
     "streak100": 54,
-    "tests": "116/116",
+    "tests": "118/118",
     "a11y": "0 违规",
     "audits": "32 批（批 32 P1=重构重开假 PASS，已根治 b00e545）",
     "lock": "25/25 100%",
@@ -68,6 +68,11 @@
   "recentFlow": [
     {
       "time": "10-04 11:xx",
+      "event": "批 32 P3 队列清偿（3e9f9f2）：乱序标记两轮实测修复+--urls scheme 校验入 lib+images 计数口径+截断披露；级联预填值被锁定器两次纠正后按实数落账（118/118）",
+      "type": "dev"
+    },
+    {
+      "time": "10-04 11:xx",
       "event": "审计批 32 收口整改（b00e545）：P1=批 30 假 PASS 修复被 315 轮重构重开（return 入 finally 吞异常，死站获 PASS 报告）——结构修+死端口/活靶双实证；元教训=重构笔视为高危默认进下轮审计",
       "type": "audit"
     },
@@ -109,11 +114,6 @@
     {
       "time": "10-04 07:xx",
       "event": "verify:page 对外首跑：agent.kcos.club 5 PASS/1 FAIL——抓移动端溢出 7px 真缺陷（冻结期记录）；goto 策略适配 SPA（875524d）；深色日报出稿",
-      "type": "milestone"
-    },
-    {
-      "time": "10-04 06:xx",
-      "event": "V2 首片落地（e9d457c）：verify:page 独立页面验收 CLI——五维组合真跑全绿，自包含署名报告；零新增依赖",
       "type": "milestone"
     }
   ]

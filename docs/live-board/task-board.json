@@ -7,7 +7,7 @@
     "streak100": 54,
     "tests": "122/122",
     "a11y": "0 违规",
-    "audits": "34 批（批 34 P1×2 整改 8d92dcb）",
+    "audits": "35 批（批 35 P0/P1 双零）",
     "lock": "25/25 100%",
     "verify": "九维验收组合（+跳过披露）",
     "roadmap": "V1 三片落地（init+Express+README 接入文档）；V2 两片（verify:page 七维+批量模式）；npm 发包暂缓"
@@ -67,6 +67,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-04 15:xx",
+      "event": "审计批 35 收口：P0/P1 双零（803e17b Playwright 因果链实测认证/a0d6010 端到端通过）；P2-① 8d92dcb 落盲区记账批 36 补正审；P3-① 已修（a850ce0）；漫游恢复+术语 02 监控恢复",
+      "type": "audit"
+    },
+    {
       "time": "10-04 14:xx",
       "event": "线上站移动端 7px 溢出根治（803e17b）：hero-actions 加 flex-wrap（375px 两行居中/桌面单行无感）落 test 分支随解冻上线；verify:page skippedSamples 声明补齐（a0d6010）九维 9 PASS/0 WARN",
       "type": "fix"
@@ -110,11 +115,6 @@
       "time": "10-04 10:xx",
       "event": "V2 第二片落地：verify:page 批量模式（--urls 多 URL+runOnce 重构+summarizeBatch 聚合入 lib）+README uak init 接入文档（49800fb/9278d9e/补账笔）；教训 16 复发如实记录（;链红灯漏检）",
       "type": "dev"
-    },
-    {
-      "time": "10-04 10:xx",
-      "event": "审计批 31 收口整改（417944b）：P1 真根因=爬取入队传未过滤原始 URL（hash 链接直入队列）——过滤单源化收归 lib+一行根因修，对外复跑 NAV-FAIL 清零；uak-init 孤儿标记回归测试+1；测试 115/115",
-      "type": "audit"
     }
   ]
 }

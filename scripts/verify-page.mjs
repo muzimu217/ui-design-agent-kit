@@ -126,6 +126,59 @@ try {
     results.axe = violations.map((v) => ({ id: v.id, impact: v.impact, nodes: v.nodes.length, help: v.help }));
     await writeFile(path.join(outDir, "axe-findings.json"), JSON.stringify(results.axe, null, 2) + "\n", "utf8");
   }
+  // 6. 对比度实算分布（axe 只报违规；这里给全页文本的前景/背景实测分布——
+  //    与门E「对比度程序实算」纪律同源：不信任声明值，只信 computed）
+  try {
+    const contrast = await axePage.evaluate(() => {
+      const lum = (rgbStr) => {
+        const m = rgbStr.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)/);
+        if (!m) return null;
+        const ch = [m[1], m[2], m[3]].map((v) => {
+          const c = Number(v) / 255;
+          return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+        });
+        return 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2];
+      };
+      const effectiveBg = (el) => {
+        let node = el;
+        while (node && node !== document.documentElement) {
+          const bg = getComputedStyle(node).backgroundColor;
+          if (bg && !bg.startsWith("rgba(0, 0, 0, 0")) return bg;
+          node = node.parentElement;
+        }
+        return "rgb(255, 255, 255)";
+      };
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const samples = [];
+      let node;
+      while ((node = walker.nextNode()) && samples.length < 400) {
+        const text = node.textContent.trim();
+        if (text.length < 4) continue;
+        const el = node.parentElement;
+        if (!el) continue;
+        const style = getComputedStyle(el);
+        if (style.display === "none" || style.visibility === "hidden") continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) continue;
+        const fg = lum(style.color);
+        const bg = lum(effectiveBg(el));
+        if (fg === null || bg === null) continue;
+        const ratio = (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05);
+        samples.push({ ratio: Math.round(ratio * 100) / 100, text: text.slice(0, 24), size: parseFloat(style.fontSize) });
+      }
+      samples.sort((a, b) => a.ratio - b.ratio);
+      const large = (s) => s.size >= 24 || (s.size >= 18.66 && true);
+      const belowAA = samples.filter((s) => s.ratio < (large(s) ? 3 : 4.5));
+      return { sampled: samples.length, belowAA: belowAA.slice(0, 8).map((s) => ({ ratio: s.ratio, text: s.text })), worst: samples[0]?.ratio ?? null };
+    });
+    results.contrast = contrast;
+    const status = contrast.sampled === 0 ? "WARN" : contrast.belowAA.length === 0 ? "PASS" : contrast.belowAA.some((s) => s.ratio < 3) ? "FAIL" : "WARN";
+    record("对比度实算分布", status,
+      contrast.sampled === 0 ? "未采样到文本" : `${contrast.sampled} 个文本样本，低于 AA ${contrast.belowAA.length} 个（最差 ${contrast.worst}:1）`,
+      JSON.stringify(contrast.belowAA));
+  } catch (error) {
+    record("对比度实算分布", "WARN", `实测失败：${String(error).slice(0, 120)}`, "");
+  }
   await axePage.close();
   await axeContext.close().catch(() => {});
 } finally {

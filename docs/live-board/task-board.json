@@ -68,6 +68,11 @@
   "recentFlow": [
     {
       "time": "10-04 10:xx",
+      "event": "JIEJOE D5 素材索引完成（68 条/8 主题/H1-H5 全强化/骨架建议）；审计批 32 后台派（约 10 笔：V1/V2 两片+钉版+整改深审）",
+      "type": "research"
+    },
+    {
+      "time": "10-04 10:xx",
       "event": "V2 第二片落地：verify:page 批量模式（--urls 多 URL+runOnce 重构+summarizeBatch 聚合入 lib）+README uak init 接入文档（49800fb/9278d9e/补账笔）；教训 16 复发如实记录（;链红灯漏检）",
       "type": "dev"
     },
@@ -109,11 +114,6 @@
     {
       "time": "10-04 07:xx",
       "event": "用户四件套执行：生产就绪评估（指令层可生产使用）+技能收缩第一步（锁 25/25 warnings 0）+每日简报机制（npm run daily-brief）+npm 发包暂缓采纳",
-      "type": "milestone"
-    },
-    {
-      "time": "10-04 06:xx",
-      "event": "V1 增长路线首交付：uak init（50509b3）+Express 档（9943ab5）——HISTORY 里程碑；角色澄清=开发线负责人（cron 评审提示词降为触发器）；测试基线 110/110",
       "type": "milestone"
     }
   ]

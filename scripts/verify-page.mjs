@@ -282,10 +282,13 @@ if (isMain) {
   const urlsFile = get("--urls");
   let urlList = [];
   if (urlsFile) {
-    urlList = (await readFile(path.resolve(urlsFile), "utf8"))
-      .split(/\r?\n/)
-      .map((line) => line.trim())
-      .filter((line) => line && !line.startsWith("#"));
+    const { parseUrlList } = await import("./verify-page-lib.mjs");
+    const parsed = parseUrlList(await readFile(path.resolve(urlsFile), "utf8"));
+    if (parsed.invalid.length > 0) {
+      console.error(`✗ ${parsed.invalid.length} 行非法（须 http/https 绝对地址）：${parsed.invalid.slice(0, 3).join(" | ")}`);
+      process.exit(1);
+    }
+    urlList = parsed.urls;
     if (urlList.length === 0) {
       console.error(`✗ ${urlsFile} 无有效 URL（每行一条，# 为注释）`);
       process.exit(1);

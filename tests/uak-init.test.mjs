@@ -75,6 +75,20 @@ test("runInit 实跑: 孤儿 begin 标记降级重写不损坏原文前段", asy
   rmSync(target, { recursive: true, force: true });
 });
 
+test("runInit 实跑: 乱序标记（end 在 begin 前）降级重写不残留", async () => {
+  // 批 32 P3-1 两轮实测回归锁：截断点必须用标记起点比较
+  const target = makeTarget();
+  const uakRoot = uakRepoRoot();
+  writeFileSync(path.join(target, "AGENTS.md"), "前段\n<!-- uak:end -->\n中段\n<!-- uak:begin (孤儿)\n尾段\n");
+  await runInit({ targetDir: target, uakPath: uakRoot, host: "other", dryRun: false });
+  const agents = readSafe(path.join(target, "AGENTS.md"));
+  assert.ok(agents.startsWith("前段"), "首个标记前原文必须保留");
+  assert.equal(agents.split("<!-- uak:begin").length - 1, 1, "begin 标记恰好一处");
+  assert.equal(agents.split("<!-- uak:end -->").length - 1, 1, "end 标记恰好一处");
+  assert.ok(!agents.includes("中段") && !agents.includes("尾段"), "损坏区内容不予保留");
+  rmSync(target, { recursive: true, force: true });
+});
+
 test("runInit 实跑: AGENTS.md 标记段幂等更新", async () => {
   const target = makeTarget();
   const uakRoot = uakRepoRoot();

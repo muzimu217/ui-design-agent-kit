@@ -38,3 +38,17 @@ export function summarizeBatch(rows) {
   const verdict = totalFail > 0 ? "FAIL" : summary.some((s) => s.verdict === "WARN") ? "WARN" : "PASS";
   return { summary, totalFail, verdict };
 }
+
+// URL 清单解析（--urls 批量）：解析行→去注释→trim→scheme 校验。
+// 返回 { urls, invalid }——invalid 如实返回由调用方决定报错或跳过。
+export function parseUrlList(text) {
+  const urls = [];
+  const invalid = [];
+  for (const raw of text.split(/\r?\n/)) {
+    const line = raw.trim();
+    if (!line || line.startsWith("#")) continue;
+    if (/^https?:\/\//.test(line)) urls.push(line);
+    else invalid.push(line);
+  }
+  return { urls, invalid };
+}

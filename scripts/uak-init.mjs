@@ -80,17 +80,23 @@ async function upsertAgentsMd(targetDir, snippet) {
   const agentsPath = path.join(targetDir, "AGENTS.md");
   let content = "";
   if (existsSync(agentsPath)) content = await readFile(agentsPath, "utf8");
-  if (content.includes("<!-- uak:begin")) {
+  if (content.includes("<!-- uak:begin") || content.includes("<!-- uak:end")) {
     const start = content.indexOf("<!-- uak:begin");
     let end = content.indexOf("<!-- uak:end -->");
-    if (end === -1) {
-      // 孤儿 begin（有开无合）：切片拼接会静默损坏原文（批 30 P2-②）——
-      // 降级为"掐掉孤儿段整体重写"
-      content = content.slice(0, start);
-      return { file: agentsPath, action: "repaired", write: () => writeFile(agentsPath, content + "\n" + snippet + "\n", "utf8") };
+    if (end !== -1) end += "<!-- uak:end -->".length;
+    // 完整有序（begin<end）→ 原位替换
+    if (start !== -1 && end !== -1 && start < end) {
+      return { file: agentsPath, action: "updated", write: () => writeFile(agentsPath, content.slice(0, start) + snippet + content.slice(end), "utf8") };
     }
-    end += "<!-- uak:end -->".length;
-    return { file: agentsPath, action: "updated", write: () => writeFile(agentsPath, content.slice(0, start) + snippet + content.slice(end), "utf8") };
+    // 乱序（end 在 begin 前）或孤儿标记 = 托管区损坏（批 32 P3-1 实测产生
+    // 重复托管区）——降级：截断至首个标记前，托管段整体重写（标记后的
+    // 内容视为损坏区，不予保留）
+    // 截断点统一用标记【起点】比较（end 已 +len 归一化，直接比会落到标记
+    // 之后——批 32 P3-1 二次实测：残留旧 end 标记）
+    const endStart = end === -1 ? Infinity : end - "<!-- uak:end -->".length;
+    const firstMarker = Math.min(start, endStart);
+    content = content.slice(0, firstMarker);
+    return { file: agentsPath, action: "repaired", write: () => writeFile(agentsPath, content.replace(/\n*$/, "\n\n") + snippet + "\n", "utf8") };
   }
   const separator = content.trim().length === 0 ? "" : "\n\n";
   return { file: agentsPath, action: content ? "appended" : "created", write: () => writeFile(agentsPath, content + separator + snippet + "\n", "utf8") };

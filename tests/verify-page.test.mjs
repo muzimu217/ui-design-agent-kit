@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { isFetchableLink, planCrawlQueue } from "../scripts/verify-page-lib.mjs";
+import { isFetchableLink, planCrawlQueue, parseUrlList } from "../scripts/verify-page-lib.mjs";
 import { summarizeBatch } from "../scripts/verify-page-lib.mjs";
 
 // V2 verify:page 纯函数覆盖：同域 http(s) 链接过滤（爬取与死链探活共用）。
@@ -58,4 +58,18 @@ test("summarizeBatch: 逐行判定与总判定", () => {
   assert.equal(result.verdict, "FAIL", "任一 FAIL 则总判定 FAIL");
   const allpass = summarizeBatch([{ url: "https://a.example/", pass: 7, fail: 0, warn: 0 }]);
   assert.equal(allpass.verdict, "PASS");
+});
+
+test("parseUrlList: 注释/空行/scheme 校验/invalid 如实返回", () => {
+  const text = [
+    "https://a.example/",
+    "",
+    "# 注释行",
+    "  https://b.example/x  ",
+    "ftp://bad.example/",
+    "not-a-url",
+  ].join("\n");
+  const { urls, invalid } = parseUrlList(text);
+  assert.deepEqual(urls, ["https://a.example/", "https://b.example/x"]);
+  assert.deepEqual(invalid, ["ftp://bad.example/", "not-a-url"]);
 });

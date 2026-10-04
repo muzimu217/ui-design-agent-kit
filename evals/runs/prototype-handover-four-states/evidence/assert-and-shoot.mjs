@@ -32,6 +32,8 @@ const page = await browser.newPage({ viewport: { width: 900, height: 720 } });
 page.on("console", (msg) => { if (msg.type() === "error") errors.push(msg.text()); });
 page.on("pageerror", (err) => errors.push(String(err)));
 
+try {
+
 const results = [];
 const check = (name, ok, detail = "") => { results.push({ name, ok, detail }); say(`${ok ? "PASS" : "FAIL"} ${name}${detail ? " — " + detail : ""}`); };
 
@@ -98,8 +100,10 @@ for (const state of states) {
 }
 say("四态截图已写 state-*.png");
 
-await browser.close();
-server.close();
+} finally {
+  await browser.close().catch(() => {});
+  server.close();
+}
 
 const passCount = results.filter((r) => r.ok).length;
 await writeFile(path.join(FIXTURE, "..", "results.txt"), lines.join("\n") + `\n\n总计: ${passCount}/${results.length} PASS\n`, "utf8");

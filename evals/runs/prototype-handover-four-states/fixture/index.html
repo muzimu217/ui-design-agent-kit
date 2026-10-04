@@ -141,7 +141,9 @@ function setState(state){
 }
 
 async function loadData(){
-  const requested = new URLSearchParams(location.search).get('state') || 'normal';
+  const validStates = ['normal', 'loading', 'empty', 'error'];
+  const raw = new URLSearchParams(location.search).get('state');
+  const requested = validStates.includes(raw) ? raw : 'normal';
   try {
     const res = await fetch('mock_data.json');
     if (!res.ok) throw new Error('HTTP ' + res.status);

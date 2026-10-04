@@ -25,7 +25,7 @@
 
 **是**：
 - 一个项目级 UI 设计智能体：指令层（SKILL.md 体系 + 22 个技能）、有界工具编排（MCP 配置钉版）、六道门人工确认工作流
-- 一套验证纪律：五级证据等级（Installed≠…≠VisuallyVerified）、101 项自动化测试（2026-10-03 口径：tests/ 92 + showcase/tests 9，实时计数以 docs/quality-monitor.md 为准）、71 场景评测台账、浏览器实测强制
+- 一套验证纪律：五级证据等级（Installed≠…≠VisuallyVerified）、104 项自动化测试（2026-10-03 全量口径：tests/ 95 + showcase/tests 9，计数由 doc-drift 锁定）、71 场景评测台账、浏览器实测强制
 - 一个可迁移提示词工厂：`npm run prompt:build` 产出单文件提示词给其他宿主
 - 12 个有独立 README/证据的线上案例
 
@@ -41,7 +41,7 @@
 ```text
 muzimu217/ui-design-agent-kit（产品仓）
 ├── 智能体指令层   .agents/skills/        ← 产品核心：22 技能、门 A-F、工具路由
-├── 验证与工具层   scripts/ tests/ evals/  ← 产品纪律：101 测试（2026-10-03 口径）、71 场景、证据等级
+├── 验证与工具层   scripts/ tests/ evals/  ← 产品纪律：104 测试（2026-10-03 口径）、71 场景、证据等级
 ├── 案例层         demo/ showcase/         ← 隔离收录的交付案例（不进运行时）
 ├── 配置层         .codex/ tooling/        ← MCP 钉版、上游锁
 └── 归档层         paper/ docs/archive/    ← 旧论文封存、历史文档

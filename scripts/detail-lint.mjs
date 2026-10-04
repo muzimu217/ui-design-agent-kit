@@ -37,10 +37,6 @@ export function scanLine(line) {
       findings.push({ rule: "will-change-nonwhitelist", detail: `will-change: ${willChange[1].trim()}` });
     }
   }
-  const trimmed = line.trim();
-  if (trimmed.startsWith("//") || trimmed.startsWith("/*") || trimmed.startsWith("*") || trimmed.startsWith("<!--")) {
-    return findings;
-  }
   const marginDecl = line.match(/margin[a-z-]*\s*:\s*([^;}]*)/);
   if (marginDecl && /(^|[\s(,])-\d/.test(marginDecl[1])) {
     findings.push({ rule: "negative-margin", detail: `margin 声明含负值: ${marginDecl[0].trim().slice(0, 120)}` });
@@ -89,7 +85,21 @@ export function checkTagBalance(text, file) {
 
 export function scanText(text, file) {
   const findings = [];
+  let inBlockComment = false;
   text.split(/\r?\n/).forEach((line, index) => {
+    // 注释行跳过=状态机（块注释跨行维持；整行块注释/行注释/HTML 注释跳过）。
+    // 不得用"以 * 开头"判注释续行——CSS 通配选择器 `* { margin: -4px }` 会被
+    // 误吞（批 28 P2-① 实锤：探针零命中）。
+    const trimmed = line.trim();
+    if (inBlockComment) {
+      if (trimmed.includes("*/")) inBlockComment = false;
+      return;
+    }
+    if (trimmed.startsWith("/*")) {
+      if (!trimmed.includes("*/")) inBlockComment = true;
+      return;
+    }
+    if (trimmed.startsWith("//") || trimmed.startsWith("<!--")) return;
     for (const finding of scanLine(line)) {
       findings.push({ file, line: index + 1, ...finding, key: `${file}:${finding.rule}:${finding.detail}` });
     }

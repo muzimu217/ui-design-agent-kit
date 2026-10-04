@@ -23,6 +23,19 @@ test("will-change allows only transform, opacity, and filter", () => {
   assert.equal(scanLine("will-change: auto;").length, 1);
 });
 
+test("comment lines are skipped but CSS universal selectors are scanned", () => {
+  // 批 28 P2-① 回归锁：* 前缀跳过曾误吞通配选择器
+  const findings = scanText("/* margin: -8px 注释不算 */\n* { margin: 0 -4px }\n", "a.css");
+  const negatives = findings.filter((f) => f.rule === "negative-margin");
+  assert.equal(negatives.length, 1, "通配选择器行必须被扫描，注释行必须被跳过");
+  assert.match(negatives[0].detail, /-4px/);
+});
+
+test("Tailwind arbitrary-value negative utilities are violations", () => {
+  assert.equal(scanLine('className="-mt-[10px]"').length, 1);
+  assert.equal(scanLine('className="mt-[10px]"').length, 0);
+});
+
 test("negative margins in CSS declarations and Tailwind utilities are violations", () => {
   assert.equal(scanLine("margin: -8px;").length, 1);
   assert.equal(scanLine("margin-top: -0.5rem;").length, 1);

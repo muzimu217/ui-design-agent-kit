@@ -1,5 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { flattenMock, checkContract } from "../scripts/spec-lint.mjs";
 
 // Pure-function coverage for the prototype handover protocol's spec gate
@@ -24,4 +27,15 @@ test("checkContract flags fields entirely absent, tolerates entity-scoped leaves
   assert.ok(partial.some((p) => p.field === "users.avatar"));
   assert.ok(partial.some((p) => p.field === "stats.total"));
   assert.ok(!partial.some((p) => p.field === "users.id"), "已登记字段不得误报");
+});
+
+
+test("spec-lint CLI --self-test exits clean", () => {
+  const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+  const result = spawnSync(process.execPath, ["scripts/spec-lint.mjs", "--self-test"], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 0, `self-test 退出码 ${result.status}`);
+  assert.match(result.stdout ?? "", /self-test OK/, "CLI 自检必须真执行");
 });

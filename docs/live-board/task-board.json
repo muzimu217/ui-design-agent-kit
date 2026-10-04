@@ -7,7 +7,7 @@
     "streak100": 54,
     "tests": "116/116",
     "a11y": "0 违规",
-    "audits": "31 批（P1 单源化真修 417944b）",
+    "audits": "32 批（批 32 P1=重构重开假 PASS，已根治 b00e545）",
     "lock": "25/25 100%",
     "verify": "八维验收组合（+爬取/死链）",
     "roadmap": "V1 三片落地（init+Express+README 接入文档）；V2 两片（verify:page 七维+批量模式）；npm 发包暂缓"
@@ -67,6 +67,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-04 11:xx",
+      "event": "审计批 32 收口整改（b00e545）：P1=批 30 假 PASS 修复被 315 轮重构重开（return 入 finally 吞异常，死站获 PASS 报告）——结构修+死端口/活靶双实证；元教训=重构笔视为高危默认进下轮审计",
+      "type": "audit"
+    },
+    {
       "time": "10-04 10:xx",
       "event": "JIEJOE D5 素材索引完成（68 条/8 主题/H1-H5 全强化/骨架建议）；审计批 32 后台派（约 10 笔：V1/V2 两片+钉版+整改深审）",
       "type": "research"
@@ -109,11 +114,6 @@
     {
       "time": "10-04 06:xx",
       "event": "V2 首片落地（e9d457c）：verify:page 独立页面验收 CLI——五维组合真跑全绿，自包含署名报告；零新增依赖",
-      "type": "milestone"
-    },
-    {
-      "time": "10-04 07:xx",
-      "event": "用户四件套执行：生产就绪评估（指令层可生产使用）+技能收缩第一步（锁 25/25 warnings 0）+每日简报机制（npm run daily-brief）+npm 发包暂缓采纳",
       "type": "milestone"
     }
   ]

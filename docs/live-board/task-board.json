@@ -5,7 +5,7 @@
     "corpus": "70/71",
     "corpusPercent": 99,
     "streak100": 54,
-    "tests": "119/119",
+    "tests": "120/120",
     "a11y": "0 违规",
     "audits": "33 批（批 33 P1×2 整改 062b1d5）",
     "lock": "25/25 100%",
@@ -68,6 +68,11 @@
   "recentFlow": [
     {
       "time": "10-04 13:xx",
+      "event": "doc-drift 计数锁子串弱点加固（includes→词边界正则+负样本测试 ×4）：'1118 项'不再误命中 118 的锁；级联 120/120",
+      "type": "dev"
+    },
+    {
+      "time": "10-04 13:xx",
       "event": "审计批 33 收口整改（062b1d5）：P1×2=uak-init 孤儿 end 假修复（Math.min 混入 -1）四态统一重写+3e9f9f2 账实不符补实装（P3-3/3-4）；元教训=脚本中断后必须清点剩余编辑项",
       "type": "audit"
     },
@@ -109,11 +114,6 @@
     {
       "time": "10-04 09:xx",
       "event": "verify:page 升八维（c583066）：同域爬取+死链检测（BFS≤5 页+探活）+lib 拆分 3 用例；R101-03 游离脚本移 archive；Express 全链证据 9 PASS；测试 113/113",
-      "type": "milestone"
-    },
-    {
-      "time": "10-04 08:xx",
-      "event": "V2 增强（8560490）：对比度实算分布维度——TreeWalker 采样+WCAG 亮度实测，对外靶 101 样本 0 违规最差 4.6:1（线上站对比度健康实录）",
       "type": "milestone"
     }
   ]

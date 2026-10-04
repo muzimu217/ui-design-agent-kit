@@ -42,6 +42,17 @@ const record = (name, status, detail, evidence) => {
   console.log(`${status === "PASS" ? "✔" : status === "WARN" ? "▲" : "✗"} ${name}${detail ? " — " + detail : ""}`);
 };
 
+// SPA 的 networkidle 常因轮询永不空闲（对外靶首跑实测超时）——
+// 统一 load + 1.2s 沉降；超时再降级 domcontentloaded（策略自 verify:page 首次对外跑）。
+async function gotoSettled(page, target) {
+  try {
+    await page.goto(target, { waitUntil: "load", timeout: 45000 });
+  } catch (error) {
+    await page.goto(target, { waitUntil: "domcontentloaded", timeout: 30000 });
+  }
+  await page.waitForTimeout(1200);
+}
+
 const browser = await chromium.launch();
 const results = { url, ranAt: new Date().toISOString(), checks: findings };
 try {
@@ -50,7 +61,7 @@ try {
   const consoleErrors = [];
   desktop.on("console", (m) => { if (m.type() === "error") consoleErrors.push(m.text().slice(0, 160)); });
   desktop.on("pageerror", (e) => consoleErrors.push(String(e).slice(0, 160)));
-  await desktop.goto(url, { waitUntil: "networkidle", timeout: 45000 });
+  await gotoSettled(desktop, url);
   await desktop.screenshot({ path: path.join(outDir, "desktop-1440.png"), fullPage: false });
   record("桌面渲染 1440×900", "PASS", "", "desktop-1440.png");
   record("console 零错误", consoleErrors.length === 0 ? "PASS" : "FAIL", consoleErrors.slice(0, 3).join(" | "), "desktop-1440.png");
@@ -58,7 +69,7 @@ try {
 
   // 2. 移动 + 横向溢出
   const mobile = await browser.newPage({ viewport: { width: 375, height: 812 } });
-  await mobile.goto(url, { waitUntil: "networkidle", timeout: 45000 });
+  await gotoSettled(mobile, url);
   await mobile.screenshot({ path: path.join(outDir, "mobile-375.png") });
   const overflow = await mobile.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   record("移动 375×812 无横向溢出", overflow <= 0 ? "PASS" : "FAIL", `溢出 ${overflow}px`, "mobile-375.png");
@@ -66,7 +77,7 @@ try {
 
   // 3. 键盘焦点可见
   const kb = await browser.newPage({ viewport: { width: 1280, height: 800 } });
-  await kb.goto(url, { waitUntil: "networkidle", timeout: 45000 });
+  await gotoSettled(kb, url);
   let focusVisible = 0;
   for (let i = 0; i < 10; i += 1) {
     await kb.keyboard.press("Tab");
@@ -87,7 +98,7 @@ try {
   const rm = await browser.newPage({ viewport: { width: 1280, height: 800 }, reducedMotion: "reduce" });
   const rmErrors = [];
   rm.on("pageerror", (e) => rmErrors.push(String(e).slice(0, 120)));
-  await rm.goto(url, { waitUntil: "networkidle", timeout: 45000 });
+  await gotoSettled(rm, url);
   await rm.screenshot({ path: path.join(outDir, "reduced-motion.png") });
   record("reduced-motion 渲染不崩", rmErrors.length === 0 ? "PASS" : "WARN", rmErrors[0] || "", "reduced-motion.png");
   await rm.close();
@@ -95,7 +106,7 @@ try {
   // 5. axe A+AA
   const axeContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const axePage = await axeContext.newPage();
-  await axePage.goto(url, { waitUntil: "networkidle", timeout: 45000 });
+  await gotoSettled(axePage, url);
   let violations = [];
   try {
     ({ violations } = await new AxeBuilder({ page: axePage })

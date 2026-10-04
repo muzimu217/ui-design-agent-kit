@@ -234,7 +234,9 @@ async function runOnce(browser, url, outDir) {
       results.contrast = contrast;
       const status = contrast.sampled === 0 ? "WARN" : contrast.belowAA.length === 0 ? "PASS" : contrast.belowAA.some((s2) => s2.ratio < 3) ? "FAIL" : "WARN";
       record("对比度实算分布", status,
-        contrast.sampled === 0 ? "未采样到文本" : `${contrast.sampled} 个文本样本，低于 AA ${contrast.belowAA.length} 个（最差 ${contrast.worst}:1）${contrast.skipped ? `；${contrast.skipped} 个样本因颜色函数不支持跳过（如实披露）` : ""}`,
+        contrast.sampled === 0
+        ? `未采样到可测文本${contrast.skipped ? `（${contrast.skipped} 个样本因颜色函数不支持跳过——如实披露）` : ""}`
+        : `${contrast.sampled} 个文本样本，低于 AA ${contrast.belowAA.length} 个（最差 ${contrast.worst}:1）${contrast.skipped ? `；${contrast.skipped} 个样本因颜色函数不支持跳过（如实披露）` : ""}`,
         JSON.stringify(contrast.belowAA));
     } catch (error) {
       record("对比度实算分布", "WARN", `实测失败：${String(error).slice(0, 120)}`, "");

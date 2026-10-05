@@ -2,7 +2,7 @@ import { mkdir, writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
 import { AxeBuilder } from "@axe-core/playwright";
-import { isFetchableLink, planCrawlQueue, summarizeBatch, discoverPages } from "./verify-page-lib.mjs";
+import { isFetchableLink, planCrawlQueue, summarizeBatch } from "./verify-page-lib.mjs";
 
 // V2（strategy-synthesis §三.7）：`uak verify <url>` 独立验收 CLI——
 // 对任意页面跑浏览器验收组合（桌面/移动截图、console、键盘焦点、
@@ -257,14 +257,16 @@ async function runOnce(browser, url, outDir) {
 
     const esc = (value) => String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     // 批 36 P2-1 非破坏延伸：markdown 摘要（可粘 issue/PR，与 HTML 报告同目录交付）
+    // 批 39 P2-3：md 通道注入防护——url/name/detail 剥离 markdown 特殊字符
+    const mdEsc = (v) => String(v).replace(/\[\]\(/g, "[](").replace(/\n/g, " ").replace(/[|]/g, "\\|");
     const mdSummary = [
       `# UAK 页面验收摘要`,
       ``,
-      `- URL：${url}`,
+      `- URL：${mdEsc(url)}`,
       `- 时间：${results.ranAt}`,
       `- 结果：${pass} PASS / ${fail} FAIL / ${warn} WARN`,
       ``,
-      ...findings.map((f) => `- [${f.status}] ${f.name}${f.detail ? " — " + f.detail : ""}`),
+      ...findings.map((f) => `- [${f.status}] ${mdEsc(f.name)}${f.detail ? " — " + mdEsc(f.detail) : ""}`),
       ``,
       `---`,
       `由 UI Design Agent Kit 验收体系驱动 · 证据与报告同目录`,
@@ -350,9 +352,12 @@ if (isMain) {
         if (visited.has(pathname)) continue;
         visited.add(pathname);
         order.push(pathname);
+        const pageUrl = origin + pathname;
         try {
-          await gotoSettled(discoverPage, origin + pathname);
+          await gotoSettled(discoverPage, pageUrl);
         } catch { linkMap[pathname] = []; continue; }
+        // 批 39 P1-1：baseHref 用当前页全 URL（非 startUrl）——否则子页相对
+        // 链接解析成根下幽灵页（实测 page-3.html → /page-3.html 漏验）
         const candidates = await discoverPage.evaluate((baseHref) => {
           const resolve = (href) => {
             try { return new URL(href, baseHref).href; } catch { return null; }
@@ -362,7 +367,7 @@ if (isMain) {
             .filter(Boolean)
             .filter((h) => { try { return new URL(h).origin === origin; } catch { return false; } })
             .map((h) => new URL(h).pathname);
-        }, startUrl);
+        }, pageUrl);
         linkMap[pathname] = [...new Set(candidates)];
         queue = planCrawlQueue(queue, visited, linkMap[pathname], 5);
       }
@@ -402,6 +407,7 @@ if (isMain) {
     console.log(`\n批量总判定：${summary.verdict}——摘要 ${path.join(outDir, "batch-summary.md")}`);
     process.exitCode = summary.totalFail > 0 ? 1 : 0;
   } else {
-    process.exitCode = rows[0].fail > 0 ? 1 : 0;
+    // 批 39 P1-2：退出码须看全部行（含 --deep 子页）——单看 rows[0] 曾致子页 FAIL 假绿
+    process.exitCode = rows.some((r) => r.fail > 0) ? 1 : 0;
   }
 }

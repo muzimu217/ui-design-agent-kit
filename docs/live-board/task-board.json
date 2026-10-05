@@ -10,7 +10,7 @@
     "audits": "36 批（批 36 盲区补正审+整改完成）",
     "lock": "25/25 100%",
     "verify": "九维验收组合（+跳过披露）",
-    "roadmap": "V1 三片落地（init+Express+README 接入文档）；V2 两片（verify:page 七维+批量模式）；npm 发包暂缓"
+    "roadmap": "V1 三片（init+Express+README 双语接入文档）；V2 两片（八维+批量）；npm 暂缓"
   },
   "activeTask": {
     "id": "V2 独立验收 CLI",
@@ -68,6 +68,11 @@
   "recentFlow": [
     {
       "time": "10-04 17:xx",
+      "event": "README.en uak init 接入节英文化（9621419，双语一致）；傍晚漫游：手搓《海绵宝宝》1.81M 播长尾爬坡（9% 赞率），「这个bug好啊，这才是我想要的角色界面」17.9w 播 13% 赞（自制 UI 内容受众再证）",
+      "type": "docs"
+    },
+    {
+      "time": "10-04 17:xx",
       "event": "审计批 36（8d92dcb 盲区补正审）收口整改：P2×2=孤儿标记 token 删除非破坏化+checkManagedBlock 补计数判定（检查侧假绿缺口闭合）；收敛性 10 病态输入全过",
       "type": "audit"
     },
@@ -110,11 +115,6 @@
       "time": "10-04 11:xx",
       "event": "批 32 P3 队列清偿（3e9f9f2）：乱序标记两轮实测修复+--urls scheme 校验入 lib+images 计数口径+截断披露；级联预填值被锁定器两次纠正后按实数落账（118/118）",
       "type": "dev"
-    },
-    {
-      "time": "10-04 11:xx",
-      "event": "审计批 32 收口整改（b00e545）：P1=批 30 假 PASS 修复被 315 轮重构重开（return 入 finally 吞异常，死站获 PASS 报告）——结构修+死端口/活靶双实证；元教训=重构笔视为高危默认进下轮审计",
-      "type": "audit"
     }
   ]
 }

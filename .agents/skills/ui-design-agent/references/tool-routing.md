@@ -333,12 +333,40 @@ Keep the runtime boundary explicit:
 - Web UI: `motion/react`, CSS, or the project's existing browser animation system.
 - Video render: `remotion`, `@remotion/media`, and, when licensed and installed,
   `@remotion/transitions` with `TransitionSeries`.
+- Real-footage edit: the video-agent-kit plugin's Python MCP and FFmpeg on the
+  user's media; never install its dependencies from a design task.
 
 Do not install Remotion packages in this agent-kit root. Install them in the
 target video project with aligned exact versions when the user requests a video
 implementation. Check the current official Remotion license for the intended use;
 an npm `UNLICENSED` field alone is not evidence of a separate paid entitlement.
 Do not promise commercial permission or require a purchase without verifying it.
+
+## Real-footage editing (video-edit-agent family)
+
+For cutting real recorded footage — multi-material assembly, narrated
+movie/match/esports recaps, speech condensing, or burned-in subtitles —
+invoke the host-provided `video-edit-agent` skill (video-agent-kit plugin).
+It discovers materials, classifies the task, routes to its assembly, recap,
+and speech workflows, and enforces an `out/` file contract: media inspection,
+transcription when speech matters, full-video frame observation, then
+`timeline.json` → `validate_timeline` → `render_preview` → `qc_preview` with
+an auditable `timeline_diff` repair loop and a final `report.md`.
+
+Remotion and the video-edit family are different media routes, not
+alternatives for the same task: Remotion renders code-driven compositions;
+the video-edit family cuts existing footage. For a mixed brief, produce the
+edited footage first, then hand the rendered output to captions or a Remotion
+pass so cue times bind to the final video.
+
+Dependency ladder, same discipline as the MCP call gates: listed skills are
+not proof the Python MCP runs; a running MCP is not proof ffmpeg, fonts, or
+the optional cloud speech channel work. Before the first edit session, run
+the plugin's `env-setup` doctor in read-only mode and record the gaps. Never
+install its pip dependencies or enable its speech services as a side effect
+of a design task — ask first. When cloud ASR/TTS is unavailable, continue
+only with the limitation recorded in `out/report.md`, and never invent
+transcript content.
 
 ## Components and implementation docs
 

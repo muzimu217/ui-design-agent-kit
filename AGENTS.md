@@ -21,6 +21,11 @@ The installed supporting skills are:
 - `remotion-best-practices`, `remotion-create`, `remotion-docs`,
   `remotion-markup`, `remotion-render`, and `remotion-studio`: official
   Remotion Agent Skills loaded on demand.
+- `video-edit-agent` family (`video-edit-assembly`, `video-recap-workflows`,
+  `video-speech-workflows`, `env-setup`): real-footage editing — material
+  discovery, assembly, narrated recaps, speech condensing, and captions,
+  enforced through the video-agent-kit plugin's own Python MCP. Host-provided
+  and not vendored here: this kit routes to it but does not ship or pin it.
 
 Load the minimum relevant supporting instructions. Explicit user requirements,
 the target project's established design system, and task scope outrank generic

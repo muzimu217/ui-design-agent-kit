@@ -277,7 +277,7 @@ node <uak 仓库路径>/scripts/uak-init.mjs --uak <uak 仓库路径>
 
 自动完成：宿主探测（codex/claude/other）→ lean 提示词导出至目标项目
 `.agents/uak-prompt.md` → AGENTS.md 幂等标记段 → MCP 配置步骤清单
-（不替你改宿主配置）。支持 `--dry-run` 预览。首个任务建议走 **Express 档**：
+（不替你改宿主配置）。支持 `--dry-run` 预览与 `--check` 自检。首个任务建议走 **Express 档**：
 首轮说「Express」，一屏方向稿 + 有界预授权，10 分钟拿到第一张验收截图。
 
 ### 宿主支持矩阵

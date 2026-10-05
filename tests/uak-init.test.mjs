@@ -152,6 +152,7 @@ test("runInit 实跑: 六态标记全收敛到唯一新块（批 34 P1-2 回归�
     "孤儿end": "损坏\n<!-- uak:end -->\n尾\n",
     "双块": "头\n<!-- uak:begin (m) -->\n旧1\n<!-- uak:end -->\n夹带\n<!-- uak:begin (m) -->\n旧2\n<!-- uak:end -->\n",
     "完整对尾随孤儿": "头\n<!-- uak:begin (managed) -->\n旧块\n<!-- uak:end -->\n尾随 <!-- uak:begin (孤儿) 残句\n",
+    "同行双孤儿": "头 <!-- uak:begin (a) --> 中 <!-- uak:begin (b) --> 尾\n",
   };
   for (const [name, init] of Object.entries(cases)) {
     const target = makeTarget();

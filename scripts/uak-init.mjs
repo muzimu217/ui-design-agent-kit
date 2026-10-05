@@ -120,7 +120,7 @@ async function upsertAgentsMd(targetDir, snippet) {
     let stripped = content.replace(/<!-- uak:begin[\s\S]*?<!-- uak:end -->/g, "");
     stripped = stripped
       .split(/\r?\n/)
-      .map((line) => line.replace("<!-- uak:begin", "").replace("<!-- uak:end -->", ""))
+      .map((line) => line.replace(/<!-- uak:begin/g, "").replace(/<!-- uak:end -->/g, ""))
       .join("\n");
     stripped = stripped.replace(/\n{3,}/g, "\n\n").replace(/^[\s\n]+/, "");
     const strippedClean = stripped.trim().length === 0 ? "" : stripped.replace(/\n*$/, "\n\n");

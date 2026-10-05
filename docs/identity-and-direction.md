@@ -41,7 +41,7 @@
 ```text
 muzimu217/ui-design-agent-kit（产品仓）
 ├── 智能体指令层   .agents/skills/        ← 产品核心：22 技能、门 A-F、工具路由
-├── 验证与工具层   scripts/ tests/ evals/  ← 产品纪律：123 测试（2026-10-04 口径）、71 场景、证据等级
+├── 验证与工具层   scripts/ tests/ evals/  ← 产品纪律：124 测试（2026-10-04 口径）、71 场景、证据等级
 ├── 案例层         demo/ showcase/         ← 隔离收录的交付案例（不进运行时）
 ├── 配置层         .codex/ tooling/        ← MCP 钉版、上游锁
 └── 归档层         paper/ docs/archive/    ← 旧论文封存、历史文档

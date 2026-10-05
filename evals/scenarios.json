@@ -1252,5 +1252,23 @@
       "Shows a bare 暂无数据 empty state or a centered spinner over the table",
       "Reports a bulk operation as a single silent done without per-record outcomes"
     ]
+  },
+  {
+    "id": "prototype-handover-four-states",
+    "request": "给这个库存列表原型补齐业务交接件：数据改成单口绑定，页面补全四种状态，并产出接口契约草案。保持现有视觉方向。",
+    "context": "已有单文件原型（库存列表，语义 token + 正常态满数据渲染）。用户是要拿原型去对客户演示、随后交给业务工程师接真实接口的。prototype-handover 协议在册；copy-contract 空态/错误态文案规则适用。",
+    "passCriteria": [
+      "All dynamic content binds from the single mock data port with zero hardcoded business data in components",
+      "All four states (normal/loading/empty/error) are present and switchable without code edits",
+      "The loading skeleton shapes match the normal-state blocks one-to-one",
+      "Empty and error states carry action-inviting and cause-plus-repair copy per the copy contract",
+      "API_CONTRACT.md registers every mock field and ships with the delivery"
+    ],
+    "failConditions": [
+      "Hardcodes business data inside component markup or inline styles",
+      "Ships only the happy path without all four states",
+      "Claims the four states or contract without real switchable evidence",
+      "Uses free-form hex colors outside the semantic token table"
+    ]
   }
 ]

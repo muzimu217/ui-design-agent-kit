@@ -1,9 +1,8 @@
 {
   "name": "ui-design-agent-kit",
-  "version": "0.2.0",
-  "private": true,
+  "version": "0.1.0",
   "type": "module",
-  "description": "Project-scoped UI design agent instructions, skills, and verified MCP integrations.",
+  "description": "Project-scoped UI design agent instructions, skills, and verified MCP integrations. Turn a spoken requirement into a verifiable, evidence-backed interface.",
   "engines": {
     "node": ">=20.18.1"
   },
@@ -43,5 +42,38 @@
     "playwright": "^1.63.0",
     "smol-toml": "1.8.0",
     "yaml": "2.9.0"
-  }
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muzimu217/ui-design-agent-kit.git"
+  },
+  "keywords": [
+    "ui-design",
+    "agent",
+    "ai",
+    "skill",
+    "acceptance",
+    "browser-verification",
+    "design-system"
+  ],
+  "bin": {
+    "uak-init": "scripts/uak-init.mjs"
+  },
+  "files": [
+    "scripts/uak-init.mjs",
+    "scripts/build-prompt.mjs",
+    "scripts/verify-page.mjs",
+    "scripts/verify-page-lib.mjs",
+    "scripts/spec-lint.mjs",
+    "scripts/detail-lint.mjs",
+    "output/ui-design-agent.system.md",
+    "output/ui-design-agent.lean.md",
+    "README.md",
+    "LICENSE",
+    "docs/faq.md",
+    "docs/examples/",
+    "tooling/sources.lock.json",
+    "THIRD_PARTY_NOTICES.md"
+  ]
 }

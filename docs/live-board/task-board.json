@@ -5,21 +5,21 @@
     "corpus": "70/71",
     "corpusPercent": 99,
     "streak100": 54,
-    "tests": "122/122",
+    "tests": "123/123",
     "a11y": "0 违规",
     "audits": "36 批（批 36 盲区补正审+整改完成）",
     "lock": "25/25 100%",
-    "verify": "九维验收组合（+跳过披露）",
+    "verify": "十维验收组合（九维+--deep 多页全维）",
     "roadmap": "V1 三片（init+Express+README 双语接入文档）；V2 两片（八维+批量）；npm 暂缓"
   },
   "activeTask": {
     "id": "V2 独立验收 CLI",
-    "name": "八维组合完成（+同域爬取/死链检测）",
-    "status": "c583066——死链夹具实测恰 2 条全抓；Express 全链证据九维 9 PASS",
+    "name": "--deep 多页全维验收落地（1ef0a51）",
+    "status": "V2 三片完成（九维+批量+deep 多页全维）；爬取演示站 3 页逐页验证含死页正确 FAIL",
     "startedAt": "2026-10-04",
-    "currentGate": "线上站溢出 7px 仍记录（解冻批修）；R101-03 收尾（游离脚本移 archive）",
-    "lastArtifact": "scripts/verify-page-lib.mjs+三用例；output/express-chain-evidence/report.html",
-    "next": "JIEJOE D5（10-07/08）；审计批 31 视堆积；WIP A/B/C、A2、npm、40 手册待用户"
+    "currentGate": "V2 功能完备；后续按用户需求迭代",
+    "lastArtifact": "scripts/verify-page.mjs --deep + discoverPages 纯函数 +3 用例",
+    "next": "JIEJOE D5 综合报告（10-07/08）；审计批 37 后台进行中"
   },
   "gates": [
     {
@@ -67,6 +67,11 @@
   ],
   "recentFlow": [
     {
+      "time": "10-04 21:xx",
+      "event": "V2 第三片（1ef0a51）：--deep 多页全维验收——爬取发现 ≤5 页逐页九维；discoverPages 纯函数+3 用例；死页正确 FAIL；测试 123/123",
+      "type": "dev"
+    },
+    {
       "time": "10-04 18:xx",
       "event": "审计批 37 后台派单（约 6 笔：两笔整改+千分位+README.en+面板深审）；傍晚漫游：情怀 15%/二创 12-14%/基线 2-8% 谱系稳；AI 逆向内容 98.7w 播进热门",
       "type": "audit"
@@ -110,11 +115,6 @@
       "time": "10-04 13:xx",
       "event": "审计批 33 收口整改（062b1d5）：P1×2=uak-init 孤儿 end 假修复（Math.min 混入 -1）四态统一重写+3e9f9f2 账实不符补实装（P3-3/3-4）；元教训=脚本中断后必须清点剩余编辑项",
       "type": "audit"
-    },
-    {
-      "time": "10-04 12:xx",
-      "event": "uak init --check 自检模式（b862967）：标记段结构+产物在位两维判定，CLI 只读自检+修复指引；审计批 33 后台进行中",
-      "type": "dev"
     }
   ]
 }

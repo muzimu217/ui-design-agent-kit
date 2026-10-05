@@ -47,6 +47,44 @@ test("stale coverage claims are gone from scorekeeping documents", async () => {
   }
 });
 
+test("README and identity cite the current full-suite test count", async () => {
+  // 批 27 P1：README/identity 写死的计数与 quality-monitor 脱钩后即漂移
+  // （96 三处连错两轮）。锁法=与全量实数（tests/ + showcase/tests/）一致，
+  // 漂移即红——不写第二套真相。
+  // 口径必须与 scripts/run-tests.mjs 一致：顶层枚举、非递归——
+  // 否则子目录测试"计入未运行"（批 28 P2-②）。
+  const countTop = async (dir) => {
+    const entries = await readdir(dir);
+    let count = 0;
+    for (const name of entries.filter((n) => n.endsWith(".test.mjs"))) {
+      count += (await readFile(path.join(dir, name), "utf8")).match(/^\s*test\(/gm)?.length ?? 0;
+    }
+    return count;
+  };
+  const fullCount = (await countTop(path.join(ROOT, "tests"))) + (await countTop(path.join(ROOT, "showcase", "tests")));
+  // 批 34 P3：includes 是子串匹配——"1118 项"会误命中 118 的锁（已复现）。
+  // 词边界正则：数字前不得有其他数字。
+  // 批 32 P3：千分位 "1,118 项" 曾被 ",118" 的 [^0-9] 前缀放行——封锁集补逗号
+  const citesCount = (source, count) => new RegExp(`(^|[^0-9,])${count} 项`).test(source);
+  for (const file of ["README.md", "docs/identity-and-direction.md"]) {
+    const source = await read(file);
+    assert.ok(
+      citesCount(source, fullCount),
+      `${file} must cite the current full-suite test count (${fullCount} 项)`,
+    );
+  }
+});
+
+test("count-citation matcher rejects substring cousins (1118 ≠ 118, 千分位旁路封锁)", () => {
+  // 批 32 P3：千分位 "1,118 项" 曾被 ",118" 的 [^0-9] 前缀放行——补逗号入封锁集
+  const citesCount = (source, count) => new RegExp(`(^|[^0-9,])${count} 项`).test(source);
+  assert.equal(citesCount("本套件含 1118 项测试", 118), false, "1118 不得误命中 118 的锁");
+  assert.equal(citesCount("本套件含 1,118 项测试", 118), false, "千分位 1,118 不得误命中");
+  assert.equal(citesCount("本套件含 118 项测试", 118), true);
+  assert.equal(citesCount("本套件含 2118 项测试", 118), false);
+  assert.equal(citesCount("开头 118 项测试", 118), true, "行首数字无前缀也命中");
+});
+
 test("quality-monitor metric rows stay current with the corpus and the test count", async () => {
   // R106-02 (round 110 escalation): quality-monitor cited stale numbers and
   // sat outside every drift guard. Both machine-derivable rows are locked

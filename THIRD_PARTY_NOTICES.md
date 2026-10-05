@@ -10,10 +10,11 @@ a substitute for each upstream repository's license text.
   `motion-ai` package. The exact upstream manifest is preserved in
   `.agents/skills/motion/UPSTREAM_PACKAGE.json`; no standalone LICENSE was found
   at this revision. Source: https://github.com/motiondivision/ai-kit
-- Impeccable (renamed to `uak-visual-critique`), `pbakaus/impeccable`, tag
-  `skill-v4.2.0`, revision
-  `e74a311e40770dc458d631e146b4ea1f0b53804f`: Apache-2.0. Source:
-  https://github.com/pbakaus/impeccable/blob/skill-v4.2.0/LICENSE
+- Impeccable (renamed to `uak-visual-critique`), `pbakaus/impeccable`, upstream
+  4.5.0 (vendored at HEAD, revision
+  `e103efe779e2dd01274dabae83531fef00bf2563`, 2026-10-03 R285-01 batch):
+  Apache-2.0. Source:
+  https://github.com/pbakaus/impeccable/blob/main/LICENSE
   The original LICENSE and NOTICE.md are preserved in
   `.agents/skills/uak-visual-critique/`. Renamed and re-authored for this kit
   (2026-09-30): skill name, SKILL.md frontmatter, and intro re-authored with
@@ -59,7 +60,8 @@ a substitute for each upstream repository's license text.
   absolute directory. The search implementation and datasets are unchanged.
 - Motion: move the top-level `argument-hint` to `metadata.argument-hint` for this
   kit's skill validator. The hint text and instruction body are unchanged.
-- The six official Remotion entrypoints: move upstream `version: 4.0.531` to
+- The official Remotion entrypoints: move upstream `version` (4.0.532 as of the
+  2026-10-03 sync) to
   `metadata.version` rather than discarding the version. References are unchanged.
 - Impeccable (`uak-visual-critique`): install the skill without its automatic hooks. The upstream engine
   launcher is retained; its native engine is a separate first-use download.

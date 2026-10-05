@@ -288,6 +288,21 @@ npm run verify
 npm test
 ```
 
+### Wire into an existing project (uak init, recommended)
+
+Already have a project? Run from the **target project root**:
+
+```bash
+node <path-to-uak-repo>/scripts/uak-init.mjs --uak <path-to-uak-repo>
+```
+
+Automated: host detection (codex/claude/other) → lean prompt export to the
+target project's `.agents/uak-prompt.md` → idempotent AGENTS.md marker block →
+MCP setup checklist (your host config is never written for you). Supports
+`--dry-run` preview and `--check` self-verification. For a light first task,
+say "Express" in the first turn: one-screen direction draft + bounded
+pre-authorization, first acceptance screenshot in 10 minutes.
+
 ### Host matrix
 
 | Host | Wiring |

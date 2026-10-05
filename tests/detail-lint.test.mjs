@@ -1,10 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { scanLine, scanText } from "../scripts/detail-lint.mjs";
+import { scanLine, scanText, checkTagBalance } from "../scripts/detail-lint.mjs";
 
 // Pure-function coverage for the R060-01 detail lint (detail-constants rules
-// 10 and 11). Fixtures are in-memory strings; the CLI's baseline handling is
-// exercised by the recorded validity proof in the ticket, not here.
+// 10 and 11) plus the R288 anti-hallucination rules (negative margins, HTML
+// tag balance). Fixtures are in-memory strings; the CLI's baseline handling
+// is exercised by the recorded validity proof in the ticket, not here.
 
 test("transition: all and the transition-all class are both violations", () => {
   assert.equal(scanLine("transition: all 0.3s ease;").length, 1);
@@ -20,6 +21,59 @@ test("will-change allows only transform, opacity, and filter", () => {
   assert.equal(scanLine("will-change: all;").length, 1);
   assert.equal(scanLine("will-change: transform, top;").length, 1);
   assert.equal(scanLine("will-change: auto;").length, 1);
+});
+
+test("comment lines are skipped but CSS universal selectors are scanned", () => {
+  // 批 28 P2-① 回归锁：* 前缀跳过曾误吞通配选择器
+  const findings = scanText("/* margin: -8px 注释不算 */\n* { margin: 0 -4px }\n", "a.css");
+  const negatives = findings.filter((f) => f.rule === "negative-margin");
+  assert.equal(negatives.length, 1, "通配选择器行必须被扫描，注释行必须被跳过");
+  assert.match(negatives[0].detail, /-4px/);
+});
+
+test("same-line block comments do not swallow trailing code violations", () => {
+  // 批 29 P2-① 回归锁：同行开合注释剥段后扫余量
+  const findings = scanText("/*a*/ *{margin:0 -4px}\n", "a.css");
+  assert.equal(findings.filter((f) => f.rule === "negative-margin").length, 1, "*/ 后的真违例不得被整行跳过吞掉");
+  const pure = scanText("/* 纯注释 margin: -8px */\n", "a.css");
+  assert.equal(pure.length, 0, "纯注释行仍不误报");
+});
+
+test("Tailwind arbitrary-value negative utilities are violations", () => {
+  assert.equal(scanLine('className="-mt-[10px]"').length, 1);
+  assert.equal(scanLine('className="mt-[10px]"').length, 0);
+});
+
+test("negative margins in CSS declarations and Tailwind utilities are violations", () => {
+  assert.equal(scanLine("margin: -8px;").length, 1);
+  assert.equal(scanLine("margin-top: -0.5rem;").length, 1);
+  assert.equal(scanLine("margin: 0 -4px 8px;").length, 1);
+  assert.equal(scanLine('className="-mt-2 -mx-3"').length, 1);
+  assert.equal(scanLine("margin: 8px auto;").length, 0);
+  assert.equal(scanLine("margin-top: 0.5rem;").length, 0);
+  assert.equal(scanLine('className="mt-2 mx-3"').length, 0);
+  assert.equal(scanLine("padding: -0px;").length, 0, "padding 不是 margin 声明");
+});
+
+test("html tag balance reports unclosed and mismatched tags with line numbers", () => {
+  const findings = scanText(
+    "<div>\n  <span>hello\n</div>\n",
+    "demo/x/preview.html",
+  );
+  const unclosed = findings.filter((f) => f.rule === "tag-balance" && f.detail.includes("<span> 未闭合"));
+  assert.equal(unclosed.length, 1);
+  assert.equal(unclosed[0].line, 2);
+
+  const mismatch = checkTagBalance("<div>\n</p>\n", "demo/x/bad.html");
+  assert.equal(mismatch.length, 2, "</p> 无开标签 + <div> 文件尾未闭合");
+  assert.match(mismatch.find((f) => f.detail.includes("</p>")).detail, /无对应开标签/);
+  assert.ok(mismatch.some((f) => f.detail.includes("<div> 未闭合")));
+
+  const clean = checkTagBalance(
+    "<div><!-- <span> 注释里的标签不算 -->\n<script>if (a < b) {}</script>\n<img src=\"x.png\">\n<p>ok</p>\n</div>\n",
+    "demo/x/clean.html",
+  );
+  assert.equal(clean.length, 0, "注释/script 内容/void 元素不得误报");
 });
 
 test("scanText reports file, line numbers, and stable keys", () => {

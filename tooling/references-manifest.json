@@ -246,6 +246,31 @@
       "dependsOn": [],
       "export": "full",
       "leanCore": false
+    },
+    {
+      "file": "prototype-handover.md",
+      "title": "Prototype Handover Protocol",
+      "purpose": "原型交接协议：数据单口（mock_data.json 零硬编码）、语义组件与 token 绑定（shadcn/Tailwind 默认，既有栈按既有体系语义化）、四态必备（正常/加载/空/错误）、API_CONTRACT.md 交接文档、三道轻门禁（构建/反幻觉/规格）",
+      "loadWhen": "门D 契约撰写涉及原型类交付时；任何初版原型实现与交接前",
+      "gate": "D",
+      "dependsOn": [
+        "design-contract.md",
+        "copy-contract.md"
+      ],
+      "export": "full",
+      "leanCore": false
+    },
+    {
+      "file": "video-craft.md",
+      "title": "Video Craft",
+      "purpose": "视频质感军规（2026-09-28 美感审计五修）：影像资产录自家 demo 禁 token 平涂、镜头语言三变化、视频排版 display 级+安全区+锁定帧对比度、声音声明式处理（免版权源走门B/显式静音轨）、叙事节奏钩子-递进-收束、工程起点与证据链",
+      "loadWhen": "视频类 brief 的门D 契约撰写与 Remotion 实现前",
+      "gate": "D",
+      "dependsOn": [
+        "motion-contract.md"
+      ],
+      "export": "full",
+      "leanCore": false
     }
   ]
 }

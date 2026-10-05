@@ -1,0 +1,10 @@
+{
+  "_schema": "库存原型数据单口；字段含义见 API_CONTRACT.md；业务工程师接手=替换本文件为真实接口",
+  "items": [
+    {"name": "伺服电机 750W", "code": "SV-0750", "qty": 24},
+    {"name": "同步带 HTD-5M", "code": "BL-5M-450", "qty": 8},
+    {"name": "光电传感器", "code": "SN-DL100", "qty": 15},
+    {"name": "接触器 24V", "code": "CT-24V-2P", "qty": 6}
+  ],
+  "stats": {"total": 4, "low": 2, "ok": 2}
+}

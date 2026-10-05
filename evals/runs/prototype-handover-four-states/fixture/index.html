@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>四态库存原型 · prototype-handover</title>
+<style>
+  :root{
+    --bg:#f4f6f8; --surface:#ffffff; --ink-1:#1c2430; --ink-2:#5b6675;
+    --accent:#0f7a5c; --accent-ink:#ffffff; --line:#dde3e9;
+    --warn-bg:#fdf3e7; --warn-ink:#8a4b0f; --err-bg:#fdeeee; --err-ink:#8f1f1f; --ok-bg:#e7f3ee;
+    --skeleton:#e6eaf0;
+  }
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink-1);font:15px/1.7 'PingFang SC','Noto Sans SC',sans-serif;padding:32px 20px}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:20px;margin:0 0 4px}
+  .sub{color:var(--ink-2);font-size:13px;margin-bottom:18px}
+  .switcher{display:flex;gap:8px;margin-bottom:16px}
+  .switcher button{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer}
+  .switcher button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+  table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+  th{text-align:left;color:var(--ink-2);font-size:12.5px;font-weight:500;border-bottom:1px solid var(--line);padding:8px 10px}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);font-size:14px}
+  tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;border-radius:999px;padding:1px 10px;font-size:12px}
+  .pill.ok{background:var(--ok-bg);color:var(--accent)}
+  .pill.low{background:var(--warn-bg);color:var(--warn-ink)}
+  .stats{display:flex;gap:12px;margin-bottom:14px}
+  .stat{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .stat b{display:block;font-size:20px}
+  .stat span{color:var(--ink-2);font-size:12px}
+  .skeleton-row{display:flex;gap:10px;align-items:center;padding:9px 10px}
+  .sk{background:var(--skeleton);border-radius:6px;height:14px;animation:pulse 1.2s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.55}}
+  .empty-cta{margin-top:14px}
+  .btn{display:inline-block;background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:8px 18px;font-size:14px;text-decoration:none;border:none;cursor:pointer}
+  .err-card{background:var(--err-bg);color:var(--err-ink);border-radius:10px;padding:14px 16px;font-size:14px}
+  .err-card b{display:block;margin-bottom:4px}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>备件库存原型</h1>
+  <p class="sub">数据单口：mock_data.json · 状态：<code id="state-label"></code></p>
+  <div class="switcher" role="group" aria-label="状态切换">
+    <button data-state="normal" aria-pressed="true">正常</button>
+    <button data-state="loading" aria-pressed="false">加载</button>
+    <button data-state="empty" aria-pressed="false">空态</button>
+    <button data-state="error" aria-pressed="false">错误</button>
+  </div>
+
+  <section class="panel" id="panel-normal">
+    <div class="stats" id="stats"></div>
+    <table>
+      <thead><tr><th>备件</th><th>编号</th><th>库存</th><th>状态</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </section>
+
+  <section class="panel hidden" id="panel-loading" aria-busy="true">
+    <div class="stats" id="sk-stats"></div>
+    <div id="sk-rows"></div>
+  </section>
+
+  <section class="panel hidden" id="panel-empty">
+    <p><b>还没有库存记录。</b></p>
+    <p style="color:var(--ink-2)">新建第一张备件卡，库存与预警状态会自动开始跟踪。</p>
+    <div class="empty-cta"><button class="btn" type="button">+ 新建备件卡</button></div>
+  </section>
+
+  <section class="panel hidden" id="panel-error">
+    <div class="err-card">
+      <b>库存数据加载失败</b>
+      原因：mock_data.json 请求返回网络错误。<br/>
+      修复：检查本地服务是否在运行，然后点击「重新加载」。
+      <div class="empty-cta"><button class="btn" type="button" onclick="loadData()">重新加载</button></div>
+    </div>
+  </section>
+</div>
+
+<script>
+// 数据单口：页面一切动态内容来自 mock_data.json（见 API_CONTRACT.md）
+let DATA = null;
+
+function renderNormal(data){
+  const stats = document.getElementById('stats');
+  stats.innerHTML = '';
+  for (const [label, key] of [['备件总数','total'],['库存预警','low'],['状态正常','ok']]) {
+    const div = document.createElement('div');
+    div.className = 'stat';
+    const b = document.createElement('b'); b.textContent = data.stats[key];
+    const span = document.createElement('span'); span.textContent = label;
+    div.append(b, span); stats.append(div);
+  }
+  const tbody = document.getElementById('rows');
+  tbody.innerHTML = '';
+  for (const item of data.items) {
+    const tr = document.createElement('tr');
+    for (const key of ['name','code','qty']) {
+      const td = document.createElement('td'); td.textContent = item[key]; tr.append(td);
+    }
+    const td = document.createElement('td');
+    const pill = document.createElement('span');
+    pill.className = 'pill ' + (item.qty <= 10 ? 'low' : 'ok');
+    pill.textContent = item.qty <= 10 ? '库存预警' : '正常';
+    td.append(pill); tr.append(td);
+    tbody.append(tr);
+  }
+}
+
+function renderSkeleton(data){
+  const skStats = document.getElementById('sk-stats');
+  skStats.innerHTML = '';
+  for (let i = 0; i < Object.keys(data.stats).length; i++) {
+    const div = document.createElement('div'); div.className = 'stat';
+    const sk = document.createElement('div'); sk.className = 'sk'; sk.style.width = '56px';
+    div.append(sk); skStats.append(div);
+  }
+  const skRows = document.getElementById('sk-rows');
+  skRows.innerHTML = '';
+  for (let i = 0; i < data.items.length; i++) {
+    const row = document.createElement('div'); row.className = 'skeleton-row';
+    for (const w of [140, 90, 56, 64]) {
+      const sk = document.createElement('div'); sk.className = 'sk'; sk.style.width = w + 'px';
+      row.append(sk);
+    }
+    skRows.append(row);
+  }
+}
+
+function setState(state){
+  for (const id of ['normal','loading','empty','error']) {
+    document.getElementById('panel-' + id).classList.toggle('hidden', id !== state);
+  }
+  for (const btn of document.querySelectorAll('.switcher button')) {
+    btn.setAttribute('aria-pressed', String(btn.dataset.state === state));
+  }
+  document.getElementById('state-label').textContent = state;
+}
+
+async function loadData(){
+  const validStates = ['normal', 'loading', 'empty', 'error'];
+  const raw = new URLSearchParams(location.search).get('state');
+  const requested = validStates.includes(raw) ? raw : 'normal';
+  try {
+    const res = await fetch('mock_data.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    DATA = await res.json();
+    renderSkeleton(DATA);           // 骨架形状先于数据渲染（与正常态同构）
+    renderNormal(DATA);
+    setState(requested);
+  } catch (e) {
+    setState(requested === 'loading' ? 'loading' : 'error');
+  }
+}
+for (const btn of document.querySelectorAll('.switcher button')) {
+  btn.addEventListener('click', () => setState(btn.dataset.state));
+}
+loadData();
+</script>
+</body>
+</html>

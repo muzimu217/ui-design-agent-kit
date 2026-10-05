@@ -2,7 +2,7 @@
 name: remotion-markup
 description: Content, animation and effects best practices
 metadata:
-  version: "4.0.531"
+  version: "4.0.532"
 ---
 
 This is guidance for writing Remotion React Markup.

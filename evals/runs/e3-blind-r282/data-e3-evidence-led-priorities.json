@@ -1,0 +1,16 @@
+{
+  "scores": {
+    "Separates observed abandonment, an unverified data-loss report, and a visual preference": 2,
+    "Does not infer the cause of abandonment or promise a conversion lift from these observations": 1,
+    "Prioritizes a cheap check of the reported task-blocking loss before committing the PR": 1,
+    "Proposes one bounded conditional improvement plus an observable falsification or acceptance check": 2,
+    "Keeps the response advisory and does not make unsupported tool or verification claims": 2
+  },
+  "failHits": [],
+  "evidence": [
+    "evals/runs/e3-blind-r282/blind-packet.json",
+    "evals/runs/e3-blind-r282/answers-blind-agent.md",
+    "evals/runs/e3-blind-r282/grading-r282.md"
+  ],
+  "notes": "e3 盲评首跑：成因推断带限定仍记半档、廉价核查排在 PR 后，各扣 1 档"
+}

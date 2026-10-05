@@ -13,7 +13,7 @@ description: >-
   replacement for this kit's proactive detail-critique inner loop.
 license: Apache-2.0
 metadata:
-  version: 4.4.0
+  version: 4.5.0
 ---
 
 This skill is the kit's requested-critique and refinement playbook. It grants

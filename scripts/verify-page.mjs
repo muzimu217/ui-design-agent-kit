@@ -2,7 +2,7 @@ import { mkdir, writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
 import { AxeBuilder } from "@axe-core/playwright";
-import { isFetchableLink, planCrawlQueue, summarizeBatch } from "./verify-page-lib.mjs";
+import { isFetchableLink, planCrawlQueue, summarizeBatch, discoverPages } from "./verify-page-lib.mjs";
 
 // V2（strategy-synthesis §三.7）：`uak verify <url>` 独立验收 CLI——
 // 对任意页面跑浏览器验收组合（桌面/移动截图、console、键盘焦点、
@@ -12,6 +12,7 @@ import { isFetchableLink, planCrawlQueue, summarizeBatch } from "./verify-page-l
 // 用法：
 //   npm run verify:page -- --url https://example.com [--out output/verify-<ts>]
 //   npm run verify:page -- --urls <file>（批量：每行一条 URL，# 注释）
+//   加 --deep：首页先爬取发现 ≤5 个同域页面，逐页跑完整九维验收（默认仅首页全维+子页死链探活）
 //
 // 验收组合（每项给 PASS/FAIL/WARN 与证据）：
 //   1. 桌面 1440×900 截图 + console 零错误
@@ -329,15 +330,57 @@ if (isMain) {
   const stamp = new Date().toISOString().slice(0, 19).replace(/[-:T]/g, "");
   const outDir = path.resolve(get("--out") || path.join("output", `verify-page-${stamp}`));
   const batch = urlList.length > 1;
+  const deep = args.includes("--deep");
 
   const browser = await chromium.launch();
   const rows = [];
   try {
-    for (let i = 0; i < urlList.length; i += 1) {
-      const url = urlList[i];
-      const sub = batch ? path.join(outDir, `site-${String(i + 1).padStart(2, "0")}`) : outDir;
-      console.log(`\n===== [${i + 1}/${urlList.length}] ${url} =====`);
-      rows.push(await runOnce(browser, url, sub));
+    if (deep) {
+      // --deep：首页爬取发现 ≤5 页，逐页跑完整九维
+      const startUrl = urlList[0];
+      const startPath = new URL(startUrl).pathname;
+      const origin = new URL(startUrl).origin;
+      const discoverPage = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+      const linkMap = {};
+      const visited = new Set();
+      let queue = [startPath];
+      const order = [];
+      while (queue.length > 0 && order.length < 5) {
+        const pathname = queue.shift();
+        if (visited.has(pathname)) continue;
+        visited.add(pathname);
+        order.push(pathname);
+        try {
+          await gotoSettled(discoverPage, origin + pathname);
+        } catch { linkMap[pathname] = []; continue; }
+        const candidates = await discoverPage.evaluate((baseHref) => {
+          const resolve = (href) => {
+            try { return new URL(href, baseHref).href; } catch { return null; }
+          };
+          return [...document.querySelectorAll("a[href]")]
+            .map((a) => resolve(a.getAttribute("href")))
+            .filter(Boolean)
+            .filter((h) => { try { return new URL(h).origin === origin; } catch { return false; } })
+            .map((h) => new URL(h).pathname);
+        }, startUrl);
+        linkMap[pathname] = [...new Set(candidates)];
+        queue = planCrawlQueue(queue, visited, linkMap[pathname], 5);
+      }
+      await discoverPage.close();
+      console.log(`--deep 发现 ${order.length} 页：${order.join(", ")}`);
+      for (let i = 0; i < order.length; i += 1) {
+        const pageUrl = origin + order[i];
+        const sub = path.join(outDir, `page-${String(i + 1).padStart(2, "0")}-${order[i].replace(/\//g, "_").replace(/^_/, "") || "root"}`);
+        console.log(`\n===== [deep ${i + 1}/${order.length}] ${pageUrl} =====`);
+        rows.push(await runOnce(browser, pageUrl, sub));
+      }
+    } else {
+      for (let i = 0; i < urlList.length; i += 1) {
+        const url = urlList[i];
+        const sub = batch ? path.join(outDir, `site-${String(i + 1).padStart(2, "0")}`) : outDir;
+        console.log(`\n===== [${i + 1}/${urlList.length}] ${url} =====`);
+        rows.push(await runOnce(browser, url, sub));
+      }
     }
   } finally {
     await browser.close();

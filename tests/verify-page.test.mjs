@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { isFetchableLink, planCrawlQueue, parseUrlList } from "../scripts/verify-page-lib.mjs";
+import { isFetchableLink, planCrawlQueue, parseUrlList, discoverPages } from "../scripts/verify-page-lib.mjs";
 import { summarizeBatch } from "../scripts/verify-page-lib.mjs";
 
 // V2 verify:page 纯函数覆盖：同域 http(s) 链接过滤（爬取与死链探活共用）。
@@ -72,4 +72,18 @@ test("parseUrlList: 注释/空行/scheme 校验/invalid 如实返回", () => {
   const { urls, invalid } = parseUrlList(text);
   assert.deepEqual(urls, ["https://a.example/", "https://b.example/x"]);
   assert.deepEqual(invalid, ["ftp://bad.example/", "not-a-url"]);
+});
+
+test("discoverPages: BFS 顺序/环状不重访/上限截断", () => {
+  // 线性：/ → /a → /b
+  const linear = discoverPages("/", { "/": ["/a"], "/a": ["/b"], "/b": [] }, 5);
+  assert.deepEqual(linear, ["/", "/a", "/b"]);
+
+  // 环状：/a ↔ /b 不死循环
+  const ring = discoverPages("/", { "/": ["/a"], "/a": ["/b"], "/b": ["/a"] }, 5);
+  assert.equal(ring.length, 3, "环状引用不得死循环");
+
+  // 上限截断：maxPages=2 只访问 2 页
+  const capped = discoverPages("/", { "/": ["/a", "/b", "/c"] }, 2);
+  assert.equal(capped.length, 2, "上限截断");
 });

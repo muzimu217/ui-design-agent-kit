@@ -52,3 +52,20 @@ export function parseUrlList(text) {
   }
   return { urls, invalid };
 }
+
+// 深度验收页面发现（纯函数）：从首页链接集出发，planCrawlQueue 决策扩张。
+// 返回去重后的访问顺序（含起始页）。调用方逐页跑 runOnce 全维验收。
+export function discoverPages(startPath, linkMap, maxPages = 5) {
+  const visited = new Set();
+  let queue = [startPath];
+  const order = [];
+  while (queue.length > 0 && order.length < maxPages) {
+    const pathname = queue.shift();
+    if (visited.has(pathname)) continue;
+    visited.add(pathname);
+    order.push(pathname);
+    const candidates = linkMap[pathname] || [];
+    queue = planCrawlQueue(queue, visited, candidates, maxPages);
+  }
+  return order;
+}

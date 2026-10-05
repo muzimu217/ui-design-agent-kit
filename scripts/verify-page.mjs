@@ -255,6 +255,20 @@ async function runOnce(browser, url, outDir) {
     await writeFile(path.join(outDir, "results.json"), JSON.stringify(results, null, 2) + "\n", "utf8").catch(() => {});
 
     const esc = (value) => String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    // 批 36 P2-1 非破坏延伸：markdown 摘要（可粘 issue/PR，与 HTML 报告同目录交付）
+    const mdSummary = [
+      `# UAK 页面验收摘要`,
+      ``,
+      `- URL：${url}`,
+      `- 时间：${results.ranAt}`,
+      `- 结果：${pass} PASS / ${fail} FAIL / ${warn} WARN`,
+      ``,
+      ...findings.map((f) => `- [${f.status}] ${f.name}${f.detail ? " — " + f.detail : ""}`),
+      ``,
+      `---`,
+      `由 UI Design Agent Kit 验收体系驱动 · 证据与报告同目录`,
+    ].join("\n");
+    await writeFile(path.join(outDir, "verify-summary.md"), mdSummary + "\n", "utf8").catch(() => {});
     const report = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>UAK 验收报告 · ${esc(url)}</title><style>
 body{margin:0;background:#0c1116;color:#e8eef2;font:15px/1.7 'PingFang SC',sans-serif;padding:32px 20px}

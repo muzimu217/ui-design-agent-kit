@@ -364,17 +364,9 @@ is not proof of a connection, and a connection is not proof of a successful call
   installed GSAP skills (`gsap-core`, `gsap-scrolltrigger`, `gsap-timeline`).
 - Use `motion` and the public Motion MCP for non-trivial web motion. Read the
   returned documentation resources, not only search-result descriptions.
-- For a React video, Remotion composition, or code-driven motion-graphics
-  deliverable, route to `remotion-video-agent` and its official Remotion skills.
-  Do not treat a video timeline as a browser UI animation task.
-- For editing real recorded footage — multi-material assembly, narrated
-  recaps, speech condensing, or burned-in captions — route to the
-  host-provided `video-edit-agent` skill family (video-agent-kit plugin) and
-  let its Python MCP enforce the ingest → timeline → validate → render → QC →
-  repair contract. Code-driven motion graphics stay with `remotion-video-agent`;
-  mixed briefs cut the footage first. The plugin is host-provided, not
-  vendored: if its skills or MCP tools are absent, say so once and fall back
-  to the research routes in tool-routing.md.
+- For a React video, Remotion composition, or code-driven motion graphics,
+  route to `remotion-video-agent`; for editing real recorded footage (assembly,
+  recaps, speech condensing, captions), route to the host-provided `video-edit-agent` family. Do not treat a video timeline as a browser UI animation task.
 - For Three.js, React Three Fiber, or other 3D scene work, inspect the existing
   scene and then route reference research through the open-source baseline
   workflow in [tool-routing.md](references/tool-routing.md). Read
@@ -408,11 +400,8 @@ in the acceptance record so it can be audited.
   choreography. References: motion-contract, css-spring, motion glossary
   (in uak-design-thinking),
   dark-surface standards; skills: `motion`, `gsap-*`, `jiejoe-design`.
-- **Video expert** (code-rendered motion graphics; real-footage editing):
-  Remotion compositions, or the host-provided `video-edit-agent` family for
-  recorded footage.
-  Skills: `remotion-video-agent` + official Remotion skills; real-footage
-  routes through `video-edit-agent` (video-agent-kit plugin); the aesthetics
+- **Video expert** (Remotion graphics; real footage: host-provided
+  `video-edit-agent`). Skills: `remotion-video-agent` + official Remotion skills; the aesthetics
   audit's five fixes (own-demo footage, camera language, video typography,
   declarative sound, narrative structure) are the video-craft standard in
   the references manifest — load it at gate D for video briefs. Remaining

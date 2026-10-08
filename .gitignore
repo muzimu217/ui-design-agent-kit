@@ -47,3 +47,6 @@ showcase/products/node_modules/
 # video-agent-kit plugin runtime scaffolding (local toolchain state)
 .video_agent/
 .v2c/
+
+# Mimosa security plugin runtime state
+.mimosa/

@@ -53,6 +53,10 @@ workspace, as used by `forma-phone-ui`.
 9. Hand off the target path and evidence without copying generated product code
    back into the kit.
 
+External-operation boundaries, user confirmation points, and failure/degradation
+rules are codified in [agent-security-baseline.md](agent-security-baseline.md) —
+a behavior-discipline policy, not a runtime enforcement feature.
+
 ## Evidence Levels
 
 | Level | Meaning | Example |

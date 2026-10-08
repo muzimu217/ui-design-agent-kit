@@ -1,11 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { parseSkill, validateConfig, loadProject, verify, ROOT } from "../scripts/verify.mjs";
 import { selectServers, assertToolResult, checkServer, smokeCheck, isBlankNavigation } from "../scripts/doctor.mjs";
-import { buildPrompt } from "../scripts/build-prompt.mjs";
+import { buildPrompt, inlineReferenceLinks, references } from "../scripts/build-prompt.mjs";
 
 test("installed skills, references, and pinned MCP config are complete", async () => {
   const result = await verify();
@@ -148,9 +148,24 @@ test("single-file prompt embeds its references and uses working in-document link
   const links = [...prompt.matchAll(/\]\(#([^)]+)\)/g)];
   assert.ok(links.length >= 3);
   for (const [, anchor] of links) assert.ok(headingAnchors.has(anchor), `Broken prompt anchor: ${anchor}`);
+  // D1-04 可迁移性：导出不得残留外部宿主解析不了的相对文件链接（references/
+  // 互引有 `references/x.md` 与裸 `x.md` 两种写法），且不携带本机绝对路径。
+  const siblingLink = /\]\([a-zA-Z0-9._-]+\.md\)/;
+  assert.equal(siblingLink.test(prompt), false, "full export must not keep sibling file links");
+  assert.equal(prompt.includes("/Users/"), false, "full export must not leak absolute host paths");
+  const leanExport = await buildPrompt(ROOT, { lean: true });
+  assert.equal(siblingLink.test(leanExport), false, "lean export must not keep sibling file links");
+  assert.equal(leanExport.includes("/Users/"), false, "lean export must not leak absolute host paths");
+  // 注册在案但 export:false 的参考（source-catalog.md）永远不在导出内——
+  // 指向它的链接必须降级为纯文本，而不是留下死链。
+  assert.equal(prompt.includes("](source-catalog.md)"), false, "unexported reference links must degrade to plain text");
+  const refDir = path.join(ROOT, ".agents/skills/ui-design-agent/references");
+  const exported = new Set(references.map(([file]) => file));
+  const unexported = (await readdir(refDir)).filter((name) => name.endsWith(".md") && !exported.has(name));
   for (const name of ["motion-contract.md", "tool-routing.md", "spatial-media.md", "stitch-mcp.md", "material-scouting.md", "plan-execute.md", "image-to-code-fidelity.md", "product-readme.md", "acceptance.md", "workflow-visualization.md"]) {
-    const source = await readFile(path.join(ROOT, ".agents/skills/ui-design-agent/references", name), "utf8");
-    assert.equal(prompt.split(source.trim()).length - 1, 1, `Reference must be embedded exactly once: ${name}`);
+    const source = await readFile(path.join(refDir, name), "utf8");
+    const inlined = inlineReferenceLinks(source.trim(), { lean: false, unexported });
+    assert.equal(prompt.split(inlined).length - 1, 1, `Reference must be embedded exactly once: ${name}`);
   }
   assert.equal(await buildPrompt(), prompt);
 });

@@ -30,6 +30,8 @@
 
 v0.dev（Vercel）｜ bolt.new ｜ Lovable ｜ GitHub Copilot Workspace/agent mode ｜ Figma Make ｜ Motiff ｜ 即时设计 AI ｜ B站 AI 编程吐槽向视频（需求信号）｜ YouTube 评测视频 ｜ GitHub awesome-*/trending（需求聚类）
 
+第一 sweep 9 项已于 2026-10-07~08 完成首轮检视（v0/bolt/Lovable/Copilot/Figma Make/Motiff/GitHub trending/B 站信号/即时设计）。第二 sweep 候选（2026-10-08 第九轮追加）：Pixso ｜ MasterGo ｜ goflygen（B 站推广出现的国产 Agent 全栈框架，痛点真实方案存疑）｜ claude-mem 型跨会话记忆信号 ｜ Figma Make 季度更新复检。
+
 ## 版本记录
 
 - v1（2026-10-07）：用户裁定设立；六步循环 + 三 KPI + 证据纪律 + 对象池。

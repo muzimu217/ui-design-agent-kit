@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%232566c4'/%3E%3Cpath d='M4 11l2.5-3 2 2 3.5-4.5' stroke='%23e8edf2' stroke-width='1.5' fill='none'/%3E%3C/svg%3E">
+<title>需求信号面板 · AI 辅助开发问卷洞察（n=4 形成性）</title>
+<style>
+  /* 语义 token：全部颜色只在此定义；组件零硬编码 hex */
+  :root {
+    --bg: #0f141a;
+    --surface: #161d26;
+    --raised: #1d2632;
+    --ink: #e8edf2;
+    --ink-2: #9aa8b5;
+    --line: #2a3644;
+    --brand: #2566c4;
+    --brand-hover: #2f79df;
+    --ok: #57d9a3;
+    --ok-bg: #14342a;
+    --low: #e0b04c;
+    --low-bg: #362c14;
+    --out: #e07a6c;
+    --out-bg: #3a1d1a;
+    --accent: #7aa7e8;
+    --accent-soft: #1a2740;
+    --warn-fg: #e8c891;
+    --warn-bg: #332a16;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px 20px 60px;
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.6;
+  }
+  main { max-width: 1080px; margin: 0 auto; }
+  header h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  header p { margin: 0; color: var(--ink-2); font-size: .9rem; }
+  .scope-note {
+    margin: 14px 0 20px; padding: 10px 14px; border-radius: var(--radius);
+    background: var(--warn-bg); color: var(--warn-fg); font-size: .85rem;
+  }
+  .scope-note strong { color: var(--ink); }
+  h2 { font-size: 1.02rem; margin: 34px 0 12px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
+
+  /* 状态条（loading/error/empty 与主内容切换） */
+  .state-banner { padding: 28px 20px; text-align: center; color: var(--ink-2); border: 1px dashed var(--line); border-radius: var(--radius); }
+  .state-banner.error { border-style: solid; background: var(--out-bg); color: var(--ink); }
+  .state-banner .retry { margin-top: 10px; }
+  .hidden { display: none !important; }
+
+  /* 样本画像表 */
+  .table-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: .88rem; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { color: var(--ink-2); font-weight: 500; font-size: .8rem; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* 痛点条形 */
+  .bar-row { display: grid; grid-template-columns: minmax(150px, 260px) 1fr 44px; gap: 12px; align-items: center; padding: 7px 0; }
+  .bar-label { font-size: .88rem; }
+  .bar-track { height: 12px; background: var(--raised); border-radius: 6px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--brand); border-radius: 6px; }
+  .bar-count { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: .85rem; }
+
+  /* 分段切换（E1 路线） */
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .seg button {
+    appearance: none; border: none; background: var(--surface); color: var(--ink);
+    padding: 9px 16px; font: inherit; font-size: .88rem; cursor: pointer;
+  }
+  .seg button[aria-selected="true"] { background: var(--brand); color: var(--ink); font-weight: 600; }
+  .seg button:focus-visible, .row:focus-visible, .close:focus-visible, .link:focus-visible {
+    outline: 2px solid var(--brand-hover); outline-offset: 2px;
+  }
+  .panel { margin-top: 12px; }
+
+  /* 证据行（FM-11 证据链，可展开 details 行） */
+  .row {
+    display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center;
+    width: 100%; text-align: left; appearance: none; border: none; cursor: pointer;
+    background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 12px 14px; margin-top: 8px; font: inherit;
+  }
+  .row:hover { background: var(--raised); }
+  .row .who { color: var(--ink-2); font-size: .8rem; }
+  .row .tagc { font-size: .72rem; padding: 2px 8px; border-radius: 99px; }
+  .tag-ok { background: var(--ok-bg); color: var(--ok); }
+  .tag-low { background: var(--low-bg); color: var(--low); }
+  .tag-out { background: var(--out-bg); color: var(--out); }
+  .detail { margin-top: 8px; padding: 12px 14px; border-radius: var(--radius); background: var(--accent-soft); border: 1px solid var(--line); font-size: .88rem; }
+  .detail q { color: var(--ink); }
+  .close { margin-top: 8px; appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: .8rem; }
+
+  /* 启示列表 */
+  .insights { margin: 0; padding-left: 18px; font-size: .9rem; }
+  .insights li { margin: 6px 0; }
+  .insights .src { color: var(--ink-2); font-size: .8rem; }
+
+  a.link { color: var(--accent); }
+  footer { margin-top: 40px; color: var(--ink-2); font-size: .8rem; }
+
+  /* 动效：Snappy 单属性；reduced-motion 全静止 */
+  @media (prefers-reduced-motion: no-preference) {
+    .bar-fill { transition: width 220ms ease-out; }
+    .detail { animation: reveal 160ms ease-out; }
+    @keyframes reveal { from { opacity: 0; transform: translateY(-2px); } }
+    .row, .seg button { transition: background-color 120ms ease; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bar-fill, .row, .seg button { transition: none; }
+    .detail { animation: none; }
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 16px 12px 48px; }
+    .bar-row { grid-template-columns: 1fr 36px; }
+    .bar-row .bar-track { grid-column: 1 / -1; }
+    .row { grid-template-columns: 1fr; gap: 4px; }
+    .row .tagc { justify-self: start; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>需求信号面板</h1>
+    <p>AI 辅助开发需求问卷 v1 · 洞察仪表盘 · 2026-10-08 回收</p>
+  </header>
+
+  <div class="scope-note" role="note">
+    <strong>n=4 形成性参考，非统计样本。</strong>数据来自 4 份有效开发者问卷（另 1 份 AI 自述按非目标样本不计入）。
+    本页只呈现"痛点存在与形态"，不做比例推断。
+  </div>
+
+  <!-- 四态：loading / error / empty / 正常内容 -->
+  <div id="state-loading" class="state-banner" role="status">正在载入问卷语料…</div>
+  <div id="state-error" class="state-banner error hidden" role="alert">
+    <div>语料载入失败：数据端口不可用。</div>
+    <div class="retry"><button class="close" id="retry-btn" type="button">重试</button></div>
+  </div>
+  <div id="state-empty" class="state-banner hidden">
+    <div>暂无回收问卷。分发问卷后，此处将显示样本画像与痛点信号。</div>
+  </div>
+  <div id="state-content" class="hidden">
+
+    <h2>样本画像</h2>
+    <div class="card table-wrap">
+      <table aria-label="问卷样本画像表">
+        <thead>
+          <tr><th scope="col">编号</th><th scope="col">角色</th><th scope="col">年限</th><th scope="col">使用频率</th><th scope="col">AI 改坏代码频率</th><th scope="col">期望流程（E1）</th></tr>
+        </thead>
+        <tbody id="portraits"></tbody>
+      </table>
+    </div>
+
+    <h2>痛点信号（C1 多选频次，n=4）</h2>
+    <div class="card" id="painpoints"></div>
+
+    <h2>期望路线分叉（E1）</h2>
+    <div class="card">
+      <div class="seg" role="tablist" aria-label="期望路线切换">
+        <button role="tab" id="tab-confirm" aria-selected="true" aria-controls="panel-confirm">人审确认派（2/4）</button>
+        <button role="tab" id="tab-evidence" aria-selected="false" aria-controls="panel-evidence" tabindex="-1">机器举证派（2/4）</button>
+      </div>
+      <div id="panel-confirm" class="panel card" role="tabpanel" aria-labelledby="tab-confirm" tabindex="0"></div>
+      <div id="panel-evidence" class="panel card hidden" role="tabpanel" aria-labelledby="tab-evidence" tabindex="0"></div>
+    </div>
+
+    <h2>FM-11 证据链（C2 原话，点击展开）</h2>
+    <div id="evidence"></div>
+
+    <h2>对产品与研究的启示</h2>
+    <div class="card"><ul class="insights" id="insights"></ul></div>
+
+    <footer>
+      数据源：研究仓 formative/demand-survey-v1-responses.md（登记：demand-survey-v1-intake.md）。
+      本页为演示洞察面板：数据静态内嵌、无后端、无持久化；引用语料为忠实转录原话。
+    </footer>
+  </div>
+</main>
+<script>
+"use strict";
+// —— 数据单口：唯一数据端口，所有渲染从 DATA 绑定，组件零业务数据硬编码 ——
+const DATA = {
+  meta: { n: 4, collectedOn: "2026-10-08", nonTarget: 1 },
+  portraits: [
+    { id: "Q-03", role: "前端", years: "3-5 年", freq: "几乎每天", breakFreq: "偶尔", route: "确认派" },
+    { id: "Q-04", role: "后端/全栈", years: "3-5 年", freq: "几乎每天", breakFreq: "经常", route: "确认派" },
+    { id: "Q-05", role: "后端/全栈（兼前端）", years: "5 年以上", freq: "几乎每天", breakFreq: "偶尔", route: "举证派" },
+    { id: "Q-06", role: "前端（兼 BFF）", years: "5 年以上", freq: "几乎每天", breakFreq: "偶尔", route: "混合（停+自动检查）" },
+  ],
+  painpoints: [
+    { label: "难维护、改不动", count: 4 },
+    { label: "改一处坏另一处", count: 3 },
+    { label: "手机端/键盘/无障碍出问题", count: 4 },
+    { label: "界面丑或风格不统一", count: 4 },
+    { label: "AI 动手范围太大（问卷新增项）", count: 0, note: "v1 未设此选项——由 C2 四例反推，v2 已入列" },
+    { label: "出错后不知下一步", count: 1 },
+    { label: "需求说不清理解偏", count: 2 },
+  ],
+  routes: {
+    confirm: { name: "人审确认派", who: "Q-03、Q-04", text: "先跟我确认需求再动手 + 关键步骤停下来让我确认。Q-04 报告 AI 改坏代码「经常」——信任被反复击穿后，选择让 AI 每步留停点。" },
+    evidence: { name: "机器举证派", who: "Q-05（Q-06 混合）", text: "自动检查对比度/键盘/手机端 + 给我截图证据证明检查过。Q-05 明确拒绝打断式确认：「需要逐步确认，说明我一开始就不该让它动手」。" },
+  },
+  evidenceRows: [
+    { id: "Q-04", who: "后端/全栈 3-5 年", tag: "静默删除", tagCls: "tag-out", quote: "让 AI 帮忙重构一个组件的样式和响应式布局，结果它悄悄删掉了我原本写好的几个边界异常处理逻辑，导致发布后生产环境报错。" },
+    { id: "Q-05", who: "后端/全栈 5 年+", tag: "整页重写", tagCls: "tag-out", quote: "让它给一个老页面加个筛选框。它把整个列表重写成了新组件，样式没跟着走，手机端直接塌了。我花了两小时把它改回去。" },
+    { id: "Q-06", who: "前端 5 年+", tag: "改动半径 7 文件", tagCls: "tag-low", quote: "antd v4 升 v5 它一口气改了 7 个文件，把我自己写的虚拟滚动换成自带组件，2 万行直接卡死；dayjs 被换回 moment，打包多 60KB。" },
+    { id: "Q-03", who: "前端 3-5 年", tag: "结构混乱", tagCls: "tag-low", quote: "AI 根据描述生成了一个页面，初看效果不错，但加入真实业务逻辑后发现组件结构混乱。后续调整交互和样式需要大量重构。" },
+  ],
+  insights: [
+    { text: "局部需求 → 大范围顺手重写是最高频根因：四例 C2 全部同构。", src: "已落地：kit 工作流新增 Change-radius discipline 六条（2026-10-08）" },
+    { text: "确认门的争议不在「要不要」，而在「确认什么」。", src: "只问真实歧义、少而准——两类受访者共同约束" },
+    { text: "「机器举证」是被资深开发者选择的第三条路：不打扰，但给证据。", src: "截图证据+自动检查 = kit 门 E 证据链的用户侧印证" },
+    { text: "同事评审对 UI 无效（Q-05：只会说「挺好的」）；AI 自查有盲区。", src: "验收证据链应以机器检查+截图为主、人工抽验为辅" },
+    { text: "E2 意愿题不可信，v2 改问过去行为。", src: "问卷三受访者的方法论批评，v2 已采纳（未分发）" },
+  ],
+};
+
+// —— 渲染（全部从 DATA 读取；空数据自动进入 empty 态） ——
+const $ = (id) => document.getElementById(id);
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+function showState(state) {
+  for (const s of ["loading", "error", "empty", "content"]) {
+    $("state-" + s).classList.toggle("hidden", s !== state);
+  }
+}
+
+function render() {
+  if (!DATA || !DATA.portraits || DATA.portraits.length === 0) { showState("empty"); return; }
+
+  $("portraits").innerHTML = DATA.portraits.map((p) =>
+    `<tr><td>${esc(p.id)}</td><td>${esc(p.role)}</td><td>${esc(p.years)}</td><td>${esc(p.freq)}</td><td><span class="tagc ${p.breakFreq === "经常" ? "tag-out" : "tag-low"}">${esc(p.breakFreq)}</span></td><td>${esc(p.route)}</td></tr>`,
+  ).join("");
+
+  const max = Math.max(...DATA.painpoints.map((p) => p.count));
+  $("painpoints").innerHTML = DATA.painpoints.map((p) =>
+    `<div class="bar-row"><span class="bar-label">${esc(p.label)}${p.note ? `<br><span class="who">${esc(p.note)}</span>` : ""}</span><span class="bar-track"><span class="bar-fill" style="width:${max ? Math.round((p.count / Math.max(max, 1)) * 100) : 0}%"></span></span><span class="bar-count">${p.count}/4</span></div>`,
+  ).join("");
+
+  $("panel-confirm").textContent = `${DATA.routes.confirm.name}（${DATA.routes.confirm.who}）：${DATA.routes.confirm.text}`;
+  $("panel-evidence").textContent = `${DATA.routes.evidence.name}（${DATA.routes.evidence.who}）：${DATA.routes.evidence.text}`;
+
+  $("evidence").innerHTML = DATA.evidenceRows.map((r, i) =>
+    `<button class="row" type="button" aria-expanded="false" aria-controls="ev-${i}" data-idx="${i}"><span class="who">${esc(r.id)} · ${esc(r.who)}</span><span>${esc(r.tag)}</span><span class="tagc ${esc(r.tagCls)}">展开原话</span></button><div class="detail hidden" id="ev-${i}"><q>${esc(r.quote)}</q><br><button class="close" type="button" data-close="ev-${i}">收起</button></div>`,
+  ).join("");
+
+  $("insights").innerHTML = DATA.insights.map((it) =>
+    `<li>${esc(it.text)} <span class="src">—— ${esc(it.src)}</span></li>`,
+  ).join("");
+}
+
+// —— 交互：E1 分段（方向键+Home/End，WAI-ARIA）、证据行展开（焦点返回）、重试 ——
+function initInteractions() {
+  const tabs = [$("tab-confirm"), $("tab-evidence")];
+  const panels = { "tab-confirm": "panel-confirm", "tab-evidence": "panel-evidence" };
+  function select(tab) {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on ? 0 : -1;
+      $(panels[t.id]).classList.toggle("hidden", !on);
+    });
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener("click", () => select(t));
+    t.addEventListener("keydown", (e) => {
+      const next = e.key === "ArrowRight" ? tabs[(i + 1) % 2] : e.key === "ArrowLeft" ? tabs[(i + 1) % 2] : (e.key === "Home" ? tabs[0] : e.key === "End" ? tabs[1] : null);
+      if (next) { e.preventDefault(); select(next); next.focus(); }
+    });
+  });
+
+  $("evidence").addEventListener("click", (e) => {
+    const openBtn = e.target.closest(".row");
+    const closeBtn = e.target.closest("[data-close]");
+    if (openBtn) {
+      const detail = $(openBtn.getAttribute("aria-controls"));
+      const open = detail.classList.toggle("hidden") === false;
+      openBtn.setAttribute("aria-expanded", String(open));
+      openBtn.querySelector(".tagc").textContent = open ? "收起原话" : "展开原话";
+    } else if (closeBtn) {
+      const detail = $(closeBtn.getAttribute("data-close"));
+      detail.classList.add("hidden");
+      const rowBtn = document.querySelector(`.row[aria-controls="${closeBtn.getAttribute("data-close")}"]`);
+      rowBtn.setAttribute("aria-expanded", "false");
+      rowBtn.querySelector(".tagc").textContent = "展开原话";
+      rowBtn.focus();
+    }
+  });
+
+  $("retry-btn").addEventListener("click", () => { showState("loading"); boot(); });
+}
+
+// —— 启动：单口绑定 → 渲染；失败进 error 态（可重试） ——
+function boot() {
+  try {
+    render();
+    if (!DATA.portraits.length) return; // empty 态已显示
+    showState("content");
+  } catch (err) {
+    console.error("render failed:", err);
+    showState("error");
+  }
+}
+initInteractions();
+// 模拟单口取数：DATA 即端口；真实接入时替换为 fetch（保持四态语义不变）
+setTimeout(boot, 120);
+</script>
+</body>
+</html>

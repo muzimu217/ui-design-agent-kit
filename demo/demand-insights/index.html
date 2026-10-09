@@ -3,312 +3,307 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%232566c4'/%3E%3Cpath d='M4 11l2.5-3 2 2 3.5-4.5' stroke='%23e8edf2' stroke-width='1.5' fill='none'/%3E%3C/svg%3E">
-<title>需求信号面板 · AI 辅助开发问卷洞察（n=4 形成性）</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23f5a623'/%3E%3Cpath d='M4 11l2.5-3 2 2 3.5-4.5' stroke='%2314100c' stroke-width='1.5' fill='none'/%3E%3C/svg%3E">
+<title>Signal Deck · AI 辅助开发需求信号板（n=4 形成性）</title>
 <style>
-  /* 语义 token：全部颜色只在此定义；组件零硬编码 hex */
+  /* ============ 语义 token：双强调色相（琥珀主 + 青蓝辅），暖纸底非灰 ============ */
   :root {
-    --bg: #0f141a;
-    --surface: #161d26;
-    --raised: #1d2632;
-    --ink: #e8edf2;
-    --ink-2: #9aa8b5;
-    --line: #2a3644;
-    --brand: #2566c4;
-    --brand-hover: #2f79df;
-    --ok: #57d9a3;
-    --ok-bg: #14342a;
-    --low: #e0b04c;
-    --low-bg: #362c14;
-    --out: #e07a6c;
-    --out-bg: #3a1d1a;
-    --accent: #7aa7e8;
-    --accent-soft: #1a2740;
-    --warn-fg: #e8c891;
-    --warn-bg: #332a16;
-    --radius: 10px;
+    --bg: #14100c;            /* 暖黑（棕相，非灰蓝） */
+    --surface: #1e1812;
+    --raised: #29211a;
+    --ink: #f3ede4;           /* 暖白 */
+    --ink-2: #b3a894;
+    --line: #3d3326;
+    --amber: #f5a623;         /* 主强调：琥珀 */
+    --amber-deep: #d88b0a;
+    --amber-soft: #3a2b10;
+    --cyan: #3ecfd4;          /* 辅强调：青 */
+    --cyan-soft: #10302f;
+    --coral: #ff6b5e;         /* 风险：珊瑚红 */
+    --coral-soft: #3c1a16;
+    --mint: #62d99a;
+    --mint-soft: #16352a;
+    --violet: #b48cf2;
+    --violet-soft: #2a1e3e;
+    --radius: 14px;
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; padding: 24px 20px 60px;
+    margin: 0; padding: 28px 22px 72px;
     font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: var(--bg); color: var(--ink); line-height: 1.6;
+    background:
+      radial-gradient(1100px 500px at 85% -10%, rgba(245,166,35,.07), transparent 60%),
+      radial-gradient(900px 480px at 0% 110%, rgba(62,207,212,.06), transparent 60%),
+      var(--bg);
+    color: var(--ink); line-height: 1.65;
   }
-  main { max-width: 1080px; margin: 0 auto; }
-  header h1 { font-size: 1.35rem; margin: 0 0 4px; }
-  header p { margin: 0; color: var(--ink-2); font-size: .9rem; }
-  .scope-note {
-    margin: 14px 0 20px; padding: 10px 14px; border-radius: var(--radius);
-    background: var(--warn-bg); color: var(--warn-fg); font-size: .85rem;
+  main { max-width: 1120px; margin: 0 auto; }
+
+  /* ============ 首屏：一句话回答"解决什么问题" ============ */
+  .hero { padding: 26px 0 10px; }
+  .kicker { color: var(--amber); font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+  .hero h1 { font-size: clamp(1.6rem, 4vw, 2.3rem); margin: 8px 0 10px; line-height: 1.25; }
+  .hero h1 em { font-style: normal; color: var(--amber); }
+  .hero .answer { font-size: 1.02rem; max-width: 46em; color: var(--ink-2); }
+  .hero .answer strong { color: var(--ink); }
+
+  /* 三大结论卡 */
+  .answers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 22px; }
+  .acard {
+    background: linear-gradient(160deg, var(--raised), var(--surface));
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 18px 16px;
+    position: relative; overflow: hidden;
   }
-  .scope-note strong { color: var(--ink); }
-  h2 { font-size: 1.02rem; margin: 34px 0 12px; }
-  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
+  .acard::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; }
+  .acard.c-amber::before { background: linear-gradient(90deg, var(--amber), transparent); }
+  .acard.c-cyan::before  { background: linear-gradient(90deg, var(--cyan), transparent); }
+  .acard.c-coral::before { background: linear-gradient(90deg, var(--coral), transparent); }
+  .acard .big { font-size: 1.9rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .acard.c-amber .big { color: var(--amber); }
+  .acard.c-cyan .big  { color: var(--cyan); }
+  .acard.c-coral .big { color: var(--coral); }
+  .acard .lbl { font-size: .86rem; margin-top: 6px; }
+  .acard .sub { font-size: .78rem; color: var(--ink-2); margin-top: 4px; }
 
-  /* 状态条（loading/error/empty 与主内容切换） */
-  .state-banner { padding: 28px 20px; text-align: center; color: var(--ink-2); border: 1px dashed var(--line); border-radius: var(--radius); }
-  .state-banner.error { border-style: solid; background: var(--out-bg); color: var(--ink); }
-  .state-banner .retry { margin-top: 10px; }
-  .hidden { display: none !important; }
+  .scope {
+    margin-top: 18px; display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px; border-radius: 99px; font-size: .8rem;
+    background: var(--amber-soft); color: var(--amber); border: 1px solid rgba(245,166,35,.25);
+  }
 
-  /* 样本画像表 */
-  .table-wrap { overflow-x: auto; }
-  table { border-collapse: collapse; width: 100%; font-size: .88rem; }
-  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-  th { color: var(--ink-2); font-weight: 500; font-size: .8rem; }
-  td.num { text-align: right; font-variant-numeric: tabular-nums; }
-  tbody tr:last-child td { border-bottom: none; }
+  /* ============ 图表区 ============ */
+  h2 { font-size: 1.05rem; margin: 44px 0 6px; }
+  h2 + .hsub { color: var(--ink-2); font-size: .84rem; margin: 0 0 14px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; }
+  .duo { display: grid; grid-template-columns: 5fr 7fr; gap: 14px; align-items: stretch; }
 
-  /* 痛点条形 */
-  .bar-row { display: grid; grid-template-columns: minmax(150px, 260px) 1fr 44px; gap: 12px; align-items: center; padding: 7px 0; }
+  /* 环形图 */
+  .donut-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  svg.donut { display: block; }
+  .donut-center { font-weight: 800; }
+  .legend { display: flex; flex-direction: column; gap: 8px; width: 100%; font-size: .84rem; }
+  .legend .li { display: grid; grid-template-columns: 12px 1fr auto; gap: 8px; align-items: center; }
+  .legend .sw { width: 12px; height: 12px; border-radius: 3px; }
+  .legend .v { font-variant-numeric: tabular-nums; color: var(--ink-2); }
+
+  /* 横向条形（痛点） */
+  .bar-row { display: grid; grid-template-columns: minmax(150px, 240px) 1fr 40px; gap: 12px; align-items: center; padding: 8px 0; }
   .bar-label { font-size: .88rem; }
-  .bar-track { height: 12px; background: var(--raised); border-radius: 6px; overflow: hidden; }
-  .bar-fill { height: 100%; background: var(--brand); border-radius: 6px; }
+  .bar-track { height: 14px; background: var(--raised); border-radius: 7px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 7px; }
   .bar-count { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: .85rem; }
 
-  /* 分段切换（E1 路线） */
-  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-  .seg button {
-    appearance: none; border: none; background: var(--surface); color: var(--ink);
-    padding: 9px 16px; font: inherit; font-size: .88rem; cursor: pointer;
+  /* 流向链（局部需求 → 越权重写 → 人肉修复） */
+  .chain { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; }
+  .chain .node {
+    flex: 1 1 200px; background: var(--raised); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 14px 16px; position: relative;
   }
-  .seg button[aria-selected="true"] { background: var(--brand); color: var(--ink); font-weight: 600; }
-  .seg button:focus-visible, .row:focus-visible, .close:focus-visible, .link:focus-visible {
-    outline: 2px solid var(--brand-hover); outline-offset: 2px;
+  .chain .node .t { font-weight: 700; font-size: .92rem; }
+  .chain .node .d { font-size: .8rem; color: var(--ink-2); margin-top: 4px; }
+  .chain .arrow { align-self: center; color: var(--amber); font-size: 1.3rem; padding: 0 10px; flex: 0 0 auto; }
+  .chain .node.n-bad { border-color: rgba(255,107,94,.4); }
+  .chain .node.n-bad .t { color: var(--coral); }
+  .chain .node.n-fix .t { color: var(--mint); }
+  .chain .node.n-fix { border-color: rgba(98,217,154,.35); }
+
+  /* 证据卡（引语） */
+  .quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .q {
+    background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--violet);
+    border-radius: var(--radius); padding: 16px 18px;
   }
-  .panel { margin-top: 12px; }
+  .q .who { font-size: .78rem; color: var(--violet); font-weight: 700; letter-spacing: .04em; }
+  .q q { display: block; margin-top: 8px; font-size: .9rem; }
+  .q .hurt { display: inline-block; margin-top: 10px; font-size: .74rem; padding: 2px 10px; border-radius: 99px; background: var(--coral-soft); color: var(--coral); }
 
-  /* 证据行（FM-11 证据链，可展开 details 行） */
-  .row {
-    display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center;
-    width: 100%; text-align: left; appearance: none; border: none; cursor: pointer;
-    background: var(--surface); color: var(--ink); border: 1px solid var(--line);
-    border-radius: var(--radius); padding: 12px 14px; margin-top: 8px; font: inherit;
-  }
-  .row:hover { background: var(--raised); }
-  .row .who { color: var(--ink-2); font-size: .8rem; }
-  .row .tagc { font-size: .72rem; padding: 2px 8px; border-radius: 99px; }
-  .tag-ok { background: var(--ok-bg); color: var(--ok); }
-  .tag-low { background: var(--low-bg); color: var(--low); }
-  .tag-out { background: var(--out-bg); color: var(--out); }
-  .detail { margin-top: 8px; padding: 12px 14px; border-radius: var(--radius); background: var(--accent-soft); border: 1px solid var(--line); font-size: .88rem; }
-  .detail q { color: var(--ink); }
-  .close { margin-top: 8px; appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: .8rem; }
+  /* 行动清单 */
+  .actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .act { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 15px 16px; }
+  .act .n { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; font-weight: 800; font-size: .9rem; }
+  .act:nth-child(1) .n { background: var(--mint-soft); color: var(--mint); }
+  .act:nth-child(2) .n { background: var(--cyan-soft); color: var(--cyan); }
+  .act:nth-child(3) .n { background: var(--amber-soft); color: var(--amber); }
+  .act:nth-child(4) .n { background: var(--violet-soft); color: var(--violet); }
+  .act .t { font-weight: 700; font-size: .92rem; }
+  .act .d { font-size: .82rem; color: var(--ink-2); margin-top: 3px; }
 
-  /* 启示列表 */
-  .insights { margin: 0; padding-left: 18px; font-size: .9rem; }
-  .insights li { margin: 6px 0; }
-  .insights .src { color: var(--ink-2); font-size: .8rem; }
+  footer { margin-top: 48px; color: var(--ink-2); font-size: .8rem; }
+  a { color: var(--cyan); }
 
-  a.link { color: var(--accent); }
-  footer { margin-top: 40px; color: var(--ink-2); font-size: .8rem; }
+  /* 四态 */
+  .state-banner { padding: 34px 20px; text-align: center; color: var(--ink-2); border: 1px dashed var(--line); border-radius: var(--radius); }
+  .state-banner.error { border-style: solid; background: var(--coral-soft); color: var(--ink); }
+  .hidden { display: none !important; }
 
-  /* 动效：Snappy 单属性；reduced-motion 全静止 */
+  :focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; border-radius: 6px; }
+
+  /* 动效（ occas 频次：入场级联+数字抬升，reduced-motion 全静止） */
   @media (prefers-reduced-motion: no-preference) {
-    .bar-fill { transition: width 220ms ease-out; }
-    .detail { animation: reveal 160ms ease-out; }
-    @keyframes reveal { from { opacity: 0; transform: translateY(-2px); } }
-    .row, .seg button { transition: background-color 120ms ease; }
+    .acard, .q, .act, .chain .node { animation: rise 380ms cubic-bezier(.2,.7,.3,1) backwards; }
+    .acard:nth-child(2) { animation-delay: 60ms; } .acard:nth-child(3) { animation-delay: 120ms; }
+    .q:nth-child(2) { animation-delay: 60ms; } .q:nth-child(3) { animation-delay: 110ms; } .q:nth-child(4) { animation-delay: 160ms; }
+    @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+    .bar-fill { transition: width 480ms cubic-bezier(.2,.7,.3,1); }
+    .donut .seg { transition: stroke-dashoffset 600ms cubic-bezier(.2,.7,.3,1); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .bar-fill, .row, .seg button { transition: none; }
-    .detail { animation: none; }
+    * { animation: none !important; transition: none !important; }
   }
 
+  @media (max-width: 900px) {
+    .answers { grid-template-columns: 1fr; }
+    .duo { grid-template-columns: 1fr; }
+    .quotes, .actions { grid-template-columns: 1fr; }
+    .chain { flex-direction: column; }
+    .chain .arrow { transform: rotate(90deg); align-self: center; padding: 6px 0; }
+  }
   @media (max-width: 640px) {
-    body { padding: 16px 12px 48px; }
-    .bar-row { grid-template-columns: 1fr 36px; }
+    body { padding: 18px 14px 56px; }
+    .bar-row { grid-template-columns: 1fr 40px; }
     .bar-row .bar-track { grid-column: 1 / -1; }
-    .row { grid-template-columns: 1fr; gap: 4px; }
-    .row .tagc { justify-self: start; }
   }
 </style>
 </head>
 <body>
 <main>
-  <header>
-    <h1>需求信号面板</h1>
-    <p>AI 辅助开发需求问卷 v1 · 洞察仪表盘 · 2026-10-08 回收</p>
-  </header>
-
-  <div class="scope-note" role="note">
-    <strong>n=4 形成性参考，非统计样本。</strong>数据来自 4 份有效开发者问卷（另 1 份 AI 自述按非目标样本不计入）。
-    本页只呈现"痛点存在与形态"，不做比例推断。
-  </div>
-
-  <!-- 四态：loading / error / empty / 正常内容 -->
   <div id="state-loading" class="state-banner" role="status">正在载入问卷语料…</div>
   <div id="state-error" class="state-banner error hidden" role="alert">
     <div>语料载入失败：数据端口不可用。</div>
-    <div class="retry"><button class="close" id="retry-btn" type="button">重试</button></div>
+    <div style="margin-top:10px"><button class="retry" id="retry-btn" type="button" style="appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:6px 14px;cursor:pointer;font:inherit">重试</button></div>
   </div>
-  <div id="state-empty" class="state-banner hidden">
-    <div>暂无回收问卷。分发问卷后，此处将显示样本画像与痛点信号。</div>
-  </div>
+  <div id="state-empty" class="state-banner hidden"><div>暂无回收问卷。</div></div>
   <div id="state-content" class="hidden">
 
-    <h2>样本画像</h2>
-    <div class="card table-wrap">
-      <table aria-label="问卷样本画像表">
-        <thead>
-          <tr><th scope="col">编号</th><th scope="col">角色</th><th scope="col">年限</th><th scope="col">使用频率</th><th scope="col">AI 改坏代码频率</th><th scope="col">期望流程（E1）</th></tr>
-        </thead>
-        <tbody id="portraits"></tbody>
-      </table>
+    <section class="hero">
+      <div class="kicker">Signal Deck · 需求信号板</div>
+      <h1>AI 帮人写界面时，<em>到底坏在哪一步</em>？</h1>
+      <p class="answer">这张板子解决一个问题：<strong>让"该往工作流里加什么约束"不再靠猜</strong>。
+      4 位一线开发者的问卷显示——AI 的毛病不是"不会写"，而是<strong>把局部需求做成大范围越权重写</strong>；
+      而他们要的救法分成两派：<strong style="color:var(--amber)">每步等我确认</strong> vs
+      <strong style="color:var(--cyan)">别打扰我，拿证据来</strong>。下面每张图都从原始问卷来。</p>
+      <div class="answers">
+        <div class="acard c-coral">
+          <div class="big">4/4</div>
+          <div class="lbl">受访者全部遭遇"改不动/改坏"</div>
+          <div class="sub">C1 高频痛点 · C2 四段原话同一根因</div>
+        </div>
+        <div class="acard c-amber">
+          <div class="big">2:1:1</div>
+          <div class="lbl">确认派 : 举证派 : 混合——两极对立</div>
+          <div class="sub">E1 路线分叉 · 争议在"确认什么"而非"要不要"</div>
+        </div>
+        <div class="acard c-cyan">
+          <div class="big">6 条</div>
+          <div class="lbl">改动半径纪律已按此入册工作流</div>
+          <div class="sub">Change-radius discipline · 2026-10-08 落地</div>
+        </div>
+      </div>
+      <div class="scope">⚠ n=4 形成性参考，非统计样本——只说"痛点存在与形态"，不做比例推断</div>
+    </section>
+
+    <h2>根因链：局部需求是怎么变成两小时返工的</h2>
+    <p class="hsub">四段 C2 原话指向同一条路径——工作流要卡住的是中间那一步</p>
+    <div class="chain">
+      <div class="node"><div class="t">① 局部需求</div><div class="d">"加个筛选框""重构个样式""升级个组件库"</div></div>
+      <div class="arrow" aria-hidden="true">→</div>
+      <div class="node n-bad"><div class="t">② 越权重写（坏在这）</div><div class="d">整页重写 · 静默删边界处理 · 一次改 7 文件 · 依赖被换回旧库</div></div>
+      <div class="arrow" aria-hidden="true">→</div>
+      <div class="node"><div class="t">③ 偏离暴露</div><div class="d">手机端塌了 · 生产报错 · review 到一半才发现</div></div>
+      <div class="arrow" aria-hidden="true">→</div>
+      <div class="node n-fix"><div class="t">④ 人肉修复</div><div class="d">2 小时改回 · diff 回滚 3 文件 · 比自己写更花时间</div></div>
     </div>
 
-    <h2>痛点信号（C1 多选频次，n=4）</h2>
+    <h2>期望路线：两个受访群像</h2>
+    <p class="hsub">同样被坑过，救法选择对立——产品门控设计必须同时接住两种</p>
+    <div class="duo">
+      <div class="card donut-wrap">
+        <svg class="donut" width="220" height="220" viewBox="0 0 220 220" role="img" aria-label="期望路线环形图：确认派 2/4，举证派 1/4，混合 1/4">
+          <circle cx="110" cy="110" r="86" fill="none" stroke="var(--raised)" stroke-width="26"/>
+          <!-- 周长 2π×86≈540.35；确认派 2/4=270.2，举证派 1/4=135.1（offset -270.2），混合 1/4=135.1（offset -405.3） -->
+          <circle class="seg" cx="110" cy="110" r="86" fill="none" stroke="var(--amber)" stroke-width="26"
+                  stroke-dasharray="270.2 540.4" stroke-dashoffset="0" transform="rotate(-90 110 110)" stroke-linecap="butt"/>
+          <circle class="seg" cx="110" cy="110" r="86" fill="none" stroke="var(--cyan)" stroke-width="26"
+                  stroke-dasharray="135.1 540.4" stroke-dashoffset="-270.2" transform="rotate(-90 110 110)" stroke-linecap="butt"/>
+          <circle class="seg" cx="110" cy="110" r="86" fill="none" stroke="var(--violet)" stroke-width="26"
+                  stroke-dasharray="135.1 540.4" stroke-dashoffset="-405.3" transform="rotate(-90 110 110)" stroke-linecap="butt"/>
+          <text class="donut-center" x="110" y="103" text-anchor="middle" fill="var(--ink)" font-size="30">2:1:1</text>
+          <text x="110" y="128" text-anchor="middle" fill="var(--ink-2)" font-size="11">确认 : 举证 : 混合</text>
+        </svg>
+        <div class="legend">
+          <div class="li"><span class="sw" style="background:var(--amber)"></span><span>人审确认派 — 关键步骤停下等我点头</span><span class="v">2 · Q-03/Q-04</span></div>
+          <div class="li"><span class="sw" style="background:var(--cyan)"></span><span>机器举证派 — 少打扰，拿检查结果和截图</span><span class="v">1 · Q-05</span></div>
+          <div class="li"><span class="sw" style="background:var(--violet)"></span><span>混合 — 停步 + 自动检查都要</span><span class="v">1 · Q-06</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-weight:700; margin-bottom:10px">两派的原话分歧</div>
+        <p style="margin:0 0 12px; font-size:.9rem"><strong style="color:var(--amber)">确认派（Q-04，AI 改坏"经常"）：</strong>
+          "先跟我确认需求再动手 + 关键步骤停下来让我确认。"——信任被反复击穿后，宁可每步留停点。</p>
+        <p style="margin:0 0 12px; font-size:.9rem"><strong style="color:var(--cyan)">举证派（Q-05，5 年+ 老手）：</strong>
+          "我没选'关键步骤停下来确认'。频繁打断我的成本比它省下的时间更高——如果我需要逐步确认，说明我一开始就不该让它动手。"</p>
+        <p style="margin:0; font-size:.9rem"><strong style="color:var(--violet)">混合（Q-06）：</strong>
+          "需求那一步不用它反复问，我需要的是别一次改 7 个文件，以及手机端和无障碍别每次靠我人肉看。"</p>
+        <p style="margin:14px 0 0; font-size:.86rem; color:var(--ink-2)">→ 收敛结论：<strong style="color:var(--ink)">确认门的争议不在"要不要"，而在"确认什么"</strong>——只问真实歧义、少而准；执行期安全靠检查与证据兜底。</p>
+      </div>
+    </div>
+
+    <h2>痛点频次（C1 多选，n=4）</h2>
+    <p class="hsub">"需求说不清"被 5 年+ 受访者明确否决——痛点多在"动手之后"</p>
     <div class="card" id="painpoints"></div>
 
-    <h2>期望路线分叉（E1）</h2>
-    <div class="card">
-      <div class="seg" role="tablist" aria-label="期望路线切换">
-        <button role="tab" id="tab-confirm" aria-selected="true" aria-controls="panel-confirm">人审确认派（2/4）</button>
-        <button role="tab" id="tab-evidence" aria-selected="false" aria-controls="panel-evidence" tabindex="-1">机器举证派（2/4）</button>
-      </div>
-      <div id="panel-confirm" class="panel card" role="tabpanel" aria-labelledby="tab-confirm" tabindex="0"></div>
-      <div id="panel-evidence" class="panel card hidden" role="tabpanel" aria-labelledby="tab-evidence" tabindex="0"></div>
+    <h2>原话即证据（C2，逐段可溯）</h2>
+    <p class="hsub">引用为忠实转录，不改写；完整转录见研究仓 demand-survey-v1-responses.md</p>
+    <div class="quotes">
+      <div class="q"><span class="who">Q-04 · 后端/全栈 3-5 年</span><q>让 AI 帮忙重构一个组件的样式和响应式布局，结果它悄悄删掉了我原本写好的几个边界异常处理逻辑，导致发布后生产环境报错。</q><span class="hurt">静默删除 · 生产事故</span></div>
+      <div class="q"><span class="who">Q-06 · 前端 5 年+</span><q>antd v4 升 v5 它一口气改了 7 个文件，把我自己写的虚拟滚动换成自带组件，2 万行直接卡死；dayjs 被换回 moment，打包多 60KB。</q><span class="hurt">改动半径 7 文件 · 依赖漂移</span></div>
+      <div class="q"><span class="who">Q-05 · 后端/全栈 5 年+</span><q>让它给一个老页面加个筛选框。它把整个列表重写成了新组件，样式没跟着走，手机端直接塌了。我花了两小时把它改回去。</q><span class="hurt">整页重写 · 2 小时返工</span></div>
+      <div class="q"><span class="who">Q-03 · 前端 3-5 年</span><q>AI 根据描述生成了一个页面，初看效果不错，但加入真实业务逻辑后发现组件结构混乱。后续调整交互和样式需要大量重构。</q><span class="hurt">结构混乱 · 二次重构</span></div>
     </div>
 
-    <h2>FM-11 证据链（C2 原话，点击展开）</h2>
-    <div id="evidence"></div>
-
-    <h2>对产品与研究的启示</h2>
-    <div class="card"><ul class="insights" id="insights"></ul></div>
+    <h2>这张板子换回了什么</h2>
+    <p class="hsub">每条信号都已变成工作流里的实际约束——不是停在"洞察"</p>
+    <div class="actions">
+      <div class="act"><span class="n">1</span><div><div class="t">改动半径纪律 ×6 入册</div><div class="d">声明半径→增量不重写→保全行为→冻结技术栈→少问准问→测试透明（plan-execute.md，随提示词导出分发）</div></div></div>
+      <div class="act"><span class="n">2</span><div><div class="t">确认门话术收窄</div><div class="d">"只在真正有歧义时才问"写入门控设计——同时接住确认派与举证派</div></div></div>
+      <div class="act"><span class="n">3</span><div><div class="t">验收证据链加码</div><div class="d">"同事看 UI 只会说挺好的"+"AI 自查有盲区"→ 机器检查+截图为主、人工抽验为辅</div></div></div>
+      <div class="act"><span class="n">4</span><div><div class="t">问卷 v2 方法论修正</div><div class="d">C1 改排序、E2 改问过去行为、E1 拆追问（已构造，未分发）</div></div></div>
+    </div>
 
     <footer>
-      数据源：研究仓 formative/demand-survey-v1-responses.md（登记：demand-survey-v1-intake.md）。
-      本页为演示洞察面板：数据静态内嵌、无后端、无持久化；引用语料为忠实转录原话。
+      数据源：研究仓 <a href="javascript:void(0)" title="uak-research/formative/demand-survey-v1-responses.md">formative/demand-survey-v1-responses.md</a>（4 份有效 + 1 份非目标样本不计入）·
+      登记与 FM 映射：demand-survey-v1-intake.md · 本页无后端无持久化，数据静态单口内嵌。
     </footer>
   </div>
 </main>
 <script>
 "use strict";
-// —— 数据单口：唯一数据端口，所有渲染从 DATA 绑定，组件零业务数据硬编码 ——
 const DATA = {
-  meta: { n: 4, collectedOn: "2026-10-08", nonTarget: 1 },
-  portraits: [
-    { id: "Q-03", role: "前端", years: "3-5 年", freq: "几乎每天", breakFreq: "偶尔", route: "确认派" },
-    { id: "Q-04", role: "后端/全栈", years: "3-5 年", freq: "几乎每天", breakFreq: "经常", route: "确认派" },
-    { id: "Q-05", role: "后端/全栈（兼前端）", years: "5 年以上", freq: "几乎每天", breakFreq: "偶尔", route: "举证派" },
-    { id: "Q-06", role: "前端（兼 BFF）", years: "5 年以上", freq: "几乎每天", breakFreq: "偶尔", route: "混合（停+自动检查）" },
-  ],
+  meta: { n: 4, nonTarget: 1 },
   painpoints: [
-    { label: "难维护、改不动", count: 4 },
-    { label: "改一处坏另一处", count: 3 },
-    { label: "手机端/键盘/无障碍出问题", count: 4 },
-    { label: "界面丑或风格不统一", count: 4 },
-    { label: "AI 动手范围太大（问卷新增项）", count: 0, note: "v1 未设此选项——由 C2 四例反推，v2 已入列" },
-    { label: "出错后不知下一步", count: 1 },
-    { label: "需求说不清理解偏", count: 2 },
-  ],
-  routes: {
-    confirm: { name: "人审确认派", who: "Q-03、Q-04", text: "先跟我确认需求再动手 + 关键步骤停下来让我确认。Q-04 报告 AI 改坏代码「经常」——信任被反复击穿后，选择让 AI 每步留停点。" },
-    evidence: { name: "机器举证派", who: "Q-05（Q-06 混合）", text: "自动检查对比度/键盘/手机端 + 给我截图证据证明检查过。Q-05 明确拒绝打断式确认：「需要逐步确认，说明我一开始就不该让它动手」。" },
-  },
-  evidenceRows: [
-    { id: "Q-04", who: "后端/全栈 3-5 年", tag: "静默删除", tagCls: "tag-out", quote: "让 AI 帮忙重构一个组件的样式和响应式布局，结果它悄悄删掉了我原本写好的几个边界异常处理逻辑，导致发布后生产环境报错。" },
-    { id: "Q-05", who: "后端/全栈 5 年+", tag: "整页重写", tagCls: "tag-out", quote: "让它给一个老页面加个筛选框。它把整个列表重写成了新组件，样式没跟着走，手机端直接塌了。我花了两小时把它改回去。" },
-    { id: "Q-06", who: "前端 5 年+", tag: "改动半径 7 文件", tagCls: "tag-low", quote: "antd v4 升 v5 它一口气改了 7 个文件，把我自己写的虚拟滚动换成自带组件，2 万行直接卡死；dayjs 被换回 moment，打包多 60KB。" },
-    { id: "Q-03", who: "前端 3-5 年", tag: "结构混乱", tagCls: "tag-low", quote: "AI 根据描述生成了一个页面，初看效果不错，但加入真实业务逻辑后发现组件结构混乱。后续调整交互和样式需要大量重构。" },
-  ],
-  insights: [
-    { text: "局部需求 → 大范围顺手重写是最高频根因：四例 C2 全部同构。", src: "已落地：kit 工作流新增 Change-radius discipline 六条（2026-10-08）" },
-    { text: "确认门的争议不在「要不要」，而在「确认什么」。", src: "只问真实歧义、少而准——两类受访者共同约束" },
-    { text: "「机器举证」是被资深开发者选择的第三条路：不打扰，但给证据。", src: "截图证据+自动检查 = kit 门 E 证据链的用户侧印证" },
-    { text: "同事评审对 UI 无效（Q-05：只会说「挺好的」）；AI 自查有盲区。", src: "验收证据链应以机器检查+截图为主、人工抽验为辅" },
-    { text: "E2 意愿题不可信，v2 改问过去行为。", src: "问卷三受访者的方法论批评，v2 已采纳（未分发）" },
+    { label: "难维护、改不动", count: 4, color: "var(--amber)" },
+    { label: "手机端/键盘/无障碍出问题", count: 4, color: "var(--amber)" },
+    { label: "界面丑或风格不统一", count: 4, color: "var(--coral)" },
+    { label: "改一处坏另一处", count: 3, color: "var(--cyan)" },
+    { label: "需求说不清理解偏", count: 2, color: "var(--violet)", note: "被 5 年+ 受访者明确否决的选项" },
+    { label: "出错后不知下一步", count: 1, color: "var(--mint)" },
+    { label: "AI 动手范围太大（问卷新增项）", count: 0, color: "var(--ink-2)", note: "v1 未设此选项——由 C2 四例反推，v2 已入列" },
   ],
 };
-
-// —— 渲染（全部从 DATA 读取；空数据自动进入 empty 态） ——
 const $ = (id) => document.getElementById(id);
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-
-function showState(state) {
-  for (const s of ["loading", "error", "empty", "content"]) {
-    $("state-" + s).classList.toggle("hidden", s !== state);
-  }
-}
-
+function showState(s) { for (const x of ["loading","error","empty","content"]) $("state-"+x).classList.toggle("hidden", x !== s); }
 function render() {
-  if (!DATA || !DATA.portraits || DATA.portraits.length === 0) { showState("empty"); return; }
-
-  $("portraits").innerHTML = DATA.portraits.map((p) =>
-    `<tr><td>${esc(p.id)}</td><td>${esc(p.role)}</td><td>${esc(p.years)}</td><td>${esc(p.freq)}</td><td><span class="tagc ${p.breakFreq === "经常" ? "tag-out" : "tag-low"}">${esc(p.breakFreq)}</span></td><td>${esc(p.route)}</td></tr>`,
-  ).join("");
-
-  const max = Math.max(...DATA.painpoints.map((p) => p.count));
+  if (!DATA.painpoints.length) { showState("empty"); return; }
   $("painpoints").innerHTML = DATA.painpoints.map((p) =>
-    `<div class="bar-row"><span class="bar-label">${esc(p.label)}${p.note ? `<br><span class="who">${esc(p.note)}</span>` : ""}</span><span class="bar-track"><span class="bar-fill" style="width:${max ? Math.round((p.count / Math.max(max, 1)) * 100) : 0}%"></span></span><span class="bar-count">${p.count}/4</span></div>`,
-  ).join("");
-
-  $("panel-confirm").textContent = `${DATA.routes.confirm.name}（${DATA.routes.confirm.who}）：${DATA.routes.confirm.text}`;
-  $("panel-evidence").textContent = `${DATA.routes.evidence.name}（${DATA.routes.evidence.who}）：${DATA.routes.evidence.text}`;
-
-  $("evidence").innerHTML = DATA.evidenceRows.map((r, i) =>
-    `<button class="row" type="button" aria-expanded="false" aria-controls="ev-${i}" data-idx="${i}"><span class="who">${esc(r.id)} · ${esc(r.who)}</span><span>${esc(r.tag)}</span><span class="tagc ${esc(r.tagCls)}">展开原话</span></button><div class="detail hidden" id="ev-${i}"><q>${esc(r.quote)}</q><br><button class="close" type="button" data-close="ev-${i}">收起</button></div>`,
-  ).join("");
-
-  $("insights").innerHTML = DATA.insights.map((it) =>
-    `<li>${esc(it.text)} <span class="src">—— ${esc(it.src)}</span></li>`,
+    `<div class="bar-row"><span class="bar-label">${esc(p.label)}${p.note ? `<br><span style="font-size:.74rem;color:var(--ink-2)">${esc(p.note)}</span>` : ""}</span><span class="bar-track"><span class="bar-fill" style="width:${Math.round((p.count / 4) * 100)}%;background:${p.color}"></span></span><span class="bar-count">${p.count}/4</span></div>`,
   ).join("");
 }
-
-// —— 交互：E1 分段（方向键+Home/End，WAI-ARIA）、证据行展开（焦点返回）、重试 ——
-function initInteractions() {
-  const tabs = [$("tab-confirm"), $("tab-evidence")];
-  const panels = { "tab-confirm": "panel-confirm", "tab-evidence": "panel-evidence" };
-  function select(tab) {
-    tabs.forEach((t) => {
-      const on = t === tab;
-      t.setAttribute("aria-selected", String(on));
-      t.tabIndex = on ? 0 : -1;
-      $(panels[t.id]).classList.toggle("hidden", !on);
-    });
-  }
-  tabs.forEach((t, i) => {
-    t.addEventListener("click", () => select(t));
-    t.addEventListener("keydown", (e) => {
-      const next = e.key === "ArrowRight" ? tabs[(i + 1) % 2] : e.key === "ArrowLeft" ? tabs[(i + 1) % 2] : (e.key === "Home" ? tabs[0] : e.key === "End" ? tabs[1] : null);
-      if (next) { e.preventDefault(); select(next); next.focus(); }
-    });
-  });
-
-  $("evidence").addEventListener("click", (e) => {
-    const openBtn = e.target.closest(".row");
-    const closeBtn = e.target.closest("[data-close]");
-    if (openBtn) {
-      const detail = $(openBtn.getAttribute("aria-controls"));
-      const open = detail.classList.toggle("hidden") === false;
-      openBtn.setAttribute("aria-expanded", String(open));
-      openBtn.querySelector(".tagc").textContent = open ? "收起原话" : "展开原话";
-    } else if (closeBtn) {
-      const detail = $(closeBtn.getAttribute("data-close"));
-      detail.classList.add("hidden");
-      const rowBtn = document.querySelector(`.row[aria-controls="${closeBtn.getAttribute("data-close")}"]`);
-      rowBtn.setAttribute("aria-expanded", "false");
-      rowBtn.querySelector(".tagc").textContent = "展开原话";
-      rowBtn.focus();
-    }
-  });
-
-  $("retry-btn").addEventListener("click", () => { showState("loading"); boot(); });
-}
-
-// —— 启动：单口绑定 → 渲染；失败进 error 态（可重试） ——
+$("retry-btn").addEventListener("click", () => { showState("loading"); setTimeout(boot, 120); });
 function boot() {
-  try {
-    render();
-    if (!DATA.portraits.length) return; // empty 态已显示
-    showState("content");
-  } catch (err) {
-    console.error("render failed:", err);
-    showState("error");
-  }
+  try { render(); if (DATA.painpoints.length) showState("content"); }
+  catch (err) { console.error("render failed:", err); showState("error"); }
 }
-initInteractions();
-// 模拟单口取数：DATA 即端口；真实接入时替换为 fetch（保持四态语义不变）
 setTimeout(boot, 120);
 </script>
 </body>

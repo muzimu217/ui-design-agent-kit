@@ -30,7 +30,7 @@
 
 v0.dev（Vercel）｜ bolt.new ｜ Lovable ｜ GitHub Copilot Workspace/agent mode ｜ Figma Make ｜ Motiff ｜ 即时设计 AI ｜ B站 AI 编程吐槽向视频（需求信号）｜ YouTube 评测视频 ｜ GitHub awesome-*/trending（需求聚类）
 
-第一 sweep 9 项已于 2026-10-07~08 完成首轮检视（v0/bolt/Lovable/Copilot/Figma Make/Motiff/GitHub trending/B 站信号/即时设计）。第二 sweep 候选（2026-10-08 第九轮追加）：Pixso ｜ MasterGo ｜ goflygen（B 站推广出现的国产 Agent 全栈框架，痛点真实方案存疑）｜ claude-mem 型跨会话记忆信号 ｜ Figma Make 季度更新复检。进度：第二 sweep 已检 2/5（Pixso 10-08、MasterGo 10-09，国产三强格局图补完：即时设计=插件型 AI/Pixso=生成前置型/MasterGo=Agent 代跑型，三卡互链）。
+第一 sweep 9 项已于 2026-10-07~08 完成首轮检视（v0/bolt/Lovable/Copilot/Figma Make/Motiff/GitHub trending/B 站信号/即时设计）。第二 sweep 候选（2026-10-08 第九轮追加）：Pixso ｜ MasterGo ｜ goflygen（B 站推广出现的国产 Agent 全栈框架，痛点真实方案存疑）｜ claude-mem 型跨会话记忆信号 ｜ Figma Make 季度更新复检。进度：第二 sweep 已检 4/5（Pixso 10-08、MasterGo 10-09、GoFlyGen 10-09、Figma Make 复检 10-09——最大增量=Make on your local codebase Beta+Ship 进主标语；仅剩 claude-mem 型记忆信号）。国产三强格局图已收官（即时设计=插件型 AI/Pixso=生成前置型/MasterGo=Agent 代跑型，三卡互链）。进度：第二 sweep 已检 2/5（Pixso 10-08、MasterGo 10-09，国产三强格局图补完：即时设计=插件型 AI/Pixso=生成前置型/MasterGo=Agent 代跑型，三卡互链）。
 
 ## 版本记录
 

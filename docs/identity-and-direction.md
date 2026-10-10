@@ -17,7 +17,7 @@
 | 2026-09-20 | 流程强化：门 A-F 工作流、证据等级制、门账本 | docs/chain-flow.md、docs/gates.md |
 | 2026-09-30 | **研究线入驻（不是身份变更）**：用户裁"研究优先重建"——先研究问题与可发表证据，工具=实验载体、知识包=附属；研究层=UAK 主架构的**适配层非替代** | research/README.md、memory 台账 |
 | 2026-10-01 | 研究仪器两批实现（事件链/门禁/控制台），全部落在 research/runtime/，不动产品主架构 | 8 commits cb2be46..7c459b0 |
-| 2026-10-02 | **身份澄清 + 研究线独立建仓**：外部批评触发定位审视；用户裁定——本仓=UI 设计智能体工作流产品仓（"这个 Kit 只是工作流，而不是这个研究方向"）；研究线整体迁出至 `~/dev/uak-research` 独立仓 | U-02、critique-assessment-v1.md、commit 1b70b0a |
+| 2026-10-02 | **身份澄清 + 研究线独立建仓**：外部批评触发定位审视；用户裁定——本仓=UI 设计智能体工作流产品仓（"这个 Kit 只是工作流，而不是这个研究方向"）；研究线整体迁出至 `~/dev/uak-research` 独立仓（历史注记：该路径 2026-10-06 后已废弃，研究仓现位于 ~/Documents/Projects/uak-research 并已建 GitHub 私有远端） | U-02、critique-assessment-v1.md、commit 1b70b0a |
 
 **诚实结论**：命名（ui-design-agent-kit）从一开始就符合产品定位；2026-09-30 的研究转向曾被误读为"仓库改做研究"——错。研究是住在仓库里的另一条线，门面从未、也不应改成研究优先。
 
@@ -25,7 +25,7 @@
 
 **是**：
 - 一个项目级 UI 设计智能体：指令层（SKILL.md 体系 + 22 个技能）、有界工具编排（MCP 配置钉版）、六道门人工确认工作流
-- 一套验证纪律：五级证据等级（Installed≠…≠VisuallyVerified）、123 项自动化测试（2026-10-04 全量口径：tests/ 114 + showcase/tests 9，计数由 doc-drift 锁定）、71 场景评测台账、浏览器实测强制
+- 一套验证纪律：五级证据等级（Installed≠…≠VisuallyVerified）、131 项自动化测试（2026-10-08 全量口径：tests/ 122 + showcase/tests 9，计数由 doc-drift 锁定，以 npm test 实际输出为准；同日上午基线曾为 123=114+9，uak-init 补 8 例后为 131）、评测台账语料 73、已执行入账 71（2026-10-09 复核 evals/results.json；change-radius-discipline 新入册待评）、浏览器实测强制
 - 一个可迁移提示词工厂：`npm run prompt:build` 产出单文件提示词给其他宿主
 - 12 个有独立 README/证据的线上案例
 
@@ -41,16 +41,18 @@
 ```text
 muzimu217/ui-design-agent-kit（产品仓）
 ├── 智能体指令层   .agents/skills/        ← 产品核心：22 技能、门 A-F、工具路由
-├── 验证与工具层   scripts/ tests/ evals/  ← 产品纪律：124 测试（2026-10-04 口径）、71 场景、证据等级
+├── 验证与工具层   scripts/ tests/ evals/  ← 产品纪律：131 测试（2026-10-08 复核，以 npm test 实际输出为准）、72 场景语料（71 已入账）、证据等级
 ├── 案例层         demo/ showcase/         ← 隔离收录的交付案例（不进运行时）
 ├── 配置层         .codex/ tooling/        ← MCP 钉版、上游锁
 └── 归档层         paper/ docs/archive/    ← 旧论文封存、历史文档
 ```
 
+> 口径注记（2026-10-08）：上图测试数为当前实测口径 131——同日 uak-init 补路径安全与软链守卫新增 8 例，由上午基线 123（=114+9）增至 131（=122+9），以 npm test 实际输出为准。2026-10-05 commit 0512b21 做口径级联时曾把本行误写为 124，与该提交自述「identity 123 项」矛盾；69e8ed9（e3 回归断言放宽）之后实测与 18265e4 的 npm test 输出均为 123/123——124 为级联笔误，非真实测试数。
+
 ## 研究线的地位（已独立建仓）
 
 - **裁定链**：2026-09-30 研究线入驻本仓（当时裁"当前仓库改造"）→ 2026-10-02 晚改裁**物理分离**——"这个 Kit 只是工作流，而不是这个研究方向"；研究仓服务于本项目的进一步开发完善、代替用户个人工作。
-- **现状**：研究线已整体迁出至独立本地仓 `~/dev/uak-research`（git 已建，自包含 65/65 测试通过；远端建仓待用户授权）。本仓的 `research/`、`tests/research-runtime.test.mjs`、`scripts/research-instrument.mjs`、`research:*` 脚本已全部移除。
+- **现状**（2026-10-08 核对）：研究线位于独立本地仓 `/Users/blackevil/Documents/Projects/uak-research`（2026-10-06 由旧路径 `~/dev` 迁入，旧目录已删除），远端 GitHub 私有仓 `muzimu217/uak-research` 已建并完成首版推送。研究线测试自包含 65/65 通过（2026-10-06 口径的历史事实）。本仓的 `research/`、`tests/research-runtime.test.mjs`、`scripts/research-instrument.mjs`、`research:*` 脚本已全部移除。
 - **关系**：单向引用——研究仓以本仓工作流为实验载体（测量对象），引用本仓公开产物；本仓不依赖研究仓任何内容。本仓测试线 = 产品测试（`tests/`、`showcase/tests/`）；研究测试随研究仓。
 - **历史注记**：研究线首批仪器提交（cb2be46..7c459b0）曾落在冻结的面分支上，随测试分支合并时会被本仓 git 历史自然清除出工作区；完整内容由研究仓接续。
 

@@ -94,6 +94,8 @@ test("the rendered document is a self-contained local status view", async () => 
 
   assert.match(html, /^<!DOCTYPE html>/);
   assert.equal(/(src|href)=["']https?:\/\//i.test(html), false, "must not reference an external resource");
+  assert.equal(/(src|href)=["']\/\//i.test(html), false, "must not use protocol-relative remote URLs");
+  assert.equal(/@import\b|url\(\s*["']?(https?:)?\/\//i.test(html), false, "must not load remote CSS via @import or url()");
   assert.match(html, /prefers-reduced-motion/);
   // Every stage must be reachable in the SVG.
   for (const stage of pipeline.stages) {

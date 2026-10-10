@@ -55,11 +55,37 @@
 > [!IMPORTANT]
 > **这个仓库维护的是一个 UI 设计智能体工作流：通过 AI 调用技能、编排工具，帮人类设计更好的 UI——不是产品运行时，也不是研究项目本体。**
 >
-> - **是**：智能体指令层（22 技能 + 六道门确认工作流）、验证纪律（五级证据等级、123 项测试、浏览器实测）、可迁移提示词工厂、12 个有证据的线上案例。
+> - **是**：智能体指令层（22 技能 + 六道门确认工作流）、验证纪律（五级证据等级、131 项测试（2026-10-08 复核，以 npm test 实际输出为准）、浏览器实测）、可迁移提示词工厂、12 个有证据的线上案例。
 > - **不是**：独立 AI 客户端、运行时引擎、Figma 同步工具（设计契约走 designContracts 钉版通道）、IDE 替代品。
 > - 研究线（人工监督研究 RQ-A、测量仪器与语料）已**独立建仓**，不在本仓目录下（2026-10-02 裁定）——定位与身份时间线见 [docs/identity-and-direction.md](docs/identity-and-direction.md)。
 >
 > demo 与 showcase 是已明确收录的教学与验收案例。案例截图证明对应页面的当次检查结果，不代表所有生成任务都已通过验收；主工具包不提供模型服务、账户、付费素材或后台业务接口。
+
+## 接入任意 AI CLI / 桌面宿主（一层转换）
+
+本工作流**不绑定单一宿主**。任何能读取指令文件的 AI CLI 编辑器或桌面端（Codex、Claude Code、Cursor 等）都走同一条接入路径：
+
+1. **安装**（本仓要求 Node ≥ 20.18.1）：
+   ```bash
+   npm ci --ignore-scripts
+   ```
+2. **生成单文件提示词**（唯一转换层，自包含、无本机路径）：
+   ```bash
+   npm run prompt:build        # 完整版 output/ui-design-agent.system.md
+   npm run prompt:build:lean   # 精简版 output/ui-design-agent.lean.md
+   ```
+3. **接入目标项目**（幂等，可重复执行）：
+   ```bash
+   node scripts/uak-init.mjs --help        # 查看用法
+   node scripts/uak-init.mjs --dry-run /path/to/project
+   node scripts/uak-init.mjs /path/to/project   # 在目标项目 AGENTS.md 追加接入区块
+   node scripts/uak-init.mjs --check /path/to/project
+   ```
+4. **宿主指令文件名不同**（如 `CLAUDE.md`）：不要复制第二份内容，放一行指针指向 `AGENTS.md` 或导出文件即可。
+
+接入后在该宿主里用一句口语需求开工即可（示例见 [docs/usage.md](docs/usage.md)）。
+宿主仍需自备模型服务、MCP 配置与技能目录——缺什么，接入说明会列清楚，不会假装已连接。
+决策背景见 [docs/adr/0003-universal-host-compat.md](docs/adr/0003-universal-host-compat.md)。
 
 ## 为什么需要它
 

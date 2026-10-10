@@ -64,6 +64,8 @@ upload-pages-artifact、deploy-pages。Node 24。PR 只构建和测试，不部�
 
 ## 当前上线限制
 
+> 2026-10-08 状态注记：下文为收录初期（2026-09）的只读核查快照，已过期——现状为开发仓 `muzimu217/ui-design-agent-kit` 已公开、展示站已上线 <https://agent.kcos.club/>（近期只读检查 HTTP 200），当时「私有仓 / free 计划不能启用 Pages」的限制不再成立。历史记录保留备查。
+
 本次实际只读核查：`muzimu217/ui-design-agent-kit` 是私有仓库，当前账号 plan 为 `free`，
 默认分支 main，Pages 查询返回 404。按 [GitHub Pages 官方文档](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages)，
 Free 的私有仓库不能直接启用 Pages。未尝试付费升级，也未把仓库改为公开。

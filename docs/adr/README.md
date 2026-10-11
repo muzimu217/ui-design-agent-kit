@@ -17,3 +17,4 @@
 | [0001](0001-learn-loop-every-dev-round.md) | 开发线每轮必做对标学习循环 | 已接受 | 2026-10-07 |
 | [0002](0002-competitive-screenshots-local-only.md) | 竞品截图仅本地留存不入库 | 已接受 | 2026-10-08 |
 | [0003](0003-universal-host-compat.md) | 通用宿主兼容：一层转换、多次输出 | 已接受 | 2026-10-08 |
+| [0004](0004-multi-platform-oss-sync.md) | 开源多端同步：GitHub 主仓 + Gitee/GitCode 只读镜像 | 已接受 | 2026-10-10 |

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23f5a623'/%3E%3Cpath d='M4 11l2.5-3 2 2 3.5-4.5' stroke='%2314100c' stroke-width='1.5' fill='none'/%3E%3C/svg%3E">
+<title>接入工作台 · 一键把 UI 设计智能体装进你的 Agent</title>
+<style>
+  :root {
+    --bg: #14100c; --surface: #1e1812; --raised: #29211a; --ink: #f3ede4; --ink-2: #b3a894;
+    --line: #3d3326; --amber: #f5a623; --amber-soft: #3a2b10; --cyan: #3ecfd4; --cyan-soft: #10302f;
+    --coral: #ff6b5e; --coral-soft: #3c1a16; --mint: #62d99a; --mint-soft: #16352a;
+    --violet: #b48cf2; --violet-soft: #2a1e3e; --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 28px 22px 72px;
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background:
+      radial-gradient(1100px 500px at 85% -10%, rgba(245,166,35,.07), transparent 60%),
+      radial-gradient(900px 480px at 0% 110%, rgba(62,207,212,.06), transparent 60%),
+      var(--bg);
+    color: var(--ink); line-height: 1.65;
+  }
+  main { max-width: 1150px; margin: 0 auto; }
+  .kicker { color: var(--amber); font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.3rem); margin: 8px 0 10px; line-height: 1.25; }
+  h1 em { font-style: normal; color: var(--amber); }
+  .lede { color: var(--ink-2); max-width: 50em; font-size: .98rem; }
+  .lede strong { color: var(--ink); }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
+  .step { background: linear-gradient(160deg, var(--raised), var(--surface)); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; position: relative; overflow: hidden; }
+  .step::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; }
+  .step:nth-child(1)::before { background: linear-gradient(90deg, var(--mint), transparent); }
+  .step:nth-child(2)::before { background: linear-gradient(90deg, var(--amber), transparent); }
+  .step:nth-child(3)::before { background: linear-gradient(90deg, var(--cyan), transparent); }
+  .step .num { font-size: .72rem; font-weight: 800; color: var(--ink-2); letter-spacing: .12em; }
+  .step h3 { margin: 4px 0 6px; font-size: .98rem; }
+  .step p { margin: 0 0 10px; font-size: .82rem; color: var(--ink-2); }
+  .cmd {
+    display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--line);
+    border-radius: 9px; padding: 9px 12px; font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .78rem; color: var(--cyan); overflow-x: auto; white-space: nowrap;
+  }
+  .cmd button {
+    appearance: none; border: 1px solid var(--line); background: var(--raised); color: var(--ink);
+    border-radius: 6px; padding: 3px 10px; cursor: pointer; font: inherit; font-size: .72rem; flex: 0 0 auto;
+  }
+  .cmd button:focus-visible, a:focus-visible, .host:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+  .note { font-size: .75rem; color: var(--ink-2); margin-top: 8px; }
+
+  h2 { font-size: 1.05rem; margin: 46px 0 6px; }
+  h2 + .hsub { color: var(--ink-2); font-size: .84rem; margin: 0 0 16px; }
+
+  /* 宿主网格 */
+  .hosts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .host { text-align: left; appearance: none; cursor: pointer; font: inherit; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
+  .host:hover { background: var(--raised); }
+  .host .hhead { display: flex; align-items: center; gap: 12px; }
+  .host svg.logo { width: 40px; height: 40px; border-radius: 10px; flex: 0 0 auto; }
+  .host .hname { font-weight: 800; font-size: .95rem; }
+  .host .hkind { font-size: .72rem; color: var(--ink-2); }
+  .host .hdesc { font-size: .8rem; color: var(--ink-2); margin: 10px 0 8px; }
+  .host .hway { font-size: .74rem; color: var(--mint); }
+
+  .detail { margin-top: 12px; background: var(--raised); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; font-size: .86rem; }
+  .detail .cmd { margin: 8px 0; }
+  .detail h4 { margin: 10px 0 4px; font-size: .8rem; color: var(--amber); }
+  .detail p { margin: 4px 0; font-size: .82rem; color: var(--ink-2); }
+
+  .truthbox { margin-top: 22px; background: var(--cyan-soft); border: 1px solid rgba(62,207,212,.25); border-radius: var(--radius); padding: 14px 18px; font-size: .84rem; color: var(--ink-2); }
+  .truthbox strong { color: var(--cyan); }
+  footer { margin-top: 46px; color: var(--ink-2); font-size: .8rem; }
+  a { color: var(--cyan); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .step, .host { animation: rise 360ms cubic-bezier(.2,.7,.3,1) backwards; }
+    .step:nth-child(2) { animation-delay: 60ms; } .step:nth-child(3) { animation-delay: 120ms; }
+    .host:nth-child(2) { animation-delay: 40ms; } .host:nth-child(3) { animation-delay: 80ms; }
+    .host:nth-child(5) { animation-delay: 40ms; } .host:nth-child(6) { animation-delay: 80ms; }
+    .detail { animation: reveal 160ms ease-out; }
+    @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+    @keyframes reveal { from { opacity: 0; transform: translateY(-3px); } }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  @media (max-width: 900px) { .steps, .hosts { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">Onboarding Console · 接入工作台</div>
+  <h1>把 UI 设计智能体<em>装进你的 Agent</em></h1>
+  <p class="lede">UI Design Agent Kit 是一层<strong>工作流指令</strong>——装进你已有的 Agent 宿主（Codex、Claude Code、Cursor…）后，
+  它按<strong>六道门工作流</strong>干活：需求确认 → 素材核对 → 原型 → 契约实现 → 真实浏览器六维验收 → 带证据交付。
+  <strong>三层适配：单文件提示词（万能）/ AGENTS.md 接入（幂等）/ 技能目录直装。</strong></p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="num">STEP 1</div>
+      <h3>装 Kit（一次性）</h3>
+      <p>任意目录安装。uak-init 命令全局可用。</p>
+      <div class="cmd"><span id="c1">npm install -g github:muzimu217/ui-design-agent-kit</span><button data-copy="c1">复制</button></div>
+      <p class="note">Node ≥ 20.18.1。安装后自动带 uak-init 命令（已实测：shebang+符号链+路径解析三重修复）。</p>
+    </div>
+    <div class="step">
+      <div class="num">STEP 2</div>
+      <h3>接入你的项目</h3>
+      <p>cd 到你的项目根目录，一条命令接入（幂等，不碰你已有内容）。</p>
+      <div class="cmd"><span id="c2">uak-init</span><button data-copy="c2">复制</button></div>
+      <p class="note">自动探测宿主（.codex/→Codex，CLAUDE.md→Claude，其余→通用）。加 --dry-run 预览、--check 体检。</p>
+    </div>
+    <div class="step">
+      <div class="num">STEP 3</div>
+      <h3>开干（Express 档）</h3>
+      <p>在你的 Agent 里说第一句话，10 分钟内拿到第一张验收截图。</p>
+      <div class="cmd"><span id="c3">对本项目首页做一次只读验收，给出证据清单</span><button data-copy="c3">复制</button></div>
+      <p class="note">首轮先注入 .agents/uak-prompt.md（接入时自动生成）。方向稿会停在门前等你确认。</p>
+    </div>
+  </div>
+
+  <h2>你的宿主怎么接</h2>
+  <p class="hsub">点击查看该宿主的具体路径。同一套工作流，不同的注入方式——一层转换、多次输出。</p>
+  <div class="hosts" id="hosts"></div>
+  <div id="detail-host"></div>
+
+  <div class="truthbox">
+    <strong>诚实边界：</strong>本 Kit 是工作流指令层，不是独立产品——它不提供模型、账户或托管。
+    宿主仍需自备模型服务与 MCP；缺什么，uak-init 的接入说明会列清楚，不会假装已连接。
+    证据与验收记录留在你自己的项目里，全部本地可复核（131 项测试 / 73 场景台账 / 五级证据等级）。
+  </div>
+
+  <footer>
+    数据来源：scripts/uak-init.mjs 实测行为（2026-10-10 全局安装三重修复后）；宿主适配边界见
+    <a href="adr/0003-universal-host-compat.md">ADR-0003</a>；产品定位见 <a href="identity-and-direction.md">identity-and-direction.md</a>。
+  </footer>
+</main>
+<script>
+"use strict";
+// —— 宿主数据单口：三层适配方式全部与 uak-init/build-prompt 实际行为一致 ——
+const HOSTS = [
+  { id: "codex", name: "Codex CLI", kind: "AGENTS.md 原生",
+    desc: "OpenAI Codex CLI 原生读 AGENTS.md，接入后自动加载。",
+    way: "uak-init 一条命令", primary: true },
+  { id: "claude", name: "Claude Code", kind: "CLAUDE.md 指针",
+    desc: "放一行指针指向 AGENTS.md 或导出文件，不复制内容（避免双源）。",
+    way: "uak-init + 一行指针", primary: true },
+  { id: "cursor", name: "Cursor", kind: "Rules 注入",
+    desc: "把单文件导出放进 .cursor/rules 或项目规则，Agent 按工作流执行。",
+    way: "prompt:build 导出", primary: true },
+  { id: "gemini", name: "Gemini CLI", kind: "GEMINI.md / 系统提示",
+    desc: "支持 GEMINI.md 的版本直接挂导出文件；其余走系统提示注入。",
+    way: "prompt:build 导出", primary: false },
+  { id: "windsurf", name: "Windsurf / Cline", kind: "规则文件注入",
+    desc: "各自规则文件指向导出文件即可；uak-init 会按 other 宿主给通用接入说明。",
+    way: "uak-init（other 档）", primary: false },
+  { id: "generic", name: "任意 Agent 宿主", kind: "单文件提示词（万能）",
+    desc: "只要有系统提示/指令注入位的都能用：完整版 231KB / lean 版 74KB，自包含无死链。",
+    way: "prompt:build 导出", primary: false },
+];
+const SVG = {
+  codex: `<svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="10" fill="var(--cyan-soft)"/><path d="M20 8l10.4 6v12L20 32 9.6 26V14z" fill="none" stroke="var(--cyan)" stroke-width="2"/><circle cx="20" cy="20" r="4" fill="var(--cyan)"/></svg>`,
+  claude: `<svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="10" fill="var(--amber-soft)"/><path d="M13 27V13h5l2 6 2-6h5v14" fill="none" stroke="var(--amber)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  cursor: `<svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="10" fill="var(--violet-soft)"/><path d="M14 10l16 12-7 1 4 8-4 2-4-8-5 5z" fill="var(--violet)"/></svg>`,
+  gemini: `<svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="10" fill="var(--mint-soft)"/><path d="M20 8c1 6 4 9 12 12-8 3-11 6-12 12-1-6-4-9-12-12 8-3 11-6 12-12z" fill="var(--mint)"/></svg>`,
+  windsurf: `<svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="10" fill="var(--coral-soft)"/><path d="M8 24c4-6 8-6 12 0s8 6 12 0" fill="none" stroke="var(--coral)" stroke-width="2.6" stroke-linecap="round"/><path d="M8 16c4-6 8-6 12 0s8 6 12 0" fill="none" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" opacity=".55"/></svg>`,
+  generic: `<svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="10" fill="var(--surface)"/><rect x="9" y="9" width="22" height="22" rx="5" fill="none" stroke="var(--ink-2)" stroke-width="2"/><path d="M14 20h12M20 14v12" stroke="var(--amber)" stroke-width="2"/></svg>`,
+};
+const DETAIL = {
+  codex: `<h4>路径（最顺）</h4><p>cd 到你的项目 → <code>uak-init</code> → 自动探测 .codex/ 并写 AGENTS.md 接入区块（幂等）→ 重启 Codex 会话即生效。</p>
+    <div class="cmd"><span id="dc-codex">uak-init --host codex</span><button data-copy="dc-codex">复制</button></div>
+    <p>宿主自备模型服务与 MCP；缺什么接入说明会列出。验收记录留在你项目里。</p>`,
+  claude: `<h4>路径</h4><p>Claude Code 读 CLAUDE.md——<strong>不要复制第二份内容</strong>，放一行指针：</p>
+    <div class="cmd"><span id="dc-claude">echo '项目 UI 工作流见 AGENTS.md 与 .agents/uak-prompt.md' >> CLAUDE.md</span><button data-copy="dc-claude">复制</button></div>
+    <p>或直接把 prompt:build 的导出文件作为系统提示注入会话。</p>`,
+  cursor: `<h4>路径</h4><p>先生成自包含导出，再放进 Cursor 规则：</p>
+    <div class="cmd"><span id="dc-cursor">npm run prompt:build</span><button data-copy="dc-cursor">复制</button></div>
+    <p>把 output/ui-design-agent.system.md（231KB 完整版）或 lean 版（74KB）放进 .cursor/rules/ 或项目规则，作为 Agent 的系统提示。</p>`,
+  gemini: `<h4>路径</h4><p>支持 GEMINI.md 的版本：一行指针指 AGENTS.md。其余：把导出文件作为系统提示注入。</p>
+    <div class="cmd"><span id="dc-gemini">npm run prompt:build:lean</span><button data-copy="dc-gemini">复制</button></div>
+    <p>lean 版 74KB，含全部行为契约（六道门/素材门/浏览器验收），引用已内联为锚点。</p>`,
+  windsurf: `<h4>路径</h4><p>uak-init 按 other 宿主处理：写 AGENTS.md 接入区块 + .agents/uak-prompt.md；你把内容按各自规则文件的要求指向即可。</p>
+    <div class="cmd"><span id="dc-wind">uak-init</span><button data-copy="dc-wind">复制</button></div>
+    <p>Windsurf/Cline 的规则机制各异，接入说明给的是通用路径，不会假装已自动接入。</p>`,
+  generic: `<h4>路径（万能）</h4><p>任何有"系统提示/自定义指令"注入位的宿主：</p>
+    <div class="cmd"><span id="dc-gen">npm run prompt:build &amp;&amp; npm run prompt:build:lean</span><button data-copy="dc-gen">复制</button></div>
+    <p>导出文件自包含：引用全部内联为锚点、无本机绝对路径、无死链（tests/kit.test.mjs 锁定）。复制内容进注入位即完成。</p>`,
+};
+const $ = (s) => document.querySelector(s);
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+function render() {
+  $("#hosts").innerHTML = HOSTS.map((h) => `
+    <button class="host" type="button" data-id="${h.id}" aria-expanded="false">
+      <span class="hhead">${SVG[h.id]}<span><span class="hname" style="display:block">${esc(h.name)}</span>
+      <span class="hkind" style="display:block">${esc(h.kind)}</span></span></span>
+      <span class="hdesc" style="display:block">${esc(h.desc)}</span>
+      <span class="hway" style="display:block">${esc(h.way)}</span>
+    </button>`).join("");
+  document.querySelectorAll(".host").forEach((c) => c.addEventListener("click", () => {
+    const open = c.getAttribute("aria-expanded") === "true";
+    document.querySelectorAll(".host").forEach((x) => x.setAttribute("aria-expanded", "false"));
+    if (open) { $("#detail-host").innerHTML = ""; return; }
+    c.setAttribute("aria-expanded", "true");
+    const h = HOSTS.find((x) => x.id === c.dataset.id);
+    $("#detail-host").innerHTML = `<div class="detail" role="region" aria-label="${esc(h.name)} 接入详情">${DETAIL[h.id]}<p style="margin-top:10px"><a href="#" onclick="return false" style="font-size:.78rem;color:var(--ink-2)">——接入方式与 uak-init 实测行为一致（2026-10-10）</a></p></div>`;
+    $("#detail-host").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }));
+  // 复制按钮
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-copy]");
+    if (!btn) return;
+    const text = document.getElementById(btn.dataset.copy)?.textContent || "";
+    navigator.clipboard?.writeText(text).then(() => {
+      const old = btn.textContent; btn.textContent = "已复制 ✓";
+      setTimeout(() => { btn.textContent = old; }, 1200);
+    });
+  });
+}
+render();
+</script>
+</body>
+</html>

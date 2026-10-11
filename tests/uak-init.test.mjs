@@ -1,10 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync, chmodSync, symlinkSync, readFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
-import { detectHost, resolveUakPath, agentsSnippet, runInit, checkManagedBlock } from "../scripts/uak-init.mjs";
+import { detectHost, resolveUakPath, agentsSnippet, runInit, checkManagedBlock, resolveTargetDir } from "../scripts/uak-init.mjs";
 
 // V1 uak-init 纯函数与守卫覆盖。夹具=临时目录，用完即删。
 
@@ -109,7 +109,6 @@ test("runInit 实跑: AGENTS.md 标记段幂等更新", async () => {
 });
 
 // —— 小工具 ——
-import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 function existsSyncSafe(p) {
   return existsSync(p);
@@ -179,5 +178,111 @@ test("--check CLI spawnSync 真跑（批 34 P1-1 补交付）", async () => {
   assert.equal(bad.status, 1, "未装自检应 exit 1");
   assert.match(bad.stderr ?? "", /尚未 init/);
   rmSync(installed, { recursive: true, force: true });
+  rmSync(bare, { recursive: true, force: true });
+});
+
+// —— D1-03 路径安全（resolveTargetDir：缺失/非目录/不可写/软链四态） ——
+
+test("runInit 实跑: 目标路径不存在 → 明确报错退出", async () => {
+  const parent = mkdtempSync(path.join(tmpdir(), "uak-miss-"));
+  const missing = path.join(parent, "不存在的目标");
+  await assert.rejects(
+    () => runInit({ targetDir: missing, uakPath: uakRepoRoot(), host: "other", dryRun: true }),
+    /目标路径不存在/,
+  );
+  rmSync(parent, { recursive: true, force: true });
+});
+
+test("runInit 实跑: 目标路径是文件（非目录）→ 明确报错退出", async () => {
+  const parent = mkdtempSync(path.join(tmpdir(), "uak-file-"));
+  const filePath = path.join(parent, "只是一个文件");
+  writeFileSync(filePath, "not a dir");
+  await assert.rejects(
+    () => runInit({ targetDir: filePath, uakPath: uakRepoRoot(), host: "other", dryRun: true }),
+    /目标路径不是目录/,
+  );
+  rmSync(parent, { recursive: true, force: true });
+});
+
+test("runInit 实跑: 目标目录不可写 → 明确报错退出", async (t) => {
+  if (process.getuid?.() === 0) return t.skip("root 不受权限位限制，无法模拟不可写");
+  const target = makeTarget();
+  chmodSync(target, 0o555);
+  try {
+    await assert.rejects(
+      () => runInit({ targetDir: target, uakPath: uakRepoRoot(), host: "other", dryRun: true }),
+      /目标目录不可写/,
+    );
+  } finally {
+    chmodSync(target, 0o755); // 必须先恢复权限才能清目录
+    rmSync(target, { recursive: true, force: true });
+  }
+});
+
+test("resolveTargetDir: AGENTS.md 是软链 → 拒写且外部文件原样保留", () => {
+  const parent = mkdtempSync(path.join(tmpdir(), "uak-sym-"));
+  const target = path.join(parent, "proj");
+  const outside = path.join(parent, "outside-AGENTS.md");
+  mkdirSync(target);
+  mkdirSync(path.join(target, ".git"));
+  writeFileSync(outside, "# 用户在别处的真实文件，绝不能被覆盖");
+  symlinkSync(outside, path.join(target, "AGENTS.md"));
+  assert.throws(() => resolveTargetDir(target), /AGENTS\.md 是软链/);
+  assert.equal(readFileSync(outside, "utf8"), "# 用户在别处的真实文件，绝不能被覆盖", "软链指向的外部文件必须原样");
+  rmSync(parent, { recursive: true, force: true });
+});
+
+test("runInit 实跑: 经软链目录访问目标 → realpath 收敛后正常接入", async () => {
+  const parent = mkdtempSync(path.join(tmpdir(), "uak-link-"));
+  const real = path.join(parent, "real-proj");
+  const link = path.join(parent, "linked-proj");
+  mkdirSync(real);
+  mkdirSync(path.join(real, ".git"));
+  symlinkSync(real, link);
+  const result = await runInit({ targetDir: link, uakPath: uakRepoRoot(), host: "other", dryRun: false });
+  assert.ok(result.actions.length >= 4);
+  assert.ok(existsSync(path.join(real, "AGENTS.md")), "写入必须落在真实路径");
+  const agents = readSafe(path.join(real, "AGENTS.md"));
+  assert.equal(agents.split("<!-- uak:begin").length - 1, 1);
+  rmSync(parent, { recursive: true, force: true });
+});
+
+test("runInit 实跑: AGENTS.md 为普通文件时正常接入且原文保留", async () => {
+  const target = makeTarget();
+  writeFileSync(path.join(target, "AGENTS.md"), "# 既有项目说明\n");
+  await runInit({ targetDir: target, uakPath: uakRepoRoot(), host: "other", dryRun: false });
+  const agents = readSafe(path.join(target, "AGENTS.md"));
+  assert.ok(agents.startsWith("# 既有项目说明"), "用户原文必须保留在标记段之前");
+  assert.equal(agents.split("<!-- uak:begin").length - 1, 1);
+  rmSync(target, { recursive: true, force: true });
+});
+
+// —— D1-03 降级提示：宿主自备 MCP/技能，绝不自动安装 ——
+
+test("runInit 实跑: 接入说明含宿主自备降级提示（MCP + 技能）", async () => {
+  const target = makeTarget();
+  const uakRoot = uakRepoRoot();
+  await runInit({ targetDir: target, uakPath: uakRoot, host: "codex", dryRun: false });
+  const agents = readSafe(path.join(target, "AGENTS.md"));
+  assert.ok(agents.includes("宿主自备"), "标记段必须声明宿主自备项");
+  assert.ok(agents.includes("不随本导出分发"), "必须说明支持技能不在导出内");
+  assert.ok(agents.includes("video-edit-agent"), "必须点名视频编辑插件缺失时的降级语义");
+  const mcpSetup = readSafe(path.join(target, ".agents", "uak-mcp-setup.md"));
+  assert.ok(mcpSetup.includes("playwright") && mcpSetup.includes("context7"), "MCP 三必配清单必须在位");
+  assert.ok(mcpSetup.includes("不代写宿主配置"), "必须声明绝不自动写宿主配置");
+  // 导出物本身已拷入目标，目标项目不依赖 UAK 仓路径即可读取提示词
+  const promptCopy = readSafe(path.join(target, ".agents", "uak-prompt.md"));
+  assert.ok(promptCopy.includes("Gate Protocol"), "uak-prompt.md 必须是自包含 lean 导出");
+  assert.equal(promptCopy.includes("/Users/"), false, "拷入目标的导出不得携带本机绝对路径");
+  rmSync(target, { recursive: true, force: true });
+});
+
+test("CLI: 非 .git 目录跑 init → exit 1（守卫在写盘前生效）", async () => {
+  const root = uakRepoRoot();
+  const bare = mkdtempSync(path.join(tmpdir(), "uak-cli-"));
+  const result = spawnSync(process.execPath, [path.join(root, "scripts", "uak-init.mjs"), "--uak", root, "--dry-run"], { cwd: bare, encoding: "utf8" });
+  assert.equal(result.status, 1, "非项目根应 exit 1");
+  assert.match(result.stderr ?? "", /不像项目根/);
+  assert.equal(existsSync(path.join(bare, ".agents")), false, "守卫失败不得写盘");
   rmSync(bare, { recursive: true, force: true });
 });

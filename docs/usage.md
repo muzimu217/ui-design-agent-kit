@@ -73,6 +73,17 @@ discovery:
 Evidence and acceptance records stay in the target workspace, per the boundary
 rules in `docs/architecture.md`.
 
+### Other hosts (universal one-conversion path)
+
+The export is not Codex-specific. Any AI CLI editor or desktop host that reads
+instruction files (Codex `AGENTS.md`, Claude Code `CLAUDE.md`, Cursor rules, or
+a system-prompt slot) uses the same one-conversion path per
+[ADR-0003](adr/0003-universal-host-compat.md): copy or reference the export,
+and point the host's own instruction file at it with a single line instead of
+duplicating content. `scripts/uak-init.mjs` handles idempotent `AGENTS.md`
+integration, `--dry-run`, and `--check` for the common case. Missing host-side
+MCP servers or skills are listed by the integration notes, never assumed.
+
 For web interaction motion:
 
 ```text

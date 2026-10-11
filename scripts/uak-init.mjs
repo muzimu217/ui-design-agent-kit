@@ -1,8 +1,11 @@
-import { readFile, writeFile, mkdir, copyFile, access } from "node:fs/promises";
-import { existsSync } from "node:fs";
+#!/usr/bin/env node
+// uak-init — one-command onboarding for target projects (package.json bin entry).
+// Shebang is REQUIRED: npm/npm-link execute this file directly as a program.
+import { readFile, writeFile, mkdir, copyFile } from "node:fs/promises";
+import { existsSync, statSync, lstatSync, accessSync, realpathSync, constants } from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
-import { pathToFileURL } from "node:url";
+import { pathToFileURL, fileURLToPath } from "node:url";
 
 // V1（strategy-synthesis 2026-09-26 §三.4）：`uak init` 一键安装器——按宿主
 // 生成接入形态。在**目标项目**目录运行：
@@ -28,7 +31,15 @@ export function detectHost(targetDir) {
 }
 
 export function resolveUakPath(explicit) {
-  const candidates = [explicit, process.env.UAK_PATH, path.resolve("..", "ui-design-agent-kit")]
+  // Candidate order matters for the packaged experience:
+  // 1) explicit --uak flag
+  // 2) UAK_PATH env
+  // 3) THIS package's own location (import.meta.url) — correct for npm i -g /
+  //    npm link installs: the kit IS the installed package, cwd-independent.
+  // 4) legacy fallback: sibling directory relative to the CURRENT WORKING
+  //    directory (repo-checkout style use before packaging existed).
+  const thisPackage = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+  const candidates = [explicit, process.env.UAK_PATH, thisPackage, path.resolve(process.cwd(), "..", "ui-design-agent-kit")]
     .filter(Boolean)
     .map((p) => path.resolve(p));
   for (const candidate of candidates) {
@@ -73,6 +84,7 @@ export function agentsSnippet(uakPath, host) {
     `- 提示词全文：\`.agents/uak-prompt.md\`（来自 UAK lean 导出；宿主首轮直接注入或按需读取）`,
     `- 源仓库：\`${rel}\`（升级=在源仓库 git pull 后重跑 uak-init）`,
     `- 接入形态（${host}）：${host === "codex" ? ".codex/ 已存在，MCP 三必配见 .agents/uak-mcp-setup.md" : host === "claude" ? "按 .agents/uak-mcp-setup.md 配置 MCP 后在 CLAUDE.md 引入提示词" : "通用宿主：首轮注入 .agents/uak-prompt.md，MCP 可选"}`,
+    "- 宿主自备（本安装器绝不自动安装）：MCP 三必配（playwright / chrome-devtools / context7）按宿主格式手动配置（见 `.agents/uak-mcp-setup.md`）；支持技能（uak-design-system、uak-visual-critique、remotion-video-agent 及宿主自备的 video-edit-agent 插件等）不随本导出分发——技能缺失时按导出内说明降级走主链路，或整仓获取 UAK 后补装",
     "- 首个任务建议（Express 档）：对本项目任一既有页面做一次「只评审不修改」的验收（细节批评+对比度实算+截图）",
     "",
     "<!-- uak:end -->",
@@ -86,6 +98,8 @@ export function mcpSetupText(host) {
     "#   2) chrome-devtools（备用取证通道）",
     "#   3) context7（官方文档检索）",
     "# 完整镜像示例见 UAK 仓库 docs/examples/mcp.json.example",
+    "# 降级提示：本脚本只打印步骤——不代写宿主配置、不装依赖；MCP 未配置时，",
+    "#           依赖浏览器取证的验收步骤无法执行，呈交时必须说明哪些验收被跳过。",
   ].join("\n");
   if (host === "codex") {
     return `${common}\n# Codex：把三项写入目标项目 .codex/config.toml 的 [mcp_servers.*]（示例文件已拷贝：.agents/uak-mcp-setup.md）`;
@@ -95,6 +109,9 @@ export function mcpSetupText(host) {
 
 async function buildLeanExport(uakPath) {
   const result = spawnSync(process.execPath, ["scripts/build-prompt.mjs", "--lean"], { cwd: uakPath, encoding: "utf8" });
+  if (result.error) {
+    throw new Error(`prompt:build 无法执行（${result.error.code ?? "unknown"}）——确认 --uak 指向 UAK 仓库：${uakPath}`);
+  }
   if (result.status !== 0) throw new Error(`prompt:build 失败：${result.stderr?.slice(0, 300)}`);
   const exported = path.join(uakPath, "output", "ui-design-agent.lean.md");
   if (!existsSync(exported)) {
@@ -130,26 +147,57 @@ async function upsertAgentsMd(targetDir, snippet) {
   return { file: agentsPath, action: content ? "appended" : "created", write: () => writeFile(agentsPath, content + separator + snippet + "\n", "utf8") };
 }
 
+// D1-03 路径安全：存在 → 目录 → 可写 → 软链收敛 + AGENTS.md 软链拒写。
+// 低级错误在写盘前明确报错退出；返回 realpath 收敛后的目标路径（macOS
+// /var、用户链接目录等软链场景不再依赖调用方传入的字面路径）。
+export function resolveTargetDir(targetDir) {
+  const resolved = path.resolve(targetDir);
+  if (!existsSync(resolved)) {
+    throw new Error(`目标路径不存在：${resolved}——请先创建目标项目根目录`);
+  }
+  if (!statSync(resolved).isDirectory()) {
+    throw new Error(`目标路径不是目录：${resolved}`);
+  }
+  try {
+    accessSync(resolved, constants.W_OK);
+  } catch {
+    throw new Error(`目标目录不可写：${resolved}——请检查目录权限后重试`);
+  }
+  const real = realpathSync(resolved);
+  const agentsPath = path.join(real, "AGENTS.md");
+  let agentsLstat;
+  try {
+    agentsLstat = lstatSync(agentsPath);
+  } catch {
+    agentsLstat = undefined; // AGENTS.md 不存在=首次接入，正常
+  }
+  if (agentsLstat?.isSymbolicLink()) {
+    throw new Error(`AGENTS.md 是软链（${agentsPath}）——写入可能落到项目外，拒绝执行；请改为真实文件后重跑`);
+  }
+  return real;
+}
+
 export async function runInit({ targetDir, uakPath, host, dryRun }) {
   const actions = [];
-  if (!existsSync(path.join(targetDir, ".git"))) {
-    throw new Error(`目标目录不像项目根（无 .git）：${targetDir}——请在目标项目根运行`);
+  const target = resolveTargetDir(targetDir);
+  if (!existsSync(path.join(target, ".git"))) {
+    throw new Error(`目标目录不像项目根（无 .git）：${target}——请在目标项目根运行`);
   }
-  if (path.resolve(targetDir) === path.resolve(uakPath) || existsSync(path.join(targetDir, "scripts", "uak-init.mjs"))) {
+  if (target === path.resolve(uakPath) || existsSync(path.join(target, "scripts", "uak-init.mjs"))) {
     throw new Error("目标目录就是 UAK 仓库本身——uak init 用于接入外部项目，不能自噬；请 cd 到目标项目后运行");
   }
-  const detected = host || detectHost(targetDir);
+  const detected = host || detectHost(target);
   const leanFile = await buildLeanExport(uakPath);
 
-  const agentsDir = path.join(targetDir, ".agents");
+  const agentsDir = path.join(target, ".agents");
   actions.push({ desc: `.agents/ 目录（提示词与 MCP 说明）`, run: () => mkdir(agentsDir, { recursive: true }) });
   actions.push({ desc: ".agents/uak-prompt.md ← lean 导出", run: () => copyFile(leanFile, path.join(agentsDir, "uak-prompt.md")) });
   actions.push({
     desc: ".agents/uak-mcp-setup.md（MCP 手动步骤）",
     run: () => writeFile(path.join(agentsDir, "uak-mcp-setup.md"), `# UAK MCP 接入（${detected}）\n\n${mcpSetupText(detected)}\n`, "utf8"),
   });
-  const agentsOp = await upsertAgentsMd(targetDir, agentsSnippet(uakPath, detected));
-  actions.push({ desc: `${path.relative(targetDir, agentsOp.file)}（${agentsOp.action}）`, run: agentsOp.write });
+  const agentsOp = await upsertAgentsMd(target, agentsSnippet(uakPath, detected));
+  actions.push({ desc: `${path.relative(target, agentsOp.file)}（${agentsOp.action}）`, run: agentsOp.write });
 
   if (!dryRun) {
     for (const action of actions) await action.run();
@@ -157,7 +205,18 @@ export async function runInit({ targetDir, uakPath, host, dryRun }) {
   return { host: detected, actions: actions.map((a) => a.desc) };
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+// Entry guard must resolve symlinks: npm/npm-link invoke this file THROUGH a
+// bin symlink (e.g. /opt/homebrew/bin/uak-init), so process.argv[1] differs
+// from import.meta.url until both sides are realpath-normalized.
+const invokedVia = (() => {
+  try {
+    if (!process.argv[1]) return null;
+    return pathToFileURL(realpathSync(path.resolve(process.argv[1]))).href;
+  } catch {
+    return null;
+  }
+})();
+if (invokedVia && invokedVia === import.meta.url) {
   const argv = process.argv.slice(2);
   if (argv.includes("--help") || argv.length === 0) {
     console.log(USAGE);

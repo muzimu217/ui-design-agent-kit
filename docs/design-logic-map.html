@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23f5a623'/%3E%3Cpath d='M4 11l2.5-3 2 2 3.5-4.5' stroke='%2314100c' stroke-width='1.5' fill='none'/%3E%3C/svg%3E">
+<title>设计逻辑总图 · UI Design Agent Kit 的工作流是怎么实现的</title>
+<style>
+  /* ============ 语义 token：Signal Deck 家族（暖黑棕底 + 五色相） ============ */
+  :root {
+    --bg: #14100c;
+    --surface: #1e1812;
+    --raised: #29211a;
+    --ink: #f3ede4;
+    --ink-2: #b3a894;
+    --line: #3d3326;
+    --amber: #f5a623;
+    --amber-soft: #3a2b10;
+    --cyan: #3ecfd4;
+    --cyan-soft: #10302f;
+    --coral: #ff6b5e;
+    --coral-soft: #3c1a16;
+    --mint: #62d99a;
+    --mint-soft: #16352a;
+    --violet: #b48cf2;
+    --violet-soft: #2a1e3e;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 28px 22px 72px;
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background:
+      radial-gradient(1100px 500px at 85% -10%, rgba(245,166,35,.07), transparent 60%),
+      radial-gradient(900px 480px at 0% 110%, rgba(62,207,212,.06), transparent 60%),
+      var(--bg);
+    color: var(--ink); line-height: 1.65;
+  }
+  main { max-width: 1150px; margin: 0 auto; }
+  .kicker { color: var(--amber); font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+  h1 { font-size: clamp(1.5rem, 3.6vw, 2.1rem); margin: 8px 0 10px; line-height: 1.25; }
+  h1 em { font-style: normal; color: var(--amber); }
+  .lede { color: var(--ink-2); max-width: 48em; font-size: .98rem; }
+  .lede strong { color: var(--ink); }
+
+  /* ============ SVG 总图 ============ */
+  .map-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 18px 14px; margin-top: 26px; }
+  svg#flowmap { display: block; width: 100%; height: auto; }
+  .stage-box { cursor: pointer; }
+  .stage-box:focus-visible { outline: none; }
+  .stage-box:focus-visible .sb-bg { stroke: var(--amber); stroke-width: 2.5; }
+  .stage-rect-label { font-size: 15px; font-weight: 700; fill: var(--ink); }
+  .stage-rect-sub { font-size: 10.5px; fill: var(--ink-2); }
+  .flow-arrow { stroke: var(--ink-2); stroke-width: 1.6; fill: none; marker-end: url(#arr); }
+  .gate-circle-label { font-size: 11px; font-weight: 700; }
+  .map-caption { font-size: .8rem; color: var(--ink-2); margin-top: 12px; }
+
+  /* ============ 节点详情（点击 SVG 或下方卡展开） ============ */
+  .detail {
+    margin-top: 12px; background: var(--raised); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 16px 18px; font-size: .88rem;
+  }
+  .detail .dt { font-weight: 800; font-size: .95rem; margin-bottom: 8px; }
+  .detail .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 6px; }
+  .detail .cell .h { font-size: .72rem; font-weight: 700; letter-spacing: .08em; margin-bottom: 4px; }
+  .detail .cell.ai .h { color: var(--cyan); }
+  .detail .cell.kb .h { color: var(--violet); }
+  .detail .cell.user .h { color: var(--amber); }
+  .detail ul { margin: 0; padding-left: 16px; }
+  .detail li { margin: 3px 0; }
+  .detail code { background: var(--bg); border: 1px solid var(--line); border-radius: 5px; padding: 0 5px; font-size: .78rem; color: var(--cyan); }
+  .close-btn {
+    margin-top: 12px; appearance: none; border: 1px solid var(--line); background: var(--surface);
+    color: var(--ink); border-radius: 8px; padding: 6px 14px; cursor: pointer; font: inherit; font-size: .8rem;
+  }
+  .close-btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+  /* ============ 节点卡（SVG 下方快捷入口） ============ */
+  .stages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+  .sc {
+    text-align: left; appearance: none; cursor: pointer; font: inherit; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 14px 16px; position: relative; overflow: hidden;
+  }
+  .sc::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; }
+  .sc[data-c="amber"]::before  { background: linear-gradient(90deg, var(--amber), transparent); }
+  .sc[data-c="cyan"]::before   { background: linear-gradient(90deg, var(--cyan), transparent); }
+  .sc[data-c="mint"]::before   { background: linear-gradient(90deg, var(--mint), transparent); }
+  .sc[data-c="violet"]::before { background: linear-gradient(90deg, var(--violet), transparent); }
+  .sc[data-c="coral"]::before  { background: linear-gradient(90deg, var(--coral), transparent); }
+  .sc .n { font-size: .7rem; font-weight: 700; letter-spacing: .1em; color: var(--ink-2); }
+  .sc .t { font-weight: 800; font-size: .95rem; margin-top: 3px; }
+  .sc .d { font-size: .8rem; color: var(--ink-2); margin-top: 4px; }
+  .sc:hover { background: var(--raised); }
+  .sc:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+  .sc[aria-expanded="true"] { border-color: var(--amber); }
+
+  /* 两线卡 */
+  .lines { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+  .line-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; border-top: 3px solid var(--mint); }
+  .line-card.research { border-top-color: var(--violet); }
+  .line-card h3 { margin: 0 0 6px; font-size: .98rem; }
+  .line-card p { margin: 0; font-size: .85rem; color: var(--ink-2); }
+  .line-card .facts { margin-top: 10px; display: flex; gap: 14px; flex-wrap: wrap; font-size: .78rem; }
+  .line-card .facts span { color: var(--ink); background: var(--raised); border-radius: 99px; padding: 3px 10px; }
+
+  footer { margin-top: 46px; color: var(--ink-2); font-size: .8rem; }
+  a { color: var(--cyan); }
+
+  /* 动效：入场级联 + 描边流动；reduced-motion 全静止 */
+  @media (prefers-reduced-motion: no-preference) {
+    .sc, .line-card { animation: rise 380ms cubic-bezier(.2,.7,.3,1) backwards; }
+    .sc:nth-child(2) { animation-delay: 50ms; } .sc:nth-child(3) { animation-delay: 100ms; }
+    .sc:nth-child(4) { animation-delay: 150ms; } .sc:nth-child(5) { animation-delay: 200ms; } .sc:nth-child(6) { animation-delay: 250ms; }
+    .line-card:nth-child(2) { animation-delay: 300ms; }
+    @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+    .detail { animation: reveal 180ms ease-out; }
+    @keyframes reveal { from { opacity: 0; transform: translateY(-3px); } }
+    .flow-live { stroke-dasharray: 6 5; animation: dashflow 1.2s linear infinite; }
+    @keyframes dashflow { to { stroke-dashoffset: -11; } }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .flow-live { stroke-dasharray: none; }
+  }
+
+  @media (max-width: 900px) {
+    .stages { grid-template-columns: 1fr 1fr; }
+    .lines { grid-template-columns: 1fr; }
+    .detail .grid3 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    body { padding: 18px 14px 56px; }
+    .stages { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">Design Logic Map · 设计逻辑总图</div>
+  <h1>一句口语需求，怎么变成<em>有证据的可验收界面</em></h1>
+  <p class="lede">这张图回答"整体设计逻辑如何实现"：<strong>六阶段思维 × 六道门 × 知识库索引</strong>——
+  AI 在每个阶段做什么（思考与检索）、查哪个知识库（真实文件）、哪里<strong>必须停下来等你回答</strong>。
+  点击下面任意节点看三栏拆解：<span style="color:var(--cyan)">AI 怎么做</span> ·
+  <span style="color:var(--violet)">知识库索引</span> · <span style="color:var(--amber)">用户停点</span>。</p>
+
+  <div class="map-card">
+    <svg id="flowmap" viewBox="0 0 1080 330" role="img" aria-label="工作流总图：六阶段与六道门，点击节点查看详情">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-2)"/>
+        </marker>
+      </defs>
+      <!-- 六阶段横排：y=40 高 92；门圆挂在阶段间 y=210 -->
+      <g id="nodes"></g>
+      <g id="edges"></g>
+      <g id="gates"></g>
+    </svg>
+    <p class="map-caption">六阶段（上排，AI 执行）与六道门（下排圆点，人工停点）交替——「AI 做，人确认」。
+      门 F（MCP 留痕）不是停点而是记录门：工具调用必须留痕。图内节点与下方卡片点击均可展开详情。</p>
+  </div>
+
+  <div id="detail-host"></div>
+
+  <h2 style="font-size:1.02rem;margin:40px 0 6px">六阶段速览（点击展开三栏拆解）</h2>
+  <div class="stages" id="stage-cards"></div>
+
+  <h2 style="font-size:1.02rem;margin:40px 0 6px">两条线（这个 kit 的整体结构）</h2>
+  <div class="lines">
+    <div class="line-card">
+      <h3 style="color:var(--mint)">开发线 · 产品工作流（本仓，公开）</h3>
+      <p>上面的六阶段+六道门就是它。核心产出：工作流指令层（22 技能 + references 知识库）、
+      验证纪律（131 项测试、73 场景评测台账、五级证据等级）、11+ 个真实交付案例。</p>
+      <div class="facts"><span>131 测试全绿</span><span>73 场景语料</span><span>12 demo</span><span>3 ADR</span></div>
+    </div>
+    <div class="line-card research">
+      <h3 style="color:var(--violet)">研究线 · 实验适配层（独立仓，私有）</h3>
+      <p>把同一套工作流包装成可测量的实验条件（C0 裸 prompt vs C1 门控），
+      验证"门控是否比裸 prompt 检出更多缺陷"。研究仓不进产品运行时，两仓不重叠。</p>
+      <div class="facts"><span>R-01~R-10 裁决</span><span>问卷 n=4 回收</span><span>预注册 v1.2</span><span>runtime 12 模块</span></div>
+    </div>
+  </div>
+
+  <footer>
+    图与索引的真实性：节点引用的全部 references 文件位于 <code>.agents/skills/ui-design-agent/references/</code>；
+    两线事实见 <a href="identity-and-direction.md">docs/identity-and-direction.md</a>；
+    本页为自产入库文档（Signal Deck 视觉家族，吸取"产品必须好看+真图表"的裁决）。
+  </footer>
+</main>
+<script>
+"use strict";
+// —— 数据单口：六阶段（AI 怎么做 / 知识库索引 / 用户停点）全部真实文件 ——
+const STAGES = [
+  { id: "s1", n: "STAGE 1", t: "需求接收与澄清", c: "amber",
+    d: "把一句口语需求整理成需求卡",
+    ai: ["意图分析：从口语里提取目标/范围/关键问题", "缺失决策标 PLAN_NEEDS_INPUT，不瞎猜", "歧义才问，少而准（问卷证据：需求层确认 vs 步骤层确认）"],
+    kb: ["plan-execute.md（Plan 模式与状态机）", "gate-protocol.md（门 A 呈交格式）", "user-taste-profile.md（用户口味档案）"],
+    user: "门 A：确认方向——「这是你要的吗」等用户点头才进下一阶段" },
+  { id: "s2", n: "STAGE 2", t: "参考与素材检索", c: "cyan",
+    d: "联网查参考、素材、文档，登记来源",
+    ai: ["四层管线：read→process→route→post-process", "检索 ≤3 源 ≤5 候选，主桶/次桶分列", "不可达/低分来源不自动进实现；目录条目≠连接"],
+    kb: ["material-scouting.md（检索预算与来源阶梯）", "inspiration-library.md（分类路由索引）", "source-catalog.md（65 源登记与许可）", "tool-routing.md（能力路由总表）"],
+    user: "门 B：素材确认——候选来源+许可边界给用户勾选后才采用" },
+  { id: "s3", n: "STAGE 3", t: "无代码原型", c: "mint",
+    d: "冻结信息架构与视觉方向，出原型",
+    ai: ["先出方向稿（方向三旋钮：保真/密度/动效）", "数据结构单文件先行，四态齐备", "原型停在门 C——happy path 交付会毁掉信任"],
+    kb: ["design-contract.md（falsifiable tokens 契约）", "prototype-handover.md（四状态交接）", "dark-surface-standards.md / data-dense-surfaces.md"],
+    user: "门 C：原型确认——接受 / 修改 / 拒绝" },
+  { id: "s4", n: "STAGE 4", t: "实现", c: "violet",
+    d: "按锁定计划写代码，改动半径受纪律约束",
+    ai: ["Change-radius 六条：声明半径/增量不重写/冻结技术栈", "行为变更逐条入交付摘要（问卷 4 例根因）", "静默删既有行为禁止；依赖不装不换"],
+    kb: ["plan-execute.md（Execute Mode 纪律）", "copy-contract.md（三态文案契约）", "detail-constants.md（18 条细节军规）"],
+    user: "执行只发生在计划锁定之后——「one-click execute」不自动批准任何门" },
+  { id: "s5", n: "STAGE 5", t: "浏览器验收", c: "cyan",
+    d: "真实浏览器多轮验收与修复",
+    ai: ["六维：桌面/移动/键盘/对比度/reduced-motion/console", "对比度必须脚本实测（非目测）", "修复回归留痕；失败如实记录不删证据"],
+    kb: ["acceptance.md（P0/P1/P2 证据清单）", "detail-critique.md（八维自评内环）", "typography-standards.md / motion-contract.md"],
+    user: "用户看验收证据后决定：通过 / 带着证据再修一轮" },
+  { id: "s6", n: "STAGE 6", t: "交付与证据", c: "amber",
+    d: "README、截图、限制、来源、验证记录",
+    ai: ["产品 README 标准整理（保真截图非概念图）", "未验证项如实列出；不把截图说成全验收", "五级证据等级：Installed≠…≠VisuallyVerified"],
+    kb: ["product-readme.md（README 标准）", "screenshots/（截图实图复核门 D10）"],
+    user: "门 E：交付确认——用户收货；门 F（MCP 留痕）全程记录工具调用" },
+];
+const $ = (s) => document.querySelector(s);
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+// —— SVG 总图渲染：六阶段盒 + 门圆 + 连接箭头 ——
+const SVG_NS = "http://www.w3.org/2000/svg";
+const STROKE = { amber: "var(--amber)", cyan: "var(--cyan)", mint: "var(--mint)", violet: "var(--violet)", coral: "var(--coral)" };
+function renderMap() {
+  const nodes = $("#nodes"), edges = $("#edges"), gates = $("#gates");
+  const W = 1080, bw = 152, bh = 96, gap = (W - 6 * bw) / 5;
+  STAGES.forEach((st, i) => {
+    const x = i * (bw + gap), y = 46;
+    const g = document.createElementNS(SVG_NS, "g");
+    g.setAttribute("class", "stage-box"); g.setAttribute("tabindex", "0"); g.setAttribute("role", "button");
+    g.setAttribute("aria-label", `${st.t}：点击查看 AI 怎么做、知识库索引与用户停点`);
+    g.dataset.stage = st.id;
+    g.innerHTML = `
+      <rect class="sb-bg" x="${x}" y="${y}" width="${bw}" height="${bh}" rx="12" fill="var(--raised)" stroke="${STROKE[st.c]}" stroke-width="1.6"/>
+      <text class="stage-rect-label" x="${x + 14}" y="${y + 34}">${st.t.length > 7 ? st.t.slice(0, 7) : st.t}</text>
+      <text class="stage-rect-sub" x="${x + 14}" y="${y + 56}">${st.n}</text>
+      <text class="stage-rect-sub" x="${x + 14}" y="${y + 76}">${st.d.length > 12 ? st.d.slice(0, 11) + "…" : st.d}</text>`;
+    nodes.appendChild(g);
+    if (i < STAGES.length - 1) {
+      const p = document.createElementNS(SVG_NS, "path");
+      p.setAttribute("class", "flow-arrow flow-live");
+      p.setAttribute("d", `M ${x + bw + 4} ${y + bh / 2} L ${x + bw + gap - 4} ${y + bh / 2}`);
+      edges.appendChild(p);
+    }
+    // 门圆：挂在每个阶段下方
+    const cx = x + bw / 2, cy = y + bh + 62;
+    const gg = document.createElementNS(SVG_NS, "g");
+    const gateLetter = ["A", "B", "C", "F", "E", "D"][i];
+    const isStop = gateLetter !== "F";
+    gg.innerHTML = `
+      <line x1="${cx}" y1="${y + bh}" x2="${cx}" y2="${cy - 20}" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="3 4"/>
+      <circle cx="${cx}" cy="${cy}" r="20" fill="${isStop ? "var(--amber-soft)" : "var(--cyan-soft)"}" stroke="${isStop ? "var(--amber)" : "var(--cyan)"}" stroke-width="1.6"/>
+      <text class="gate-circle-label" x="${cx}" y="${cy + 4.5}" text-anchor="middle" fill="${isStop ? "var(--amber)" : "var(--cyan)"}">门${gateLetter}</text>
+      <text class="stage-rect-sub" x="${cx}" y="${cy + 42}" text-anchor="middle">${isStop ? "人工停点" : "工具留痕"}</text>`;
+    gates.appendChild(gg);
+  });
+}
+
+// —— 详情展开（SVG 节点与下方卡片共用） ——
+let openId = null;
+function renderDetail(st) {
+  $("#detail-host").innerHTML = `
+    <div class="detail" role="region" aria-label="${esc(st.t)} 详情">
+      <div class="dt" style="color:${STROKE[st.c]}">${esc(st.t)} — ${esc(st.d)}</div>
+      <div class="grid3">
+        <div class="cell ai"><div class="h">AI 怎么做（思考与动作）</div><ul>${st.ai.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>
+        <div class="cell kb"><div class="h">知识库索引（真实文件）</div><ul>${st.kb.map((x) => `<li><code>${esc(x.split("（")[0])}</code> ${esc(x.includes("（") ? "（" + x.split("（")[1] : "")}</li>`).join("")}</ul></div>
+        <div class="cell user"><div class="h">用户停点（人在哪）</div><ul><li>${esc(st.user)}</li></ul></div>
+      </div>
+      <button class="close-btn" type="button">收起</button>
+    </div>`;
+  $(".close-btn").addEventListener("click", () => closeDetail());
+  $(".detail").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+function openStage(id, focusEl) {
+  const st = STAGES.find((s) => s.id === id);
+  if (!st) return;
+  openId = id;
+  renderDetail(st);
+  document.querySelectorAll(".sc").forEach((c) => c.setAttribute("aria-expanded", String(c.dataset.stage === id)));
+  if (focusEl) focusEl.focus();
+}
+function closeDetail() {
+  openId = null;
+  $("#detail-host").innerHTML = "";
+  document.querySelectorAll(".sc").forEach((c) => c.setAttribute("aria-expanded", "false"));
+}
+
+function initInteractions() {
+  document.querySelectorAll(".stage-box").forEach((g) => {
+    g.addEventListener("click", () => openStage(g.dataset.stage));
+    g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openStage(g.dataset.stage, g); } });
+  });
+  // 下方快捷卡
+  $("#stage-cards").innerHTML = STAGES.map((st) => `
+    <button class="sc" type="button" data-stage="${st.id}" data-c="${st.c}" aria-expanded="false" aria-controls="detail-host">
+      <span class="n">${st.n}</span><span class="t" style="display:block">${st.t}</span>
+      <span class="d" style="display:block">${st.d}</span>
+    </button>`).join("");
+  document.querySelectorAll(".sc").forEach((c) => c.addEventListener("click", () => {
+    if (openId === c.dataset.stage) closeDetail(); else openStage(c.dataset.stage);
+  }));
+}
+
+renderMap();
+initInteractions();
+</script>
+</body>
+</html>

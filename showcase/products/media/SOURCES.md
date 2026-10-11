@@ -4,6 +4,32 @@ These are existing, locally generated workflow outcome screenshots selected for
 the Agent workflow portfolio. They are evidence previews, not claims that the
 historic products are deployed or fully accepted.
 
+## Agent host logos (media/hosts/, added 2026-10-10)
+
+Host logos indicate integration compatibility and belong to their respective
+owners; trademark rights are not claimed. Each file was fetched from the
+owner's official domain or official GitHub organization avatar:
+
+| File | Host | Official source |
+| --- | --- | --- |
+| openai-codex.webp | OpenAI（Codex CLI） | cdn.oaistatic.com（OpenAI 官方静态 CDN，apple-touch-icon，180×180） |
+| claude-code.ico | Anthropic（Claude Code） | anthropic.com/favicon.ico |
+| cursor.ico | Cursor（Anysphere） | cursor.com/favicon.ico |
+| gemini-cli.png | Gemini CLI（Google） | gemini.google.com 官网内嵌的 Gemini 四色星形标志（www.gstatic.com/lamda/images/gemini_sparkle_4g_512_lt，512×512）——曾误取 Google 组织头像"G"，用户复核指正后更换 |
+| windsurf.ico | Windsurf | windsurf.com/favicon.ico |
+| github-copilot.svg | GitHub Copilot | Primer Octicons 官方图标集 copilot-24（unpkg.com/@primer/octicons）——曾误取 GitHub favicon"章鱼猫"，用户复核指正后更换 |
+| cline.png | Cline | GitHub 官方组织头像（cline org, avatars.githubusercontent.com/u/184127137）——曾按猜测 ID 误取他组织头像，用户复核指正后更换 |
+| opencode.png | OpenCode | opencode.ai/favicon.ico |
+| zcode.png | ZCode 桌面版（Z.ai 智谱） | z.ai/favicon.png（320×262） |
+| deepseek.png | DeepSeek（深度求索） | cdn.deepseek.com/favicon.png（蓝鲸标志） |
+| openclaw.svg | OpenClaw | openclaw.ai/favicon.svg（官方矢量） |
+
+WorkBuddy 与 Hermes 暂无已核实的官方图标（EigenFlux 官方宿主名单在列），工作台 tab 使用文字加号占位——待其官方素材可用时补图。
+
+The 2026-10-09 self-drawn SVG host icons in docs/onboarding-console.html were
+rejected in user review ("find real assets online, don't draw them"); the
+official assets above supersede that approach on the published site.
+
 | File | Original evidence | Presentation label |
 | --- | --- | --- |
 | inventory.webp | evals/runs/operations-not-marketing/evidence/v23-build-dashboard.png | 库存运营台，运营工具，历史截图 |

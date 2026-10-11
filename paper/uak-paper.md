@@ -22,7 +22,7 @@ abstract: |
   records every decision the user still owes, with decay rules for stale items
   and batch adjudication. Behavior is pinned by a 60-scenario evaluation
   corpus at the release snapshot (72 scenarios, 18 executed as of
-  2026-09-23); five scenarios had been executed over ten recorded rounds
+  2026-09-23; 73 scenarios, 71 executed as of 2026-10-09); five scenarios had been executed over ten recorded rounds
   under a
   deterministic 0--2 rubric with fail-zeroing, and a separate eight-dimension
   style review shows that a functionally perfect dashboard initially scored
@@ -388,7 +388,7 @@ built artifact, 63.8 kB gzipped.
 co-design loop that built the system, by a single human adjudicator; scenarios
 were authored with the system's behavior in view; and five executed scenarios
 is a small sample of the 60-scenario corpus (release snapshot; 72 scenarios,
-16 executed as of 2026-09-26). We therefore present the rubric
+16 executed as of 2026-09-26; 73 scenarios, 71 executed as of 2026-10-09). We therefore present the rubric
 and the evidence trail — every score links to its screenshots, contrast logs,
 and regression records — as the primary artifact, and the scores as
 instruments of iteration, not as benchmark results.

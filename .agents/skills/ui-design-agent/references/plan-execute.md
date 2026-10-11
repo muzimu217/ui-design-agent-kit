@@ -67,6 +67,38 @@ allowed by the locked plan. Keep the existing MCP, license, browser, and
 acceptance gates. “One-click execute” means start this authorized sequence; it
 does not auto-approve a direction, material, prototype, contract, or finished UI.
 
+### Change-radius discipline (editing existing code)
+
+Field evidence (four returned developer questionnaires, 2026-10-08) shows one
+dominant failure cluster: a narrow request becomes a wide rewrite — whole
+components rewritten for a local edit, edge-case handling silently dropped,
+unrequested library swaps, an “upgrade” touching seven files, mobile layout
+collapsing from restructuring. Apply these rules whenever a task edits
+existing code:
+
+1. **Declare the radius before editing.** Name the files and areas you will
+   touch and those you will not. A local request defaults to the smallest
+   surface that satisfies it.
+2. **Extend, don’t rewrite.** Modify the existing component in place; do not
+   restructure, rename, or restyle code outside the request. If a rewrite is
+   genuinely required, propose it and wait for confirmation.
+3. **Preserve existing behavior.** List the behaviors, edge cases, and error
+   handling in the code you touch. Silent deletion or behavior change is
+   prohibited; every intentional behavior change is listed item by item in the
+   delivery summary.
+4. **Freeze the stack.** No new dependency, no library swap, no version
+   migration unless explicitly requested or confirmed — the project’s existing
+   packages stay (an existing date library stays).
+5. **Ask only about real ambiguity — few and precise.** Never re-ask what the
+   user already stated; clarifying stops are for genuine ambiguity and
+   irreversible actions, not for step-by-step ceremony. Execution-stage safety
+   comes from checks and evidence, not from interrupting.
+6. **Disclose test changes.** If a test must change, say why in the same
+   summary; never tune tests and implementation so they accommodate each other.
+
+The delivery summary carries the touched-file list against the declared radius
+and the behavior-change list; neither may be omitted.
+
 ## State transitions
 
 ```text

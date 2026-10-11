@@ -17,6 +17,17 @@ import forma from '../media/forma.webp';
 import tempo from '../media/tempo.webp';
 import ruiear from '../media/ruiear.webp';
 import introVideo from '../media/intro.mp4';
+import logoCodex from '../media/hosts/openai-codex.webp';
+import logoClaude from '../media/hosts/claude-code.ico';
+import logoCursor from '../media/hosts/cursor.ico';
+import logoGemini from '../media/hosts/gemini-cli.png';
+import logoWindsurf from '../media/hosts/windsurf.ico';
+import logoCopilot from '../media/hosts/github-copilot.svg';
+import logoCline from '../media/hosts/cline.png';
+import logoOpenCode from '../media/hosts/opencode.png';
+import logoZCode from '../media/hosts/zcode.png';
+import logoDeepSeek from '../media/hosts/deepseek.png';
+import logoOpenClaw from '../media/hosts/openclaw.svg';
 import './styles.css';
 
 const BASE = import.meta.env.BASE_URL;
@@ -353,36 +364,184 @@ function ScreenshotGallery() {
   </section>;
 }
 
-const INSTALL_CMD = [
-  'git clone https://github.com/muzimu217/ui-design-agent-kit.git',
-  '  && cd ui-design-agent-kit',
-  '  && npm ci --ignore-scripts',
-  '  && npm run verify',
-].join(' \\\n');
+const INSTALL_CMD = 'npm install -g github:muzimu217/ui-design-agent-kit';
 
-function InstallSection() {
-  const [copied, setCopied] = useState(false);
-  const copy = async () => {
+type HostTarget = {
+  id: string;
+  name: string;
+  org: string;
+  logo?: string;
+  kind: string;
+  way: string;
+  cmd: { label: string; value: string }[];
+  steps: string[];
+};
+
+const HOST_TARGETS: HostTarget[] = [
+  {
+    id: 'codex', name: 'Codex CLI', org: 'OpenAI', logo: logoCodex, kind: 'AGENTS.md 原生', way: 'uak-init 一条命令',
+    cmd: [
+      { label: '① 安装 Kit（任意目录，一次性）', value: INSTALL_CMD },
+      { label: '② cd 到你的项目后接入（幂等）', value: 'uak-init --host codex' },
+    ],
+    steps: ['自动写入 AGENTS.md 接入区块与 .agents/uak-prompt.md；重启 Codex 会话即生效。', '按 .agents/uak-mcp-setup.md 把 playwright / chrome-devtools / context7 三项写进 .codex/config.toml（浏览器验收依赖它们）。'],
+  },
+  {
+    id: 'claude', name: 'Claude Code', org: 'Anthropic', logo: logoClaude, kind: 'CLAUDE.md 指针', way: 'uak-init + 一行指针',
+    cmd: [
+      { label: '① 安装 Kit', value: INSTALL_CMD },
+      { label: '② 接入（自动探测 CLAUDE.md 场景）', value: 'uak-init --host claude' },
+      { label: '③ 让 Claude Code 读到入口', value: "echo '## UI 工作流：见 AGENTS.md 与 .agents/uak-prompt.md' >> CLAUDE.md" },
+    ],
+    steps: ['接入区块写进 AGENTS.md；CLAUDE.md 只放指针，不复制第二份内容（避免双源漂移）。', 'MCP 按 .agents/uak-mcp-setup.md 的 JSON 示例配置。'],
+  },
+  {
+    id: 'cursor', name: 'Cursor', org: 'Anysphere', logo: logoCursor, kind: 'Rules 注入', way: 'prompt:build 导出',
+    cmd: [
+      { label: '① 在 Kit 仓库生成自包含提示词', value: 'npm run prompt:build' },
+      { label: '② 拷进 Cursor 规则', value: 'cp output/ui-design-agent.system.md <你的项目>/.cursor/rules/uak.mdc' },
+    ],
+    steps: ['导出文件自包含（引用内联为锚点、无本机路径），完整版 231KB / lean 版 74KB。', 'Cursor 会话即按六道门工作流执行；模型与 MCP 由你的 Cursor 环境自备。'],
+  },
+  {
+    id: 'gemini', name: 'Gemini CLI', org: 'Google', logo: logoGemini, kind: 'GEMINI.md / 系统提示', way: 'prompt:build 导出',
+    cmd: [
+      { label: '① 生成 lean 版', value: 'npm run prompt:build:lean' },
+      { label: '② 挂进 GEMINI.md', value: "echo '## UI 工作流提示词：见 .agents/uak-prompt.md' >> GEMINI.md" },
+    ],
+    steps: ['先跑一次 uak-init 生成 .agents/uak-prompt.md，再让 GEMINI.md 指向它。', '支持系统提示注入的版本可直接粘贴 lean 导出全文。'],
+  },
+  {
+    id: 'copilot', name: 'GitHub Copilot', org: 'GitHub', logo: logoCopilot, kind: 'copilot-instructions', way: 'lean 导出粘贴',
+    cmd: [
+      { label: '① 生成 lean 版', value: 'npm run prompt:build:lean' },
+      { label: '② 写进仓库指引文件', value: 'cp output/ui-design-agent.lean.md <你的项目>/.github/copilot-instructions.md' },
+    ],
+    steps: ['Copilot coding agent 会按该文件约束工作方式；lean 版含六道门与验收约定。', '适合让仓库里的 Copilot 任务默认走"先确认再实现"的流程。'],
+  },
+  {
+    id: 'windsurf', name: 'Windsurf', org: 'Windsurf', logo: logoWindsurf, kind: 'Rules 注入', way: 'uak-init（other 档）+ 指针',
+    cmd: [
+      { label: '① 接入（other 宿主通用档）', value: 'uak-init' },
+      { label: '② 按其 Rules 机制指向提示词', value: '查看 .agents/uak-prompt.md' },
+    ],
+    steps: ['uak-init 生成 .agents/uak-prompt.md 与接入区块；在 Windsurf 的 Rules/ Memories 里挂一行指向。', '各家规则机制不同——接入说明给通用路径，不假装自动接入。'],
+  },
+  {
+    id: 'cline', name: 'Cline', org: 'Cline', logo: logoCline, kind: 'Rules / Memory', way: '指针挂载',
+    cmd: [
+      { label: '① 接入', value: 'uak-init' },
+      { label: '② 指向提示词', value: '.agents/uak-prompt.md' },
+    ],
+    steps: ['把 .agents/uak-prompt.md 挂进 Cline 的 custom instructions / rules。', '浏览器验收类任务需按 uak-mcp-setup.md 配好 MCP。'],
+  },
+  {
+    id: 'opencode', name: 'OpenCode', org: 'OpenCode', logo: logoOpenCode, kind: 'AGENTS.md 兼容', way: 'uak-init 一条命令',
+    cmd: [
+      { label: '① 安装并接入', value: 'uak-init' },
+    ],
+    steps: ['OpenCode 兼容 AGENTS.md 约定——uak-init 的接入区块会被直接读取。', 'MCP 按宿主格式配置，参考 .agents/uak-mcp-setup.md。'],
+  },
+  {
+    id: 'zcode', name: 'ZCode 桌面版', org: 'Z.ai 智谱', logo: logoZCode, kind: 'AGENTS.md 原生', way: 'uak-init 一条命令',
+    cmd: [
+      { label: '① 安装 Kit', value: INSTALL_CMD },
+      { label: '② cd 到项目后接入', value: 'uak-init' },
+    ],
+    steps: ['ZCode Desktop 原生读取 AGENTS.md——接入区块自动生效（本展厅的 UI 工作流即由 ZCode 宿主执行）。', 'GLM 模型驱动；MCP 按宿主格式配置。'],
+  },
+  {
+    id: 'deepseek', name: 'DeepSeek', org: '深度求索', logo: logoDeepSeek, kind: '模型/App 层', way: 'lean 导出粘贴',
+    cmd: [
+      { label: '① 生成 lean 版', value: 'npm run prompt:build:lean' },
+    ],
+    steps: ['工作流与模型无关：DeepSeek 作为模型可驱动任何兼容宿主跑本工作流。', '把 lean 导出（74KB）粘贴进你的 DeepSeek 客户端/应用的系统提示或自定义指令即可。'],
+  },
+  {
+    id: 'openclaw', name: 'OpenClaw', org: '开源社区', logo: logoOpenClaw, kind: '个人 AI 助理网关', way: '工作区指令注入',
+    cmd: [
+      { label: '① 接入', value: 'uak-init' },
+      { label: '② 生成 lean 导出', value: 'npm run prompt:build:lean' },
+    ],
+    steps: ['OpenClaw（开源个人 AI 助理网关）的 agent 可按工作区指令执行 UI 工作流。', '把 lean 导出挂进其工作区指令；注意网关场景下浏览器验收需该 agent 有浏览器工具。'],
+  },
+  {
+    id: 'workbuddy', name: 'WorkBuddy', org: '—', logo: undefined, kind: '裸 CLI 宿主', way: '单文件提示词注入',
+    cmd: [
+      { label: '① 生成 lean 导出', value: 'npm run prompt:build:lean' },
+    ],
+    steps: ['WorkBuddy 属"无宿主钩子"类型：把 lean 导出按其自定义指令位注入即可。', 'EigenFlux 官方宿主名单在列；具体注入位以 WorkBuddy 当前版本文档为准。'],
+  },
+  {
+    id: 'hermes', name: 'Hermes', org: '—', logo: undefined, kind: '裸 CLI 宿主', way: '单文件提示词注入',
+    cmd: [
+      { label: '① 生成 lean 导出', value: 'npm run prompt:build:lean' },
+    ],
+    steps: ['Hermes 同属裸 CLI 宿主族：lean 导出注入其指令位即可。', 'EigenFlux 官方宿主名单在列；具体注入位以 Hermes 当前版本文档为准。'],
+  },
+];
+
+function HostWorkbenchSection() {
+  const [active, setActive] = useState(0);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const host = HOST_TARGETS[active];
+  const copy = async (key: string, value: string) => {
     try {
-      await navigator.clipboard.writeText(INSTALL_CMD);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(value);
+      setCopiedKey(key);
+      window.setTimeout(() => setCopiedKey((current) => (current === key ? null : current)), 2000);
     } catch { /* 剪贴板被拒绝时，访客可手动选中复制 */ }
   };
-  return <section className="install-band" id="install" aria-labelledby="install-heading"><div className="content-width">
-    <div className="section-heading"><div><h2 id="install-heading">一条指令安装。</h2><p>克隆、安装依赖、跑自检，一次完成。</p></div><FolderGit2 size={28} strokeWidth={1.5} aria-hidden="true" /></div>
+  const onKey = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    let next: number | null = null;
+    if (event.key === 'ArrowRight') next = (index + 1) % HOST_TARGETS.length;
+    if (event.key === 'ArrowLeft') next = (index - 1 + HOST_TARGETS.length) % HOST_TARGETS.length;
+    if (event.key === 'Home') next = 0;
+    if (event.key === 'End') next = HOST_TARGETS.length - 1;
+    if (next === null) return;
+    event.preventDefault(); setActive(next); tabRefs.current[next]?.focus();
+  };
+  return <section className="install-band host-workbench" id="install" aria-labelledby="install-heading"><div className="content-width">
+    <div className="section-heading"><div><h2 id="install-heading">接入你的 Agent。</h2><p>常用宿主的接法都在这里——同一套工作流，不同的注入方式。</p></div><Plug size={28} strokeWidth={1.5} aria-hidden="true" /></div>
     <div className="install-command">
       <code>{INSTALL_CMD}</code>
-      <button type="button" className={`copy-button${copied ? ' is-copied' : ''}`} onClick={copy} aria-label={copied ? '安装指令已复制' : '复制安装指令'} aria-live="polite">
-        {copied ? <><Check size={15} aria-hidden="true" />已复制</> : <><Copy size={15} aria-hidden="true" />复制</>}
+      <button type="button" className={`copy-button${copiedKey === 'install' ? ' is-copied' : ''}`} onClick={() => copy('install', INSTALL_CMD)} aria-label={copiedKey === 'install' ? '安装指令已复制' : '复制通用安装指令'} aria-live="polite">
+        {copiedKey === 'install' ? <><Check size={15} aria-hidden="true" />已复制</> : <><Copy size={15} aria-hidden="true" />复制</>}
       </button>
     </div>
-    <ol className="install-steps">
-      <li><strong>克隆自检</strong><span>需要 Node.js 20.18 以上。<code>npm run verify</code> 通过说明指令、配置与测试就位。</span></li>
-      <li><strong>仓库内直接用</strong><span>Codex 等宿主会自动读取 AGENTS.md，输入 <code>$ui-design-agent …</code> 开始 UI 任务。</span></li>
-      <li><strong>外部工作区注入</strong><span>运行 <code>npm run prompt:build</code> 得到单文件提示词，粘贴到目标项目的 AGENTS.md 或系统提示词。</span></li>
-    </ol>
-    <p className="install-note">Agent 宿主仍需自行接入 MCP 与 skills；导出的提示词内含门禁与验收约定，但不会自动安装或登录任何服务。</p>
+    <p className="install-note">通用第一步：装一次 Kit，<code>uak-init</code> 命令全局可用；下面按宿主选第二步。</p>
+    <p className="install-note">一套命令全部兼容——下面横幅里的宿主都能用这条命令接入；点任意图标查看该宿主的专属说明。</p>
+    <div className="host-marquee" role="tablist" aria-label="支持的 Agent 宿主（滚动展示，悬停暂停）">
+      <div className="host-track">{[...HOST_TARGETS, ...HOST_TARGETS].map((item, index) => {
+        const dup = index >= HOST_TARGETS.length;
+        return (
+        <button key={`${item.id}-${index}`} ref={(element) => { if (!dup) tabRefs.current[index] = element; }} type="button" role="tab"
+          id={dup ? undefined : `host-tab-${item.id}`} aria-controls={dup ? undefined : 'host-panel'}
+          aria-selected={!dup && active === index} aria-hidden={dup || undefined}
+          tabIndex={dup ? -1 : active === index ? 0 : -1}
+          className={`host-tab${!dup && active === index ? ' is-active' : ''}`} onClick={() => { if (!dup) setActive(index); }}
+          onKeyDown={dup ? undefined : (event) => onKey(event, index)}>
+          {item.logo ? <img className="host-logo" src={item.logo} alt="" width={40} height={40} loading="lazy" /> : <span className="host-logo host-logo-fallback" aria-hidden="true">＋</span>}
+          <span className="host-tab-name">{item.name}</span>
+        </button>); })}</div>
+    </div>
+    <div className="host-panel" role="tabpanel" tabIndex={0} id="host-panel" aria-labelledby={`host-tab-${host.id}`}>
+      <div className="host-panel-head">
+        {host.logo && <img className="host-panel-logo" src={host.logo} alt="" width={44} height={44} />}
+        <div><h3>{host.name}<span className="host-org">{host.org}</span></h3><p>{host.kind} · {host.way}</p></div>
+      </div>
+      <div className="host-commands">
+        {host.cmd.map((item) => <div key={item.value} className="host-command"><span className="host-command-label">{item.label}</span>
+          <div className="install-command"><code>{item.value}</code>
+            <button type="button" className={`copy-button${copiedKey === `${host.id}:${item.value}` ? ' is-copied' : ''}`} onClick={() => copy(`${host.id}:${item.value}`, item.value)} aria-label={`复制：${item.label}`} aria-live="polite">
+              {copiedKey === `${host.id}:${item.value}` ? <><Check size={15} aria-hidden="true" />已复制</> : <><Copy size={15} aria-hidden="true" />复制</>}
+            </button></div></div>)}
+      </div>
+      <ul className="host-steps">{host.steps.map((step) => <li key={step}>{step}</li>)}</ul>
+    </div>
+    <p className="install-note">宿主名称与图标仅用于说明兼容性，商标归各自所有方；图标取自各官方站点/官方 GitHub 组织（来源登记见 media/SOURCES.md）。
+    Agent 宿主仍需自行接入 MCP 与 skills；导出的提示词内含门禁与验收约定，但不会自动安装或登录任何服务。</p>
   </div></section>;
 }
 
@@ -572,7 +731,7 @@ function HomePage({ onOpen }: { onOpen: (item: Project, opener: HTMLButtonElemen
     <section className="projects-band" id="projects" aria-labelledby="projects-heading"><div className="content-width"><div className="section-heading"><div><h2 id="projects-heading">工作流成果</h2><p>不同的任务，不同的界面表达。</p></div><Layers3 size={28} strokeWidth={1.5} aria-hidden="true" /></div><div className="project-filters" role="tablist" aria-label="成果项目类型">{FILTERS.map((item, index) => <button key={item} id={`filter-${index}`} type="button" role="tab" aria-selected={filter === item} aria-controls="projects-panel" className={filter === item ? 'is-active' : ''} tabIndex={filter === item ? 0 : -1} onClick={() => setFilter(item)} ref={(element) => { filterRefs.current[index] = element; }} onKeyDown={(event) => onFilterKey(event, index)}><span>{item}</span>{filter === item && <motion.span className="filter-selection" layoutId="project-filter" transition={reducedMotion ? { duration: 0 } : SNAPPY} />}</button>)}</div>
       <div className="projects-grid" id="projects-panel" role="tabpanel" aria-labelledby={`filter-${FILTERS.indexOf(filter)}`} tabIndex={0}>{projects.map((item) => { const Icon = item.icon; return <motion.article key={item.id} className="project-item" layout transition={reducedMotion ? { duration: 0 } : ELEGANT}><button type="button" className="project-image" onClick={(event) => onOpen(item, event.currentTarget)} aria-label={`查看${item.name}案例`}><img src={item.image} alt={item.alt} loading="lazy" width={1440} height={900} /><span className="project-open"><Maximize2 size={19} aria-hidden="true" /></span></button><div className="project-meta"><span><Icon size={16} />{item.category}</span><span>{item.status}</span></div><div className="project-title"><div><h3>{item.name}</h3><p>{item.kind}</p></div><button type="button" onClick={(event) => onOpen(item, event.currentTarget)} className="case-open-link">{item.id === 'brick' || item.id === 'inventory' || item.id in PLAYABLE_URLS ? '查看 demo' : '查看截图'}<ArrowUpRight size={17} /></button></div></motion.article>; })}</div>
     </div></section>
-    <InstallSection />
+    <HostWorkbenchSection />
     <section className="closing-band" id="testing" aria-labelledby="closing-heading"><div className="content-width closing-content"><div><h2 id="closing-heading">参与公开测试</h2><p>成果与源码已公开。反馈请注明版本、复现步骤，以及 demo 体验或工作流执行测试。</p></div><ActionLink href={FEEDBACK_URL} external>提交测试反馈</ActionLink></div></section>
   </main>;
 }

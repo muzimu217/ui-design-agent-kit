@@ -47,3 +47,10 @@ showcase/products/node_modules/
 # video-agent-kit plugin runtime scaffolding (local toolchain state)
 .video_agent/
 .v2c/
+
+# Mimosa security plugin runtime state
+.mimosa/
+
+# Competitive screenshots are kept local-only (ADR-0002); the generated
+# local viewer page stays out of git too, the generator script is tracked.
+docs/competitive-insights/viewer.html

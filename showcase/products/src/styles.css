@@ -170,6 +170,22 @@ img { display: block; max-width: 100%; }
 
 /* 接入工作台（Agent 宿主选择） */
 .host-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+
+/* 接入工作台：宿主横幅轮转（悬停暂停，点击查看该宿主说明） */
+.host-marquee { overflow: hidden; margin-top: 26px; padding-block: 12px; border-block: 1px solid var(--line);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.host-track { display: flex; gap: 14px; width: max-content; animation: host-marquee-roll 38s linear infinite; }
+.host-marquee:hover .host-track, .host-marquee:focus-within .host-track { animation-play-state: paused; }
+@keyframes host-marquee-roll { to { transform: translateX(-50%); } }
+.host-tab { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); cursor: pointer; position: relative; }
+.host-tab:hover { background: #ffffff; border-color: #4c6f75; }
+.host-tab.is-active { border-color: #4c6f75; box-shadow: 0 0 0 1px #4c6f75 inset; background: #ffffff; }
+.host-tab:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.host-logo { width: 30px; height: 30px; border-radius: 8px; object-fit: contain; background: #ffffff; }
+.host-logo-fallback { display: inline-flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; color: var(--green); }
+.host-tab-name { font-size: 13px; font-weight: 640; color: var(--ink); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .host-track { animation: none !important; flex-wrap: wrap; width: 100%; } }
 .host-tab { display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); cursor: pointer; position: relative; }
 .host-tab:hover { background: #ffffff; }
 .host-tab.is-active { border-color: #4c6f75; background: #ffffff; }

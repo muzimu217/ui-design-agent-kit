@@ -511,13 +511,21 @@ function HostWorkbenchSection() {
       </button>
     </div>
     <p className="install-note">通用第一步：装一次 Kit，<code>uak-init</code> 命令全局可用；下面按宿主选第二步。</p>
-    <div className="host-tabs" role="tablist" aria-label="选择你的 Agent 宿主">{HOST_TARGETS.map((item, index) => (
-      <button key={item.id} ref={(element) => { tabRefs.current[index] = element; }} type="button" role="tab"
-        id={`host-tab-${item.id}`} aria-controls="host-panel" aria-selected={active === index} tabIndex={active === index ? 0 : -1}
-        className={`host-tab${active === index ? ' is-active' : ''}`} onClick={() => setActive(index)} onKeyDown={(event) => onKey(event, index)}>
-        {item.logo ? <img className="host-logo" src={item.logo} alt="" width={40} height={40} loading="lazy" /> : <span className="host-logo host-logo-fallback" aria-hidden="true">＋</span>}
-        <span className="host-tab-name">{item.name}</span>
-      </button>))}</div>
+    <p className="install-note">一套命令全部兼容——下面横幅里的宿主都能用这条命令接入；点任意图标查看该宿主的专属说明。</p>
+    <div className="host-marquee" role="tablist" aria-label="支持的 Agent 宿主（滚动展示，悬停暂停）">
+      <div className="host-track">{[...HOST_TARGETS, ...HOST_TARGETS].map((item, index) => {
+        const dup = index >= HOST_TARGETS.length;
+        return (
+        <button key={`${item.id}-${index}`} ref={(element) => { if (!dup) tabRefs.current[index] = element; }} type="button" role="tab"
+          id={dup ? undefined : `host-tab-${item.id}`} aria-controls={dup ? undefined : 'host-panel'}
+          aria-selected={!dup && active === index} aria-hidden={dup || undefined}
+          tabIndex={dup ? -1 : active === index ? 0 : -1}
+          className={`host-tab${!dup && active === index ? ' is-active' : ''}`} onClick={() => { if (!dup) setActive(index); }}
+          onKeyDown={dup ? undefined : (event) => onKey(event, index)}>
+          {item.logo ? <img className="host-logo" src={item.logo} alt="" width={40} height={40} loading="lazy" /> : <span className="host-logo host-logo-fallback" aria-hidden="true">＋</span>}
+          <span className="host-tab-name">{item.name}</span>
+        </button>); })}</div>
+    </div>
     <div className="host-panel" role="tabpanel" tabIndex={0} id="host-panel" aria-labelledby={`host-tab-${host.id}`}>
       <div className="host-panel-head">
         {host.logo && <img className="host-panel-logo" src={host.logo} alt="" width={44} height={44} />}

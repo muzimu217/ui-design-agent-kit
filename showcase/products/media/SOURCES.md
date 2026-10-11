@@ -4,6 +4,27 @@ These are existing, locally generated workflow outcome screenshots selected for
 the Agent workflow portfolio. They are evidence previews, not claims that the
 historic products are deployed or fully accepted.
 
+## Agent host logos (media/hosts/, added 2026-10-10)
+
+Host logos indicate integration compatibility and belong to their respective
+owners; trademark rights are not claimed. Each file was fetched from the
+owner's official domain or official GitHub organization avatar:
+
+| File | Host | Official source |
+| --- | --- | --- |
+| openai-codex.webp | OpenAI（Codex CLI） | cdn.oaistatic.com（OpenAI 官方静态 CDN，favicon/apple-touch-icon） |
+| claude-code.ico | Anthropic（Claude Code） | anthropic.com/favicon.ico |
+| cursor.ico | Cursor（Anysphere） | cursor.com/favicon.ico |
+| gemini-cli.png | Gemini CLI（Google） | GitHub 官方组织头像（google org, avatars.githubusercontent.com） |
+| windsurf.ico | Windsurf | windsurf.com/favicon.ico |
+| github-copilot.png | GitHub Copilot | github.githubassets.com 官方 favicon |
+| cline.png | Cline | GitHub 官方组织头像（cline org, avatars.githubusercontent.com） |
+| opencode.png | OpenCode | opencode.ai/favicon.ico |
+
+The 2026-10-09 self-drawn SVG host icons in docs/onboarding-console.html were
+rejected in user review ("find real assets online, don't draw them"); the
+official assets above supersede that approach on the published site.
+
 | File | Original evidence | Presentation label |
 | --- | --- | --- |
 | inventory.webp | evals/runs/operations-not-marketing/evidence/v23-build-dashboard.png | 库存运营台，运营工具，历史截图 |

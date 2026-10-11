@@ -1,6 +1,6 @@
 # UAK · 用户需求 → 能力映射 → 缺口 → 开发路径
 
-> 2026-10-02 · 来源：B 站五组定向搜索 + 54 批评测数据 + 24 批审计 + 推广 playbook；2026-10-08 痛点向漫游追加 D8-D10（证据目录 docs/competitive-insights/2026-10-08-bilibili-demand/）；2026-10-09 goflygen 检视追加 D11
+> 2026-10-02 · 来源：B 站五组定向搜索 + 54 批评测数据 + 24 批审计 + 推广 playbook；2026-10-08 痛点向漫游追加 D8-D10（证据目录 docs/competitive-insights/2026-10-08-bilibili-demand/）；2026-10-09 goflygen 检视追加 D11；2026-10-11 Onlook 检视追加 D12-D13（docs/competitive-insights/2026-10-11-onlook/）
 > 性质：**知识资产**——每次 B 站漫游/竞品调研后追加，持续完善开发方向
 > 定位：这是「做什么」的依据，不是「怎么做」的实现文档
 
@@ -23,6 +23,8 @@
 | D9 | AI 代码"不能直接投产、需大量人工修改"痛点 | goflygen 推广视频「Vibe Coding 别踩坑！…是框架没管得住」（BV1Yx4y6EEGv；痛点陈述真实，推荐方案为第三方框架广告已标注） | 160（推广引流） | ⚠️ 初步验证（2026-10-08） |
 | D10 | "看起来对、实际难维护"的维护性焦虑 | D8 视频简介原话："直接让 AI 写，很容易写出一堆'看起来对、实际难维护'的东西" | 同 D8 | ⚠️ 初步验证（2026-10-08） |
 | D11 | 框架约束型 AI 协同开发（"把开发规范统一约束，确保 AI 与手写代码风格一致"） | goflygen 框架产品页（goflys.cn/goflygen，2026-10-09 实拍；B 站推广引流、痛点与方案自洽、付费套餐商业模式）——"AI 适配"被列为框架设计五维度之一；与本 kit 构成框架层 vs 工作流层互补对照 | 官网DOM文本（非播放量） | ⚠️ 初步验证（2026-10-09，登记于 docs/competitive-insights/2026-10-09-goflygen/） |
+| D12 | 设计实验分支与检查点回滚（"改坏了能退回去、两个方案分叉试"） | Onlook 功能清单 "Use Branching to experiment with designs"+"Save and restore from checkpoints"（GitHub README，2026-10-11 实拍）——**版本对比+回滚机制第四次收敛**（Pixso→MasterGo→Figma Make→Onlook，开源工具侧首次）；与门 E 版本对比记录同向 | 仓库公开功能清单（unverified-partial） | ⚠️ 初步验证（2026-10-11，登记于 docs/competitive-insights/2026-10-11-onlook/） |
+| D13 | 品牌要素自动提取（从官网/既有站点抓取品牌色、字体、素材生成设计基线） | Onlook packages 提交 "Adding brand extraction from firecrawl"（2025-11 落地）；其功能清单含 "Manage brand assets and tokens"——素材门 B"官方渠道取材"的自动化辅助方向，可作候选工具路由，不替代人工确认 | 仓库公开提交记录（unverified-partial） | ⚠️ 初步验证（2026-10-11，登记于 docs/competitive-insights/2026-10-11-onlook/） |
 
 ### 推导需求（从已验证需求推导，尚无直接 B 站信号）
 

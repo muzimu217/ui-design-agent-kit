@@ -143,6 +143,13 @@ The deprecated Remotion MCP is intentionally not configured.
 The animation ecosystem references are candidates for research and routing; they
 are not automatically installed, connected, or licensed for code and media reuse.
 
+## Workflow diagram
+
+`npm run diagram:check` validates the workflow diagram against the live
+instruction sources, but it reads a generated artifact: run `npm run diagram`
+(build) first. On a fresh clone the check alone fails with ENOENT — this is a
+two-step chain, not a defect (verified 2026-10-10 tool sweep).
+
 ## Detail lint
 
 `npm run lint:detail` statically scans `demo/*/src` and `showcase/products/src`

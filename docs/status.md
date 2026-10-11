@@ -43,6 +43,6 @@
 ## 挂账历史
 
 - 决议编号与状态：`docs/gates.md`（D7①-⑨）、
-  `docs/archive/d7-decision-packet.md`（包 A/B/C）、
+  `docs/decisions/d7-decision-packet.md`（包 A/B/C）、
   `docs/product-review-2026-09.md`（D1-D8）。
 - 迭代史：`docs/iteration-log.md`（最新在上）。

@@ -7,8 +7,6 @@ __pycache__/
 !.env.example
 output/
 out/
-# 参赛投稿 PDF 是临时产物，体积大，不入库（HTML 与 qc-report 仍跟踪作记录）
-docs/competition/submission/*.pdf
 paper/out/
 paper/submission/arxiv-bundle/
 paper/submission/*.zip

@@ -1,8 +1,11 @@
+#!/usr/bin/env node
+// uak-init — one-command onboarding for target projects (package.json bin entry).
+// Shebang is REQUIRED: npm/npm-link execute this file directly as a program.
 import { readFile, writeFile, mkdir, copyFile } from "node:fs/promises";
 import { existsSync, statSync, lstatSync, accessSync, realpathSync, constants } from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
-import { pathToFileURL } from "node:url";
+import { pathToFileURL, fileURLToPath } from "node:url";
 
 // V1（strategy-synthesis 2026-09-26 §三.4）：`uak init` 一键安装器——按宿主
 // 生成接入形态。在**目标项目**目录运行：
@@ -28,7 +31,15 @@ export function detectHost(targetDir) {
 }
 
 export function resolveUakPath(explicit) {
-  const candidates = [explicit, process.env.UAK_PATH, path.resolve("..", "ui-design-agent-kit")]
+  // Candidate order matters for the packaged experience:
+  // 1) explicit --uak flag
+  // 2) UAK_PATH env
+  // 3) THIS package's own location (import.meta.url) — correct for npm i -g /
+  //    npm link installs: the kit IS the installed package, cwd-independent.
+  // 4) legacy fallback: sibling directory relative to the CURRENT WORKING
+  //    directory (repo-checkout style use before packaging existed).
+  const thisPackage = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+  const candidates = [explicit, process.env.UAK_PATH, thisPackage, path.resolve(process.cwd(), "..", "ui-design-agent-kit")]
     .filter(Boolean)
     .map((p) => path.resolve(p));
   for (const candidate of candidates) {
@@ -194,7 +205,18 @@ export async function runInit({ targetDir, uakPath, host, dryRun }) {
   return { host: detected, actions: actions.map((a) => a.desc) };
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+// Entry guard must resolve symlinks: npm/npm-link invoke this file THROUGH a
+// bin symlink (e.g. /opt/homebrew/bin/uak-init), so process.argv[1] differs
+// from import.meta.url until both sides are realpath-normalized.
+const invokedVia = (() => {
+  try {
+    if (!process.argv[1]) return null;
+    return pathToFileURL(realpathSync(path.resolve(process.argv[1]))).href;
+  } catch {
+    return null;
+  }
+})();
+if (invokedVia && invokedVia === import.meta.url) {
   const argv = process.argv.slice(2);
   if (argv.includes("--help") || argv.length === 0) {
     console.log(USAGE);

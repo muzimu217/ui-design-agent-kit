@@ -12,15 +12,15 @@ owner's official domain or official GitHub organization avatar:
 
 | File | Host | Official source |
 | --- | --- | --- |
-| openai-codex.webp | OpenAI（Codex CLI） | cdn.oaistatic.com（OpenAI 官方静态 CDN，apple-touch-icon，180×180） |
-| claude-code.ico | Anthropic（Claude Code） | anthropic.com/favicon.ico |
+| codex.svg | Codex CLI（OpenAI） | devicons.io/devicons/icons/codex-icon.svg（用户指定渠道；devicons 元数据标注品牌来源 openai.com/codex 与 OpenAI brand guidelines）——蓝紫渐变云朵+终端提示符的 Codex CLI 专属标志；曾误用 cdn.oaistatic OpenAI 通用 apple-touch-icon，用户复核指正"两个 CLI 的图标错了"后更换 |
+| claude.svg | Claude / Claude Code（Anthropic） | devicons.io/devicons/icons/claude-icon.svg（用户指定渠道；#D97757 珊瑚色星芒为 Claude 官方产品标志，devicons 元数据标注许可来源 anthropic.com）——曾误用 anthropic.com 公司 favicon，同轮指正后更换 |
 | cursor.ico | Cursor（Anysphere） | cursor.com/favicon.ico |
 | gemini-cli.png | Gemini CLI（Google） | gemini.google.com 官网内嵌的 Gemini 四色星形标志（www.gstatic.com/lamda/images/gemini_sparkle_4g_512_lt，512×512）——曾误取 Google 组织头像"G"，用户复核指正后更换 |
 | windsurf.ico | Windsurf | windsurf.com/favicon.ico |
 | github-copilot.svg | GitHub Copilot | Primer Octicons 官方图标集 copilot-24（unpkg.com/@primer/octicons）——曾误取 GitHub favicon"章鱼猫"，用户复核指正后更换 |
 | cline.png | Cline | GitHub 官方组织头像（cline org, avatars.githubusercontent.com/u/184127137）——曾按猜测 ID 误取他组织头像，用户复核指正后更换 |
 | opencode.png | OpenCode | opencode.ai/favicon.ico |
-| zcode.png | ZCode 桌面版（Z.ai 智谱） | z.ai/favicon.png（320×262） |
+| zcode.png | ZCode（Z.ai 智谱） | z.ai/favicon.png（320×262） |
 | deepseek-harness.svg | DeepSeek Harness（深度求索） | deepseek.com/harness/favicon.svg（官方 Harness 专属黑色鲸鱼标志，viewBox 50×50 矢量）——曾临时复用 DeepSeek 蓝鲸 favicon，用户复核指正"官方 CLI 是黑鲸不是蓝鲸"后更换为 Harness 官网 head 声明的专属图标 |
 | openclaw.svg | OpenClaw | openclaw.ai/favicon.svg（官方矢量） |
 | workbuddy.svg | WorkBuddy（腾讯） | workbuddy.ai 官网 head 声明的官方 logo.svg（download.codebuddy.ai CDN，viewBox 40×40 矢量）——与 EigenFlux 官网宿主名单（www.eigenflux.ai 首页"支持任何 Agent"栏）所用 agent-icons/workbuddy.svg 字节一致（md5 核验），2026-10-11 补图 |

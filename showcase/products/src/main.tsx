@@ -17,8 +17,8 @@ import forma from '../media/forma.webp';
 import tempo from '../media/tempo.webp';
 import ruiear from '../media/ruiear.webp';
 import introVideo from '../media/intro.mp4';
-import logoCodex from '../media/hosts/openai-codex.webp';
-import logoClaude from '../media/hosts/claude-code.ico';
+import logoCodex from '../media/hosts/codex.svg';
+import logoClaude from '../media/hosts/claude.svg';
 import logoCursor from '../media/hosts/cursor.ico';
 import logoGemini from '../media/hosts/gemini-cli.png';
 import logoWindsurf from '../media/hosts/windsurf.ico';
@@ -383,104 +383,103 @@ const HOST_TARGETS: HostTarget[] = [
   {
     id: 'codex', name: 'Codex CLI', org: 'OpenAI', logo: logoCodex, kind: 'AGENTS.md 原生', way: 'uak-init 一条命令',
     cmd: [
-      { label: '① 安装 Kit（任意目录，一次性）', value: INSTALL_CMD },
       { label: '② cd 到你的项目后接入（幂等）', value: 'uak-init --host codex' },
     ],
-    steps: ['自动写入 AGENTS.md 接入区块与 .agents/uak-prompt.md；重启 Codex 会话即生效。', '按 .agents/uak-mcp-setup.md 把 playwright / chrome-devtools / context7 三项写进 .codex/config.toml（浏览器验收依赖它们）。'],
+    steps: ['uak-init 自动生成 .agents/uak-prompt.md 并写入 AGENTS.md 接入区块——重启 Codex 会话即按工作流干活。', '浏览器验收依赖 MCP：按 .agents/uak-mcp-setup.md 把三项写进 .codex/config.toml。'],
   },
   {
     id: 'claude', name: 'Claude Code', org: 'Anthropic', logo: logoClaude, kind: 'CLAUDE.md 指针', way: 'uak-init + 一行指针',
     cmd: [
-      { label: '① 安装 Kit', value: INSTALL_CMD },
       { label: '② 接入（自动探测 CLAUDE.md 场景）', value: 'uak-init --host claude' },
       { label: '③ 让 Claude Code 读到入口', value: "echo '## UI 工作流：见 AGENTS.md 与 .agents/uak-prompt.md' >> CLAUDE.md" },
     ],
     steps: ['接入区块写进 AGENTS.md；CLAUDE.md 只放指针，不复制第二份内容（避免双源漂移）。', 'MCP 按 .agents/uak-mcp-setup.md 的 JSON 示例配置。'],
   },
   {
-    id: 'cursor', name: 'Cursor', org: 'Anysphere', logo: logoCursor, kind: 'Rules 注入', way: 'prompt:build 导出',
+    id: 'cursor', name: 'Cursor', org: 'Anysphere', logo: logoCursor, kind: 'Rules 注入', way: 'uak-init + 规则文件',
     cmd: [
-      { label: '① 在 Kit 仓库生成自包含提示词', value: 'npm run prompt:build' },
-      { label: '② 拷进 Cursor 规则', value: 'cp output/ui-design-agent.system.md <你的项目>/.cursor/rules/uak.mdc' },
+      { label: '② 在你的项目里接入', value: 'uak-init' },
+      { label: '③ 存为 Cursor 规则', value: 'cp .agents/uak-prompt.md .cursor/rules/uak.mdc' },
     ],
-    steps: ['导出文件自包含（引用内联为锚点、无本机路径），完整版 231KB / lean 版 74KB。', 'Cursor 会话即按六道门工作流执行；模型与 MCP 由你的 Cursor 环境自备。'],
+    steps: ['.agents/uak-prompt.md 为自包含 lean 导出（引用内联、无本机路径）。', 'Cursor 会话即按六道门工作流执行；模型与 MCP 由你的 Cursor 环境自备。'],
   },
   {
-    id: 'gemini', name: 'Gemini CLI', org: 'Google', logo: logoGemini, kind: 'GEMINI.md / 系统提示', way: 'prompt:build 导出',
+    id: 'gemini', name: 'Gemini CLI', org: 'Google', logo: logoGemini, kind: 'GEMINI.md / 系统提示', way: 'uak-init + 一行指针',
     cmd: [
-      { label: '① 生成 lean 版', value: 'npm run prompt:build:lean' },
-      { label: '② 挂进 GEMINI.md', value: "echo '## UI 工作流提示词：见 .agents/uak-prompt.md' >> GEMINI.md" },
+      { label: '② 在你的项目里接入', value: 'uak-init' },
+      { label: '③ 挂进 GEMINI.md', value: "echo '## UI 工作流提示词：见 .agents/uak-prompt.md' >> GEMINI.md" },
     ],
-    steps: ['先跑一次 uak-init 生成 .agents/uak-prompt.md，再让 GEMINI.md 指向它。', '支持系统提示注入的版本可直接粘贴 lean 导出全文。'],
+    steps: ['uak-init 生成 .agents/uak-prompt.md，GEMINI.md 一行指针指向它。', '支持系统提示注入的版本，可直接把该文件全文粘进 Gemini 的自定义指令。'],
   },
   {
-    id: 'copilot', name: 'GitHub Copilot', org: 'GitHub', logo: logoCopilot, kind: 'copilot-instructions', way: 'lean 导出粘贴',
+    id: 'copilot', name: 'GitHub Copilot', org: 'GitHub', logo: logoCopilot, kind: 'copilot-instructions', way: 'uak-init + 指引文件',
     cmd: [
-      { label: '① 生成 lean 版', value: 'npm run prompt:build:lean' },
-      { label: '② 写进仓库指引文件', value: 'cp output/ui-design-agent.lean.md <你的项目>/.github/copilot-instructions.md' },
+      { label: '② 在你的项目里接入', value: 'uak-init' },
+      { label: '③ 写进仓库指引文件', value: 'cp .agents/uak-prompt.md .github/copilot-instructions.md' },
     ],
     steps: ['Copilot coding agent 会按该文件约束工作方式；lean 版含六道门与验收约定。', '适合让仓库里的 Copilot 任务默认走"先确认再实现"的流程。'],
   },
   {
     id: 'windsurf', name: 'Windsurf', org: 'Windsurf', logo: logoWindsurf, kind: 'Rules 注入', way: 'uak-init（other 档）+ 指针',
     cmd: [
-      { label: '① 接入（other 宿主通用档）', value: 'uak-init' },
-      { label: '② 按其 Rules 机制指向提示词', value: '查看 .agents/uak-prompt.md' },
+      { label: '② 在你的项目里接入（other 档）', value: 'uak-init' },
+      { label: '③ 在 Rules / Memories 挂一行指向', value: '.agents/uak-prompt.md' },
     ],
     steps: ['uak-init 生成 .agents/uak-prompt.md 与接入区块；在 Windsurf 的 Rules/ Memories 里挂一行指向。', '各家规则机制不同——接入说明给通用路径，不假装自动接入。'],
   },
   {
     id: 'cline', name: 'Cline', org: 'Cline', logo: logoCline, kind: 'Rules / Memory', way: '指针挂载',
     cmd: [
-      { label: '① 接入', value: 'uak-init' },
-      { label: '② 指向提示词', value: '.agents/uak-prompt.md' },
+      { label: '② 在你的项目里接入', value: 'uak-init' },
+      { label: '③ 挂进 custom instructions / rules', value: '.agents/uak-prompt.md' },
     ],
     steps: ['把 .agents/uak-prompt.md 挂进 Cline 的 custom instructions / rules。', '浏览器验收类任务需按 uak-mcp-setup.md 配好 MCP。'],
   },
   {
     id: 'opencode', name: 'OpenCode', org: 'OpenCode', logo: logoOpenCode, kind: 'AGENTS.md 兼容', way: 'uak-init 一条命令',
     cmd: [
-      { label: '① 安装并接入', value: 'uak-init' },
+      { label: '② cd 到你的项目后接入', value: 'uak-init' },
     ],
     steps: ['OpenCode 兼容 AGENTS.md 约定——uak-init 的接入区块会被直接读取。', 'MCP 按宿主格式配置，参考 .agents/uak-mcp-setup.md。'],
   },
   {
-    id: 'zcode', name: 'ZCode 桌面版', org: 'Z.ai 智谱', logo: logoZCode, kind: 'AGENTS.md 原生', way: 'uak-init 一条命令',
+    id: 'zcode', name: 'ZCode', org: 'Z.ai 智谱', logo: logoZCode, kind: 'AGENTS.md 原生', way: 'uak-init 一条命令',
     cmd: [
-      { label: '① 安装 Kit', value: INSTALL_CMD },
-      { label: '② cd 到项目后接入', value: 'uak-init' },
+      { label: '② cd 到你的项目后接入', value: 'uak-init' },
     ],
     steps: ['ZCode Desktop 原生读取 AGENTS.md——接入区块自动生效（本展厅的 UI 工作流即由 ZCode 宿主执行）。', 'GLM 模型驱动；MCP 按宿主格式配置。'],
   },
   {
     id: 'deepseek-harness', name: 'DeepSeek Harness', org: '深度求索', logo: logoDsh, kind: 'Agent Harness（插件架构）', way: '插件 / 自定义指令',
     cmd: [
-      { label: '① 安装并启动（需 Node.js）', value: 'npx @deepseek-ai/dsh web' },
-      { label: '② 生成 lean 导出', value: 'npm run prompt:build:lean' },
+      { label: '② 在你的项目里接入', value: 'uak-init' },
+      { label: '③ 粘进 Harness 的自定义指令 / 插件位', value: '.agents/uak-prompt.md' },
     ],
-    steps: ['DeepSeek 官方开源 Agent Harness（github.com/deepseek-ai/deepseek-harness，一切皆插件架构）。', '目前为开发者预览版，兼容性可能变动：把 lean 导出按其插件/自定义指令机制注入，具体注入位以官方文档为准。'],
+    steps: ['默认你已装好 DeepSeek Harness：一切皆插件架构，把 .agents/uak-prompt.md 内容按其自定义指令/插件机制注入，里面的 AI 即按工作流干活。', '目前为开发者预览版，兼容性可能变动——具体注入位以官方文档为准。'],
   },
   {
     id: 'openclaw', name: 'OpenClaw', org: '开源社区', logo: logoOpenClaw, kind: '个人 AI 助理网关', way: '工作区指令注入',
     cmd: [
-      { label: '① 接入', value: 'uak-init' },
-      { label: '② 生成 lean 导出', value: 'npm run prompt:build:lean' },
+      { label: '② 在你的项目里接入', value: 'uak-init' },
+      { label: '③ 挂进工作区指令', value: '.agents/uak-prompt.md' },
     ],
-    steps: ['OpenClaw（开源个人 AI 助理网关）的 agent 可按工作区指令执行 UI 工作流。', '把 lean 导出挂进其工作区指令；注意网关场景下浏览器验收需该 agent 有浏览器工具。'],
+    steps: ['OpenClaw（开源个人 AI 助理网关）的 agent 可按工作区指令执行 UI 工作流。', '网关场景下浏览器验收需该 agent 有浏览器工具。'],
   },
   {
     id: 'workbuddy', name: 'WorkBuddy', org: 'WorkBuddy', logo: logoWorkBuddy, kind: '裸 CLI 宿主', way: '单文件提示词注入',
     cmd: [
-      { label: '① 生成 lean 导出', value: 'npm run prompt:build:lean' },
+      { label: '② 在你的项目里接入', value: 'uak-init' },
+      { label: '③ 粘进自定义指令位', value: '.agents/uak-prompt.md' },
     ],
-    steps: ['WorkBuddy 属"无宿主钩子"类型：把 lean 导出按其自定义指令位注入即可。', 'EigenFlux 官方宿主名单在列；具体注入位以 WorkBuddy 当前版本文档为准。'],
+    steps: ['WorkBuddy 属"无宿主钩子"类型：把 .agents/uak-prompt.md 内容粘进其自定义指令位，里面的 AI 即按工作流干活。', 'EigenFlux 官方宿主名单在列；具体注入位以 WorkBuddy 当前版本文档为准。'],
   },
   {
     id: 'hermes', name: 'Hermes', org: 'Nous Research', logo: logoHermes, kind: '裸 CLI 宿主', way: '单文件提示词注入',
     cmd: [
-      { label: '① 生成 lean 导出', value: 'npm run prompt:build:lean' },
+      { label: '② 在你的项目里接入', value: 'uak-init' },
+      { label: '③ 粘进自定义指令位', value: '.agents/uak-prompt.md' },
     ],
-    steps: ['Hermes 同属裸 CLI 宿主族：lean 导出注入其指令位即可。', 'EigenFlux 官方宿主名单在列；具体注入位以 Hermes 当前版本文档为准。'],
+    steps: ['Hermes 同属裸 CLI 宿主族：把 .agents/uak-prompt.md 内容注入其指令位，里面的 AI 即按工作流干活。', 'EigenFlux 官方宿主名单在列；具体注入位以 Hermes 当前版本文档为准。'],
   },
 ];
 
@@ -513,7 +512,8 @@ function HostWorkbenchSection() {
         {copiedKey === 'install' ? <><Check size={15} aria-hidden="true" />已复制</> : <><Copy size={15} aria-hidden="true" />复制</>}
       </button>
     </div>
-    <p className="install-note">通用第一步：装一次 Kit，<code>uak-init</code> 命令全局可用；下面按宿主选第二步。</p>
+    <p className="install-note">通用第一步：装一次 Kit，<code>uak-init</code> 命令全局可用；宿主本身默认你已经装好——下面从第二步起，只讲怎么把工作流装进它、让里面的 AI 按它干活。</p>
+    <p className="install-note">②③ 都是普通终端命令，在你的项目根目录运行（不是斜杠命令）；也可以原样发给宿主里的 AI，让它替你跑。跑完后宿主自动读到生成的工作流文件（AGENTS.md 与 .agents/uak-prompt.md）——不需要你手动给 AI 发提示词。</p>
     <p className="install-note">一套命令全部兼容——下面横幅里的宿主都能用这条命令接入；点任意图标查看该宿主的专属说明。</p>
     <div className="host-marquee" role="tablist" aria-label="支持的 Agent 宿主（滚动展示，悬停暂停）">
       <div className="host-track">{[...HOST_TARGETS, ...HOST_TARGETS].map((item, index) => {

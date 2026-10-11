@@ -26,8 +26,10 @@ import logoCopilot from '../media/hosts/github-copilot.svg';
 import logoCline from '../media/hosts/cline.png';
 import logoOpenCode from '../media/hosts/opencode.png';
 import logoZCode from '../media/hosts/zcode.png';
-import logoDeepSeek from '../media/hosts/deepseek.png';
+import logoDsh from '../media/hosts/deepseek-harness.svg';
 import logoOpenClaw from '../media/hosts/openclaw.svg';
+import logoWorkBuddy from '../media/hosts/workbuddy.svg';
+import logoHermes from '../media/hosts/hermes.ico';
 import './styles.css';
 
 const BASE = import.meta.env.BASE_URL;
@@ -451,11 +453,12 @@ const HOST_TARGETS: HostTarget[] = [
     steps: ['ZCode Desktop 原生读取 AGENTS.md——接入区块自动生效（本展厅的 UI 工作流即由 ZCode 宿主执行）。', 'GLM 模型驱动；MCP 按宿主格式配置。'],
   },
   {
-    id: 'deepseek', name: 'DeepSeek', org: '深度求索', logo: logoDeepSeek, kind: '模型/App 层', way: 'lean 导出粘贴',
+    id: 'deepseek-harness', name: 'DeepSeek Harness', org: '深度求索', logo: logoDsh, kind: 'Agent Harness（插件架构）', way: '插件 / 自定义指令',
     cmd: [
-      { label: '① 生成 lean 版', value: 'npm run prompt:build:lean' },
+      { label: '① 安装并启动（需 Node.js）', value: 'npx @deepseek-ai/dsh web' },
+      { label: '② 生成 lean 导出', value: 'npm run prompt:build:lean' },
     ],
-    steps: ['工作流与模型无关：DeepSeek 作为模型可驱动任何兼容宿主跑本工作流。', '把 lean 导出（74KB）粘贴进你的 DeepSeek 客户端/应用的系统提示或自定义指令即可。'],
+    steps: ['DeepSeek 官方开源 Agent Harness（github.com/deepseek-ai/deepseek-harness，一切皆插件架构）。', '目前为开发者预览版，兼容性可能变动：把 lean 导出按其插件/自定义指令机制注入，具体注入位以官方文档为准。'],
   },
   {
     id: 'openclaw', name: 'OpenClaw', org: '开源社区', logo: logoOpenClaw, kind: '个人 AI 助理网关', way: '工作区指令注入',
@@ -466,14 +469,14 @@ const HOST_TARGETS: HostTarget[] = [
     steps: ['OpenClaw（开源个人 AI 助理网关）的 agent 可按工作区指令执行 UI 工作流。', '把 lean 导出挂进其工作区指令；注意网关场景下浏览器验收需该 agent 有浏览器工具。'],
   },
   {
-    id: 'workbuddy', name: 'WorkBuddy', org: '—', logo: undefined, kind: '裸 CLI 宿主', way: '单文件提示词注入',
+    id: 'workbuddy', name: 'WorkBuddy', org: 'WorkBuddy', logo: logoWorkBuddy, kind: '裸 CLI 宿主', way: '单文件提示词注入',
     cmd: [
       { label: '① 生成 lean 导出', value: 'npm run prompt:build:lean' },
     ],
     steps: ['WorkBuddy 属"无宿主钩子"类型：把 lean 导出按其自定义指令位注入即可。', 'EigenFlux 官方宿主名单在列；具体注入位以 WorkBuddy 当前版本文档为准。'],
   },
   {
-    id: 'hermes', name: 'Hermes', org: '—', logo: undefined, kind: '裸 CLI 宿主', way: '单文件提示词注入',
+    id: 'hermes', name: 'Hermes', org: 'Nous Research', logo: logoHermes, kind: '裸 CLI 宿主', way: '单文件提示词注入',
     cmd: [
       { label: '① 生成 lean 导出', value: 'npm run prompt:build:lean' },
     ],

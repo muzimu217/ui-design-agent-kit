@@ -288,13 +288,16 @@ npm run verify
 npm test
 ```
 
-### Wire into an existing project (uak init, recommended)
+### Wire into an existing project (uak-init, recommended)
 
 Already have a project? Run from the **target project root**:
 
 ```bash
-node <path-to-uak-repo>/scripts/uak-init.mjs --uak <path-to-uak-repo>
+npm install -g github:muzimu217/ui-design-agent-kit   # one-time, gives you the uak-init bin
+uak-init                                              # auto-detects host: .codex/ → codex; CLAUDE.md → claude; else other
 ```
+
+Or without a global install: `node <path-to-uak-repo>/scripts/uak-init.mjs --uak <path-to-uak-repo>`.
 
 Automated: host detection (codex/claude/other) → lean prompt export to the
 target project's `.agents/uak-prompt.md` → idempotent AGENTS.md marker block →
@@ -305,10 +308,17 @@ pre-authorization, first acceptance screenshot in 10 minutes.
 
 ### Host matrix
 
-| Host | Wiring |
-| --- | --- |
-| Codex | Works out of the box: `.codex/config.toml` ships with the repo (incl. MCP config) |
-| Claude Code / Cursor / others | The host does not read `.codex` — run `npm run prompt:build` to emit a single-file instruction bundle and paste it into the system/project prompt; configure MCP tools per `.codex/config.toml` yourself |
+13 hosts share one three-layer wiring (install the Kit → `uak-init` → a one-line
+pointer in the host's own instruction file). The full workbench with official
+icons and per-host commands lives in the online gallery
+([agent.kcos.club](https://agent.kcos.club/), locally: `showcase/products/`). By wiring class:
+
+| Wiring class | Hosts | Note |
+| --- | --- | --- |
+| AGENTS.md native | Codex CLI · OpenCode · ZCode | `uak-init` alone; the marker block is read directly |
+| Pointer file | Claude Code · Gemini CLI · GitHub Copilot · Windsurf · Cline | one-line pointer in each host's rules/instructions file |
+| Rules injection | Cursor | save `.agents/uak-prompt.md` as `.cursor/rules/uak.mdc` |
+| Custom instructions / plugins | DeepSeek Harness · OpenClaw · WorkBuddy · Hermes | paste `.agents/uak-prompt.md` per the host's mechanism |
 
 ### What the first run looks like
 

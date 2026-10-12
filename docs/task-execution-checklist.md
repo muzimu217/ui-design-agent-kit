@@ -173,7 +173,7 @@
 **候选优化方向**：
 
 - [ ] 版本对比和回滚叙事
-- [ ] 设计系统前置选择（收敛证据×4：bolt.new 项目启动前置选择（立卡源头）；Pixso"智能设计系统"附件——AI 生成时可挂用户设计系统，2026-10-08 实测；Onlook "Manage brand assets and tokens"，2026-10-11；**v0 "Create design systems — Define colors, typography, and styles across projects"，2026-10-11 实拍（Vercel 入场，家族最重成员）**。四次独立收敛，优先级上调建议）
+- [ ] 设计系统前置选择（收敛证据×4：bolt.new 项目启动前置选择（立卡源头；2026-10-11 复检确认仍在前排并升级为"Build with your design system"专题区）；Pixso"智能设计系统"附件——AI 生成时可挂用户设计系统，2026-10-08 实测；Onlook "Manage brand assets and tokens"，2026-10-11；**v0 "Create design systems — Define colors, typography, and styles across projects"，2026-10-11 实拍（Vercel 入场，家族最重成员）**。四次独立收敛，优先级上调建议）
 - [ ] Plan 模式
 - [ ] 质量和成本交换显式化
 - [ ] 权限与审批

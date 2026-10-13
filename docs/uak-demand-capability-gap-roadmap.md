@@ -1,6 +1,6 @@
 # UAK · 用户需求 → 能力映射 → 缺口 → 开发路径
 
-> 2026-10-02 · 来源：B 站五组定向搜索 + 54 批评测数据 + 24 批审计 + 推广 playbook；2026-10-08 痛点向漫游追加 D8-D10（证据目录 docs/competitive-insights/2026-10-08-bilibili-demand/）；2026-10-09 goflygen 检视追加 D11；2026-10-11 Onlook 检视追加 D12-D13（docs/competitive-insights/2026-10-11-onlook/）；2026-10-11 bolt 复检追加 D14（docs/competitive-insights/2026-10-11-bolt-new-recheck/）
+> 2026-10-02 · 来源：B 站五组定向搜索 + 54 批评测数据 + 24 批审计 + 推广 playbook；2026-10-08 痛点向漫游追加 D8-D10（证据目录 docs/competitive-insights/2026-10-08-bilibili-demand/）；2026-10-09 goflygen 检视追加 D11；2026-10-11 Onlook 检视追加 D12-D13（docs/competitive-insights/2026-10-11-onlook/）；2026-10-11 bolt 复检追加 D14（docs/competitive-insights/2026-10-11-bolt-new-recheck/）；2026-10-13 B 站新 sweep 追加 D15-D16（docs/competitive-insights/2026-10-13-bilibili-demand/）
 > 性质：**知识资产**——每次 B 站漫游/竞品调研后追加，持续完善开发方向
 > 定位：这是「做什么」的依据，不是「怎么做」的实现文档
 
@@ -26,6 +26,8 @@
 | D12 | 设计实验分支与检查点回滚（"改坏了能退回去、两个方案分叉试"） | Onlook 功能清单 "Use Branching to experiment with designs"+"Save and restore from checkpoints"（GitHub README，2026-10-11 实拍）——**版本对比+回滚机制第四次收敛**（Pixso→MasterGo→Figma Make→Onlook，开源工具侧首次）；与门 E 版本对比记录同向 | 仓库公开功能清单（unverified-partial） | ⚠️ 初步验证（2026-10-11，登记于 docs/competitive-insights/2026-10-11-onlook/） |
 | D13 | 品牌要素自动提取（从官网/既有站点抓取品牌色、字体、素材生成设计基线） | Onlook packages 提交 "Adding brand extraction from firecrawl"（2025-11 落地）；其功能清单含 "Manage brand assets and tokens"——素材门 B"官方渠道取材"的自动化辅助方向，可作候选工具路由，不替代人工确认 | 仓库公开提交记录（unverified-partial） | ⚠️ 初步验证（2026-10-11，登记于 docs/competitive-insights/2026-10-11-onlook/） |
 | D14 | 生成质量自动兜底焦虑（"AI 生成老出错，谁来保证能跑"）——自动验证进入生成平台叙事 | bolt.new 首屏 "98% less errors — Bolt automatically tests, refactors, and iterates"（2026-10-11 实拍，docs/competitive-insights/2026-10-11-bolt-new-recheck/）——验证环节被平台商品化为黑盒自动兜底；**2026-10-12 强信号：GitHub Copilot Code Review 把 "AI first-pass reviews + Bring your team in for PR decisions that need a human eye" 做成一等卖点（docs/competitive-insights/2026-10-12-copilot-codereview/）——"AI 初审+人终审"HITL 叙事首次出现在平台级产品，但审查对象是代码、产出是评论流非证据台账、人审可选项非强制门——白盒 UI 验收+证据纪律仍无人做** | 平台公开卖点（unverified-partial） | ⚠️ 验证中（2026-10-11 bolt→2026-10-12 Copilot 递进） |
+| D15 | "测试全绿 ≠ 产品能用"（自动化通过≠验收通过） | B 站「测试全绿 = 产品能用？我用 AI 写测试踩过的 3 个坑｜覆盖率·误报·稳定性」（BV1UWRQBFEV3，1049 播放，封面逐字"测试通过 ≠ 产品没问题"）——**与本仓五级证据等级第一公理（npm test 绿≠VisuallyVerified）逐字同构**；UP 主全套内容为 AI Agent 工程方法论（Skills/状态机协作/Agent 专属技能）——技能工程方法论已在 B 站形成创作者品类（docs/competitive-insights/2026-10-13-bilibili-demand/） | 1049 播放+50 收藏（收藏比高=工具型内容，如实记） | ⚠️ 初步验证（2026-10-13） |
+| D16 | AI 协作成长自欺焦虑（"我到底是在成长，还是自欺欺人？"） | B 站同名视频（1111 播放，的老AI日常）——vibe coding 用户对产出真实性的元认知焦虑=**对外部可验证证据的心理需求**，正对本仓"验收证据交付"价值主张；同 sweep 另有「不懂代码，先别让 AI 开工」1159 播（D8 小白角度印证） | 1111/1159 播放（千级如实记） | ⚠️ 初步验证（2026-10-13，登记于 docs/competitive-insights/2026-10-13-bilibili-demand/） |
 
 ### 推导需求（从已验证需求推导，尚无直接 B 站信号）
 

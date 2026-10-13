@@ -1322,5 +1322,39 @@
    "Ignores the requested status colors / chain order and renders an unstructured list",
    "Claims browser verification that was not performed"
   ]
+ },
+ {
+  "id": "import-approval-gate",
+  "request": "Build an import flow page for saving a user-provided design system as a reusable skill: source input step, starter preview step, an explicit review pause requiring user approval before save, and a post-save validation state with verified usage links.",
+  "context": "New web UI. Single page with stepper; state machine must not allow skipping the approval step; no backend.",
+  "passCriteria": [
+   "Stepper shows all four steps with the approval step visually mandatory",
+   "Save action is disabled until the approval checkbox/confirm is engaged",
+   "Post-save validation state renders verified usage links from the response data",
+   "Attempting to reach step 3 without approval is blocked with a visible reason",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Allows saving without explicit user approval",
+   "Uses placeholder blocks instead of a working stepper",
+   "Claims verification that was not performed"
+  ]
+ },
+ {
+  "id": "reference-contract-file-card",
+  "request": "Build a machine-readable contract file viewer card: renders a JSON contract (version, reference sources list with repo/ref/mount path, starter config) as a readable card with collapsible sections and a copy-to-clipboard for the raw JSON.",
+  "context": "New web UI. Data is an embedded JSON object; card must render in dark theme; copy uses navigator.clipboard with visible success feedback.",
+  "passCriteria": [
+   "All top-level contract fields render with human labels",
+   "Collapsible sections default to collapsed except version",
+   "Copy button writes raw JSON and shows visible success state",
+   "Dark theme contrast passes 4.5:1 for all labels",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Renders raw JSON dump without structure",
+   "Copy button has no visible feedback",
+   "Contrast fails on any label"
+  ]
  }
 ]

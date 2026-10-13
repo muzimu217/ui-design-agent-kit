@@ -30,7 +30,7 @@
 
 **是**：
 - 一个项目级 UI 设计智能体：指令层（SKILL.md 体系 + 22 个技能）、有界工具编排（MCP 配置钉版）、六道门人工确认工作流
-- 一套验证纪律：五级证据等级（Installed≠…≠VisuallyVerified）、131 项自动化测试（2026-10-08 全量口径：tests/ 122 + showcase/tests 9，计数由 doc-drift 锁定，以 npm test 实际输出为准；同日上午基线曾为 123=114+9，uak-init 补 8 例后为 131）、评测台账语料 75（2026-10-13 口径：新增 workflow-canvas-dark 与 requirement-chain-card 两条画布场景）、已执行入账 71（2026-10-09 复核 evals/results.json；change-radius-discipline 等 4 条新入册待评）、浏览器实测强制
+- 一套验证纪律：五级证据等级（Installed≠…≠VisuallyVerified）、131 项自动化测试（2026-10-08 全量口径：tests/ 122 + showcase/tests 9，计数由 doc-drift 锁定，以 npm test 实际输出为准；同日上午基线曾为 123=114+9，uak-init 补 8 例后为 131）、评测台账语料 77（2026-10-13 口径：画布场景 +4——workflow-canvas-dark/requirement-chain-card/import-approval-gate/reference-contract-file-card）、已执行入账 71（2026-10-09 复核 evals/results.json；change-radius-discipline 等 4 条新入册待评）、浏览器实测强制
 - 一个可迁移提示词工厂：`npm run prompt:build` 产出单文件提示词给其他宿主
 - 12 个有独立 README/证据的线上案例
 

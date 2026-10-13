@@ -31,3 +31,10 @@
 | 设计系统载体 | skill 适配器（scope 级） | design-contract 契约+门 D 确认 | 同构；我们多人工门 |
 | 理解验证 | starter app 自动验证 | 门 A 方向稿+门 E 浏览器六维 | 方向同、强制性与证据性我们强 |
 | 更新 | Keep up to date（文档有节） | 契约修订走门 | 机制待细节读取 |
+
+## ⑥ 补录（同日 10 点档深读 v0.json/审批流节）
+
+- **审批门在 v0 正式落地（修正 10-12 判读）**：导入流程五步——发现源与原语 → 构建 starter app 预览 → **"Pauses for your review before saving anything"** → **"Saves the skill only after you approve it"** → **"Validates the saved skill before confirming"**（保存后验证+给验证过的使用链接）。第四层渗透比昨日评估更进一步：门的概念在 skill 保存流程落地——但仍是**单点导入门**，非全流程门禁+证据台账；"Take the review seriously" 甚至提醒用户审批严肃性。
+- **v0.json 机器契约**：`referenceWorkspace.sources`（只读 GitHub 源挂载，≤3 个，含 repo/ref/mountPath）+ `starter`（skill-directory/empty/v0-default 三种）——"the file is the source of truth for what gets applied"。设计系统契约的机器可读化方向与我们 design-contract JSON 化同向。
+- **提炼物（Figma frames/docs）蒸馏进 skill instructions**而非长驻 v0.json——输入与契约分层。
+- 对本仓画布的即时影响：chain.schema.md 的 `verifyUnderstanding.confirmedBy=user` 门与 v0 的 pause→approve→save 同构——方向再次互证。

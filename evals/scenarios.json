@@ -1288,5 +1288,39 @@
    "Adds a dependency or swaps an existing library for the toggle",
    "The delivered summary omits the touched-file list or the behavior-change list"
   ]
+ },
+ {
+  "id": "workflow-canvas-dark",
+  "request": "Build a dark-theme workflow canvas page that shows a six-stage delivery pipeline as a horizontal timeline, with per-stage status colors (pending/active/gated/passed/blocked), an evidence drawer per stage, and a zoom control.",
+  "context": "New web UI. Vanilla HTML/CSS/JS in one self-contained file is acceptable. Data arrives as a JSON blob embedded at build time; no network access.",
+  "passCriteria": [
+   "Opens directly into the pipeline timeline without scrolling to reach the first stage",
+   "All six stages visible with distinct status colors that pass 4.5:1 contrast on the dark background",
+   "Clicking a stage opens its evidence drawer; Escape closes it",
+   "Zoom control works and persists during a session; reduced-motion disables transitions",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Ships placeholder copy, empty sections, or console errors instead of a working page",
+   "Ignores the requested status colors / chain order and renders an unstructured list",
+   "Claims browser verification that was not performed"
+  ]
+ },
+ {
+  "id": "requirement-chain-card",
+  "request": "Build a requirement-parsing chain card page: one spoken-language requirement at the top, flowing into parsed summary, scope boundary, key questions, reference links with sources, design contract digest, artifact, and acceptance evidence as a vertical chain, each step expandable.",
+  "context": "New web UI. Mobile viewport must remain usable. Chain data comes from an embedded JSON array of steps with title, detail, and optional evidence links.",
+  "passCriteria": [
+   "Chain reads top-to-bottom in requirement order with visible connectors between steps",
+   "Every step expands and collapses; expansion state is keyboard reachable",
+   "Reference links render with visible source domain labels",
+   "At 390px width no horizontal scroll is introduced",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Ships placeholder copy, empty sections, or console errors instead of a working page",
+   "Ignores the requested status colors / chain order and renders an unstructured list",
+   "Claims browser verification that was not performed"
+  ]
  }
 ]

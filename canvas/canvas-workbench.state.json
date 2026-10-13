@@ -1,0 +1,44 @@
+{
+ "task": "工作流画布工作台（Canvas Workbench）",
+ "revision": "P-canvas-1",
+ "updatedOn": "2026-10-13",
+ "note": "把六道门流水线从文档态升级为可视化工作台：门径画布 MVP → 需求解析链路可视 → 品牌化+产物墙。规划=docs/canvas-workbench-plan.md（门 A 方向稿）。",
+ "stages": {
+  "brief": {
+   "status": "gated",
+   "evidence": "docs/canvas-workbench-plan.md",
+   "note": "门 A 方向稿已呈交（三阶段规划+现状对账表），等用户裁决"
+  },
+  "reference": {
+   "status": "passed",
+   "evidence": "docs/competitive-insights/2026-10-11-onlook/insight.md",
+   "note": "对标已集：Onlook 画布机制/bolt 设计系统专题/v0 Agentic+设计系统（学习循环 20-26 轮），第四层定位论证完成"
+  },
+  "contract": {
+   "status": "pending",
+   "note": "等门 A 通过后按 design-contract 定画布语义 token 与动效参数"
+  },
+  "build": {
+   "status": "active",
+   "evidence": "scripts/workflow-diagram/（复用既有画布壳：自包含 HTML/相机/证据嵌入/visual 验收）",
+   "note": "增量 1：接入真实任务状态（本文件即画布工作台自身的第一份活数据——吃狗粮）"
+  },
+  "verify": {
+   "status": "pending",
+   "note": "每增量过 cli visual 无头多视口回执 + 六维验收"
+  },
+  "deliver": {
+   "status": "pending",
+   "note": "产物入画布产物墙，与对标产物六维并排（KPI4）"
+  }
+ },
+ "gates": {
+  "A": "gated",
+  "B": "passed",
+  "C": "pending",
+  "D": "pending",
+  "E": "pending",
+  "F": "pending"
+ },
+ "blockedReason": null
+}

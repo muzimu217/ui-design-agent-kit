@@ -34,7 +34,7 @@
     "init": "node scripts/uak-init.mjs",
     "daily-brief": "node scripts/daily-report-gen.mjs",
     "verify:page": "node scripts/verify-page.mjs",
-    "canvas:build": "node scripts/workflow-diagram/cli.mjs build output/canvas-workbench.html --state canvas/canvas-workbench.state.json --title '工作流画布工作台 · 实时门径' && node canvas/render-chain.mjs canvas/chain-canvas-workbench.json output/chain-canvas-workbench.html"
+    "canvas:build": "node scripts/workflow-diagram/cli.mjs build output/canvas-workbench.html --state canvas/canvas-workbench.state.json --title '工作流画布工作台 · 实时门径' && node canvas/render-chain.mjs canvas/chain-canvas-workbench.json output/chain-canvas-workbench.html && node canvas/render-index.mjs output/canvas-index.html"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

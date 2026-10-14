@@ -1424,5 +1424,39 @@
    "Re-verification status is hidden or fake",
    "Breaking changes can be skipped"
   ]
+ },
+ {
+  "id": "workbench-entry-hub",
+  "request": "Build a dark entry hub page for a workbench: three linked cards (live gate canvas, requirement chain, plan document), a gate-status pill row (A-F with per-status colors), and a six-stage status grid where each stage shows status and note.",
+  "context": "New web UI. Data from embedded JSON; cards link to sibling offline pages; responsive auto-fit grid.",
+  "passCriteria": [
+   "Three entry cards render with distinct descriptions and working relative links",
+   "Gate pills show per-gate status with per-status border colors",
+   "Six-stage grid renders each stage with its status color and note",
+   "Grid reflows without horizontal overflow at 640px",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Cards render without links or with placeholder text",
+   "Gate pills all show the same color regardless of status",
+   "Stage notes are truncated without ellipsis or wrap"
+  ]
+ },
+ {
+  "id": "artifact-wall-summary",
+  "request": "Build an artifact wall section listing produced artifacts: each row shows title and round, expanding to path, six-dimension verification summary, comparison target with verdict, and status.",
+  "context": "New web UI. Data from an embedded JSON array; collapsed rows keep the wall compact.",
+  "passCriteria": [
+   "Each artifact row shows title and round in the collapsed state",
+   "Expanded view renders path as code, six-dim summary, and comparison verdict",
+   "Multiple artifacts stack without layout shift",
+   "Long paths wrap via overflow-wrap without overflow",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Wall renders as a raw JSON dump",
+   "Expanded details omit the comparison verdict",
+   "Long paths cause horizontal overflow"
+  ]
  }
 ]

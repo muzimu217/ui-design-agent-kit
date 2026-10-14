@@ -1458,5 +1458,37 @@
    "Expanded details omit the comparison verdict",
    "Long paths cause horizontal overflow"
   ]
+ },
+ {
+  "id": "dark-page-contrast-pass",
+  "request": "Build a dark-theme page where every text element (headings, body, summary rows, code chips, footer) passes WCAG 4.5:1 contrast against its actual rendered background, verified via computed styles not design-time swatches.",
+  "context": "New web UI. Verification uses measured computed colors on the live page; nested panels change effective backgrounds.",
+  "passCriteria": [
+   "All sampled text >= 4.5:1 against nearest opaque ancestor background",
+   "Code chips and dim labels included in the sample",
+   "No console errors (including favicon requests)",
+   "Verification is reproducible via a script, not a one-off eyeball"
+  ],
+  "failConditions": [
+   "Dim labels or code text below 4.5:1",
+   "Console 404 on favicon or other auto-requested resource",
+   "Contrast claimed from design swatches rather than measured styles"
+  ]
+ },
+ {
+  "id": "summary-tab-order",
+  "request": "Build a details/summary step list where keyboard-only navigation can reach and toggle every summary row in document order, with focus outline visible.",
+  "context": "New web UI. No custom keyboard JS; rely on native details semantics; verify via automation pressing Tab.",
+  "passCriteria": [
+   "Tab reaches every summary exactly once in order",
+   "Enter/Space toggles the focused details",
+   "Focus indicator visible on summary rows",
+   "No focus traps or skipped rows"
+  ],
+  "failConditions": [
+   "Summaries unreachable by keyboard",
+   "Custom JS breaks native toggle",
+   "Focus jumps out of order"
+  ]
  }
 ]

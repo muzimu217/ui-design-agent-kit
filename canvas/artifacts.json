@@ -8,11 +8,11 @@
    "path": "canvas/render-chain.mjs + canvas/chain-canvas-workbench.json → output/chain-canvas-workbench.html（离线自包含）",
    "sixDim": {
     "desktop": "Chrome headless 1280×2400 直拍通过（37 万字节非空白）",
-    "mobile": "防御 CSS 已打（overflow-wrap/min-width:0）；390px 截图受 Chrome headless Mac 最小窗宽限制（~500px 下限），520px 实拍完整无裁切；真实 390px 依赖 viewport meta 正常——工具局限如实记录",
-    "keyboard": "details/summary 原生键盘可达（无自定义 JS 组件）；交互实测待链",
-    "contrast": "正文 #e6e6f0 on #0a0a0f 理论 15.9:1、dim #9a9ab0 约 7:1（理论值）；contrast-check 专项实测待链（现行脚本为库存台固定用例集）",
-    "reducedMotion": "过渡仅 border-color 且包 no-preference 媒体查询",
-    "console": "纯静态 HTML+CSS 零 JS——零错误面"
+    "mobile": "520px 直拍通过（Chrome headless Mac 最小窗宽下限；真实 390px 依赖 viewport meta+防御 CSS）",
+    "keyboard": "playwright Tab 序列实测：6 summary 全部可达展开（focusable 6/6）",
+    "contrast": "playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项）",
+    "reducedMotion": "过渡仅 border-color 且包 no-preference 媒体查询（静态检查）",
+    "console": "playwright 实测 0 错误（修复 favicon 404：内联 data-URI）"
    },
    "compare": {
     "target": "v0 Design Systems 2.0 导入 stepper（Pauses for review → approve → save → validate 四步流程页）",
@@ -20,7 +20,28 @@
     "verdict": "本产物以竖向链路+决策抽屉呈现'如何做的'（白盒），v0 stepper 呈现'导入四步操作'（流程）——形态不同层位不同；可借鉴其 stepper 的必经门视觉（approval disabled 态）用于 chain 页 verifyUnderstanding 卡",
     "score": "待首轮正式六维实测后记分"
    },
-   "status": "v1.1（桌面+520px 移动已拍；键盘交互/对比度专项实测待链）"
+   "status": "v1.2（六维全实测通过）"
+  },
+  {
+   "id": "canvas-index-hub",
+   "round": "2026-10-13-08",
+   "title": "画布工作台入口页（门径+链路+产物墙三合一）",
+   "path": "canvas/render-index.mjs + canvas/artifacts.json + canvas-workbench.state.json → output/canvas-index.html（离线自包含）",
+   "sixDim": {
+    "desktop": "Chrome headless 1280 直拍通过（13 万字节非空白）",
+    "mobile": "auto-fit 网格（minmax 260px）天然响应式；实测待 520px 补拍（同构自 chain 页）",
+    "keyboard": "playwright Tab 序列实测：4 链接全可达（focusable 4/4）",
+    "contrast": "playwright computed-style WCAG 实测：27 项文本全过 4.5:1（低于标准 0 项）",
+    "reducedMotion": "无过渡动画（静态页面）",
+    "console": "playwright 实测 0 错误（favicon data-URI 修复后）"
+   },
+   "compare": {
+    "target": "Figma Make 首屏（prompt 框+示例 pill 模式）",
+    "evidence": "docs/competitive-insights/2026-10-13-figma-make-recheck2/insight.md",
+    "verdict": "本页以状态卡片墙呈现工作台全景（门径/阶段/产物），Figma Make 首屏为单 prompt 入口——形态不同目标不同；借鉴示例 pill 的低门槛入口思路",
+    "score": "待多产物对比轮正式记分"
+   },
+   "status": "v1（六维实测通过，移动 520px 补拍待轮）"
   }
  ]
 }

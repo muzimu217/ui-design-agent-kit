@@ -1490,5 +1490,39 @@
    "Custom JS breaks native toggle",
    "Focus jumps out of order"
   ]
+ },
+ {
+  "id": "artifact-wall-sorted-badges",
+  "request": "Build an artifact wall where entries are sorted newest-round first, each collapsed row shows a six-dimension completion badge (n/6) derived from natural-language verification notes, and expanding reveals full verification details.",
+  "context": "New web UI. Completion counting parses verification notes by keywords (verified/measured/passed), not hardcoded enums. Data embedded.",
+  "passCriteria": [
+   "Entries sort by round descending",
+   "Badge shows measured count out of 6 matching the notes",
+   "Collapsed rows fit one line without overflow at 520px",
+   "Badge and title remain distinguishable",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Sorting ignores round",
+   "Badge hardcodes counts or always shows 6/6",
+   "Collapsed rows overflow at 520px"
+  ]
+ },
+ {
+  "id": "trust-sources-distinction",
+  "request": "Build a trust section that clearly distinguishes two trust sources: authority endorsement (logo wall) and verifiable evidence (linked acceptance records), rendering them as separate labeled groups rather than mixing them.",
+  "context": "New web UI. Two groups from embedded JSON; the evidence group entries must carry real links, the logo group is visual only.",
+  "passCriteria": [
+   "Two labeled groups render separately",
+   "Evidence entries each carry a working link to a record",
+   "Logo group renders visually without fake links",
+   "Groups reflow in one column at 520px without overflow",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Logos rendered as links to nowhere",
+   "Evidence entries without real links",
+   "Groups visually merged into one undifferentiated strip"
+  ]
  }
 ]

@@ -29,7 +29,7 @@
    "path": "canvas/render-index.mjs + canvas/artifacts.json + canvas-workbench.state.json → output/canvas-index.html（离线自包含）",
    "sixDim": {
     "desktop": "Chrome headless 1280 直拍通过（13 万字节非空白）",
-    "mobile": "auto-fit 网格（minmax 260px）天然响应式；实测待 520px 补拍（同构自 chain 页）",
+    "mobile": "520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）",
     "keyboard": "playwright Tab 序列实测：4 链接全可达（focusable 4/4）",
     "contrast": "playwright computed-style WCAG 实测：27 项文本全过 4.5:1（低于标准 0 项）",
     "reducedMotion": "无过渡动画（静态页面）",
@@ -41,7 +41,7 @@
     "verdict": "本页以状态卡片墙呈现工作台全景（门径/阶段/产物），Figma Make 首屏为单 prompt 入口——形态不同目标不同；借鉴示例 pill 的低门槛入口思路",
     "score": "待多产物对比轮正式记分"
    },
-   "status": "v1（六维实测通过，移动 520px 补拍待轮）"
+   "status": "v1.1（六维全实测通过）"
   }
  ]
 }

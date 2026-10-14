@@ -27,9 +27,17 @@ async function main() {
     .map(([id, st]) => `<span class="pill" style="border-color:${gateColor[st] ?? gateColor.pending}">${esc(id)} · ${esc(st)}</span>`)
     .join("");
 
-  const rows = artifacts.artifacts
+  // 排序视图：round 降序（最新在前），并给每条算六维完成度徽章（已实测项数/6）。
+  // 完成度判定按措辞（通过/实测/直拍/可达/全过）——六维条目是自然语言，无法硬编码枚举。
+  const sixKeys = ["desktop", "mobile", "keyboard", "contrast", "reducedMotion", "console"];
+  const measured = (a) => {
+    const sd = a.sixDim ?? {};
+    return sixKeys.filter((k) => /通过|实测|直拍|可达|全过/.test(String(sd[k] ?? ""))).length;
+  };
+  const sorted = [...artifacts.artifacts].sort((a, b) => (a.round < b.round ? 1 : a.round > b.round ? -1 : 0));
+  const rows = sorted
     .map(
-      (a) => `<details class="art"><summary><span class="t">${esc(a.title)}</span><span class="round">${esc(a.round)}</span></summary>
+      (a) => `<details class="art"><summary><span class="badge">${measured(a)}/6</span><span class="t">${esc(a.title)}</span><span class="round">${esc(a.round)}</span></summary>
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>${esc(a.path)}</code></span></div>
         <div class="row"><span class="k">六维</span><span class="v">${esc(Object.entries(a.sixDim ?? {}).map(([k, v]) => `${k}: ${v}`).join("；")).slice(0, 500)}</span></div>
@@ -82,6 +90,7 @@ async function main() {
   details.art summary::-webkit-details-marker { display:none; }
   .t { font-weight:600; flex:1; }
   .round { color:var(--dim); font-size:12px; }
+  .badge { flex:none; background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:1px 8px; font-size:11px; color:#a7f3d0; }
   .body { padding:0 16px 14px; font-size:13px; }
   .row { display:flex; gap:10px; margin:6px 0; min-width:0; }
   .k { color:var(--dim); min-width:48px; flex:none; }

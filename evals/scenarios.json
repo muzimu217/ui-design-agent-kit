@@ -1390,5 +1390,39 @@
    "Decision drawer omits the basis citations",
    "Collapsed summaries hide the warning"
   ]
+ },
+ {
+  "id": "mobile-viewport-integrity",
+  "request": "Build any card-based dark page that remains fully readable at 390px width: cards shrink to viewport, long CJK and Latin strings wrap without horizontal overflow, and no content is clipped at the right edge.",
+  "context": "New web UI. Flex rows must not expand past the container; test at 390px and 520px viewports.",
+  "passCriteria": [
+   "No horizontal scroll at 390px",
+   "Long unbreakable strings (paths, IDs) wrap via overflow-wrap",
+   "Flex rows use min-width:0 so children cannot force container expansion",
+   "Cards visually fit the viewport with padding intact",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Text clipped at the right edge at 390px",
+   "Horizontal scrollbar appears",
+   "Cards overflow the viewport width"
+  ]
+ },
+ {
+  "id": "update-reverify-loop",
+  "request": "Build an update-flow section for a versioned artifact: when a new version arrives (with release notes and breaking changes listed), the flow updates the artifact and then runs a mandatory re-verification step before confirming; show re-verification status visibly.",
+  "context": "New web UI. Based on the 'update = re-verify' pattern; single page, state from embedded JSON.",
+  "passCriteria": [
+   "Update action requires release-notes/breaking-changes input before proceeding",
+   "Re-verification step is mandatory and its status (pending/running/passed) is visible",
+   "Confirm state is unreachable until re-verification passes",
+   "Previous version remains visible for comparison",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Update completes without re-verification",
+   "Re-verification status is hidden or fake",
+   "Breaking changes can be skipped"
+  ]
  }
 ]

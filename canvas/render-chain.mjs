@@ -66,16 +66,17 @@ function render(chain) {
 <style>
   :root { color-scheme: dark; --bg:#0a0a0f; --panel:#141420; --line:#26263a; --text:#e6e6f0; --dim:#9a9ab0; }
   * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.65 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif; padding:32px 20px 64px; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.65 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif; padding:32px 20px 64px; overflow-x:hidden; overflow-wrap:anywhere; }
   main { max-width: 860px; margin: 0 auto; }
   h1 { font-size:22px; letter-spacing:-0.01em; margin:0 0 4px; }
   .meta { color:var(--dim); font-size:13px; margin-bottom:24px; }
   .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:14px; }
   .card h2 { font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--dim); margin:0 0 10px; }
-  .kv { display:flex; gap:10px; margin:6px 0; }
+  .kv { display:flex; gap:10px; margin:6px 0; min-width:0; }
+  .kv .v { min-width:0; overflow-wrap:anywhere; }
   .k { color:var(--dim); min-width:72px; flex:none; font-size:13px; }
   .v { flex:1; }
-  .raw { background:#0d0d15; border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:14px; color:#d8d8e8; }
+  .raw { background:#0d0d15; border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:14px; color:#d8d8e8; overflow-wrap:anywhere; }
   code { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:12px; color:#8ab4ff; word-break:break-all; }
   details.step { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--c,#6b7280); border-radius:10px; margin-bottom:10px; }
   details.step summary { cursor:pointer; display:flex; align-items:center; gap:10px; padding:12px 16px; list-style:none; }

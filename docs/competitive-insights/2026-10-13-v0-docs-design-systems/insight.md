@@ -38,3 +38,10 @@
 - **v0.json 机器契约**：`referenceWorkspace.sources`（只读 GitHub 源挂载，≤3 个，含 repo/ref/mountPath）+ `starter`（skill-directory/empty/v0-default 三种）——"the file is the source of truth for what gets applied"。设计系统契约的机器可读化方向与我们 design-contract JSON 化同向。
 - **提炼物（Figma frames/docs）蒸馏进 skill instructions**而非长驻 v0.json——输入与契约分层。
 - 对本仓画布的即时影响：chain.schema.md 的 `verifyUnderstanding.confirmedBy=user` 门与 v0 的 pause→approve→save 同构——方向再次互证。
+
+## ⑦ 补录（00 点档续读 Best practices/FAQ 节）
+
+- **Best practices 五条**：①源要含设计系统本体+至少一个真实消费 app ②宁要最新文档/版本/可用示例，不要陈旧而全的参考 ③私有包先配 team npm 凭据或附 .tgz ④**记录全局设置（providers/主题包装/字体/CSS 导入/Tailwind config/环境变量）** ⑤一源一系统一栈，不混。
+- **starter app 的机制细节（FAQ）**：v0 默认 Next.js+shadcn/ui+Tailwind 起步，**可能与用户自有设计系统冲突**——导入时配置专属 starter 并存进 skill，后续 chat 从它起步，省去重复 setup 的 token/时间。"**不重蹈默认栈**"是 starter 存在的理由。
+- **更新机制**：在任何 chat 里让 v0 更新 skill（附新版本/变更源/release notes/迁移指南/破坏性变更）→ v0 更新 skill 并**重新验证 starter app**；也可在 Design Systems 页手动编辑。**更新=重验证**，不是静默换版。
+- **对本仓落点**：④"记录全局设置清单"与本仓 design-contract 的必填项（语义 token/字体/动效参数）同构；"更新=重验证"与门 D 契约修订流程同构——两条互证已足够，**本对象检视收官**（三节深读完毕：导入/契约/最佳实践+更新）。

@@ -1356,5 +1356,39 @@
    "Copy button has no visible feedback",
    "Contrast fails on any label"
   ]
+ },
+ {
+  "id": "requirement-anchor-integrity",
+  "request": "Build a requirement card component that renders the user's raw spoken requirement verbatim in a quoted block, clearly labeled as the untouchable anchor, visually distinct from the parsed summary card below it.",
+  "context": "New web UI. Two cards stacked; raw text may contain long paragraphs and must not be rewritten or truncated by the UI layer.",
+  "passCriteria": [
+   "Raw requirement renders full-length with a visible 'verbatim anchor' label",
+   "Parsed summary card is visually distinct (different border accent or header)",
+   "Long paragraphs wrap without overflow at 390px width",
+   "Raw text is byte-identical to the input string in the DOM",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "UI truncates, rewrites, or summarizes the raw requirement",
+   "Two cards are visually indistinguishable",
+   "Horizontal overflow at mobile width"
+  ]
+ },
+ {
+  "id": "blackbox-step-warning",
+  "request": "Build a step timeline where steps with a decision record render an expandable decision drawer (question/choice/basis), and steps WITHOUT one render a visible yellow warning badge marking them as opaque steps.",
+  "context": "New web UI. Steps come from an embedded JSON array; the warning must be unmistakable without opening the step.",
+  "passCriteria": [
+   "Steps with decisions show expandable question/choice/basis drawer",
+   "Steps without decisions show a visible yellow warning in the collapsed summary row",
+   "Warning text explains the step is opaque (no decision record)",
+   "Status colors remain distinguishable for all steps",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Opaque steps render identically to normal steps (no warning)",
+   "Decision drawer omits the basis citations",
+   "Collapsed summaries hide the warning"
+  ]
  }
 ]

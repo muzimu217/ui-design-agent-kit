@@ -1,0 +1,26 @@
+{
+  "note": "画布产物墙（KPI4）：每轮开发线 1 个 mini 产物入墙，与对标产物六维并排对比。对比截图按 ADR-0002 本地留存（compare 字段指向 insight.md 或本地路径），六维=桌面/移动/键盘/对比度/reduced-motion/console。",
+  "artifacts": [
+    {
+      "id": "chain-canvas-workbench",
+      "round": "2026-10-13-00",
+      "title": "需求解析链路页（chain 渲染器首个产物）",
+      "path": "canvas/render-chain.mjs + canvas/chain-canvas-workbench.json → output/chain-canvas-workbench.html（离线自包含）",
+      "sixDim": {
+        "desktop": "Chrome headless 1280×2400 直拍通过（37 万字节非空白，/tmp/chain-shot.png）",
+        "mobile": "CSS 含 640px 断点（实拍待下轮补）",
+        "keyboard": "details 原生键盘可达（实拍待下轮补）",
+        "contrast": "文字 #e6e6f0 on #0a0a0f 及卡片面板，预估 ≥7:1（实测待下轮 contrast-check）",
+        "reducedMotion": "仅 border-color 过渡且包 no-preference 媒体查询",
+        "console": "零脚本（纯静态 HTML+CSS，无 JS 逻辑错误面）"
+      },
+      "compare": {
+        "target": "v0 Design Systems 2.0 导入 stepper（Pauses for review → approve → save → validate 四步流程页）",
+        "evidence": "docs/competitive-insights/2026-10-13-v0-docs-design-systems/insight.md",
+        "verdict": "本产物以竖向链路+决策抽屉呈现'如何做的'（白盒），v0 stepper 呈现'导入四步操作'（流程）——形态不同层位不同；可借鉴其 stepper 的必经门视觉（approval disabled 态）用于 chain 页 verifyUnderstanding 卡",
+        "score": "待首轮正式六维实测后记分"
+      },
+      "status": "v1（桌面已拍；移动/键盘/对比度实测下轮补齐）"
+    }
+  ]
+}

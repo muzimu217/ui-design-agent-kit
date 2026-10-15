@@ -41,7 +41,7 @@ function stepHtml(step, index) {
   const decision = step.decision
     ? `<div class="decision"><div class="d-row"><span class="q">面对：${esc(step.decision.question)}</span></div>
        <div class="d-row"><span class="a">选择：${esc(step.decision.chose)}</span></div>
-       ${step.decision.basis?.length ? `<div class="d-row basis">依据：${step.decision.basis.map((b) => `<code>${esc(b)}</code>`).join(" ")}</div>` : ""}</div>`
+       ${step.decision.basis?.length ? `<div class="d-row basis">依据：${step.decision.basis.map((b) => `<a class="basis-link" href="${esc(b)}" target="_blank" rel="noreferrer"><code>${esc(b)}</code></a>`).join(" ")}</div>` : ""}</div>`
     : `<div class="decision warn">⚠ 无决策记录（黑盒步骤）</div>`;
   const evidence = step.evidence?.length
     ? `<div class="ev">${step.evidence.map((e) => `<code>${esc(e)}</code>`).join(" ")}</div>`
@@ -78,6 +78,14 @@ function render(chain) {
   .k { color:var(--dim); min-width:72px; flex:none; font-size:13px; }
   .v { flex:1; }
   .raw { background:#0d0d15; border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:14px; color:#d8d8e8; overflow-wrap:anywhere; }
+  .compare { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .compare .col h3 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); margin:0 0 6px; }
+  .compare .col .raw { font-size:13px; }
+  .vu-badge { display:inline-block; border:1px solid #34d399; border-radius:99px; padding:2px 10px; font-size:12px; color:#34d399; }
+  .vu-badge.pending { border-color:#fbbf24; color:#fbbf24; }
+  @media (max-width: 640px) { .compare { grid-template-columns:1fr; } }
+  a.basis-link { color:#8ab4ff; text-decoration:none; border-bottom:1px dotted #3b5b8f; }
+  a.basis-link:hover { border-bottom-color:#8ab4ff; }
   code { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:12px; color:#8ab4ff; word-break:break-all; }
   details.step { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--c,#6b7280); border-radius:10px; margin-bottom:10px; }
   details.step summary { cursor:pointer; display:flex; align-items:center; gap:10px; padding:12px 16px; list-style:none; }
@@ -107,7 +115,10 @@ function render(chain) {
 
   ${card("原始口语需求（逐字锚点）", `<div class="raw">${esc(req.raw)}</div>`, "#7c3aed")}
   ${card("解析摘要与范围", kv("摘要", esc(req.summary)) + kv("范围·做", esc((req.scope?.in ?? []).join("、"))) + kv("范围·不做", esc((req.scope?.out ?? []).join("、"))) + kv("关键问题", esc((req.keyQuestions ?? []).join("；"))), "#7c3aed")}
-  ${card("理解验证（AI 复述 · 用户比对）", `<div class="raw">${esc(vu.restated ?? "—")}</div>` + kv("确认", esc(vu.confirmedBy ?? "pending") + (vu.at ? ` · ${esc(vu.at)}` : "")), "#22d3ee")}
+  ${card("理解验证（AI 复述 · 用户比对）", `<div class="compare">
+      <div class="col"><h3>原始口语（锚点）</h3><div class="raw">${esc(req.raw)}</div></div>
+      <div class="col"><h3>AI 复述（供比对）</h3><div class="raw">${esc(vu.restated ?? "—")}</div></div>
+    </div>` + `<div style="margin-top:10px"><span class="vu-badge ${vu.confirmedBy === "user" ? "" : "pending"}">${vu.confirmedBy === "user" ? "✓ 用户已比对确认" : "… 待用户比对确认"}</span>${vu.at ? ` <span class="k">${esc(vu.at)}</span>` : ""}</div>`, "#22d3ee")}
   <h2 style="font-size:13px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin:22px 0 10px">六步链路（点击展开决策依据）</h2>
   ${steps}
   ${chain.artifact ? card("产物", kv("路径", `<code>${esc(chain.artifact.path)}</code>`) + kv("类型", esc(chain.artifact.kind ?? "")), "#34d399") : ""}

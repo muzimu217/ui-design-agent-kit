@@ -19,6 +19,14 @@
   .k { color:var(--dim); min-width:72px; flex:none; font-size:13px; }
   .v { flex:1; }
   .raw { background:#0d0d15; border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:14px; color:#d8d8e8; overflow-wrap:anywhere; }
+  .compare { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .compare .col h3 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); margin:0 0 6px; }
+  .compare .col .raw { font-size:13px; }
+  .vu-badge { display:inline-block; border:1px solid #34d399; border-radius:99px; padding:2px 10px; font-size:12px; color:#34d399; }
+  .vu-badge.pending { border-color:#fbbf24; color:#fbbf24; }
+  @media (max-width: 640px) { .compare { grid-template-columns:1fr; } }
+  a.basis-link { color:#8ab4ff; text-decoration:none; border-bottom:1px dotted #3b5b8f; }
+  a.basis-link:hover { border-bottom-color:#8ab4ff; }
   code { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:12px; color:#8ab4ff; word-break:break-all; }
   details.step { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--c,#6b7280); border-radius:10px; margin-bottom:10px; }
   details.step summary { cursor:pointer; display:flex; align-items:center; gap:10px; padding:12px 16px; list-style:none; }
@@ -56,7 +64,10 @@
   </section>
   <section class="card" style="border-left:3px solid #22d3ee">
     <h2>理解验证（AI 复述 · 用户比对）</h2>
-    <div class="raw">你要的不是新功能堆叠，而是把已经存在的六道门流水线『打开给人看』：画布上能看到每一步怎么做的、依据什么、审查结论是什么；门面要高端品牌质感；每轮都要有小产物和与网上同类效果的质量对比；样本库持续扩量——整体走产业化流水线。</div><div class="kv"><span class="k">确认</span><span class="v">user · 2026-10-13（用户 10-13 指令即包含对本仓现状的追问与方向确认，视为门 A 通过）</span></div>
+    <div class="compare">
+      <div class="col"><h3>原始口语（锚点）</h3><div class="raw">我们这个项目整体的架构怎么样？它有没有前端的工作台界面？……我觉得这样挺好的。有AI调用技能，开发个完善的画布界面，包括这个项目是如何实现的，一步步能可视化，而且不是黑盒状态。还有审查，每一步都审查，对吧？就是按照用户的需求进行解析理解，跟做品牌化、高端化方向走，不可能做一个很简陋的画面……还有相关的测试样本还需要增加，和每一次都要进行一些一系列小测试和测试产物。看看每次产物对比网上那些做出来的效果如何？产品质量如何？我们要走高端化，产业化、流水线制的路线。</div></div>
+      <div class="col"><h3>AI 复述（供比对）</h3><div class="raw">你要的不是新功能堆叠，而是把已经存在的六道门流水线『打开给人看』：画布上能看到每一步怎么做的、依据什么、审查结论是什么；门面要高端品牌质感；每轮都要有小产物和与网上同类效果的质量对比；样本库持续扩量——整体走产业化流水线。</div></div>
+    </div><div style="margin-top:10px"><span class="vu-badge ">✓ 用户已比对确认</span> <span class="k">2026-10-13（用户 10-13 指令即包含对本仓现状的追问与方向确认，视为门 A 通过）</span></div>
   </section>
   <h2 style="font-size:13px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin:22px 0 10px">六步链路（点击展开决策依据）</h2>
   <details class="step" style="--c:#34d399" >
@@ -64,28 +75,28 @@
       <span class="t">需求与方向</span><span class="st" style="color:#34d399">passed</span></summary>
     <div class="body"><p>现状对账表（9 项诉求逐条判定有/无/半有）+三阶段路线+扩量计划，落 docs/canvas-workbench-plan.md 并入 goal.md G5</p><div class="decision"><div class="d-row"><span class="q">面对：重写新画布还是复用既有壳？</span></div>
        <div class="d-row"><span class="a">选择：复用 workflow-diagram 壳接数据流</span></div>
-       <div class="d-row basis">依据：<code>scripts/workflow-diagram/ 已有自包含 HTML/相机/证据嵌入/状态机/visual 验收（增量 1 实测 107KB check 零问题）</code></div></div><div class="ev"><code>docs/canvas-workbench-plan.md</code> <code>docs/goal.md#G5</code></div></div>
+       <div class="d-row basis">依据：<a class="basis-link" href="scripts/workflow-diagram/ 已有自包含 HTML/相机/证据嵌入/状态机/visual 验收（增量 1 实测 107KB check 零问题）" target="_blank" rel="noreferrer"><code>scripts/workflow-diagram/ 已有自包含 HTML/相机/证据嵌入/状态机/visual 验收（增量 1 实测 107KB check 零问题）</code></a></div></div><div class="ev"><code>docs/canvas-workbench-plan.md</code> <code>docs/goal.md#G5</code></div></div>
   </details>
 <details class="step" style="--c:#34d399" >
     <summary><span class="dot"></span><span class="idx">02</span>
       <span class="t">参考素材</span><span class="st" style="color:#34d399">passed</span></summary>
     <div class="body"><p>对标已集：Onlook 画布机制、bolt 设计系统专题、v0 Agentic+DS 2.0（学习循环 20-27 轮）</p><div class="decision"><div class="d-row"><span class="q">面对：画布交互参考谁的机制？</span></div>
        <div class="d-row"><span class="a">选择：时间轴+证据抽屉+状态三色（Onlook/v0 机制抽象，外观自主）</span></div>
-       <div class="d-row basis">依据：<code>docs/competitive-insights/2026-10-11-onlook/insight.md ⑤对照表</code></div></div><div class="ev"><code>docs/competitive-insights/2026-10-11-onlook/insight.md</code> <code>docs/competitive-insights/2026-10-13-v0-docs-design-systems/insight.md</code></div></div>
+       <div class="d-row basis">依据：<a class="basis-link" href="docs/competitive-insights/2026-10-11-onlook/insight.md ⑤对照表" target="_blank" rel="noreferrer"><code>docs/competitive-insights/2026-10-11-onlook/insight.md ⑤对照表</code></a></div></div><div class="ev"><code>docs/competitive-insights/2026-10-11-onlook/insight.md</code> <code>docs/competitive-insights/2026-10-13-v0-docs-design-systems/insight.md</code></div></div>
   </details>
 <details class="step" style="--c:#22d3ee" open>
     <summary><span class="dot"></span><span class="idx">03</span>
       <span class="t">原型与契约</span><span class="st" style="color:#22d3ee">active</span></summary>
     <div class="body"><p>chain.json schema v1 落盘（含 v0 式理解验证步）+画布自身 design-contract 待定稿</p><div class="decision"><div class="d-row"><span class="q">面对：审查记录如何从文档态升级为界面态？</span></div>
        <div class="d-row"><span class="a">选择：chain.json decisions[]（每步 question/chose/basis）+verifyUnderstanding 复述比对门</span></div>
-       <div class="d-row basis">依据：<code>canvas/chain.schema.md 规则 1-4</code></div></div><div class="ev"><code>canvas/chain.schema.md</code> <code>canvas/chain-canvas-workbench.json</code></div></div>
+       <div class="d-row basis">依据：<a class="basis-link" href="canvas/chain.schema.md 规则 1-4" target="_blank" rel="noreferrer"><code>canvas/chain.schema.md 规则 1-4</code></a></div></div><div class="ev"><code>canvas/chain.schema.md</code> <code>canvas/chain-canvas-workbench.json</code></div></div>
   </details>
 <details class="step" style="--c:#22d3ee" open>
     <summary><span class="dot"></span><span class="idx">04</span>
       <span class="t">交互实现</span><span class="st" style="color:#22d3ee">active</span></summary>
     <div class="body"><p>增量 1：state 接入 workflow-diagram 壳生成自包含画布 HTML（107KB，check 零问题）；增量 2：cli visual Chrome --user-data-dir 隔离修复（三视口回执 ok:true）</p><div class="decision"><div class="d-row"><span class="q">面对：MVP 形态选 React 管线还是自包含 HTML？</span></div>
        <div class="d-row"><span class="a">选择：先自包含 HTML（复用既有生成器），React 壳阶段 3 再评估</span></div>
-       <div class="d-row basis">依据：<code>scripts/workflow-diagram/html.mjs 既有模式</code> <code>output/canvas-workbench-visual.json 三视口捕获</code></div></div><div class="ev"><code>canvas/canvas-workbench.state.json</code> <code>output/canvas-workbench-visual.json</code></div></div>
+       <div class="d-row basis">依据：<a class="basis-link" href="scripts/workflow-diagram/html.mjs 既有模式" target="_blank" rel="noreferrer"><code>scripts/workflow-diagram/html.mjs 既有模式</code></a> <a class="basis-link" href="output/canvas-workbench-visual.json 三视口捕获" target="_blank" rel="noreferrer"><code>output/canvas-workbench-visual.json 三视口捕获</code></a></div></div><div class="ev"><code>canvas/canvas-workbench.state.json</code> <code>output/canvas-workbench-visual.json</code></div></div>
   </details>
 <details class="step" style="--c:#22d3ee" open>
     <summary><span class="dot"></span><span class="idx">05</span>

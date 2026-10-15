@@ -1592,5 +1592,39 @@
    "Broken or absolute local path links",
    "Section duplicates content verbatim from the plan"
   ]
+ },
+ {
+  "id": "verify-understanding-compare",
+  "request": "Build a two-column comparison card for requirement understanding verification: left column shows the raw spoken requirement (verbatim anchor), right column shows the AI restatement for comparison, with a status badge (user-confirmed vs pending) and timestamp below.",
+  "context": "New web UI. Columns collapse to stacked at 640px; badge color distinguishes confirmed (green) from pending (amber).",
+  "passCriteria": [
+   "Two labeled columns render side by side",
+   "Raw text and restatement are visually parallel and complete",
+   "Badge shows confirmed state in green with check, pending in amber",
+   "Columns stack at 640px without overflow",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Columns render without labels",
+   "Badge always shows confirmed regardless of data",
+   "Stacked layout overflows"
+  ]
+ },
+ {
+  "id": "basis-links-clickable",
+  "request": "Build a decision drawer where each basis citation renders as a clickable link (opening in a new tab with rel=noreferrer) styled as a code chip with dotted underline hover.",
+  "context": "New web UI. Basis entries are relative paths or URLs; chips keep word-break for long paths.",
+  "passCriteria": [
+   "Every basis citation is an anchor with target=_blank and rel=noreferrer",
+   "Chip styling preserved (background, border, word-break)",
+   "Hover shows underline affordance",
+   "Long paths wrap without overflow",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Citations render as non-clickable code blocks",
+   "Links missing rel=noreferrer",
+   "Chip style lost on anchor conversion"
+  ]
  }
 ]

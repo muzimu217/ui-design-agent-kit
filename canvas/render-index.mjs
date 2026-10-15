@@ -6,7 +6,7 @@
 //
 // Usage: node canvas/render-index.mjs [output.html]
 
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -26,6 +26,41 @@ async function main() {
   const gatePills = Object.entries(gates)
     .map(([id, st]) => `<span class="pill" style="border-color:${gateColor[st] ?? gateColor.pending}">${esc(id)} · ${esc(st)}</span>`)
     .join("");
+
+  // 多链路注册表：扫 canvas/chain-*.json（除 schema 文档），每条链一行（标题/轮次/步数/确认态/页链接）。
+  // 渲染页文件名约定 = <chain 文件名去掉 .json>.html。
+  const chainFiles = (await readdir(path.join(ROOT, "canvas")))
+    .filter((f) => /^chain-.+\.json$/.test(f))
+    .sort((a, b) => (a < b ? 1 : -1));
+  const chains = [];
+  for (const f of chainFiles) {
+    try {
+      const c = JSON.parse(await readFile(path.join(ROOT, "canvas", f), "utf8"));
+      const page = f.replace(/\.json$/, ".html");
+      chains.push({
+        title: c.title ?? c.chainId ?? f,
+        round: c.round ?? "—",
+        steps: Array.isArray(c.steps) ? c.steps.length : 0,
+        confirmed: c.verifyUnderstanding?.confirmedBy === "user",
+        page,
+      });
+    } catch {
+      chains.push({ title: `${f}（解析失败）`, round: "—", steps: 0, confirmed: false, page: f.replace(/\.json$/, ".html") });
+    }
+  }
+  const chainRows = chains
+    .map(
+      (c) => `<a class="chain-row" href="${esc(c.page)}">
+        <span class="badge">${c.confirmed ? "✓ 已确认" : "… 待确认"}</span>
+        <span class="t">${esc(c.title)}</span>
+        <span class="round">${esc(c.round)} · ${c.steps} 步</span>
+        <span class="open">打开 ↗</span>
+      </a>`
+    )
+    .join("\n");
+  const chainSection = chains.length
+    ? `<h2 class="sec">解析链路（${chains.length} 条）</h2>${chainRows}`
+    : "";
 
   // 排序视图：round 降序（最新在前），并给每条算六维完成度徽章（已实测项数/6）。
   // 完成度判定按措辞（通过/实测/直拍/可达/全过）——六维条目是自然语言，无法硬编码枚举。
@@ -90,6 +125,10 @@ async function main() {
   details.art summary::-webkit-details-marker { display:none; }
   .t { font-weight:600; flex:1; }
   .round { color:var(--dim); font-size:12px; }
+  .chain-row { display:flex; align-items:baseline; gap:10px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin-bottom:8px; text-decoration:none; color:var(--text); min-width:0; }
+  .chain-row:hover { border-color:var(--accent); }
+  .chain-row .t { font-weight:600; flex:1; min-width:0; overflow-wrap:anywhere; }
+  .chain-row .round, .chain-row .open { color:var(--dim); font-size:12px; flex:none; }
   .badge { flex:none; background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:1px 8px; font-size:11px; color:#a7f3d0; }
   .body { padding:0 16px 14px; font-size:13px; }
   .row { display:flex; gap:10px; margin:6px 0; min-width:0; }
@@ -111,6 +150,7 @@ async function main() {
   <h2 class="sec">门径状态</h2>
   <div>${gatePills}</div>
   <div class="stages">${stageCards}</div>
+  ${chainSection}
   <h2 class="sec">产物墙（KPI4 · ${artifacts.artifacts.length} 件）</h2>
   ${rows}
   <footer>canvas workbench · 由 canvas/render-index.mjs 生成 · npm run canvas:build 重建全部</footer>

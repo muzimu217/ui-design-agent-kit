@@ -1626,5 +1626,39 @@
    "Links missing rel=noreferrer",
    "Chip style lost on anchor conversion"
   ]
+ },
+ {
+  "id": "multi-chain-registry",
+  "request": "Build a chain registry section that scans a directory for all chain JSON files (excluding schema docs), rendering each as one row: confirmed badge, title, round, step count, and a link to its rendered page; parse failures render as an error row without breaking the section.",
+  "context": "New web UI. Directory scan at build time; rows link to sibling rendered pages; section hidden gracefully when no chains exist.",
+  "passCriteria": [
+   "All chain files render as rows with badge/title/round/step-count/link",
+   "Confirmed chains show green check badge, others amber pending",
+   "A malformed chain file renders an error row but does not crash the page",
+   "Section shows total count in its heading",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Only the first chain renders",
+   "Malformed file crashes the build or page",
+   "Rows link to wrong pages"
+  ]
+ },
+ {
+  "id": "trending-signal-row-format",
+  "request": "Build a signal log row component for external market signals: each row renders name, play/star count with honest magnitude suffix, recency tag, and a verdict chip (confirmed/preliminary/monitoring) from embedded data.",
+  "context": "New web UI. Rows from embedded JSON; counts must render exactly as provided (no fabrication); verdict chip colors differ per state.",
+  "passCriteria": [
+   "Counts render verbatim from data with magnitude suffix",
+   "Recency tag renders (e.g. '1 天前')",
+   "Verdict chips use distinct colors per state",
+   "Rows stack at 520px without overflow",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Counts are fabricated or rounded up",
+   "Verdict chips all identical",
+   "Rows overflow at 520px"
+  ]
  }
 ]

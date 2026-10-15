@@ -129,6 +129,9 @@ async function main() {
   .chain-row:hover { border-color:var(--accent); }
   .chain-row .t { font-weight:600; flex:1; min-width:0; overflow-wrap:anywhere; }
   .chain-row .round, .chain-row .open { color:var(--dim); font-size:12px; flex:none; }
+  .wall-filter { display:flex; gap:8px; margin-bottom:10px; }
+  .wf-btn { background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:3px 12px; font-size:12px; color:var(--dim); cursor:pointer; }
+  .wf-btn.is-on { border-color:var(--accent); color:#c4b5fd; }
   .badge { flex:none; background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:1px 8px; font-size:11px; color:#a7f3d0; }
   .body { padding:0 16px 14px; font-size:13px; }
   .row { display:flex; gap:10px; margin:6px 0; min-width:0; }
@@ -151,8 +154,25 @@ async function main() {
   <div>${gatePills}</div>
   <div class="stages">${stageCards}</div>
   ${chainSection}
-  <h2 class="sec">产物墙（KPI4 · ${artifacts.artifacts.length} 件）</h2>
+  <h2 class="sec">产物墙（KPI4 · ${artifacts.artifacts.length} 件 · <span id="wall-mode">全部</span>）</h2>
+  <div class="wall-filter" role="group" aria-label="产物墙过滤">
+    <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>
+    <button type="button" class="wf-btn" data-mode="full" onclick="wallFilter('full')">仅全实测（6/6）</button>
+  </div>
   ${rows}
+<script>
+// 六维过滤：measured 徽章 < 6 的条目在 full 模式下隐藏（纯展示切换，无网络无构建逻辑）。
+function wallFilter(mode) {
+  const full = mode === 'full';
+  document.querySelectorAll('details.art').forEach((d) => {
+    const badge = d.querySelector('.badge');
+    const n = badge ? parseInt((badge.textContent || '').split('/')[0], 10) : 6;
+    d.style.display = full && n < 6 ? 'none' : '';
+  });
+  document.querySelectorAll('.wf-btn').forEach((b) => b.classList.toggle('is-on', b.dataset.mode === mode));
+  document.getElementById('wall-mode').textContent = full ? '仅全实测（6/6）' : '全部';
+}
+</script>
   <footer>canvas workbench · 由 canvas/render-index.mjs 生成 · npm run canvas:build 重建全部</footer>
 </main>
 </body>

@@ -48,3 +48,4 @@
 2. 每步 `decision.basis` 至少一条引用；无依据的决策视为黑盒步骤，链路渲染时标黄。
 3. `verifyUnderstanding.confirmedBy=user` 前链路不得推进到 contract 步（对应门 A）。
 4. schema 演进走本文件修订记录，不静默改。
+5. 单链路单设计系统：一条 chain 不混多设计系统/多框架栈（借鉴 v0 Best practices "Keep sources focused"——2026-10-14 收官轮）。

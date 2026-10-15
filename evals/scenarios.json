@@ -1660,5 +1660,39 @@
    "Verdict chips all identical",
    "Rows overflow at 520px"
   ]
+ },
+ {
+  "id": "wall-filter-toggle",
+  "request": "Build a filter toggle for an artifact wall: buttons 'all' and 'fully-verified only'; switching hides entries whose verification badge count is below 6 and updates a visible mode label; active button is visually distinct.",
+  "context": "New web UI. Pure client-side toggle on pre-rendered entries; badge count parsed from badge text; no network.",
+  "passCriteria": [
+   "Fully-verified mode hides entries with badge < 6",
+   "All mode shows every entry",
+   "Mode label text updates with the active mode",
+   "Active button visually distinct",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Toggle hides entries in all mode",
+   "Mode label never updates",
+   "Buttons render but do nothing"
+  ]
+ },
+ {
+  "id": "single-system-per-chain",
+  "request": "Build a chain validator page that flags any chain whose steps reference more than one design system source, rendering a visible warning listing the conflicting sources.",
+  "context": "New web UI. Chains from embedded JSON; a source field per step; validation runs client-side on load.",
+  "passCriteria": [
+   "Chains with a single source render clean",
+   "Multi-source chains show a warning listing conflicting source names",
+   "Warning appears without expanding any step",
+   "Warning text names the rule (one system per chain)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Multi-source chains pass silently",
+   "Warning missing source names",
+   "Validator crashes on missing source field"
+  ]
  }
 ]

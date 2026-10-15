@@ -83,6 +83,16 @@
 首任务建议说「Express」：一屏方向稿 + 有界预授权，10 分钟拿到第一张验收截图。
 决策背景见 [docs/adr/0003-universal-host-compat.md](docs/adr/0003-universal-host-compat.md)；只要单文件提示词、不要落盘接入时，仍可用 `npm run prompt:build` 产出完整版/lean 版导出。
 
+## 画布工作台（流水线可视化）
+
+六道门流水线本身也有可视化视图——`npm run canvas:build` 生成三件离线自包含页（离线可开、零依赖）：
+
+- **门径画布**：六阶段四泳道流水线，门状态三色、证据嵌入、搜索/缩放/回放；
+- **需求解析链路**：原始口语 → 解析摘要 → 理解验证 → 六步决策抽屉，黑盒步骤自动标黄；
+- **工作台入口**：三卡入口 + 门径状态 + 产物墙（排序视图+六维完成度徽章）。
+
+验收命令 `npm run canvas:check`（playwright 实测：WCAG 对比度 / 键盘 Tab 序列 / console 回执）。线上展厅的「画布工作台」页签即这三件产物的构建时快照。规划详见 [docs/canvas-workbench-plan.md](docs/canvas-workbench-plan.md)。
+
 ## 为什么需要它
 
 大多数 UI 生成把需求、设计决策和验收证据混在一段对话里。

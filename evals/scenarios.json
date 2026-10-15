@@ -1558,5 +1558,39 @@
    "Copies diverge from generated snapshots",
    "Relative asset links break when served from the subdirectory"
   ]
+ },
+ {
+  "id": "canvas-build-one-command",
+  "request": "Wire a single npm script that regenerates all canvas pages (gate canvas, requirement chain, entry hub) from their source JSON and then distributes byte-identical copies into a static site's public directory for bundling.",
+  "context": "Node scripts, zero runtime deps; distribution target is a Vite public/ dir; script must be rerunnable.",
+  "passCriteria": [
+   "One command regenerates all three pages and distributes copies",
+   "Distributed copies are byte-identical to generated output",
+   "Subsequent showcase build ships the pages under /canvas/ in dist",
+   "Script is idempotent (rerun produces identical results)",
+   "Console reports each step's completion"
+  ],
+  "failConditions": [
+   "Any page missing after the run",
+   "Copies diverge from generated files",
+   "Manual copy step still required"
+  ]
+ },
+ {
+  "id": "readme-canvas-section",
+  "request": "Add a README section documenting the canvas workbench: the three generated pages with one-line descriptions, the build and acceptance commands, and a link to the plan document.",
+  "context": "Existing README; section goes between the host-integration and why-it-exists sections; keep it under 10 lines.",
+  "passCriteria": [
+   "Section names all three pages with accurate one-line descriptions",
+   "Both npm commands (build/check) documented",
+   "Plan document linked with relative path",
+   "Section length within limit",
+   "Markdown renders without broken links"
+  ],
+  "failConditions": [
+   "Section missing either command",
+   "Broken or absolute local path links",
+   "Section duplicates content verbatim from the plan"
+  ]
  }
 ]

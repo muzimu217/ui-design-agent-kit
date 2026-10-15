@@ -1524,5 +1524,39 @@
    "Evidence entries without real links",
    "Groups visually merged into one undifferentiated strip"
   ]
+ },
+ {
+  "id": "canvas-tab-entry",
+  "request": "Add a 'canvas workbench' tab to an existing hash-routed multi-page site: navigation highlights the active tab, the tab renders gate-status pills, a six-stage status grid, entry cards linking to offline canvas pages, and an artifact wall.",
+  "context": "Existing React site (hash routing home/evidence/workflow). New page follows the same layout components and styling conventions; content from embedded snapshot data.",
+  "passCriteria": [
+   "Nav shows the new tab with active highlight on #/canvas",
+   "Gate pills render per-status border colors",
+   "Entry cards open the three offline canvas pages in new tabs",
+   "TypeScript compiles with no errors and build succeeds",
+   "Console has zero errors on the new page"
+  ],
+  "failConditions": [
+   "Tab renders but navigation highlight is missing or wrong",
+   "Entry links 404 (artifacts not bundled)",
+   "Page breaks existing tabs"
+  ]
+ },
+ {
+  "id": "offline-artifact-bundling",
+  "request": "Bundle offline self-contained HTML pages into a static site build so they are served under a subdirectory (e.g. /canvas/) and remain fully functional when opened directly from the built dist.",
+  "context": "Vite static build; source pages live in an output directory excluded from git; the bundling step must copy them into public/ before build.",
+  "passCriteria": [
+   "All three canvas pages present under dist/canvas/ after build",
+   "Each page opens directly from the built dist over file:// or http with full rendering",
+   "Pages remain byte-identical copies of the generated snapshots",
+   "Rebuild is reproducible via a single npm script",
+   "No broken relative links inside the copied pages"
+  ],
+  "failConditions": [
+   "Pages missing from dist after build",
+   "Copies diverge from generated snapshots",
+   "Relative asset links break when served from the subdirectory"
+  ]
  }
 ]

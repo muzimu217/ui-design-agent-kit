@@ -3,6 +3,7 @@ import type { KeyboardEvent, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { motion, MotionConfig, useInView, useReducedMotion } from 'motion/react';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Blocks, Check, CircleCheck, CircleDashed, CirclePause, CodeXml, Compass, Copy, FileText, FolderGit2, Gamepad2, Globe, Headphones, Layers3, LoaderCircle, Maximize2, Monitor, NotebookPen, OctagonAlert, PackageCheck, PanelsTopLeft, Pause, Play, Plug, RotateCcw, ScanEye, Search, Settings2, SkipForward, Smartphone, Timer, Workflow, X } from 'lucide-react';
+import { CanvasPage } from './CanvasPage';
 import desktop from '../../../demo/brick-workshop/screenshots/desktop.webp';
 import mobile from '../../../demo/brick-workshop/screenshots/mobile.webp';
 import house from '../../../demo/brick-workshop/screenshots/house.webp';
@@ -50,9 +51,9 @@ const FEEDBACK_URL = 'https://github.com/muzimu217/ui-design-agent-showcase/issu
 const RELEASE = import.meta.env.VITE_RELEASE_ID || 'local-preview';
 const SNAPPY = { type: 'spring', stiffness: 400, damping: 30, mass: 0.8 } as const;
 const ELEGANT = { type: 'spring', stiffness: 100, damping: 20, mass: 1 } as const;
-type Page = 'home' | 'evidence' | 'workflow';
-const PAGE_TITLES: Record<Page, string> = { home: '首页', evidence: '证据与验证', workflow: '工作流' };
-const pageFromHash = (): Page => (location.hash === '#/evidence' ? 'evidence' : location.hash === '#/workflow' ? 'workflow' : 'home');
+type Page = 'home' | 'evidence' | 'workflow' | 'canvas';
+const PAGE_TITLES: Record<Page, string> = { home: '首页', evidence: '证据与验证', workflow: '工作流', canvas: '画布工作台' };
+const pageFromHash = (): Page => (location.hash === '#/evidence' ? 'evidence' : location.hash === '#/workflow' ? 'workflow' : location.hash === '#/canvas' ? 'canvas' : 'home');
 const usePage = (): [Page] => {
   const [page, setPage] = useState<Page>(pageFromHash);
   const pageRef = useRef<Page>(page);
@@ -777,6 +778,7 @@ function App() {
     {page === 'home' && <HomePage onOpen={openProject} />}
     {page === 'evidence' && <EvidencePage />}
     {page === 'workflow' && <WorkflowPage />}
+    {page === 'canvas' && <CanvasPage />}
     <footer className="site-footer content-width"><a href={BASE}>UI 设计智能体工作流</a><span>{RELEASE}</span><a href={FEEDBACK_URL} target="_blank" rel="noreferrer">测试反馈<ArrowUpRight size={14} /></a><a href={`${BASE}THIRD_PARTY_LICENSES.txt`}>依赖许可</a><a href={SHOWCASE_REPOSITORY_URL} target="_blank" rel="noreferrer">公开展示仓库<ArrowUpRight size={14} /></a><a href={REPOSITORY_URL} target="_blank" rel="noreferrer">Agent 源码<ArrowUpRight size={14} /></a></footer><CaseDialog project={project} onClose={closeProject} />
   </>;
 }

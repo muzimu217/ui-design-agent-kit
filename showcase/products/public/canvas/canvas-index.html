@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>画布工作台 · 入口</title>
+<style>
+  :root { color-scheme: dark; --bg:#0a0a0f; --panel:#141420; --line:#26263a; --text:#e6e6f0; --dim:#9a9ab0; --accent:#7c3aed; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.65 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif; padding:32px 20px 64px; overflow-x:hidden; overflow-wrap:anywhere; }
+  main { max-width:920px; margin:0 auto; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  .meta { color:var(--dim); font-size:13px; margin-bottom:20px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-bottom:22px; }
+  a.card { display:block; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px; text-decoration:none; color:var(--text); }
+  a.card:hover { border-color:var(--accent); }
+  a.card h2 { margin:0 0 6px; font-size:16px; color:#c4b5fd; }
+  a.card p { margin:0; color:var(--dim); font-size:13px; }
+  .pill { display:inline-block; border:1px solid var(--line); border-radius:99px; padding:2px 10px; font-size:12px; margin:2px 4px 2px 0; }
+  .stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:22px; }
+  .stage { background:var(--panel); border:1px solid var(--line); border-top:3px solid var(--c); border-radius:10px; padding:12px; }
+  .sid { font-weight:600; }
+  .sst { font-size:12px; margin:2px 0 6px; }
+  .snote { color:var(--dim); font-size:12px; }
+  h2.sec { font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--dim); margin:22px 0 10px; }
+  details.art { background:var(--panel); border:1px solid var(--line); border-radius:10px; margin-bottom:10px; }
+  details.art summary { cursor:pointer; display:flex; gap:10px; align-items:baseline; padding:12px 16px; list-style:none; }
+  details.art summary::-webkit-details-marker { display:none; }
+  .t { font-weight:600; flex:1; }
+  .round { color:var(--dim); font-size:12px; }
+  .badge { flex:none; background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:1px 8px; font-size:11px; color:#a7f3d0; }
+  .body { padding:0 16px 14px; font-size:13px; }
+  .row { display:flex; gap:10px; margin:6px 0; min-width:0; }
+  .k { color:var(--dim); min-width:48px; flex:none; }
+  .v { flex:1; min-width:0; overflow-wrap:anywhere; }
+  code { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:12px; color:#8ab4ff; word-break:break-all; }
+  footer { margin-top:24px; color:var(--dim); font-size:12px; text-align:center; }
+</style>
+</head>
+<body>
+<main>
+  <h1>画布工作台 · 入口</h1>
+  <div class="meta">工作流画布工作台（Canvas Workbench） · P-canvas-1 · 更新 2026-10-13 · 离线自包含</div>
+  <div class="grid">
+    <a class="card" href="canvas-workbench.html"><h2>门径画布（实时门径）</h2><p>六阶段四泳道流水线：门状态/证据嵌入/搜索/缩放/回放——由 workflow-diagram 壳渲染</p></a>
+    <a class="card" href="chain-canvas-workbench.html"><h2>需求解析链路</h2><p>原始口语 → 解析摘要 → 理解验证 → 六步决策抽屉——黑盒步骤自动标黄</p></a>
+    <a class="card" href="https://github.com/muzimu217/ui-design-agent-kit/blob/dev/auto/docs/canvas-workbench-plan.md"><h2>规划（门 A 方向稿）</h2><p>三阶段路线+现状对账+扩量计划——docs/canvas-workbench-plan.md</p></a>
+  </div>
+  <h2 class="sec">门径状态</h2>
+  <div><span class="pill" style="border-color:#f472b6">A · gated</span><span class="pill" style="border-color:#34d399">B · passed</span><span class="pill" style="border-color:#6b7280">C · pending</span><span class="pill" style="border-color:#6b7280">D · pending</span><span class="pill" style="border-color:#6b7280">E · pending</span><span class="pill" style="border-color:#6b7280">F · pending</span></div>
+  <div class="stages"><div class="stage" style="--c:#f472b6">
+        <div class="sid">brief</div>
+        <div class="sst" style="color:#f472b6">gated</div>
+        <div class="snote">门 A 方向稿已呈交（三阶段规划+现状对账表），等用户裁决</div>
+      </div>
+<div class="stage" style="--c:#34d399">
+        <div class="sid">reference</div>
+        <div class="sst" style="color:#34d399">passed</div>
+        <div class="snote">对标已集：Onlook 画布机制/bolt 设计系统专题/v0 Agentic+设计系统（学习循环 20-26 轮），第四层定位论证完成</div>
+      </div>
+<div class="stage" style="--c:#6b7280">
+        <div class="sid">contract</div>
+        <div class="sst" style="color:#6b7280">pending</div>
+        <div class="snote">等门 A 通过后按 design-contract 定画布语义 token 与动效参数</div>
+      </div>
+<div class="stage" style="--c:#22d3ee">
+        <div class="sid">build</div>
+        <div class="sst" style="color:#22d3ee">active</div>
+        <div class="snote">增量 1：接入真实任务状态（本文件即画布工作台自身的第一份活数据——吃狗粮）</div>
+      </div>
+<div class="stage" style="--c:#6b7280">
+        <div class="sid">verify</div>
+        <div class="sst" style="color:#6b7280">pending</div>
+        <div class="snote">每增量过 cli visual 无头多视口回执 + 六维验收</div>
+      </div>
+<div class="stage" style="--c:#6b7280">
+        <div class="sid">deliver</div>
+        <div class="sst" style="color:#6b7280">pending</div>
+        <div class="snote">产物入画布产物墙，与对标产物六维并排（KPI4）</div>
+      </div></div>
+  <h2 class="sec">产物墙（KPI4 · 2 件）</h2>
+  <details class="art"><summary><span class="badge">5/6</span><span class="t">画布工作台入口页（门径+链路+产物墙三合一）</span><span class="round">2026-10-13-08</span></summary>
+      <div class="body">
+        <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-index.mjs + canvas/artifacts.json + canvas-workbench.state.json → output/canvas-index.html（离线自包含）</code></span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（13 万字节非空白）；mobile: 520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）；keyboard: playwright Tab 序列实测：4 链接全可达（focusable 4/4）；contrast: playwright computed-style WCAG 实测：27 项文本全过 4.5:1（低于标准 0 项）；reducedMotion: 无过渡动画（静态页面）；console: playwright 实测 0 错误（favicon data-URI 修复后）</span></div>
+        <div class="row"><span class="k">对比</span><span class="v">Figma Make 首屏（prompt 框+示例 pill 模式） — 本页以状态卡片墙呈现工作台全景（门径/阶段/产物），Figma Make 首屏为单 prompt 入口——形态不同目标不同；借鉴示例 pill 的低门槛入口思路</span></div>
+        <div class="row"><span class="k">状态</span><span class="v">v1.1（六维全实测通过）</span></div>
+      </div>
+    </details>
+<details class="art"><summary><span class="badge">5/6</span><span class="t">需求解析链路页（chain 渲染器首个产物）</span><span class="round">2026-10-13-00</span></summary>
+      <div class="body">
+        <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-chain.mjs + canvas/chain-canvas-workbench.json → output/chain-canvas-workbench.html（离线自包含）</code></span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280×2400 直拍通过（37 万字节非空白）；mobile: 520px 直拍通过（Chrome headless Mac 最小窗宽下限；真实 390px 依赖 viewport meta+防御 CSS）；keyboard: playwright Tab 序列实测：6 summary 全部可达展开（focusable 6/6）；contrast: playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项）；reducedMotion: 过渡仅 border-color 且包 no-preference 媒体查询（静态检查）；console: playwright 实测 0 错误（修复 favicon 404：内联 data-URI）</span></div>
+        <div class="row"><span class="k">对比</span><span class="v">v0 Design Systems 2.0 导入 stepper（Pauses for review → approve → save → validate 四步流程页） — 本产物以竖向链路+决策抽屉呈现&#39;如何做的&#39;（白盒），v0 stepper 呈现&#39;导入四步操作&#39;（流程）——形态不同层位不同；可借鉴其 stepper 的必经门视觉（approval disabled 态）用于 chain 页 verifyUnderstanding 卡</span></div>
+        <div class="row"><span class="k">状态</span><span class="v">v1.2（六维全实测通过）</span></div>
+      </div>
+    </details>
+  <footer>canvas workbench · 由 canvas/render-index.mjs 生成 · npm run canvas:build 重建全部</footer>
+</main>
+</body>
+</html>

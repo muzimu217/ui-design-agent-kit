@@ -424,3 +424,25 @@ img { display: block; max-width: 100%; }
 @media (max-width: 620px) {
   .gate-track { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* 画布工作台页签 */
+.canvas-band { padding: 56px 0 72px; }
+.canvas-gates { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 20px; }
+.canvas-pill { display: inline-block; border: 1px solid var(--line, #26263a); border-radius: 99px; padding: 3px 12px; font-size: 13px; color: var(--text, #e6e6f0); }
+.canvas-stages { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 26px; }
+.canvas-stage { background: var(--panel, #141420); border: 1px solid var(--line, #26263a); border-top: 3px solid #9a9ab0; border-radius: 10px; padding: 14px; }
+.canvas-stage-id { font-weight: 600; }
+.canvas-stage-status { font-size: 12px; margin: 3px 0 8px; }
+.canvas-stage-note { color: var(--dim, #9a9ab0); font-size: 12px; }
+.canvas-sub { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--dim, #9a9ab0); margin: 26px 0 10px; }
+.canvas-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 12px; }
+.canvas-link-card { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--panel, #141420); border: 1px solid var(--line, #26263a); border-radius: 10px; padding: 14px 16px; color: #c4b5fd; text-decoration: none; font-weight: 500; }
+.canvas-link-card:hover { border-color: var(--accent, #7c3aed); }
+.canvas-note { color: var(--dim, #9a9ab0); font-size: 13px; }
+.canvas-note code { background: #0d0d15; border: 1px solid var(--line, #26263a); border-radius: 6px; padding: 1px 6px; font-size: 12px; }
+.canvas-wall { display: flex; flex-direction: column; gap: 8px; }
+.canvas-wall-row { display: flex; align-items: baseline; gap: 10px; background: var(--panel, #141420); border: 1px solid var(--line, #26263a); border-radius: 10px; padding: 12px 16px; min-width: 0; }
+.canvas-wall-title { font-weight: 600; flex: none; }
+.canvas-wall-desc { color: var(--dim, #9a9ab0); font-size: 13px; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.canvas-wall-row a { color: #c4b5fd; flex: none; display: inline-flex; align-items: center; gap: 3px; }
+@media (max-width: 640px) { .canvas-wall-row { flex-wrap: wrap; } .canvas-stages { grid-template-columns: 1fr; } }

@@ -15,6 +15,7 @@ The installed supporting skills are:
 
 - `uak-design-system`: local design-system and UX lookup.
 - `uak-visual-critique`: visual critique, targeted refinement, and design craft (adapted from the upstream impeccable skill).
+- `anatomy`: crafted isometric SVG figures that explain a technical idea as a physical machine — for docs/landing-page figures and premium technical drawings (whole-package vendored, MIT, pinned 2026-10-16).
 - `motion`: official Motion animation guidance and MCP workflows.
 - `remotion-video-agent`: local orchestrator for React video composition, frame
   math, transitions, Studio preview, and render verification.

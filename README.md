@@ -55,7 +55,7 @@
 > [!IMPORTANT]
 > **这个仓库维护的是一个 UI 设计智能体工作流：通过 AI 调用技能、编排工具，帮人类设计更好的 UI——不是产品运行时，也不是研究项目本体。**
 >
-> - **是**：智能体指令层（22 技能 + 六道门确认工作流）、验证纪律（五级证据等级、131 项测试（2026-10-08 复核，以 npm test 实际输出为准）、浏览器实测）、可迁移提示词工厂、12 个有证据的线上案例。
+> - **是**：智能体指令层（23 技能 + 六道门确认工作流）、验证纪律（五级证据等级、131 项测试（2026-10-08 复核，以 npm test 实际输出为准）、浏览器实测）、可迁移提示词工厂、12 个有证据的线上案例。
 > - **不是**：独立 AI 客户端、运行时引擎、Figma 同步工具（设计契约走 designContracts 钉版通道）、IDE 替代品。
 > - 研究线（人工监督研究 RQ-A、测量仪器与语料）已**独立建仓**，不在本仓目录下（2026-10-02 裁定）——定位与身份时间线见 [docs/identity-and-direction.md](docs/identity-and-direction.md)。
 >
@@ -368,7 +368,7 @@ npm run doctor:mcp
 | Context7 文档检索 | 已配置公开 MCP |
 | shadcn 组件检索 | 固定版本本地 MCP |
 | Playwright 浏览器操作 | 固定版本、隔离无头会话 |
-| uak-design-system、uak-visual-critique、uak-design-thinking、jiejoe-design + motion / GSAP×8 / Remotion×6 官方 skills | 22 个已安装项目级 skill；三个 uak-* 为 2026-09-30 本地化改名（原 ui-ux-pro-max / impeccable / Emil 三技能），改编范围见 THIRD_PARTY_NOTICES.md |
+| uak-design-system、uak-visual-critique、uak-design-thinking、jiejoe-design + motion / GSAP×8 / Remotion×6 官方 skills | 23 个已安装项目级 skill（2026-10-16 anatomy 整包引入）；三个 uak-* 为 2026-09-30 本地化改名（原 ui-ux-pro-max / impeccable / Emil 三技能），改编范围见 THIRD_PARTY_NOTICES.md |
 | Remotion | 6 个官方 skills + 本地视频编排提示词；不安装已废弃的官方 MCP |
 | Three.js / R3F / Rapier | 按需运行库路由与验收规范；不在 kit 根目录安装运行库 |
 | Blender 建模与 GLB 导出 | 可选本地 CLI / 第三方 Blender MCP 路由；未安装或配置 Blender MCP |

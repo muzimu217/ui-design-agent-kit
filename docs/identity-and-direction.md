@@ -29,7 +29,7 @@
 ## 是什么 / 不是什么（能力矩阵）
 
 **是**：
-- 一个项目级 UI 设计智能体：指令层（SKILL.md 体系 + 22 个技能）、有界工具编排（MCP 配置钉版）、六道门人工确认工作流
+- 一个项目级 UI 设计智能体：指令层（SKILL.md 体系 + 23 个技能）、有界工具编排（MCP 配置钉版）、六道门人工确认工作流
 - 一套验证纪律：五级证据等级（Installed≠…≠VisuallyVerified）、131 项自动化测试（2026-10-08 全量口径：tests/ 122 + showcase/tests 9，计数由 doc-drift 锁定，以 npm test 实际输出为准；同日上午基线曾为 123=114+9，uak-init 补 8 例后为 131）、评测台账语料 99（2026-10-14 口径：画布场景 +26——含 wall-sort-view/trust-groups-separation 增量 13 场景）、已执行入账 71（2026-10-09 复核 evals/results.json；change-radius-discipline 等 4 条新入册待评）、浏览器实测强制
 - 一个可迁移提示词工厂：`npm run prompt:build` 产出单文件提示词给其他宿主
 - 12 个有独立 README/证据的线上案例
@@ -45,7 +45,7 @@
 
 ```text
 muzimu217/ui-design-agent-kit（产品仓）
-├── 智能体指令层   .agents/skills/        ← 产品核心：22 技能、门 A-F、工具路由
+├── 智能体指令层   .agents/skills/        ← 产品核心：23 技能、门 A-F、工具路由
 ├── 验证与工具层   scripts/ tests/ evals/  ← 产品纪律：131 测试（2026-10-08 复核，以 npm test 实际输出为准）、72 场景语料（71 已入账）、证据等级
 ├── 案例层         demo/ showcase/         ← 隔离收录的交付案例（不进运行时）
 ├── 配置层         .codex/ tooling/        ← MCP 钉版、上游锁

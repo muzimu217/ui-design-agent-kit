@@ -11,6 +11,7 @@ test("installed skills, references, and pinned MCP config are complete", async (
   const result = await verify();
   assert.deepEqual(result.errors, []);
   assert.deepEqual(result.skills.sort(), [
+    "anatomy",
     "gsap-core", "gsap-frameworks", "gsap-performance", "gsap-plugins",
     "gsap-react", "gsap-scrolltrigger", "gsap-timeline", "gsap-utils",
     "jiejoe-design", "motion",

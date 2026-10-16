@@ -342,6 +342,21 @@ implementation. Check the current official Remotion license for the intended use
 an npm `UNLICENSED` field alone is not evidence of a separate paid entitlement.
 Do not promise commercial permission or require a purchase without verifying it.
 
+## Isometric figures (anatomy skill)
+
+For explanatory technical figures — isometric diagrams of machines, systems,
+algorithms or components; docs/blog/landing-page illustrations; "Linear-style
+premium technical drawings"; interactive explainers — invoke the vendored
+`anatomy` skill (`.agents/skills/anatomy/`, MIT, pinned 2026-10-16). It builds
+a crafted isometric SVG machine whose working *is* the concept: open the
+closest example under `examples/` first, write a parts list before geometry,
+and reuse its `kit/` engine rather than hand-rolling paths. It can add WebGL
+shaders (fire, exhaust, water, caustics) registered inside the isometric
+planes. Do not use it for interface mockups or product UI screens — it makes
+physical-object figures, not app screens. Boundaries: no publishing to its
+community gallery (external channel); heavy figures are Hero/Epic tiers with
+time estimates, agree scope before building.
+
 ## Real-footage editing (video-edit-agent family)
 
 For cutting real recorded footage — multi-material assembly, narrated

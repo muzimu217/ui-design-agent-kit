@@ -1694,5 +1694,39 @@
    "Warning missing source names",
    "Validator crashes on missing source field"
   ]
+ },
+ {
+  "id": "wall-sort-view",
+  "request": "Build a sort control for an artifact wall: buttons 'by round' (newest first) and 'by completion' (badge count descending) that reorder the existing entries client-side; active sort button visually distinct and independent from the filter toggle.",
+  "context": "New web UI. DOM reordering of pre-rendered entries; badge count parsed from badge text; round compared as strings descending.",
+  "passCriteria": [
+   "By-round mode orders entries newest first",
+   "By-completion mode orders entries by badge count descending",
+   "Sort and filter toggles operate independently",
+   "Active sort button visually distinct",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Sort buttons do nothing",
+   "Sort breaks the filter state",
+   "Active states of sort and filter interfere"
+  ]
+ },
+ {
+  "id": "trust-groups-separation",
+  "request": "Build a trust rendering pattern that never mixes unverifiable logo strips with verifiable evidence links: logo walls render as decorative groups without links, evidence walls render as linked record rows with visible verdicts.",
+  "context": "New web UI. Pattern level: any page combining endorsement logos and acceptance records must keep them in separate labeled groups.",
+  "passCriteria": [
+   "Logo group renders without anchor elements",
+   "Evidence rows each carry real record links and visible verdict text",
+   "Both groups have distinct labels",
+   "Groups stack cleanly at 520px",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Logos wrapped in fake links",
+   "Evidence rows rendered as bare images",
+   "No group labels"
+  ]
  }
 ]

@@ -130,6 +130,7 @@ async function main() {
   .chain-row .t { font-weight:600; flex:1; min-width:0; overflow-wrap:anywhere; }
   .chain-row .round, .chain-row .open { color:var(--dim); font-size:12px; flex:none; }
   .wall-filter { display:flex; gap:8px; margin-bottom:10px; }
+  .wf-sep { color:var(--dim); font-size:12px; margin:0 4px; }
   .wf-btn { background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:3px 12px; font-size:12px; color:var(--dim); cursor:pointer; }
   .wf-btn.is-on { border-color:var(--accent); color:#c4b5fd; }
   .badge { flex:none; background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:1px 8px; font-size:11px; color:#a7f3d0; }
@@ -155,9 +156,12 @@ async function main() {
   <div class="stages">${stageCards}</div>
   ${chainSection}
   <h2 class="sec">产物墙（KPI4 · ${artifacts.artifacts.length} 件 · <span id="wall-mode">全部</span>）</h2>
-  <div class="wall-filter" role="group" aria-label="产物墙过滤">
+  <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
     <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>
     <button type="button" class="wf-btn" data-mode="full" onclick="wallFilter('full')">仅全实测（6/6）</button>
+    <span class="wf-sep" aria-hidden="true">|</span>
+    <button type="button" class="wf-btn is-on" data-sort="round" onclick="wallSort('round')">按轮次</button>
+    <button type="button" class="wf-btn" data-sort="verified" onclick="wallSort('verified')">按完成度</button>
   </div>
   ${rows}
 <script>
@@ -169,8 +173,23 @@ function wallFilter(mode) {
     const n = badge ? parseInt((badge.textContent || '').split('/')[0], 10) : 6;
     d.style.display = full && n < 6 ? 'none' : '';
   });
-  document.querySelectorAll('.wf-btn').forEach((b) => b.classList.toggle('is-on', b.dataset.mode === mode));
+  document.querySelectorAll('.wf-btn[data-mode]').forEach((b) => b.classList.toggle('is-on', b.dataset.mode === mode));
   document.getElementById('wall-mode').textContent = full ? '仅全实测（6/6）' : '全部';
+}
+// 排序视图：按轮次（新在前）或按完成度（徽章数降序）重排 details 条目——借鉴排行内容的排序呈现，判据=六维实测数。
+function wallSort(by) {
+  const wall = document.querySelector('.canvas-wall');
+  if (!wall) return;
+  const entries = [...wall.querySelectorAll('details.art')];
+  const key = (d) => {
+    const badge = d.querySelector('.badge');
+    const n = badge ? parseInt((badge.textContent || '').split('/')[0], 10) : 0;
+    const round = d.querySelector('.round');
+    return by === 'verified' ? n : (round ? round.textContent.trim() : '');
+  };
+  entries.sort((a, b) => by === 'verified' ? key(b) - key(a) : (key(a) < key(b) ? 1 : -1));
+  entries.forEach((d) => wall.appendChild(d));
+  document.querySelectorAll('.wf-btn[data-sort]').forEach((b) => b.classList.toggle('is-on', b.dataset.sort === by));
 }
 </script>
   <footer>canvas workbench · 由 canvas/render-index.mjs 生成 · npm run canvas:build 重建全部</footer>

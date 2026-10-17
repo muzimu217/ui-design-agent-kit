@@ -1898,5 +1898,39 @@
    "Restore deletes newer entries",
    "No statement of append-only semantics"
   ]
+ },
+ {
+  "id": "offline-export-bundle",
+  "request": "Package a set of generated static pages into a distributable offline bundle: pages plus a README explaining how to open and how to re-verify, plus a manifest recording export time and exact source commit — the bundle must open from file:// with no network and no build step.",
+  "context": "Build-script level: copy pages byte-identical, write README and manifest, optionally zip. Recipient opens by double-click.",
+  "passCriteria": [
+   "All pages present and byte-identical to generated sources",
+   "README states open instructions and re-verification steps",
+   "Manifest records export time and full source commit hash",
+   "Bundle opens from file:// with full rendering (no network)",
+   "Zip (when produced) contains the same files"
+  ],
+  "failConditions": [
+   "Bundle requires a build step or server to open",
+   "Manifest missing the commit hash",
+   "Pages diverge from generated sources"
+  ]
+ },
+ {
+  "id": "export-manifest-traceability",
+  "request": "Build an export manifest viewer that shows the source commit hash, commit subject, export timestamp, and per-file sizes for a distributed bundle, making it possible for a recipient to trace exactly which revision produced the bundle.",
+  "context": "New web UI. Data from embedded manifest JSON; long hashes must wrap without breaking layout.",
+  "passCriteria": [
+   "Commit hash and subject both rendered",
+   "Export timestamp rendered in readable form",
+   "Per-file sizes listed",
+   "Long hashes wrap without horizontal overflow",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Only a truncated hash with no subject",
+   "File sizes omitted",
+   "Hash causes horizontal overflow"
+  ]
  }
 ]

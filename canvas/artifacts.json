@@ -20,7 +20,9 @@
     "verdict": "本产物以竖向链路+决策抽屉呈现'如何做的'（白盒），v0 stepper 呈现'导入四步操作'（流程）——形态不同层位不同；可借鉴其 stepper 的必经门视觉（approval disabled 态）用于 chain 页 verifyUnderstanding 卡",
     "score": "待首轮正式六维实测后记分"
    },
-   "status": "v1.3（六维全实测+页脚互链）"
+   "status": "v1.3（六维全实测+页脚互链）",
+   "version": 4,
+   "changeSummary": "v1.0 首版链路页 → v1.1 防御 CSS+520px 实测 → v1.2 六维全实测+favicon 修复 → v1.3 页脚互链门径画布/工作台入口（键盘 9→11）"
   },
   {
    "id": "canvas-index-hub",
@@ -41,7 +43,9 @@
     "verdict": "本页以状态卡片墙呈现工作台全景（门径/阶段/产物），Figma Make 首屏为单 prompt 入口——形态不同目标不同；借鉴示例 pill 的低门槛入口思路",
     "score": "待多产物对比轮正式记分"
    },
-   "status": "v1.2（六维全实测）"
+   "status": "v1.2（六维全实测）",
+   "version": 3,
+   "changeSummary": "v1.0 三卡入口+门径 pills+产物墙 → v1.1 520px 实测通过 → v1.2 排序视图+完成度徽章+mission control 两态分离+任务注册表"
   }
  ]
 }

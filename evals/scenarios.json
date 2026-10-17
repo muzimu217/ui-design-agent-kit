@@ -1864,5 +1864,39 @@
    "Evidence field empty but verification claimed",
    "Labels ambiguous or missing"
   ]
+ },
+ {
+  "id": "artifact-version-badge",
+  "request": "Build an artifact wall where each entry shows a version badge (vN) next to its title, and expanding the entry reveals a change summary listing what changed per version — versions are append-only and restores never rewrite history.",
+  "context": "New web UI. Data from embedded artifact records with version number and changeSummary fields; badge visible in collapsed row.",
+  "passCriteria": [
+   "Version badge visible in collapsed row",
+   "Expanded entry shows change summary",
+   "Change summary reads as append-only history (v1 → v2 → ...)",
+   "Missing version renders a placeholder rather than breaking",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Version badge only visible when expanded",
+   "Change summary rewrites or deletes prior versions",
+   "Missing version crashes the row"
+  ]
+ },
+ {
+  "id": "append-only-history-language",
+  "request": "Build a release-notes style list where every change is an appended entry with a version number and date; no entry is ever edited in place and a 'restore' action creates a new entry rather than removing later ones.",
+  "context": "New web UI. Static list from embedded JSON; wording must make append-only semantics explicit.",
+  "passCriteria": [
+   "Every entry has version number and date",
+   "Restore action (if simulated) appends a new entry",
+   "No UI affordance deletes or rewrites prior entries",
+   "Wording states history is append-only",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Edit-in-place affordance on historical entries",
+   "Restore deletes newer entries",
+   "No statement of append-only semantics"
+  ]
  }
 ]

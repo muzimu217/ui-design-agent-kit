@@ -62,6 +62,45 @@ async function main() {
     ? `<h2 class="sec">解析链路（${chains.length} 条）</h2>${chainRows}`
     : "";
 
+  // 多任务注册表：扫 canvas/*.state.json（每个任务一份状态），每任务一行两态摘要。
+  // 与单任务 mission control 同构：执行态列（阶段进度/待裁决）与证据态列（完成阶段数）分离。
+  const stateFiles = (await readdir(path.join(ROOT, "canvas"))).filter((f) => /\.state\.json$/.test(f));
+  const tasks = [];
+  for (const f of stateFiles) {
+    try {
+      const s = JSON.parse(await readFile(path.join(ROOT, "canvas", f), "utf8"));
+      const stages = Object.entries(s.stages ?? {});
+      const passed = stages.filter(([, v]) => v.status === "passed").length;
+      const gated = stages.filter(([, v]) => v.status === "gated").map(([k]) => k);
+      const active = stages.filter(([, v]) => v.status === "active").map(([k]) => k);
+      tasks.push({
+        task: s.task ?? f,
+        revision: s.revision ?? "",
+        total: stages.length,
+        passed,
+        gated,
+        active,
+        gatesGated: Object.entries(s.gates ?? {}).filter(([, v]) => v === "gated").map(([k]) => k),
+        updatedOn: s.updatedOn ?? "",
+      });
+    } catch {
+      tasks.push({ task: `${f}（解析失败）`, revision: "", total: 0, passed: 0, gated: [], active: [], gatesGated: [], updatedOn: "" });
+    }
+  }
+  const taskRows = tasks
+    .map(
+      (t) => `<div class="task-row">
+        <span class="t">${esc(t.task)}</span>
+        <span class="round">${esc(t.revision)}${t.updatedOn ? ` · ${esc(t.updatedOn)}` : ""}</span>
+        <span class="task-exec">执行：${t.active.length ? esc(t.active.join("/")) : "—"}${t.gated.length ? ` · 待裁决 ${esc(t.gated.join("/"))}` : ""}</span>
+        <span class="task-ev">证据：${t.passed}/${t.total} 阶段通过${t.gatesGated.length ? ` · 门 ${esc(t.gatesGated.join("/"))} 待裁` : ""}</span>
+      </div>`
+    )
+    .join("\n");
+  const taskSection = tasks.length
+    ? `<h2 class="sec">任务注册表（${tasks.length} 项 · 多任务 mission control）</h2>${taskRows}`
+    : "";
+
   // 排序视图：round 降序（最新在前），并给每条算六维完成度徽章（已实测项数/6）。
   // 完成度判定按措辞（通过/实测/直拍/可达/全过）——六维条目是自然语言，无法硬编码枚举。
   const sixKeys = ["desktop", "mobile", "keyboard", "contrast", "reducedMotion", "console"];
@@ -146,6 +185,11 @@ async function main() {
   .mc-k { color:var(--dim); min-width:76px; flex:none; font-size:12px; }
   .mc-v { flex:1; min-width:0; overflow-wrap:anywhere; font-size:13px; }
   @media (max-width: 640px) { .mc { grid-template-columns:1fr; } }
+  .task-row { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin-bottom:8px; min-width:0; }
+  .task-row .t { font-weight:600; flex:1 1 220px; min-width:0; overflow-wrap:anywhere; }
+  .task-row .round { color:var(--dim); font-size:12px; flex:none; }
+  .task-exec { color:#22d3ee; font-size:12px; flex:1 1 200px; min-width:0; }
+  .task-ev { color:#34d399; font-size:12px; flex:1 1 200px; min-width:0; }
   .badge { flex:none; background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:1px 8px; font-size:11px; color:#a7f3d0; }
   .body { padding:0 16px 14px; font-size:13px; }
   .row { display:flex; gap:10px; margin:6px 0; min-width:0; }
@@ -179,6 +223,7 @@ async function main() {
       <div class="mc-row"><span class="mc-k">验收命令</span><span class="mc-v"><code>npm run canvas:check</code></span></div>
     </div>
   </div>
+  ${taskSection}
   <h2 class="sec">门径状态</h2>
   <div>${gatePills}</div>
   <div class="stages">${stageCards}</div>

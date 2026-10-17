@@ -44,6 +44,11 @@
   .mc-k { color:var(--dim); min-width:76px; flex:none; font-size:12px; }
   .mc-v { flex:1; min-width:0; overflow-wrap:anywhere; font-size:13px; }
   @media (max-width: 640px) { .mc { grid-template-columns:1fr; } }
+  .task-row { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin-bottom:8px; min-width:0; }
+  .task-row .t { font-weight:600; flex:1 1 220px; min-width:0; overflow-wrap:anywhere; }
+  .task-row .round { color:var(--dim); font-size:12px; flex:none; }
+  .task-exec { color:#22d3ee; font-size:12px; flex:1 1 200px; min-width:0; }
+  .task-ev { color:#34d399; font-size:12px; flex:1 1 200px; min-width:0; }
   .badge { flex:none; background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:1px 8px; font-size:11px; color:#a7f3d0; }
   .body { padding:0 16px 14px; font-size:13px; }
   .row { display:flex; gap:10px; margin:6px 0; min-width:0; }
@@ -77,6 +82,12 @@
       <div class="mc-row"><span class="mc-k">验收命令</span><span class="mc-v"><code>npm run canvas:check</code></span></div>
     </div>
   </div>
+  <h2 class="sec">任务注册表（1 项 · 多任务 mission control）</h2><div class="task-row">
+        <span class="t">工作流画布工作台（Canvas Workbench）</span>
+        <span class="round">P-canvas-1 · 2026-10-13</span>
+        <span class="task-exec">执行：build · 待裁决 brief</span>
+        <span class="task-ev">证据：1/6 阶段通过 · 门 A 待裁</span>
+      </div>
   <h2 class="sec">门径状态</h2>
   <div><span class="pill" style="border-color:#f472b6">A · gated</span><span class="pill" style="border-color:#34d399">B · passed</span><span class="pill" style="border-color:#6b7280">C · pending</span><span class="pill" style="border-color:#6b7280">D · pending</span><span class="pill" style="border-color:#6b7280">E · pending</span><span class="pill" style="border-color:#6b7280">F · pending</span></div>
   <div class="stages"><div class="stage" style="--c:#f472b6">

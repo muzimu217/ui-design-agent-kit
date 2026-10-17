@@ -1830,5 +1830,39 @@
    "Groups unlabeled",
    "Command displayed is not a real script in the project"
   ]
+ },
+ {
+  "id": "multi-task-registry",
+  "request": "Build a task registry section that scans a directory for per-task state files (*.state.json), rendering one row per task with two separated summaries: execution (active stages, pending rulings) and evidence (passed stage count, gated gates) — a malformed state file must render an error row without breaking the page.",
+  "context": "New web UI. Directory scan at build time; each state file follows the six-stage schema; rows reflow at 640px.",
+  "passCriteria": [
+   "One row per state file with task name and revision",
+   "Execution summary and evidence summary visually separated per row",
+   "Malformed state file yields an error row, page still renders",
+   "Section heading shows total task count",
+   "Rows reflow without overflow at 640px"
+  ],
+  "failConditions": [
+   "Only the first task renders",
+   "Execution and evidence merged into one ambiguous string",
+   "Malformed file crashes the build"
+  ]
+ },
+ {
+  "id": "stage-progress-not-verification",
+  "request": "Build a progress display where 'stages passed' is labeled as workflow progress and never as product verification; verification claims require a separate evidence field with linked proof.",
+  "context": "New web UI. Two fields per task: workflow progress (stage counts) and verification evidence (linked records); the labels must make the distinction unmistakable.",
+  "passCriteria": [
+   "Stage progress labeled as workflow progress, not verification",
+   "Verification claims only appear where evidence links exist",
+   "Both fields render side by side with distinct labels",
+   "No badge conflates the two",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Stage count presented as a verification score",
+   "Evidence field empty but verification claimed",
+   "Labels ambiguous or missing"
+  ]
  }
 ]

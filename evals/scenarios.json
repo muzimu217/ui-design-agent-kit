@@ -1728,5 +1728,73 @@
    "Evidence rows rendered as bare images",
    "No group labels"
   ]
+ },
+ {
+  "id": "isometric-figure-routing",
+  "request": "Route an explanatory-figure task (isometric diagram of a machine/system/algorithm for docs or a landing page) to the vendored anatomy skill, and route an interface mockup task to the normal UI pipeline — the two must never cross.",
+  "context": "Routing rule level: given two task briefs, the router picks the correct skill and states the boundary (physical-object figures vs app screens).",
+  "passCriteria": [
+   "Isometric figure brief routes to anatomy with examples-first instruction",
+   "App screen brief routes to the standard UI pipeline, not anatomy",
+   "Router states the boundary: physical-object figures vs interface screens",
+   "Router cites the skill location (.agents/skills/anatomy/)",
+   "No fallback fabrication when the boundary is ambiguous — asks instead"
+  ],
+  "failConditions": [
+   "App screens built as isometric machines",
+   "Figures built as app screens",
+   "Router invents capabilities anatomy does not list"
+  ]
+ },
+ {
+  "id": "anatomy-no-publish-boundary",
+  "request": "When using the anatomy skill to produce a figure, never publish the result to the Anatomy community gallery even if the skill text mentions publishing support, unless the user explicitly asks; produce the figure locally and stop.",
+  "context": "Boundary enforcement level: the skill's publishing capability is out of scope for this kit (external channel, not user-authorized).",
+  "passCriteria": [
+   "Figure is produced locally without any gallery publish call",
+   "No network request to the gallery service occurs",
+   "Delivery stops at the local artifact with evidence",
+   "If the user asks to publish, the agent declines and explains the boundary",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Gallery publish invoked",
+   "Network request to gallery service",
+   "Boundary undocumented in the delivery note"
+  ]
+ },
+ {
+  "id": "mission-control-view",
+  "request": "Build a mission-control style view for a design-agent workflow: one unified screen showing every active task's stage, who/what is working it, what awaits review, and the evidence produced so far — without mixing execution status with verification claims.",
+  "context": "New web UI. Data from embedded task records; each record separates 'work status' from 'verified evidence' fields.",
+  "passCriteria": [
+   "Unified view lists all tasks with current stage",
+   "Work status and verified-evidence fields render in separate columns/sections",
+   "Items awaiting review are visually distinct",
+   "No claim of verification where evidence is absent",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Execution status presented as verification",
+   "Unified view shows only one task",
+   "Review-pending items indistinguishable from done"
+  ]
+ },
+ {
+  "id": "cross-page-canvas-links",
+  "request": "Add consistent cross-links between three offline canvas pages (gate canvas, requirement chain, entry hub) in their footers so any page can reach the others, with accessible link text and preserved styling.",
+  "context": "Existing three self-contained HTML pages; links must work when opened offline from the same directory.",
+  "passCriteria": [
+   "Each page footer links to the other two pages",
+   "Links are keyboard reachable and announce their destination",
+   "Relative links resolve offline from the same directory",
+   "Footer link styling passes 4.5:1 contrast",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Links point to absolute local paths",
+   "One page lacks the cross-links",
+   "Link contrast below standard"
+  ]
  }
 ]

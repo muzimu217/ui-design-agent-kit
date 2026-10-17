@@ -104,6 +104,7 @@ function render(chain) {
   .basis code { margin-right:4px; }
   .ev { font-size:12px; }
   footer { margin-top:20px; color:var(--dim); font-size:12px; text-align:center; }
+  footer a { color:#8ab4ff; }
   @media (max-width: 640px) { body { padding:20px 12px 48px; } .kv { flex-direction:column; gap:2px; } }
   @media (prefers-reduced-motion: no-preference) { details.step { transition: border-color .15s ease; } }
 </style>
@@ -123,7 +124,8 @@ function render(chain) {
   ${steps}
   ${chain.artifact ? card("产物", kv("路径", `<code>${esc(chain.artifact.path)}</code>`) + kv("类型", esc(chain.artifact.kind ?? "")), "#34d399") : ""}
   ${chain.acceptance ? card("验收", kv("六维", esc(chain.acceptance.sixDim ?? "—")) + (chain.acceptance.score ? kv("分数", esc(chain.acceptance.score)) : ""), "#34d399") : ""}
-  <footer>canvas workbench · chain.schema.md v1 · 本页由 canvas/render-chain.mjs 生成，离线可开</footer>
+  <footer>canvas workbench · chain.schema.md v1 · 本页由 canvas/render-chain.mjs 生成，离线可开 ·
+    <a href="canvas-workbench.html">门径画布</a> · <a href="canvas-index.html">工作台入口</a></footer>
 </main>
 </body>
 </html>`;

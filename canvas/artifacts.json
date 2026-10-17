@@ -9,7 +9,7 @@
    "sixDim": {
     "desktop": "Chrome headless 1280×2400 直拍通过（37 万字节非空白）",
     "mobile": "520px 直拍通过（Chrome headless Mac 最小窗宽下限；真实 390px 依赖 viewport meta+防御 CSS）",
-    "keyboard": "playwright Tab 序列实测：6 summary 全部可达展开（focusable 6/6）",
+    "keyboard": "playwright Tab 序列实测：6 summary+3 basis 链接+2 页脚互链共 11 项全可达（focusable 11/11）",
     "contrast": "playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项）",
     "reducedMotion": "过渡仅 border-color 且包 no-preference 媒体查询（静态检查）",
     "console": "playwright 实测 0 错误（修复 favicon 404：内联 data-URI）"
@@ -20,7 +20,7 @@
     "verdict": "本产物以竖向链路+决策抽屉呈现'如何做的'（白盒），v0 stepper 呈现'导入四步操作'（流程）——形态不同层位不同；可借鉴其 stepper 的必经门视觉（approval disabled 态）用于 chain 页 verifyUnderstanding 卡",
     "score": "待首轮正式六维实测后记分"
    },
-   "status": "v1.2（六维全实测通过）"
+   "status": "v1.3（六维全实测+页脚互链）"
   },
   {
    "id": "canvas-index-hub",
@@ -30,7 +30,7 @@
    "sixDim": {
     "desktop": "Chrome headless 1280 直拍通过（13 万字节非空白）",
     "mobile": "520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）",
-    "keyboard": "playwright Tab 序列实测：4 链接全可达（focusable 4/4）",
+    "keyboard": "playwright Tab 序列实测：4 链接+4 过滤排序按钮+2 页脚互链共 10 项全可达（focusable 10/10）",
     "contrast": "playwright computed-style WCAG 实测：27 项文本全过 4.5:1（低于标准 0 项）",
     "reducedMotion": "无过渡动画（静态页面）",
     "console": "playwright 实测 0 错误（favicon data-URI 修复后）"
@@ -41,7 +41,7 @@
     "verdict": "本页以状态卡片墙呈现工作台全景（门径/阶段/产物），Figma Make 首屏为单 prompt 入口——形态不同目标不同；借鉴示例 pill 的低门槛入口思路",
     "score": "待多产物对比轮正式记分"
    },
-   "status": "v1.1（六维全实测通过）"
+   "status": "v1.2（六维全实测）"
   }
  ]
 }

@@ -83,6 +83,12 @@ async function main() {
     )
     .join("\n");
 
+  // mission control 两态分离：执行态（阶段进度）与证据态（可复核产物）分列，禁止把执行状态当验收声明。
+  const currentStageId = stageEntries.find(([, s]) => s.status === "active")?.[0] ?? stageEntries[0]?.[0] ?? "—";
+  const currentStageStatus = stageEntries.find(([, s]) => s.status === "active")?.[1]?.status ?? "pending";
+  const activeStages = stageEntries.filter(([, s]) => s.status === "active").map(([id]) => id);
+  const gatedStages = stageEntries.filter(([, s]) => s.status === "gated").map(([id]) => id);
+  const fullyVerified = artifacts.artifacts.filter((a) => sixKeys.filter((k) => /通过|实测|直拍|可达|全过/.test(String((a.sixDim ?? {})[k] ?? ""))).length === 6).length;
   const stageCards = stageEntries
     .map(([id, s]) => {
       const color = gateColor[s.status] ?? gateColor.pending;
@@ -133,6 +139,13 @@ async function main() {
   .wf-sep { color:var(--dim); font-size:12px; margin:0 4px; }
   .wf-btn { background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:3px 12px; font-size:12px; color:var(--dim); cursor:pointer; }
   .wf-btn.is-on { border-color:var(--accent); color:#c4b5fd; }
+  .mc { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+  .mc-col { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+  .mc-col h3 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); margin:0 0 10px; }
+  .mc-row { display:flex; gap:10px; margin:6px 0; min-width:0; }
+  .mc-k { color:var(--dim); min-width:76px; flex:none; font-size:12px; }
+  .mc-v { flex:1; min-width:0; overflow-wrap:anywhere; font-size:13px; }
+  @media (max-width: 640px) { .mc { grid-template-columns:1fr; } }
   .badge { flex:none; background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:1px 8px; font-size:11px; color:#a7f3d0; }
   .body { padding:0 16px 14px; font-size:13px; }
   .row { display:flex; gap:10px; margin:6px 0; min-width:0; }
@@ -150,6 +163,21 @@ async function main() {
     <a class="card" href="canvas-workbench.html"><h2>门径画布（实时门径）</h2><p>六阶段四泳道流水线：门状态/证据嵌入/搜索/缩放/回放——由 workflow-diagram 壳渲染</p></a>
     <a class="card" href="chain-canvas-workbench.html"><h2>需求解析链路</h2><p>原始口语 → 解析摘要 → 理解验证 → 六步决策抽屉——黑盒步骤自动标黄</p></a>
     <a class="card" href="https://github.com/muzimu217/ui-design-agent-kit/blob/dev/auto/docs/canvas-workbench-plan.md"><h2>规划（门 A 方向稿）</h2><p>三阶段路线+现状对账+扩量计划——docs/canvas-workbench-plan.md</p></a>
+  </div>
+  <h2 class="sec">任务管控（mission control · 执行态与证据态分离）</h2>
+  <div class="mc">
+    <div class="mc-col">
+      <h3>执行态（工作在哪）</h3>
+      <div class="mc-row"><span class="mc-k">当前阶段</span><span class="mc-v">${esc(currentStageId)} · ${esc(currentStageStatus)}</span></div>
+      <div class="mc-row"><span class="mc-k">进行中</span><span class="mc-v">${esc(activeStages.join("、") || "—")}</span></div>
+      <div class="mc-row"><span class="mc-k">待裁决</span><span class="mc-v">${esc(gatedStages.join("、") || "—")}</span></div>
+    </div>
+    <div class="mc-col">
+      <h3>证据态（可复核什么）</h3>
+      <div class="mc-row"><span class="mc-k">全实测产物</span><span class="mc-v">${fullyVerified}/${artifacts.artifacts.length}（6/6 六维）</span></div>
+      <div class="mc-row"><span class="mc-k">解析链路</span><span class="mc-v">${chains.length} 条 · 已确认 ${chains.filter((c) => c.confirmed).length}</span></div>
+      <div class="mc-row"><span class="mc-k">验收命令</span><span class="mc-v"><code>npm run canvas:check</code></span></div>
+    </div>
   </div>
   <h2 class="sec">门径状态</h2>
   <div>${gatePills}</div>

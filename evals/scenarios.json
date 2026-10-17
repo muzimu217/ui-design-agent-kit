@@ -1796,5 +1796,39 @@
    "One page lacks the cross-links",
    "Link contrast below standard"
   ]
+ },
+ {
+  "id": "execution-vs-evidence-separation",
+  "request": "Build a status panel that strictly separates execution state (which stage is running, what awaits a ruling) from evidence state (how many artifacts are fully verified, how many chains confirmed) in two distinct labeled columns — execution progress must never be presented as verification.",
+  "context": "New web UI. Data from embedded state + artifact records; two-column layout collapsing to stacked at 640px.",
+  "passCriteria": [
+   "Two labeled columns: execution state and evidence state",
+   "Execution column shows current stage, active items, pending rulings",
+   "Evidence column shows fully-verified count as a fraction and confirmation counts",
+   "No wording presents execution progress as verified outcome",
+   "Columns stack at 640px without overflow"
+  ],
+  "failConditions": [
+   "Execution status shown as verification badge",
+   "Columns merged into one undifferentiated list",
+   "Evidence counts fabricated when no artifacts exist"
+  ]
+ },
+ {
+  "id": "canvas-mission-control",
+  "request": "Build a canvas entry page whose top section answers two questions separately: where is work happening now, and what can be re-checked now — with a visible verification command the reader can run themselves.",
+  "context": "New web UI. Static page; verification command rendered as code with the actual npm script name.",
+  "passCriteria": [
+   "Top section answers 'where is work' and 'what can be re-checked' in separate groups",
+   "A real runnable command is displayed for re-verification",
+   "Group headings state their purpose explicitly",
+   "No console errors; contrast passes on all labels",
+   "Layout remains readable at 520px"
+  ],
+  "failConditions": [
+   "No runnable verification command shown",
+   "Groups unlabeled",
+   "Command displayed is not a real script in the project"
+  ]
  }
 ]

@@ -1,6 +1,6 @@
 # UAK · 用户需求 → 能力映射 → 缺口 → 开发路径
 
-> 2026-10-02 · 来源：B 站五组定向搜索 + 54 批评测数据 + 24 批审计 + 推广 playbook；2026-10-08 痛点向漫游追加 D8-D10（证据目录 docs/competitive-insights/2026-10-08-bilibili-demand/）；2026-10-09 goflygen 检视追加 D11
+> 2026-10-02 · 来源：B 站五组定向搜索 + 54 批评测数据 + 24 批审计 + 推广 playbook；2026-10-08 痛点向漫游追加 D8-D10（证据目录 docs/competitive-insights/2026-10-08-bilibili-demand/）；2026-10-09 goflygen 检视追加 D11；2026-10-11 Onlook 检视追加 D12-D13（docs/competitive-insights/2026-10-11-onlook/）；2026-10-11 bolt 复检追加 D14（docs/competitive-insights/2026-10-11-bolt-new-recheck/）；2026-10-13 B 站新 sweep 追加 D15-D16（docs/competitive-insights/2026-10-13-bilibili-demand/）
 > 性质：**知识资产**——每次 B 站漫游/竞品调研后追加，持续完善开发方向
 > 定位：这是「做什么」的依据，不是「怎么做」的实现文档
 
@@ -19,10 +19,15 @@
 | D5 | 真实过程纪实（含翻车与修复） | 修家电师傅 389w / Pianoboy 赞率倒挂 157% | 38-290 万 | ✅ 已验证 |
 | D6 | 工具对比评测 | 「四个生成前端页面的工具对比」；**西方印证（2026-10-09）：YouTube《I Built the SAME App in Lovable vs Base44 vs Bolt》88,148 次观看（WeAreNoCode），同题对比是持续内容品类，且头部评测为联盟返利驱动——带判据的中立评分供给是真空白**（docs/competitive-insights/2026-10-09-youtube-reviews/） | 1.4w + 西方 8.8w | ✅ 中西双市场验证 |
 | D7 | 设计契约/规范让 AI 不瞎编 | ZTough「awesome-design-md」 | 1224 | ⚠️ 初步验证 |
-| D8 | 计划先行工作流（拆需求→列风险→做验证，再写码） | Unity老易「我现在用 AI，不让它先写代码」（BV1ADRDBXE7x，简介明言三步法，与门 A/计划锁定/验收同构） | 132（论点级信号，低播放如实记） | ⚠️ 初步验证（2026-10-08） |
+| D8 | 计划先行工作流（拆需求→列风险→做验证，再写码） | Unity老易「我现在用 AI，不让它先写代码」（BV1ADRDBXE7x，简介明言三步法，与门 A/计划锁定/验收同构）；**西方头部印证（2026-10-11）：v0 首屏卖点 "Agentic by default — v0 plans, creates tasks…as it builds"（Vercel 把"先计划再建"做成第一屏承诺）——但 v0 的计划是 agent 内部行为、无人工确认门，"计划透明+人可否决"仍无人做**（docs/competitive-insights/2026-10-11-v0-dev-recheck/） | 132（论点级信号，低播放如实记）+ 西方头部机制收敛 | ✅ 中西双市场验证（机制侧；HITL 缺口仍在） |
 | D9 | AI 代码"不能直接投产、需大量人工修改"痛点 | goflygen 推广视频「Vibe Coding 别踩坑！…是框架没管得住」（BV1Yx4y6EEGv；痛点陈述真实，推荐方案为第三方框架广告已标注） | 160（推广引流） | ⚠️ 初步验证（2026-10-08） |
 | D10 | "看起来对、实际难维护"的维护性焦虑 | D8 视频简介原话："直接让 AI 写，很容易写出一堆'看起来对、实际难维护'的东西" | 同 D8 | ⚠️ 初步验证（2026-10-08） |
 | D11 | 框架约束型 AI 协同开发（"把开发规范统一约束，确保 AI 与手写代码风格一致"） | goflygen 框架产品页（goflys.cn/goflygen，2026-10-09 实拍；B 站推广引流、痛点与方案自洽、付费套餐商业模式）——"AI 适配"被列为框架设计五维度之一；与本 kit 构成框架层 vs 工作流层互补对照 | 官网DOM文本（非播放量） | ⚠️ 初步验证（2026-10-09，登记于 docs/competitive-insights/2026-10-09-goflygen/） |
+| D12 | 设计实验分支与检查点回滚（"改坏了能退回去、两个方案分叉试"） | Onlook 功能清单 "Use Branching to experiment with designs"+"Save and restore from checkpoints"（GitHub README，2026-10-11 实拍）——**版本对比+回滚机制第四次收敛**（Pixso→MasterGo→Figma Make→Onlook，开源工具侧首次）；与门 E 版本对比记录同向 | 仓库公开功能清单（unverified-partial） | ⚠️ 初步验证（2026-10-11，登记于 docs/competitive-insights/2026-10-11-onlook/） |
+| D13 | 品牌要素自动提取（从官网/既有站点抓取品牌色、字体、素材生成设计基线） | Onlook packages 提交 "Adding brand extraction from firecrawl"（2025-11 落地）；其功能清单含 "Manage brand assets and tokens"——素材门 B"官方渠道取材"的自动化辅助方向，可作候选工具路由，不替代人工确认 | 仓库公开提交记录（unverified-partial） | ⚠️ 初步验证（2026-10-11，登记于 docs/competitive-insights/2026-10-11-onlook/） |
+| D14 | 生成质量自动兜底焦虑（"AI 生成老出错，谁来保证能跑"）——自动验证进入生成平台叙事 | bolt.new 首屏 "98% less errors — Bolt automatically tests, refactors, and iterates"（2026-10-11 实拍，docs/competitive-insights/2026-10-11-bolt-new-recheck/）——验证环节被平台商品化为黑盒自动兜底；**2026-10-12 强信号：GitHub Copilot Code Review 把 "AI first-pass reviews + Bring your team in for PR decisions that need a human eye" 做成一等卖点（docs/competitive-insights/2026-10-12-copilot-codereview/）——"AI 初审+人终审"HITL 叙事首次出现在平台级产品，但审查对象是代码、产出是评论流非证据台账、人审可选项非强制门——白盒 UI 验收+证据纪律仍无人做** | 平台公开卖点（unverified-partial） | ⚠️ 验证中（2026-10-11 bolt→2026-10-12 Copilot 递进） |
+| D15 | "测试全绿 ≠ 产品能用"（自动化通过≠验收通过） | B 站「测试全绿 = 产品能用？我用 AI 写测试踩过的 3 个坑｜覆盖率·误报·稳定性」（BV1UWRQBFEV3，1049 播放，封面逐字"测试通过 ≠ 产品没问题"）——**与本仓五级证据等级第一公理（npm test 绿≠VisuallyVerified）逐字同构**；UP 主全套内容为 AI Agent 工程方法论（Skills/状态机协作/Agent 专属技能）——技能工程方法论已在 B 站形成创作者品类（docs/competitive-insights/2026-10-13-bilibili-demand/） | 1049 播放+50 收藏（收藏比高=工具型内容，如实记） | ⚠️ 初步验证（2026-10-13） |
+| D16 | AI 协作成长自欺焦虑（"我到底是在成长，还是自欺欺人？"） | B 站同名视频（1111 播放，的老AI日常）——vibe coding 用户对产出真实性的元认知焦虑=**对外部可验证证据的心理需求**，正对本仓"验收证据交付"价值主张；同 sweep 另有「不懂代码，先别让 AI 开工」1159 播（D8 小白角度印证） | 1111/1159 播放（千级如实记） | ⚠️ 初步验证（2026-10-13，登记于 docs/competitive-insights/2026-10-13-bilibili-demand/） |
 
 ### 推导需求（从已验证需求推导，尚无直接 B 站信号）
 

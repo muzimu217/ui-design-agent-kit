@@ -23,6 +23,7 @@
 
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { existsSync, statSync } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { ROOT, loadPipeline, buildModel } from "./model.mjs";
 import { loadState, validateState } from "./state.mjs";
@@ -213,6 +214,9 @@ async function visual({ flags }, root = ROOT) {
         "--headless=new",
         "--disable-gpu",
         "--hide-scrollbars",
+        // Isolated profile: a running Chrome instance holds the default profile
+        // lock, which makes headless spawns fail silently under `execFileSync`.
+        `--user-data-dir=${path.join(os.tmpdir(), `workflow-diagram-visual-${spec.name}`)}`,
         `--window-size=${spec.width},${spec.height}`,
         "--virtual-time-budget=5000",
         `--screenshot=${shot}`,

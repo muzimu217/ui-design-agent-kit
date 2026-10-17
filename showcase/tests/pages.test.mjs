@@ -33,7 +33,7 @@ test('base paths support project mounts and reject URL/path injection', () => {
 });
 
 test('only explicit public entrypoints and asset types are publishable', () => {
-  for (const name of ['index.html', 'favicon.svg', 'assets/main-Q2.js', 'assets/desktop.webp', 'countries-110m.json', 'logo-mark.svg', 'prototype.html', 'models/characterMedium.fbx', 'models/animal-dog.glb', 'models/Textures/colormap.png', 'models/skins/skaterMaleA.png', 'photos/nasa.jpg']) assert.doesNotThrow(() => assertPublicPath(name));
+  for (const name of ['index.html', 'favicon.svg', 'assets/main-Q2.js', 'assets/desktop.webp', 'assets/host-logo.ico', 'canvas/canvas-workbench.html', 'countries-110m.json', 'logo-mark.svg', 'prototype.html', 'models/characterMedium.fbx', 'models/animal-dog.glb', 'models/Textures/colormap.png', 'models/skins/skaterMaleA.png', 'photos/nasa.jpg']) assert.doesNotThrow(() => assertPublicPath(name));
   for (const name of ['.env', '.codex/config.toml', 'docs/PLAN.md', 'package.json', 'assets/app.js.map', 'assets/../secret.js', 'assets/.env.js', '../index.html', 'node_modules/react/index.js', 'models/track.mp3', 'models/../escape.js', 'data/countries.json']) {
     assert.throws(() => assertPublicPath(name), /Refusing/);
   }

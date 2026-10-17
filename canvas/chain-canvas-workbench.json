@@ -1,0 +1,91 @@
+{
+  "chainId": "canvas-workbench",
+  "title": "工作流画布工作台",
+  "round": "2026-10-13-08",
+  "requirement": {
+    "raw": "我们这个项目整体的架构怎么样？它有没有前端的工作台界面？……我觉得这样挺好的。有AI调用技能，开发个完善的画布界面，包括这个项目是如何实现的，一步步能可视化，而且不是黑盒状态。还有审查，每一步都审查，对吧？就是按照用户的需求进行解析理解，跟做品牌化、高端化方向走，不可能做一个很简陋的画面……还有相关的测试样本还需要增加，和每一次都要进行一些一系列小测试和测试产物。看看每次产物对比网上那些做出来的效果如何？产品质量如何？我们要走高端化，产业化、流水线制的路线。",
+    "summary": "为六道门流水线建可视化工作台：画布界面逐步呈现项目实现过程（非黑盒）、每步审查记录界面化、品牌化高端视觉、测试样本扩量、每轮 mini 产物并与网上同类效果六维对比，走高端化/产业化/流水线制路线。",
+    "scope": {
+      "in": ["门径画布 MVP", "需求解析链路可视", "品牌化壳", "产物墙与六维对比", "evals 扩量"],
+      "out": ["后端/账户/在线服务", "重写既有 workflow-diagram 壳", "非 UI 领域功能"]
+    },
+    "keyQuestions": [
+      "画布数据源与既有可视化资产的边界（结论：复用 workflow-diagram 壳，不重写）",
+      "审查记录如何从文档态升级为界面态（结论：chain.json decisions[]）",
+      "对比基准如何选取（结论：v0/bolt 同类产物六维并排）"
+    ]
+  },
+  "verifyUnderstanding": {
+    "restated": "你要的不是新功能堆叠，而是把已经存在的六道门流水线『打开给人看』：画布上能看到每一步怎么做的、依据什么、审查结论是什么；门面要高端品牌质感；每轮都要有小产物和与网上同类效果的质量对比；样本库持续扩量——整体走产业化流水线。",
+    "confirmedBy": "user",
+    "at": "2026-10-13（用户 10-13 指令即包含对本仓现状的追问与方向确认，视为门 A 通过）"
+  },
+  "steps": [
+    {
+      "id": "brief",
+      "title": "需求与方向",
+      "status": "passed",
+      "detail": "现状对账表（9 项诉求逐条判定有/无/半有）+三阶段路线+扩量计划，落 docs/canvas-workbench-plan.md 并入 goal.md G5",
+      "evidence": ["docs/canvas-workbench-plan.md", "docs/goal.md#G5"],
+      "decision": {
+        "question": "重写新画布还是复用既有壳？",
+        "chose": "复用 workflow-diagram 壳接数据流",
+        "basis": ["scripts/workflow-diagram/ 已有自包含 HTML/相机/证据嵌入/状态机/visual 验收（增量 1 实测 107KB check 零问题）"]
+      }
+    },
+    {
+      "id": "reference",
+      "title": "参考素材",
+      "status": "passed",
+      "detail": "对标已集：Onlook 画布机制、bolt 设计系统专题、v0 Agentic+DS 2.0（学习循环 20-27 轮）",
+      "evidence": ["docs/competitive-insights/2026-10-11-onlook/insight.md", "docs/competitive-insights/2026-10-13-v0-docs-design-systems/insight.md"],
+      "decision": {
+        "question": "画布交互参考谁的机制？",
+        "chose": "时间轴+证据抽屉+状态三色（Onlook/v0 机制抽象，外观自主）",
+        "basis": ["docs/competitive-insights/2026-10-11-onlook/insight.md ⑤对照表"]
+      }
+    },
+    {
+      "id": "contract",
+      "title": "原型与契约",
+      "status": "active",
+      "detail": "chain.json schema v1 落盘（含 v0 式理解验证步）+画布自身 design-contract 待定稿",
+      "evidence": ["canvas/chain.schema.md", "canvas/chain-canvas-workbench.json"],
+      "decision": {
+        "question": "审查记录如何从文档态升级为界面态？",
+        "chose": "chain.json decisions[]（每步 question/chose/basis）+verifyUnderstanding 复述比对门",
+        "basis": ["canvas/chain.schema.md 规则 1-4"]
+      }
+    },
+    {
+      "id": "build",
+      "title": "交互实现",
+      "status": "active",
+      "detail": "增量 1：state 接入 workflow-diagram 壳生成自包含画布 HTML（107KB，check 零问题）；增量 2：cli visual Chrome --user-data-dir 隔离修复（三视口回执 ok:true）",
+      "evidence": ["canvas/canvas-workbench.state.json", "output/canvas-workbench-visual.json"],
+      "decision": {
+        "question": "MVP 形态选 React 管线还是自包含 HTML？",
+        "chose": "先自包含 HTML（复用既有生成器），React 壳阶段 3 再评估",
+        "basis": ["scripts/workflow-diagram/html.mjs 既有模式", "output/canvas-workbench-visual.json 三视口捕获"]
+      }
+    },
+    {
+      "id": "verify",
+      "title": "浏览器验证",
+      "status": "active",
+      "detail": "visual 回执三视口（1440 暗亮/2048 暗）全过 18-26 万字节非空白；六维全量验收待 React 壳或链路渲染页成型",
+      "evidence": ["output/canvas-workbench-visual.json"],
+      "decision": null
+    },
+    {
+      "id": "deliver",
+      "title": "交付与迭代",
+      "status": "pending",
+      "detail": "产物墙与 KPI4 对比机制待立（下轮）",
+      "evidence": [],
+      "decision": null
+    }
+  ],
+  "artifact": { "path": "output/canvas-workbench.html", "kind": "canvas" },
+  "acceptance": { "sixDim": "visual 回执三视口非空白（全量六维待链路渲染页）", "score": null }
+}

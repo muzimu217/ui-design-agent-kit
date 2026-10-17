@@ -9,11 +9,11 @@
 
 简体中文 | [English](README.en.md)
 
-### 从口语需求到可验证界面的项目级 AI 设计工作流。
+### 专门为 UI 设计而设：从口语需求到可验证界面的项目级 AI 设计工作流。
 
 **整理需求 · 查找素材 · 确认设计 · 实现交互 · 浏览器验收。**
 
-这不是独立 AI 客户端，也不是应用脚手架。
+不是通用编码助手，也不是应用脚手架——技能路由、六道门与验收纪律全部围绕"界面质量"这一件事闭环。
 
 <br />
 
@@ -55,37 +55,43 @@
 > [!IMPORTANT]
 > **这个仓库维护的是一个 UI 设计智能体工作流：通过 AI 调用技能、编排工具，帮人类设计更好的 UI——不是产品运行时，也不是研究项目本体。**
 >
-> - **是**：智能体指令层（22 技能 + 六道门确认工作流）、验证纪律（五级证据等级、131 项测试（2026-10-08 复核，以 npm test 实际输出为准）、浏览器实测）、可迁移提示词工厂、12 个有证据的线上案例。
+> - **是**：智能体指令层（23 技能 + 六道门确认工作流）、验证纪律（五级证据等级、131 项测试（2026-10-08 复核，以 npm test 实际输出为准）、浏览器实测）、可迁移提示词工厂、12 个有证据的线上案例。
 > - **不是**：独立 AI 客户端、运行时引擎、Figma 同步工具（设计契约走 designContracts 钉版通道）、IDE 替代品。
 > - 研究线（人工监督研究 RQ-A、测量仪器与语料）已**独立建仓**，不在本仓目录下（2026-10-02 裁定）——定位与身份时间线见 [docs/identity-and-direction.md](docs/identity-and-direction.md)。
 >
 > demo 与 showcase 是已明确收录的教学与验收案例。案例截图证明对应页面的当次检查结果，不代表所有生成任务都已通过验收；主工具包不提供模型服务、账户、付费素材或后台业务接口。
 
-## 接入任意 AI CLI / 桌面宿主（一层转换）
+## 接入 13 个主流 AI 宿主（一层转换）
 
-本工作流**不绑定单一宿主**。任何能读取指令文件的 AI CLI 编辑器或桌面端（Codex、Claude Code、Cursor 等）都走同一条接入路径：
+本工作流**不绑定单一宿主**：Codex、Claude Code、Cursor、Gemini CLI、GitHub Copilot、Windsurf、Cline、OpenCode、ZCode、DeepSeek Harness、OpenClaw、WorkBuddy、Hermes 都走同一条三层接入——宿主怎么换，工作流不变。每家的真实官方图标、逐条命令与特化步骤，见线上展厅的**接入工作台**（[agent.kcos.club](https://agent.kcos.club/)，本地预览：`showcase/products/`）。
 
-1. **安装**（本仓要求 Node ≥ 20.18.1）：
+1. **装 Kit**（一次性，任意目录；本仓要求 Node ≥ 20.18.1）：
    ```bash
-   npm ci --ignore-scripts
+   npm install -g github:muzimu217/ui-design-agent-kit
    ```
-2. **生成单文件提示词**（唯一转换层，自包含、无本机路径）：
+2. **进你的项目，一条命令接入**（幂等，可重复执行）：
    ```bash
-   npm run prompt:build        # 完整版 output/ui-design-agent.system.md
-   npm run prompt:build:lean   # 精简版 output/ui-design-agent.lean.md
+   uak-init                  # 自动探测宿主：.codex/ → codex；CLAUDE.md → claude；否则 other
+   uak-init --host codex     # 或显式指定宿主
    ```
-3. **接入目标项目**（幂等，可重复执行）：
-   ```bash
-   node scripts/uak-init.mjs --help        # 查看用法
-   node scripts/uak-init.mjs --dry-run /path/to/project
-   node scripts/uak-init.mjs /path/to/project   # 在目标项目 AGENTS.md 追加接入区块
-   node scripts/uak-init.mjs --check /path/to/project
-   ```
-4. **宿主指令文件名不同**（如 `CLAUDE.md`）：不要复制第二份内容，放一行指针指向 `AGENTS.md` 或导出文件即可。
+
+   自动完成：lean 提示词导出至目标项目 `.agents/uak-prompt.md` → `AGENTS.md` 幂等接入区块 → MCP 配置步骤清单（不替你改宿主配置）。支持 `--dry-run` 预览与 `--check` 自检。
+3. **按宿主特化最后一步**（只有一步，且只是"指个路"）：各家指令文件名不同——`CLAUDE.md`、`.cursor/rules/`、`GEMINI.md`、`.github/copilot-instructions.md` 等，都只放**一行指针**指向 `AGENTS.md` 或 `.agents/uak-prompt.md`，不复制第二份内容（避免双源漂移）。
 
 接入后在该宿主里用一句口语需求开工即可（示例见 [docs/usage.md](docs/usage.md)）。
 宿主仍需自备模型服务、MCP 配置与技能目录——缺什么，接入说明会列清楚，不会假装已连接。
-决策背景见 [docs/adr/0003-universal-host-compat.md](docs/adr/0003-universal-host-compat.md)。
+首任务建议说「Express」：一屏方向稿 + 有界预授权，10 分钟拿到第一张验收截图。
+决策背景见 [docs/adr/0003-universal-host-compat.md](docs/adr/0003-universal-host-compat.md)；只要单文件提示词、不要落盘接入时，仍可用 `npm run prompt:build` 产出完整版/lean 版导出。
+
+## 画布工作台（流水线可视化）
+
+六道门流水线本身也有可视化视图——`npm run canvas:build` 生成三件离线自包含页（离线可开、零依赖）：
+
+- **门径画布**：六阶段四泳道流水线，门状态三色、证据嵌入、搜索/缩放/回放；
+- **需求解析链路**：原始口语 → 解析摘要 → 理解验证 → 六步决策抽屉，黑盒步骤自动标黄；
+- **工作台入口**：三卡入口 + 门径状态 + 产物墙（排序视图+六维完成度徽章）。
+
+验收命令 `npm run canvas:check`（playwright 实测：WCAG 对比度 / 键盘 Tab 序列 / console 回执）。线上展厅的「画布工作台」页签即这三件产物的构建时快照。规划详见 [docs/canvas-workbench-plan.md](docs/canvas-workbench-plan.md)。
 
 ## 为什么需要它
 
@@ -293,13 +299,15 @@ npm run verify
 npm test
 ```
 
-### 给现有项目接入（uak init，推荐）
+### 给现有项目接入（uak-init，推荐）
 
 已经有自己的项目？在**目标项目根**运行：
 
 ```bash
-node <uak 仓库路径>/scripts/uak-init.mjs --uak <uak 仓库路径>
+uak-init          # 全局安装后直接可用（装法见上"接入 13 个主流 AI 宿主"）
 ```
+
+未全局安装时用仓库路径直跑：`node <uak 仓库路径>/scripts/uak-init.mjs --uak <uak 仓库路径>`。
 
 自动完成：宿主探测（codex/claude/other）→ lean 提示词导出至目标项目
 `.agents/uak-prompt.md` → AGENTS.md 幂等标记段 → MCP 配置步骤清单
@@ -308,10 +316,15 @@ node <uak 仓库路径>/scripts/uak-init.mjs --uak <uak 仓库路径>
 
 ### 宿主支持矩阵
 
-| 宿主 | 接线方式 |
-| --- | --- |
-| Codex | 开箱即用：`.codex/config.toml` 随仓库生效（含 MCP 配置） |
-| Claude Code / Cursor / 其他 | 宿主不读 `.codex`——运行 `npm run prompt:build` 生成单文件指令（含全部规则），粘进宿主的系统提示或项目指令即可；MCP 工具需按 `.codex/config.toml` 自行配置 |
+13 个宿主的接线方式、真实官方图标与逐家特化步骤，见**接入工作台**
+（线上展厅 [agent.kcos.club](https://agent.kcos.club/)，本地：`showcase/products/`）。按接线类别速览：
+
+| 接线类别 | 宿主 | 说明 |
+| --- | --- | --- |
+| AGENTS.md 原生 | Codex CLI · OpenCode · ZCode | `uak-init` 一条命令，接入区块直接生效 |
+| 指针文件 | Claude Code · Gemini CLI · GitHub Copilot · Windsurf · Cline | `uak-init` 后在各家规则/指引文件里挂一行指针 |
+| 规则注入 | Cursor | `uak-init` 后把 `.agents/uak-prompt.md` 存为 `.cursor/rules/uak.mdc` |
+| 自定义指令 / 插件 | DeepSeek Harness · OpenClaw · WorkBuddy · Hermes | 把 `.agents/uak-prompt.md` 按各家机制粘入对应位置 |
 
 ### 第一次使用会发生什么
 
@@ -355,7 +368,7 @@ npm run doctor:mcp
 | Context7 文档检索 | 已配置公开 MCP |
 | shadcn 组件检索 | 固定版本本地 MCP |
 | Playwright 浏览器操作 | 固定版本、隔离无头会话 |
-| uak-design-system、uak-visual-critique、uak-design-thinking、jiejoe-design + motion / GSAP×8 / Remotion×6 官方 skills | 22 个已安装项目级 skill；三个 uak-* 为 2026-09-30 本地化改名（原 ui-ux-pro-max / impeccable / Emil 三技能），改编范围见 THIRD_PARTY_NOTICES.md |
+| uak-design-system、uak-visual-critique、uak-design-thinking、jiejoe-design + motion / GSAP×8 / Remotion×6 官方 skills | 23 个已安装项目级 skill（2026-10-16 anatomy 整包引入）；三个 uak-* 为 2026-09-30 本地化改名（原 ui-ux-pro-max / impeccable / Emil 三技能），改编范围见 THIRD_PARTY_NOTICES.md |
 | Remotion | 6 个官方 skills + 本地视频编排提示词；不安装已废弃的官方 MCP |
 | Three.js / R3F / Rapier | 按需运行库路由与验收规范；不在 kit 根目录安装运行库 |
 | Blender 建模与 GLB 导出 | 可选本地 CLI / 第三方 Blender MCP 路由；未安装或配置 Blender MCP |

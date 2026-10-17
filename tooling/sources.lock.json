@@ -265,6 +265,18 @@
       "adaptations": [
         "Self-authored root skill (own repo, git rev pinned)；同仓自引用语义：revision 为钉版时点快照，随本仓每笔提交自然过期（以 git HEAD 为实时真相）"
       ]
+    },
+    {
+      "name": "anatomy",
+      "repository": "https://github.com/wheresryan22/anatomy",
+      "revision": "e9488296a44211c42701ff71705b7901470ec78f",
+      "sourcePath": ".",
+      "license": "MIT (LICENSE file at package root, Copyright (c) 2026 Ryan)",
+      "notice": ".agents/skills/anatomy/NOTICE.md",
+      "adaptations": [
+        "Moved compatibility frontmatter key into metadata for the local skill validator; content preserved",
+        "Built example HTML outputs (~9.8MB) excluded and reproducible via node examples/<name>/build.mjs"
+      ]
     }
   ],
   "mcp": [

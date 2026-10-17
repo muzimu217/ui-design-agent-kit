@@ -127,7 +127,7 @@ $remotion-video-agent 用已授权的产品 GLB 制作 15 秒、30fps 的产品�
 ```
 
 For the reference analysis and learning priorities, see
-[the tihuqiche study](archive/tihuqiche-spatial-study.md). Its screenshots and source
+[the tihuqiche study](decisions/tihuqiche-spatial-study.md). Its screenshots and source
 inspection are evidence about that reference, not proof of a generated app.
 
 For a brand-led animation or an adjacent open-source reference:
@@ -142,6 +142,13 @@ contracts. The Motion AI Kit is the source for web Motion docs and CSS easing.
 The deprecated Remotion MCP is intentionally not configured.
 The animation ecosystem references are candidates for research and routing; they
 are not automatically installed, connected, or licensed for code and media reuse.
+
+## Workflow diagram
+
+`npm run diagram:check` validates the workflow diagram against the live
+instruction sources, but it reads a generated artifact: run `npm run diagram`
+(build) first. On a fresh clone the check alone fails with ENOENT — this is a
+two-step chain, not a defect (verified 2026-10-10 tool sweep).
 
 ## Detail lint
 

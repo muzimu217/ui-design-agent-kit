@@ -9,20 +9,26 @@
    "sixDim": {
     "desktop": "Chrome headless 1280×2400 直拍通过（37 万字节非空白）",
     "mobile": "520px 直拍通过（Chrome headless Mac 最小窗宽下限；真实 390px 依赖 viewport meta+防御 CSS）",
-    "keyboard": "playwright Tab 序列实测：6 summary+3 basis 链接+2 页脚互链共 11 项全可达（focusable 11/11）",
+    "keyboard": "playwright Tab 序列实测：11 项 tab 停留全可达（6 summary+3 条展开抽屉内 basis 链接+2 页脚互链；另 2 条 basis 链接在闭合抽屉内展开后可达，检测器计数 13——增量 21 复测口径）",
     "contrast": "playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项）",
-    "reducedMotion": "过渡仅 border-color 且包 no-preference 媒体查询（静态检查）",
+    "reducedMotion": "过渡仅 border-color 且包 no-preference 媒体查询（静态检查通过）",
     "console": "playwright 实测 0 错误（修复 favicon 404：内联 data-URI）"
    },
    "compare": {
     "target": "v0 Design Systems 2.0 导入 stepper（Pauses for review → approve → save → validate 四步流程页）",
     "evidence": "docs/competitive-insights/2026-10-13-v0-docs-design-systems/insight.md",
     "verdict": "本产物以竖向链路+决策抽屉呈现'如何做的'（白盒），v0 stepper 呈现'导入四步操作'（流程）——形态不同层位不同；可借鉴其 stepper 的必经门视觉（approval disabled 态）用于 chain 页 verifyUnderstanding 卡",
-    "score": "待首轮正式六维实测后记分"
+    "score": {
+     "rubric": "六维各 1 分：1=有本轮实测/实看证据，0=实测缺失，null=公开渠道不可观测（不计分母）；对标侧检视级别见 level，不虚记不可测维度",
+     "us": { "desktop": 1, "mobile": 1, "keyboard": 1, "contrast": 1, "reducedMotion": 1, "console": 1 },
+     "them": { "desktop": 1, "mobile": null, "keyboard": null, "contrast": null, "reducedMotion": null, "console": null },
+     "level": "unverified-partial",
+     "themNote": "对标侧为公开文档页实看：仅桌面呈现可观测，键盘可达性/对比度/降动效/console 均无公开可验证证据，记 null 不虚记"
+    }
    },
-   "status": "v1.3（六维全实测+页脚互链）",
-   "version": 4,
-   "changeSummary": "v1.0 首版链路页 → v1.1 防御 CSS+520px 实测 → v1.2 六维全实测+favicon 修复 → v1.3 页脚互链门径画布/工作台入口（键盘 9→11）",
+   "status": "v1.4（KPI4 评分并排表）",
+   "version": 5,
+   "changeSummary": "v1.0 首版链路页 → v1.1 防御 CSS+520px 实测 → v1.2 六维全实测+favicon 修复 → v1.3 页脚互链门径画布/工作台入口（键盘 9→11）→ v1.4 对比评分结构化（六维并排表+检视级别入墙）",
    "origin": "ai-draft+human-revision",
    "originNote": "渲染器与版式由代理编写，经多轮人工验收意见修订（页脚互链/防御 CSS/比对视图）"
   },
@@ -32,22 +38,28 @@
    "title": "画布工作台入口页（门径+链路+产物墙三合一）",
    "path": "canvas/render-index.mjs + canvas/artifacts.json + canvas-workbench.state.json → output/canvas-index.html（离线自包含）",
    "sixDim": {
-    "desktop": "Chrome headless 1280 直拍通过（13 万字节非空白）",
-    "mobile": "520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）",
+    "desktop": "Chrome headless 1280 直拍通过（15.1 万字节非空白，增量 21 复拍）",
+    "mobile": "520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切，20.5 万字节）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）",
     "keyboard": "playwright Tab 序列实测：4 链接+4 过滤排序按钮+2 页脚互链共 10 项全可达（focusable 10/10）",
-    "contrast": "playwright computed-style WCAG 实测：27 项文本全过 4.5:1（低于标准 0 项）",
-    "reducedMotion": "无过渡动画（静态页面）",
+    "contrast": "playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项，增量 21 复测——对比表新增文本节点）",
+    "reducedMotion": "无过渡动画（静态检查通过）",
     "console": "playwright 实测 0 错误（favicon data-URI 修复后）"
    },
    "compare": {
     "target": "Figma Make 首屏（prompt 框+示例 pill 模式）",
     "evidence": "docs/competitive-insights/2026-10-13-figma-make-recheck2/insight.md",
     "verdict": "本页以状态卡片墙呈现工作台全景（门径/阶段/产物），Figma Make 首屏为单 prompt 入口——形态不同目标不同；借鉴示例 pill 的低门槛入口思路",
-    "score": "待多产物对比轮正式记分"
+    "score": {
+     "rubric": "六维各 1 分：1=有本轮实测/实看证据，0=实测缺失，null=公开渠道不可观测（不计分母）；对标侧检视级别见 level，不虚记不可测维度",
+     "us": { "desktop": 1, "mobile": 1, "keyboard": 1, "contrast": 1, "reducedMotion": 1, "console": 1 },
+     "them": { "desktop": 1, "mobile": null, "keyboard": null, "contrast": null, "reducedMotion": null, "console": null },
+     "level": "unverified-partial",
+     "themNote": "对标侧为公开首屏实看（未注册实测）：仅首屏呈现可观测，其余四维无公开可验证证据，记 null 不虚记"
+    }
    },
-   "status": "v1.2（六维全实测）",
-   "version": 3,
-   "changeSummary": "v1.0 三卡入口+门径 pills+产物墙 → v1.1 520px 实测通过 → v1.2 排序视图+完成度徽章+mission control 两态分离+任务注册表",
+   "status": "v1.3（KPI4 评分并排表）",
+   "version": 4,
+   "changeSummary": "v1.0 三卡入口+门径 pills+产物墙 → v1.1 520px 实测通过 → v1.2 排序视图+完成度徽章+mission control 两态分离+任务注册表 → v1.3 对比评分结构化（六维并排表+检视级别入墙，借鉴 Wegic 模板详情结构化呈现）",
    "origin": "ai-draft+human-revision",
    "originNote": "入口页由代理编写，经用户门 A 方向确认与多轮增量修订（mission control/任务注册表/版本徽章）"
   }

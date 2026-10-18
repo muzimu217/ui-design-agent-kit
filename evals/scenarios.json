@@ -1966,5 +1966,38 @@
    "Verification implied by provenance",
    "Labels conflate lineage with quality"
   ]
+ },
+ {
+  "id": "comparison-null-honesty",
+  "request": "Build a side-by-side comparison table where each cell is measured-pass, measured-fail, or not-observable; unobservable cells must render as a neutral dash, never as pass or fail, and score summaries must state the observable denominator.",
+  "context": "Data-dense comparison UI (canvas/artifact wall). Three cell states with distinct visual marks; summary line shows the raw score next to an 'X/Y observable' denominator.",
+  "passCriteria": [
+   "Unobservable cells render as a neutral dash, not a pass or fail mark",
+   "Pass and fail marks are visually distinct",
+   "Score summary states the observable denominator (X/Y)",
+   "External inspection level labeled (e.g. unverified-partial) when the comparison target was not machine-measured",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Unobservable cell rendered as pass or fail",
+   "Summary score hides the denominator",
+   "External observation presented as full verification"
+  ]
+ },
+ {
+  "id": "dark-dense-table-muted-text",
+  "request": "Design a data-dense table UI on a dark theme where muted/secondary text (table headers, footnotes, captions) still passes 4.5:1 contrast; density must come from spacing and typography, never from dimming text below the contrast floor.",
+  "context": "Dark-themed dense dashboard table with primary cells, a header row, and footnotes; every text layer is measured independently against its own background.",
+  "passCriteria": [
+   "Header, footnote and caption text each measure >=4.5:1 against their background",
+   "Density achieved via row height and column rhythm, not low-contrast text",
+   "Row separators visible without relying on text dimming",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Any text layer below 4.5:1",
+   "Muted text used as the only density mechanism",
+   "Contrast measured only on primary cells"
+  ]
  }
 ]

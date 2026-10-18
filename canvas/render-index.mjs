@@ -108,6 +108,29 @@ async function main() {
     const sd = a.sixDim ?? {};
     return sixKeys.filter((k) => /通过|实测|直拍|可达|全过/.test(String(sd[k] ?? ""))).length;
   };
+  // KPI4 并排对比表：compare.score 结构化评分（us/them 六维，1=有实测或实看证据，0=实测缺失，
+  // null=公开渠道不可观测不计分母），对标侧检视级别如实标注（unverified-partial 等），不虚记不可测维度。
+  const sixLabels = { desktop: "桌面", mobile: "移动", keyboard: "键盘", contrast: "对比度", reducedMotion: "降动效", console: "控制台" };
+  const mark = (v) => (v === 1 ? '<span class="mk mk-yes">✓</span>' : v === 0 ? '<span class="mk mk-no">✗</span>' : '<span class="mk mk-na">—</span>');
+  const scoreSum = (m) => sixKeys.reduce((n, k) => n + (m?.[k] === 1 ? 1 : 0), 0);
+  const scoreObs = (m) => sixKeys.filter((k) => m?.[k] === 0 || m?.[k] === 1).length;
+  const compareBlock = (a) => {
+    const c = a.compare;
+    if (!c?.score?.us) return `<div class="row"><span class="k">对比</span><span class="v">${esc(c?.target ?? "—")} — ${esc(c?.verdict ?? "")}</span></div>`;
+    const s = c.score;
+    const body = sixKeys
+      .map((k) => `<tr><td>${esc(sixLabels[k])}</td><td>${mark(s.us[k])}</td><td>${mark(s.them[k])}</td></tr>`)
+      .join("");
+    return `<div class="row"><span class="k">对比</span><span class="v">
+      <div class="cmp">
+        <div class="cmp-head"><span class="cmp-vs">vs ${esc(c.target ?? "—")}</span><span class="cmp-sum">本产物 ${scoreSum(s.us)}/6 · 对标 ${scoreSum(s.them)}/${scoreObs(s.them)} 可观测</span><span class="cmp-level">检视级别 ${esc(s.level ?? "unverified-partial")}</span></div>
+        <table class="cmp-table"><thead><tr><th scope="col">维度</th><th scope="col">本产物</th><th scope="col">对标</th></tr></thead><tbody>${body}</tbody></table>
+        ${s.themNote ? `<div class="cmp-note">${esc(s.themNote)}</div>` : ""}
+        <div class="cmp-note">${esc(c.verdict ?? "")}</div>
+        ${c.evidence ? `<div class="cmp-note">证据（仓内路径）：${esc(c.evidence)}</div>` : ""}
+      </div>
+    </span></div>`;
+  };
   const sorted = [...artifacts.artifacts].sort((a, b) => (a.round < b.round ? 1 : a.round > b.round ? -1 : 0));
   const rows = sorted
     .map(
@@ -115,7 +138,7 @@ async function main() {
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>${esc(a.path)}</code></span></div>
         <div class="row"><span class="k">六维</span><span class="v">${esc(Object.entries(a.sixDim ?? {}).map(([k, v]) => `${k}: ${v}`).join("；")).slice(0, 500)}</span></div>
-        <div class="row"><span class="k">对比</span><span class="v">${esc(a.compare?.target ?? "—")} — ${esc(a.compare?.verdict ?? "")}</span></div>
+        ${compareBlock(a)}
         <div class="row"><span class="k">状态</span><span class="v">${esc(a.status ?? "")}</span></div><div class="row"><span class="k">来源</span><span class="v">${a.origin === "ai-only" ? "AI 直出（未经人工修订）" : "AI 起草 + 人工修订"}${a.originNote ? ` — ${esc(a.originNote)}` : ""}</span></div>${a.changeSummary ? `<div class="row"><span class="k">变更</span><span class="v">${esc(a.changeSummary)}</span></div>` : ""}
       </div>
     </details>`
@@ -200,6 +223,20 @@ async function main() {
   .k { color:var(--dim); min-width:48px; flex:none; }
   .v { flex:1; min-width:0; overflow-wrap:anywhere; }
   code { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:12px; color:#8ab4ff; word-break:break-all; }
+  .cmp { border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin:4px 0; background:#0d0d15; }
+  .cmp-head { display:flex; flex-wrap:wrap; gap:8px; align-items:baseline; margin-bottom:8px; }
+  .cmp-vs { font-weight:600; color:#c4b5fd; }
+  .cmp-sum { color:var(--dim); font-size:12px; }
+  .cmp-level { margin-left:auto; border:1px solid #4a3b12; color:#fbbf24; border-radius:99px; padding:1px 8px; font-size:11px; }
+  .cmp-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .cmp-table th { color:var(--dim); font-weight:500; text-align:left; padding:3px 8px; border-bottom:1px solid var(--line); }
+  .cmp-table td { padding:3px 8px; border-bottom:1px solid var(--line); overflow-wrap:anywhere; }
+  .cmp-table tr:last-child td { border-bottom:none; }
+  .mk { font-weight:600; }
+  .mk-yes { color:#34d399; }
+  .mk-no { color:#f87171; }
+  .mk-na { color:var(--dim); }
+  .cmp-note { color:var(--dim); font-size:12px; margin-top:8px; }
   footer { margin-top:24px; color:var(--dim); font-size:12px; text-align:center; }
 </style>
 </head>

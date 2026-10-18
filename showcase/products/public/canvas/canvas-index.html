@@ -59,6 +59,20 @@
   .k { color:var(--dim); min-width:48px; flex:none; }
   .v { flex:1; min-width:0; overflow-wrap:anywhere; }
   code { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:12px; color:#8ab4ff; word-break:break-all; }
+  .cmp { border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin:4px 0; background:#0d0d15; }
+  .cmp-head { display:flex; flex-wrap:wrap; gap:8px; align-items:baseline; margin-bottom:8px; }
+  .cmp-vs { font-weight:600; color:#c4b5fd; }
+  .cmp-sum { color:var(--dim); font-size:12px; }
+  .cmp-level { margin-left:auto; border:1px solid #4a3b12; color:#fbbf24; border-radius:99px; padding:1px 8px; font-size:11px; }
+  .cmp-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .cmp-table th { color:var(--dim); font-weight:500; text-align:left; padding:3px 8px; border-bottom:1px solid var(--line); }
+  .cmp-table td { padding:3px 8px; border-bottom:1px solid var(--line); overflow-wrap:anywhere; }
+  .cmp-table tr:last-child td { border-bottom:none; }
+  .mk { font-weight:600; }
+  .mk-yes { color:#34d399; }
+  .mk-no { color:#f87171; }
+  .mk-na { color:var(--dim); }
+  .cmp-note { color:var(--dim); font-size:12px; margin-top:8px; }
   footer { margin-top:24px; color:var(--dim); font-size:12px; text-align:center; }
 </style>
 </head>
@@ -81,7 +95,7 @@
     </div>
     <div class="mc-col">
       <h3>证据态（可复核什么）</h3>
-      <div class="mc-row"><span class="mc-k">全实测产物</span><span class="mc-v">0/2（6/6 六维）</span></div>
+      <div class="mc-row"><span class="mc-k">全实测产物</span><span class="mc-v">2/2（6/6 六维）</span></div>
       <div class="mc-row"><span class="mc-k">解析链路</span><span class="mc-v">1 条 · 已确认 1</span></div>
       <div class="mc-row"><span class="mc-k">验收命令</span><span class="mc-v"><code>npm run canvas:check</code></span></div>
     </div>
@@ -138,20 +152,36 @@
     <button type="button" class="wf-btn is-on" data-sort="round" onclick="wallSort('round')">按轮次</button>
     <button type="button" class="wf-btn" data-sort="verified" onclick="wallSort('verified')">按完成度</button>
   </div>
-  <details class="art"><summary><span class="badge">5/6</span><span class="t">画布工作台入口页（门径+链路+产物墙三合一）</span><span class="src src-mixed">AI+人工</span><span class="ver">v3</span><span class="round">2026-10-13-08</span></summary>
+  <details class="art"><summary><span class="badge">6/6</span><span class="t">画布工作台入口页（门径+链路+产物墙三合一）</span><span class="src src-mixed">AI+人工</span><span class="ver">v4</span><span class="round">2026-10-13-08</span></summary>
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-index.mjs + canvas/artifacts.json + canvas-workbench.state.json → output/canvas-index.html（离线自包含）</code></span></div>
-        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（13 万字节非空白）；mobile: 520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）；keyboard: playwright Tab 序列实测：4 链接+4 过滤排序按钮+2 页脚互链共 10 项全可达（focusable 10/10）；contrast: playwright computed-style WCAG 实测：27 项文本全过 4.5:1（低于标准 0 项）；reducedMotion: 无过渡动画（静态页面）；console: playwright 实测 0 错误（favicon data-URI 修复后）</span></div>
-        <div class="row"><span class="k">对比</span><span class="v">Figma Make 首屏（prompt 框+示例 pill 模式） — 本页以状态卡片墙呈现工作台全景（门径/阶段/产物），Figma Make 首屏为单 prompt 入口——形态不同目标不同；借鉴示例 pill 的低门槛入口思路</span></div>
-        <div class="row"><span class="k">状态</span><span class="v">v1.2（六维全实测）</span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订 — 入口页由代理编写，经用户门 A 方向确认与多轮增量修订（mission control/任务注册表/版本徽章）</span></div><div class="row"><span class="k">变更</span><span class="v">v1.0 三卡入口+门径 pills+产物墙 → v1.1 520px 实测通过 → v1.2 排序视图+完成度徽章+mission control 两态分离+任务注册表</span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（15.1 万字节非空白，增量 21 复拍）；mobile: 520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切，20.5 万字节）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）；keyboard: playwright Tab 序列实测：4 链接+4 过滤排序按钮+2 页脚互链共 10 项全可达（focusable 10/10）；contrast: playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项，增量 21 复测——对比表新增文本节点）；reducedMotion: 无过渡动画（静态检查通过）；console: playwright 实测 0 错误（favicon data-URI 修复后）</span></div>
+        <div class="row"><span class="k">对比</span><span class="v">
+      <div class="cmp">
+        <div class="cmp-head"><span class="cmp-vs">vs Figma Make 首屏（prompt 框+示例 pill 模式）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level">检视级别 unverified-partial</span></div>
+        <table class="cmp-table"><thead><tr><th scope="col">维度</th><th scope="col">本产物</th><th scope="col">对标</th></tr></thead><tbody><tr><td>桌面</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-yes">✓</span></td></tr><tr><td>移动</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>键盘</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>对比度</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>降动效</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>控制台</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr></tbody></table>
+        <div class="cmp-note">对标侧为公开首屏实看（未注册实测）：仅首屏呈现可观测，其余四维无公开可验证证据，记 null 不虚记</div>
+        <div class="cmp-note">本页以状态卡片墙呈现工作台全景（门径/阶段/产物），Figma Make 首屏为单 prompt 入口——形态不同目标不同；借鉴示例 pill 的低门槛入口思路</div>
+        <div class="cmp-note">证据（仓内路径）：docs/competitive-insights/2026-10-13-figma-make-recheck2/insight.md</div>
+      </div>
+    </span></div>
+        <div class="row"><span class="k">状态</span><span class="v">v1.3（KPI4 评分并排表）</span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订 — 入口页由代理编写，经用户门 A 方向确认与多轮增量修订（mission control/任务注册表/版本徽章）</span></div><div class="row"><span class="k">变更</span><span class="v">v1.0 三卡入口+门径 pills+产物墙 → v1.1 520px 实测通过 → v1.2 排序视图+完成度徽章+mission control 两态分离+任务注册表 → v1.3 对比评分结构化（六维并排表+检视级别入墙，借鉴 Wegic 模板详情结构化呈现）</span></div>
       </div>
     </details>
-<details class="art"><summary><span class="badge">5/6</span><span class="t">需求解析链路页（chain 渲染器首个产物）</span><span class="src src-mixed">AI+人工</span><span class="ver">v4</span><span class="round">2026-10-13-00</span></summary>
+<details class="art"><summary><span class="badge">6/6</span><span class="t">需求解析链路页（chain 渲染器首个产物）</span><span class="src src-mixed">AI+人工</span><span class="ver">v5</span><span class="round">2026-10-13-00</span></summary>
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-chain.mjs + canvas/chain-canvas-workbench.json → output/chain-canvas-workbench.html（离线自包含）</code></span></div>
-        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280×2400 直拍通过（37 万字节非空白）；mobile: 520px 直拍通过（Chrome headless Mac 最小窗宽下限；真实 390px 依赖 viewport meta+防御 CSS）；keyboard: playwright Tab 序列实测：6 summary+3 basis 链接+2 页脚互链共 11 项全可达（focusable 11/11）；contrast: playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项）；reducedMotion: 过渡仅 border-color 且包 no-preference 媒体查询（静态检查）；console: playwright 实测 0 错误（修复 favicon 404：内联 data-URI）</span></div>
-        <div class="row"><span class="k">对比</span><span class="v">v0 Design Systems 2.0 导入 stepper（Pauses for review → approve → save → validate 四步流程页） — 本产物以竖向链路+决策抽屉呈现&#39;如何做的&#39;（白盒），v0 stepper 呈现&#39;导入四步操作&#39;（流程）——形态不同层位不同；可借鉴其 stepper 的必经门视觉（approval disabled 态）用于 chain 页 verifyUnderstanding 卡</span></div>
-        <div class="row"><span class="k">状态</span><span class="v">v1.3（六维全实测+页脚互链）</span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订 — 渲染器与版式由代理编写，经多轮人工验收意见修订（页脚互链/防御 CSS/比对视图）</span></div><div class="row"><span class="k">变更</span><span class="v">v1.0 首版链路页 → v1.1 防御 CSS+520px 实测 → v1.2 六维全实测+favicon 修复 → v1.3 页脚互链门径画布/工作台入口（键盘 9→11）</span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280×2400 直拍通过（37 万字节非空白）；mobile: 520px 直拍通过（Chrome headless Mac 最小窗宽下限；真实 390px 依赖 viewport meta+防御 CSS）；keyboard: playwright Tab 序列实测：11 项 tab 停留全可达（6 summary+3 条展开抽屉内 basis 链接+2 页脚互链；另 2 条 basis 链接在闭合抽屉内展开后可达，检测器计数 13——增量 21 复测口径）；contrast: playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项）；reducedMotion: 过渡仅 border-color 且包 no-preference 媒体查询（静态检查通过）；console: playwright 实测 0 错误（修复 favicon 404：内联 data-URI）</span></div>
+        <div class="row"><span class="k">对比</span><span class="v">
+      <div class="cmp">
+        <div class="cmp-head"><span class="cmp-vs">vs v0 Design Systems 2.0 导入 stepper（Pauses for review → approve → save → validate 四步流程页）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level">检视级别 unverified-partial</span></div>
+        <table class="cmp-table"><thead><tr><th scope="col">维度</th><th scope="col">本产物</th><th scope="col">对标</th></tr></thead><tbody><tr><td>桌面</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-yes">✓</span></td></tr><tr><td>移动</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>键盘</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>对比度</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>降动效</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>控制台</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr></tbody></table>
+        <div class="cmp-note">对标侧为公开文档页实看：仅桌面呈现可观测，键盘可达性/对比度/降动效/console 均无公开可验证证据，记 null 不虚记</div>
+        <div class="cmp-note">本产物以竖向链路+决策抽屉呈现&#39;如何做的&#39;（白盒），v0 stepper 呈现&#39;导入四步操作&#39;（流程）——形态不同层位不同；可借鉴其 stepper 的必经门视觉（approval disabled 态）用于 chain 页 verifyUnderstanding 卡</div>
+        <div class="cmp-note">证据（仓内路径）：docs/competitive-insights/2026-10-13-v0-docs-design-systems/insight.md</div>
+      </div>
+    </span></div>
+        <div class="row"><span class="k">状态</span><span class="v">v1.4（KPI4 评分并排表）</span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订 — 渲染器与版式由代理编写，经多轮人工验收意见修订（页脚互链/防御 CSS/比对视图）</span></div><div class="row"><span class="k">变更</span><span class="v">v1.0 首版链路页 → v1.1 防御 CSS+520px 实测 → v1.2 六维全实测+favicon 修复 → v1.3 页脚互链门径画布/工作台入口（键盘 9→11）→ v1.4 对比评分结构化（六维并排表+检视级别入墙）</span></div>
       </div>
     </details>
 <script>

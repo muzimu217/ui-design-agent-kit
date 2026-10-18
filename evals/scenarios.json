@@ -1999,5 +1999,37 @@
    "Muted text used as the only density mechanism",
    "Contrast measured only on primary cells"
   ]
+ },
+ {
+  "id": "wall-entry-clickable-source",
+  "request": "Make product-wall or index entries that reference an openable artifact clickable via same-directory relative URLs that survive offline file:// distribution; entries whose target is the page itself or unavailable must render an explicit self-referential note instead of a dead link or silent omission.",
+  "context": "Offline self-contained hub page with an artifact wall. One entry points to a sibling generated page; another page is the page itself and must not self-link.",
+  "passCriteria": [
+   "Openable entry rendered as a real link with same-directory relative href",
+   "Self-referential entry renders an explicit note, not a link to itself",
+   "Links still resolve after offline export (file:// double-click) — no absolute paths, no network",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Dead link or link-to-self presented as an entry action",
+   "Absolute path or http URL breaking offline distribution",
+   "Openable artifact present but not linked while claiming clickability"
+  ]
+ },
+ {
+  "id": "measured-keyword-decoupling",
+  "request": "Derive completion or verification badges from evidence prose without silently depending on incidental wording; either store structured per-dimension results, or guard any keyword-based regex against misses so an unmatched evidence row lowers the badge AND is flagged in CI rather than silently undercounting.",
+  "context": "Evidence dashboard where a reducer regex scores six-dimension evidence strings; a reworded string that drops a keyword must surface as a detectable drift, not a quiet badge change.",
+  "passCriteria": [
+   "Each evidence dimension has a structured result or a keyword guard with CI coverage",
+   "A reworded evidence row that stops matching is flagged, not silently scored lower",
+   "Badge denominators still reflect all six dimensions",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Badge count changes with no detectable signal for the cause",
+   "Regex keyword list treated as authoritative without a drift check",
+   "Undercounted evidence row invisible to CI"
+  ]
  }
 ]

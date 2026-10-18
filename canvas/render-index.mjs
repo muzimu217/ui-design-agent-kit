@@ -136,7 +136,7 @@ async function main() {
     .map(
       (a) => `<details class="art"><summary><span class="badge">${measured(a)}/6</span><span class="t">${esc(a.title)}</span><span class="src ${a.origin === "ai-only" ? "src-ai" : "src-mixed"}">${a.origin === "ai-only" ? "AI 直出" : "AI+人工"}</span><span class="ver">v${esc(a.version ?? "?")}</span><span class="round">${esc(a.round)}</span></summary>
       <div class="body">
-        <div class="row"><span class="k">产物</span><span class="v"><code>${esc(a.path)}</code></span></div>
+        <div class="row"><span class="k">产物</span><span class="v"><code>${esc(a.path)}</code>${a.viewUrl ? ` <a class="art-open" href="${esc(a.viewUrl)}">打开产物 ↗</a>` : ` <span class="art-self">— 本页自指，不设自链</span>`}</span></div>
         <div class="row"><span class="k">六维</span><span class="v">${esc(Object.entries(a.sixDim ?? {}).map(([k, v]) => `${k}: ${v}`).join("；")).slice(0, 500)}</span></div>
         ${compareBlock(a)}
         <div class="row"><span class="k">状态</span><span class="v">${esc(a.status ?? "")}</span></div><div class="row"><span class="k">来源</span><span class="v">${a.origin === "ai-only" ? "AI 直出（未经人工修订）" : "AI 起草 + 人工修订"}${a.originNote ? ` — ${esc(a.originNote)}` : ""}</span></div>${a.changeSummary ? `<div class="row"><span class="k">变更</span><span class="v">${esc(a.changeSummary)}</span></div>` : ""}
@@ -223,6 +223,9 @@ async function main() {
   .k { color:var(--dim); min-width:48px; flex:none; }
   .v { flex:1; min-width:0; overflow-wrap:anywhere; }
   code { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:12px; color:#8ab4ff; word-break:break-all; }
+  .art-open { color:#c4b5fd; text-decoration:underline dotted; text-underline-offset:3px; white-space:nowrap; }
+  .art-open:hover { color:#a78bfa; }
+  .art-self { color:var(--dim); font-size:12px; white-space:nowrap; }
   .cmp { border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin:4px 0; background:#0d0d15; }
   .cmp-head { display:flex; flex-wrap:wrap; gap:8px; align-items:baseline; margin-bottom:8px; }
   .cmp-vs { font-weight:600; color:#c4b5fd; }

@@ -2031,5 +2031,37 @@
    "Regex keyword list treated as authoritative without a drift check",
    "Undercounted evidence row invisible to CI"
   ]
+ },
+ {
+  "id": "export-package-selfcontained-review",
+  "request": "Ship offline export bundles with every piece of evidence a third-party reviewer needs (comparison tables, inspection-level rubric, open steps) generated programmatically from the same structured data source as the rendered pages — a reviewer must complete the review without repo access, and no hand-copied claims may drift from the source data.",
+  "context": "Distributable offline bundle (HTML pages + docs + manifest) for external re-verification. Comparison/score evidence lives in structured JSON and must be rendered into the bundle's docs by the same export script.",
+  "passCriteria": [
+   "Bundle contains comparison evidence with inspection-level labels and observable denominators",
+   "Evidence docs generated from the structured data file, not hand-written copies",
+   "Reviewer can verify six-dimension and comparison claims using only bundle contents",
+   "Console has zero errors when opening bundled pages"
+  ],
+  "failConditions": [
+   "Reviewer forced back to the repo to interpret shipped comparisons",
+   "Hand-copied evidence text diverging from the structured source",
+   "Bundle claims inspection levels without the rubric that defines them"
+  ]
+ },
+ {
+  "id": "export-manifest-byte-accounting",
+  "request": "Record per-file byte size in the export manifest for every shipped file — generated pages and documentation alike — so a reviewer can reconcile the manifest listing against unpacked bundle contents; any file present in the bundle but absent from the manifest is a reconciliation failure.",
+  "context": "Offline export with a machine-readable manifest (export time, source commit, file bytes). The manifest is the bundle's table of contents and its tamper-evidence baseline.",
+  "passCriteria": [
+   "Every file in the bundle appears in the manifest with its byte size",
+   "Recorded sizes match actual unpacked file sizes",
+   "Manifest records export time and exact source commit",
+   "Console has zero errors when opening bundled pages"
+  ],
+  "failConditions": [
+   "Bundle file missing from the manifest",
+   "Recorded byte size differs from the unpacked file",
+   "Manifest lacks the source commit provenance"
+  ]
  }
 ]

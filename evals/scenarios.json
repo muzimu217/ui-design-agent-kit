@@ -2063,5 +2063,37 @@
    "Recorded byte size differs from the unpacked file",
    "Manifest lacks the source commit provenance"
   ]
+ },
+ {
+  "id": "seekable-animation-lint",
+  "request": "For any time-based animation intended for deterministic frame rendering, enforce a seekable-animation contract via a static lint rule: animations must be driven by a deterministic clock (currentTime/seek addressable), never by wall-clock accumulation; violations fail the check with the offending selector or track named.",
+  "context": "Motion/ video composition pipeline where exports must be reproducible frame-by-frame; CSS keyframes with scrubbing support pass, setInterval/setTimeout-driven animation fails.",
+  "passCriteria": [
+   "Each animation maps to a deterministic, seekable clock source",
+   "Wall-clock-driven animation (setTimeout/setInterval accumulation) flagged as violation",
+   "Violation reports the offending selector/track, not just a count",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Non-seekable animation passes the lint",
+   "Violation reported without a locatable source",
+   "Determinism checked only by eyeballing the rendered output"
+  ]
+ },
+ {
+  "id": "badge-legend-accessibility",
+  "request": "Make status badges (scores, counts, levels) accessible: each badge exposes an accessible name that states its meaning (e.g. '6 of 6 dimensions measured'), and the page carries a legend or tooltip explaining the scoring rubric so the badge is interpretable without visual context.",
+  "context": "Data-dense evidence dashboard whose wall entries show n/6 badges, level pills and version chips; screen-reader users must get the same interpretation as sighted users.",
+  "passCriteria": [
+   "Every badge has an accessible name conveying its meaning, not just the raw text",
+   "Rubric legend available in the page (visible or programmatically associated)",
+   "Level pills state their semantics (e.g. unverified-partial), not color alone",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Badge announced as bare number with no dimension context",
+   "Meaning conveyed by color/position only",
+   "Rubric present only outside the artifact (repo-only), unreachable from the page"
+  ]
  }
 ]

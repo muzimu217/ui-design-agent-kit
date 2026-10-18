@@ -51,7 +51,44 @@ try {
 }
 const receipt = { ok: true, pages: [] };
 
-for (const page of pages) {
+// Data guard — the wall's evidence registry must stay machine-checkable:
+// every artifact carries all six dimensions, each dimension's prose matches
+// the measured-keyword contract (guards the 2026-10-17 reducedMotion wording
+// miss), and a structured compare score (when present) has a full us/them
+// vector over 0/1/null plus an inspection level. --guard-fixture points the
+// guard at an alternate file for self-testing; --data-only skips the browser.
+const SIX_KEYS = ["desktop", "mobile", "keyboard", "contrast", "reducedMotion", "console"];
+const MEASURED_RE = /通过|实测|直拍|可达|全过/;
+const fixtureIdx = process.argv.indexOf("--guard-fixture");
+const guardSource = fixtureIdx > -1 ? process.argv[fixtureIdx + 1] : path.join(ROOT, "canvas", "artifacts.json");
+const dataOnly = process.argv.includes("--data-only");
+const dataIssues = [];
+try {
+  const artifacts = JSON.parse(await readFile(guardSource, "utf8"));
+  (artifacts.artifacts ?? []).forEach((a, i) => {
+    const id = a.id ?? `#${i}`;
+    const sd = a.sixDim ?? {};
+    for (const k of SIX_KEYS) {
+      if (!(k in sd)) dataIssues.push(`${id}: sixDim 缺 ${k}`);
+      else if (!MEASURED_RE.test(String(sd[k]))) dataIssues.push(`${id}: sixDim.${k} 未含判定关键词（通过/实测/直拍/可达/全过）`);
+    }
+    const s = a.compare?.score;
+    if (s) {
+      for (const side of ["us", "them"]) {
+        const m = s[side];
+        if (!m || typeof m !== "object") { dataIssues.push(`${id}: compare.score.${side} 缺失`); continue; }
+        for (const k of SIX_KEYS) if (!(k in m) || ![0, 1, null].includes(m[k])) dataIssues.push(`${id}: compare.score.${side}.${k} 非法（须 0/1/null）`);
+      }
+      if (!s.level) dataIssues.push(`${id}: compare.score 缺检视级别 level`);
+    }
+  });
+} catch (e) {
+  dataIssues.push(`artifacts 数据解析失败: ${e.message}`);
+}
+if (dataIssues.length) receipt.ok = false;
+receipt.dataGuard = { ok: dataIssues.length === 0, source: path.relative(ROOT, guardSource) || guardSource, issues: dataIssues };
+
+for (const page of dataOnly ? [] : pages) {
   const bg = { chromium, ctx: null, pageObj: null };
   const ctx = await browser.newContext();
   const p = await ctx.newPage();

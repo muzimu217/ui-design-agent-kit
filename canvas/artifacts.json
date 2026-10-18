@@ -39,10 +39,10 @@
    "title": "画布工作台入口页（门径+链路+产物墙三合一）",
    "path": "canvas/render-index.mjs + canvas/artifacts.json + canvas-workbench.state.json → output/canvas-index.html（离线自包含）",
    "sixDim": {
-    "desktop": "Chrome headless 1280 直拍通过（15.1 万字节非空白，增量 21 复拍）",
-    "mobile": "520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切，20.5 万字节）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）",
+    "desktop": "Chrome headless 1280 直拍通过（15.1 万字节非空白，增量 25 复拍）",
+    "mobile": "520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切，22.1 万字节）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）",
     "keyboard": "playwright Tab 序列实测：10 项 tab 停留全可达（4 卡片链接+4 过滤排序按钮+2 页脚互链）；chain 条目'打开产物'链接在其闭合折叠体内、展开后可达（检测器合计 11——增量 22 复测口径；入口页条目自指不设链，null 不虚记）",
-    "contrast": "playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项，增量 21 复测——对比表新增文本节点）",
+    "contrast": "playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项，增量 25 复测——图例与 caption 后抽样 40 项 0 低于）",
     "reducedMotion": "无过渡动画（静态检查通过）",
     "console": "playwright 实测 0 错误（favicon data-URI 修复后）"
    },
@@ -58,9 +58,9 @@
      "themNote": "对标侧为公开首屏实看（未注册实测）：仅首屏呈现可观测，其余四维无公开可验证证据，记 null 不虚记"
     }
    },
-   "status": "v1.4（条目可点击打开）",
-   "version": 5,
-   "changeSummary": "v1.0 三卡入口+门径 pills+产物墙 → v1.1 520px 实测通过 → v1.2 排序视图+完成度徽章+mission control 两态分离+任务注册表 → v1.3 对比评分结构化（六维并排表+检视级别入墙，借鉴 Wegic 模板详情结构化呈现）→ v1.4 产物墙条目 viewUrl（chain 条目可点击打开；本页条目自指不设链）",
+   "status": "v1.5（徽章语义化+口径图例）",
+   "version": 6,
+   "changeSummary": "v1.0 三卡入口+门径 pills+产物墙 → v1.1 520px 实测通过 → v1.2 排序视图+完成度徽章+mission control 两态分离+任务注册表 → v1.3 对比评分结构化（六维并排表+检视级别入墙，借鉴 Wegic 模板详情结构化呈现）→ v1.4 产物墙条目 viewUrl（chain 条目可点击打开；本页条目自指不设链）→ v1.5 徽章 aria 语义化+口径图例入页+对比表 caption（badge-legend 语料的工具落地）",
    "origin": "ai-draft+human-revision",
    "originNote": "入口页由代理编写，经用户门 A 方向确认与多轮增量修订（mission control/任务注册表/版本徽章）"
   }

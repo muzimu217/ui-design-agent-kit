@@ -123,8 +123,8 @@ async function main() {
       .join("");
     return `<div class="row"><span class="k">对比</span><span class="v">
       <div class="cmp">
-        <div class="cmp-head"><span class="cmp-vs">vs ${esc(c.target ?? "—")}</span><span class="cmp-sum">本产物 ${scoreSum(s.us)}/6 · 对标 ${scoreSum(s.them)}/${scoreObs(s.them)} 可观测</span><span class="cmp-level">检视级别 ${esc(s.level ?? "unverified-partial")}</span></div>
-        <table class="cmp-table"><thead><tr><th scope="col">维度</th><th scope="col">本产物</th><th scope="col">对标</th></tr></thead><tbody>${body}</tbody></table>
+        <div class="cmp-head"><span class="cmp-vs">vs ${esc(c.target ?? "—")}</span><span class="cmp-sum">本产物 ${scoreSum(s.us)}/6 · 对标 ${scoreSum(s.them)}/${scoreObs(s.them)} 可观测</span><span class="cmp-level" aria-label="检视级别 ${esc(s.level ?? "unverified-partial")}：仅公开页面检视，未实测维度记 null">检视级别 ${esc(s.level ?? "unverified-partial")}</span></div>
+        <table class="cmp-table"><caption class="cmp-caption">六维并排评分：✓=有实测/实看证据，✗=实测缺失，—=不可观测不计分母</caption><thead><tr><th scope="col">维度</th><th scope="col">本产物</th><th scope="col">对标</th></tr></thead><tbody>${body}</tbody></table>
         ${s.themNote ? `<div class="cmp-note">${esc(s.themNote)}</div>` : ""}
         <div class="cmp-note">${esc(c.verdict ?? "")}</div>
         ${c.evidence ? `<div class="cmp-note">证据（仓内路径）：${esc(c.evidence)}</div>` : ""}
@@ -134,7 +134,7 @@ async function main() {
   const sorted = [...artifacts.artifacts].sort((a, b) => (a.round < b.round ? 1 : a.round > b.round ? -1 : 0));
   const rows = sorted
     .map(
-      (a) => `<details class="art"><summary><span class="badge">${measured(a)}/6</span><span class="t">${esc(a.title)}</span><span class="src ${a.origin === "ai-only" ? "src-ai" : "src-mixed"}">${a.origin === "ai-only" ? "AI 直出" : "AI+人工"}</span><span class="ver">v${esc(a.version ?? "?")}</span><span class="round">${esc(a.round)}</span></summary>
+      (a) => `<details class="art"><summary><span class="badge" aria-label="六维完成度 ${measured(a)}/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">${measured(a)}/6</span><span class="t">${esc(a.title)}</span><span class="src ${a.origin === "ai-only" ? "src-ai" : "src-mixed"}" aria-label="来源：${a.origin === "ai-only" ? "AI 直出，未经人工修订" : "AI 起草加人工修订"}">${a.origin === "ai-only" ? "AI 直出" : "AI+人工"}</span><span class="ver" aria-label="版本 v${esc(a.version ?? "?")}">v${esc(a.version ?? "?")}</span><span class="round">${esc(a.round)}</span></summary>
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>${esc(a.path)}</code>${a.viewUrl ? ` <a class="art-open" href="${esc(a.viewUrl)}">打开产物 ↗</a>` : ` <span class="art-self">— 本页自指，不设自链</span>`}</span></div>
         <div class="row"><span class="k">六维</span><span class="v">${esc(Object.entries(a.sixDim ?? {}).map(([k, v]) => `${k}: ${v}`).join("；")).slice(0, 500)}</span></div>
@@ -240,6 +240,8 @@ async function main() {
   .mk-no { color:#f87171; }
   .mk-na { color:var(--dim); }
   .cmp-note { color:var(--dim); font-size:12px; margin-top:8px; }
+  .wall-legend { color:var(--dim); font-size:12px; margin:0 0 10px; }
+  .cmp-caption { caption-side:bottom; color:var(--dim); font-size:11px; text-align:left; padding-top:6px; }
   footer { margin-top:24px; color:var(--dim); font-size:12px; text-align:center; }
 </style>
 </head>
@@ -280,6 +282,7 @@ async function main() {
     <button type="button" class="wf-btn is-on" data-sort="round" onclick="wallSort('round')">按轮次</button>
     <button type="button" class="wf-btn" data-sort="verified" onclick="wallSort('verified')">按完成度</button>
   </div>
+  <p class="wall-legend" id="wall-legend">徽章口径：n/6=六维实测数（桌面/移动/键盘/对比度/降动效/控制台各 1 分）；vN=版本序号；检视级别 unverified-partial=仅公开页面检视，未公开验证的维度记 — 不虚记。</p>
   ${rows}
 <script>
 // 六维过滤：measured 徽章 < 6 的条目在 full 模式下隐藏（纯展示切换，无网络无构建逻辑）。

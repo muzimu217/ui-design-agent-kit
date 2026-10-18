@@ -2095,5 +2095,37 @@
    "Meaning conveyed by color/position only",
    "Rubric present only outside the artifact (repo-only), unreachable from the page"
   ]
+ },
+ {
+  "id": "prompt-attachment-clarity",
+  "request": "When a generation prompt input accepts attachments (design system, reference image, token file), the UI must show each active attachment by name, state in one line what it constrains in the generated output, and allow removal; hidden constraints that silently shape the result are a failure.",
+  "context": "Prompt-first generation entry with an attach-design-system affordance; the attachment constrains style/tokens of whatever gets generated.",
+  "passCriteria": [
+   "Active attachments listed by name next to the prompt input",
+   "Each attachment's constraining effect stated in one visible line",
+   "Attachment removable before submit; removal reflected immediately",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Attachment applied but not visible at prompt time",
+   "Constraint effect described only in external docs",
+   "Removal possible only by restarting the flow"
+  ]
+ },
+ {
+  "id": "pipeline-tabs-a11y",
+  "request": "Implement pipeline/stage tab strips as accessible tablists: the selected tab exposes aria-selected, panels are labelled by their tab, and keyboard users can move between tabs (arrow keys or sequential focus) with visible focus; stage state must never be conveyed by color alone.",
+  "context": "A horizontal stage strip (e.g. plan → design → verify → deliver) where each tab switches a content panel describing that stage.",
+  "passCriteria": [
+   "Selected tab exposes aria-selected=true and the panel is labelled by its tab",
+   "Keyboard navigation between tabs works with visible focus",
+   "Stage completion/status available in text, not color alone",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Selected state conveyed only visually",
+   "Panels unreachable or unlabelled for screen readers",
+   "Tab strip focus invisible on dark background"
+  ]
  }
 ]

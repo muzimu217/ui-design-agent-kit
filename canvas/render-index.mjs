@@ -111,12 +111,12 @@ async function main() {
   const sorted = [...artifacts.artifacts].sort((a, b) => (a.round < b.round ? 1 : a.round > b.round ? -1 : 0));
   const rows = sorted
     .map(
-      (a) => `<details class="art"><summary><span class="badge">${measured(a)}/6</span><span class="t">${esc(a.title)}</span><span class="ver">v${esc(a.version ?? "?")}</span><span class="round">${esc(a.round)}</span></summary>
+      (a) => `<details class="art"><summary><span class="badge">${measured(a)}/6</span><span class="t">${esc(a.title)}</span><span class="src ${a.origin === "ai-only" ? "src-ai" : "src-mixed"}">${a.origin === "ai-only" ? "AI 直出" : "AI+人工"}</span><span class="ver">v${esc(a.version ?? "?")}</span><span class="round">${esc(a.round)}</span></summary>
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>${esc(a.path)}</code></span></div>
         <div class="row"><span class="k">六维</span><span class="v">${esc(Object.entries(a.sixDim ?? {}).map(([k, v]) => `${k}: ${v}`).join("；")).slice(0, 500)}</span></div>
         <div class="row"><span class="k">对比</span><span class="v">${esc(a.compare?.target ?? "—")} — ${esc(a.compare?.verdict ?? "")}</span></div>
-        <div class="row"><span class="k">状态</span><span class="v">${esc(a.status ?? "")}</span></div>${a.changeSummary ? `<div class="row"><span class="k">变更</span><span class="v">${esc(a.changeSummary)}</span></div>` : ""}
+        <div class="row"><span class="k">状态</span><span class="v">${esc(a.status ?? "")}</span></div><div class="row"><span class="k">来源</span><span class="v">${a.origin === "ai-only" ? "AI 直出（未经人工修订）" : "AI 起草 + 人工修订"}${a.originNote ? ` — ${esc(a.originNote)}` : ""}</span></div>${a.changeSummary ? `<div class="row"><span class="k">变更</span><span class="v">${esc(a.changeSummary)}</span></div>` : ""}
       </div>
     </details>`
     )
@@ -190,6 +190,9 @@ async function main() {
   .task-row .round { color:var(--dim); font-size:12px; flex:none; }
   .task-exec { color:#22d3ee; font-size:12px; flex:1 1 200px; min-width:0; }
   .task-ev { color:#34d399; font-size:12px; flex:1 1 200px; min-width:0; }
+  .src { flex:none; border-radius:99px; padding:1px 8px; font-size:11px; border:1px solid var(--line); }
+  .src-ai { color:#fbbf24; border-color:#4a3b12; }
+  .src-mixed { color:#a7f3d0; border-color:#1f4d3a; }
   .ver { flex:none; color:#c4b5fd; font-size:11px; font-weight:600; }
   .badge { flex:none; background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:1px 8px; font-size:11px; color:#a7f3d0; }
   .body { padding:0 16px 14px; font-size:13px; }

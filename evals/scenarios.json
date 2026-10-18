@@ -1932,5 +1932,39 @@
    "File sizes omitted",
    "Hash causes horizontal overflow"
   ]
+ },
+ {
+  "id": "artifact-origin-marker",
+  "request": "Build an artifact wall where every entry carries a provenance marker distinguishing AI-only output from AI-drafted-then-human-revised, visible in the collapsed row with distinct colors, and expanding shows the origin note.",
+  "context": "New web UI. Data from embedded records with origin field (ai-only | ai-draft+human-revision); markers must not imply quality ranking.",
+  "passCriteria": [
+   "Provenance marker visible in collapsed row",
+   "AI-only and mixed markers visually distinct (color + text)",
+   "Expanded entry shows the origin note",
+   "Marker wording never implies one origin is better",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Marker hidden until expanded",
+   "Markers use identical styling",
+   "Wording ranks origins as quality"
+  ]
+ },
+ {
+  "id": "provenance-not-quality",
+  "request": "Build a provenance display where 'AI-only' and 'human-revised' are presented as factual lineage labels, never as quality scores or ranking; any quality claim must come from a separate verification field.",
+  "context": "New web UI. Two separate fields: provenance (lineage) and verification (measured evidence); the labels and layout must keep them independent.",
+  "passCriteria": [
+   "Provenance rendered as factual label (no star/score)",
+   "Verification rendered separately with measured evidence",
+   "No wording equates human-revised with higher quality",
+   "Both fields labeled distinctly",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Provenance shown as a score or badge of honor",
+   "Verification implied by provenance",
+   "Labels conflate lineage with quality"
+  ]
  }
 ]

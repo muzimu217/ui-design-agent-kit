@@ -22,7 +22,9 @@
    },
    "status": "v1.3（六维全实测+页脚互链）",
    "version": 4,
-   "changeSummary": "v1.0 首版链路页 → v1.1 防御 CSS+520px 实测 → v1.2 六维全实测+favicon 修复 → v1.3 页脚互链门径画布/工作台入口（键盘 9→11）"
+   "changeSummary": "v1.0 首版链路页 → v1.1 防御 CSS+520px 实测 → v1.2 六维全实测+favicon 修复 → v1.3 页脚互链门径画布/工作台入口（键盘 9→11）",
+   "origin": "ai-draft+human-revision",
+   "originNote": "渲染器与版式由代理编写，经多轮人工验收意见修订（页脚互链/防御 CSS/比对视图）"
   },
   {
    "id": "canvas-index-hub",
@@ -45,7 +47,9 @@
    },
    "status": "v1.2（六维全实测）",
    "version": 3,
-   "changeSummary": "v1.0 三卡入口+门径 pills+产物墙 → v1.1 520px 实测通过 → v1.2 排序视图+完成度徽章+mission control 两态分离+任务注册表"
+   "changeSummary": "v1.0 三卡入口+门径 pills+产物墙 → v1.1 520px 实测通过 → v1.2 排序视图+完成度徽章+mission control 两态分离+任务注册表",
+   "origin": "ai-draft+human-revision",
+   "originNote": "入口页由代理编写，经用户门 A 方向确认与多轮增量修订（mission control/任务注册表/版本徽章）"
   }
  ]
 }

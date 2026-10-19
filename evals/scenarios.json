@@ -2625,6 +2625,38 @@
   ]
  },
  {
+  "id": "storyboard-constraints-auditable",
+  "request": "A video storyboard must carry a constraint-reconciliation column where every narrative constraint (hook timing, re-hook cadence, screenshot counts) is checked against the beat table; rendering may only start when every row reconciles, and the storyboard itself renders no video.",
+  "context": "A 30-second storyboard awaiting user review before any render is spent.",
+  "passCriteria": [
+   "Each beat row cites the constraints it satisfies",
+   "Constraint violations block the storyboard (not the render)",
+   "Storyboards pending user review carry no rendered output",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Rendering started with unreconciled storyboard rows",
+   "Storyboard written after the video was already rendered",
+   "Constraint column present but unchecked"
+  ]
+ },
+ {
+  "id": "readonly-phase-explicit",
+  "request": "A workflow that mixes research and mutation must name its read-only phase explicitly (e.g. plan mode denies edits, asks before shell commands) and map which workflow gates run inside that phase — so the permissions story and the gate story reinforce rather than contradict each other.",
+  "context": "A gated workflow whose early gates (direction, references) are research-only while later gates produce deliverables.",
+  "passCriteria": [
+   "Research-only phase named and its permission defaults stated",
+   "Gates mapped to phases: which run read-only, which mutate",
+   "Permission escalation requires the same human confirmation as gates",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Mutation possible during the declared read-only phase",
+   "Gate list and permission list tell contradictory stories",
+   "Escalation silent or unlogged"
+  ]
+ },
+ {
   "id": "incumbent-multiagent-console",
   "request": "When an incumbent ships a multi-agent management console, a recheck must distinguish what it manages (execution progress) from what our layer provides (evidence and acceptance), and must state whether our differentiating layer (browser-measured verification) was encroached upon — reaffirming or revising the moat judgement with the interval noted.",
   "context": "Periodic recheck of an incumbent that just productized agent task management in a desktop app.",

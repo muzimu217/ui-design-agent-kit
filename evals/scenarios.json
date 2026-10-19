@@ -2479,5 +2479,37 @@
    "Licence of a sub-dependency ignored",
    "Kit's self-reported quality accepted as the only gate"
   ]
+ },
+ {
+  "id": "style-heuristics-nonblocking",
+  "request": "Style-constraint heuristics derived from knowledge cards (e.g. single-stroke path M-command count, colour palette size) must run as non-blocking hints — they surface where a page exceeds a constraint with a human-readable reason, but never fail the acceptance receipt, because these are taste constraints rather than correctness ones.",
+  "context": "An acceptance script that already blocks on correctness (contrast, keyboard, console) and should additionally inform on style-constraint exceedances without gatekeeping them.",
+  "passCriteria": [
+   "Exceeding a style constraint produces a named, locatable hint",
+   "Hint count does not affect receipt ok or exit code",
+   "Correctness checks remain blocking in the same run",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Style hint causes acceptance failure (gatekeeping taste)",
+   "Hint reported without locating the offending element",
+   "Hints exist but correctness checks silently became non-blocking"
+  ]
+ },
+ {
+  "id": "incumbent-rerecord-interval",
+  "request": "Incumbent competitor rechecks must record an interval and an honest delta: what changed since the last check, what did not, and what that does to the earlier judgement — a recheck that finds no change still records the interval as evidence of stability rather than skipping the round.",
+  "context": "Periodic recheck of an incumbent platform two days after the previous visit.",
+  "passCriteria": [
+   "Interval since last check stated",
+   "Deltas listed explicitly (new features, unchanged areas)",
+   "Prior judgement reaffirmed or revised with reasons",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Recheck repeats the old insight without a delta list",
+   "Interval omitted so cadence is unauditable",
+   "Judgement changed with no stated trigger"
+  ]
  }
 ]

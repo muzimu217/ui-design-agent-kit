@@ -180,6 +180,30 @@ for (const page of dataOnly ? [] : pages) {
   });
   pageResult.ariaGuard = ariaGuard;
   if (!ariaGuard.ok) { receipt.ok = false; pageResult.fail = (pageResult.fail ? pageResult.fail + "; " : "") + "aria guard"; }
+
+  // SVG heuristics — knowledge cards icon-single-stroke-constraint and
+  // illustration-minimal-constraints turned into NON-BLOCKING hints: count
+  // M commands per path (single-stroke) and distinct fill colours (colour
+  // count). Hints never fail the receipt; they surface where a page exceeds
+  // a constraint so a human decides whether it matters.
+  const svgHints = await p.evaluate(() => {
+    const hints = [];
+    document.querySelectorAll("svg").forEach((svg, si) => {
+      svg.querySelectorAll("path").forEach((p, pi) => {
+        const d = p.getAttribute("d") ?? "";
+        const mCount = (d.match(/M/gi) ?? []).length;
+        if (mCount > 1) hints.push(`svg#${si} path#${pi}: ${mCount} 次 M 起笔（单笔约束为 ≤1）`);
+      });
+      const fills = new Set();
+      svg.querySelectorAll("[fill]").forEach((el) => {
+        const v = (el.getAttribute("fill") ?? "").trim();
+        if (v && v !== "none") fills.add(v);
+      });
+      if (fills.size > 4) hints.push(`svg#${si}: ${fills.size} 种 fill 颜色（极简插画约束为 ≤4）`);
+    });
+    return { count: hints.length, hints: hints.slice(0, 8) };
+  });
+  pageResult.svgHints = svgHints;
   if (contrast.below.length > 0) { receipt.ok = false; pageResult.fail = "contrast below 4.5:1"; }
   if (consoleErrors.length > 0) { receipt.ok = false; pageResult.fail = (pageResult.fail ? pageResult.fail + "; " : "") + "console errors"; }
   receipt.pages.push(pageResult);

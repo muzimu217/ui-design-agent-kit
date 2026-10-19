@@ -2159,5 +2159,37 @@
    "Confirmed and pending announce identically to screen readers",
    "State change conveyed only by color"
   ]
+ },
+ {
+  "id": "kpi4-artifact-family-check",
+  "request": "Before scoring a product-level six-dimension comparison, verify artifact-family applicability: for non-graphic deliverables (CLI, MCP server, backend library) the six UI dimensions do not apply and must be reported as '0/0 observable — not applicable', never as a 0/6 score or an omitted comparison.",
+  "context": "An evidence wall that compares shipped artifacts against external targets across desktop/mobile/keyboard/contrast/reduced-motion/console dimensions.",
+  "passCriteria": [
+   "Family check precedes scoring; non-graphic targets marked not-applicable",
+   "Not-applicable shown as an explicit 0/0 denominator, not a zero score",
+   "Cross-family comparisons limited to mechanism-level notes, no dimension scores",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Non-graphic artifact scored 0/6 as if it failed UI dimensions",
+   "Comparison silently dropped for cross-family targets",
+   "Family applicability decided after scores are published"
+  ]
+ },
+ {
+  "id": "bundle-reconcile-fail-loudly",
+  "request": "A distributable bundle's build script must self-verify (archive integrity, per-file byte parity against the manifest, no unlisted or missing files) and fail with a non-zero exit naming each discrepancy; self-referential files (a manifest listing its own bytes) must be explicitly excluded from self-accounting with the exclusion documented in the artifact itself.",
+  "context": "Offline bundle exporter that writes pages plus generated docs plus a manifest; the manifest cannot record its own final size.",
+  "passCriteria": [
+   "Unlisted, missing, and byte-drifted files each fail the build with named output",
+   "Clean bundle passes reconciliation with a file-count confirmation",
+   "Manifest self-exclusion documented in the manifest and honored by the checker",
+   "A verify-only mode can re-check an existing bundle without rebuilding"
+  ],
+  "failConditions": [
+   "Discrepancy detected but exit code stays zero",
+   "Self-referential size recorded and silently drifting",
+   "Reconciliation only runs on files the script itself just wrote"
+  ]
  }
 ]

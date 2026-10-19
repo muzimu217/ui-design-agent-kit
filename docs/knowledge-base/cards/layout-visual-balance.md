@@ -20,6 +20,9 @@ codable:
     - "移动端单列布局不适用左右平衡，改用上/下重量与滚动节奏"
     - "平衡不等于居中：不对称但配平优于机械对称"
   appliesTo: ["着陆页 hero", "卡片网格", "海报式区块", "仪表盘信息层级"]
+  paramProvenance: inferred
+layer: composition
+measurable: true
 scope: 适用于静态或弱动效的版面构成；强动效页面中平衡由运动轨迹主导，需另行判读。
 counterexample: 把"平衡"做成镜像对称——会失去张力，读作模板化（对应"AI UI 千篇一律"的成因之一）。
 relations:

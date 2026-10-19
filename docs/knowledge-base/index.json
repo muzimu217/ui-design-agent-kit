@@ -1,43 +1,101 @@
 {
   "schemaVersion": 1,
+  "schemaMinor": 1,
   "generatedAt": "2026-10-19",
-  "note": "机读索引（工作台知识库区块读取）。卡片本体在 docs/knowledge-base/cards/。新增卡片须同步本文件；兼容规则见 schema.md §5。",
+  "note": "机读索引（工作台知识库区块读取）。卡片本体在 docs/knowledge-base/cards/。新增卡片须同步本文件；兼容规则见 schema.md §5。v1.1 新增 layer/measurable/paramProvenance（可选，向后兼容）。",
+  "layers": {
+    "composition": "构成（静态形式）",
+    "motion": "运动（时间维度）",
+    "order": "秩序（系统维度）"
+  },
   "cards": [
     {
-      "id": "motion-force-anticipation",
-      "title": "力量感 = 预备动作 + 加速曲线 + 跟随延迟",
-      "domain": "motion",
+      "id": "icon-single-stroke-constraint",
+      "title": "约束美学：单一连续笔画产生形式感",
+      "domain": "icon",
+      "layer": "composition",
+      "measurable": true,
       "status": "active",
       "confidence": "sourced",
       "version": 1,
       "relations": [{ "type": "related", "target": "layout-visual-balance" }],
-      "source": { "kind": "video", "heat": 2151000, "author": "喜定", "ref": "https://www.bilibili.com/video/BV1uL4y1H74Q/" },
-      "codableParams": 3,
+      "source": { "kind": "video", "heat": 5888000, "author": "设计师深海", "ref": "https://www.bilibili.com/video/BV1qb4y1b7Hh/" },
+      "codableParams": 5,
       "learnedAt": "2026-10-19"
     },
     {
       "id": "layout-visual-balance",
       "title": "视觉平衡 = 视觉重量分布，而非几何对称",
       "domain": "layout",
+      "layer": "composition",
+      "measurable": true,
       "status": "active",
       "confidence": "sourced",
       "version": 1,
       "relations": [{ "type": "related", "target": "motion-force-anticipation" }],
       "source": { "kind": "video", "heat": 3170000, "author": "言九七_", "ref": "https://www.bilibili.com/video/BV1yU4y1K7uL/" },
-      "codableParams": 3,
+      "codableParams": 5,
       "learnedAt": "2026-10-19"
     },
     {
-      "id": "icon-single-stroke-constraint",
-      "title": "约束美学：单一连续笔画产生形式感",
-      "domain": "icon",
+      "id": "motion-force-anticipation",
+      "title": "力量感 = 预备动作 + 加速曲线 + 跟随延迟",
+      "domain": "motion",
+      "layer": "motion",
+      "measurable": false,
       "status": "active",
       "confidence": "sourced",
       "version": 1,
       "relations": [{ "type": "related", "target": "layout-visual-balance" }],
-      "source": { "kind": "video", "heat": 5888000, "author": "设计师深海", "ref": "https://www.bilibili.com/video/BV1qb4y1b7Hh/" },
-      "codableParams": 3,
+      "source": { "kind": "video", "heat": 2151000, "author": "喜定", "ref": "https://www.bilibili.com/video/BV1uL4y1H74Q/" },
+      "codableParams": 5,
       "learnedAt": "2026-10-19"
+    },
+    {
+      "id": "icon-primitive-reduction",
+      "title": "基本形状归约：用圆/方/三角的有限组合承载识别",
+      "domain": "icon",
+      "layer": "composition",
+      "measurable": true,
+      "status": "active",
+      "confidence": "sourced",
+      "version": 1,
+      "relations": [
+        { "type": "extends", "target": "icon-single-stroke-constraint" },
+        { "type": "related", "target": "layout-visual-balance" }
+      ],
+      "source": { "kind": "video", "heat": 1165000, "author": "设计师深海", "ref": "https://www.bilibili.com/video/BV1MU4y1J7cv/" },
+      "codableParams": 5,
+      "learnedAt": "2026-10-19"
+    },
+    {
+      "id": "illustration-minimal-constraints",
+      "title": "极简插画 = 低色数 + 无渐变 + 大负空间",
+      "domain": "illustration",
+      "layer": "composition",
+      "measurable": true,
+      "status": "active",
+      "confidence": "sourced",
+      "version": 1,
+      "relations": [{ "type": "related", "target": "icon-primitive-reduction" }],
+      "source": { "kind": "video", "heat": 2095000, "author": "设计师深海", "ref": "https://www.bilibili.com/video/BV1YS4y1r7BM/" },
+      "codableParams": 6,
+      "learnedAt": "2026-10-19"
+    },
+    {
+      "id": "motion-reverse-phi-illusion",
+      "title": "Reverse Phi 错觉：静止帧交替产生运动感知",
+      "domain": "motion",
+      "layer": "motion",
+      "measurable": false,
+      "status": "active",
+      "confidence": "sourced",
+      "version": 1,
+      "relations": [{ "type": "related", "target": "motion-force-anticipation" }],
+      "source": { "kind": "video", "heat": 1757000, "author": "设计师深海（原作 jagarikin）", "ref": "https://www.bilibili.com/video/BV12T4y117GH/" },
+      "codableParams": 7,
+      "learnedAt": "2026-10-19",
+      "safetyNote": "光敏风险：8-12fps 明暗反转落在高风险区间，research-only，默认不实现"
     }
   ]
 }

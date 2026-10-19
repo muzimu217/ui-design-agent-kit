@@ -20,6 +20,9 @@ codable:
     - "同一屏幕内力量感元素不超过 2 处，否则互相削弱"
     - "reduced-motion 下保留位移结果、移除预备与跟随"
   appliesTo: ["按钮按压反馈", "卡片入场", "拖拽释放", "游戏化动效"]
+  paramProvenance: inferred
+layer: motion
+measurable: false
 scope: 适用于有物理隐喻的界面动效（拖拽/撞击/弹出）；不适用于状态切换类（如 tab 切换），后者需要的是即时性而非力量感。
 counterexample: 把"力量感"套在表单校验提示上——用户需要的是即时确认，过长的预备动作会被读成卡顿。
 relations:

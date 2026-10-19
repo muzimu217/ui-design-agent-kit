@@ -2383,5 +2383,37 @@
    "Claim of verification where the artifact has unmeasured dimensions",
    "Terms/limitations omitted from the public page"
   ]
+ },
+ {
+  "id": "knowledge-layer-taxonomy",
+  "request": "A knowledge base must classify each card into an explicit layer (composition / motion / order) and declare whether its parameters are script-detectable and how those parameter values were obtained (observed / inferred / measured); a card that cannot state its provenance is downgraded rather than presented as measured fact.",
+  "context": "Self-learning knowledge base whose cards are distilled from video analysis rather than first-hand measurement.",
+  "passCriteria": [
+   "Every card declares layer and measurable flag",
+   "Parameter provenance distinguishes observed/inferred/measured",
+   "UI groups cards by layer so gaps (e.g. empty order layer) are visible",
+   "Cards with unmeasurable mechanisms are not claimed as auto-checkable"
+  ],
+  "failConditions": [
+   "Parameters presented as measured when they were inferred from videos",
+   "No layer taxonomy, making the knowledge base a flat unsearchable list",
+   "Unmeasurable aesthetic claims wired into blocking checks"
+  ]
+ },
+ {
+  "id": "safety-flagged-mechanism",
+  "request": "A mechanism carrying a known safety risk (e.g. flashing above photosensitivity thresholds) must be recorded with an explicit safety note, marked research-only, excluded from default implementations, and disabled under prefers-reduced-motion.",
+  "context": "Knowledge base ingesting high-view motion-design content that includes strobing/illusive techniques.",
+  "passCriteria": [
+   "Card carries an explicit safety note naming the risk",
+   "Status prevents default implementation (research-only / frozen)",
+   "Reduced-motion behaviour stated as disabled",
+   "UI surfaces the risk marker on the card"
+  ],
+  "failConditions": [
+   "Strobing technique implemented without photosensitivity review",
+   "Safety caveat buried in prose without a machine-visible flag",
+   "Reduced-motion behaviour unspecified"
+  ]
  }
 ]

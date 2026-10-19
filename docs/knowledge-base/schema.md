@@ -1,10 +1,20 @@
-# 知识库 Schema v1
+# 知识库 Schema v1.1
 
-- schemaVersion：**1**
+- schemaVersion：**1**（minor 1.1，向后兼容新增可选字段）
 - 更新日期：2026-10-19
 - 变更纪律：见 `docs/self-learning-loop.md` §3（向后兼容优先；破坏性变更走 migrations/；卡片不删除只 superseded）
 
-## 一、卡片文件位置与命名
+## 一、v1.1 新增可选字段（向后兼容）
+
+| 字段 | 必填 | 类型 | 说明 |
+| --- | --- | --- | --- |
+| `layer` | ⬜ | enum | `composition`（构成/静态形式）/ `motion`（运动/时间）/ `order`（秩序/系统）。用于三层体系检索 |
+| `measurable` | ⬜ | boolean | 该机制能否被 check 脚本启发式检测（默认 `false`，不得夸大为可自动判定） |
+| `codable.paramProvenance` | ⬜ | enum | 参数来源：`observed`（从作品观察）/ `inferred`（从多例归纳）/ `measured`（本项目实测）。**缺省视为 `inferred`** |
+
+**为什么要这三个字段**：v1 只能回答"这条知识说了什么"，回答不了"它在体系里属于哪层""能不能自动检测""数值有多可信"。v1.1 补齐这三问，且全部可选——旧卡无需改写即可继续读取。
+
+## 二、卡片文件位置与命名
 
 ```
 docs/knowledge-base/
@@ -26,7 +36,7 @@ docs/knowledge-base/
 | `confidence` | ✅ | enum | `verified`（本项目实测）/ `sourced`（外部来源可信）/ `unverified-partial` |
 | `source` | ✅ | object | `{kind: video|article|product|experiment, ref: url/路径, author, publishedAt, heat?: 播放量}` |
 | `mechanism` | ✅ | string | 机制的一句话解释（为什么有效） |
-| `codable` | ✅ | object | `{params: [], constraints: [], appliesTo: []}` —— **可编码参数**，缺此视为 incomplete |
+| `codable` | ✅ | object | `{params: [], constraints: [], appliesTo: [], paramProvenance?: observed\|inferred\|measured}` —— **可编码参数**，缺此视为 incomplete |
 | `scope` | ✅ | string | 适用边界（什么场景成立、什么场景不成立） |
 | `counterexample` | ⬜ | string | 反例/失效条件 |
 | `relations` | ✅ | array | `[{type: extends|supersedes|conflicts|related, target: <card id>}]` |

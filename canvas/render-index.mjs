@@ -56,18 +56,20 @@ async function main() {
   } catch { /* 缺文件时不渲染区块 */ }
   const kbCards = kb.cards ?? [];
   const kbDomains = [...new Set(kbCards.map((c) => c.domain))];
+  const kbLayers = (kb.layers ?? {});
+  const kbByLayer = Object.keys(kbLayers).map((k) => [k, kbCards.filter((c) => c.layer === k).length]).filter(([, n]) => n > 0);
   const kbRecent = [...kbCards].sort((a, b) => (a.learnedAt < b.learnedAt ? 1 : -1)).slice(0, 3);
   const kbRows = kbRecent
     .map(
       (c) => `<div class="kb-row">
-        <span class="kb-dom">${esc(c.domain)}</span>
-        <span class="kb-title">${esc(c.title)}</span>
+        <span class="kb-dom">${esc(c.layer ?? c.domain)}</span>
+        <span class="kb-title">${esc(c.title)}${c.measurable ? '<span class="kb-m" aria-label="可被脚本启发式检测">可测</span>' : ""}${c.safetyNote ? '<span class="kb-risk" aria-label="含安全风险，仅研究">风险</span>' : ""}</span>
         <span class="kb-meta">${esc(c.source?.author ?? "")} · ${c.source?.heat ? `${(c.source.heat / 10000).toFixed(1)} 万播放` : ""} · 参数 ${esc(c.codableParams ?? 0)} 条</span>
       </div>`
     )
     .join("\n");
   const kbSection = kbCards.length
-    ? `<h2 class="sec">知识库（自学机制 · schema v${esc(kb.schemaVersion)} · ${kbCards.length} 卡 / ${kbDomains.length} 域）</h2>
+    ? `<h2 class="sec">知识库（自学机制 · schema v${esc(kb.schemaVersion)}${kb.schemaMinor ? `.${esc(kb.schemaMinor)}` : ""} · ${kbCards.length} 卡 / ${kbDomains.length} 域 · ${kbByLayer.map(([k, n]) => `${esc(kbLayers[k])} ${n}`).join(" · ")}）</h2>
        <p class="cap-intro">每日视频学习 → 机制卡片（可编码参数+适用边界）→ 兼容性声明（extends/supersedes/conflicts）→ 转化。规范 <code>docs/self-learning-loop.md</code> · <code>docs/knowledge-base/schema.md</code>。</p>
        <div class="kb-table">${kbRows}</div>`
     : "";
@@ -330,6 +332,8 @@ async function main() {
   .kb-row { display:grid; grid-template-columns:56px 1fr minmax(160px,auto); gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-left:3px solid #22d3ee; border-radius:9px; padding:10px 14px; font-size:12px; }
   .kb-dom { color:#22d3ee; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
   .kb-title { font-weight:600; overflow-wrap:anywhere; }
+  .kb-m { display:inline-block; margin-left:6px; font-size:10px; border:1px solid #1f4d3a; color:#a7f3d0; border-radius:99px; padding:0 6px; vertical-align:middle; }
+  .kb-risk { display:inline-block; margin-left:6px; font-size:10px; border:1px solid #4a1d1d; color:#fca5a5; border-radius:99px; padding:0 6px; vertical-align:middle; }
   .kb-meta { color:var(--dim); text-align:right; }
   @media (max-width: 640px) { .kb-row { grid-template-columns:56px 1fr; } .kb-meta { grid-column:2; text-align:left; } }
   .taste-table { display:grid; gap:8px; }

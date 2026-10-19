@@ -20,6 +20,9 @@ codable:
     - "信息密度高的图标（如设置齿轮）不适合单笔约束，需换图形语言"
     - "小尺寸（≤16px）下单笔路径易糊，需简化节点"
   appliesTo: ["品牌标志", "图标系统", "生成式装饰图形", "空态插画"]
+  paramProvenance: inferred
+layer: composition
+measurable: true
 scope: 适用于符号化、识别优先的图形；不适用于需要精确表达机械结构或文字信息的图。
 counterexample: 把单笔约束套到数据图表上——连续性会牺牲可读性。
 relations:

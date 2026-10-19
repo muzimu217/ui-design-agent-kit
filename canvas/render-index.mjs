@@ -19,6 +19,34 @@ function esc(s) {
 async function main() {
   const artifacts = JSON.parse(await readFile(path.join(ROOT, "canvas", "artifacts.json"), "utf8"));
   const state = JSON.parse(await readFile(path.join(ROOT, "canvas", "canvas-workbench.state.json"), "utf8"));
+
+  // 能力接入登记表：外部生成能力按契约登记（谁产出/边界/验收/证据），
+  // adopted 才可用于交付；空缺（evaluating）如实展示为"未接入"而非隐藏。
+  let capabilities = { capabilities: [] };
+  try {
+    capabilities = JSON.parse(await readFile(path.join(ROOT, "canvas", "capabilities.json"), "utf8"));
+  } catch { /* 缺文件时区块不渲染 */ }
+  const capStatus = {
+    adopted: { label: "已接入", color: "#34d399" },
+    evaluating: { label: "待接入", color: "#fbbf24" },
+    rejected: { label: "不接入", color: "#f87171" },
+  };
+  const capRows = (capabilities.capabilities ?? [])
+    .map((c) => {
+      const st = capStatus[c.status] ?? capStatus.evaluating;
+      return `<div class="cap-row">
+        <span class="cap-st" style="color:${st.color};border-color:${st.color}" aria-label="接入状态：${st.label}">${st.label}</span>
+        <span class="cap-name">${esc(c.name)}<span class="cap-kind">${esc(c.kind ?? "")}</span></span>
+        <span class="cap-prov">${esc(c.provider)}${c.pinned && c.pinned !== "—" ? ` · ${esc(c.pinned)}` : ""}</span>
+        <span class="cap-acc">${esc(c.acceptance)}</span>
+      </div>`;
+    })
+    .join("\n");
+  const capSection = capRows
+    ? `<h2 class="sec">能力接入（工作流监管层 · ${(capabilities.capabilities ?? []).filter((c) => c.status === "adopted").length} 已接入 / ${(capabilities.capabilities ?? []).length} 登记）</h2>
+       <p class="cap-intro">本仓不做生成引擎：外部能力按契约接入，工作流负责门径、验收与证据（<code>docs/capability-adapters.md</code>）。待接入项为空缺状态，不得用于交付。</p>
+       <div class="cap-table">${capRows}</div>`
+    : "";
   const stageEntries = Object.entries(state.stages ?? {});
   const gates = state.gates ?? {};
   const gateColor = { passed: "#34d399", gated: "#f472b6", active: "#22d3ee", blocked: "#f87171", pending: "#6b7280" };
@@ -241,6 +269,15 @@ async function main() {
   .mk-na { color:var(--dim); }
   .cmp-note { color:var(--dim); font-size:12px; margin-top:8px; }
   .wall-legend { color:var(--dim); font-size:12px; margin:0 0 10px; }
+  .cap-intro { color:var(--dim); font-size:12px; margin:0 0 10px; }
+  .cap-table { display:grid; gap:8px; }
+  .cap-row { display:grid; grid-template-columns:64px minmax(140px,1.1fr) minmax(120px,1fr) minmax(180px,1.6fr); gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-radius:9px; padding:10px 14px; font-size:12px; }
+  .cap-st { border:1px solid; border-radius:99px; padding:1px 8px; font-size:11px; text-align:center; white-space:nowrap; }
+  .cap-name { font-weight:600; }
+  .cap-kind { color:var(--dim); font-weight:400; margin-left:6px; font-size:11px; }
+  .cap-prov { color:var(--dim); overflow-wrap:anywhere; }
+  .cap-acc { color:#a7f3d0; overflow-wrap:anywhere; }
+  @media (max-width: 640px) { .cap-row { grid-template-columns:64px 1fr; } .cap-prov, .cap-acc { grid-column:2; } }
   .cmp-caption { caption-side:bottom; color:var(--dim); font-size:11px; text-align:left; padding-top:6px; }
   /* 生成式微艺术背景：装饰层（aria-hidden），降动效下完全静止且构图不变 */
   .ambient { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.55; }
@@ -284,6 +321,7 @@ async function main() {
   <div>${gatePills}</div>
   <div class="stages">${stageCards}</div>
   ${chainSection}
+  ${capSection}
   <h2 class="sec">产物墙（KPI4 · ${artifacts.artifacts.length} 件 · <span id="wall-mode">全部</span>）</h2>
   <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
     <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>

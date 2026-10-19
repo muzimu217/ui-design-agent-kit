@@ -2287,5 +2287,37 @@
    "Text placed directly over moving high-contrast art",
    "Ambient layer intercepts pointer or focus"
   ]
+ },
+ {
+  "id": "capability-adapter-registry",
+  "request": "Every externally supplied generation capability used in a workflow must be registered with four answers — who produces it (pinned version), what it cannot do, how its output is accepted (artifact-type-specific, never a generic UI score), and where the evidence lives — and unregistered or evaluating capabilities must be visibly marked as not usable for delivery.",
+  "context": "A workflow that consumes third-party image/3D/video skills; the product's own scope is governance, not generation.",
+  "passCriteria": [
+   "Registry entry carries provider + pinned version, explicit limits, artifact-specific acceptance, evidence path",
+   "Evaluating/rejected capabilities render as not-deliverable in the UI",
+   "Acceptance criteria differ by artifact family (web vs image vs 3D vs video)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Capability used in delivery without a registry entry",
+   "Generic six-dimension score applied to non-UI artifacts",
+   "Evaluating capability silently treated as adopted"
+  ]
+ },
+ {
+  "id": "evaluated-and-rejected-is-a-record",
+  "request": "A capability that was evaluated and deliberately not adopted must remain in the registry with its rejection reason and evidence link, rather than disappearing; the record must make clear what it would have needed to be adoptable.",
+  "context": "Reference/knowledge services considered for workflow integration but rejected for cost, licensing, or offline-reproducibility reasons.",
+  "passCriteria": [
+   "Rejected capability persists with reason and insight link",
+   "Reason names the blocking constraint (cost/licence/network/reproducibility)",
+   "Registry distinguishes adopted / evaluating / rejected visually and textually",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Rejected capability deleted, allowing silent re-evaluation loops",
+   "Rejection reason omitted or reduced to 'not needed'",
+   "Rejected entry indistinguishable from adopted in the UI"
+  ]
  }
 ]

@@ -92,6 +92,13 @@
   .kb-title { font-weight:600; overflow-wrap:anywhere; }
   .kb-meta { color:var(--dim); text-align:right; }
   @media (max-width: 640px) { .kb-row { grid-template-columns:56px 1fr; } .kb-meta { grid-column:2; text-align:left; } }
+  .taste-table { display:grid; gap:8px; }
+  .taste-row { display:grid; grid-template-columns:64px 1fr 52px minmax(90px,auto); gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-left:3px solid #7c3aed; border-radius:9px; padding:10px 14px; font-size:12px; }
+  .taste-st { border:1px solid; border-radius:99px; padding:1px 8px; font-size:11px; text-align:center; white-space:nowrap; }
+  .taste-label { font-weight:600; overflow-wrap:anywhere; }
+  .taste-conf { color:#c4b5fd; font-variant-numeric:tabular-nums; text-align:right; }
+  .taste-ev { color:var(--dim); font-size:11px; }
+  @media (max-width: 640px) { .taste-row { grid-template-columns:64px 1fr 52px; } .taste-ev { grid-column:2 / -1; } }
   .cmp-caption { caption-side:bottom; color:var(--dim); font-size:11px; text-align:left; padding-top:6px; }
   /* 生成式微艺术背景：装饰层（aria-hidden），降动效下完全静止且构图不变 */
   .ambient { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.55; }
@@ -174,6 +181,50 @@
         <span class="round">2026-10-13-08 · 6 步</span>
         <span class="open">打开 ↗</span>
       </a>
+  <h2 class="sec">方向与品味（越用越懂你 · 2 已采用 / 7 条特质 · 5 条信号）</h2>
+       <p class="cap-intro">特质只从可复核信号推导（你的原话、明确选择、被接受/被拒的方案），每条都能回溯到具体信号；置信度不足只展示不采用。规则见 <code>canvas/derive-taste.mjs</code>（证据上限钳制 + 采用需 ≥2 条独立信号）。</p>
+       <div class="taste-table"><div class="taste-row">
+        <span class="taste-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="品味特质状态：仅展示">仅展示</span>
+        <span class="taste-label">偏好监管深度而非生成广度</span>
+        <span class="taste-conf" aria-label="置信度 70%">70%</span>
+        <span class="taste-ev">sig-002</span>
+      </div>
+<div class="taste-row">
+        <span class="taste-st" style="color:#34d399;border-color:#34d399" aria-label="品味特质状态：已采用">已采用</span>
+        <span class="taste-label">重视视觉与艺术画面质量</span>
+        <span class="taste-conf" aria-label="置信度 85%">85%</span>
+        <span class="taste-ev">sig-001 · sig-005</span>
+      </div>
+<div class="taste-row">
+        <span class="taste-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="品味特质状态：仅展示">仅展示</span>
+        <span class="taste-label">要求方向与状态持续可见</span>
+        <span class="taste-conf" aria-label="置信度 70%">70%</span>
+        <span class="taste-ev">sig-004</span>
+      </div>
+<div class="taste-row">
+        <span class="taste-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="品味特质状态：仅展示">仅展示</span>
+        <span class="taste-label">希望工作流随使用累积理解用户</span>
+        <span class="taste-conf" aria-label="置信度 70%">70%</span>
+        <span class="taste-ev">sig-004</span>
+      </div>
+<div class="taste-row">
+        <span class="taste-st" style="color:#34d399;border-color:#34d399" aria-label="品味特质状态：已采用">已采用</span>
+        <span class="taste-label">要求证据优先、反感夸大</span>
+        <span class="taste-conf" aria-label="置信度 80%">80%</span>
+        <span class="taste-ev">sig-003 · sig-002</span>
+      </div>
+<div class="taste-row">
+        <span class="taste-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="品味特质状态：仅展示">仅展示</span>
+        <span class="taste-label">偏好结构化证据界面</span>
+        <span class="taste-conf" aria-label="置信度 70%">70%</span>
+        <span class="taste-ev">sig-005</span>
+      </div>
+<div class="taste-row">
+        <span class="taste-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="品味特质状态：仅展示">仅展示</span>
+        <span class="taste-label">把工作台界面视为产品门面</span>
+        <span class="taste-conf" aria-label="置信度 70%">70%</span>
+        <span class="taste-ev">sig-001</span>
+      </div></div>
   <h2 class="sec">能力接入（工作流监管层 · 4 已接入 / 7 登记）</h2>
        <p class="cap-intro">本仓不做生成引擎：外部能力按契约接入，工作流负责门径、验收与证据（<code>docs/capability-adapters.md</code>）。待接入项为空缺状态，不得用于交付。</p>
        <div class="cap-table"><div class="cap-row">

@@ -12,7 +12,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = path.join(ROOT, "output");
 const DST = path.join(ROOT, "showcase", "products", "public", "canvas");
 
-const pages = ["canvas-workbench.html", "chain-canvas-workbench.html", "canvas-index.html", "mini-dashboard.html"];
+const pages = ["canvas-workbench.html", "chain-canvas-workbench.html", "canvas-index.html", "mini-dashboard.html", "site.html"];
 await mkdir(DST, { recursive: true });
 for (const f of pages) {
   await copyFile(path.join(SRC, f), path.join(DST, f));

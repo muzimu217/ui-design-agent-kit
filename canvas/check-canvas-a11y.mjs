@@ -15,7 +15,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const pages = process.argv.slice(2).length
   ? process.argv.slice(2)
-  : ["output/chain-canvas-workbench.html", "output/canvas-index.html", "output/mini-dashboard.html"];
+  : ["output/chain-canvas-workbench.html", "output/canvas-index.html", "output/mini-dashboard.html", "output/site.html"];
 
 let chromium;
 try {

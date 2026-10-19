@@ -71,6 +71,30 @@ async function main() {
        <p class="cap-intro">每日视频学习 → 机制卡片（可编码参数+适用边界）→ 兼容性声明（extends/supersedes/conflicts）→ 转化。规范 <code>docs/self-learning-loop.md</code> · <code>docs/knowledge-base/schema.md</code>。</p>
        <div class="kb-table">${kbRows}</div>`
     : "";
+
+  // 品味档案（用户级，与项目级知识库分离）：展示被采用/仅展示的特质及其信号来源。
+  // 采用门槛由 canvas/derive-taste.mjs 计算，页面只读不改。
+  let taste = { signals: [], traits: [], summary: null };
+  try {
+    taste = JSON.parse(await readFile(path.join(ROOT, "canvas", "taste-profile.json"), "utf8"));
+  } catch { /* 缺文件时不渲染 */ }
+  const tasteTraits = (taste.traits ?? []).filter((t) => t.status === "adopted" || t.status === "shown" || t.status === "contested");
+  const tasteRows = tasteTraits
+    .map((t) => {
+      const badge = t.status === "adopted" ? { label: "已采用", color: "#34d399" } : t.status === "contested" ? { label: "有争议", color: "#f87171" } : { label: "仅展示", color: "#fbbf24" };
+      return `<div class="taste-row">
+        <span class="taste-st" style="color:${badge.color};border-color:${badge.color}" aria-label="品味特质状态：${badge.label}">${badge.label}</span>
+        <span class="taste-label">${esc(t.label)}</span>
+        <span class="taste-conf" aria-label="置信度 ${Math.round((t.confidence ?? 0) * 100)}%">${Math.round((t.confidence ?? 0) * 100)}%</span>
+        <span class="taste-ev">${esc((t.evidence ?? []).join(" · "))}</span>
+      </div>`;
+    })
+    .join("\n");
+  const tasteSection = tasteTraits.length
+    ? `<h2 class="sec">方向与品味（越用越懂你 · ${taste.summary?.adopted ?? 0} 已采用 / ${tasteTraits.length} 条特质 · ${taste.summary?.signals ?? 0} 条信号）</h2>
+       <p class="cap-intro">特质只从可复核信号推导（你的原话、明确选择、被接受/被拒的方案），每条都能回溯到具体信号；置信度不足只展示不采用。规则见 <code>canvas/derive-taste.mjs</code>（证据上限钳制 + 采用需 ≥2 条独立信号）。</p>
+       <div class="taste-table">${tasteRows}</div>`
+    : "";
   const stageEntries = Object.entries(state.stages ?? {});
   const gates = state.gates ?? {};
   const gateColor = { passed: "#34d399", gated: "#f472b6", active: "#22d3ee", blocked: "#f87171", pending: "#6b7280" };
@@ -308,6 +332,13 @@ async function main() {
   .kb-title { font-weight:600; overflow-wrap:anywhere; }
   .kb-meta { color:var(--dim); text-align:right; }
   @media (max-width: 640px) { .kb-row { grid-template-columns:56px 1fr; } .kb-meta { grid-column:2; text-align:left; } }
+  .taste-table { display:grid; gap:8px; }
+  .taste-row { display:grid; grid-template-columns:64px 1fr 52px minmax(90px,auto); gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-left:3px solid #7c3aed; border-radius:9px; padding:10px 14px; font-size:12px; }
+  .taste-st { border:1px solid; border-radius:99px; padding:1px 8px; font-size:11px; text-align:center; white-space:nowrap; }
+  .taste-label { font-weight:600; overflow-wrap:anywhere; }
+  .taste-conf { color:#c4b5fd; font-variant-numeric:tabular-nums; text-align:right; }
+  .taste-ev { color:var(--dim); font-size:11px; }
+  @media (max-width: 640px) { .taste-row { grid-template-columns:64px 1fr 52px; } .taste-ev { grid-column:2 / -1; } }
   .cmp-caption { caption-side:bottom; color:var(--dim); font-size:11px; text-align:left; padding-top:6px; }
   /* 生成式微艺术背景：装饰层（aria-hidden），降动效下完全静止且构图不变 */
   .ambient { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.55; }
@@ -351,6 +382,7 @@ async function main() {
   <div>${gatePills}</div>
   <div class="stages">${stageCards}</div>
   ${chainSection}
+  ${tasteSection}
   ${capSection}
   ${kbSection}
   <h2 class="sec">产物墙（KPI4 · ${artifacts.artifacts.length} 件 · <span id="wall-mode">全部</span>）</h2>

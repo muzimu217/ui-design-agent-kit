@@ -2351,5 +2351,37 @@
    "Conflict resolved by fiat without evidence",
    "Schema renamed in place with no migration"
   ]
+ },
+ {
+  "id": "taste-trait-traceable",
+  "request": "A user taste profile must derive every trait from recorded, quotable signals; a trait without traceable evidence is invalid, confidence must be capped by the amount of supporting evidence, and adoption requires both the confidence threshold and at least two independent signals.",
+  "context": "Adaptive workflow that learns user preferences from explicit direction and accepted/rejected proposals.",
+  "passCriteria": [
+   "Each trait cites signal ids that exist in the signal log",
+   "Claimed confidence above what cited evidence supports is clamped, with the clamp recorded",
+   "Adoption requires threshold AND >=2 independent signals",
+   "Trait shows whether it is adopted or display-only"
+  ],
+  "failConditions": [
+   "Trait invented without a signal",
+   "Confidence asserted beyond evidence and silently used for defaults",
+   "Single signal promoted to an adopted default"
+  ]
+ },
+ {
+  "id": "site-claims-backed-by-data",
+  "request": "A public product site must render its headline numbers (verified artifacts, capability adoption, knowledge cards, adopted traits) from the same structured sources the product itself uses, so no marketing claim can exceed what the repository can prove.",
+  "context": "Marketing/landing page generated from the workbench's own JSON (artifacts, capabilities, knowledge index, taste profile).",
+  "passCriteria": [
+   "Every headline statistic is computed from a repository JSON source at build time",
+   "Counts shown match the underlying files (no hand-typed numbers)",
+   "Terms page linked and states what is and is not guaranteed",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Hard-coded marketing numbers that can drift from evidence",
+   "Claim of verification where the artifact has unmeasured dimensions",
+   "Terms/limitations omitted from the public page"
+  ]
  }
 ]

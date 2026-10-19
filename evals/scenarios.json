@@ -2319,5 +2319,37 @@
    "Rejection reason omitted or reduced to 'not needed'",
    "Rejected entry indistinguishable from adopted in the UI"
   ]
+ },
+ {
+  "id": "knowledge-card-codable-required",
+  "request": "Every knowledge-base card must carry codable parameters (numeric or boolean constraints an implementation can apply) and an explicit scope; a card without codable parameters is marked incomplete rather than published as active knowledge.",
+  "context": "Self-learning pipeline that ingests high-view visual-design videos and distils reusable mechanisms into a versioned knowledge base.",
+  "passCriteria": [
+   "Card lists concrete codable params (values/ranges/constraints), not adjectives",
+   "Scope states where the mechanism holds and where it does not",
+   "Missing codable params force status=incomplete",
+   "Card cites source with inspection level and heat signal"
+  ],
+  "failConditions": [
+   "Card consists of impressions with no applicable parameters",
+   "Scope omitted, implying universal applicability",
+   "View count used as a quality claim"
+  ]
+ },
+ {
+  "id": "knowledge-supersede-not-delete",
+  "request": "Knowledge-base evolution must be append-only: when a newer card contradicts an older one, the older card is marked superseded with a pointer to its successor, conflicts carry an explicit resolution (or an evidence-insufficient note), and destructive schema changes ship a migration record.",
+  "context": "Versioned knowledge base consumed by a workbench UI; cards accumulate daily from video learning.",
+  "passCriteria": [
+   "Superseded card retained with link to successor",
+   "Conflicting cards carry resolution or evidence-insufficient marker",
+   "Schema changes have a migration note mapping old to new fields",
+   "Reader tolerates unknown fields and missing optional fields"
+  ],
+  "failConditions": [
+   "Old card deleted or silently overwritten",
+   "Conflict resolved by fiat without evidence",
+   "Schema renamed in place with no migration"
+  ]
  }
 ]

@@ -47,6 +47,30 @@ async function main() {
        <p class="cap-intro">本仓不做生成引擎：外部能力按契约接入，工作流负责门径、验收与证据（<code>docs/capability-adapters.md</code>）。待接入项为空缺状态，不得用于交付。</p>
        <div class="cap-table">${capRows}</div>`
     : "";
+
+  // 知识库区块：读 docs/knowledge-base/index.json（自学机制 L2/L3 的产物）。
+  // 展示 schema 版本（兼容基线）、卡片数、域分布、最近学习与待转化项。
+  let kb = { schemaVersion: 0, cards: [] };
+  try {
+    kb = JSON.parse(await readFile(path.join(ROOT, "docs", "knowledge-base", "index.json"), "utf8"));
+  } catch { /* 缺文件时不渲染区块 */ }
+  const kbCards = kb.cards ?? [];
+  const kbDomains = [...new Set(kbCards.map((c) => c.domain))];
+  const kbRecent = [...kbCards].sort((a, b) => (a.learnedAt < b.learnedAt ? 1 : -1)).slice(0, 3);
+  const kbRows = kbRecent
+    .map(
+      (c) => `<div class="kb-row">
+        <span class="kb-dom">${esc(c.domain)}</span>
+        <span class="kb-title">${esc(c.title)}</span>
+        <span class="kb-meta">${esc(c.source?.author ?? "")} · ${c.source?.heat ? `${(c.source.heat / 10000).toFixed(1)} 万播放` : ""} · 参数 ${esc(c.codableParams ?? 0)} 条</span>
+      </div>`
+    )
+    .join("\n");
+  const kbSection = kbCards.length
+    ? `<h2 class="sec">知识库（自学机制 · schema v${esc(kb.schemaVersion)} · ${kbCards.length} 卡 / ${kbDomains.length} 域）</h2>
+       <p class="cap-intro">每日视频学习 → 机制卡片（可编码参数+适用边界）→ 兼容性声明（extends/supersedes/conflicts）→ 转化。规范 <code>docs/self-learning-loop.md</code> · <code>docs/knowledge-base/schema.md</code>。</p>
+       <div class="kb-table">${kbRows}</div>`
+    : "";
   const stageEntries = Object.entries(state.stages ?? {});
   const gates = state.gates ?? {};
   const gateColor = { passed: "#34d399", gated: "#f472b6", active: "#22d3ee", blocked: "#f87171", pending: "#6b7280" };
@@ -278,6 +302,12 @@ async function main() {
   .cap-prov { color:var(--dim); overflow-wrap:anywhere; }
   .cap-acc { color:#a7f3d0; overflow-wrap:anywhere; }
   @media (max-width: 640px) { .cap-row { grid-template-columns:64px 1fr; } .cap-prov, .cap-acc { grid-column:2; } }
+  .kb-table { display:grid; gap:8px; }
+  .kb-row { display:grid; grid-template-columns:56px 1fr minmax(160px,auto); gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-left:3px solid #22d3ee; border-radius:9px; padding:10px 14px; font-size:12px; }
+  .kb-dom { color:#22d3ee; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+  .kb-title { font-weight:600; overflow-wrap:anywhere; }
+  .kb-meta { color:var(--dim); text-align:right; }
+  @media (max-width: 640px) { .kb-row { grid-template-columns:56px 1fr; } .kb-meta { grid-column:2; text-align:left; } }
   .cmp-caption { caption-side:bottom; color:var(--dim); font-size:11px; text-align:left; padding-top:6px; }
   /* 生成式微艺术背景：装饰层（aria-hidden），降动效下完全静止且构图不变 */
   .ambient { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.55; }
@@ -322,6 +352,7 @@ async function main() {
   <div class="stages">${stageCards}</div>
   ${chainSection}
   ${capSection}
+  ${kbSection}
   <h2 class="sec">产物墙（KPI4 · ${artifacts.artifacts.length} 件 · <span id="wall-mode">全部</span>）</h2>
   <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
     <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>

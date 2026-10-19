@@ -1,0 +1,63 @@
+# 知识库 Schema v1
+
+- schemaVersion：**1**
+- 更新日期：2026-10-19
+- 变更纪律：见 `docs/self-learning-loop.md` §3（向后兼容优先；破坏性变更走 migrations/；卡片不删除只 superseded）
+
+## 一、卡片文件位置与命名
+
+```
+docs/knowledge-base/
+├── schema.md                 # 本文件（版本与字段定义）
+├── index.md                  # 人读索引（自动生成可，手维护亦可）
+├── index.json                # 机读索引（工作台渲染用）
+├── cards/<domain>-<slug>.md  # 卡片本体，domain ∈ {motion, layout, color, type, icon, interaction, three-d, video, workflow}
+└── migrations/NNNN-<name>.md # 破坏性变更的迁移记录
+```
+
+## 二、Frontmatter 字段（v1）
+
+| 字段 | 必填 | 类型 | 说明 |
+| --- | --- | --- | --- |
+| `id` | ✅ | string | 唯一，与文件名一致（不含 .md） |
+| `title` | ✅ | string | 机制名（**可复用的一句话命名**，不是观后感标题） |
+| `domain` | ✅ | enum | 见上 domain 列表 |
+| `status` | ✅ | enum | `active` / `incomplete` / `superseded` / `deprecated` |
+| `confidence` | ✅ | enum | `verified`（本项目实测）/ `sourced`（外部来源可信）/ `unverified-partial` |
+| `source` | ✅ | object | `{kind: video|article|product|experiment, ref: url/路径, author, publishedAt, heat?: 播放量}` |
+| `mechanism` | ✅ | string | 机制的一句话解释（为什么有效） |
+| `codable` | ✅ | object | `{params: [], constraints: [], appliesTo: []}` —— **可编码参数**，缺此视为 incomplete |
+| `scope` | ✅ | string | 适用边界（什么场景成立、什么场景不成立） |
+| `counterexample` | ⬜ | string | 反例/失效条件 |
+| `relations` | ✅ | array | `[{type: extends|supersedes|conflicts|related, target: <card id>}]` |
+| `resolution` | ⬜ | string | 当 relations 含 conflicts 时必填：消解结论或"证据不足并存" |
+| `version` | ✅ | integer | 卡片自身版本，从 1 起 |
+| `createdAt` / `updatedAt` | ✅ | date | ISO 日期 |
+
+## 三、机读索引 `index.json`
+
+```json
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-19",
+  "cards": [
+    { "id": "...", "title": "...", "domain": "...", "status": "active", "confidence": "sourced", "relations": [], "version": 1 }
+  ]
+}
+```
+
+工作台"知识库"区块读此文件渲染（卡数/域分布/最近学习/兼容状态）。
+
+## 四、校验规则（未来接 check 脚本）
+
+1. `id` 与文件名一致；frontmatter 必填字段齐全；
+2. `codable.params` 为空 → 强制 `status: incomplete`；
+3. `relations.type === "conflicts"` → 必须填 `resolution`；
+4. `superseded` 卡片必须存在指向它的新卡（双向一致）；
+5. `source.kind === "video"` 时 `heat` 必须填写（播放量信号）。
+
+## 五、兼容策略
+
+- **v1 为基线**；新增可选字段不升 major（记为 v1.x）；
+- 语义变更/字段改名 → v2 + migration；
+- 读取方（工作台）必须容忍未知字段与缺失可选字段。

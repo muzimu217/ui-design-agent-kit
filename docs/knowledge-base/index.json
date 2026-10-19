@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-19",
+  "note": "机读索引（工作台知识库区块读取）。卡片本体在 docs/knowledge-base/cards/。新增卡片须同步本文件；兼容规则见 schema.md §5。",
+  "cards": [
+    {
+      "id": "motion-force-anticipation",
+      "title": "力量感 = 预备动作 + 加速曲线 + 跟随延迟",
+      "domain": "motion",
+      "status": "active",
+      "confidence": "sourced",
+      "version": 1,
+      "relations": [{ "type": "related", "target": "layout-visual-balance" }],
+      "source": { "kind": "video", "heat": 2151000, "author": "喜定", "ref": "https://www.bilibili.com/video/BV1uL4y1H74Q/" },
+      "codableParams": 3,
+      "learnedAt": "2026-10-19"
+    },
+    {
+      "id": "layout-visual-balance",
+      "title": "视觉平衡 = 视觉重量分布，而非几何对称",
+      "domain": "layout",
+      "status": "active",
+      "confidence": "sourced",
+      "version": 1,
+      "relations": [{ "type": "related", "target": "motion-force-anticipation" }],
+      "source": { "kind": "video", "heat": 3170000, "author": "言九七_", "ref": "https://www.bilibili.com/video/BV1yU4y1K7uL/" },
+      "codableParams": 3,
+      "learnedAt": "2026-10-19"
+    },
+    {
+      "id": "icon-single-stroke-constraint",
+      "title": "约束美学：单一连续笔画产生形式感",
+      "domain": "icon",
+      "status": "active",
+      "confidence": "sourced",
+      "version": 1,
+      "relations": [{ "type": "related", "target": "layout-visual-balance" }],
+      "source": { "kind": "video", "heat": 5888000, "author": "设计师深海", "ref": "https://www.bilibili.com/video/BV1qb4y1b7Hh/" },
+      "codableParams": 3,
+      "learnedAt": "2026-10-19"
+    }
+  ]
+}

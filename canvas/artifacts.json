@@ -39,11 +39,11 @@
    "title": "画布工作台入口页（门径+链路+产物墙三合一）",
    "path": "canvas/render-index.mjs + canvas/artifacts.json + canvas-workbench.state.json → output/canvas-index.html（离线自包含）",
    "sixDim": {
-    "desktop": "Chrome headless 1280 直拍通过（15.1 万字节非空白，增量 25 复拍）",
-    "mobile": "520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切，22.1 万字节）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）",
-    "keyboard": "playwright Tab 序列实测：11 项 tab 停留全可达（3 卡片链接+1 链路行+4 过滤排序按钮+3 墙条目 summary——增量 28 枚举修正：此前两轮'共 N 项'组成表述不完整；2 条 viewUrl 在闭合折叠体内展开后可达，检测器合计 13）",
-    "contrast": "playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项，增量 25 复测——图例与 caption 后抽样 40 项 0 低于）",
-    "reducedMotion": "无过渡动画（静态检查通过）",
+    "desktop": "Chrome headless 1280 直拍通过（15.8 万字节非空白，增量 29 艺术画面复拍）",
+    "mobile": "520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）",
+    "keyboard": "playwright Tab 序列实测：11 项 tab 停留全可达（3 卡片链接+1 链路行+4 过滤排序按钮+3 墙条目 summary——增量 28 枚举修正；2 条 viewUrl 在闭合折叠体内展开后可达，检测器合计 13）",
+    "contrast": "playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项，增量 29 复测——生成式背景为独立装饰层，文字在面板底色上）",
+    "reducedMotion": "生成式背景在 prefers-reduced-motion 下画一帧静态构图后停止（media query 监听切换即停帧）；静态检查通过",
     "console": "playwright 实测 0 错误（favicon data-URI 修复后）"
    },
    "compare": {
@@ -58,9 +58,9 @@
      "themNote": "对标侧为公开首屏实看（未注册实测）：仅首屏呈现可观测，其余四维无公开可验证证据，记 null 不虚记"
     }
    },
-   "status": "v1.6（墙扩至三条）",
-   "version": 7,
-   "changeSummary": "v1.0 三卡入口+门径 pills+产物墙 → v1.1 520px 实测通过 → v1.2 排序视图+完成度徽章+mission control 两态分离+任务注册表 → v1.3 对比评分结构化（六维并排表+检视级别入墙，借鉴 Wegic 模板详情结构化呈现）→ v1.4 产物墙条目 viewUrl（chain 条目可点击打开；本页条目自指不设链）→ v1.5 徽章 aria 语义化+口径图例入页+对比表 caption（badge-legend 语料的工具落地）→ v1.6 墙扩至三条（mini 看板入墙）+键盘组成枚举修正",
+   "status": "v1.7（艺术画面+空态插画）",
+   "version": 8,
+   "changeSummary": "v1.0 三卡入口+门径 pills+产物墙 → … → v1.6 墙扩至三条（mini 看板入墙）+键盘组成枚举修正 → v1.7 艺术画面落地（生成式微艺术背景+降动效静态帧+产物墙空态插画与微文案——用户 10-19 方向裁定'更好的艺术画面'首个增量）",
    "origin": "ai-draft+human-revision",
    "originNote": "入口页由代理编写，经用户门 A 方向确认与多轮增量修订（mission control/任务注册表/版本徽章）"
   },

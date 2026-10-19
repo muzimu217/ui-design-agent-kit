@@ -2255,5 +2255,37 @@
    "Animated background dims or lights text below 4.5:1 at peak frames",
    "Generative layer announced to screen readers"
   ]
+ },
+ {
+  "id": "empty-state-not-dead-end",
+  "request": "When a filter or search yields zero results, show a designed empty state (illustration + plain-language reason + the exact next action) rather than a blank region; the empty state must be reachable in keyboard order without stealing focus.",
+  "context": "Evidence wall with a filter toggle that can legitimately produce an empty result set.",
+  "passCriteria": [
+   "Empty state renders only when the filtered set is truly empty",
+   "Copy states why it is empty and names the recovery action",
+   "Illustration is inline SVG marked aria-hidden",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Blank region shown for zero results",
+   "Empty state permanently hidden by a truthiness bug (renders never)",
+   "Illustration announced as content to screen readers"
+  ]
+ },
+ {
+  "id": "ambient-layer-text-isolation",
+  "request": "Decorative ambient layers (generative canvas, gradients, grain) must sit behind an opaque or sufficiently contrast-safe text surface so measured contrast is independent of the layer's current animation frame; verify by sampling contrast with the layer at different animation states.",
+  "context": "Fixed-position canvas art behind a dark content page with text in panels.",
+  "passCriteria": [
+   "Text surfaces measured at >=4.5:1 with ambient layer active",
+   "Contrast stable across sampled animation frames",
+   "Ambient layer pointer-events none and aria-hidden",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Contrast measured only with ambient layer disabled",
+   "Text placed directly over moving high-contrast art",
+   "Ambient layer intercepts pointer or focus"
+  ]
  }
 ]

@@ -242,10 +242,20 @@ async function main() {
   .cmp-note { color:var(--dim); font-size:12px; margin-top:8px; }
   .wall-legend { color:var(--dim); font-size:12px; margin:0 0 10px; }
   .cmp-caption { caption-side:bottom; color:var(--dim); font-size:11px; text-align:left; padding-top:6px; }
+  /* 生成式微艺术背景：装饰层（aria-hidden），降动效下完全静止且构图不变 */
+  .ambient { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.55; }
+  .ambient canvas { width:100%; height:100%; display:block; }
+  main { position:relative; z-index:1; }
+  .wall-empty { background:var(--panel); border:1px dashed var(--line); border-radius:12px; padding:22px 20px; margin:6px 0 10px; display:flex; gap:16px; align-items:center; }
+  .wall-empty[hidden] { display:none; }
+  .wall-empty-art { width:120px; height:80px; flex:none; }
+  .wall-empty-copy { margin:0; color:var(--dim); font-size:13px; }
+  .wall-empty-copy strong { color:var(--text); display:block; margin-bottom:2px; }
   footer { margin-top:24px; color:var(--dim); font-size:12px; text-align:center; }
 </style>
 </head>
 <body>
+<div class="ambient" aria-hidden="true"><canvas id="ambient-canvas" width="1600" height="1000"></canvas></div>
 <main>
   <h1>画布工作台 · 入口</h1>
   <div class="meta">${esc(state.task)} · ${esc(state.revision ?? "")} · 更新 ${esc(state.updatedOn ?? "")} · 离线自包含</div>
@@ -284,17 +294,33 @@ async function main() {
   </div>
   <p class="wall-legend" id="wall-legend">徽章口径：n/6=六维实测数（桌面/移动/键盘/对比度/降动效/控制台各 1 分）；vN=版本序号；检视级别 unverified-partial=仅公开页面检视，未公开验证的维度记 — 不虚记。</p>
   ${rows}
+  <div class="wall-empty" id="wall-empty" hidden>
+    <svg class="wall-empty-art" viewBox="0 0 120 80" aria-hidden="true" focusable="false">
+      <defs><linearGradient id="ge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs>
+      <rect x="8" y="14" width="46" height="30" rx="4" fill="none" stroke="url(#ge)" stroke-width="2"/>
+      <rect x="62" y="26" width="50" height="40" rx="4" fill="none" stroke="#34d399" stroke-width="2"/>
+      <circle cx="31" cy="29" r="5" fill="#fbbf24"/>
+      <path d="M18 38 L28 30 L38 38" fill="none" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round"/>
+      <path d="M70 56 L82 44 L94 56 L104 48" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <p class="wall-empty-copy"><strong>这一层还没有产物。</strong>不是坏了——是墙空了。切回「全部」或先跑 <code>npm run canvas:build</code> 收一轮增量。</p>
+  </div>
 <script>
 // 六维过滤：measured 徽章 < 6 的条目在 full 模式下隐藏（纯展示切换，无网络无构建逻辑）。
 function wallFilter(mode) {
   const full = mode === 'full';
+  let visible = 0;
   document.querySelectorAll('details.art').forEach((d) => {
     const badge = d.querySelector('.badge');
     const n = badge ? parseInt((badge.textContent || '').split('/')[0], 10) : 6;
-    d.style.display = full && n < 6 ? 'none' : '';
+    const hide = full && n < 6;
+    d.style.display = hide ? 'none' : '';
+    if (!hide) visible += 1;
   });
   document.querySelectorAll('.wf-btn[data-mode]').forEach((b) => b.classList.toggle('is-on', b.dataset.mode === mode));
   document.getElementById('wall-mode').textContent = full ? '仅全实测（6/6）' : '全部';
+  const empty = document.getElementById('wall-empty');
+  if (empty) empty.hidden = visible > 0;
 }
 // 排序视图：按轮次（新在前）或按完成度（徽章数降序）重排 details 条目——借鉴排行内容的排序呈现，判据=六维实测数。
 function wallSort(by) {
@@ -311,6 +337,41 @@ function wallSort(by) {
   entries.forEach((d) => wall.appendChild(d));
   document.querySelectorAll('.wf-btn[data-sort]').forEach((b) => b.classList.toggle('is-on', b.dataset.sort === by));
 }
+// 生成式微艺术：极低密度漂移粒子（纯装饰，aria-hidden）。降动效时画一帧静态构图后停止，
+// 构图与文字对比度不随动画变化（粒子仅落在画布层，文字有自己的面板底色）。
+(function ambientArt() {
+  const cv = document.getElementById('ambient-canvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  if (!ctx) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const DOTS = 26;
+  const dots = Array.from({ length: DOTS }, (_, i) => ({
+    x: ((i * 137.5) % 1) * cv.width || ((i * 7919) % cv.width),
+    y: ((i * 2459) % cv.height),
+    r: 1 + (i % 3),
+    dx: (i % 2 ? 1 : -1) * (0.06 + (i % 5) * 0.02),
+    dy: (i % 3 ? 1 : -1) * (0.04 + (i % 4) * 0.02),
+    hue: i % 3,
+  }));
+  const palette = ['rgba(124,58,237,0.30)', 'rgba(34,211,238,0.22)', 'rgba(52,211,153,0.18)'];
+  function frame() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    for (const d of dots) {
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = palette[d.hue];
+      ctx.fill();
+      d.x += d.dx; d.y += d.dy;
+      if (d.x < -10) d.x = cv.width + 10; if (d.x > cv.width + 10) d.x = -10;
+      if (d.y < -10) d.y = cv.height + 10; if (d.y > cv.height + 10) d.y = -10;
+    }
+  }
+  if (reduce.matches) { frame(); return; }
+  let raf = 0;
+  (function loop() { frame(); raf = requestAnimationFrame(loop); })();
+  reduce.addEventListener('change', (e) => { if (e.matches && raf) { cancelAnimationFrame(raf); raf = 0; frame(); } });
+})();
 </script>
   <footer>canvas workbench · 由 canvas/render-index.mjs 生成 · npm run canvas:build 重建全部</footer>
 </main>

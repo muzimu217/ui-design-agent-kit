@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "output", "canvas-export");
-const PAGES = ["canvas-workbench.html", "chain-canvas-workbench.html", "canvas-index.html"];
+const PAGES = ["canvas-workbench.html", "chain-canvas-workbench.html", "canvas-index.html", "mini-dashboard.html"];
 
 function git(args) {
   try {

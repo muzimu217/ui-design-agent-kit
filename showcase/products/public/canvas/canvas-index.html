@@ -100,7 +100,7 @@
     </div>
     <div class="mc-col">
       <h3>证据态（可复核什么）</h3>
-      <div class="mc-row"><span class="mc-k">全实测产物</span><span class="mc-v">2/2（6/6 六维）</span></div>
+      <div class="mc-row"><span class="mc-k">全实测产物</span><span class="mc-v">3/3（6/6 六维）</span></div>
       <div class="mc-row"><span class="mc-k">解析链路</span><span class="mc-v">1 条 · 已确认 1</span></div>
       <div class="mc-row"><span class="mc-k">验收命令</span><span class="mc-v"><code>npm run canvas:check</code></span></div>
     </div>
@@ -149,7 +149,7 @@
         <span class="round">2026-10-13-08 · 6 步</span>
         <span class="open">打开 ↗</span>
       </a>
-  <h2 class="sec">产物墙（KPI4 · 2 件 · <span id="wall-mode">全部</span>）</h2>
+  <h2 class="sec">产物墙（KPI4 · 3 件 · <span id="wall-mode">全部</span>）</h2>
   <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
     <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>
     <button type="button" class="wf-btn" data-mode="full" onclick="wallFilter('full')">仅全实测（6/6）</button>
@@ -158,10 +158,26 @@
     <button type="button" class="wf-btn" data-sort="verified" onclick="wallSort('verified')">按完成度</button>
   </div>
   <p class="wall-legend" id="wall-legend">徽章口径：n/6=六维实测数（桌面/移动/键盘/对比度/降动效/控制台各 1 分）；vN=版本序号；检视级别 unverified-partial=仅公开页面检视，未公开验证的维度记 — 不虚记。</p>
-  <details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">画布工作台入口页（门径+链路+产物墙三合一）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v6">v6</span><span class="round">2026-10-13-08</span></summary>
+  <details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">画布流水线指标 mini 看板（产物墙首件 mini 产物）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v1">v1</span><span class="round">2026-10-19-00</span></summary>
+      <div class="body">
+        <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-mini-dashboard.mjs → output/mini-dashboard.html（离线自包含）</code> <a class="art-open" href="mini-dashboard.html">打开产物 ↗</a></span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（9.3 万字节非空白）；mobile: 520px Chrome headless 直拍通过（7.8 万字节；备注列 560px 下防御性折叠为四列，无横向裁切）；keyboard: playwright Tab 序列实测：0 项可聚焦（纯静态数据页无交互件——如实记 0/0，非缺失）；contrast: playwright computed-style WCAG 实测：4 项抽样全过 4.5:1（低于标准 0 项，含 muted 表头/脚注/备注）；reducedMotion: 无过渡动画（静态检查通过）；console: playwright 实测 0 错误</span></div>
+        <div class="row"><span class="k">对比</span><span class="v">
+      <div class="cmp">
+        <div class="cmp-head"><span class="cmp-vs">vs Pixso 八阶段流水线 tabs（产品规划→需求梳理→原型图→UI设计→设计系统→交互演示→交付→文件管理）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level" aria-label="检视级别 unverified-partial：仅公开页面检视，未实测维度记 null">检视级别 unverified-partial</span></div>
+        <table class="cmp-table"><caption class="cmp-caption">六维并排评分：✓=有实测/实看证据，✗=实测缺失，—=不可观测不计分母</caption><thead><tr><th scope="col">维度</th><th scope="col">本产物</th><th scope="col">对标</th></tr></thead><tbody><tr><td>桌面</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-yes">✓</span></td></tr><tr><td>移动</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>键盘</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>对比度</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>降动效</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>控制台</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr></tbody></table>
+        <div class="cmp-note">对标侧为公开营销页实看：仅桌面呈现可观测，其余维度无公开可验证证据，记 null 不虚记</div>
+        <div class="cmp-note">同为&#39;阶段×状态&#39;信息架构：他们=营销功能面板（无门无证据无停点），本产物=门态+证据数台账快照（口径脚注明示非进度百分比）——同形状不同物种判读的产物级实证</div>
+        <div class="cmp-note">证据（仓内路径）：docs/competitive-insights/2026-10-18-pixso-recheck2/insight.md</div>
+      </div>
+    </span></div>
+        <div class="row"><span class="k">状态</span><span class="v">v1.0（六维全实测+入墙）</span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订 — 生成器与版式由代理编写，数据为 state.json 快照（人工口径校对：证据数=留痕条数而非进度）</span></div><div class="row"><span class="k">变更</span><span class="v">v1.0 首版：六阶段×门态×证据数快照（dark-dense-table-muted-text 语料的参考实现——密度来自行高与列节奏，muted 文本仍过 4.5:1）</span></div>
+      </div>
+    </details>
+<details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">画布工作台入口页（门径+链路+产物墙三合一）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v7">v7</span><span class="round">2026-10-13-08</span></summary>
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-index.mjs + canvas/artifacts.json + canvas-workbench.state.json → output/canvas-index.html（离线自包含）</code> <span class="art-self">— 本页自指，不设自链</span></span></div>
-        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（15.1 万字节非空白，增量 25 复拍）；mobile: 520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切，22.1 万字节）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）；keyboard: playwright Tab 序列实测：10 项 tab 停留全可达（4 卡片链接+4 过滤排序按钮+2 页脚互链）；chain 条目&#39;打开产物&#39;链接在其闭合折叠体内、展开后可达（检测器合计 11——增量 22 复测口径；入口页条目自指不设链，null 不虚记）；contrast: playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项，增量 25 复测——图例与 caption 后抽样 40 项 0 低于）；reducedMotion: 无过渡动画（静态检查通过）；console: playwright 实测 0 错误（favicon data</span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（15.1 万字节非空白，增量 25 复拍）；mobile: 520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切，22.1 万字节）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）；keyboard: playwright Tab 序列实测：11 项 tab 停留全可达（3 卡片链接+1 链路行+4 过滤排序按钮+3 墙条目 summary——增量 28 枚举修正：此前两轮&#39;共 N 项&#39;组成表述不完整；2 条 viewUrl 在闭合折叠体内展开后可达，检测器合计 13）；contrast: playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项，增量 25 复测——图例与 caption 后抽样 40 项 0 低于）；reducedMotion: 无过渡动画（静态检查通过）；console: playwright 实测 0 错误（favicon</span></div>
         <div class="row"><span class="k">对比</span><span class="v">
       <div class="cmp">
         <div class="cmp-head"><span class="cmp-vs">vs Figma Make 首屏（prompt 框+示例 pill 模式）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level" aria-label="检视级别 unverified-partial：仅公开页面检视，未实测维度记 null">检视级别 unverified-partial</span></div>
@@ -171,7 +187,7 @@
         <div class="cmp-note">证据（仓内路径）：docs/competitive-insights/2026-10-13-figma-make-recheck2/insight.md</div>
       </div>
     </span></div>
-        <div class="row"><span class="k">状态</span><span class="v">v1.5（徽章语义化+口径图例）</span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订 — 入口页由代理编写，经用户门 A 方向确认与多轮增量修订（mission control/任务注册表/版本徽章）</span></div><div class="row"><span class="k">变更</span><span class="v">v1.0 三卡入口+门径 pills+产物墙 → v1.1 520px 实测通过 → v1.2 排序视图+完成度徽章+mission control 两态分离+任务注册表 → v1.3 对比评分结构化（六维并排表+检视级别入墙，借鉴 Wegic 模板详情结构化呈现）→ v1.4 产物墙条目 viewUrl（chain 条目可点击打开；本页条目自指不设链）→ v1.5 徽章 aria 语义化+口径图例入页+对比表 caption（badge-legend 语料的工具落地）</span></div>
+        <div class="row"><span class="k">状态</span><span class="v">v1.6（墙扩至三条）</span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订 — 入口页由代理编写，经用户门 A 方向确认与多轮增量修订（mission control/任务注册表/版本徽章）</span></div><div class="row"><span class="k">变更</span><span class="v">v1.0 三卡入口+门径 pills+产物墙 → v1.1 520px 实测通过 → v1.2 排序视图+完成度徽章+mission control 两态分离+任务注册表 → v1.3 对比评分结构化（六维并排表+检视级别入墙，借鉴 Wegic 模板详情结构化呈现）→ v1.4 产物墙条目 viewUrl（chain 条目可点击打开；本页条目自指不设链）→ v1.5 徽章 aria 语义化+口径图例入页+对比表 caption（badge-legend 语料的工具落地）→ v1.6 墙扩至三条（mini 看板入墙）+键盘组成枚举修正</span></div>
       </div>
     </details>
 <details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">需求解析链路页（chain 渲染器首个产物）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v6">v6</span><span class="round">2026-10-13-00</span></summary>

@@ -2191,5 +2191,37 @@
    "Self-referential size recorded and silently drifting",
    "Reconciliation only runs on files the script itself just wrote"
   ]
+ },
+ {
+  "id": "dense-table-static-page-honesty",
+  "request": "For a purely static data page with zero interactive elements, record keyboard accessibility as an explicit '0/0 focusable — static page by design', never as a missing-coverage gap or a fake interactive affordance; a11y receipts must distinguish 'nothing to focus' from 'focus not verified'.",
+  "context": "A dark data-dense metrics board shipped as a static self-contained HTML page with no links, buttons, or forms.",
+  "passCriteria": [
+   "Keyboard row states 0 focusable with the static-by-design reason",
+   "Contrast measured on every text layer including muted headers and footnotes",
+   "Density achieved without hiding content on narrow viewports below readability",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "0/0 recorded as an untested gap or padded with a do-nothing control",
+   "Muted footnote below 4.5:1",
+   "Mobile view crops columns instead of a designed collapse"
+  ]
+ },
+ {
+  "id": "stage-board-vs-pipeline-honesty",
+  "request": "When presenting a stage×status board derived from a task state snapshot, the page must state that counts are audit-trace tallies rather than progress percentages, and name the authoritative source and rebuild command; a stage board must not read as a completion meter.",
+  "context": "A mini pipeline board rendering six stages with gate states and evidence counts from a state file.",
+  "passCriteria": [
+   "Evidence counts labeled as tally semantics, not percent progress",
+   "Authoritative source and rebuild command printed on the page",
+   "Gated/pending states visually and textually distinct from passed",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Counts presented as progress percentage",
+   "No rebuild path shown for the snapshot",
+   "Gated stage rendered as if passing"
+  ]
  }
 ]

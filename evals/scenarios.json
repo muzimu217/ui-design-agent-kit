@@ -2223,5 +2223,37 @@
    "No rebuild path shown for the snapshot",
    "Gated stage rendered as if passing"
   ]
+ },
+ {
+  "id": "state-page-artistry-copy",
+  "request": "Style empty and error states with personality (playful microcopy plus a small illustration) while keeping the actionable recovery path unambiguous; humor must never bury the instruction a user needs to continue.",
+  "context": "Product UI empty/error states — e.g. a password-reset hint with wry copy and a hand-drawn-style illustration.",
+  "passCriteria": [
+   "Error state still leads with the actionable instruction before/alongside the playful line",
+   "Illustration is decorative-only (SVG/inline, no external asset dependency)",
+   "Copy stays professional-safe (no insulting or blaming the user in production flows)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Humor replaces the recovery instruction",
+   "Illustration loaded from network and breaks offline",
+   "Copy hostile to users in a real error flow"
+  ]
+ },
+ {
+  "id": "generative-background-reduced-motion",
+  "request": "Decorative generative art backgrounds (canvas particles, pixel growth, ambient motion) must ship with a prefers-reduced-motion static fallback that preserves composition and contrast, and must never reduce body-text contrast below 4.5:1 in any animation frame.",
+  "context": "A dark hero or panel backed by an ambient generative visual; text sits directly on top of the artwork.",
+  "passCriteria": [
+   "prefers-reduced-motion shows a static frame with identical layout",
+   "Text contrast measured against the animated background stays >=4.5:1 in sampled frames",
+   "Generative layer marked aria-hidden/decorative",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Motion continues under reduced-motion",
+   "Animated background dims or lights text below 4.5:1 at peak frames",
+   "Generative layer announced to screen readers"
+  ]
  }
 ]

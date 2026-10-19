@@ -84,7 +84,7 @@
 <body>
 <main>
   <h1>画布工作台 · 入口</h1>
-  <div class="meta">工作流画布工作台（Canvas Workbench） · P-canvas-1 · 更新 2026-10-13 · 离线自包含</div>
+  <div class="meta">工作流画布工作台（Canvas Workbench） · P-canvas-2 · 更新 2026-10-19 · 离线自包含</div>
   <div class="grid">
     <a class="card" href="canvas-workbench.html"><h2>门径画布（实时门径）</h2><p>六阶段四泳道流水线：门状态/证据嵌入/搜索/缩放/回放——由 workflow-diagram 壳渲染</p></a>
     <a class="card" href="chain-canvas-workbench.html"><h2>需求解析链路</h2><p>原始口语 → 解析摘要 → 理解验证 → 六步决策抽屉——黑盒步骤自动标黄</p></a>
@@ -94,9 +94,9 @@
   <div class="mc">
     <div class="mc-col">
       <h3>执行态（工作在哪）</h3>
-      <div class="mc-row"><span class="mc-k">当前阶段</span><span class="mc-v">build · active</span></div>
-      <div class="mc-row"><span class="mc-k">进行中</span><span class="mc-v">build</span></div>
-      <div class="mc-row"><span class="mc-k">待裁决</span><span class="mc-v">brief</span></div>
+      <div class="mc-row"><span class="mc-k">当前阶段</span><span class="mc-v">contract · active</span></div>
+      <div class="mc-row"><span class="mc-k">进行中</span><span class="mc-v">contract、build</span></div>
+      <div class="mc-row"><span class="mc-k">待裁决</span><span class="mc-v">—</span></div>
     </div>
     <div class="mc-col">
       <h3>证据态（可复核什么）</h3>
@@ -107,26 +107,26 @@
   </div>
   <h2 class="sec">任务注册表（1 项 · 多任务 mission control）</h2><div class="task-row">
         <span class="t">工作流画布工作台（Canvas Workbench）</span>
-        <span class="round">P-canvas-1 · 2026-10-13</span>
-        <span class="task-exec">执行：build · 待裁决 brief</span>
-        <span class="task-ev">证据：1/6 阶段通过 · 门 A 待裁</span>
+        <span class="round">P-canvas-2 · 2026-10-19</span>
+        <span class="task-exec">执行：contract/build</span>
+        <span class="task-ev">证据：2/6 阶段通过</span>
       </div>
   <h2 class="sec">门径状态</h2>
-  <div><span class="pill" style="border-color:#f472b6">A · gated</span><span class="pill" style="border-color:#34d399">B · passed</span><span class="pill" style="border-color:#6b7280">C · pending</span><span class="pill" style="border-color:#6b7280">D · pending</span><span class="pill" style="border-color:#6b7280">E · pending</span><span class="pill" style="border-color:#6b7280">F · pending</span></div>
-  <div class="stages"><div class="stage" style="--c:#f472b6">
+  <div><span class="pill" style="border-color:#34d399">A · passed</span><span class="pill" style="border-color:#34d399">B · passed</span><span class="pill" style="border-color:#22d3ee">C · active</span><span class="pill" style="border-color:#6b7280">D · pending</span><span class="pill" style="border-color:#6b7280">E · pending</span><span class="pill" style="border-color:#6b7280">F · pending</span></div>
+  <div class="stages"><div class="stage" style="--c:#34d399">
         <div class="sid">brief</div>
-        <div class="sst" style="color:#f472b6">gated</div>
-        <div class="snote">门 A 方向稿已呈交（三阶段规划+现状对账表），等用户裁决</div>
+        <div class="sst" style="color:#34d399">passed</div>
+        <div class="snote">门 A 方向已获用户裁定（2026-10-19）：工作台形态升级+艺术画面明示要求+能力地平线四序列；阶段 4 新增</div>
       </div>
 <div class="stage" style="--c:#34d399">
         <div class="sid">reference</div>
         <div class="sst" style="color:#34d399">passed</div>
         <div class="snote">对标已集：Onlook 画布机制/bolt 设计系统专题/v0 Agentic+设计系统（学习循环 20-26 轮），第四层定位论证完成</div>
       </div>
-<div class="stage" style="--c:#6b7280">
+<div class="stage" style="--c:#22d3ee">
         <div class="sid">contract</div>
-        <div class="sst" style="color:#6b7280">pending</div>
-        <div class="snote">等门 A 通过后按 design-contract 定画布语义 token 与动效参数</div>
+        <div class="sst" style="color:#22d3ee">active</div>
+        <div class="snote">门 A 已通过：按 design-contract 定画布语义 token 与动效参数（阶段 4 艺术画面升级的契约层）</div>
       </div>
 <div class="stage" style="--c:#22d3ee">
         <div class="sid">build</div>

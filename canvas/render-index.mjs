@@ -68,9 +68,22 @@ async function main() {
       </div>`
     )
     .join("\n");
+
+  // 自学执行记录（L1-L4）：learning-log.json 的当日/累计状态。
+  let learningLog = { entries: [], dailyTotals: {} };
+  try {
+    learningLog = JSON.parse(await readFile(path.join(ROOT, "docs", "knowledge-base", "learning-log.json"), "utf8"));
+  } catch { /* 缺文件时不显示学习状态 */ }
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const today = learningLog.dailyTotals?.[todayKey];
+  const est = today?.estimated ? "（部分 estimated）" : "";
+  const learningStatus = today
+    ? `<div class="kb-learn" aria-label="今日自学状态：视频 ${today.videos} 条、学习 ${today.minutes} 分钟、入库 ${today.cards} 卡、转化 ${today.conversions} 项">今日自学：视频 <b>${today.videos}</b> 条 · <b>${today.minutes}</b> 分钟 · 入库 <b>${today.cards}</b> 卡 · 转化 <b>${today.conversions}</b> 项${est} —— KPI ${today.kpiMet ? "✓ 达标" : "✗ 未达标"}</div>`
+    : "";
   const kbSection = kbCards.length
     ? `<h2 class="sec">知识库（自学机制 · schema v${esc(kb.schemaVersion)}${kb.schemaMinor ? `.${esc(kb.schemaMinor)}` : ""} · ${kbCards.length} 卡 / ${kbDomains.length} 域 · ${kbByLayer.map(([k, n]) => `${esc(kbLayers[k])} ${n}`).join(" · ")}）</h2>
        <p class="cap-intro">每日视频学习 → 机制卡片（可编码参数+适用边界）→ 兼容性声明（extends/supersedes/conflicts）→ 转化。规范 <code>docs/self-learning-loop.md</code> · <code>docs/knowledge-base/schema.md</code>。</p>
+       ${learningStatus}
        <div class="kb-table">${kbRows}</div>`
     : "";
 
@@ -356,6 +369,8 @@ async function main() {
   .kb-title { font-weight:600; overflow-wrap:anywhere; }
   .kb-m { display:inline-block; margin-left:6px; font-size:10px; border:1px solid #1f4d3a; color:#a7f3d0; border-radius:99px; padding:0 6px; vertical-align:middle; }
   .kb-risk { display:inline-block; margin-left:6px; font-size:10px; border:1px solid #4a1d1d; color:#fca5a5; border-radius:99px; padding:0 6px; vertical-align:middle; }
+  .kb-learn { color:var(--dim); font-size:12px; margin:0 0 10px; }
+  .kb-learn b { color:var(--accent2); font-variant-numeric:tabular-nums; }
   .kb-meta { color:var(--dim); text-align:right; }
   @media (max-width: 640px) { .kb-row { grid-template-columns:56px 1fr; } .kb-meta { grid-column:2; text-align:left; } }
   .taste-table { display:grid; gap:8px; }

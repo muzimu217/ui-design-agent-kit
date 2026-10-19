@@ -2657,6 +2657,38 @@
   ]
  },
  {
+  "id": "learning-log-estimated-flagged",
+  "request": "Self-learning execution records must distinguish measured from estimated values: minutes and video counts that were not timed are flagged estimated, entries with no video (product rechecks, sweep-level category views) record videos=0 honestly, and daily KPI verdicts remain computable from the flagged data rather than from padded numbers.",
+  "context": "A learning-log JSON consumed by the workbench to show daily L1-L4 status.",
+  "passCriteria": [
+   "Untimed sessions flagged estimated=true",
+   "Non-video rounds record videos=0 rather than inflating",
+   "Daily KPI verdict computable from recorded fields",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Estimated minutes presented as measured",
+   "Product rechecks padded with video counts",
+   "KPI verdict hardcoded instead of derived"
+  ]
+ },
+ {
+  "id": "incumbent-licensing-model-shift",
+  "request": "When an incumbent shifts its licensing model (open-source core becoming a funnel for a closed hosted product), the recheck must record the shift, its effect on prior judgements, and whether any adopted dependency is affected — capability pinning decisions must not silently outlive a licence-model change upstream.",
+  "context": "Periodic recheck of an open-source visual editor that just moved its new product behind a waitlist.",
+  "passCriteria": [
+   "Licensing-model shift recorded with the effect on prior judgements",
+   "Adopted dependencies checked against the upstream change",
+   "Commercialization path noted as an identity-level item for user ruling",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Upstream licence-model change unnoticed in adopted pins",
+   "Prior judgement left stale after the shift",
+   "Commercialization option adopted without user ruling"
+  ]
+ },
+ {
   "id": "incumbent-multiagent-console",
   "request": "When an incumbent ships a multi-agent management console, a recheck must distinguish what it manages (execution progress) from what our layer provides (evidence and acceptance), and must state whether our differentiating layer (browser-measured verification) was encroached upon — reaffirming or revising the moat judgement with the interval noted.",
   "context": "Periodic recheck of an incumbent that just productized agent task management in a desktop app.",

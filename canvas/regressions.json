@@ -1,0 +1,42 @@
+{
+  "note": "产物墙反例卡（Regressions）：记录本仓产物的真实缺陷、漏计与回退。**只增不删**——修复后标 resolved 并写明修复提交，绝不删除记录（与知识库 superseded 同纪律）。反例是证据的一部分：失败记录的传播力不低于成功案例（59 轮 B 站判读）。",
+  "updatedOn": "2026-10-19",
+  "regressions": [
+    {
+      "id": "reg-001",
+      "date": "2026-10-17",
+      "artifact": "canvas-index-hub",
+      "title": "reducedMotion 完成度漏计（徽章 5/6 误报）",
+      "what": "完成度判定依赖措辞关键词（通过/实测/直拍/可达/全过），reducedMotion 条目写的是'静态检查'，不含任何关键词，导致徽章显示 5/6、mission control 全实测 0/2——实际该维度已通过检查，纯措辞漏计。",
+      "root": "判据与文案耦合：关键词法无 drift 守卫",
+      "fix": "措辞改为'静态检查通过'（21 轮同笔）+ 增量 33 落地 svgHints/数据守卫；measured-keyword-decoupling 语料（33 轮）+ 守卫化（24 轮 dataGuard）双保险",
+      "status": "resolved",
+      "fixCommit": "增量 21 措辞修正；增量 24 dataGuard；增量 33 语料→工具闭环",
+      "lesson": "验收判据必须与文案措辞解耦；发现漏计的当时就要同时修文案、建守卫、立语料三件套"
+    },
+    {
+      "id": "reg-002",
+      "date": "2026-10-18",
+      "artifact": "canvas-export",
+      "title": "导出 manifest 自我漂移（978→1178 字节）",
+      "what": "manifest.json 把自身字节写入自身列表，二次写入使字节变化，导出对账首跑即失败。",
+      "root": "自指记账：写自身即改变自身",
+      "fix": "manifest 不自列（selfExcluded 声明）+ 对账对称豁免 + --verify-only 独立复核通道（增量 27）",
+      "status": "resolved",
+      "fixCommit": "增量 27",
+      "lesson": "任何记账系统不能把自己算进被记账对象；自指必须显式豁免并文档化"
+    },
+    {
+      "id": "reg-003",
+      "date": "2026-10-19",
+      "artifact": "canvas-index-hub",
+      "title": "产物墙空态永不显示",
+      "what": "wall-empty 空态区块被加入页面时未接显隐逻辑（hidden 属性从不被 JS 更新），若过滤结果为空用户会看到空白而非提示——增量 29 加入插画时发现并顺带修复。",
+      "root": "只加了展示层，没接状态层",
+      "fix": "wallFilter 统计可见条目数并切换 hidden（增量 29 同笔）",
+      "status": "resolved",
+      "fixCommit": "增量 29",
+      "lesson": "加任何'条件显示'的区块，必须同时接状态更新逻辑；空态是最容易被忘记接线的区块"
+    }
+  ]
+}

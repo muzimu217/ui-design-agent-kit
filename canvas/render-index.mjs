@@ -97,6 +97,28 @@ async function main() {
        <p class="cap-intro">特质只从可复核信号推导（你的原话、明确选择、被接受/被拒的方案），每条都能回溯到具体信号；置信度不足只展示不采用。规则见 <code>canvas/derive-taste.mjs</code>（证据上限钳制 + 采用需 ≥2 条独立信号）。</p>
        <div class="taste-table">${tasteRows}</div>`
     : "";
+
+  // 反例卡：本仓产物的真实缺陷记录，只增不删（resolved 也保留）。
+  let regressions = { regressions: [] };
+  try {
+    regressions = JSON.parse(await readFile(path.join(ROOT, "canvas", "regressions.json"), "utf8"));
+  } catch { /* 缺文件时不渲染 */ }
+  const regRows = (regressions.regressions ?? [])
+    .map((r) => {
+      const resolved = r.status === "resolved";
+      const badge = resolved ? { label: "已修复", color: "#34d399" } : { label: "未修复", color: "#f87171" };
+      return `<div class="reg-row">
+        <span class="reg-st" style="color:${badge.color};border-color:${badge.color}" aria-label="反例状态：${badge.label}">${badge.label}</span>
+        <span class="reg-body"><strong>${esc(r.title)}</strong><span class="reg-what">${esc(r.what)}</span><span class="reg-lesson">教训：${esc(r.lesson)}</span></span>
+        <span class="reg-meta">${esc(r.date)} · ${esc(r.fixCommit ?? "")}</span>
+      </div>`;
+    })
+    .join("\n");
+  const regSection = regRows
+    ? `<h2 class="sec">反例记录（只增不删 · ${(regressions.regressions ?? []).length} 条 · ${(regressions.regressions ?? []).filter((r) => r.status === "resolved").length} 已修复）</h2>
+       <p class="cap-intro">本仓产物的真实缺陷与漏计：失败记录的传播力不低于成功案例（59 轮判读）。修复后标 resolved 并写明提交，<strong>绝不删除</strong>——反例是证据的一部分。</p>
+       <div class="reg-table">${regRows}</div>`
+    : "";
   const stageEntries = Object.entries(state.stages ?? {});
   const gates = state.gates ?? {};
   const gateColor = { passed: "#34d399", gated: "#f472b6", active: "#22d3ee", blocked: "#f87171", pending: "#6b7280" };
@@ -343,6 +365,15 @@ async function main() {
   .taste-conf { color:#c4b5fd; font-variant-numeric:tabular-nums; text-align:right; }
   .taste-ev { color:var(--dim); font-size:11px; }
   @media (max-width: 640px) { .taste-row { grid-template-columns:64px 1fr 52px; } .taste-ev { grid-column:2 / -1; } }
+  .reg-table { display:grid; gap:8px; }
+  .reg-row { display:grid; grid-template-columns:64px 1fr minmax(90px,auto); gap:12px; background:var(--panel); border:1px solid var(--line); border-left:3px solid #f87171; border-radius:9px; padding:10px 14px; font-size:12px; }
+  .reg-st { border:1px solid; border-radius:99px; padding:1px 8px; font-size:11px; text-align:center; white-space:nowrap; }
+  .reg-body { display:grid; gap:4px; min-width:0; }
+  .reg-body strong { font-size:12.5px; }
+  .reg-what { color:var(--dim); overflow-wrap:anywhere; }
+  .reg-lesson { color:#a7f3d0; overflow-wrap:anywhere; }
+  .reg-meta { color:var(--dim); font-size:11px; text-align:right; }
+  @media (max-width: 640px) { .reg-row { grid-template-columns:64px 1fr; } .reg-meta { grid-column:2; text-align:left; } }
   .cmp-caption { caption-side:bottom; color:var(--dim); font-size:11px; text-align:left; padding-top:6px; }
   /* 生成式微艺术背景：装饰层（aria-hidden），降动效下完全静止且构图不变 */
   .ambient { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.55; }
@@ -389,6 +420,7 @@ async function main() {
   ${tasteSection}
   ${capSection}
   ${kbSection}
+  ${regSection}
   <h2 class="sec">产物墙（KPI4 · ${artifacts.artifacts.length} 件 · <span id="wall-mode">全部</span>）</h2>
   <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
     <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>

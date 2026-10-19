@@ -2543,5 +2543,37 @@
    "Visible seam at loop point",
    "Motion entries require per-item play interaction to show anything"
   ]
+ },
+ {
+  "id": "regression-record-append-only",
+  "request": "Product defect and regression records must be append-only: a fixed regression is marked resolved with its fix reference but never deleted, and the record must carry what broke, the root cause, the fix, and the reusable lesson as separate fields.",
+  "context": "An evidence wall or ledger that includes the product's own failure history.",
+  "passCriteria": [
+   "Fixed regressions retained with resolved status and fix reference",
+   "Record separates what/root-cause/fix/lesson into distinct fields",
+   "Resolution cannot silently overwrite the description of the failure",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Resolved record deleted, hiding the failure history",
+   "Fix described but root cause absent",
+   "Lesson missing — record usable as blame but not as learning"
+  ]
+ },
+ {
+  "id": "empty-state-wiring",
+  "request": "Any conditionally-shown block (empty state, filter result, alert) must be wired to the state that controls it in the same change; adding the presentation without the state update creates a permanently hidden block, which is itself a regression detectable by tests.",
+  "context": "A filtered artifact wall whose empty state was added without the show/hide wiring and never appeared.",
+  "passCriteria": [
+   "Empty state visibility driven by computed result count",
+   "A test or check exercises both visible and hidden paths",
+   "Hidden state uses hidden attribute or equivalent, not just styling",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Block present in DOM but unreachable by any state",
+   "Visibility driven by styling alone with no logic",
+   "State update deferred to a later change"
+  ]
  }
 ]

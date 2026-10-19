@@ -92,6 +92,45 @@
    "evidence": "docs/competitive-insights/2026-10-19-mobbin-mcp-firstlook/insight.md",
    "inspectionLevel": "unverified-partial",
    "note": "评估过不接入：解决'看什么'，我们解决'判定合格+谁签字+证据在哪'；互补非竞争。保留为门 B 人工参考渠道"
+  },
+  {
+   "id": "ai-promo-video-maker",
+   "name": "AI 宣传片制作器（liyupi）",
+   "provider": "liyupi（MIT）",
+   "pinned": "未钉版（候选，需先本地跑通再钉）",
+   "status": "evaluating",
+   "kind": "视频（工作流套件）",
+   "limits": "依赖 Remotion（个人/3 人内免费，超出需商业授权）+ ElevenLabs（可选，免费额度不可商用）+ Playwright + ffmpeg；不做真人出镜、不用 AI 视频生成模型",
+   "acceptance": "其自带闸门（渲染前后检查+按场景截图审查）之上，再叠本仓视频口径复核；节奏数值已并入知识卡 video-launch-narrative-structure v2",
+   "evidence": "docs/competitive-insights/2026-10-19-user-recommended-videos/insight.md",
+   "inspectionLevel": "unverified-partial",
+   "note": "与本仓门径+证据纪律高度同构（10 阶段/人只拍板需求确认/真实截图≥8 张/声音逐句转写校验/踩坑记录 60+）；候选接入，未本地实测前不标 adopted"
+  },
+  {
+   "id": "meshy-3d",
+   "name": "Meshy（AI 3D 生成）",
+   "provider": "Meshy",
+   "pinned": "—",
+   "status": "evaluating",
+   "kind": "3D 资产",
+   "limits": "商用许可与导出格式待确认；生成质量需按 3D 口径验收（面数/包围盒/材质完整性/浏览器加载）",
+   "acceptance": "3D 口径：面数/包围盒/材质完整性/浏览器实测加载",
+   "evidence": "docs/competitive-insights/2026-10-19-user-recommended-videos/insight.md（B站 BV1HfHQ6gEPz：通用大模型+Meshy 完成 3D 游戏/网站/动画/打印）",
+   "inspectionLevel": "unverified-partial",
+   "note": "3D 槽位首个具体候选；'通用大模型 + 专业 3D 工具'正是本仓能力外接范式"
+  },
+  {
+   "id": "frameronin-pixel",
+   "name": "Frameronin（像素序列/多向动作）",
+   "provider": "frameronin.com",
+   "pinned": "—",
+   "status": "evaluating",
+   "kind": "素材（像素动画）",
+   "limits": "产出为像素序列素材；许可证与商用条款待确认；只作素材源，不参与验收判定",
+   "acceptance": "素材口径：来源血缘+序列完整性+帧率一致",
+   "evidence": "docs/competitive-insights/2026-10-19-user-recommended-videos/insight.md（B站 BV16xH966EMZ）",
+   "inspectionLevel": "unverified-partial",
+   "note": "用户判断：可作素材模块，游戏类项目可介入；作为像素风/小游戏方向的素材源候选"
   }
  ]
 }

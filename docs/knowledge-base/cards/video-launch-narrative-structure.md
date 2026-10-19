@@ -18,6 +18,10 @@ codable:
     - "30s 片：≥3 个 re-hook；60s 片：≥5 个"
     - "首帧静音可读（字幕承载核心信息），音乐只做节奏不承载信息"
     - "结尾 3-5s 给制作图谱或数据凭证（真实调用数/报错数），不喊口号"
+    - "【v2 合并自 liyupi/ai-promo-video-maker】快切镜头停留 ≥0.65s（字幕可读完）"
+    - "【v2】网址/品牌名停留 ≥3s（可识别）"
+    - "【v2】任意时刻往后 2s 内必须出现新信息（防拖沓）"
+    - "【v2】真实界面截图全片 ≥8 张，功能段落每段 ≥1 张；AI 生成图只做包装与转场"
   paramProvenance: observed
   constraints:
     - "信息密度优先于制作规格（Message > Production Value）"

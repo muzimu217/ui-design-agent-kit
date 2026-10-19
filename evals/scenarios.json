@@ -2447,5 +2447,37 @@
    "Metrics presented as quality scores",
    "Numbers with no reproducible source"
   ]
+ },
+ {
+  "id": "video-pacing-numeric-floors",
+  "request": "Video timing must obey numeric floors: fast-cut shots hold at least 0.65s, URLs/brand names hold at least 3s, new information appears within 2s at any point, and at least 8 real interface captures appear in the piece with one per feature segment — generated imagery only wraps or transitions.",
+  "context": "Code-rendered product video where timing and shot composition are authored as data, enabling programmatic checking.",
+  "passCriteria": [
+   "Cut durations and hold times validated against the numeric floors",
+   "Real-capture count >= 8 with per-segment coverage",
+   "Generated/AI imagery limited to packaging and transitions",
+   "Violations reported with the offending scene id"
+  ],
+  "failConditions": [
+   "Sub-0.65s cuts carrying text that cannot be read",
+   "Feature segment built entirely from generated imagery",
+   "Information gap longer than 2s with no new content"
+  ]
+ },
+ {
+  "id": "third-party-workflow-adoption",
+  "request": "Adopting a third-party workflow kit requires: pinning a version, running it locally once, reconciling its licence terms (including sub-dependency licences such as renderer and TTS), and layering the adopter's own acceptance checks on top of the kit's built-in gates — a kit may not be marked adopted on documentation reading alone.",
+  "context": "Evaluating an open-source video-production kit that ships its own agent instructions, templates, and validation scripts.",
+  "passCriteria": [
+   "Registry entry stays evaluating until a local run is recorded",
+   "Sub-dependency licences (renderer/TTS/music) explicitly reconciled",
+   "Adopter's acceptance checks layered above the kit's own gates",
+   "Provenance and evidence path recorded"
+  ],
+  "failConditions": [
+   "Marked adopted from README reading alone",
+   "Licence of a sub-dependency ignored",
+   "Kit's self-reported quality accepted as the only gate"
+  ]
  }
 ]

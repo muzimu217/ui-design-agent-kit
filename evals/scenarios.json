@@ -2575,5 +2575,37 @@
    "Visibility driven by styling alone with no logic",
    "State update deferred to a later change"
   ]
+ },
+ {
+  "id": "emphasis-unity-dom-approximation",
+  "request": "Principles like Emphasis (single focal element) and Unity (limited type/colour/radius scales) may be approximated in DOM checks — h1 count, distinct font-family roots, distinct border-radius values — but such approximations must be non-blocking hints that name the principle they approximate; a failed approximation must never block acceptance because the DOM is not the visual truth.",
+  "context": "Acceptance script layering style-principle hints above blocking correctness checks.",
+  "passCriteria": [
+   "h1>1 flagged as Emphasis approximation",
+   "Font/radius scale exceedances flagged as Unity approximation",
+   "Hints never change receipt ok or exit code",
+   "Real pages surface at least one actionable hint without failing"
+  ],
+  "failConditions": [
+   "Approximation blocks acceptance",
+   "Approximation claims to be the visual truth",
+   "Hints buried so deep no one reads them"
+  ]
+ },
+ {
+  "id": "incumbent-multiagent-console",
+  "request": "When an incumbent ships a multi-agent management console, a recheck must distinguish what it manages (execution progress) from what our layer provides (evidence and acceptance), and must state whether our differentiating layer (browser-measured verification) was encroached upon — reaffirming or revising the moat judgement with the interval noted.",
+  "context": "Periodic recheck of an incumbent that just productized agent task management in a desktop app.",
+  "passCriteria": [
+   "Recheck names the new console and what it manages",
+   "Explicit comparison: execution management vs evidence/acceptance layer",
+   "Moat judgement reaffirmed or revised with interval and trigger",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Recheck declares moat lost without evidence of encroachment",
+   "Recheck ignores the new console entirely",
+   "Differentiation stated without naming the layer"
+  ]
  }
 ]

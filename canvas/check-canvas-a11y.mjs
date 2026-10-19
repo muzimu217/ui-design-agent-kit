@@ -204,6 +204,30 @@ for (const page of dataOnly ? [] : pages) {
     return { count: hints.length, hints: hints.slice(0, 8) };
   });
   pageResult.svgHints = svgHints;
+
+  // Style hints — design-seven-principles as DOM-approximation hints
+  // (NON-BLOCKING, same contract as svgHints): Emphasis uniqueness via h1
+  // count, Unity via distinct font families and border-radius scales. These
+  // are approximations of visual judgement, so they inform, never gate.
+  const styleHints = await p.evaluate(() => {
+    const hints = [];
+    const h1s = document.querySelectorAll("h1").length;
+    if (h1s > 1) hints.push(`页面含 ${h1s} 个 h1（Emphasis 唯一性：强调元素 ≤1）`);
+    const fonts = new Set();
+    document.querySelectorAll("*").forEach((el) => {
+      const f = getComputedStyle(el).fontFamily;
+      if (f) fonts.add(f.split(",")[0].trim().toLowerCase());
+    });
+    if (fonts.size > 3) hints.push(`页面使用 ${fonts.size} 个字族（Unity：字族 ≤2 档）`);
+    const radii = new Set();
+    document.querySelectorAll("*").forEach((el) => {
+      const r = getComputedStyle(el).borderRadius;
+      if (r && r !== "0px") radii.add(r);
+    });
+    if (radii.size > 5) hints.push(`页面使用 ${radii.size} 档圆角（Unity：圆角 ≤4 档）`);
+    return { count: hints.length, hints: hints.slice(0, 8) };
+  });
+  pageResult.styleHints = styleHints;
   if (contrast.below.length > 0) { receipt.ok = false; pageResult.fail = "contrast below 4.5:1"; }
   if (consoleErrors.length > 0) { receipt.ok = false; pageResult.fail = (pageResult.fail ? pageResult.fail + "; " : "") + "console errors"; }
   receipt.pages.push(pageResult);

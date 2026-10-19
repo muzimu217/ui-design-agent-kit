@@ -9,7 +9,7 @@
 | --- | --- | --- |
 | `composition` | 构成：静态形式（约束、词汇、重量、色彩） | 4 |
 | `motion` | 运动：时间维度（力量感、错觉） | 2 |
-| `order` | 秩序：系统维度（七原则、流水线） | 0（待补） |
+| `order` | 秩序：系统维度（七原则、叙事节拍） | 2 |
 
 ## 卡片（6）
 
@@ -21,6 +21,8 @@
 | [icon-primitive-reduction](cards/icon-primitive-reduction.md) | 构成 | 图标 | 基本形状归约（圆/方/三角） | 深海 116.5 万 | ✓ |
 | [motion-force-anticipation](cards/motion-force-anticipation.md) | 运动 | 动效 | 力量感=预备+加速+跟随 | 喜定 215.1 万 | ✗ |
 | [motion-reverse-phi-illusion](cards/motion-reverse-phi-illusion.md) | 运动 | 动效 | Reverse Phi 错觉（**research-only/光敏风险**） | 深海 175.7 万 | ✗ |
+| [video-launch-narrative-structure](cards/video-launch-narrative-structure.md) | 秩序 | 视频 | 3 秒钩子+每 12 秒 re-hook（v2 九参数） | SideShift 拆解 69 万 | ✗ |
+| [design-seven-principles](cards/design-seven-principles.md) | 秩序 | 版式 | 七原则可操作定义（Emphasis≤1/Unity 三唯一等） | Envato 课程 187.7 万 | ✗ |
 | [video-launch-narrative-structure](cards/video-launch-narrative-structure.md) | 秩序 | 视频 | 3 秒钩子+每 12 秒 re-hook | SideShift 拆解 69 万 | ✗ |
 
 ## 关系图

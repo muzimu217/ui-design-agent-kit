@@ -2511,5 +2511,37 @@
    "Interval omitted so cadence is unauditable",
    "Judgement changed with no stated trigger"
   ]
+ },
+ {
+  "id": "principles-wordlist-not-pipeline",
+  "request": "Design principles (balance, unity, contrast, emphasis, repetition, pattern, rhythm) must be applied as a review wordlist with explicit applicability — at most a few per screen — never as a seven-point compliance pipeline; any check that demands all seven simultaneously must fail design review as template-driven.",
+  "context": "Page-level composition review using the seven principles as a shared vocabulary for critiques and contract items.",
+  "passCriteria": [
+   "Each applied principle names what it constrains on this page",
+   "A page may deliberately omit principles with a stated reason",
+   "Principle violations are review vocabulary, not blocking errors",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "All seven demanded on every screen",
+   "Principles used to block correctness-level acceptance",
+   "Vocabulary applied to single-component internals where it does not hold"
+  ]
+ },
+ {
+  "id": "motion-gallery-loop-format",
+  "request": "Motion work shown in galleries or product pages must default to short auto-looping clips (2-4s) rather than long-form video; the loop must start and end on visually compatible frames so the seam is invisible, and long-form remains available one click away.",
+  "context": "A gallery of motion artifacts (canvas wall, video line outputs) presented alongside static products.",
+  "passCriteria": [
+   "Motion entries render as 2-4s seamless auto-loops, muted",
+   "Loop endpoints visually compatible (no visible jump cut)",
+   "Long-form video reachable within one click",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Long-form video autoplayed in gallery context",
+   "Visible seam at loop point",
+   "Motion entries require per-item play interaction to show anything"
+  ]
  }
 ]

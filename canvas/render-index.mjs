@@ -51,7 +51,7 @@ async function main() {
   const chainRows = chains
     .map(
       (c) => `<a class="chain-row" href="${esc(c.page)}">
-        <span class="badge">${c.confirmed ? "✓ 已确认" : "… 待确认"}</span>
+        <span class="badge" aria-label="解析链路确认状态：${c.confirmed ? "用户已比对确认" : "待比对确认"}">${c.confirmed ? "✓ 已确认" : "… 待确认"}</span>
         <span class="t">${esc(c.title)}</span>
         <span class="round">${esc(c.round)} · ${c.steps} 步</span>
         <span class="open">打开 ↗</span>

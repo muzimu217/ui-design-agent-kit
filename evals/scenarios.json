@@ -2127,5 +2127,37 @@
    "Panels unreachable or unlabelled for screen readers",
    "Tab strip focus invisible on dark background"
   ]
+ },
+ {
+  "id": "guard-covers-rendered-aria",
+  "request": "Acceptance checks for generated pages must assert aria-semantic presence (status badges, level pills, scored tables carry accessible names and inline rubrics) and the check itself must be falsifiable — demonstrated by running it against a deliberately broken fixture where it fails with named issues and a non-zero exit.",
+  "context": "An a11y acceptance script over generated HTML pages; a guard that always passes is no guard, so the negative path must be exercised.",
+  "passCriteria": [
+   "Check fails with named element and issue when a badge lacks an accessible name",
+   "Broken fixture produces non-zero exit and machine-readable issues",
+   "Clean pages pass with the same check (no false positives)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Guard that cannot fail (no negative test)",
+   "Issue reported without locating element",
+   "Exit code stays zero on guard failure"
+  ]
+ },
+ {
+  "id": "confirmation-badge-semantics",
+  "request": "Confirmation-state badges (e.g. confirmed vs pending review) must announce what was confirmed, by whom, and when applicable — via accessible name or adjacent text; a bare checkmark glyph or color flip is not a confirmation signal.",
+  "context": "A registry list where each row carries a confirmation badge driven by user review state.",
+  "passCriteria": [
+   "Badge accessible name states the confirmation state in words",
+   "Reviewer identity or review basis stated in adjacent text when available",
+   "Pending state visually and semantically distinct from confirmed",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Glyph-only confirmation (✓) with no textual semantics",
+   "Confirmed and pending announce identically to screen readers",
+   "State change conveyed only by color"
+  ]
  }
 ]

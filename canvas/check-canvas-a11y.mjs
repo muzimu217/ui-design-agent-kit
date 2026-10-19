@@ -158,6 +158,28 @@ for (const page of dataOnly ? [] : pages) {
     keyboard: { focusableTotal: total, tabbed: seen.length, sample: seen.slice(0, 6) },
     consoleErrors,
   };
+
+  // Aria guard — status badges and level pills must carry accessible names and
+  // scored tables must state their rubric inline (render-level counterpart of
+  // the dataGuard above; guards the 2026-10-18 badge-legend increment).
+  const ariaGuard = await p.evaluate(() => {
+    const issues = [];
+    const labelled = ["badge", "src", "ver", "cmp-level"];
+    for (const cls of labelled) {
+      document.querySelectorAll(`.${cls}`).forEach((el, i) => {
+        if (!(el.getAttribute("aria-label") ?? "").trim()) issues.push(`.${cls}#${i} 缺 aria-label`);
+      });
+    }
+    document.querySelectorAll(".cmp-table").forEach((t, i) => {
+      const cap = t.querySelector("caption");
+      if (!cap || !cap.textContent.trim()) issues.push(`.cmp-table#${i} 缺非空 caption（评分口径）`);
+    });
+    const legend = document.querySelector("#wall-legend");
+    if (legend !== null && !legend.textContent.trim()) issues.push("#wall-legend 为空");
+    return { ok: issues.length === 0, issues };
+  });
+  pageResult.ariaGuard = ariaGuard;
+  if (!ariaGuard.ok) { receipt.ok = false; pageResult.fail = (pageResult.fail ? pageResult.fail + "; " : "") + "aria guard"; }
   if (contrast.below.length > 0) { receipt.ok = false; pageResult.fail = "contrast below 4.5:1"; }
   if (consoleErrors.length > 0) { receipt.ok = false; pageResult.fail = (pageResult.fail ? pageResult.fail + "; " : "") + "console errors"; }
   receipt.pages.push(pageResult);

@@ -96,6 +96,20 @@
       "codableParams": 7,
       "learnedAt": "2026-10-19",
       "safetyNote": "光敏风险：8-12fps 明暗反转落在高风险区间，research-only，默认不实现"
+    },
+    {
+      "id": "video-launch-narrative-structure",
+      "title": "发布片结构：3 秒钩子 + 每 12 秒一次 re-hook",
+      "domain": "video",
+      "layer": "order",
+      "measurable": false,
+      "status": "active",
+      "confidence": "sourced",
+      "version": 1,
+      "relations": [{ "type": "related", "target": "motion-force-anticipation" }],
+      "source": { "kind": "video", "heat": 690000, "author": "B2B but make it human（SideShift 拆解）", "ref": "https://www.youtube.com/watch?v=KTqMRkSqXX4" },
+      "codableParams": 5,
+      "learnedAt": "2026-10-19"
     }
   ]
 }

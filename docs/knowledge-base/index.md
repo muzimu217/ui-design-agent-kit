@@ -21,6 +21,7 @@
 | [icon-primitive-reduction](cards/icon-primitive-reduction.md) | 构成 | 图标 | 基本形状归约（圆/方/三角） | 深海 116.5 万 | ✓ |
 | [motion-force-anticipation](cards/motion-force-anticipation.md) | 运动 | 动效 | 力量感=预备+加速+跟随 | 喜定 215.1 万 | ✗ |
 | [motion-reverse-phi-illusion](cards/motion-reverse-phi-illusion.md) | 运动 | 动效 | Reverse Phi 错觉（**research-only/光敏风险**） | 深海 175.7 万 | ✗ |
+| [video-launch-narrative-structure](cards/video-launch-narrative-structure.md) | 秩序 | 视频 | 3 秒钩子+每 12 秒 re-hook | SideShift 拆解 69 万 | ✗ |
 
 ## 关系图
 

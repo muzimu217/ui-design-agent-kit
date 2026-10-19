@@ -62,7 +62,7 @@ const capRows = (caps.capabilities ?? [])
   .join("\n");
 
 const kbRows = (kb.cards ?? [])
-  .map((c) => `<tr><td><span class="dom">${esc(c.domain)}</span></td><td>${esc(c.title)}</td><td class="dim">${esc(c.source?.author ?? "")}${c.source?.heat ? ` · ${(c.source.heat / 10000).toFixed(1)} 万播放` : ""}</td></tr>`)
+  .map((c) => `<tr><td><span class="dom">${esc(c.layer ?? c.domain)}</span></td><td>${esc(c.title)}</td><td class="dim">${esc(c.source?.author ?? "")}${c.source?.heat ? ` · ${(c.source.heat / 10000).toFixed(1)} 万播放` : ""}</td></tr>`)
   .join("\n");
 
 const tasteRows = (taste.traits ?? [])
@@ -82,82 +82,100 @@ const html = `<!doctype html>
 <title>UI Design Agent Kit · 有证据的 UI 工作流</title>
 <meta name="description" content="UI 设计智能体工作流：六道门确认、六维实测、证据可复核。不做生成引擎，做生成过程的监管与质量把控。">
 <style>
-  :root { color-scheme: dark; --bg:#08080c; --panel:#12121c; --panel2:#171726; --line:#26263a; --text:#ececf5; --dim:#9a9ab0; --accent:#8b5cf6; --accent2:#22d3ee; }
+  :root { color-scheme: dark; --bg:#07070a; --panel:#101017; --panel2:#15151f; --line:#23232f; --text:#ededf2; --dim:#9595a8; --accent:#a78bfa; --accent2:#22d3ee; --ok:#34d399; --warn:#fbbf24; }
   * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif; overflow-x:hidden; }
-  .wrap { max-width:1080px; margin:0 auto; padding:0 22px; }
-  header { position:sticky; top:0; z-index:10; backdrop-filter:blur(12px); background:rgba(8,8,12,.78); border-bottom:1px solid var(--line); }
-  .nav { display:flex; align-items:center; gap:18px; padding:14px 0; }
-  .brand { font-weight:700; letter-spacing:.01em; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15.5px/1.72 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
+  /* 单笔连续路径艺术层（知识卡 icon-single-stroke-constraint 的落地）：一条不断线的 SVG 路径，
+     装饰层 aria-hidden、不拦截指针、降动效时完全静止。 */
+  .stroke-art { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.5; }
+  .stroke-art svg { width:100%; height:100%; }
+  .stroke-art path { fill:none; stroke:url(#strokeGrad); stroke-width:1.1; stroke-linecap:round; stroke-linejoin:round; }
+  .wrap { position:relative; z-index:1; max-width:1040px; margin:0 auto; padding:0 24px; }
+  header { position:sticky; top:0; z-index:10; backdrop-filter:blur(14px); background:rgba(7,7,10,.82); border-bottom:1px solid var(--line); }
+  .nav { display:flex; align-items:center; gap:20px; padding:15px 0; }
+  .brand { font-weight:650; letter-spacing:-.01em; font-size:15px; }
   .brand span { color:var(--accent); }
-  nav a { color:var(--dim); text-decoration:none; font-size:13px; }
+  nav { display:flex; gap:18px; margin-left:auto; flex-wrap:wrap; }
+  nav a { color:var(--dim); text-decoration:none; font-size:12.5px; letter-spacing:.01em; }
   nav a:hover { color:var(--text); }
-  nav { display:flex; gap:16px; margin-left:auto; flex-wrap:wrap; }
-  .hero { padding:72px 0 56px; position:relative; }
-  .hero::before { content:""; position:absolute; inset:-40% 40% 20% -20%; background:radial-gradient(circle at 30% 30%, rgba(139,92,246,.22), transparent 60%); pointer-events:none; }
-  .kicker { color:var(--accent2); font-size:13px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:14px; }
-  h1 { font-size:clamp(30px,5vw,52px); line-height:1.15; margin:0 0 18px; letter-spacing:-.02em; }
-  h1 em { font-style:normal; background:linear-gradient(90deg,#a78bfa,#22d3ee); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  .lede { color:var(--dim); font-size:17px; max-width:640px; margin:0 0 26px; }
-  .cta { display:flex; gap:12px; flex-wrap:wrap; }
-  .btn { display:inline-block; padding:11px 20px; border-radius:10px; text-decoration:none; font-size:14px; font-weight:600; border:1px solid var(--line); color:var(--text); }
-  .btn.primary { background:linear-gradient(135deg,#7c3aed,#4f46e5); border-color:transparent; }
+  .hero { padding:96px 0 64px; }
+  .kicker { display:inline-flex; align-items:center; gap:8px; color:var(--accent2); font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; margin-bottom:22px; }
+  .kicker::before { content:""; width:22px; height:1px; background:var(--accent2); display:block; }
+  h1 { font-size:clamp(32px,5.4vw,58px); line-height:1.1; margin:0 0 22px; letter-spacing:-.03em; font-weight:680; }
+  h1 em { font-style:normal; color:var(--accent); }
+  .lede { color:var(--dim); font-size:16.5px; max-width:620px; margin:0 0 30px; }
+  .lede strong { color:var(--text); font-weight:600; }
+  .cta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:44px; }
+  .btn { display:inline-block; padding:10px 18px; border-radius:8px; text-decoration:none; font-size:13.5px; font-weight:600; border:1px solid var(--line); color:var(--text); }
+  .btn.primary { background:var(--text); color:#0a0a0f; border-color:transparent; }
   .btn:hover { border-color:var(--accent); }
-  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin:34px 0 0; }
-  .stat { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
-  .stat b { display:block; font-size:24px; letter-spacing:-.02em; }
-  .stat span { color:var(--dim); font-size:12px; }
-  section { padding:46px 0; border-top:1px solid var(--line); }
-  h2 { font-size:24px; margin:0 0 8px; letter-spacing:-.01em; }
-  .sub { color:var(--dim); font-size:14px; margin:0 0 22px; max-width:720px; }
-  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; }
-  .card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px; }
-  .card h3 { margin:0 0 8px; font-size:16px; }
-  .card p { margin:0; color:var(--dim); font-size:13.5px; }
-  .steps { counter-reset:step; display:grid; gap:12px; }
-  .step { display:grid; grid-template-columns:34px 1fr; gap:14px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
-  .step::before { counter-increment:step; content:counter(step); display:grid; place-items:center; width:30px; height:30px; border-radius:99px; background:var(--accent); color:#fff; font-size:14px; font-weight:700; }
-  .step h3 { margin:0 0 4px; font-size:15px; }
-  .step p { margin:0; color:var(--dim); font-size:13.5px; }
-  pre { background:#0b0b13; border:1px solid var(--line); border-radius:10px; padding:14px 16px; overflow-x:auto; font-size:13px; margin:10px 0 0; }
-  code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; color:#a5b4fc; }
-  .gates { list-style:none; padding:0; margin:0; display:grid; gap:8px; }
-  .gate { display:grid; grid-template-columns:38px 96px 1fr; gap:12px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px 16px; font-size:13.5px; }
-  .gid { border:1px solid; border-radius:8px; text-align:center; font-weight:700; font-size:12px; padding:1px 0; }
+  /* 证据条：数字用等宽，标签克制 */
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(132px,1fr)); gap:0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .stat { padding:18px 0 18px 18px; border-left:1px solid var(--line); }
+  .stat:first-child { border-left:none; padding-left:0; }
+  .stat b { display:block; font:600 26px/1.15 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+  .stat span { color:var(--dim); font-size:11.5px; }
+  section { padding:56px 0; border-top:1px solid var(--line); }
+  h2 { font-size:21px; margin:0 0 8px; letter-spacing:-.015em; font-weight:640; }
+  .sub { color:var(--dim); font-size:14px; margin:0 0 26px; max-width:680px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(228px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .card { background:var(--panel); padding:22px; }
+  .card h3 { margin:0 0 8px; font-size:14.5px; font-weight:620; }
+  .card p { margin:0; color:var(--dim); font-size:13px; }
+  .steps { display:grid; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; counter-reset:step; }
+  .step { background:var(--panel); padding:20px 22px; display:grid; grid-template-columns:30px 1fr; gap:16px; }
+  .step::before { counter-increment:step; content:counter(step); display:grid; place-items:center; width:26px; height:26px; border-radius:6px; border:1px solid var(--line); color:var(--accent); font:600 12px/1 ui-monospace,monospace; }
+  .step h3 { margin:0 0 4px; font-size:14.5px; font-weight:620; }
+  .step p { margin:0; color:var(--dim); font-size:13px; }
+  pre { background:#0a0a11; border:1px solid var(--line); border-radius:8px; padding:13px 15px; overflow-x:auto; font-size:12.5px; margin:12px 0 0; line-height:1.65; }
+  code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; color:#b4b8ff; }
+  .gates { list-style:none; padding:0; margin:0; display:grid; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .gate { background:var(--panel); display:grid; grid-template-columns:34px 88px 1fr; gap:14px; align-items:baseline; padding:13px 18px; font-size:13px; }
+  .gid { border:1px solid; border-radius:5px; text-align:center; font:600 11px/1.6 ui-monospace,monospace; }
   .gname { font-weight:600; }
   .gdesc { color:var(--dim); }
-  table { width:100%; border-collapse:collapse; font-size:13.5px; background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
-  th { text-align:left; color:var(--dim); font-weight:500; font-size:12px; padding:10px 14px; border-bottom:1px solid var(--line); background:var(--panel2); }
-  td { padding:10px 14px; border-bottom:1px solid var(--line); }
-  tr:last-child td { border-bottom:none; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  thead th { text-align:left; color:var(--dim); font-weight:500; font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; padding:0 14px 10px; }
+  tbody td { padding:12px 14px; border-top:1px solid var(--line); }
+  tbody tr:hover { background:var(--panel); }
   .dim { color:var(--dim); }
-  .pill { display:inline-block; border:1px solid var(--line); border-radius:99px; padding:1px 9px; font-size:11px; }
-  .pill.yes { color:#34d399; border-color:#34d399; }
-  .pill.no { color:#fbbf24; border-color:#fbbf24; }
-  .dom { color:var(--accent2); font-size:11px; text-transform:uppercase; letter-spacing:.05em; }
-  .terms { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
-  .term { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:12px; padding:16px 18px; }
-  .term h3 { margin:0 0 6px; font-size:14px; }
-  .term p { margin:0; color:var(--dim); font-size:13px; }
-  footer { padding:34px 0 60px; color:var(--dim); font-size:12.5px; border-top:1px solid var(--line); }
+  .pill { display:inline-block; border:1px solid var(--line); border-radius:99px; padding:1px 9px; font-size:10.5px; }
+  .pill.yes { color:var(--ok); border-color:rgba(52,211,153,.45); }
+  .pill.no { color:var(--warn); border-color:rgba(251,191,36,.4); }
+  .dom { color:var(--accent2); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; }
+  .terms { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .term { background:var(--panel); padding:20px 22px; }
+  .term h3 { margin:0 0 6px; font-size:13.5px; font-weight:620; }
+  .term p { margin:0; color:var(--dim); font-size:12.5px; }
+  footer { padding:40px 0 72px; color:var(--dim); font-size:12px; border-top:1px solid var(--line); }
   footer a { color:var(--dim); }
-  @media (max-width:640px) { .gate { grid-template-columns:34px 1fr; } .gdesc { grid-column:2; } .hero { padding:48px 0 36px; } }
-  @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
+  @media (max-width:640px) { .gate { grid-template-columns:30px 1fr; } .gdesc { grid-column:2; } .hero { padding:64px 0 44px; } .stat { padding-left:14px; } }
+  @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } .stroke-art { opacity:.32; } }
 </style>
 </head>
 <body>
+<div class="stroke-art" aria-hidden="true">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false">
+    <defs><linearGradient id="strokeGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a78bfa" stop-opacity=".55"/><stop offset=".55" stop-color="#22d3ee" stop-opacity=".35"/><stop offset="1" stop-color="#34d399" stop-opacity=".2"/>
+    </linearGradient></defs>
+    <!-- 单笔连续路径：一次 M，其余全部 L/C（知识卡 icon-single-stroke-constraint） -->
+    <path d="M-40 210 C 120 120, 240 300, 360 230 S 560 90, 700 190 S 900 330, 1040 240 S 1280 110, 1480 200
+             L 1480 520 C 1320 600, 1180 470, 1040 540 S 820 690, 680 600 S 460 450, 320 540 S 100 690, -40 600 Z"/>
+  </svg>
+</div>
 <header><div class="wrap nav">
   <div class="brand">UI Design <span>Agent Kit</span></div>
   <nav>
     <a href="#what">是什么</a><a href="#how">怎么用</a><a href="#gates">六道门</a>
-    <a href="#caps">能力接入</a><a href="#kb">知识库</a><a href="#terms">条款</a>
+    <a href="#caps">能力接入</a><a href="#kb">知识库</a><a href="#taste">品味</a><a href="#terms">条款</a>
   </nav>
 </div></header>
 
 <main class="wrap">
   <div class="hero">
     <div class="kicker">有证据的 UI 工作流</div>
-    <h1>把一句需求，变成<br><em>可验收</em>的界面。</h1>
+    <h1>把一句需求，<br>变成<em>可验收</em>的界面。</h1>
     <p class="lede">我们不做生成引擎。我们做生成过程的<strong>监管与质量把控</strong>：六道门确认、六维实测、证据可复核。市面上的生成能力越强，这套监管层越有价值。</p>
     <div class="cta">
       <a class="btn primary" href="#how">三步开始</a>
@@ -165,7 +183,7 @@ const html = `<!doctype html>
     </div>
     <div class="stats">
       <div class="stat"><b>${verifiedArtifacts}/${artCount}</b><span>产物六维全实测</span></div>
-      <div class="stat"><b>${adopted}/${capCount}</b><span>能力接入（已接入/登记）</span></div>
+      <div class="stat"><b>${adopted}/${capCount}</b><span>能力接入 · 已接入/登记</span></div>
       <div class="stat"><b>${kbCount}</b><span>机制知识卡</span></div>
       <div class="stat"><b>${adoptedTraits}</b><span>已采用品味特质</span></div>
     </div>
@@ -211,7 +229,7 @@ npm run canvas:export  # 离线复核包（含 COMPARE.md）</code></pre></div><
   <section id="kb">
     <h2>知识库</h2>
     <p class="sub">每日从高播放视觉系内容中提炼机制，写成带<strong>可编码参数</strong>与适用边界的卡片；卡片只增不删，冲突以证据消解。</p>
-    <table><thead><tr><th>域</th><th>机制</th><th>来源</th></tr></thead><tbody>${kbRows}</tbody></table>
+    <table><thead><tr><th>层</th><th>机制</th><th>来源</th></tr></thead><tbody>${kbRows}</tbody></table>
   </section>
 
   <section id="taste">

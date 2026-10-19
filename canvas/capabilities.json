@@ -9,11 +9,11 @@
    "pinned": "tooling/sources.lock.json",
    "status": "adopted",
    "kind": "视频",
-   "limits": "编码路径合成（React 帧），不做 AI 生成素材本身；不提供素材版权",
-   "acceptance": "视频口径：时长/帧率/确定性帧/音画同步",
-   "evidence": ".agents/skills/remotion-*/；产物按轮次留档",
+   "limits": "编码路径合成（React 帧），不做 AI 生成素材本身；不做真人出镜；复杂 3D 需外部资产（three.js 程序化渲染可）",
+   "acceptance": "视频口径：时长/帧率/确定性帧/音画同步/首帧静音可读/字幕对比度；叙事节拍见知识卡 video-launch-narrative-structure",
+   "evidence": ".agents/skills/remotion-*/；docs/competitive-insights/2026-10-19-video-production-study/insight.md",
    "inspectionLevel": "verified",
-   "note": "本仓视频线载体；确定性帧渲染与 hyperframes 学习结论同向"
+   "note": "官方支持 Agent Skills（npx skills add remotion-dev/skills），库内已钉版；渲染链 CLI/SSR/Lambda/GH Actions 全支持"
   },
   {
    "id": "motion-official",

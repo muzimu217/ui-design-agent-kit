@@ -2415,5 +2415,37 @@
    "Safety caveat buried in prose without a machine-visible flag",
    "Reduced-motion behaviour unspecified"
   ]
+ },
+ {
+  "id": "video-narrative-beat-structure",
+  "request": "A launch/demo video script must declare its beat structure explicitly — a hook inside the first 3 seconds and a re-hook roughly every 12 seconds — with each beat naming its type (raise stakes / pattern interrupt / new evidence); a script that front-loads a logo animation or exceeds 20 seconds without a re-hook fails review.",
+  "context": "Short product video produced by code (Remotion) where script beats drive both animation timing and narration.",
+  "passCriteria": [
+   "Beat table lists time ranges with beat type per segment",
+   "Hook occupies 0-3s and states the core claim without a logo intro",
+   "No gap longer than ~20s without a re-hook in videos under 90s",
+   "Ending carries a verifiable evidence frame, not a slogan"
+  ],
+  "failConditions": [
+   "Logo animation as the opening beat",
+   "Long information stretch with no re-hook",
+   "Claims in narration with no evidence frame backing them"
+  ]
+ },
+ {
+  "id": "video-evidence-frame-honesty",
+  "request": "If a video shows production metrics (agent count, tool calls, error count), those numbers must be computed from the project's own logs at build time and labeled as recorded facts; a video may not display rounded or invented metrics as proof of quality.",
+  "context": "Ending frame of a code-rendered video that displays the real production record of the project.",
+  "passCriteria": [
+   "Metrics derived from repository logs/records, not hand-typed",
+   "Labels state what the numbers are (calls/errors), not that they imply quality",
+   "Recording date or commit referenced",
+   "No metric shown that cannot be reproduced from the repo"
+  ],
+  "failConditions": [
+   "Invented or inflated production metrics",
+   "Metrics presented as quality scores",
+   "Numbers with no reproducible source"
+  ]
  }
 ]

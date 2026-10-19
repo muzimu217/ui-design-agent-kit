@@ -214,17 +214,22 @@ for (const page of dataOnly ? [] : pages) {
     const h1s = document.querySelectorAll("h1").length;
     if (h1s > 1) hints.push(`页面含 ${h1s} 个 h1（Emphasis 唯一性：强调元素 ≤1）`);
     const fonts = new Set();
-    document.querySelectorAll("*").forEach((el) => {
+    document.body.querySelectorAll("*").forEach((el) => {
       const f = getComputedStyle(el).fontFamily;
       if (f) fonts.add(f.split(",")[0].trim().toLowerCase());
     });
     if (fonts.size > 3) hints.push(`页面使用 ${fonts.size} 个字族（Unity：字族 ≤2 档）`);
     const radii = new Set();
     document.querySelectorAll("*").forEach((el) => {
-      const r = getComputedStyle(el).borderRadius;
-      if (r && r !== "0px") radii.add(r);
+      const r = getComputedStyle(el).borderTopLeftRadius || getComputedStyle(el).borderRadius;
+      if (!r || r === "0px") return;
+      // 圆（百分比）与胶囊（≥50px）是形状而非档位，豁免
+      if (r.includes("%")) return;
+      const px = parseFloat(r);
+      if (!Number.isNaN(px) && px >= 50) return;
+      radii.add(r);
     });
-    if (radii.size > 5) hints.push(`页面使用 ${radii.size} 档圆角（Unity：圆角 ≤4 档）`);
+    if (radii.size > 4) hints.push(`页面使用 ${radii.size} 档圆角（Unity：圆角 ≤4 档，圆/胶囊不计）`);
     return { count: hints.length, hints: hints.slice(0, 8) };
   });
   pageResult.styleHints = styleHints;

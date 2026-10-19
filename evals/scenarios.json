@@ -2593,6 +2593,38 @@
   ]
  },
  {
+  "id": "unity-scale-exemptions",
+  "request": "Unity scale checks must exempt shapes that are not scale steps — full circles (percentage radii) and pills (radii >= half the element height, practically >=50px) — and must sample only rendered elements (body descendants), not head nodes with default styles; otherwise button default fonts inflate the family count and produce false Unity hints.",
+  "context": "A Unity hint counting distinct border-radius and font-family values across a rendered page.",
+  "passCriteria": [
+   "Percentage radii and pill radii excluded from the scale count",
+   "Sampling limited to body descendants",
+   "Buttons/inputs inherit the body font (no UA-default families counted)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "UA-default button fonts counted as a design-system family",
+   "Head/meta elements inflating the sample",
+   "Circles counted as radius steps"
+  ]
+ },
+ {
+  "id": "incumbent-trending-delta",
+  "request": "A trending-page sweep must produce a categorized delta (which domains rose, which incumbents persisted, which are new) rather than a raw list, and must state explicitly when there is nothing actionable for the product's own scope.",
+  "context": "Daily GitHub trending sweep as part of the learning loop.",
+  "passCriteria": [
+   "Entries grouped by domain with counts (e.g. CLI 5/12)",
+   "New faces vs persistent entries distinguished",
+   "Explicit 'nothing actionable' or concrete follow-up stated",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Raw repo list with no categorization",
+   "Deep-diving every entry in a sweep-level round",
+   "Actionability claimed without a scope check"
+  ]
+ },
+ {
   "id": "incumbent-multiagent-console",
   "request": "When an incumbent ships a multi-agent management console, a recheck must distinguish what it manages (execution progress) from what our layer provides (evidence and acceptance), and must state whether our differentiating layer (browser-measured verification) was encroached upon — reaffirming or revising the moat judgement with the interval noted.",
   "context": "Periodic recheck of an incumbent that just productized agent task management in a desktop app.",

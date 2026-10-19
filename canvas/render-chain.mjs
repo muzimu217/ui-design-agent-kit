@@ -77,7 +77,7 @@ function render(chain) {
   .kv .v { min-width:0; overflow-wrap:anywhere; }
   .k { color:var(--dim); min-width:72px; flex:none; font-size:13px; }
   .v { flex:1; }
-  .raw { background:#0d0d15; border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:14px; color:#d8d8e8; overflow-wrap:anywhere; }
+  .raw { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:10px 12px; font-size:14px; color:#d8d8e8; overflow-wrap:anywhere; }
   .compare { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .compare .col h3 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); margin:0 0 6px; }
   .compare .col .raw { font-size:13px; }
@@ -96,7 +96,7 @@ function render(chain) {
   .st { font-size:12px; }
   .body { padding:0 16px 14px 35px; }
   .body p { margin:0 0 10px; }
-  .decision { background:#0d0d15; border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-bottom:8px; font-size:13px; }
+  .decision { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:10px 12px; margin-bottom:8px; font-size:13px; }
   .decision.warn { color:#fbbf24; border-color:#4a3b12; }
   .d-row { margin:3px 0; }
   .q::before { content:""; }

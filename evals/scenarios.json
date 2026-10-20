@@ -2689,6 +2689,38 @@
   ]
  },
  {
+  "id": "stroke-draw-loop-reduced-motion",
+  "request": "Decorative stroke-drawing loops (dashoffset animation revealing a path) must keep the fully-drawn path as the reduced-motion static frame, hold the completed stroke for a visible pause before restarting, use ease-out for the drawing phase, and never reduce text contrast at any animation frame.",
+  "context": "Ambient single-stroke path art behind a dark landing page.",
+  "passCriteria": [
+   "prefers-reduced-motion shows the completed path, not a partially-drawn one",
+   "Draw phase uses ease-out; hold phase >=1s before restart",
+   "Text contrast unaffected at sampled frames",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Reduced-motion shows a half-drawn path",
+   "Immediate restart with no hold (jarring loop)",
+   "Linear draw motion (reads mechanical)"
+  ]
+ },
+ {
+  "id": "incumbent-skills-distribution-consensus",
+  "request": "When tracking skills-based distribution (npx skills add / plugin marketplaces), each new incumbent adopting the pattern must be recorded in the round's insight — the count and names constitute the consensus evidence used for distribution-form rulings; a count without names, or names without sources, is not evidence.",
+  "context": "Learning loop tracking how many major tools ship agent skills entry points.",
+  "passCriteria": [
+   "Each adopting incumbent named with its entry point",
+   "Count cited in capability rulings references the named list",
+   "Non-adopters or blocked attempts recorded too",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "'Many tools do this' claimed without naming them",
+   "Named list without accessible sources",
+   "Adopted list missing a known incumbent"
+  ]
+ },
+ {
   "id": "incumbent-multiagent-console",
   "request": "When an incumbent ships a multi-agent management console, a recheck must distinguish what it manages (execution progress) from what our layer provides (evidence and acceptance), and must state whether our differentiating layer (browser-measured verification) was encroached upon — reaffirming or revising the moat judgement with the interval noted.",
   "context": "Periodic recheck of an incumbent that just productized agent task management in a desktop app.",

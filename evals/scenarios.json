@@ -2735,5 +2735,37 @@
    "Recheck ignores the new console entirely",
    "Differentiation stated without naming the layer"
   ]
+ },
+ {
+  "id": "new-page-joins-wall-same-round",
+  "request": "Any new user-facing page added to the canvas must join the artifact wall in the same round it ships — with six-dimension measurements from the shared check run, a compare entry, and its viewUrl link — before the round's build is committed; a page shipped without wall registration is an undocumented deliverable.",
+  "context": "Canvas pipeline where render-site.mjs added a new public page alongside existing chain/index/mini pages.",
+  "passCriteria": [
+   "New page present in artifacts.json with sixDim from the shared check",
+   "viewUrl link works from the wall (same-directory relative)",
+   "Mission control fully-verified count includes the new page",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Page shipped and built but absent from the wall",
+   "sixDim copied from another page instead of measured",
+   "Wall count and rendered card count disagree"
+  ]
+ },
+ {
+  "id": "tutorial-ecosystem-maturity-check",
+  "request": "Before investing render time in a new output format, record an ecosystem maturity check: search results categorized by count and recency, the conclusion (standard workflow vs experimental), and what remains scarce (e.g. narrative guidance vs rendering tutorials) — scarcity is the investment signal.",
+  "context": "Video line deciding whether to produce a 30-second sample before user confirmation.",
+  "passCriteria": [
+   "Search categorized with counts and recency",
+   "Conclusion names the workflow as standard/experimental",
+   "Scarcity analysis names what is missing (e.g. narrative vs rendering)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Investment started without maturity evidence",
+   "Maturity check counts tutorials but ignores what they cover",
+   "Scarcity claim made with no search evidence"
+  ]
  }
 ]

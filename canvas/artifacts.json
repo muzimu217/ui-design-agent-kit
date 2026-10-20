@@ -95,6 +95,38 @@
    "changeSummary": "v1.0 首版：六阶段×门态×证据数快照（dark-dense-table-muted-text 语料的参考实现——密度来自行高与列节奏，muted 文本仍过 4.5:1）",
    "origin": "ai-draft+human-revision",
    "originNote": "生成器与版式由代理编写，数据为 state.json 快照（人工口径校对：证据数=留痕条数而非进度）"
+  },
+  {
+   "id": "product-site",
+   "round": "2026-10-19-20",
+   "title": "产品官网页（公开展示/使用指南/条款入口）",
+   "path": "canvas/render-site.mjs + canvas/{artifacts,capabilities,taste-profile}.json → output/site.html（离线自包含）",
+   "viewUrl": "site.html",
+   "sixDim": {
+    "desktop": "Chrome headless 1280 直拍通过（22.4 万字节非空白，含描边循环动画）",
+    "mobile": "520px Chrome headless 直拍通过（17.7 万字节，导航/网格响应式无裁切）",
+    "keyboard": "playwright Tab 序列实测：12 项 tab 停留全可达（focusable 12/12——锚点导航 7+CTA 2+描边层不占焦点）",
+    "contrast": "playwright computed-style WCAG 实测：32 项文本全过 4.5:1（低于标准 0 项）",
+    "reducedMotion": "描边循环动画在 prefers-reduced-motion 下停帧显示完整路径（dashoffset=0），静态检查通过",
+    "console": "playwright 实测 0 错误"
+   },
+   "compare": {
+    "target": "Framer 首屏（design agent 定位页）",
+    "evidence": "docs/competitive-insights/2026-10-19-framer-firstlook/insight.md",
+    "verdict": "同为 design agent 定位页：Framer 的 Agent/Style 双模式与'alongside you not instead of you'句式与本仓'监管而非生成'同源；本页差异=数字全部从工作台 JSON 实时计算（宣称不超证据）",
+    "score": {
+     "rubric": "六维各 1 分：1=有本轮实测/实看证据，0=实测缺失，null=公开渠道不可观测（不计分母）；对标侧检视级别见 level，不虚记不可测维度",
+     "us": { "desktop": 1, "mobile": 1, "keyboard": 1, "contrast": 1, "reducedMotion": 1, "console": 1 },
+     "them": { "desktop": 1, "mobile": null, "keyboard": null, "contrast": null, "reducedMotion": null, "console": null },
+     "level": "unverified-partial",
+     "themNote": "对标侧为公开首屏实看：仅桌面呈现可观测，其余维度无公开可验证证据，记 null 不虚记"
+    }
+   },
+   "status": "v2.0（描边循环动画+入墙）",
+   "version": 1,
+   "changeSummary": "v1.0 首版（展示/三步/六道门/能力/知识库/品味/条款，数字从工作台 JSON 计算）→ v2.0 单笔描边循环动画（reduced-motion 停帧）+ 入产物墙",
+   "origin": "ai-draft+human-revision",
+   "originNote": "页面由代理编写；定位句式借鉴 Framer'alongside not instead'（知识卡判读）与 10-19 用户方向裁定"
   }
  ]
 }

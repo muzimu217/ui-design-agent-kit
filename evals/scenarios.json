@@ -2975,5 +2975,37 @@
    "Hover shifts layout or reflows siblings",
    "Reduced-motion still animates"
   ]
+ },
+ {
+  "id": "series-content-one-scenario-per-card",
+  "request": "Knowledge cards distilled from series content must maintain one-scenario-per-card granularity (e.g. a transition card, a scroll card, a modal card — not one merged microinteraction card); merged cards reduce retrieval precision and hide which scenario a parameter applies to.",
+  "context": "Self-learning loop distilling a tutorial series that covers many microinteraction scenarios.",
+  "passCriteria": [
+   "Each card names its specific scenario (transition/scroll/modal/drag)",
+   "Scenario-specific parameters stay in their own card",
+   "Cross-card links use relations, not merged bodies",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "One microinteractions card absorbing all scenarios",
+   "Parameters from different scenarios mixed without scope",
+   "Retrieval by scenario impossible"
+  ]
+ },
+ {
+  "id": "easing-curve-as-first-principle",
+  "request": "Motion knowledge base must treat easing curves as a first-class entry (families: ease-out for feedback, spring for physics, linear for data flow) with concrete cubic-bezier values per family — curves are the first principle of motion, preceding duration and stagger decisions.",
+  "context": "Motion knowledge base with a motion-contract spring parameter system.",
+  "passCriteria": [
+   "Curve families enumerated with cubic-bezier values",
+   "Each family mapped to its use case (feedback/physics/data)",
+   "Cross-referenced with the motion contract presets",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Curves treated as an afterthought to duration",
+   "No concrete values per family",
+   "Family-to-usecase mapping absent"
+  ]
  }
 ]

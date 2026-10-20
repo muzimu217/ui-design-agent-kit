@@ -2895,5 +2895,37 @@
    "Alias invented without the card's provenance",
    "Aliases collide across unrelated cards"
   ]
+ },
+ {
+  "id": "blocked-source-structural-reroute",
+  "request": "When a research source is structurally unreachable (all card links point to a login-walled platform, not a one-off 404), the round must record the blockage as a structural reroute — naming the alternative path and updating the standing plan — rather than treating it as a transient miss.",
+  "context": "A gallery whose motion works all link to X posts while the research session cannot access X.",
+  "passCriteria": [
+   "Blockage classified as structural (all links) vs transient (single 404)",
+   "Alternative research path named and adopted in the standing plan",
+   "Prior预告 explicitly marked deferred rather than silently dropped",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Structural blockage treated as a one-off miss",
+   "Alternative path adopted without recording the switch",
+   "预告 silently dropped"
+  ]
+ },
+ {
+  "id": "checklist-wordlist-not-gate",
+  "request": "User-facing review checklists derived from knowledge cards must be phrased as questions to ask (wordlist), never as pass/fail gates; the checklist teaches users what to ask the AI, and must cite the knowledge card that carries the parameterized definitions.",
+  "context": "A getting-started guide translating the seven design principles into a two-minute self-check for non-experts.",
+  "passCriteria": [
+   "Checklist phrased as questions with what-to-look-for",
+   "Explicitly scoped: a page needs only a few principles at once",
+   "Cites the knowledge card carrying parameterized definitions",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Checklist demands all seven principles per page",
+   "Questions written as pass/fail assertions",
+   "No link to the parameterized source"
+  ]
  }
 ]

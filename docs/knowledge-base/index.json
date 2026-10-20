@@ -209,6 +209,34 @@
       },
       "codableParams": 7,
       "learnedAt": "2026-10-19"
+    },
+    {
+      "id": "icon-motion-500ms",
+      "title": "图标微动效 0.5 秒量级：入场/变化/收尾的三段近似",
+      "domain": "icon",
+      "layer": "motion",
+      "measurable": true,
+      "status": "active",
+      "confidence": "sourced",
+      "version": 1,
+      "relations": [
+        {
+          "type": "related",
+          "target": "motion-force-anticipation"
+        },
+        {
+          "type": "related",
+          "target": "icon-single-stroke-constraint"
+        }
+      ],
+      "source": {
+        "kind": "video",
+        "heat": 4768000,
+        "author": "太阳鸽鸽棒",
+        "ref": "https://www.bilibili.com/video/BV1Ub41167NE/"
+      },
+      "codableParams": 4,
+      "learnedAt": "2026-10-20"
     }
   ]
 }

@@ -2927,5 +2927,37 @@
    "Questions written as pass/fail assertions",
    "No link to the parameterized source"
   ]
+ },
+ {
+  "id": "icon-micro-motion-duration",
+  "request": "Icon micro-animations must stay within the 0.4-0.6s window (three-part: enter ~0.2s, change ~0.2s, settle ~0.1s); durations above 0.8s turn a control into a performance, and the reduced-motion frame must be the completed state.",
+  "context": "Dark UI with status/achievement icons that animate on state change.",
+  "passCriteria": [
+   "Animation duration within 0.4-0.6s per icon",
+   "Three-part structure (enter/change/settle) present",
+   "Reduced-motion shows the completed state frame",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Icon animation exceeding 0.8s",
+   "Looping icon animation without a completed-state rest point",
+   "Multiple icons animating simultaneously beyond 3"
+  ]
+ },
+ {
+  "id": "game-icon-motion-as-asset",
+  "request": "When a game franchise officially adopts animated icons (官宣), that is recorded as market evidence that animated icons are formal design assets — relevant to capability planning (pixel/3D asset slots) and to icon-motion knowledge cards as domain validation, independent of the game IP itself.",
+  "context": "Bilibili content ecosystem where game studios' animated icon systems draw millions of views.",
+  "passCriteria": [
+   "Official adoption signal recorded (announcement video views cited)",
+   "IP assets referenced for mechanism only, never reproduced",
+   "Connection to capability slots stated (asset pipeline relevance)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Game IP artwork reproduced in project materials",
+   "Adoption signal ignored because the domain differs",
+   "Mechanism extracted without noting the IP boundary"
+  ]
  }
 ]

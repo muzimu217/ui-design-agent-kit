@@ -2831,5 +2831,37 @@
    "Treating an invalid-ID page as the real source",
    "Silently dropping the target video after a bad guess"
   ]
+ },
+ {
+  "id": "row-entrance-three-part-motion",
+  "request": "Row entrance animation must follow the three-part force pattern — brief reverse anticipation, ease-out acceleration (cubic-bezier with steep start), and staggered follow-through delay per row (~33ms increments) — run exactly once on first paint, and collapse to fully-visible static rows under prefers-reduced-motion.",
+  "context": "A data table whose rows animate in on load (dark dense dashboard).",
+  "passCriteria": [
+   "Per-row stagger delay ~33ms increments",
+   "Easing curve is ease-out family (steep start), never linear",
+   "prefers-reduced-motion shows all rows immediately",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Rows animate linearly or loop",
+   "Reduced-motion shows partial or delayed rows",
+   "Animation blocks interaction before completing"
+  ]
+ },
+ {
+  "id": "gate-state-colour-semantics",
+  "request": "Gate/stage state text must use consistent colour semantics — passed=green family, active=cyan family, gated/pending=amber family — applied via classes (not inline per-cell) and still readable when colour is removed; states must never share a colour.",
+  "context": "A stage board where gate states (passed/active/pending) are rendered as text badges.",
+  "passCriteria": [
+   "Each state family has a dedicated class",
+   "Colours distinguish states without relying on colour alone (text label present)",
+   "Amber reserved for pending, green for passed, cyan for active consistently",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Two different states share one colour class",
+   "State shown by colour only",
+   "Inline colour per cell bypassing the class system"
+  ]
  }
 ]

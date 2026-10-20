@@ -22,9 +22,24 @@
   td.muted { color:var(--dim); font-size:12px; }
   td.stage-cell { font-weight:600; white-space:nowrap; }
   td.gate-cell { font-size:12px; white-space:nowrap; }
+  /* motion-force 三段式（知识卡 motion-force-anticipation）：
+     预备（反向淡入 60ms）→ 加速（cubic-bezier(0.2,0,0,1) 即快出慢入）→ 行间跟随延迟（每行递增 33ms）。
+     仅首屏入场一次，不循环；降动效时全部行直接显示。 */
+  tbody tr { opacity:0; transform:translateY(6px); animation:rowIn .34s cubic-bezier(.2,0,0,1) forwards; }
+  tbody tr:nth-child(1) { animation-delay:.05s; }
+  tbody tr:nth-child(2) { animation-delay:.083s; }
+  tbody tr:nth-child(3) { animation-delay:.116s; }
+  tbody tr:nth-child(4) { animation-delay:.149s; }
+  tbody tr:nth-child(5) { animation-delay:.182s; }
+  tbody tr:nth-child(6) { animation-delay:.215s; }
+  @keyframes rowIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .gate-cell .g-pass { color:#34d399; }
+  .gate-cell .g-active { color:#22d3ee; }
+  .gate-cell .g-wait { color:#fbbf24; }
   .footnote { color:var(--dim); font-size:12px; margin-top:12px; }
   .footnote code { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:11px; color:#8ab4ff; }
   footer { margin-top:20px; color:var(--dim); font-size:12px; text-align:center; }
+  @media (prefers-reduced-motion: reduce) { tbody tr { opacity:1; transform:none; animation:none; } }
   @media (max-width: 560px) { th, td { padding:6px 6px; } td.muted { display:none; } th:nth-child(5) { display:none; } }
 </style>
 </head>
@@ -39,42 +54,42 @@
       <tbody>
 <tr>
       <td class="stage-cell">brief</td>
-      <td class="gate-cell">A · gated</td>
+      <td class="gate-cell"><span class="g-wait">A · gated</span></td>
       <td>方向稿已呈交</td>
       <td class="num">1</td>
       <td class="muted">等用户裁决</td>
     </tr>
 <tr>
       <td class="stage-cell">reference</td>
-      <td class="gate-cell">B · passed</td>
+      <td class="gate-cell"><span class="g-pass">B · passed</span></td>
       <td>对标集完成</td>
       <td class="num">3</td>
       <td class="muted">Onlook/bolt/v0 家族</td>
     </tr>
 <tr>
       <td class="stage-cell">contract</td>
-      <td class="gate-cell">C · pending</td>
+      <td class="gate-cell"><span class="g-wait">C · pending</span></td>
       <td>待门 A 后定 token</td>
       <td class="num">0</td>
       <td class="muted">语义色与弹簧参数</td>
     </tr>
 <tr>
       <td class="stage-cell">build</td>
-      <td class="gate-cell">— · active</td>
+      <td class="gate-cell"><span class="g-active">— · active</span></td>
       <td>增量 1-27 在线</td>
       <td class="num">27</td>
       <td class="muted">三页+墙+守卫</td>
     </tr>
 <tr>
       <td class="stage-cell">verify</td>
-      <td class="gate-cell">E · pending</td>
+      <td class="gate-cell"><span class="g-wait">E · pending</span></td>
       <td>每增量实测</td>
       <td class="num">27</td>
       <td class="muted">对比度/键盘/console</td>
     </tr>
 <tr>
       <td class="stage-cell">deliver</td>
-      <td class="gate-cell">F · pending</td>
+      <td class="gate-cell"><span class="g-wait">F · pending</span></td>
       <td>产物入墙</td>
       <td class="num">3</td>
       <td class="muted">含本 mini 产物</td>

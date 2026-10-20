@@ -22,11 +22,13 @@ const rows = [
   { stage: "deliver", gate: "F · pending", states: "产物入墙", evidence: 3, note: "含本 mini 产物" },
 ];
 
+const gateClass = (g) => (g.includes("passed") ? "g-pass" : g.includes("active") ? "g-active" : "g-wait");
+
 const body = rows
   .map(
     (r) => `<tr>
       <td class="stage-cell">${r.stage}</td>
-      <td class="gate-cell">${r.gate}</td>
+      <td class="gate-cell"><span class="${gateClass(r.gate)}">${r.gate}</span></td>
       <td>${r.states}</td>
       <td class="num">${r.evidence}</td>
       <td class="muted">${r.note}</td>
@@ -58,9 +60,24 @@ const html = `<!doctype html>
   td.muted { color:var(--dim); font-size:12px; }
   td.stage-cell { font-weight:600; white-space:nowrap; }
   td.gate-cell { font-size:12px; white-space:nowrap; }
+  /* motion-force 三段式（知识卡 motion-force-anticipation）：
+     预备（反向淡入 60ms）→ 加速（cubic-bezier(0.2,0,0,1) 即快出慢入）→ 行间跟随延迟（每行递增 33ms）。
+     仅首屏入场一次，不循环；降动效时全部行直接显示。 */
+  tbody tr { opacity:0; transform:translateY(6px); animation:rowIn .34s cubic-bezier(.2,0,0,1) forwards; }
+  tbody tr:nth-child(1) { animation-delay:.05s; }
+  tbody tr:nth-child(2) { animation-delay:.083s; }
+  tbody tr:nth-child(3) { animation-delay:.116s; }
+  tbody tr:nth-child(4) { animation-delay:.149s; }
+  tbody tr:nth-child(5) { animation-delay:.182s; }
+  tbody tr:nth-child(6) { animation-delay:.215s; }
+  @keyframes rowIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .gate-cell .g-pass { color:#34d399; }
+  .gate-cell .g-active { color:#22d3ee; }
+  .gate-cell .g-wait { color:#fbbf24; }
   .footnote { color:var(--dim); font-size:12px; margin-top:12px; }
   .footnote code { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:11px; color:#8ab4ff; }
   footer { margin-top:20px; color:var(--dim); font-size:12px; text-align:center; }
+  @media (prefers-reduced-motion: reduce) { tbody tr { opacity:1; transform:none; animation:none; } }
   @media (max-width: 560px) { th, td { padding:6px 6px; } td.muted { display:none; } th:nth-child(5) { display:none; } }
 </style>
 </head>

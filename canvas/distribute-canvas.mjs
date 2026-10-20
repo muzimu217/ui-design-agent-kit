@@ -13,9 +13,13 @@ const SRC = path.join(ROOT, "output");
 const DST = path.join(ROOT, "showcase", "products", "public", "canvas");
 
 const pages = ["canvas-workbench.html", "chain-canvas-workbench.html", "canvas-index.html", "mini-dashboard.html", "site.html"];
+const media = ["stroke-loop.webm", "stroke-loop.gif"];
 await mkdir(DST, { recursive: true });
 for (const f of pages) {
   await copyFile(path.join(SRC, f), path.join(DST, f));
+}
+for (const f of media) {
+  await copyFile(path.join(SRC, f), path.join(DST, f)).catch(() => {});
 }
 const listed = await readdir(DST);
 console.log(`canvas distributed to showcase: ${DST} (${listed.length} files)`);

@@ -76,6 +76,9 @@ const html = `<!doctype html>
   .gate-cell .g-wait { color:#fbbf24; }
   .footnote { color:var(--dim); font-size:12px; margin-top:12px; }
   .footnote code { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:11px; color:#8ab4ff; }
+  .loop-preview { margin-top:12px; border:1px solid var(--line); border-radius:8px; overflow:hidden; max-width:420px; }
+  .loop-preview video, .loop-preview img { display:block; width:100%; height:auto; }
+  .loop-cap { color:var(--dim); font-size:11px; padding:6px 10px; border-top:1px solid var(--line); }
   footer { margin-top:20px; color:var(--dim); font-size:12px; text-align:center; }
   @media (prefers-reduced-motion: reduce) { tbody tr { opacity:1; transform:none; animation:none; } }
   @media (max-width: 560px) { th, td { padding:6px 6px; } td.muted { display:none; } th:nth-child(5) { display:none; } }
@@ -95,6 +98,10 @@ ${body}
     </table>
   </div>
   <p class="footnote">口径：证据数=该阶段在本仓台账（iteration-log/gates/artifacts）可指认的留痕条数，非进度百分比；门态=canvas-workbench.state.json 快照，权威源以 <code>npm run canvas:build</code> 重建为准。</p>
+  <div class="loop-preview">
+    <video src="stroke-loop.webm" autoplay muted loop playsinline aria-label="官网描边循环动画预览（静音自动循环）"></video>
+    <div class="loop-cap">微循环预览：官网描边动画（4.2s 循环，静音；知识卡 icon-single-stroke + motion-force 落地）</div>
+  </div>
   <footer>mini-dashboard · 由 canvas/render-mini-dashboard.mjs 生成 · npm run canvas:build 重建全部</footer>
 </main>
 </body>

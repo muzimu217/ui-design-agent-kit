@@ -2863,5 +2863,37 @@
    "State shown by colour only",
    "Inline colour per cell bypassing the class system"
   ]
+ },
+ {
+  "id": "referenced-media-in-manifest",
+  "request": "When a bundled page references a media file (video/image), the exporter must ship that file into the bundle AND list it in the manifest accounting — a referenced-but-unshipped or shipped-but-unlisted file must fail reconciliation with the filename named.",
+  "context": "Offline bundle whose mini page references stroke-loop.webm for its loop preview.",
+  "passCriteria": [
+   "Referenced media shipped into the bundle and listed in manifest",
+   "Reconciliation catches unlisted files with named output",
+   "Missing media file fails the export before shipping",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Page references media absent from the bundle",
+   "Media shipped but invisible to manifest accounting",
+   "Reconciliation passes while bundle contents and manifest disagree"
+  ]
+ },
+ {
+  "id": "vox-style-alias-field",
+  "request": "Knowledge cards may carry an optional scene-named alias (e.g. 'Vox style' alongside 'editorial motion principles') to improve retrieval and transmission; the alias is a handle, never a replacement for the mechanism title, and carries the same provenance as the card.",
+  "context": "A self-learning knowledge base whose cards are retrieved by both agents and humans.",
+  "passCriteria": [
+   "Alias field optional and back-compatible",
+   "Alias never overrides the mechanism title in formal contexts",
+   "Alias carries the same provenance/inspection level as the card",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Alias replaces the mechanism title in citations",
+   "Alias invented without the card's provenance",
+   "Aliases collide across unrelated cards"
+  ]
  }
 ]

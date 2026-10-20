@@ -14,6 +14,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "output", "canvas-export");
 const PAGES = ["canvas-workbench.html", "chain-canvas-workbench.html", "canvas-index.html", "mini-dashboard.html", "site.html"];
+const MEDIA = ["stroke-loop.webm", "stroke-loop.gif"];
 
 function git(args) {
   try {
@@ -47,6 +48,12 @@ if (!verifyOnly) for (const page of PAGES) {
   await copyFile(src, dst);
   const { size } = await stat(dst);
   manifest.pages.push({ file: page, bytes: size });
+}
+if (!verifyOnly) for (const f of MEDIA) {
+  // 微循环媒体：mini-dashboard 的 loop-preview 引用 stroke-loop.webm，缺它预览裂图；
+  // 必打包（页面引用了它），列入 manifest.docs 逐文件记账
+  const msrc = path.join(ROOT, "output", f);
+  await copyFile(msrc, path.join(OUT, f));
 }
 
 const readme = `# 画布工作台 · 离线导出包
@@ -126,6 +133,10 @@ if (!verifyOnly) {
   for (const doc of ["README.md", "COMPARE.md"]) {
     const { size } = await stat(path.join(OUT, doc));
     manifest.docs.push({ file: doc, bytes: size });
+  }
+  for (const f of MEDIA) {
+    const mpath = path.join(OUT, f);
+    try { const { size } = await stat(mpath); manifest.docs.push({ file: f, bytes: size }); } catch { /* 源缺失已在对账报错 */ }
   }
   manifest.selfExcluded = "manifest.json 不自列字节（写自身即改变自身）；对账时作为必在第 (pages+docs+1) 文件只查存在性";
   await writeFile(path.join(OUT, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n");

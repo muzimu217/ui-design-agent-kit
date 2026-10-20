@@ -90,9 +90,10 @@
      "themNote": "对标侧为公开营销页实看：仅桌面呈现可观测，其余维度无公开可验证证据，记 null 不虚记"
     }
    },
-   "status": "v1.0（六维全实测+入墙）",
-   "version": 1,
-   "changeSummary": "v1.0 首版：六阶段×门态×证据数快照（dark-dense-table-muted-text 语料的参考实现——密度来自行高与列节奏，muted 文本仍过 4.5:1）",
+   "status": "v1.1（动效化+微循环预览）",
+   "version": 2,
+   "changeSummary": "v1.0 首版：六阶段×门态×证据数快照（dark-dense-table-muted-text 语料的参考实现——密度来自行高与列节奏，muted 文本仍过 4.5:1）→ v1.1 motion-force 三段式入场（stagger 33ms/cubic-bezier(.2,0,0,1)/首屏一次，降动效全行立现）+ 门态上色语义化 + 微循环预览（stroke-loop.webm/gif 本地相对引用）",
+   "previewLoop": "stroke-loop.webm",
    "origin": "ai-draft+human-revision",
    "originNote": "生成器与版式由代理编写，数据为 state.json 快照（人工口径校对：证据数=留痕条数而非进度）"
   },

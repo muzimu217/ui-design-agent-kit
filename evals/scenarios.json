@@ -2799,5 +2799,37 @@
    "Frames collide on shared profile lock",
    "Hold phase missing from the capture"
   ]
+ },
+ {
+  "id": "tutorial-path-informs-investment-order",
+  "request": "When a tutorial ecosystem reveals a progression path (single element → animated chart → long-form → cinematic), the project's own video investment must follow the same order — start with the smallest deliverable that stands alone, and defer cinematic production until the smaller pieces exist and are confirmed.",
+  "context": "Video line planning informed by how tutorials structure their teaching (small to large, static to animated).",
+  "passCriteria": [
+   "Investment order follows the smallest-standalone-first principle",
+   "Cinematic/long-form deferred until smaller pieces confirmed",
+   "Order decision cites the tutorial progression evidence",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Starting with the most complex render before basics exist",
+   "Order decision made without ecosystem evidence",
+   "Basic pieces skipped because the end goal looks achievable"
+  ]
+ },
+ {
+  "id": "guess-video-id-never-construct",
+  "request": "Video research must navigate from real search results or linked pages — constructing a video ID from memory and visiting it is a failed navigation pattern; the fallback is always re-search with refined keywords, and the miss is recorded.",
+  "context": "Deep-diving a previously seen tutorial whose URL was not captured.",
+  "passCriteria": [
+   "Constructed IDs are never visited",
+   "Fallback re-search finds the real entry",
+   "Navigation miss recorded honestly if unresolved",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Visiting guessed/remembered video URLs",
+   "Treating an invalid-ID page as the real source",
+   "Silently dropping the target video after a bad guess"
+  ]
  }
 ]

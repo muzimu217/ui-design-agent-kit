@@ -2767,5 +2767,37 @@
    "Maturity check counts tutorials but ignores what they cover",
    "Scarcity claim made with no search evidence"
   ]
+ },
+ {
+  "id": "loop-export-frame-progress",
+  "request": "A micro-loop export (animated GIF/WebM assembled from screenshots of a CSS animation) must prove frames actually progressed — distinct byte sizes across frames above a threshold — and must state the loop format, size, and frame rate; a loop assembled from identical frames is a failed export even if the file is valid.",
+  "context": "Exporting an ambient CSS animation (e.g. stroke-draw) into a gallery-loop asset via headless screenshots plus ffmpeg.",
+  "passCriteria": [
+   "Distinct frame count above threshold proves animation progression",
+   "Loop file size and frame rate documented (gallery embed cost)",
+   "First frame works as a standalone thumbnail",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "All frames byte-identical (animation did not advance)",
+   "Loop file size unbounded (no embed-cost consideration)",
+   "Export claims success with a single duplicated frame"
+  ]
+ },
+ {
+  "id": "virtual-time-animation-sampling",
+  "request": "Sampling CSS animation phases in headless Chrome must use virtual time budget increments mapped to the animation timeline (budget = base + phase offset), with per-shot isolated profiles; wall-clock based recording is not required for deterministic CSS animations.",
+  "context": "Capturing deterministic CSS keyframe animations frame-by-frame without a real-time recorder.",
+  "passCriteria": [
+   "Phase offsets mapped linearly to animation duration",
+   "Per-shot isolated user-data-dir avoids profile lock",
+   "Frame count covers full cycle including hold phase",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Sampling relies on sleep/timing luck",
+   "Frames collide on shared profile lock",
+   "Hold phase missing from the capture"
+  ]
  }
 ]

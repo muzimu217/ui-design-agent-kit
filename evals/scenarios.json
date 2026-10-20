@@ -2959,5 +2959,21 @@
    "Adoption signal ignored because the domain differs",
    "Mechanism extracted without noting the IP boundary"
   ]
+ },
+ {
+  "id": "icon-badge-hover-500ms",
+  "request": "Wall-entry badge hover must complete its lift-and-highlight within the 0.5s micro-motion window (transform + glow + border approximated by transition timing), be fully disabled under prefers-reduced-motion, and never alter the badge's readable text or its layout position.",
+  "context": "Artifact wall summary badges (score/origin/version) gaining hover affordance.",
+  "passCriteria": [
+   "Hover transition completes within 0.5s total",
+   "prefers-reduced-motion disables transform and shadow entirely",
+   "Badge text, count, and layout position unchanged during hover",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Hover animation exceeds 0.8s",
+   "Hover shifts layout or reflows siblings",
+   "Reduced-motion still animates"
+  ]
  }
 ]

@@ -302,7 +302,11 @@ async function main() {
   .snote { color:var(--dim); font-size:12px; }
   h2.sec { font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--dim); margin:22px 0 10px; }
   details.art { background:var(--panel); border:1px solid var(--line); border-radius:10px; margin-bottom:10px; }
+  // 图标/条目微动效 0.5s 三段式（知识卡 icon-motion-500ms）：badge hover 时 0.5s 内完成抬起-高亮-回稳，降动效直接高亮无位移。
+  details.art summary .badge { transition:transform .2s cubic-bezier(.2,0,0,1), box-shadow .2s cubic-bezier(.2,0,0,1), border-color .1s ease; }
+  details.art:hover summary .badge, details.art[open] summary .badge { transform:translateY(-1px); box-shadow:0 1px 4px rgba(167,139,250,.35); border-color:var(--accent); }
   details.art summary { cursor:pointer; display:flex; gap:10px; align-items:baseline; padding:12px 16px; list-style:none; }
+  @media (prefers-reduced-motion: reduce) { details.art summary .badge { transform:none !important; box-shadow:none !important; transition:none !important; } }
   details.art summary::-webkit-details-marker { display:none; }
   .t { font-weight:600; flex:1; }
   .round { color:var(--dim); font-size:12px; }

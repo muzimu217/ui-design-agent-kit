@@ -230,6 +230,14 @@ for (const page of dataOnly ? [] : pages) {
       radii.add(r);
     });
     if (radii.size > 4) hints.push(`页面使用 ${radii.size} 档圆角（Unity：圆角 ≤4 档，圆/胶囊不计）`);
+    // 曲线族谱映射（知识卡 motion-curve-soul）：反馈场景元素（button/a）的
+    // transition-timing-function 用 linear 时提示——反馈需要 ease-out 族的加速度。
+    let linearFeedback = 0;
+    document.querySelectorAll("button, a, summary").forEach((el) => {
+      const tf = getComputedStyle(el).transitionTimingFunction;
+      if (/linear/.test(tf)) linearFeedback += 1;
+    });
+    if (linearFeedback > 0) hints.push(`${linearFeedback} 个反馈元素（button/a/summary）transition 用 linear（曲线族谱：反馈场景禁 linear，建议 ease-out 族）`);
     return { count: hints.length, hints: hints.slice(0, 8) };
   });
   pageResult.styleHints = styleHints;

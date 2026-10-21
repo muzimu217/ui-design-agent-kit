@@ -3039,5 +3039,37 @@
    "Sweep findings recorded as a raw list",
    "Gap finding made without categorizing the results"
   ]
+ },
+ {
+  "id": "linear-feedback-curve-hint",
+  "request": "Feedback elements (button/a/summary) whose transition-timing-function is linear must be surfaced as non-blocking hints citing the curve family mapping (feedback requires ease-out acceleration); the hint must not gate acceptance since curve choice is a taste constraint.",
+  "context": "Acceptance script layering curve-family hints above blocking correctness checks.",
+  "passCriteria": [
+   "Linear-timing feedback elements produce a named hint",
+   "Hint cites the curve family mapping rationale",
+   "Hint does not affect receipt ok or exit code",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Linear hint gates acceptance",
+   "Hint counts elements without naming the violation",
+   "Correctness checks silently became non-blocking"
+  ]
+ },
+ {
+  "id": "math-explanation-writing-paradigm",
+  "request": "Knowledge card mechanism fields should prefer mathematical/function explanations (position as a function of time, slope changes) over subjective adjectives (feels smooth/looks natural); math-expressible mechanisms are directly codable and verifiable, adjective-only mechanisms are not.",
+  "context": "Knowledge base writing standard for mechanism fields distilled from video content.",
+  "passCriteria": [
+   "Mechanism expressed as function/relationship, not adjectives",
+   "Codable params derive from the math expression",
+   "Subjective phrasing (smooth/natural/beautiful) absent from mechanism field",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Mechanism field contains only aesthetic judgments",
+   "Math description present but params not derived from it",
+   "Card marked active without codable mechanism"
+  ]
  }
 ]

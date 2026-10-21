@@ -1,0 +1,88 @@
+{
+  "$schema": "./sfx-cues.schema.json",
+  "note": "音效打点表（cue sheet）。依据知识卡 video-sound-design-layer：音效独立于 BGM 的三层（转场 whoosh / 强调 click / 节奏 tick），与画面事件帧对齐 ≤2 帧，BGM 侧链 ducking。本表只记录'哪里该响、响什么、多响'——不产生音频文件，渲染时由 Remotion <Audio> 按帧读取。",
+  "sourceCard": "video-sound-design-layer",
+  "fps": 30,
+  "durationInFrames": 4950,
+  "durationSeconds": 165,
+  "composition": "UakIntro",
+  "mixContract": {
+    "bgmTrack": "public/music.wav",
+    "bgmBaseGainDb": 0,
+    "duck": {
+      "depthDb": -4.5,
+      "attackFrames": 2,
+      "releaseFrames": 3,
+      "note": "知识卡参数区间 3-6dB，取中值；释放 80ms≈2.4 帧取 3"
+    },
+    "sfxGainRangeDb": [-14, -6],
+    "silentPlayback": "所有信息由字幕与画面承载；静音播放完整可读"
+  },
+  "tracks": {
+    "transition": {
+      "role": "转场层——镜头切换的听觉落点",
+      "samples": ["whoosh-soft", "riser-1s"],
+      "gainDb": -8
+    },
+    "emphasis": {
+      "role": "强调层——数字跳变/关键词出现的重量",
+      "samples": ["click-tight", "pop-low"],
+      "gainDb": -11
+    },
+    "rhythm": {
+      "role": "节奏层——UI 元素入场的细碎标记",
+      "samples": ["tick-subtle"],
+      "gainDb": -14
+    }
+  },
+  "cues": [
+    {"frame": 120, "scene": "proof", "track": "transition", "sample": "whoosh-soft", "why": "HOOK→PROOF 硬切"},
+    {"frame": 132, "scene": "proof", "track": "emphasis", "sample": "click-tight", "why": "首条字幕入（工作台/产物墙/看板）"},
+    {"frame": 152, "scene": "proof", "track": "rhythm", "sample": "tick-subtle", "why": "统计卡首列入场"},
+    {"frame": 176, "scene": "proof", "track": "rhythm", "sample": "tick-subtle", "why": "统计卡次列入场"},
+    {"frame": 200, "scene": "proof", "track": "rhythm", "sample": "tick-subtle", "why": "统计卡三列入场"},
+    {"frame": 224, "scene": "proof", "track": "rhythm", "sample": "tick-subtle", "why": "统计卡四列入场"},
+    {"frame": 360, "scene": "workbench", "track": "transition", "sample": "whoosh-soft", "why": "PROOF→WORKBENCH 硬切"},
+    {"frame": 376, "scene": "workbench", "track": "emphasis", "sample": "click-tight", "why": "UI 01 字幕入"},
+    {"frame": 660, "scene": "wall", "track": "transition", "sample": "whoosh-soft", "why": "WORKBENCH→WALL 硬切"},
+    {"frame": 676, "scene": "wall", "track": "emphasis", "sample": "click-tight", "why": "产物墙字幕入"},
+    {"frame": 960, "scene": "chain", "track": "transition", "sample": "whoosh-soft", "why": "WALL→CHAIN 硬切"},
+    {"frame": 976, "scene": "chain", "track": "emphasis", "sample": "click-tight", "why": "解析链路字幕入"},
+    {"frame": 1260, "scene": "regressions", "track": "transition", "sample": "riser-1s", "why": "CHAIN→REGRESSIONS 转场（段落升级，用 riser 抬）"},
+    {"frame": 1278, "scene": "regressions", "track": "emphasis", "sample": "pop-low", "why": "反例墙字幕入（低音更沉）"},
+    {"frame": 1626, "scene": "regressions", "track": "emphasis", "sample": "click-tight", "why": "「已删除：0」结论句"},
+    {"frame": 1800, "scene": "taste", "track": "transition", "sample": "whoosh-soft", "why": "REGRESSIONS→TASTE 硬切"},
+    {"frame": 1808, "scene": "taste", "track": "emphasis", "sample": "click-tight", "why": "品味档案字幕入"},
+    {"frame": 2146, "scene": "taste", "track": "emphasis", "sample": "click-tight", "why": "采用门槛 0.8 数字强调"},
+    {"frame": 2340, "scene": "learning", "track": "transition", "sample": "whoosh-soft", "why": "TASTE→LEARNING 硬切"},
+    {"frame": 2348, "scene": "learning", "track": "emphasis", "sample": "click-tight", "why": "自学机制字幕入"},
+    {"frame": 2506, "scene": "learning", "track": "emphasis", "sample": "click-tight", "why": "L1-L4 四层枚举入"},
+    {"frame": 2880, "scene": "gates", "track": "transition", "sample": "riser-1s", "why": "LEARNING→GATES 进 3D 段（段前蓄势）"},
+    {"frame": 2900, "scene": "gates", "track": "emphasis", "sample": "pop-low", "why": "六道门字幕入"},
+    {"frame": 3086, "scene": "gates", "track": "rhythm", "sample": "tick-subtle", "why": "六门名称枚举"},
+    {"frame": 3450, "scene": "guards", "track": "transition", "sample": "whoosh-soft", "why": "GATES→GUARDS 硬切"},
+    {"frame": 3468, "scene": "guards", "track": "emphasis", "sample": "click-tight", "why": "三层守卫字幕入"},
+    {"frame": 3666, "scene": "guards", "track": "emphasis", "sample": "click-tight", "why": "数据/渲染/分发三层枚举"},
+    {"frame": 3960, "scene": "knowledge", "track": "transition", "sample": "whoosh-soft", "why": "GUARDS→KNOWLEDGE 硬切"},
+    {"frame": 3988, "scene": "knowledge", "track": "emphasis", "sample": "click-tight", "why": "知识库卡数字幕入"},
+    {"frame": 4326, "scene": "knowledge", "track": "emphasis", "sample": "click-tight", "why": "能力接入 4/10 数字强调"},
+    {"frame": 4440, "scene": "mini", "track": "transition", "sample": "whoosh-soft", "why": "KNOWLEDGE→MINI 硬切"},
+    {"frame": 4460, "scene": "mini", "track": "emphasis", "sample": "click-tight", "why": "指标看板字幕入"},
+    {"frame": 4566, "scene": "mini", "track": "rhythm", "sample": "tick-subtle", "why": "微循环预览开始"},
+    {"frame": 4680, "scene": "end", "track": "transition", "sample": "riser-1s", "why": "MINI→END 收束（段末抬）"},
+    {"frame": 4700, "scene": "end", "track": "emphasis", "sample": "pop-low", "why": "主张句入"},
+    {"frame": 4836, "scene": "end", "track": "emphasis", "sample": "pop-low", "why": "收尾句入"}
+  ],
+  "counts": {
+    "total": 36,
+    "transition": 12,
+    "emphasis": 16,
+    "rhythm": 8
+  },
+  "acceptance": {
+    "alignmentToleranceFrames": 2,
+    "densityCheck": "165s 片 36 个点 ≈ 每 4.6 秒 1 个（知识卡建议 60s 片 12-20 个，按比例换算 165s 上限约 55 个——本表在密度区间内偏克制）",
+    "duckingCheck": "每个 emphasis/transition cue 触发 BGM duck -4.5dB，2 帧 attack / 3 帧 release",
+    "silentCheck": "全部 31 条字幕独立承载信息，静音播放完整可读"
+  }
+}

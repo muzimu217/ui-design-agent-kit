@@ -154,6 +154,39 @@ Use `TransitionSeries.Sequence` for scenes and put a single
   package named `remotion-mcp`. Do not use the deprecated Remotion MCP; use
   the installed official `remotion-docs` skill for current package guidance.
 
+## Sound design and delivery form
+
+Sound is a layer of its own, not a garnish on the music bed. Author it on a
+separate track so it can be re-timed, ducked, and re-mixed independently of the
+score. See knowledge card `video-sound-design-layer` for the full parameter set
+and `video-sixty-second-delivery-form` for the duration matrix.
+
+- Three layers, three jobs: **transition** (a whoosh or riser marking the cut),
+  **emphasis** (a click or pop on a number change or key word), **rhythm** (a
+  subtle tick as UI elements enter). Do not let one layer do another's job.
+- Align every cue to its picture event within **2 frames**. A sound that lands
+  late reads as an editing mistake, not as style.
+- Keep the BGM under the effects: duck 3–6 dB on every cue with a short attack
+  and release. Never bake effects into the music file — that makes re-cutting
+  impossible.
+- Budget the density by length: roughly one cue per 4–5 seconds for a 2–3 minute
+  cut, 12–20 cues for a 60-second cut. More than one per three seconds reads as
+  cheap.
+- Effects must never carry information. Every claim stays readable with sound
+  off; audio is enhancement, not a channel.
+- Write the cues down as data before writing audio code — a cue sheet with
+  `frame`, `track`, `sample`, and `why` per row. The why is mandatory: a cue
+  nobody can justify is noise. Validate the sheet against the composition's
+  scene contract so drift is caught mechanically (`scripts/sfx-check.mjs` in the
+  kit is the reference implementation).
+
+Deliver a duration matrix rather than one cut: a hero (90–165s), a standard
+60s ±5s, and a 30s ±5s social cut. All lengths share one narrative skeleton —
+hook, re-hooks, evidence — and differ only in how many information points they
+carry. A short cut is re-edited (reordered, re-trimmed to its own beats), never
+mechanically cropped from the hero. Give every length its own silent-readable
+first frame.
+
 ## Studio, render, and evidence
 
 Open Studio after a meaningful composition change and inspect the first frame,

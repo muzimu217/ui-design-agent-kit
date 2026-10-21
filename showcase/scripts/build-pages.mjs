@@ -24,7 +24,9 @@ const ROOT_FILES = new Set([
   // 工作流页：全链路线图（用户批准的九环节串行主链静态图，已检视）
   'workflow-route-map.svg',
 ]);
-const ASSET_PATTERN = /^(?:assets|models|photos|Textures)\/[A-Za-z0-9_./-]+\.(?:js|css|png|jpe?g|webp|avif|svg|woff2?|ttf|fbx|glb|gltf|bin|json|mp4)$/;
+// ico：接入工作台宿主官方图标（cursor/hermes/windsurf）为 Vite 打包的公开图片资源；
+// html + canvas：画布工作台页（public/canvas/*.html）随构建分发，html 本身即公开网页
+const ASSET_PATTERN = /^(?:assets|models|photos|Textures|canvas)\/[A-Za-z0-9_./-]+\.(?:html|js|css|png|jpe?g|webp|avif|svg|ico|woff2?|ttf|fbx|glb|gltf|bin|json|mp4)$/;
 
 export function normalizeBase(value = '/') {
   if (typeof value !== 'string' || !/^\/(?:[A-Za-z0-9_-]+\/)*$/.test(value)) {
@@ -33,7 +35,7 @@ export function normalizeBase(value = '/') {
   return value;
 }
 
-const DIR_PATTERN = /^(?:assets|models|photos|Textures)(?:\/[A-Za-z0-9_-]+)*$/;
+const DIR_PATTERN = /^(?:assets|models|photos|Textures|canvas)(?:\/[A-Za-z0-9_-]+)*$/;
 
 export function assertPublicPath(relative) {
   const parts = relative.split('/');

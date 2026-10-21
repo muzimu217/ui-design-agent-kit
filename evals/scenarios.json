@@ -1288,5 +1288,1916 @@
    "Adds a dependency or swaps an existing library for the toggle",
    "The delivered summary omits the touched-file list or the behavior-change list"
   ]
+ },
+ {
+  "id": "workflow-canvas-dark",
+  "request": "Build a dark-theme workflow canvas page that shows a six-stage delivery pipeline as a horizontal timeline, with per-stage status colors (pending/active/gated/passed/blocked), an evidence drawer per stage, and a zoom control.",
+  "context": "New web UI. Vanilla HTML/CSS/JS in one self-contained file is acceptable. Data arrives as a JSON blob embedded at build time; no network access.",
+  "passCriteria": [
+   "Opens directly into the pipeline timeline without scrolling to reach the first stage",
+   "All six stages visible with distinct status colors that pass 4.5:1 contrast on the dark background",
+   "Clicking a stage opens its evidence drawer; Escape closes it",
+   "Zoom control works and persists during a session; reduced-motion disables transitions",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Ships placeholder copy, empty sections, or console errors instead of a working page",
+   "Ignores the requested status colors / chain order and renders an unstructured list",
+   "Claims browser verification that was not performed"
+  ]
+ },
+ {
+  "id": "requirement-chain-card",
+  "request": "Build a requirement-parsing chain card page: one spoken-language requirement at the top, flowing into parsed summary, scope boundary, key questions, reference links with sources, design contract digest, artifact, and acceptance evidence as a vertical chain, each step expandable.",
+  "context": "New web UI. Mobile viewport must remain usable. Chain data comes from an embedded JSON array of steps with title, detail, and optional evidence links.",
+  "passCriteria": [
+   "Chain reads top-to-bottom in requirement order with visible connectors between steps",
+   "Every step expands and collapses; expansion state is keyboard reachable",
+   "Reference links render with visible source domain labels",
+   "At 390px width no horizontal scroll is introduced",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Ships placeholder copy, empty sections, or console errors instead of a working page",
+   "Ignores the requested status colors / chain order and renders an unstructured list",
+   "Claims browser verification that was not performed"
+  ]
+ },
+ {
+  "id": "import-approval-gate",
+  "request": "Build an import flow page for saving a user-provided design system as a reusable skill: source input step, starter preview step, an explicit review pause requiring user approval before save, and a post-save validation state with verified usage links.",
+  "context": "New web UI. Single page with stepper; state machine must not allow skipping the approval step; no backend.",
+  "passCriteria": [
+   "Stepper shows all four steps with the approval step visually mandatory",
+   "Save action is disabled until the approval checkbox/confirm is engaged",
+   "Post-save validation state renders verified usage links from the response data",
+   "Attempting to reach step 3 without approval is blocked with a visible reason",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Allows saving without explicit user approval",
+   "Uses placeholder blocks instead of a working stepper",
+   "Claims verification that was not performed"
+  ]
+ },
+ {
+  "id": "reference-contract-file-card",
+  "request": "Build a machine-readable contract file viewer card: renders a JSON contract (version, reference sources list with repo/ref/mount path, starter config) as a readable card with collapsible sections and a copy-to-clipboard for the raw JSON.",
+  "context": "New web UI. Data is an embedded JSON object; card must render in dark theme; copy uses navigator.clipboard with visible success feedback.",
+  "passCriteria": [
+   "All top-level contract fields render with human labels",
+   "Collapsible sections default to collapsed except version",
+   "Copy button writes raw JSON and shows visible success state",
+   "Dark theme contrast passes 4.5:1 for all labels",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Renders raw JSON dump without structure",
+   "Copy button has no visible feedback",
+   "Contrast fails on any label"
+  ]
+ },
+ {
+  "id": "requirement-anchor-integrity",
+  "request": "Build a requirement card component that renders the user's raw spoken requirement verbatim in a quoted block, clearly labeled as the untouchable anchor, visually distinct from the parsed summary card below it.",
+  "context": "New web UI. Two cards stacked; raw text may contain long paragraphs and must not be rewritten or truncated by the UI layer.",
+  "passCriteria": [
+   "Raw requirement renders full-length with a visible 'verbatim anchor' label",
+   "Parsed summary card is visually distinct (different border accent or header)",
+   "Long paragraphs wrap without overflow at 390px width",
+   "Raw text is byte-identical to the input string in the DOM",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "UI truncates, rewrites, or summarizes the raw requirement",
+   "Two cards are visually indistinguishable",
+   "Horizontal overflow at mobile width"
+  ]
+ },
+ {
+  "id": "blackbox-step-warning",
+  "request": "Build a step timeline where steps with a decision record render an expandable decision drawer (question/choice/basis), and steps WITHOUT one render a visible yellow warning badge marking them as opaque steps.",
+  "context": "New web UI. Steps come from an embedded JSON array; the warning must be unmistakable without opening the step.",
+  "passCriteria": [
+   "Steps with decisions show expandable question/choice/basis drawer",
+   "Steps without decisions show a visible yellow warning in the collapsed summary row",
+   "Warning text explains the step is opaque (no decision record)",
+   "Status colors remain distinguishable for all steps",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Opaque steps render identically to normal steps (no warning)",
+   "Decision drawer omits the basis citations",
+   "Collapsed summaries hide the warning"
+  ]
+ },
+ {
+  "id": "mobile-viewport-integrity",
+  "request": "Build any card-based dark page that remains fully readable at 390px width: cards shrink to viewport, long CJK and Latin strings wrap without horizontal overflow, and no content is clipped at the right edge.",
+  "context": "New web UI. Flex rows must not expand past the container; test at 390px and 520px viewports.",
+  "passCriteria": [
+   "No horizontal scroll at 390px",
+   "Long unbreakable strings (paths, IDs) wrap via overflow-wrap",
+   "Flex rows use min-width:0 so children cannot force container expansion",
+   "Cards visually fit the viewport with padding intact",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Text clipped at the right edge at 390px",
+   "Horizontal scrollbar appears",
+   "Cards overflow the viewport width"
+  ]
+ },
+ {
+  "id": "update-reverify-loop",
+  "request": "Build an update-flow section for a versioned artifact: when a new version arrives (with release notes and breaking changes listed), the flow updates the artifact and then runs a mandatory re-verification step before confirming; show re-verification status visibly.",
+  "context": "New web UI. Based on the 'update = re-verify' pattern; single page, state from embedded JSON.",
+  "passCriteria": [
+   "Update action requires release-notes/breaking-changes input before proceeding",
+   "Re-verification step is mandatory and its status (pending/running/passed) is visible",
+   "Confirm state is unreachable until re-verification passes",
+   "Previous version remains visible for comparison",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Update completes without re-verification",
+   "Re-verification status is hidden or fake",
+   "Breaking changes can be skipped"
+  ]
+ },
+ {
+  "id": "workbench-entry-hub",
+  "request": "Build a dark entry hub page for a workbench: three linked cards (live gate canvas, requirement chain, plan document), a gate-status pill row (A-F with per-status colors), and a six-stage status grid where each stage shows status and note.",
+  "context": "New web UI. Data from embedded JSON; cards link to sibling offline pages; responsive auto-fit grid.",
+  "passCriteria": [
+   "Three entry cards render with distinct descriptions and working relative links",
+   "Gate pills show per-gate status with per-status border colors",
+   "Six-stage grid renders each stage with its status color and note",
+   "Grid reflows without horizontal overflow at 640px",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Cards render without links or with placeholder text",
+   "Gate pills all show the same color regardless of status",
+   "Stage notes are truncated without ellipsis or wrap"
+  ]
+ },
+ {
+  "id": "artifact-wall-summary",
+  "request": "Build an artifact wall section listing produced artifacts: each row shows title and round, expanding to path, six-dimension verification summary, comparison target with verdict, and status.",
+  "context": "New web UI. Data from an embedded JSON array; collapsed rows keep the wall compact.",
+  "passCriteria": [
+   "Each artifact row shows title and round in the collapsed state",
+   "Expanded view renders path as code, six-dim summary, and comparison verdict",
+   "Multiple artifacts stack without layout shift",
+   "Long paths wrap via overflow-wrap without overflow",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Wall renders as a raw JSON dump",
+   "Expanded details omit the comparison verdict",
+   "Long paths cause horizontal overflow"
+  ]
+ },
+ {
+  "id": "dark-page-contrast-pass",
+  "request": "Build a dark-theme page where every text element (headings, body, summary rows, code chips, footer) passes WCAG 4.5:1 contrast against its actual rendered background, verified via computed styles not design-time swatches.",
+  "context": "New web UI. Verification uses measured computed colors on the live page; nested panels change effective backgrounds.",
+  "passCriteria": [
+   "All sampled text >= 4.5:1 against nearest opaque ancestor background",
+   "Code chips and dim labels included in the sample",
+   "No console errors (including favicon requests)",
+   "Verification is reproducible via a script, not a one-off eyeball"
+  ],
+  "failConditions": [
+   "Dim labels or code text below 4.5:1",
+   "Console 404 on favicon or other auto-requested resource",
+   "Contrast claimed from design swatches rather than measured styles"
+  ]
+ },
+ {
+  "id": "summary-tab-order",
+  "request": "Build a details/summary step list where keyboard-only navigation can reach and toggle every summary row in document order, with focus outline visible.",
+  "context": "New web UI. No custom keyboard JS; rely on native details semantics; verify via automation pressing Tab.",
+  "passCriteria": [
+   "Tab reaches every summary exactly once in order",
+   "Enter/Space toggles the focused details",
+   "Focus indicator visible on summary rows",
+   "No focus traps or skipped rows"
+  ],
+  "failConditions": [
+   "Summaries unreachable by keyboard",
+   "Custom JS breaks native toggle",
+   "Focus jumps out of order"
+  ]
+ },
+ {
+  "id": "artifact-wall-sorted-badges",
+  "request": "Build an artifact wall where entries are sorted newest-round first, each collapsed row shows a six-dimension completion badge (n/6) derived from natural-language verification notes, and expanding reveals full verification details.",
+  "context": "New web UI. Completion counting parses verification notes by keywords (verified/measured/passed), not hardcoded enums. Data embedded.",
+  "passCriteria": [
+   "Entries sort by round descending",
+   "Badge shows measured count out of 6 matching the notes",
+   "Collapsed rows fit one line without overflow at 520px",
+   "Badge and title remain distinguishable",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Sorting ignores round",
+   "Badge hardcodes counts or always shows 6/6",
+   "Collapsed rows overflow at 520px"
+  ]
+ },
+ {
+  "id": "trust-sources-distinction",
+  "request": "Build a trust section that clearly distinguishes two trust sources: authority endorsement (logo wall) and verifiable evidence (linked acceptance records), rendering them as separate labeled groups rather than mixing them.",
+  "context": "New web UI. Two groups from embedded JSON; the evidence group entries must carry real links, the logo group is visual only.",
+  "passCriteria": [
+   "Two labeled groups render separately",
+   "Evidence entries each carry a working link to a record",
+   "Logo group renders visually without fake links",
+   "Groups reflow in one column at 520px without overflow",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Logos rendered as links to nowhere",
+   "Evidence entries without real links",
+   "Groups visually merged into one undifferentiated strip"
+  ]
+ },
+ {
+  "id": "canvas-tab-entry",
+  "request": "Add a 'canvas workbench' tab to an existing hash-routed multi-page site: navigation highlights the active tab, the tab renders gate-status pills, a six-stage status grid, entry cards linking to offline canvas pages, and an artifact wall.",
+  "context": "Existing React site (hash routing home/evidence/workflow). New page follows the same layout components and styling conventions; content from embedded snapshot data.",
+  "passCriteria": [
+   "Nav shows the new tab with active highlight on #/canvas",
+   "Gate pills render per-status border colors",
+   "Entry cards open the three offline canvas pages in new tabs",
+   "TypeScript compiles with no errors and build succeeds",
+   "Console has zero errors on the new page"
+  ],
+  "failConditions": [
+   "Tab renders but navigation highlight is missing or wrong",
+   "Entry links 404 (artifacts not bundled)",
+   "Page breaks existing tabs"
+  ]
+ },
+ {
+  "id": "offline-artifact-bundling",
+  "request": "Bundle offline self-contained HTML pages into a static site build so they are served under a subdirectory (e.g. /canvas/) and remain fully functional when opened directly from the built dist.",
+  "context": "Vite static build; source pages live in an output directory excluded from git; the bundling step must copy them into public/ before build.",
+  "passCriteria": [
+   "All three canvas pages present under dist/canvas/ after build",
+   "Each page opens directly from the built dist over file:// or http with full rendering",
+   "Pages remain byte-identical copies of the generated snapshots",
+   "Rebuild is reproducible via a single npm script",
+   "No broken relative links inside the copied pages"
+  ],
+  "failConditions": [
+   "Pages missing from dist after build",
+   "Copies diverge from generated snapshots",
+   "Relative asset links break when served from the subdirectory"
+  ]
+ },
+ {
+  "id": "canvas-build-one-command",
+  "request": "Wire a single npm script that regenerates all canvas pages (gate canvas, requirement chain, entry hub) from their source JSON and then distributes byte-identical copies into a static site's public directory for bundling.",
+  "context": "Node scripts, zero runtime deps; distribution target is a Vite public/ dir; script must be rerunnable.",
+  "passCriteria": [
+   "One command regenerates all three pages and distributes copies",
+   "Distributed copies are byte-identical to generated output",
+   "Subsequent showcase build ships the pages under /canvas/ in dist",
+   "Script is idempotent (rerun produces identical results)",
+   "Console reports each step's completion"
+  ],
+  "failConditions": [
+   "Any page missing after the run",
+   "Copies diverge from generated files",
+   "Manual copy step still required"
+  ]
+ },
+ {
+  "id": "readme-canvas-section",
+  "request": "Add a README section documenting the canvas workbench: the three generated pages with one-line descriptions, the build and acceptance commands, and a link to the plan document.",
+  "context": "Existing README; section goes between the host-integration and why-it-exists sections; keep it under 10 lines.",
+  "passCriteria": [
+   "Section names all three pages with accurate one-line descriptions",
+   "Both npm commands (build/check) documented",
+   "Plan document linked with relative path",
+   "Section length within limit",
+   "Markdown renders without broken links"
+  ],
+  "failConditions": [
+   "Section missing either command",
+   "Broken or absolute local path links",
+   "Section duplicates content verbatim from the plan"
+  ]
+ },
+ {
+  "id": "verify-understanding-compare",
+  "request": "Build a two-column comparison card for requirement understanding verification: left column shows the raw spoken requirement (verbatim anchor), right column shows the AI restatement for comparison, with a status badge (user-confirmed vs pending) and timestamp below.",
+  "context": "New web UI. Columns collapse to stacked at 640px; badge color distinguishes confirmed (green) from pending (amber).",
+  "passCriteria": [
+   "Two labeled columns render side by side",
+   "Raw text and restatement are visually parallel and complete",
+   "Badge shows confirmed state in green with check, pending in amber",
+   "Columns stack at 640px without overflow",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Columns render without labels",
+   "Badge always shows confirmed regardless of data",
+   "Stacked layout overflows"
+  ]
+ },
+ {
+  "id": "basis-links-clickable",
+  "request": "Build a decision drawer where each basis citation renders as a clickable link (opening in a new tab with rel=noreferrer) styled as a code chip with dotted underline hover.",
+  "context": "New web UI. Basis entries are relative paths or URLs; chips keep word-break for long paths.",
+  "passCriteria": [
+   "Every basis citation is an anchor with target=_blank and rel=noreferrer",
+   "Chip styling preserved (background, border, word-break)",
+   "Hover shows underline affordance",
+   "Long paths wrap without overflow",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Citations render as non-clickable code blocks",
+   "Links missing rel=noreferrer",
+   "Chip style lost on anchor conversion"
+  ]
+ },
+ {
+  "id": "multi-chain-registry",
+  "request": "Build a chain registry section that scans a directory for all chain JSON files (excluding schema docs), rendering each as one row: confirmed badge, title, round, step count, and a link to its rendered page; parse failures render as an error row without breaking the section.",
+  "context": "New web UI. Directory scan at build time; rows link to sibling rendered pages; section hidden gracefully when no chains exist.",
+  "passCriteria": [
+   "All chain files render as rows with badge/title/round/step-count/link",
+   "Confirmed chains show green check badge, others amber pending",
+   "A malformed chain file renders an error row but does not crash the page",
+   "Section shows total count in its heading",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Only the first chain renders",
+   "Malformed file crashes the build or page",
+   "Rows link to wrong pages"
+  ]
+ },
+ {
+  "id": "trending-signal-row-format",
+  "request": "Build a signal log row component for external market signals: each row renders name, play/star count with honest magnitude suffix, recency tag, and a verdict chip (confirmed/preliminary/monitoring) from embedded data.",
+  "context": "New web UI. Rows from embedded JSON; counts must render exactly as provided (no fabrication); verdict chip colors differ per state.",
+  "passCriteria": [
+   "Counts render verbatim from data with magnitude suffix",
+   "Recency tag renders (e.g. '1 天前')",
+   "Verdict chips use distinct colors per state",
+   "Rows stack at 520px without overflow",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Counts are fabricated or rounded up",
+   "Verdict chips all identical",
+   "Rows overflow at 520px"
+  ]
+ },
+ {
+  "id": "wall-filter-toggle",
+  "request": "Build a filter toggle for an artifact wall: buttons 'all' and 'fully-verified only'; switching hides entries whose verification badge count is below 6 and updates a visible mode label; active button is visually distinct.",
+  "context": "New web UI. Pure client-side toggle on pre-rendered entries; badge count parsed from badge text; no network.",
+  "passCriteria": [
+   "Fully-verified mode hides entries with badge < 6",
+   "All mode shows every entry",
+   "Mode label text updates with the active mode",
+   "Active button visually distinct",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Toggle hides entries in all mode",
+   "Mode label never updates",
+   "Buttons render but do nothing"
+  ]
+ },
+ {
+  "id": "single-system-per-chain",
+  "request": "Build a chain validator page that flags any chain whose steps reference more than one design system source, rendering a visible warning listing the conflicting sources.",
+  "context": "New web UI. Chains from embedded JSON; a source field per step; validation runs client-side on load.",
+  "passCriteria": [
+   "Chains with a single source render clean",
+   "Multi-source chains show a warning listing conflicting source names",
+   "Warning appears without expanding any step",
+   "Warning text names the rule (one system per chain)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Multi-source chains pass silently",
+   "Warning missing source names",
+   "Validator crashes on missing source field"
+  ]
+ },
+ {
+  "id": "wall-sort-view",
+  "request": "Build a sort control for an artifact wall: buttons 'by round' (newest first) and 'by completion' (badge count descending) that reorder the existing entries client-side; active sort button visually distinct and independent from the filter toggle.",
+  "context": "New web UI. DOM reordering of pre-rendered entries; badge count parsed from badge text; round compared as strings descending.",
+  "passCriteria": [
+   "By-round mode orders entries newest first",
+   "By-completion mode orders entries by badge count descending",
+   "Sort and filter toggles operate independently",
+   "Active sort button visually distinct",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Sort buttons do nothing",
+   "Sort breaks the filter state",
+   "Active states of sort and filter interfere"
+  ]
+ },
+ {
+  "id": "trust-groups-separation",
+  "request": "Build a trust rendering pattern that never mixes unverifiable logo strips with verifiable evidence links: logo walls render as decorative groups without links, evidence walls render as linked record rows with visible verdicts.",
+  "context": "New web UI. Pattern level: any page combining endorsement logos and acceptance records must keep them in separate labeled groups.",
+  "passCriteria": [
+   "Logo group renders without anchor elements",
+   "Evidence rows each carry real record links and visible verdict text",
+   "Both groups have distinct labels",
+   "Groups stack cleanly at 520px",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Logos wrapped in fake links",
+   "Evidence rows rendered as bare images",
+   "No group labels"
+  ]
+ },
+ {
+  "id": "isometric-figure-routing",
+  "request": "Route an explanatory-figure task (isometric diagram of a machine/system/algorithm for docs or a landing page) to the vendored anatomy skill, and route an interface mockup task to the normal UI pipeline — the two must never cross.",
+  "context": "Routing rule level: given two task briefs, the router picks the correct skill and states the boundary (physical-object figures vs app screens).",
+  "passCriteria": [
+   "Isometric figure brief routes to anatomy with examples-first instruction",
+   "App screen brief routes to the standard UI pipeline, not anatomy",
+   "Router states the boundary: physical-object figures vs interface screens",
+   "Router cites the skill location (.agents/skills/anatomy/)",
+   "No fallback fabrication when the boundary is ambiguous — asks instead"
+  ],
+  "failConditions": [
+   "App screens built as isometric machines",
+   "Figures built as app screens",
+   "Router invents capabilities anatomy does not list"
+  ]
+ },
+ {
+  "id": "anatomy-no-publish-boundary",
+  "request": "When using the anatomy skill to produce a figure, never publish the result to the Anatomy community gallery even if the skill text mentions publishing support, unless the user explicitly asks; produce the figure locally and stop.",
+  "context": "Boundary enforcement level: the skill's publishing capability is out of scope for this kit (external channel, not user-authorized).",
+  "passCriteria": [
+   "Figure is produced locally without any gallery publish call",
+   "No network request to the gallery service occurs",
+   "Delivery stops at the local artifact with evidence",
+   "If the user asks to publish, the agent declines and explains the boundary",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Gallery publish invoked",
+   "Network request to gallery service",
+   "Boundary undocumented in the delivery note"
+  ]
+ },
+ {
+  "id": "mission-control-view",
+  "request": "Build a mission-control style view for a design-agent workflow: one unified screen showing every active task's stage, who/what is working it, what awaits review, and the evidence produced so far — without mixing execution status with verification claims.",
+  "context": "New web UI. Data from embedded task records; each record separates 'work status' from 'verified evidence' fields.",
+  "passCriteria": [
+   "Unified view lists all tasks with current stage",
+   "Work status and verified-evidence fields render in separate columns/sections",
+   "Items awaiting review are visually distinct",
+   "No claim of verification where evidence is absent",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Execution status presented as verification",
+   "Unified view shows only one task",
+   "Review-pending items indistinguishable from done"
+  ]
+ },
+ {
+  "id": "cross-page-canvas-links",
+  "request": "Add consistent cross-links between three offline canvas pages (gate canvas, requirement chain, entry hub) in their footers so any page can reach the others, with accessible link text and preserved styling.",
+  "context": "Existing three self-contained HTML pages; links must work when opened offline from the same directory.",
+  "passCriteria": [
+   "Each page footer links to the other two pages",
+   "Links are keyboard reachable and announce their destination",
+   "Relative links resolve offline from the same directory",
+   "Footer link styling passes 4.5:1 contrast",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Links point to absolute local paths",
+   "One page lacks the cross-links",
+   "Link contrast below standard"
+  ]
+ },
+ {
+  "id": "execution-vs-evidence-separation",
+  "request": "Build a status panel that strictly separates execution state (which stage is running, what awaits a ruling) from evidence state (how many artifacts are fully verified, how many chains confirmed) in two distinct labeled columns — execution progress must never be presented as verification.",
+  "context": "New web UI. Data from embedded state + artifact records; two-column layout collapsing to stacked at 640px.",
+  "passCriteria": [
+   "Two labeled columns: execution state and evidence state",
+   "Execution column shows current stage, active items, pending rulings",
+   "Evidence column shows fully-verified count as a fraction and confirmation counts",
+   "No wording presents execution progress as verified outcome",
+   "Columns stack at 640px without overflow"
+  ],
+  "failConditions": [
+   "Execution status shown as verification badge",
+   "Columns merged into one undifferentiated list",
+   "Evidence counts fabricated when no artifacts exist"
+  ]
+ },
+ {
+  "id": "canvas-mission-control",
+  "request": "Build a canvas entry page whose top section answers two questions separately: where is work happening now, and what can be re-checked now — with a visible verification command the reader can run themselves.",
+  "context": "New web UI. Static page; verification command rendered as code with the actual npm script name.",
+  "passCriteria": [
+   "Top section answers 'where is work' and 'what can be re-checked' in separate groups",
+   "A real runnable command is displayed for re-verification",
+   "Group headings state their purpose explicitly",
+   "No console errors; contrast passes on all labels",
+   "Layout remains readable at 520px"
+  ],
+  "failConditions": [
+   "No runnable verification command shown",
+   "Groups unlabeled",
+   "Command displayed is not a real script in the project"
+  ]
+ },
+ {
+  "id": "multi-task-registry",
+  "request": "Build a task registry section that scans a directory for per-task state files (*.state.json), rendering one row per task with two separated summaries: execution (active stages, pending rulings) and evidence (passed stage count, gated gates) — a malformed state file must render an error row without breaking the page.",
+  "context": "New web UI. Directory scan at build time; each state file follows the six-stage schema; rows reflow at 640px.",
+  "passCriteria": [
+   "One row per state file with task name and revision",
+   "Execution summary and evidence summary visually separated per row",
+   "Malformed state file yields an error row, page still renders",
+   "Section heading shows total task count",
+   "Rows reflow without overflow at 640px"
+  ],
+  "failConditions": [
+   "Only the first task renders",
+   "Execution and evidence merged into one ambiguous string",
+   "Malformed file crashes the build"
+  ]
+ },
+ {
+  "id": "stage-progress-not-verification",
+  "request": "Build a progress display where 'stages passed' is labeled as workflow progress and never as product verification; verification claims require a separate evidence field with linked proof.",
+  "context": "New web UI. Two fields per task: workflow progress (stage counts) and verification evidence (linked records); the labels must make the distinction unmistakable.",
+  "passCriteria": [
+   "Stage progress labeled as workflow progress, not verification",
+   "Verification claims only appear where evidence links exist",
+   "Both fields render side by side with distinct labels",
+   "No badge conflates the two",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Stage count presented as a verification score",
+   "Evidence field empty but verification claimed",
+   "Labels ambiguous or missing"
+  ]
+ },
+ {
+  "id": "artifact-version-badge",
+  "request": "Build an artifact wall where each entry shows a version badge (vN) next to its title, and expanding the entry reveals a change summary listing what changed per version — versions are append-only and restores never rewrite history.",
+  "context": "New web UI. Data from embedded artifact records with version number and changeSummary fields; badge visible in collapsed row.",
+  "passCriteria": [
+   "Version badge visible in collapsed row",
+   "Expanded entry shows change summary",
+   "Change summary reads as append-only history (v1 → v2 → ...)",
+   "Missing version renders a placeholder rather than breaking",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Version badge only visible when expanded",
+   "Change summary rewrites or deletes prior versions",
+   "Missing version crashes the row"
+  ]
+ },
+ {
+  "id": "append-only-history-language",
+  "request": "Build a release-notes style list where every change is an appended entry with a version number and date; no entry is ever edited in place and a 'restore' action creates a new entry rather than removing later ones.",
+  "context": "New web UI. Static list from embedded JSON; wording must make append-only semantics explicit.",
+  "passCriteria": [
+   "Every entry has version number and date",
+   "Restore action (if simulated) appends a new entry",
+   "No UI affordance deletes or rewrites prior entries",
+   "Wording states history is append-only",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Edit-in-place affordance on historical entries",
+   "Restore deletes newer entries",
+   "No statement of append-only semantics"
+  ]
+ },
+ {
+  "id": "offline-export-bundle",
+  "request": "Package a set of generated static pages into a distributable offline bundle: pages plus a README explaining how to open and how to re-verify, plus a manifest recording export time and exact source commit — the bundle must open from file:// with no network and no build step.",
+  "context": "Build-script level: copy pages byte-identical, write README and manifest, optionally zip. Recipient opens by double-click.",
+  "passCriteria": [
+   "All pages present and byte-identical to generated sources",
+   "README states open instructions and re-verification steps",
+   "Manifest records export time and full source commit hash",
+   "Bundle opens from file:// with full rendering (no network)",
+   "Zip (when produced) contains the same files"
+  ],
+  "failConditions": [
+   "Bundle requires a build step or server to open",
+   "Manifest missing the commit hash",
+   "Pages diverge from generated sources"
+  ]
+ },
+ {
+  "id": "export-manifest-traceability",
+  "request": "Build an export manifest viewer that shows the source commit hash, commit subject, export timestamp, and per-file sizes for a distributed bundle, making it possible for a recipient to trace exactly which revision produced the bundle.",
+  "context": "New web UI. Data from embedded manifest JSON; long hashes must wrap without breaking layout.",
+  "passCriteria": [
+   "Commit hash and subject both rendered",
+   "Export timestamp rendered in readable form",
+   "Per-file sizes listed",
+   "Long hashes wrap without horizontal overflow",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Only a truncated hash with no subject",
+   "File sizes omitted",
+   "Hash causes horizontal overflow"
+  ]
+ },
+ {
+  "id": "artifact-origin-marker",
+  "request": "Build an artifact wall where every entry carries a provenance marker distinguishing AI-only output from AI-drafted-then-human-revised, visible in the collapsed row with distinct colors, and expanding shows the origin note.",
+  "context": "New web UI. Data from embedded records with origin field (ai-only | ai-draft+human-revision); markers must not imply quality ranking.",
+  "passCriteria": [
+   "Provenance marker visible in collapsed row",
+   "AI-only and mixed markers visually distinct (color + text)",
+   "Expanded entry shows the origin note",
+   "Marker wording never implies one origin is better",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Marker hidden until expanded",
+   "Markers use identical styling",
+   "Wording ranks origins as quality"
+  ]
+ },
+ {
+  "id": "provenance-not-quality",
+  "request": "Build a provenance display where 'AI-only' and 'human-revised' are presented as factual lineage labels, never as quality scores or ranking; any quality claim must come from a separate verification field.",
+  "context": "New web UI. Two separate fields: provenance (lineage) and verification (measured evidence); the labels and layout must keep them independent.",
+  "passCriteria": [
+   "Provenance rendered as factual label (no star/score)",
+   "Verification rendered separately with measured evidence",
+   "No wording equates human-revised with higher quality",
+   "Both fields labeled distinctly",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Provenance shown as a score or badge of honor",
+   "Verification implied by provenance",
+   "Labels conflate lineage with quality"
+  ]
+ },
+ {
+  "id": "comparison-null-honesty",
+  "request": "Build a side-by-side comparison table where each cell is measured-pass, measured-fail, or not-observable; unobservable cells must render as a neutral dash, never as pass or fail, and score summaries must state the observable denominator.",
+  "context": "Data-dense comparison UI (canvas/artifact wall). Three cell states with distinct visual marks; summary line shows the raw score next to an 'X/Y observable' denominator.",
+  "passCriteria": [
+   "Unobservable cells render as a neutral dash, not a pass or fail mark",
+   "Pass and fail marks are visually distinct",
+   "Score summary states the observable denominator (X/Y)",
+   "External inspection level labeled (e.g. unverified-partial) when the comparison target was not machine-measured",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Unobservable cell rendered as pass or fail",
+   "Summary score hides the denominator",
+   "External observation presented as full verification"
+  ]
+ },
+ {
+  "id": "dark-dense-table-muted-text",
+  "request": "Design a data-dense table UI on a dark theme where muted/secondary text (table headers, footnotes, captions) still passes 4.5:1 contrast; density must come from spacing and typography, never from dimming text below the contrast floor.",
+  "context": "Dark-themed dense dashboard table with primary cells, a header row, and footnotes; every text layer is measured independently against its own background.",
+  "passCriteria": [
+   "Header, footnote and caption text each measure >=4.5:1 against their background",
+   "Density achieved via row height and column rhythm, not low-contrast text",
+   "Row separators visible without relying on text dimming",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Any text layer below 4.5:1",
+   "Muted text used as the only density mechanism",
+   "Contrast measured only on primary cells"
+  ]
+ },
+ {
+  "id": "wall-entry-clickable-source",
+  "request": "Make product-wall or index entries that reference an openable artifact clickable via same-directory relative URLs that survive offline file:// distribution; entries whose target is the page itself or unavailable must render an explicit self-referential note instead of a dead link or silent omission.",
+  "context": "Offline self-contained hub page with an artifact wall. One entry points to a sibling generated page; another page is the page itself and must not self-link.",
+  "passCriteria": [
+   "Openable entry rendered as a real link with same-directory relative href",
+   "Self-referential entry renders an explicit note, not a link to itself",
+   "Links still resolve after offline export (file:// double-click) — no absolute paths, no network",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Dead link or link-to-self presented as an entry action",
+   "Absolute path or http URL breaking offline distribution",
+   "Openable artifact present but not linked while claiming clickability"
+  ]
+ },
+ {
+  "id": "measured-keyword-decoupling",
+  "request": "Derive completion or verification badges from evidence prose without silently depending on incidental wording; either store structured per-dimension results, or guard any keyword-based regex against misses so an unmatched evidence row lowers the badge AND is flagged in CI rather than silently undercounting.",
+  "context": "Evidence dashboard where a reducer regex scores six-dimension evidence strings; a reworded string that drops a keyword must surface as a detectable drift, not a quiet badge change.",
+  "passCriteria": [
+   "Each evidence dimension has a structured result or a keyword guard with CI coverage",
+   "A reworded evidence row that stops matching is flagged, not silently scored lower",
+   "Badge denominators still reflect all six dimensions",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Badge count changes with no detectable signal for the cause",
+   "Regex keyword list treated as authoritative without a drift check",
+   "Undercounted evidence row invisible to CI"
+  ]
+ },
+ {
+  "id": "export-package-selfcontained-review",
+  "request": "Ship offline export bundles with every piece of evidence a third-party reviewer needs (comparison tables, inspection-level rubric, open steps) generated programmatically from the same structured data source as the rendered pages — a reviewer must complete the review without repo access, and no hand-copied claims may drift from the source data.",
+  "context": "Distributable offline bundle (HTML pages + docs + manifest) for external re-verification. Comparison/score evidence lives in structured JSON and must be rendered into the bundle's docs by the same export script.",
+  "passCriteria": [
+   "Bundle contains comparison evidence with inspection-level labels and observable denominators",
+   "Evidence docs generated from the structured data file, not hand-written copies",
+   "Reviewer can verify six-dimension and comparison claims using only bundle contents",
+   "Console has zero errors when opening bundled pages"
+  ],
+  "failConditions": [
+   "Reviewer forced back to the repo to interpret shipped comparisons",
+   "Hand-copied evidence text diverging from the structured source",
+   "Bundle claims inspection levels without the rubric that defines them"
+  ]
+ },
+ {
+  "id": "export-manifest-byte-accounting",
+  "request": "Record per-file byte size in the export manifest for every shipped file — generated pages and documentation alike — so a reviewer can reconcile the manifest listing against unpacked bundle contents; any file present in the bundle but absent from the manifest is a reconciliation failure.",
+  "context": "Offline export with a machine-readable manifest (export time, source commit, file bytes). The manifest is the bundle's table of contents and its tamper-evidence baseline.",
+  "passCriteria": [
+   "Every file in the bundle appears in the manifest with its byte size",
+   "Recorded sizes match actual unpacked file sizes",
+   "Manifest records export time and exact source commit",
+   "Console has zero errors when opening bundled pages"
+  ],
+  "failConditions": [
+   "Bundle file missing from the manifest",
+   "Recorded byte size differs from the unpacked file",
+   "Manifest lacks the source commit provenance"
+  ]
+ },
+ {
+  "id": "seekable-animation-lint",
+  "request": "For any time-based animation intended for deterministic frame rendering, enforce a seekable-animation contract via a static lint rule: animations must be driven by a deterministic clock (currentTime/seek addressable), never by wall-clock accumulation; violations fail the check with the offending selector or track named.",
+  "context": "Motion/ video composition pipeline where exports must be reproducible frame-by-frame; CSS keyframes with scrubbing support pass, setInterval/setTimeout-driven animation fails.",
+  "passCriteria": [
+   "Each animation maps to a deterministic, seekable clock source",
+   "Wall-clock-driven animation (setTimeout/setInterval accumulation) flagged as violation",
+   "Violation reports the offending selector/track, not just a count",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Non-seekable animation passes the lint",
+   "Violation reported without a locatable source",
+   "Determinism checked only by eyeballing the rendered output"
+  ]
+ },
+ {
+  "id": "badge-legend-accessibility",
+  "request": "Make status badges (scores, counts, levels) accessible: each badge exposes an accessible name that states its meaning (e.g. '6 of 6 dimensions measured'), and the page carries a legend or tooltip explaining the scoring rubric so the badge is interpretable without visual context.",
+  "context": "Data-dense evidence dashboard whose wall entries show n/6 badges, level pills and version chips; screen-reader users must get the same interpretation as sighted users.",
+  "passCriteria": [
+   "Every badge has an accessible name conveying its meaning, not just the raw text",
+   "Rubric legend available in the page (visible or programmatically associated)",
+   "Level pills state their semantics (e.g. unverified-partial), not color alone",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Badge announced as bare number with no dimension context",
+   "Meaning conveyed by color/position only",
+   "Rubric present only outside the artifact (repo-only), unreachable from the page"
+  ]
+ },
+ {
+  "id": "prompt-attachment-clarity",
+  "request": "When a generation prompt input accepts attachments (design system, reference image, token file), the UI must show each active attachment by name, state in one line what it constrains in the generated output, and allow removal; hidden constraints that silently shape the result are a failure.",
+  "context": "Prompt-first generation entry with an attach-design-system affordance; the attachment constrains style/tokens of whatever gets generated.",
+  "passCriteria": [
+   "Active attachments listed by name next to the prompt input",
+   "Each attachment's constraining effect stated in one visible line",
+   "Attachment removable before submit; removal reflected immediately",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Attachment applied but not visible at prompt time",
+   "Constraint effect described only in external docs",
+   "Removal possible only by restarting the flow"
+  ]
+ },
+ {
+  "id": "pipeline-tabs-a11y",
+  "request": "Implement pipeline/stage tab strips as accessible tablists: the selected tab exposes aria-selected, panels are labelled by their tab, and keyboard users can move between tabs (arrow keys or sequential focus) with visible focus; stage state must never be conveyed by color alone.",
+  "context": "A horizontal stage strip (e.g. plan → design → verify → deliver) where each tab switches a content panel describing that stage.",
+  "passCriteria": [
+   "Selected tab exposes aria-selected=true and the panel is labelled by its tab",
+   "Keyboard navigation between tabs works with visible focus",
+   "Stage completion/status available in text, not color alone",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Selected state conveyed only visually",
+   "Panels unreachable or unlabelled for screen readers",
+   "Tab strip focus invisible on dark background"
+  ]
+ },
+ {
+  "id": "guard-covers-rendered-aria",
+  "request": "Acceptance checks for generated pages must assert aria-semantic presence (status badges, level pills, scored tables carry accessible names and inline rubrics) and the check itself must be falsifiable — demonstrated by running it against a deliberately broken fixture where it fails with named issues and a non-zero exit.",
+  "context": "An a11y acceptance script over generated HTML pages; a guard that always passes is no guard, so the negative path must be exercised.",
+  "passCriteria": [
+   "Check fails with named element and issue when a badge lacks an accessible name",
+   "Broken fixture produces non-zero exit and machine-readable issues",
+   "Clean pages pass with the same check (no false positives)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Guard that cannot fail (no negative test)",
+   "Issue reported without locating element",
+   "Exit code stays zero on guard failure"
+  ]
+ },
+ {
+  "id": "confirmation-badge-semantics",
+  "request": "Confirmation-state badges (e.g. confirmed vs pending review) must announce what was confirmed, by whom, and when applicable — via accessible name or adjacent text; a bare checkmark glyph or color flip is not a confirmation signal.",
+  "context": "A registry list where each row carries a confirmation badge driven by user review state.",
+  "passCriteria": [
+   "Badge accessible name states the confirmation state in words",
+   "Reviewer identity or review basis stated in adjacent text when available",
+   "Pending state visually and semantically distinct from confirmed",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Glyph-only confirmation (✓) with no textual semantics",
+   "Confirmed and pending announce identically to screen readers",
+   "State change conveyed only by color"
+  ]
+ },
+ {
+  "id": "kpi4-artifact-family-check",
+  "request": "Before scoring a product-level six-dimension comparison, verify artifact-family applicability: for non-graphic deliverables (CLI, MCP server, backend library) the six UI dimensions do not apply and must be reported as '0/0 observable — not applicable', never as a 0/6 score or an omitted comparison.",
+  "context": "An evidence wall that compares shipped artifacts against external targets across desktop/mobile/keyboard/contrast/reduced-motion/console dimensions.",
+  "passCriteria": [
+   "Family check precedes scoring; non-graphic targets marked not-applicable",
+   "Not-applicable shown as an explicit 0/0 denominator, not a zero score",
+   "Cross-family comparisons limited to mechanism-level notes, no dimension scores",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Non-graphic artifact scored 0/6 as if it failed UI dimensions",
+   "Comparison silently dropped for cross-family targets",
+   "Family applicability decided after scores are published"
+  ]
+ },
+ {
+  "id": "bundle-reconcile-fail-loudly",
+  "request": "A distributable bundle's build script must self-verify (archive integrity, per-file byte parity against the manifest, no unlisted or missing files) and fail with a non-zero exit naming each discrepancy; self-referential files (a manifest listing its own bytes) must be explicitly excluded from self-accounting with the exclusion documented in the artifact itself.",
+  "context": "Offline bundle exporter that writes pages plus generated docs plus a manifest; the manifest cannot record its own final size.",
+  "passCriteria": [
+   "Unlisted, missing, and byte-drifted files each fail the build with named output",
+   "Clean bundle passes reconciliation with a file-count confirmation",
+   "Manifest self-exclusion documented in the manifest and honored by the checker",
+   "A verify-only mode can re-check an existing bundle without rebuilding"
+  ],
+  "failConditions": [
+   "Discrepancy detected but exit code stays zero",
+   "Self-referential size recorded and silently drifting",
+   "Reconciliation only runs on files the script itself just wrote"
+  ]
+ },
+ {
+  "id": "dense-table-static-page-honesty",
+  "request": "For a purely static data page with zero interactive elements, record keyboard accessibility as an explicit '0/0 focusable — static page by design', never as a missing-coverage gap or a fake interactive affordance; a11y receipts must distinguish 'nothing to focus' from 'focus not verified'.",
+  "context": "A dark data-dense metrics board shipped as a static self-contained HTML page with no links, buttons, or forms.",
+  "passCriteria": [
+   "Keyboard row states 0 focusable with the static-by-design reason",
+   "Contrast measured on every text layer including muted headers and footnotes",
+   "Density achieved without hiding content on narrow viewports below readability",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "0/0 recorded as an untested gap or padded with a do-nothing control",
+   "Muted footnote below 4.5:1",
+   "Mobile view crops columns instead of a designed collapse"
+  ]
+ },
+ {
+  "id": "stage-board-vs-pipeline-honesty",
+  "request": "When presenting a stage×status board derived from a task state snapshot, the page must state that counts are audit-trace tallies rather than progress percentages, and name the authoritative source and rebuild command; a stage board must not read as a completion meter.",
+  "context": "A mini pipeline board rendering six stages with gate states and evidence counts from a state file.",
+  "passCriteria": [
+   "Evidence counts labeled as tally semantics, not percent progress",
+   "Authoritative source and rebuild command printed on the page",
+   "Gated/pending states visually and textually distinct from passed",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Counts presented as progress percentage",
+   "No rebuild path shown for the snapshot",
+   "Gated stage rendered as if passing"
+  ]
+ },
+ {
+  "id": "state-page-artistry-copy",
+  "request": "Style empty and error states with personality (playful microcopy plus a small illustration) while keeping the actionable recovery path unambiguous; humor must never bury the instruction a user needs to continue.",
+  "context": "Product UI empty/error states — e.g. a password-reset hint with wry copy and a hand-drawn-style illustration.",
+  "passCriteria": [
+   "Error state still leads with the actionable instruction before/alongside the playful line",
+   "Illustration is decorative-only (SVG/inline, no external asset dependency)",
+   "Copy stays professional-safe (no insulting or blaming the user in production flows)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Humor replaces the recovery instruction",
+   "Illustration loaded from network and breaks offline",
+   "Copy hostile to users in a real error flow"
+  ]
+ },
+ {
+  "id": "generative-background-reduced-motion",
+  "request": "Decorative generative art backgrounds (canvas particles, pixel growth, ambient motion) must ship with a prefers-reduced-motion static fallback that preserves composition and contrast, and must never reduce body-text contrast below 4.5:1 in any animation frame.",
+  "context": "A dark hero or panel backed by an ambient generative visual; text sits directly on top of the artwork.",
+  "passCriteria": [
+   "prefers-reduced-motion shows a static frame with identical layout",
+   "Text contrast measured against the animated background stays >=4.5:1 in sampled frames",
+   "Generative layer marked aria-hidden/decorative",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Motion continues under reduced-motion",
+   "Animated background dims or lights text below 4.5:1 at peak frames",
+   "Generative layer announced to screen readers"
+  ]
+ },
+ {
+  "id": "empty-state-not-dead-end",
+  "request": "When a filter or search yields zero results, show a designed empty state (illustration + plain-language reason + the exact next action) rather than a blank region; the empty state must be reachable in keyboard order without stealing focus.",
+  "context": "Evidence wall with a filter toggle that can legitimately produce an empty result set.",
+  "passCriteria": [
+   "Empty state renders only when the filtered set is truly empty",
+   "Copy states why it is empty and names the recovery action",
+   "Illustration is inline SVG marked aria-hidden",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Blank region shown for zero results",
+   "Empty state permanently hidden by a truthiness bug (renders never)",
+   "Illustration announced as content to screen readers"
+  ]
+ },
+ {
+  "id": "ambient-layer-text-isolation",
+  "request": "Decorative ambient layers (generative canvas, gradients, grain) must sit behind an opaque or sufficiently contrast-safe text surface so measured contrast is independent of the layer's current animation frame; verify by sampling contrast with the layer at different animation states.",
+  "context": "Fixed-position canvas art behind a dark content page with text in panels.",
+  "passCriteria": [
+   "Text surfaces measured at >=4.5:1 with ambient layer active",
+   "Contrast stable across sampled animation frames",
+   "Ambient layer pointer-events none and aria-hidden",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Contrast measured only with ambient layer disabled",
+   "Text placed directly over moving high-contrast art",
+   "Ambient layer intercepts pointer or focus"
+  ]
+ },
+ {
+  "id": "capability-adapter-registry",
+  "request": "Every externally supplied generation capability used in a workflow must be registered with four answers — who produces it (pinned version), what it cannot do, how its output is accepted (artifact-type-specific, never a generic UI score), and where the evidence lives — and unregistered or evaluating capabilities must be visibly marked as not usable for delivery.",
+  "context": "A workflow that consumes third-party image/3D/video skills; the product's own scope is governance, not generation.",
+  "passCriteria": [
+   "Registry entry carries provider + pinned version, explicit limits, artifact-specific acceptance, evidence path",
+   "Evaluating/rejected capabilities render as not-deliverable in the UI",
+   "Acceptance criteria differ by artifact family (web vs image vs 3D vs video)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Capability used in delivery without a registry entry",
+   "Generic six-dimension score applied to non-UI artifacts",
+   "Evaluating capability silently treated as adopted"
+  ]
+ },
+ {
+  "id": "evaluated-and-rejected-is-a-record",
+  "request": "A capability that was evaluated and deliberately not adopted must remain in the registry with its rejection reason and evidence link, rather than disappearing; the record must make clear what it would have needed to be adoptable.",
+  "context": "Reference/knowledge services considered for workflow integration but rejected for cost, licensing, or offline-reproducibility reasons.",
+  "passCriteria": [
+   "Rejected capability persists with reason and insight link",
+   "Reason names the blocking constraint (cost/licence/network/reproducibility)",
+   "Registry distinguishes adopted / evaluating / rejected visually and textually",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Rejected capability deleted, allowing silent re-evaluation loops",
+   "Rejection reason omitted or reduced to 'not needed'",
+   "Rejected entry indistinguishable from adopted in the UI"
+  ]
+ },
+ {
+  "id": "knowledge-card-codable-required",
+  "request": "Every knowledge-base card must carry codable parameters (numeric or boolean constraints an implementation can apply) and an explicit scope; a card without codable parameters is marked incomplete rather than published as active knowledge.",
+  "context": "Self-learning pipeline that ingests high-view visual-design videos and distils reusable mechanisms into a versioned knowledge base.",
+  "passCriteria": [
+   "Card lists concrete codable params (values/ranges/constraints), not adjectives",
+   "Scope states where the mechanism holds and where it does not",
+   "Missing codable params force status=incomplete",
+   "Card cites source with inspection level and heat signal"
+  ],
+  "failConditions": [
+   "Card consists of impressions with no applicable parameters",
+   "Scope omitted, implying universal applicability",
+   "View count used as a quality claim"
+  ]
+ },
+ {
+  "id": "knowledge-supersede-not-delete",
+  "request": "Knowledge-base evolution must be append-only: when a newer card contradicts an older one, the older card is marked superseded with a pointer to its successor, conflicts carry an explicit resolution (or an evidence-insufficient note), and destructive schema changes ship a migration record.",
+  "context": "Versioned knowledge base consumed by a workbench UI; cards accumulate daily from video learning.",
+  "passCriteria": [
+   "Superseded card retained with link to successor",
+   "Conflicting cards carry resolution or evidence-insufficient marker",
+   "Schema changes have a migration note mapping old to new fields",
+   "Reader tolerates unknown fields and missing optional fields"
+  ],
+  "failConditions": [
+   "Old card deleted or silently overwritten",
+   "Conflict resolved by fiat without evidence",
+   "Schema renamed in place with no migration"
+  ]
+ },
+ {
+  "id": "taste-trait-traceable",
+  "request": "A user taste profile must derive every trait from recorded, quotable signals; a trait without traceable evidence is invalid, confidence must be capped by the amount of supporting evidence, and adoption requires both the confidence threshold and at least two independent signals.",
+  "context": "Adaptive workflow that learns user preferences from explicit direction and accepted/rejected proposals.",
+  "passCriteria": [
+   "Each trait cites signal ids that exist in the signal log",
+   "Claimed confidence above what cited evidence supports is clamped, with the clamp recorded",
+   "Adoption requires threshold AND >=2 independent signals",
+   "Trait shows whether it is adopted or display-only"
+  ],
+  "failConditions": [
+   "Trait invented without a signal",
+   "Confidence asserted beyond evidence and silently used for defaults",
+   "Single signal promoted to an adopted default"
+  ]
+ },
+ {
+  "id": "site-claims-backed-by-data",
+  "request": "A public product site must render its headline numbers (verified artifacts, capability adoption, knowledge cards, adopted traits) from the same structured sources the product itself uses, so no marketing claim can exceed what the repository can prove.",
+  "context": "Marketing/landing page generated from the workbench's own JSON (artifacts, capabilities, knowledge index, taste profile).",
+  "passCriteria": [
+   "Every headline statistic is computed from a repository JSON source at build time",
+   "Counts shown match the underlying files (no hand-typed numbers)",
+   "Terms page linked and states what is and is not guaranteed",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Hard-coded marketing numbers that can drift from evidence",
+   "Claim of verification where the artifact has unmeasured dimensions",
+   "Terms/limitations omitted from the public page"
+  ]
+ },
+ {
+  "id": "knowledge-layer-taxonomy",
+  "request": "A knowledge base must classify each card into an explicit layer (composition / motion / order) and declare whether its parameters are script-detectable and how those parameter values were obtained (observed / inferred / measured); a card that cannot state its provenance is downgraded rather than presented as measured fact.",
+  "context": "Self-learning knowledge base whose cards are distilled from video analysis rather than first-hand measurement.",
+  "passCriteria": [
+   "Every card declares layer and measurable flag",
+   "Parameter provenance distinguishes observed/inferred/measured",
+   "UI groups cards by layer so gaps (e.g. empty order layer) are visible",
+   "Cards with unmeasurable mechanisms are not claimed as auto-checkable"
+  ],
+  "failConditions": [
+   "Parameters presented as measured when they were inferred from videos",
+   "No layer taxonomy, making the knowledge base a flat unsearchable list",
+   "Unmeasurable aesthetic claims wired into blocking checks"
+  ]
+ },
+ {
+  "id": "safety-flagged-mechanism",
+  "request": "A mechanism carrying a known safety risk (e.g. flashing above photosensitivity thresholds) must be recorded with an explicit safety note, marked research-only, excluded from default implementations, and disabled under prefers-reduced-motion.",
+  "context": "Knowledge base ingesting high-view motion-design content that includes strobing/illusive techniques.",
+  "passCriteria": [
+   "Card carries an explicit safety note naming the risk",
+   "Status prevents default implementation (research-only / frozen)",
+   "Reduced-motion behaviour stated as disabled",
+   "UI surfaces the risk marker on the card"
+  ],
+  "failConditions": [
+   "Strobing technique implemented without photosensitivity review",
+   "Safety caveat buried in prose without a machine-visible flag",
+   "Reduced-motion behaviour unspecified"
+  ]
+ },
+ {
+  "id": "video-narrative-beat-structure",
+  "request": "A launch/demo video script must declare its beat structure explicitly — a hook inside the first 3 seconds and a re-hook roughly every 12 seconds — with each beat naming its type (raise stakes / pattern interrupt / new evidence); a script that front-loads a logo animation or exceeds 20 seconds without a re-hook fails review.",
+  "context": "Short product video produced by code (Remotion) where script beats drive both animation timing and narration.",
+  "passCriteria": [
+   "Beat table lists time ranges with beat type per segment",
+   "Hook occupies 0-3s and states the core claim without a logo intro",
+   "No gap longer than ~20s without a re-hook in videos under 90s",
+   "Ending carries a verifiable evidence frame, not a slogan"
+  ],
+  "failConditions": [
+   "Logo animation as the opening beat",
+   "Long information stretch with no re-hook",
+   "Claims in narration with no evidence frame backing them"
+  ]
+ },
+ {
+  "id": "video-evidence-frame-honesty",
+  "request": "If a video shows production metrics (agent count, tool calls, error count), those numbers must be computed from the project's own logs at build time and labeled as recorded facts; a video may not display rounded or invented metrics as proof of quality.",
+  "context": "Ending frame of a code-rendered video that displays the real production record of the project.",
+  "passCriteria": [
+   "Metrics derived from repository logs/records, not hand-typed",
+   "Labels state what the numbers are (calls/errors), not that they imply quality",
+   "Recording date or commit referenced",
+   "No metric shown that cannot be reproduced from the repo"
+  ],
+  "failConditions": [
+   "Invented or inflated production metrics",
+   "Metrics presented as quality scores",
+   "Numbers with no reproducible source"
+  ]
+ },
+ {
+  "id": "video-pacing-numeric-floors",
+  "request": "Video timing must obey numeric floors: fast-cut shots hold at least 0.65s, URLs/brand names hold at least 3s, new information appears within 2s at any point, and at least 8 real interface captures appear in the piece with one per feature segment — generated imagery only wraps or transitions.",
+  "context": "Code-rendered product video where timing and shot composition are authored as data, enabling programmatic checking.",
+  "passCriteria": [
+   "Cut durations and hold times validated against the numeric floors",
+   "Real-capture count >= 8 with per-segment coverage",
+   "Generated/AI imagery limited to packaging and transitions",
+   "Violations reported with the offending scene id"
+  ],
+  "failConditions": [
+   "Sub-0.65s cuts carrying text that cannot be read",
+   "Feature segment built entirely from generated imagery",
+   "Information gap longer than 2s with no new content"
+  ]
+ },
+ {
+  "id": "third-party-workflow-adoption",
+  "request": "Adopting a third-party workflow kit requires: pinning a version, running it locally once, reconciling its licence terms (including sub-dependency licences such as renderer and TTS), and layering the adopter's own acceptance checks on top of the kit's built-in gates — a kit may not be marked adopted on documentation reading alone.",
+  "context": "Evaluating an open-source video-production kit that ships its own agent instructions, templates, and validation scripts.",
+  "passCriteria": [
+   "Registry entry stays evaluating until a local run is recorded",
+   "Sub-dependency licences (renderer/TTS/music) explicitly reconciled",
+   "Adopter's acceptance checks layered above the kit's own gates",
+   "Provenance and evidence path recorded"
+  ],
+  "failConditions": [
+   "Marked adopted from README reading alone",
+   "Licence of a sub-dependency ignored",
+   "Kit's self-reported quality accepted as the only gate"
+  ]
+ },
+ {
+  "id": "style-heuristics-nonblocking",
+  "request": "Style-constraint heuristics derived from knowledge cards (e.g. single-stroke path M-command count, colour palette size) must run as non-blocking hints — they surface where a page exceeds a constraint with a human-readable reason, but never fail the acceptance receipt, because these are taste constraints rather than correctness ones.",
+  "context": "An acceptance script that already blocks on correctness (contrast, keyboard, console) and should additionally inform on style-constraint exceedances without gatekeeping them.",
+  "passCriteria": [
+   "Exceeding a style constraint produces a named, locatable hint",
+   "Hint count does not affect receipt ok or exit code",
+   "Correctness checks remain blocking in the same run",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Style hint causes acceptance failure (gatekeeping taste)",
+   "Hint reported without locating the offending element",
+   "Hints exist but correctness checks silently became non-blocking"
+  ]
+ },
+ {
+  "id": "incumbent-rerecord-interval",
+  "request": "Incumbent competitor rechecks must record an interval and an honest delta: what changed since the last check, what did not, and what that does to the earlier judgement — a recheck that finds no change still records the interval as evidence of stability rather than skipping the round.",
+  "context": "Periodic recheck of an incumbent platform two days after the previous visit.",
+  "passCriteria": [
+   "Interval since last check stated",
+   "Deltas listed explicitly (new features, unchanged areas)",
+   "Prior judgement reaffirmed or revised with reasons",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Recheck repeats the old insight without a delta list",
+   "Interval omitted so cadence is unauditable",
+   "Judgement changed with no stated trigger"
+  ]
+ },
+ {
+  "id": "principles-wordlist-not-pipeline",
+  "request": "Design principles (balance, unity, contrast, emphasis, repetition, pattern, rhythm) must be applied as a review wordlist with explicit applicability — at most a few per screen — never as a seven-point compliance pipeline; any check that demands all seven simultaneously must fail design review as template-driven.",
+  "context": "Page-level composition review using the seven principles as a shared vocabulary for critiques and contract items.",
+  "passCriteria": [
+   "Each applied principle names what it constrains on this page",
+   "A page may deliberately omit principles with a stated reason",
+   "Principle violations are review vocabulary, not blocking errors",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "All seven demanded on every screen",
+   "Principles used to block correctness-level acceptance",
+   "Vocabulary applied to single-component internals where it does not hold"
+  ]
+ },
+ {
+  "id": "motion-gallery-loop-format",
+  "request": "Motion work shown in galleries or product pages must default to short auto-looping clips (2-4s) rather than long-form video; the loop must start and end on visually compatible frames so the seam is invisible, and long-form remains available one click away.",
+  "context": "A gallery of motion artifacts (canvas wall, video line outputs) presented alongside static products.",
+  "passCriteria": [
+   "Motion entries render as 2-4s seamless auto-loops, muted",
+   "Loop endpoints visually compatible (no visible jump cut)",
+   "Long-form video reachable within one click",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Long-form video autoplayed in gallery context",
+   "Visible seam at loop point",
+   "Motion entries require per-item play interaction to show anything"
+  ]
+ },
+ {
+  "id": "regression-record-append-only",
+  "request": "Product defect and regression records must be append-only: a fixed regression is marked resolved with its fix reference but never deleted, and the record must carry what broke, the root cause, the fix, and the reusable lesson as separate fields.",
+  "context": "An evidence wall or ledger that includes the product's own failure history.",
+  "passCriteria": [
+   "Fixed regressions retained with resolved status and fix reference",
+   "Record separates what/root-cause/fix/lesson into distinct fields",
+   "Resolution cannot silently overwrite the description of the failure",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Resolved record deleted, hiding the failure history",
+   "Fix described but root cause absent",
+   "Lesson missing — record usable as blame but not as learning"
+  ]
+ },
+ {
+  "id": "empty-state-wiring",
+  "request": "Any conditionally-shown block (empty state, filter result, alert) must be wired to the state that controls it in the same change; adding the presentation without the state update creates a permanently hidden block, which is itself a regression detectable by tests.",
+  "context": "A filtered artifact wall whose empty state was added without the show/hide wiring and never appeared.",
+  "passCriteria": [
+   "Empty state visibility driven by computed result count",
+   "A test or check exercises both visible and hidden paths",
+   "Hidden state uses hidden attribute or equivalent, not just styling",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Block present in DOM but unreachable by any state",
+   "Visibility driven by styling alone with no logic",
+   "State update deferred to a later change"
+  ]
+ },
+ {
+  "id": "emphasis-unity-dom-approximation",
+  "request": "Principles like Emphasis (single focal element) and Unity (limited type/colour/radius scales) may be approximated in DOM checks — h1 count, distinct font-family roots, distinct border-radius values — but such approximations must be non-blocking hints that name the principle they approximate; a failed approximation must never block acceptance because the DOM is not the visual truth.",
+  "context": "Acceptance script layering style-principle hints above blocking correctness checks.",
+  "passCriteria": [
+   "h1>1 flagged as Emphasis approximation",
+   "Font/radius scale exceedances flagged as Unity approximation",
+   "Hints never change receipt ok or exit code",
+   "Real pages surface at least one actionable hint without failing"
+  ],
+  "failConditions": [
+   "Approximation blocks acceptance",
+   "Approximation claims to be the visual truth",
+   "Hints buried so deep no one reads them"
+  ]
+ },
+ {
+  "id": "unity-scale-exemptions",
+  "request": "Unity scale checks must exempt shapes that are not scale steps — full circles (percentage radii) and pills (radii >= half the element height, practically >=50px) — and must sample only rendered elements (body descendants), not head nodes with default styles; otherwise button default fonts inflate the family count and produce false Unity hints.",
+  "context": "A Unity hint counting distinct border-radius and font-family values across a rendered page.",
+  "passCriteria": [
+   "Percentage radii and pill radii excluded from the scale count",
+   "Sampling limited to body descendants",
+   "Buttons/inputs inherit the body font (no UA-default families counted)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "UA-default button fonts counted as a design-system family",
+   "Head/meta elements inflating the sample",
+   "Circles counted as radius steps"
+  ]
+ },
+ {
+  "id": "incumbent-trending-delta",
+  "request": "A trending-page sweep must produce a categorized delta (which domains rose, which incumbents persisted, which are new) rather than a raw list, and must state explicitly when there is nothing actionable for the product's own scope.",
+  "context": "Daily GitHub trending sweep as part of the learning loop.",
+  "passCriteria": [
+   "Entries grouped by domain with counts (e.g. CLI 5/12)",
+   "New faces vs persistent entries distinguished",
+   "Explicit 'nothing actionable' or concrete follow-up stated",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Raw repo list with no categorization",
+   "Deep-diving every entry in a sweep-level round",
+   "Actionability claimed without a scope check"
+  ]
+ },
+ {
+  "id": "storyboard-constraints-auditable",
+  "request": "A video storyboard must carry a constraint-reconciliation column where every narrative constraint (hook timing, re-hook cadence, screenshot counts) is checked against the beat table; rendering may only start when every row reconciles, and the storyboard itself renders no video.",
+  "context": "A 30-second storyboard awaiting user review before any render is spent.",
+  "passCriteria": [
+   "Each beat row cites the constraints it satisfies",
+   "Constraint violations block the storyboard (not the render)",
+   "Storyboards pending user review carry no rendered output",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Rendering started with unreconciled storyboard rows",
+   "Storyboard written after the video was already rendered",
+   "Constraint column present but unchecked"
+  ]
+ },
+ {
+  "id": "readonly-phase-explicit",
+  "request": "A workflow that mixes research and mutation must name its read-only phase explicitly (e.g. plan mode denies edits, asks before shell commands) and map which workflow gates run inside that phase — so the permissions story and the gate story reinforce rather than contradict each other.",
+  "context": "A gated workflow whose early gates (direction, references) are research-only while later gates produce deliverables.",
+  "passCriteria": [
+   "Research-only phase named and its permission defaults stated",
+   "Gates mapped to phases: which run read-only, which mutate",
+   "Permission escalation requires the same human confirmation as gates",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Mutation possible during the declared read-only phase",
+   "Gate list and permission list tell contradictory stories",
+   "Escalation silent or unlogged"
+  ]
+ },
+ {
+  "id": "learning-log-estimated-flagged",
+  "request": "Self-learning execution records must distinguish measured from estimated values: minutes and video counts that were not timed are flagged estimated, entries with no video (product rechecks, sweep-level category views) record videos=0 honestly, and daily KPI verdicts remain computable from the flagged data rather than from padded numbers.",
+  "context": "A learning-log JSON consumed by the workbench to show daily L1-L4 status.",
+  "passCriteria": [
+   "Untimed sessions flagged estimated=true",
+   "Non-video rounds record videos=0 rather than inflating",
+   "Daily KPI verdict computable from recorded fields",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Estimated minutes presented as measured",
+   "Product rechecks padded with video counts",
+   "KPI verdict hardcoded instead of derived"
+  ]
+ },
+ {
+  "id": "incumbent-licensing-model-shift",
+  "request": "When an incumbent shifts its licensing model (open-source core becoming a funnel for a closed hosted product), the recheck must record the shift, its effect on prior judgements, and whether any adopted dependency is affected — capability pinning decisions must not silently outlive a licence-model change upstream.",
+  "context": "Periodic recheck of an open-source visual editor that just moved its new product behind a waitlist.",
+  "passCriteria": [
+   "Licensing-model shift recorded with the effect on prior judgements",
+   "Adopted dependencies checked against the upstream change",
+   "Commercialization path noted as an identity-level item for user ruling",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Upstream licence-model change unnoticed in adopted pins",
+   "Prior judgement left stale after the shift",
+   "Commercialization option adopted without user ruling"
+  ]
+ },
+ {
+  "id": "stroke-draw-loop-reduced-motion",
+  "request": "Decorative stroke-drawing loops (dashoffset animation revealing a path) must keep the fully-drawn path as the reduced-motion static frame, hold the completed stroke for a visible pause before restarting, use ease-out for the drawing phase, and never reduce text contrast at any animation frame.",
+  "context": "Ambient single-stroke path art behind a dark landing page.",
+  "passCriteria": [
+   "prefers-reduced-motion shows the completed path, not a partially-drawn one",
+   "Draw phase uses ease-out; hold phase >=1s before restart",
+   "Text contrast unaffected at sampled frames",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Reduced-motion shows a half-drawn path",
+   "Immediate restart with no hold (jarring loop)",
+   "Linear draw motion (reads mechanical)"
+  ]
+ },
+ {
+  "id": "incumbent-skills-distribution-consensus",
+  "request": "When tracking skills-based distribution (npx skills add / plugin marketplaces), each new incumbent adopting the pattern must be recorded in the round's insight — the count and names constitute the consensus evidence used for distribution-form rulings; a count without names, or names without sources, is not evidence.",
+  "context": "Learning loop tracking how many major tools ship agent skills entry points.",
+  "passCriteria": [
+   "Each adopting incumbent named with its entry point",
+   "Count cited in capability rulings references the named list",
+   "Non-adopters or blocked attempts recorded too",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "'Many tools do this' claimed without naming them",
+   "Named list without accessible sources",
+   "Adopted list missing a known incumbent"
+  ]
+ },
+ {
+  "id": "incumbent-multiagent-console",
+  "request": "When an incumbent ships a multi-agent management console, a recheck must distinguish what it manages (execution progress) from what our layer provides (evidence and acceptance), and must state whether our differentiating layer (browser-measured verification) was encroached upon — reaffirming or revising the moat judgement with the interval noted.",
+  "context": "Periodic recheck of an incumbent that just productized agent task management in a desktop app.",
+  "passCriteria": [
+   "Recheck names the new console and what it manages",
+   "Explicit comparison: execution management vs evidence/acceptance layer",
+   "Moat judgement reaffirmed or revised with interval and trigger",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Recheck declares moat lost without evidence of encroachment",
+   "Recheck ignores the new console entirely",
+   "Differentiation stated without naming the layer"
+  ]
+ },
+ {
+  "id": "new-page-joins-wall-same-round",
+  "request": "Any new user-facing page added to the canvas must join the artifact wall in the same round it ships — with six-dimension measurements from the shared check run, a compare entry, and its viewUrl link — before the round's build is committed; a page shipped without wall registration is an undocumented deliverable.",
+  "context": "Canvas pipeline where render-site.mjs added a new public page alongside existing chain/index/mini pages.",
+  "passCriteria": [
+   "New page present in artifacts.json with sixDim from the shared check",
+   "viewUrl link works from the wall (same-directory relative)",
+   "Mission control fully-verified count includes the new page",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Page shipped and built but absent from the wall",
+   "sixDim copied from another page instead of measured",
+   "Wall count and rendered card count disagree"
+  ]
+ },
+ {
+  "id": "tutorial-ecosystem-maturity-check",
+  "request": "Before investing render time in a new output format, record an ecosystem maturity check: search results categorized by count and recency, the conclusion (standard workflow vs experimental), and what remains scarce (e.g. narrative guidance vs rendering tutorials) — scarcity is the investment signal.",
+  "context": "Video line deciding whether to produce a 30-second sample before user confirmation.",
+  "passCriteria": [
+   "Search categorized with counts and recency",
+   "Conclusion names the workflow as standard/experimental",
+   "Scarcity analysis names what is missing (e.g. narrative vs rendering)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Investment started without maturity evidence",
+   "Maturity check counts tutorials but ignores what they cover",
+   "Scarcity claim made with no search evidence"
+  ]
+ },
+ {
+  "id": "loop-export-frame-progress",
+  "request": "A micro-loop export (animated GIF/WebM assembled from screenshots of a CSS animation) must prove frames actually progressed — distinct byte sizes across frames above a threshold — and must state the loop format, size, and frame rate; a loop assembled from identical frames is a failed export even if the file is valid.",
+  "context": "Exporting an ambient CSS animation (e.g. stroke-draw) into a gallery-loop asset via headless screenshots plus ffmpeg.",
+  "passCriteria": [
+   "Distinct frame count above threshold proves animation progression",
+   "Loop file size and frame rate documented (gallery embed cost)",
+   "First frame works as a standalone thumbnail",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "All frames byte-identical (animation did not advance)",
+   "Loop file size unbounded (no embed-cost consideration)",
+   "Export claims success with a single duplicated frame"
+  ]
+ },
+ {
+  "id": "virtual-time-animation-sampling",
+  "request": "Sampling CSS animation phases in headless Chrome must use virtual time budget increments mapped to the animation timeline (budget = base + phase offset), with per-shot isolated profiles; wall-clock based recording is not required for deterministic CSS animations.",
+  "context": "Capturing deterministic CSS keyframe animations frame-by-frame without a real-time recorder.",
+  "passCriteria": [
+   "Phase offsets mapped linearly to animation duration",
+   "Per-shot isolated user-data-dir avoids profile lock",
+   "Frame count covers full cycle including hold phase",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Sampling relies on sleep/timing luck",
+   "Frames collide on shared profile lock",
+   "Hold phase missing from the capture"
+  ]
+ },
+ {
+  "id": "tutorial-path-informs-investment-order",
+  "request": "When a tutorial ecosystem reveals a progression path (single element → animated chart → long-form → cinematic), the project's own video investment must follow the same order — start with the smallest deliverable that stands alone, and defer cinematic production until the smaller pieces exist and are confirmed.",
+  "context": "Video line planning informed by how tutorials structure their teaching (small to large, static to animated).",
+  "passCriteria": [
+   "Investment order follows the smallest-standalone-first principle",
+   "Cinematic/long-form deferred until smaller pieces confirmed",
+   "Order decision cites the tutorial progression evidence",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Starting with the most complex render before basics exist",
+   "Order decision made without ecosystem evidence",
+   "Basic pieces skipped because the end goal looks achievable"
+  ]
+ },
+ {
+  "id": "guess-video-id-never-construct",
+  "request": "Video research must navigate from real search results or linked pages — constructing a video ID from memory and visiting it is a failed navigation pattern; the fallback is always re-search with refined keywords, and the miss is recorded.",
+  "context": "Deep-diving a previously seen tutorial whose URL was not captured.",
+  "passCriteria": [
+   "Constructed IDs are never visited",
+   "Fallback re-search finds the real entry",
+   "Navigation miss recorded honestly if unresolved",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Visiting guessed/remembered video URLs",
+   "Treating an invalid-ID page as the real source",
+   "Silently dropping the target video after a bad guess"
+  ]
+ },
+ {
+  "id": "row-entrance-three-part-motion",
+  "request": "Row entrance animation must follow the three-part force pattern — brief reverse anticipation, ease-out acceleration (cubic-bezier with steep start), and staggered follow-through delay per row (~33ms increments) — run exactly once on first paint, and collapse to fully-visible static rows under prefers-reduced-motion.",
+  "context": "A data table whose rows animate in on load (dark dense dashboard).",
+  "passCriteria": [
+   "Per-row stagger delay ~33ms increments",
+   "Easing curve is ease-out family (steep start), never linear",
+   "prefers-reduced-motion shows all rows immediately",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Rows animate linearly or loop",
+   "Reduced-motion shows partial or delayed rows",
+   "Animation blocks interaction before completing"
+  ]
+ },
+ {
+  "id": "gate-state-colour-semantics",
+  "request": "Gate/stage state text must use consistent colour semantics — passed=green family, active=cyan family, gated/pending=amber family — applied via classes (not inline per-cell) and still readable when colour is removed; states must never share a colour.",
+  "context": "A stage board where gate states (passed/active/pending) are rendered as text badges.",
+  "passCriteria": [
+   "Each state family has a dedicated class",
+   "Colours distinguish states without relying on colour alone (text label present)",
+   "Amber reserved for pending, green for passed, cyan for active consistently",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Two different states share one colour class",
+   "State shown by colour only",
+   "Inline colour per cell bypassing the class system"
+  ]
+ },
+ {
+  "id": "referenced-media-in-manifest",
+  "request": "When a bundled page references a media file (video/image), the exporter must ship that file into the bundle AND list it in the manifest accounting — a referenced-but-unshipped or shipped-but-unlisted file must fail reconciliation with the filename named.",
+  "context": "Offline bundle whose mini page references stroke-loop.webm for its loop preview.",
+  "passCriteria": [
+   "Referenced media shipped into the bundle and listed in manifest",
+   "Reconciliation catches unlisted files with named output",
+   "Missing media file fails the export before shipping",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Page references media absent from the bundle",
+   "Media shipped but invisible to manifest accounting",
+   "Reconciliation passes while bundle contents and manifest disagree"
+  ]
+ },
+ {
+  "id": "vox-style-alias-field",
+  "request": "Knowledge cards may carry an optional scene-named alias (e.g. 'Vox style' alongside 'editorial motion principles') to improve retrieval and transmission; the alias is a handle, never a replacement for the mechanism title, and carries the same provenance as the card.",
+  "context": "A self-learning knowledge base whose cards are retrieved by both agents and humans.",
+  "passCriteria": [
+   "Alias field optional and back-compatible",
+   "Alias never overrides the mechanism title in formal contexts",
+   "Alias carries the same provenance/inspection level as the card",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Alias replaces the mechanism title in citations",
+   "Alias invented without the card's provenance",
+   "Aliases collide across unrelated cards"
+  ]
+ },
+ {
+  "id": "blocked-source-structural-reroute",
+  "request": "When a research source is structurally unreachable (all card links point to a login-walled platform, not a one-off 404), the round must record the blockage as a structural reroute — naming the alternative path and updating the standing plan — rather than treating it as a transient miss.",
+  "context": "A gallery whose motion works all link to X posts while the research session cannot access X.",
+  "passCriteria": [
+   "Blockage classified as structural (all links) vs transient (single 404)",
+   "Alternative research path named and adopted in the standing plan",
+   "Prior预告 explicitly marked deferred rather than silently dropped",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Structural blockage treated as a one-off miss",
+   "Alternative path adopted without recording the switch",
+   "预告 silently dropped"
+  ]
+ },
+ {
+  "id": "checklist-wordlist-not-gate",
+  "request": "User-facing review checklists derived from knowledge cards must be phrased as questions to ask (wordlist), never as pass/fail gates; the checklist teaches users what to ask the AI, and must cite the knowledge card that carries the parameterized definitions.",
+  "context": "A getting-started guide translating the seven design principles into a two-minute self-check for non-experts.",
+  "passCriteria": [
+   "Checklist phrased as questions with what-to-look-for",
+   "Explicitly scoped: a page needs only a few principles at once",
+   "Cites the knowledge card carrying parameterized definitions",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Checklist demands all seven principles per page",
+   "Questions written as pass/fail assertions",
+   "No link to the parameterized source"
+  ]
+ },
+ {
+  "id": "icon-micro-motion-duration",
+  "request": "Icon micro-animations must stay within the 0.4-0.6s window (three-part: enter ~0.2s, change ~0.2s, settle ~0.1s); durations above 0.8s turn a control into a performance, and the reduced-motion frame must be the completed state.",
+  "context": "Dark UI with status/achievement icons that animate on state change.",
+  "passCriteria": [
+   "Animation duration within 0.4-0.6s per icon",
+   "Three-part structure (enter/change/settle) present",
+   "Reduced-motion shows the completed state frame",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Icon animation exceeding 0.8s",
+   "Looping icon animation without a completed-state rest point",
+   "Multiple icons animating simultaneously beyond 3"
+  ]
+ },
+ {
+  "id": "game-icon-motion-as-asset",
+  "request": "When a game franchise officially adopts animated icons (官宣), that is recorded as market evidence that animated icons are formal design assets — relevant to capability planning (pixel/3D asset slots) and to icon-motion knowledge cards as domain validation, independent of the game IP itself.",
+  "context": "Bilibili content ecosystem where game studios' animated icon systems draw millions of views.",
+  "passCriteria": [
+   "Official adoption signal recorded (announcement video views cited)",
+   "IP assets referenced for mechanism only, never reproduced",
+   "Connection to capability slots stated (asset pipeline relevance)",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Game IP artwork reproduced in project materials",
+   "Adoption signal ignored because the domain differs",
+   "Mechanism extracted without noting the IP boundary"
+  ]
+ },
+ {
+  "id": "icon-badge-hover-500ms",
+  "request": "Wall-entry badge hover must complete its lift-and-highlight within the 0.5s micro-motion window (transform + glow + border approximated by transition timing), be fully disabled under prefers-reduced-motion, and never alter the badge's readable text or its layout position.",
+  "context": "Artifact wall summary badges (score/origin/version) gaining hover affordance.",
+  "passCriteria": [
+   "Hover transition completes within 0.5s total",
+   "prefers-reduced-motion disables transform and shadow entirely",
+   "Badge text, count, and layout position unchanged during hover",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Hover animation exceeds 0.8s",
+   "Hover shifts layout or reflows siblings",
+   "Reduced-motion still animates"
+  ]
+ },
+ {
+  "id": "series-content-one-scenario-per-card",
+  "request": "Knowledge cards distilled from series content must maintain one-scenario-per-card granularity (e.g. a transition card, a scroll card, a modal card — not one merged microinteraction card); merged cards reduce retrieval precision and hide which scenario a parameter applies to.",
+  "context": "Self-learning loop distilling a tutorial series that covers many microinteraction scenarios.",
+  "passCriteria": [
+   "Each card names its specific scenario (transition/scroll/modal/drag)",
+   "Scenario-specific parameters stay in their own card",
+   "Cross-card links use relations, not merged bodies",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "One microinteractions card absorbing all scenarios",
+   "Parameters from different scenarios mixed without scope",
+   "Retrieval by scenario impossible"
+  ]
+ },
+ {
+  "id": "easing-curve-as-first-principle",
+  "request": "Motion knowledge base must treat easing curves as a first-class entry (families: ease-out for feedback, spring for physics, linear for data flow) with concrete cubic-bezier values per family — curves are the first principle of motion, preceding duration and stagger decisions.",
+  "context": "Motion knowledge base with a motion-contract spring parameter system.",
+  "passCriteria": [
+   "Curve families enumerated with cubic-bezier values",
+   "Each family mapped to its use case (feedback/physics/data)",
+   "Cross-referenced with the motion contract presets",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Curves treated as an afterthought to duration",
+   "No concrete values per family",
+   "Family-to-usecase mapping absent"
+  ]
+ },
+ {
+  "id": "curve-family-scene-mapping",
+  "request": "Easing curve selection must map curve families to scenes — ease-out family for feedback (buttons/entrance/hover), spring family with overshoot for physics (toggles/drag release), linear or near-linear for data flow (progress/numbers/charts) — and must include a disable list (no linear for feedback, no spring for data, no bounce outside gamified contexts); curve choice precedes duration.",
+  "context": "Motion knowledge base curve taxonomy consumed by implementers choosing CSS transitions.",
+  "passCriteria": [
+   "Three families + special cases enumerated with concrete bezier values",
+   "Disable list present (which curve must not appear in which scene)",
+   "Cross-referenced with the motion contract spring presets",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Curve selection as infinite free choice with no scene mapping",
+   "No disable list",
+   "Curve family chosen after duration is fixed"
+  ]
+ },
+ {
+  "id": "tool-tutorial-vs-principle-scarcity",
+  "request": "Sweep-level ecosystem checks must distinguish tool-operation content from principle content and record which is scarce; when principle content is absent from a topic top results, the absence itself is recorded as a content gap and a knowledge-base opportunity.",
+  "context": "A learning loop sweep over a motion topic where top results are all software tutorials.",
+  "passCriteria": [
+   "Top results categorized as tool-operation vs principle",
+   "Principle scarcity recorded as a finding",
+   "Knowledge card fills the gap with mechanism-level content",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Tutorial abundance mistaken for principle coverage",
+   "Sweep findings recorded as a raw list",
+   "Gap finding made without categorizing the results"
+  ]
+ },
+ {
+  "id": "linear-feedback-curve-hint",
+  "request": "Feedback elements (button/a/summary) whose transition-timing-function is linear must be surfaced as non-blocking hints citing the curve family mapping (feedback requires ease-out acceleration); the hint must not gate acceptance since curve choice is a taste constraint.",
+  "context": "Acceptance script layering curve-family hints above blocking correctness checks.",
+  "passCriteria": [
+   "Linear-timing feedback elements produce a named hint",
+   "Hint cites the curve family mapping rationale",
+   "Hint does not affect receipt ok or exit code",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Linear hint gates acceptance",
+   "Hint counts elements without naming the violation",
+   "Correctness checks silently became non-blocking"
+  ]
+ },
+ {
+  "id": "math-explanation-writing-paradigm",
+  "request": "Knowledge card mechanism fields should prefer mathematical/function explanations (position as a function of time, slope changes) over subjective adjectives (feels smooth/looks natural); math-expressible mechanisms are directly codable and verifiable, adjective-only mechanisms are not.",
+  "context": "Knowledge base writing standard for mechanism fields distilled from video content.",
+  "passCriteria": [
+   "Mechanism expressed as function/relationship, not adjectives",
+   "Codable params derive from the math expression",
+   "Subjective phrasing (smooth/natural/beautiful) absent from mechanism field",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Mechanism field contains only aesthetic judgments",
+   "Math description present but params not derived from it",
+   "Card marked active without codable mechanism"
+  ]
+ },
+ {
+  "id": "alias-is-handle-not-replacement",
+  "request": "Knowledge card aliases (scene-named handles) must coexist with the mechanism title — formal citations use the title, aliases aid retrieval and transmission — and an alias invented without the card provenance must not be accepted; the alias field is optional and back-compatible.",
+  "context": "Knowledge base v1.2 adding an optional alias field for scene-named handles.",
+  "passCriteria": [
+   "Alias present alongside (not replacing) the mechanism title",
+   "Alias carries the card provenance (source noted)",
+   "Formal citations still use the mechanism title",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Alias silently replacing the title in citations",
+   "Alias with no provenance accepted",
+   "Back-compatibility broken for cards without aliases"
+  ]
+ },
+ {
+  "id": "local-first-positioning-language",
+  "request": "Products that keep all state and builds local must consistently use the local-first positioning term across identity and public pages — replacing scattered phrases like all-local or no-backend — so that the positioning camp (local-first vs cloud) is legible to users comparing tools.",
+  "context": "Identity doc and public site for a workflow whose privacy boundary depends on local operation.",
+  "passCriteria": [
+   "local-first used as the single positioning term in identity and site",
+   "Scattered equivalent phrases consolidated",
+   "The term appears in the public site positioning copy",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Three different phrases for the same local boundary",
+   "Positioning camp (local vs cloud) absent from public copy",
+   "Identity doc contradicts the site positioning"
+  ]
+ },
+ {
+  "id": "alias-surfaced-not-just-stored",
+  "request": "A structured field added to a data schema must be surfaced in the consuming UI in the same cycle it is introduced — an alias stored in the index but never rendered is dead data, and reviewers cannot tell the schema change from an unused field.",
+  "context": "Knowledge base v1.2 added an alias field; the workbench card list initially rendered only the mechanism title.",
+  "passCriteria": [
+   "Alias rendered next to the mechanism title in the card list",
+   "Alias carries an accessible name stating it is a scene alias",
+   "Cards without an alias render unchanged",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Schema field stored but never displayed",
+   "Alias rendered without accessible semantics",
+   "Missing alias breaks the row layout"
+  ]
+ },
+ {
+  "id": "design-system-as-capability-item",
+  "request": "When an incumbent promotes design-system definition from documentation guidance to a first-class product capability, the recheck must record the delta and compare enforcement models — mandatory gate (ours) vs optional capability (theirs) — rather than reporting feature parity.",
+  "context": "v0 added a Create design systems capability item beside templates and design mode.",
+  "passCriteria": [
+   "Delta recorded against the previous recheck",
+   "Enforcement model compared explicitly (gate vs optional)",
+   "Cross-incumbent convergence noted where applicable",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Feature listed without the enforcement comparison",
+   "Prior recheck not referenced",
+   "Parity claimed between optional and mandatory models"
+  ]
+ },
+ {
+  "id": "alias-surface-dual-surfaces",
+  "request": "When a knowledge-base field is promoted into the schema as a retrieval handle (alias), it must be surfaced on every page that renders knowledge cards with the contracted accessible name — a field stored in data but rendered nowhere is dead data and fails the round.",
+  "context": "schema v1.2 added alias; the workbench rendered it from 增量 53, the site only from 增量 54.",
+  "passCriteria": [
+   "Every page rendering knowledge cards shows aliases as declared (no fabricated chips)",
+   "Chips carry the contracted aria-label format",
+   "Cross-page coverage: every declared alias appears on at least one knowledge-card page",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Field present in JSON but absent from all rendered pages",
+   "Chip rendered without accessible name",
+   "Guard skips the page set entirely"
+  ]
+ },
+ {
+  "id": "horizontal-overflow-two-widths",
+  "request": "A page claiming responsive no-clipping must measure document scrollWidth against viewport width at both shipping widths (desktop 1280 and mobile 520); grid children containing pre/code/tables need minmax(0,1fr) plus min-width:0 so long unbreakable content scrolls internally instead of stretching the page.",
+  "context": "site 520px overflowed 115px since v1.0 (.step pre + kb table min-content) and the sixDim mobile claim said 无裁切 without a scrollWidth probe.",
+  "passCriteria": [
+   "scrollWidth <= clientWidth at 1280 and 520",
+   "Long code lines scroll inside their pre rather than widening the page",
+   "Fix recorded in the regressions wall with root cause",
+   "The overflow probe becomes a standing check, not a one-off"
+  ],
+  "failConditions": [
+   "Screenshot-only evidence used to claim no clipping",
+   "Overflow fixed by hiding content instead of internal scroll",
+   "Guard added but only run on the page that regressed"
+  ]
+ },
+ {
+  "id": "video-delivery-form-matrix",
+  "request": "When producing a product promo video, deliver a duration matrix (hero 90-165s, standard 60s, social 30s) sharing one narrative skeleton rather than a single cut; each length gets its own silent-readable first frame and re-hook count.",
+  "context": "B站 AI产品宣传片 Top30 shows 60s named as the standard form while 3min+ only holds for tutorials; our pipeline had only a 165s hero cut.",
+  "passCriteria": [
+   "Duration matrix declared with per-length purpose",
+   "All lengths reuse one narrative skeleton (hook/re-hook/evidence)",
+   "Short cuts are re-edited, not mechanically cropped from the hero",
+   "Each length has a silent-readable first frame"
+  ],
+  "failConditions": [
+   "Single cut shipped to every channel",
+   "Short version produced by trimming the hero without reordering",
+   "First frame depends on audio to be understood"
+  ]
+ },
+ {
+  "id": "sound-design-as-separate-layer",
+  "request": "Sound design is an independent layer from BGM: transition whooshes, emphasis clicks and rhythm ticks must be authored on separate tracks, frame-aligned to picture events, with BGM ducking — a BGM-only cut reads flat and must be reported as a gap, not as finished.",
+  "context": "The highest-engagement promo titles name 音效+快闪字体+UI界面 as the formula; our 165s cut had BGM with zero sound-effect events.",
+  "passCriteria": [
+   "SFX track separate from BGM track",
+   "Each SFX aligned to its picture event within 2 frames",
+   "BGM ducks under SFX",
+   "Silent playback remains fully understandable"
+  ],
+  "failConditions": [
+   "SFX baked into the BGM file",
+   "Sound effects used to carry information unavailable visually",
+   "BGM-only cut reported as complete without flagging the gap"
+  ]
  }
 ]

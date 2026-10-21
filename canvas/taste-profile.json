@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "note": "用户品味档案 v0（Taste Profile）。与项目级知识库（docs/knowledge-base/）严格分离：知识库=我们提供给你参考的机制；品味档案=从你的实际使用中累积的偏好。**只记录可复核信号，不做心理推断；每条特质必须能指向来源信号；置信度低于阈值的只展示不采用。**",
+  "updatedOn": "2026-10-19",
+  "signals": [
+    {
+      "id": "sig-001",
+      "at": "2026-10-19",
+      "kind": "explicit-direction",
+      "quote": "更是一个工作台界面……制作更好的界面，包括更好的艺术画面",
+      "derived": [
+        "wants-workbench-surface",
+        "values-visual-craft"
+      ],
+      "source": "用户会话"
+    },
+    {
+      "id": "sig-002",
+      "at": "2026-10-19",
+      "kind": "explicit-direction",
+      "quote": "我们主打的是工作流……专注一下我们工作流的一个监管和产品质量把控",
+      "derived": [
+        "values-governance-over-generation"
+      ],
+      "source": "用户会话"
+    },
+    {
+      "id": "sig-003",
+      "at": "2026-10-19",
+      "kind": "explicit-direction",
+      "quote": "每天都要按 KPI 这样做（高播放视觉系视频学习）",
+      "derived": [
+        "wants-continuous-learning",
+        "trusts-evidence-over-hype"
+      ],
+      "source": "用户会话"
+    },
+    {
+      "id": "sig-004",
+      "at": "2026-10-19",
+      "kind": "explicit-direction",
+      "quote": "让这个工作流越用越懂用户 / 用户能每次都看到目前的方向和情况",
+      "derived": [
+        "wants-visible-direction",
+        "wants-adaptive-workflow"
+      ],
+      "source": "用户会话"
+    },
+    {
+      "id": "sig-005",
+      "at": "2026-10-19",
+      "kind": "artifact-choice",
+      "quote": "知识库区块/产物墙/能力接入登记表被要求成为一等界面",
+      "derived": [
+        "prefers-structured-evidence-ui"
+      ],
+      "source": "用户会话"
+    }
+  ],
+  "traits": [
+    {
+      "id": "values-governance-over-generation",
+      "label": "偏好监管深度而非生成广度",
+      "confidence": 0.7,
+      "evidence": [
+        "sig-002"
+      ],
+      "appliesTo": [
+        "能力接入取舍",
+        "路线优先级",
+        "对外表述"
+      ],
+      "counterSignal": null,
+      "status": "shown",
+      "adopted": false
+    },
+    {
+      "id": "values-visual-craft",
+      "label": "重视视觉与艺术画面质量",
+      "confidence": 0.85,
+      "evidence": [
+        "sig-001",
+        "sig-005"
+      ],
+      "appliesTo": [
+        "工作台视觉",
+        "产物验收",
+        "官网呈现"
+      ],
+      "counterSignal": null,
+      "status": "adopted",
+      "adopted": true
+    },
+    {
+      "id": "wants-visible-direction",
+      "label": "要求方向与状态持续可见",
+      "confidence": 0.7,
+      "evidence": [
+        "sig-004"
+      ],
+      "appliesTo": [
+        "工作台信息架构",
+        "轮次汇报",
+        "官网说明"
+      ],
+      "counterSignal": null,
+      "status": "shown",
+      "adopted": false
+    },
+    {
+      "id": "wants-adaptive-workflow",
+      "label": "希望工作流随使用累积理解用户",
+      "confidence": 0.7,
+      "evidence": [
+        "sig-004"
+      ],
+      "appliesTo": [
+        "品味档案",
+        "默认参数",
+        "推荐策略"
+      ],
+      "counterSignal": null,
+      "status": "shown",
+      "adopted": false
+    },
+    {
+      "id": "trusts-evidence-over-hype",
+      "label": "要求证据优先、反感夸大",
+      "confidence": 0.8,
+      "evidence": [
+        "sig-003",
+        "sig-002"
+      ],
+      "appliesTo": [
+        "文案",
+        "验收口径",
+        "对比表"
+      ],
+      "counterSignal": null,
+      "status": "adopted",
+      "adopted": true
+    },
+    {
+      "id": "prefers-structured-evidence-ui",
+      "label": "偏好结构化证据界面",
+      "confidence": 0.7,
+      "evidence": [
+        "sig-005"
+      ],
+      "appliesTo": [
+        "区块设计",
+        "表格密度"
+      ],
+      "counterSignal": null,
+      "status": "shown",
+      "adopted": false
+    },
+    {
+      "id": "wants-workbench-surface",
+      "label": "把工作台界面视为产品门面",
+      "confidence": 0.7,
+      "evidence": [
+        "sig-001"
+      ],
+      "appliesTo": [
+        "官网与工作台关系",
+        "品牌呈现"
+      ],
+      "counterSignal": null,
+      "status": "shown",
+      "adopted": false
+    }
+  ],
+  "thresholds": {
+    "adopt": 0.8,
+    "showOnly": 0.5,
+    "note": "≥adopt 才可作为默认值采用；showOnly 之间只展示；<showOnly 不展示（避免噪音）"
+  },
+  "guardrails": [
+    "只从可复核信号推导（用户原话、明确选择、被接受/被拒的方案），不做心理画像",
+    "每条特质必须可回溯到 signals 中的具体条目",
+    "反信号（counterSignal）存在时，置信度必须下调并如实展示",
+    "品味档案不跨用户共享，不上传，不外发",
+    "用户可随时要求删除某条信号或整份档案"
+  ],
+  "derivedAt": "2026-10-19",
+  "summary": {
+    "signals": 5,
+    "traits": 7,
+    "adopted": 2,
+    "contested": 0
+  }
+}

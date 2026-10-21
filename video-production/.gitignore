@@ -1,0 +1,9 @@
+node_modules/
+out/
+!out/scores/
+public/music.wav
+# 截图由 scripts/capture-uak.mjs 现场生成，可重建，不入库
+assets/captures/
+src/assets/
+public/captures/
+public/test-canvas.png

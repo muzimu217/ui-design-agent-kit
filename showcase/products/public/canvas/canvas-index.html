@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>画布工作台 · 入口</title>
+<style>
+  :root { color-scheme: dark; --bg:#0a0a0f; --panel:#141420; --line:#26263a; --text:#e6e6f0; --dim:#9a9ab0; --accent:#7c3aed; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.65 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif; padding:32px 20px 64px; overflow-x:hidden; overflow-wrap:anywhere; }
+  main { max-width:920px; margin:0 auto; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  .meta { color:var(--dim); font-size:13px; margin-bottom:20px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-bottom:22px; }
+  a.card { display:block; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px; text-decoration:none; color:var(--text); }
+  a.card:hover { border-color:var(--accent); }
+  a.card h2 { margin:0 0 6px; font-size:16px; color:#c4b5fd; }
+  a.card p { margin:0; color:var(--dim); font-size:13px; }
+  .pill { display:inline-block; border:1px solid var(--line); border-radius:99px; padding:2px 10px; font-size:12px; margin:2px 4px 2px 0; }
+  .stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:22px; }
+  .stage { background:var(--panel); border:1px solid var(--line); border-top:3px solid var(--c); border-radius:10px; padding:12px; }
+  .sid { font-weight:600; }
+  .sst { font-size:12px; margin:2px 0 6px; }
+  .snote { color:var(--dim); font-size:12px; }
+  h2.sec { font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--dim); margin:22px 0 10px; }
+  details.art { background:var(--panel); border:1px solid var(--line); border-radius:10px; margin-bottom:10px; }
+  // 图标/条目微动效 0.5s 三段式（知识卡 icon-motion-500ms）：badge hover 时 0.5s 内完成抬起-高亮-回稳，降动效直接高亮无位移。
+  details.art summary .badge { transition:transform .2s cubic-bezier(.2,0,0,1), box-shadow .2s cubic-bezier(.2,0,0,1), border-color .1s ease; }
+  details.art:hover summary .badge, details.art[open] summary .badge { transform:translateY(-1px); box-shadow:0 1px 4px rgba(167,139,250,.35); border-color:var(--accent); }
+  details.art summary { cursor:pointer; display:flex; gap:10px; align-items:baseline; padding:12px 16px; list-style:none; }
+  @media (prefers-reduced-motion: reduce) { details.art summary .badge { transform:none !important; box-shadow:none !important; transition:none !important; } }
+  details.art summary::-webkit-details-marker { display:none; }
+  .t { font-weight:600; flex:1; }
+  .round { color:var(--dim); font-size:12px; }
+  .chain-row { display:flex; align-items:baseline; gap:10px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin-bottom:8px; text-decoration:none; color:var(--text); min-width:0; }
+  .chain-row:hover { border-color:var(--accent); }
+  .chain-row .t { font-weight:600; flex:1; min-width:0; overflow-wrap:anywhere; }
+  .chain-row .round, .chain-row .open { color:var(--dim); font-size:12px; flex:none; }
+  .wall-filter { display:flex; gap:8px; margin-bottom:10px; }
+  .wf-sep { color:var(--dim); font-size:12px; margin:0 4px; }
+  .wf-btn { background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:3px 12px; font:inherit; font-size:12px; color:var(--dim); cursor:pointer; }
+  .wf-btn.is-on { border-color:var(--accent); color:#c4b5fd; }
+  .mc { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+  .mc-col { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+  .mc-col h3 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); margin:0 0 10px; }
+  .mc-row { display:flex; gap:10px; margin:6px 0; min-width:0; }
+  .mc-k { color:var(--dim); min-width:76px; flex:none; font-size:12px; }
+  .mc-v { flex:1; min-width:0; overflow-wrap:anywhere; font-size:13px; }
+  @media (max-width: 640px) { .mc { grid-template-columns:1fr; } }
+  .task-row { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin-bottom:8px; min-width:0; }
+  .task-row .t { font-weight:600; flex:1 1 220px; min-width:0; overflow-wrap:anywhere; }
+  .task-row .round { color:var(--dim); font-size:12px; flex:none; }
+  .task-exec { color:#22d3ee; font-size:12px; flex:1 1 200px; min-width:0; }
+  .task-ev { color:#34d399; font-size:12px; flex:1 1 200px; min-width:0; }
+  .src { flex:none; border-radius:99px; padding:1px 8px; font-size:11px; border:1px solid var(--line); }
+  .src-ai { color:#fbbf24; border-color:#4a3b12; }
+  .src-mixed { color:#a7f3d0; border-color:#1f4d3a; }
+  .ver { flex:none; color:#c4b5fd; font-size:11px; font-weight:600; }
+  .badge { flex:none; background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:1px 8px; font-size:11px; color:#a7f3d0; }
+  .body { padding:0 16px 14px; font-size:13px; }
+  .row { display:flex; gap:10px; margin:6px 0; min-width:0; }
+  .k { color:var(--dim); min-width:48px; flex:none; }
+  .v { flex:1; min-width:0; overflow-wrap:anywhere; }
+  code { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:12px; color:#8ab4ff; word-break:break-all; }
+  .art-open { color:#c4b5fd; text-decoration:underline dotted; text-underline-offset:3px; white-space:nowrap; }
+  .art-open:hover { color:#a78bfa; }
+  .art-self { color:var(--dim); font-size:12px; white-space:nowrap; }
+  .cmp { border:1px solid var(--line); border-radius:6px; padding:10px 12px; margin:4px 0; background:#0d0d15; }
+  .cmp-head { display:flex; flex-wrap:wrap; gap:8px; align-items:baseline; margin-bottom:8px; }
+  .cmp-vs { font-weight:600; color:#c4b5fd; }
+  .cmp-sum { color:var(--dim); font-size:12px; }
+  .cmp-level { margin-left:auto; border:1px solid #4a3b12; color:#fbbf24; border-radius:99px; padding:1px 8px; font-size:11px; }
+  .cmp-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .cmp-table th { color:var(--dim); font-weight:500; text-align:left; padding:3px 8px; border-bottom:1px solid var(--line); }
+  .cmp-table td { padding:3px 8px; border-bottom:1px solid var(--line); overflow-wrap:anywhere; }
+  .cmp-table tr:last-child td { border-bottom:none; }
+  .mk { font-weight:600; }
+  .mk-yes { color:#34d399; }
+  .mk-no { color:#f87171; }
+  .mk-na { color:var(--dim); }
+  .cmp-note { color:var(--dim); font-size:12px; margin-top:8px; }
+  .wall-legend { color:var(--dim); font-size:12px; margin:0 0 10px; }
+  .cap-intro { color:var(--dim); font-size:12px; margin:0 0 10px; }
+  .cap-table { display:grid; gap:8px; }
+  .cap-row { display:grid; grid-template-columns:64px minmax(140px,1.1fr) minmax(120px,1fr) minmax(180px,1.6fr); gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px 14px; font-size:12px; }
+  .cap-st { border:1px solid; border-radius:99px; padding:1px 8px; font-size:11px; text-align:center; white-space:nowrap; }
+  .cap-name { font-weight:600; }
+  .cap-kind { color:var(--dim); font-weight:400; margin-left:6px; font-size:11px; }
+  .cap-prov { color:var(--dim); overflow-wrap:anywhere; }
+  .cap-acc { color:#a7f3d0; overflow-wrap:anywhere; }
+  @media (max-width: 640px) { .cap-row { grid-template-columns:64px 1fr; } .cap-prov, .cap-acc { grid-column:2; } }
+  .kb-table { display:grid; gap:8px; }
+  .kb-row { display:grid; grid-template-columns:56px 1fr minmax(160px,auto); gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-left:3px solid #22d3ee; border-radius:10px; padding:10px 14px; font-size:12px; }
+  .kb-dom { color:#22d3ee; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+  .kb-title { font-weight:600; overflow-wrap:anywhere; }
+  .kb-alias { display:inline-block; margin-left:6px; font-size:10px; color:#c4b5fd; border:1px solid #3f3a5e; border-radius:99px; padding:0 6px; vertical-align:middle; font-weight:400; }
+  .kb-m { display:inline-block; margin-left:6px; font-size:10px; border:1px solid #1f4d3a; color:#a7f3d0; border-radius:99px; padding:0 6px; vertical-align:middle; }
+  .kb-risk { display:inline-block; margin-left:6px; font-size:10px; border:1px solid #4a1d1d; color:#fca5a5; border-radius:99px; padding:0 6px; vertical-align:middle; }
+  .kb-learn { color:var(--dim); font-size:12px; margin:0 0 10px; }
+  .kb-learn b { color:var(--accent2); font-variant-numeric:tabular-nums; }
+  .kb-meta { color:var(--dim); text-align:right; }
+  @media (max-width: 640px) { .kb-row { grid-template-columns:56px 1fr; } .kb-meta { grid-column:2; text-align:left; } }
+  .taste-table { display:grid; gap:8px; }
+  .taste-row { display:grid; grid-template-columns:64px 1fr 52px minmax(90px,auto); gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-left:3px solid #7c3aed; border-radius:10px; padding:10px 14px; font-size:12px; }
+  .taste-st { border:1px solid; border-radius:99px; padding:1px 8px; font-size:11px; text-align:center; white-space:nowrap; }
+  .taste-label { font-weight:600; overflow-wrap:anywhere; }
+  .taste-conf { color:#c4b5fd; font-variant-numeric:tabular-nums; text-align:right; }
+  .taste-ev { color:var(--dim); font-size:11px; }
+  @media (max-width: 640px) { .taste-row { grid-template-columns:64px 1fr 52px; } .taste-ev { grid-column:2 / -1; } }
+  .reg-table { display:grid; gap:8px; }
+  .reg-row { display:grid; grid-template-columns:64px 1fr minmax(90px,auto); gap:12px; background:var(--panel); border:1px solid var(--line); border-left:3px solid #f87171; border-radius:10px; padding:10px 14px; font-size:12px; }
+  .reg-st { border:1px solid; border-radius:99px; padding:1px 8px; font-size:11px; text-align:center; white-space:nowrap; }
+  .reg-body { display:grid; gap:4px; min-width:0; }
+  .reg-body strong { font-size:12.5px; }
+  .reg-what { color:var(--dim); overflow-wrap:anywhere; }
+  .reg-lesson { color:#a7f3d0; overflow-wrap:anywhere; }
+  .reg-meta { color:var(--dim); font-size:11px; text-align:right; }
+  @media (max-width: 640px) { .reg-row { grid-template-columns:64px 1fr; } .reg-meta { grid-column:2; text-align:left; } }
+  .cmp-caption { caption-side:bottom; color:var(--dim); font-size:11px; text-align:left; padding-top:6px; }
+  /* 生成式微艺术背景：装饰层（aria-hidden），降动效下完全静止且构图不变 */
+  .ambient { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.55; }
+  .ambient canvas { width:100%; height:100%; display:block; }
+  main { position:relative; z-index:1; }
+  .wall-empty { background:var(--panel); border:1px dashed var(--line); border-radius:10px; padding:22px 20px; margin:6px 0 10px; display:flex; gap:16px; align-items:center; }
+  .wall-empty[hidden] { display:none; }
+  .wall-empty-art { width:120px; height:80px; flex:none; }
+  .wall-empty-copy { margin:0; color:var(--dim); font-size:13px; }
+  .wall-empty-copy strong { color:var(--text); display:block; margin-bottom:2px; }
+  footer { margin-top:24px; color:var(--dim); font-size:12px; text-align:center; }
+</style>
+</head>
+<body>
+<div class="ambient" aria-hidden="true"><canvas id="ambient-canvas" width="1600" height="1000"></canvas></div>
+<main>
+  <h1>画布工作台 · 入口</h1>
+  <div class="meta">工作流画布工作台（Canvas Workbench） · P-canvas-2 · 更新 2026-10-19 · 离线自包含</div>
+  <div class="grid">
+    <a class="card" href="canvas-workbench.html"><h2>门径画布（实时门径）</h2><p>六阶段四泳道流水线：门状态/证据嵌入/搜索/缩放/回放——由 workflow-diagram 壳渲染</p></a>
+    <a class="card" href="chain-canvas-workbench.html"><h2>需求解析链路</h2><p>原始口语 → 解析摘要 → 理解验证 → 六步决策抽屉——黑盒步骤自动标黄</p></a>
+    <a class="card" href="https://github.com/muzimu217/ui-design-agent-kit/blob/dev/auto/docs/canvas-workbench-plan.md"><h2>规划（门 A 方向稿）</h2><p>三阶段路线+现状对账+扩量计划——docs/canvas-workbench-plan.md</p></a>
+  </div>
+  <h2 class="sec">任务管控（mission control · 执行态与证据态分离）</h2>
+  <div class="mc">
+    <div class="mc-col">
+      <h3>执行态（工作在哪）</h3>
+      <div class="mc-row"><span class="mc-k">当前阶段</span><span class="mc-v">contract · active</span></div>
+      <div class="mc-row"><span class="mc-k">进行中</span><span class="mc-v">contract、build</span></div>
+      <div class="mc-row"><span class="mc-k">待裁决</span><span class="mc-v">—</span></div>
+    </div>
+    <div class="mc-col">
+      <h3>证据态（可复核什么）</h3>
+      <div class="mc-row"><span class="mc-k">全实测产物</span><span class="mc-v">4/4（6/6 六维）</span></div>
+      <div class="mc-row"><span class="mc-k">解析链路</span><span class="mc-v">1 条 · 已确认 1</span></div>
+      <div class="mc-row"><span class="mc-k">验收命令</span><span class="mc-v"><code>npm run canvas:check</code></span></div>
+    </div>
+  </div>
+  <h2 class="sec">任务注册表（1 项 · 多任务 mission control）</h2><div class="task-row">
+        <span class="t">工作流画布工作台（Canvas Workbench）</span>
+        <span class="round">P-canvas-2 · 2026-10-19</span>
+        <span class="task-exec">执行：contract/build</span>
+        <span class="task-ev">证据：2/6 阶段通过</span>
+      </div>
+  <h2 class="sec">门径状态</h2>
+  <div><span class="pill" style="border-color:#34d399">A · passed</span><span class="pill" style="border-color:#34d399">B · passed</span><span class="pill" style="border-color:#22d3ee">C · active</span><span class="pill" style="border-color:#6b7280">D · pending</span><span class="pill" style="border-color:#6b7280">E · pending</span><span class="pill" style="border-color:#6b7280">F · pending</span></div>
+  <div class="stages"><div class="stage" style="--c:#34d399">
+        <div class="sid">brief</div>
+        <div class="sst" style="color:#34d399">passed</div>
+        <div class="snote">门 A 方向已获用户裁定（2026-10-19）：工作台形态升级+艺术画面明示要求+能力地平线四序列；阶段 4 新增</div>
+      </div>
+<div class="stage" style="--c:#34d399">
+        <div class="sid">reference</div>
+        <div class="sst" style="color:#34d399">passed</div>
+        <div class="snote">对标已集：Onlook 画布机制/bolt 设计系统专题/v0 Agentic+设计系统（学习循环 20-26 轮），第四层定位论证完成</div>
+      </div>
+<div class="stage" style="--c:#22d3ee">
+        <div class="sid">contract</div>
+        <div class="sst" style="color:#22d3ee">active</div>
+        <div class="snote">门 A 已通过：按 design-contract 定画布语义 token 与动效参数（阶段 4 艺术画面升级的契约层）</div>
+      </div>
+<div class="stage" style="--c:#22d3ee">
+        <div class="sid">build</div>
+        <div class="sst" style="color:#22d3ee">active</div>
+        <div class="snote">增量 1：接入真实任务状态（本文件即画布工作台自身的第一份活数据——吃狗粮）</div>
+      </div>
+<div class="stage" style="--c:#6b7280">
+        <div class="sid">verify</div>
+        <div class="sst" style="color:#6b7280">pending</div>
+        <div class="snote">每增量过 cli visual 无头多视口回执 + 六维验收</div>
+      </div>
+<div class="stage" style="--c:#6b7280">
+        <div class="sid">deliver</div>
+        <div class="sst" style="color:#6b7280">pending</div>
+        <div class="snote">产物入画布产物墙，与对标产物六维并排（KPI4）</div>
+      </div></div>
+  <h2 class="sec">解析链路（1 条）</h2><a class="chain-row" href="chain-canvas-workbench.html">
+        <span class="badge" aria-label="解析链路确认状态：用户已比对确认">✓ 已确认</span>
+        <span class="t">工作流画布工作台</span>
+        <span class="round">2026-10-13-08 · 6 步</span>
+        <span class="open">打开 ↗</span>
+      </a>
+  <h2 class="sec">方向与品味（越用越懂你 · 2 已采用 / 7 条特质 · 5 条信号）</h2>
+       <p class="cap-intro">特质只从可复核信号推导（你的原话、明确选择、被接受/被拒的方案），每条都能回溯到具体信号；置信度不足只展示不采用。规则见 <code>canvas/derive-taste.mjs</code>（证据上限钳制 + 采用需 ≥2 条独立信号）。</p>
+       <div class="taste-table"><div class="taste-row">
+        <span class="taste-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="品味特质状态：仅展示">仅展示</span>
+        <span class="taste-label">偏好监管深度而非生成广度</span>
+        <span class="taste-conf" aria-label="置信度 70%">70%</span>
+        <span class="taste-ev">sig-002</span>
+      </div>
+<div class="taste-row">
+        <span class="taste-st" style="color:#34d399;border-color:#34d399" aria-label="品味特质状态：已采用">已采用</span>
+        <span class="taste-label">重视视觉与艺术画面质量</span>
+        <span class="taste-conf" aria-label="置信度 85%">85%</span>
+        <span class="taste-ev">sig-001 · sig-005</span>
+      </div>
+<div class="taste-row">
+        <span class="taste-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="品味特质状态：仅展示">仅展示</span>
+        <span class="taste-label">要求方向与状态持续可见</span>
+        <span class="taste-conf" aria-label="置信度 70%">70%</span>
+        <span class="taste-ev">sig-004</span>
+      </div>
+<div class="taste-row">
+        <span class="taste-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="品味特质状态：仅展示">仅展示</span>
+        <span class="taste-label">希望工作流随使用累积理解用户</span>
+        <span class="taste-conf" aria-label="置信度 70%">70%</span>
+        <span class="taste-ev">sig-004</span>
+      </div>
+<div class="taste-row">
+        <span class="taste-st" style="color:#34d399;border-color:#34d399" aria-label="品味特质状态：已采用">已采用</span>
+        <span class="taste-label">要求证据优先、反感夸大</span>
+        <span class="taste-conf" aria-label="置信度 80%">80%</span>
+        <span class="taste-ev">sig-003 · sig-002</span>
+      </div>
+<div class="taste-row">
+        <span class="taste-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="品味特质状态：仅展示">仅展示</span>
+        <span class="taste-label">偏好结构化证据界面</span>
+        <span class="taste-conf" aria-label="置信度 70%">70%</span>
+        <span class="taste-ev">sig-005</span>
+      </div>
+<div class="taste-row">
+        <span class="taste-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="品味特质状态：仅展示">仅展示</span>
+        <span class="taste-label">把工作台界面视为产品门面</span>
+        <span class="taste-conf" aria-label="置信度 70%">70%</span>
+        <span class="taste-ev">sig-001</span>
+      </div></div>
+  <h2 class="sec">能力接入（工作流监管层 · 4 已接入 / 11 登记）</h2>
+       <p class="cap-intro">本仓不做生成引擎：外部能力按契约接入，工作流负责门径、验收与证据（<code>docs/capability-adapters.md</code>）。待接入项为空缺状态，不得用于交付。</p>
+       <div class="cap-table"><div class="cap-row">
+        <span class="cap-st" style="color:#34d399;border-color:#34d399" aria-label="接入状态：已接入">已接入</span>
+        <span class="cap-name">Remotion 视频合成<span class="cap-kind">视频</span></span>
+        <span class="cap-prov">Remotion 官方 skills · tooling/sources.lock.json</span>
+        <span class="cap-acc">视频口径：时长/帧率/确定性帧/音画同步/首帧静音可读/字幕对比度；叙事节拍见知识卡 video-launch-narrative-structure</span>
+      </div>
+<div class="cap-row">
+        <span class="cap-st" style="color:#34d399;border-color:#34d399" aria-label="接入状态：已接入">已接入</span>
+        <span class="cap-name">Motion 官方技能<span class="cap-kind">网页动效</span></span>
+        <span class="cap-prov">Motion (motion.dev) · tooling/sources.lock.json</span>
+        <span class="cap-acc">网页六维（含降动效降级）</span>
+      </div>
+<div class="cap-row">
+        <span class="cap-st" style="color:#34d399;border-color:#34d399" aria-label="接入状态：已接入">已接入</span>
+        <span class="cap-name">anatomy 等距技术图<span class="cap-kind">静态图像（SVG）</span></span>
+        <span class="cap-prov">wheresryan22/anatomy (MIT) · e9488296（tooling/sources.lock.json）</span>
+        <span class="cap-acc">静态图像口径：来源血缘+可复现（构建脚本+参数）</span>
+      </div>
+<div class="cap-row">
+        <span class="cap-st" style="color:#34d399;border-color:#34d399" aria-label="接入状态：已接入">已接入</span>
+        <span class="cap-name">GSAP 动效技能族<span class="cap-kind">网页动效</span></span>
+        <span class="cap-prov">GSAP 官方 · tooling/sources.lock.json</span>
+        <span class="cap-acc">网页六维（含降动效降级）</span>
+      </div>
+<div class="cap-row">
+        <span class="cap-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="接入状态：待接入">待接入</span>
+        <span class="cap-name">图像生成能力（候选空缺）<span class="cap-kind">静态图像（位图）</span></span>
+        <span class="cap-prov">—</span>
+        <span class="cap-acc">静态图像口径：尺寸/格式/色域/来源血缘/生成参数可复现</span>
+      </div>
+<div class="cap-row">
+        <span class="cap-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="接入状态：待接入">待接入</span>
+        <span class="cap-name">3D 建模能力（候选空缺）<span class="cap-kind">3D 资产</span></span>
+        <span class="cap-prov">—</span>
+        <span class="cap-acc">3D 口径：面数/包围盒/材质完整性/浏览器实测加载</span>
+      </div>
+<div class="cap-row">
+        <span class="cap-st" style="color:#f87171;border-color:#f87171" aria-label="接入状态：不接入">不接入</span>
+        <span class="cap-name">Mobbin MCP（设计参考检索）<span class="cap-kind">知识库（参考检索）</span></span>
+        <span class="cap-prov">Mobbin（Pro/Team 订阅）</span>
+        <span class="cap-acc">若接入需：订阅成本确认、检索结果可本地留存、检视级别如实标</span>
+      </div>
+<div class="cap-row">
+        <span class="cap-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="接入状态：待接入">待接入</span>
+        <span class="cap-name">AI 宣传片制作器（liyupi）<span class="cap-kind">视频（工作流套件）</span></span>
+        <span class="cap-prov">liyupi（MIT） · 未钉版（候选，需先本地跑通再钉）</span>
+        <span class="cap-acc">其自带闸门（渲染前后检查+按场景截图审查）之上，再叠本仓视频口径复核；节奏数值已并入知识卡 video-launch-narrative-structure v2</span>
+      </div>
+<div class="cap-row">
+        <span class="cap-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="接入状态：待接入">待接入</span>
+        <span class="cap-name">Meshy（AI 3D 生成）<span class="cap-kind">3D 资产</span></span>
+        <span class="cap-prov">Meshy</span>
+        <span class="cap-acc">3D 口径：面数/包围盒/材质完整性/浏览器实测加载</span>
+      </div>
+<div class="cap-row">
+        <span class="cap-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="接入状态：待接入">待接入</span>
+        <span class="cap-name">Frameronin（像素序列/多向动作）<span class="cap-kind">素材（像素动画）</span></span>
+        <span class="cap-prov">frameronin.com</span>
+        <span class="cap-acc">素材口径：来源血缘+序列完整性+帧率一致</span>
+      </div>
+<div class="cap-row">
+        <span class="cap-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="接入状态：待接入">待接入</span>
+        <span class="cap-name">Remotion Agent Skill（社区「视频导演级」工作流）<span class="cap-kind">视频（工作流范式）</span></span>
+        <span class="cap-prov">社区实践（B 站 jeffzhengye《AI视频导演级Skill：Codex装上它5分钟出电影感产品宣传片》），同栈于本仓 remotion-video · —（社区实践，不钉版；技术栈已由 remotion-video 钉版覆盖）</span>
+        <span class="cap-acc">若纳入：需以本仓视频口径复核（时长/帧率/确定性帧/音画同步/首帧静音可读/字幕对比度）+ 叙事节拍（video-launch-narrative-structure）+ 音效层（video-sound-design-layer）；不接受「5 分钟」作为质量声明</span>
+      </div></div>
+  <h2 class="sec">知识库（自学机制 · schema v1.1 · 12 卡 / 5 域 · 构成（静态形式） 4 · 运动（时间维度） 4 · 秩序（系统维度） 4）</h2>
+       <p class="cap-intro">每日视频学习 → 机制卡片（可编码参数+适用边界）→ 兼容性声明（extends/supersedes/conflicts）→ 转化。规范 <code>docs/self-learning-loop.md</code> · <code>docs/knowledge-base/schema.md</code>。</p>
+       
+       <div class="kb-table"><div class="kb-row">
+        <span class="kb-dom">motion</span>
+        <span class="kb-title">音效设计是宣传片的第三根支柱：转场/强调/节奏三层<span class="kb-alias" aria-label="场景化别名 音效三件套">音效三件套</span><span class="kb-m" aria-label="可被脚本启发式检测">可测</span></span>
+        <span class="kb-meta">创意者动画制作公司《音效+快闪字体+UI界面完美配合》 · 2.7 万播放 · 参数 6 条</span>
+      </div>
+<div class="kb-row">
+        <span class="kb-dom">order</span>
+        <span class="kb-title">60 秒是宣传片的标准交付形态：一主片 + 多时长剪辑矩阵<span class="kb-alias" aria-label="场景化别名 60秒标准版">60秒标准版</span><span class="kb-m" aria-label="可被脚本启发式检测">可测</span></span>
+        <span class="kb-meta">B 站「AI产品宣传片」Top30 交叉 · 30.8 万播放 · 参数 6 条</span>
+      </div>
+<div class="kb-row">
+        <span class="kb-dom">order</span>
+        <span class="kb-title">动效的灵魂是曲线：三族缓动 + 特殊曲线的可枚举族谱<span class="kb-m" aria-label="可被脚本启发式检测">可测</span></span>
+        <span class="kb-meta">B 站曲线主题 Top10 交叉 · 8.0 万播放 · 参数 5 条</span>
+      </div></div>
+  <h2 class="sec">反例记录（只增不删 · 5 条 · 5 已修复）</h2>
+       <p class="cap-intro">本仓产物的真实缺陷与漏计：失败记录的传播力不低于成功案例（59 轮判读）。修复后标 resolved 并写明提交，<strong>绝不删除</strong>——反例是证据的一部分。</p>
+       <div class="reg-table"><div class="reg-row">
+        <span class="reg-st" style="color:#34d399;border-color:#34d399" aria-label="反例状态：已修复">已修复</span>
+        <span class="reg-body"><strong>reducedMotion 完成度漏计（徽章 5/6 误报）</strong><span class="reg-what">完成度判定依赖措辞关键词（通过/实测/直拍/可达/全过），reducedMotion 条目写的是&#39;静态检查&#39;，不含任何关键词，导致徽章显示 5/6、mission control 全实测 0/2——实际该维度已通过检查，纯措辞漏计。</span><span class="reg-lesson">教训：验收判据必须与文案措辞解耦；发现漏计的当时就要同时修文案、建守卫、立语料三件套</span></span>
+        <span class="reg-meta">2026-10-17 · 增量 21 措辞修正；增量 24 dataGuard；增量 33 语料→工具闭环</span>
+      </div>
+<div class="reg-row">
+        <span class="reg-st" style="color:#34d399;border-color:#34d399" aria-label="反例状态：已修复">已修复</span>
+        <span class="reg-body"><strong>导出 manifest 自我漂移（978→1178 字节）</strong><span class="reg-what">manifest.json 把自身字节写入自身列表，二次写入使字节变化，导出对账首跑即失败。</span><span class="reg-lesson">教训：任何记账系统不能把自己算进被记账对象；自指必须显式豁免并文档化</span></span>
+        <span class="reg-meta">2026-10-18 · 增量 27</span>
+      </div>
+<div class="reg-row">
+        <span class="reg-st" style="color:#34d399;border-color:#34d399" aria-label="反例状态：已修复">已修复</span>
+        <span class="reg-body"><strong>产物墙空态永不显示</strong><span class="reg-what">wall-empty 空态区块被加入页面时未接显隐逻辑（hidden 属性从不被 JS 更新），若过滤结果为空用户会看到空白而非提示——增量 29 加入插画时发现并顺带修复。</span><span class="reg-lesson">教训：加任何&#39;条件显示&#39;的区块，必须同时接状态更新逻辑；空态是最容易被忘记接线的区块</span></span>
+        <span class="reg-meta">2026-10-19 · 增量 29</span>
+      </div>
+<div class="reg-row">
+        <span class="reg-st" style="color:#34d399;border-color:#34d399" aria-label="反例状态：已修复">已修复</span>
+        <span class="reg-body"><strong>官网 520px 横向溢出 115px</strong><span class="reg-what">三步卡 .step 内 pre（长 git clone URL 最小内容宽度）撑破 grid 1fr 列 + 知识库表 min-content 611px——520px 视口 scrollWidth=635，六维 mobile&#39;无裁切&#39;宣称失真。v1.0 起潜伏，增量 54 为 alias chip 复拍时新加 scrollWidth 探针才发现。</span><span class="reg-lesson">教训：&#39;无裁切/无溢出&#39;类宣称必须有 scrollWidth 实测背书；grid 子项放 pre/表格等宽内容时必须 minmax(0,1fr)+min-width:0</span></span>
+        <span class="reg-meta">2026-10-21 · 增量 54</span>
+      </div>
+<div class="reg-row">
+        <span class="reg-st" style="color:#34d399;border-color:#34d399" aria-label="反例状态：已修复">已修复</span>
+        <span class="reg-body"><strong>360/390/414px 横向溢出（能力表撑破）</strong><span class="reg-what">增量 54 修了 520px 的 .step 与 kb 表，但 overflowGuard 只测 520/1280 两个宽度，恰好跳过真实手机宽度。用户复核后发现 360px 溢出 77px、390px 47px、414px 23px——元凶是四列能力接入表（min-content 413px）。</span><span class="reg-lesson">教训：响应式断言必须扫真实设备宽度带（320/360/375/390/414/768…），不能只挑两档代表性宽度；&#39;我测过两个宽度&#39;不是&#39;响应式没问题&#39;</span></span>
+        <span class="reg-meta">2026-10-21 · 增量 55</span>
+      </div></div>
+  <h2 class="sec">产物墙（KPI4 · 4 件 · <span id="wall-mode">全部</span>）</h2>
+  <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
+    <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>
+    <button type="button" class="wf-btn" data-mode="full" onclick="wallFilter('full')">仅全实测（6/6）</button>
+    <span class="wf-sep" aria-hidden="true">|</span>
+    <button type="button" class="wf-btn is-on" data-sort="round" onclick="wallSort('round')">按轮次</button>
+    <button type="button" class="wf-btn" data-sort="verified" onclick="wallSort('verified')">按完成度</button>
+  </div>
+  <p class="wall-legend" id="wall-legend">徽章口径：n/6=六维实测数（桌面/移动/键盘/对比度/降动效/控制台各 1 分）；vN=版本序号；检视级别 unverified-partial=仅公开页面检视，未公开验证的维度记 — 不虚记。</p>
+  <details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">产品官网页（公开展示/使用指南/条款入口）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v3">v3</span><span class="round">2026-10-19-20</span></summary>
+      <div class="body">
+        <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-site.mjs + canvas/{artifacts,capabilities,taste-profile}.json → output/site.html（离线自包含）</code> <a class="art-open" href="site.html">打开产物 ↗</a></span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过；scrollWidth=1280 无横向溢出（17 宽度扫描 320→1920 全 clean，增量 55 实测）；mobile: 320/360/375/390/414/480/520px 七档全无横向溢出（scrollWidth=clientWidth，增量 55 实测）；宽表在容器内横向滚动、内容不裁切；390px 依赖 viewport meta+防御 CSS；keyboard: playwright Tab 序列实测：14 项可聚焦全可达（导航锚点 8+CTA 2+介绍片链接+页脚 3；alias chip 为非交互 span 不占焦点，增量 54 复测）；contrast: playwright computed-style WCAG 实测：34 项文本全过 4.5:1（低于标准 0 项，增量 54 复测含视频区）；reducedMotion: 描边循环动画在 prefers-reduced-motion 下停帧显示完整路径（dashoffset=0），静态检查通过；console: playwright</span></div>
+        <div class="row"><span class="k">对比</span><span class="v">
+      <div class="cmp">
+        <div class="cmp-head"><span class="cmp-vs">vs Framer 首屏（design agent 定位页）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level" aria-label="检视级别 unverified-partial：仅公开页面检视，未实测维度记 null">检视级别 unverified-partial</span></div>
+        <table class="cmp-table"><caption class="cmp-caption">六维并排评分：✓=有实测/实看证据，✗=实测缺失，—=不可观测不计分母</caption><thead><tr><th scope="col">维度</th><th scope="col">本产物</th><th scope="col">对标</th></tr></thead><tbody><tr><td>桌面</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-yes">✓</span></td></tr><tr><td>移动</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>键盘</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>对比度</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>降动效</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>控制台</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr></tbody></table>
+        <div class="cmp-note">对标侧为公开首屏实看：仅桌面呈现可观测，其余维度无公开可验证证据，记 null 不虚记</div>
+        <div class="cmp-note">同为 design agent 定位页：Framer 的 Agent/Style 双模式与&#39;alongside you not instead of you&#39;句式与本仓&#39;监管而非生成&#39;同源；本页差异=数字全部从工作台 JSON 实时计算（宣称不超证据）</div>
+        <div class="cmp-note">证据（仓内路径）：docs/competitive-insights/2026-10-19-framer-firstlook/insight.md</div>
+      </div>
+    </span></div>
+        <div class="row"><span class="k">状态</span><span class="v">v2.2（宽表容器内滚+17 宽度溢出扫描）</span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订 — 页面由代理编写；定位句式借鉴 Framer&#39;alongside not instead&#39;（知识卡判读）与 10-19 用户方向裁定</span></div><div class="row"><span class="k">变更</span><span class="v">v1.0 首版（展示/三步/六道门/能力/知识库/品味/条款，数字从工作台 JSON 计算）→ v2.0 单笔描边循环动画（reduced-motion 停帧）+ 入产物墙 → v2.1 知识库表场景化别名 chip（与工作台同 aria 契约）+ 修复 520px 横向溢出 115px（.step pre 最小内容宽+kb 表 min-content，reg-004）+ check 新增 aliasGuard/aliasCoverage/overflowGuard 三守卫 → v2.2 三张宽表包 .table-wrap 容器内滚（reg-005：360/390/414px 能力表 min-content 413px 撑破）；overflowGuard 2→17 宽度</span></div>
+      </div>
+    </details>
+<details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">画布流水线指标 mini 看板（产物墙首件 mini 产物）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v2">v2</span><span class="round">2026-10-19-00</span></summary>
+      <div class="body">
+        <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-mini-dashboard.mjs → output/mini-dashboard.html（离线自包含）</code> <a class="art-open" href="mini-dashboard.html">打开产物 ↗</a></span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（9.3 万字节非空白）；mobile: 520px Chrome headless 直拍通过（7.8 万字节；备注列 560px 下防御性折叠为四列，无横向裁切）；keyboard: playwright Tab 序列实测：0 项可聚焦（纯静态数据页无交互件——如实记 0/0，非缺失）；contrast: playwright computed-style WCAG 实测：4 项抽样全过 4.5:1（低于标准 0 项，含 muted 表头/脚注/备注）；reducedMotion: 无过渡动画（静态检查通过）；console: playwright 实测 0 错误</span></div>
+        <div class="row"><span class="k">对比</span><span class="v">
+      <div class="cmp">
+        <div class="cmp-head"><span class="cmp-vs">vs Pixso 八阶段流水线 tabs（产品规划→需求梳理→原型图→UI设计→设计系统→交互演示→交付→文件管理）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level" aria-label="检视级别 unverified-partial：仅公开页面检视，未实测维度记 null">检视级别 unverified-partial</span></div>
+        <table class="cmp-table"><caption class="cmp-caption">六维并排评分：✓=有实测/实看证据，✗=实测缺失，—=不可观测不计分母</caption><thead><tr><th scope="col">维度</th><th scope="col">本产物</th><th scope="col">对标</th></tr></thead><tbody><tr><td>桌面</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-yes">✓</span></td></tr><tr><td>移动</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>键盘</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>对比度</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>降动效</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>控制台</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr></tbody></table>
+        <div class="cmp-note">对标侧为公开营销页实看：仅桌面呈现可观测，其余维度无公开可验证证据，记 null 不虚记</div>
+        <div class="cmp-note">同为&#39;阶段×状态&#39;信息架构：他们=营销功能面板（无门无证据无停点），本产物=门态+证据数台账快照（口径脚注明示非进度百分比）——同形状不同物种判读的产物级实证</div>
+        <div class="cmp-note">证据（仓内路径）：docs/competitive-insights/2026-10-18-pixso-recheck2/insight.md</div>
+      </div>
+    </span></div>
+        <div class="row"><span class="k">状态</span><span class="v">v1.1（动效化+微循环预览）</span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订 — 生成器与版式由代理编写，数据为 state.json 快照（人工口径校对：证据数=留痕条数而非进度）</span></div><div class="row"><span class="k">变更</span><span class="v">v1.0 首版：六阶段×门态×证据数快照（dark-dense-table-muted-text 语料的参考实现——密度来自行高与列节奏，muted 文本仍过 4.5:1）→ v1.1 motion-force 三段式入场（stagger 33ms/cubic-bezier(.2,0,0,1)/首屏一次，降动效全行立现）+ 门态上色语义化 + 微循环预览（stroke-loop.webm/gif 本地相对引用）</span></div>
+      </div>
+    </details>
+<details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">画布工作台入口页（门径+链路+产物墙三合一）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v8">v8</span><span class="round">2026-10-13-08</span></summary>
+      <div class="body">
+        <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-index.mjs + canvas/artifacts.json + canvas-workbench.state.json → output/canvas-index.html（离线自包含）</code> <span class="art-self">— 本页自指，不设自链</span></span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（15.8 万字节非空白，增量 29 艺术画面复拍）；mobile: 520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）；keyboard: playwright Tab 序列实测：11 项 tab 停留全可达（3 卡片链接+1 链路行+4 过滤排序按钮+3 墙条目 summary——增量 28 枚举修正；2 条 viewUrl 在闭合折叠体内展开后可达，检测器合计 13）；contrast: playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项，增量 29 复测——生成式背景为独立装饰层，文字在面板底色上）；reducedMotion: 生成式背景在 prefers-reduced-motion 下画一帧静态构图后停止（media query 监听切换即停帧）；静态检查通过；console: playwri</span></div>
+        <div class="row"><span class="k">对比</span><span class="v">
+      <div class="cmp">
+        <div class="cmp-head"><span class="cmp-vs">vs Figma Make 首屏（prompt 框+示例 pill 模式）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level" aria-label="检视级别 unverified-partial：仅公开页面检视，未实测维度记 null">检视级别 unverified-partial</span></div>
+        <table class="cmp-table"><caption class="cmp-caption">六维并排评分：✓=有实测/实看证据，✗=实测缺失，—=不可观测不计分母</caption><thead><tr><th scope="col">维度</th><th scope="col">本产物</th><th scope="col">对标</th></tr></thead><tbody><tr><td>桌面</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-yes">✓</span></td></tr><tr><td>移动</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>键盘</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>对比度</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>降动效</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>控制台</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr></tbody></table>
+        <div class="cmp-note">对标侧为公开首屏实看（未注册实测）：仅首屏呈现可观测，其余四维无公开可验证证据，记 null 不虚记</div>
+        <div class="cmp-note">本页以状态卡片墙呈现工作台全景（门径/阶段/产物），Figma Make 首屏为单 prompt 入口——形态不同目标不同；借鉴示例 pill 的低门槛入口思路</div>
+        <div class="cmp-note">证据（仓内路径）：docs/competitive-insights/2026-10-13-figma-make-recheck2/insight.md</div>
+      </div>
+    </span></div>
+        <div class="row"><span class="k">状态</span><span class="v">v1.7（艺术画面+空态插画）</span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订 — 入口页由代理编写，经用户门 A 方向确认与多轮增量修订（mission control/任务注册表/版本徽章）</span></div><div class="row"><span class="k">变更</span><span class="v">v1.0 三卡入口+门径 pills+产物墙 → … → v1.6 墙扩至三条（mini 看板入墙）+键盘组成枚举修正 → v1.7 艺术画面落地（生成式微艺术背景+降动效静态帧+产物墙空态插画与微文案——用户 10-19 方向裁定&#39;更好的艺术画面&#39;首个增量）</span></div>
+      </div>
+    </details>
+<details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">需求解析链路页（chain 渲染器首个产物）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v6">v6</span><span class="round">2026-10-13-00</span></summary>
+      <div class="body">
+        <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-chain.mjs + canvas/chain-canvas-workbench.json → output/chain-canvas-workbench.html（离线自包含）</code> <a class="art-open" href="chain-canvas-workbench.html">打开产物 ↗</a></span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280×2400 直拍通过（37 万字节非空白）；mobile: 520px 直拍通过（Chrome headless Mac 最小窗宽下限；真实 390px 依赖 viewport meta+防御 CSS）；keyboard: playwright Tab 序列实测：11 项 tab 停留全可达（6 summary+3 条展开抽屉内 basis 链接+2 页脚互链；另 2 条 basis 链接在闭合抽屉内展开后可达，检测器计数 13——增量 21 复测口径）；contrast: playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项）；reducedMotion: 过渡仅 border-color 且包 no-preference 媒体查询（静态检查通过）；console: playwright 实测 0 错误（修复 favicon 404：内联 data-URI）</span></div>
+        <div class="row"><span class="k">对比</span><span class="v">
+      <div class="cmp">
+        <div class="cmp-head"><span class="cmp-vs">vs v0 Design Systems 2.0 导入 stepper（Pauses for review → approve → save → validate 四步流程页）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level" aria-label="检视级别 unverified-partial：仅公开页面检视，未实测维度记 null">检视级别 unverified-partial</span></div>
+        <table class="cmp-table"><caption class="cmp-caption">六维并排评分：✓=有实测/实看证据，✗=实测缺失，—=不可观测不计分母</caption><thead><tr><th scope="col">维度</th><th scope="col">本产物</th><th scope="col">对标</th></tr></thead><tbody><tr><td>桌面</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-yes">✓</span></td></tr><tr><td>移动</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>键盘</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>对比度</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>降动效</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>控制台</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr></tbody></table>
+        <div class="cmp-note">对标侧为公开文档页实看：仅桌面呈现可观测，键盘可达性/对比度/降动效/console 均无公开可验证证据，记 null 不虚记</div>
+        <div class="cmp-note">本产物以竖向链路+决策抽屉呈现&#39;如何做的&#39;（白盒），v0 stepper 呈现&#39;导入四步操作&#39;（流程）——形态不同层位不同；可借鉴其 stepper 的必经门视觉（approval disabled 态）用于 chain 页 verifyUnderstanding 卡</div>
+        <div class="cmp-note">证据（仓内路径）：docs/competitive-insights/2026-10-13-v0-docs-design-systems/insight.md</div>
+      </div>
+    </span></div>
+        <div class="row"><span class="k">状态</span><span class="v">v1.5（条目可点击打开）</span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订 — 渲染器与版式由代理编写，经多轮人工验收意见修订（页脚互链/防御 CSS/比对视图）</span></div><div class="row"><span class="k">变更</span><span class="v">v1.0 首版链路页 → v1.1 防御 CSS+520px 实测 → v1.2 六维全实测+favicon 修复 → v1.3 页脚互链门径画布/工作台入口（键盘 9→11）→ v1.4 对比评分结构化（六维并排表+检视级别入墙）→ v1.5 产物墙条目 viewUrl 可点击（同目录相对链接，导出包内成立；借鉴 Wegic 自定义模板的&#39;从观看到起点&#39;）</span></div>
+      </div>
+    </details>
+  <div class="wall-empty" id="wall-empty" hidden>
+    <svg class="wall-empty-art" viewBox="0 0 120 80" aria-hidden="true" focusable="false">
+      <defs><linearGradient id="ge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs>
+      <rect x="8" y="14" width="46" height="30" rx="4" fill="none" stroke="url(#ge)" stroke-width="2"/>
+      <rect x="62" y="26" width="50" height="40" rx="4" fill="none" stroke="#34d399" stroke-width="2"/>
+      <circle cx="31" cy="29" r="5" fill="#fbbf24"/>
+      <path d="M18 38 L28 30 L38 38" fill="none" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round"/>
+      <path d="M70 56 L82 44 L94 56 L104 48" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <p class="wall-empty-copy"><strong>这一层还没有产物。</strong>不是坏了——是墙空了。切回「全部」或先跑 <code>npm run canvas:build</code> 收一轮增量。</p>
+  </div>
+<script>
+// 六维过滤：measured 徽章 < 6 的条目在 full 模式下隐藏（纯展示切换，无网络无构建逻辑）。
+function wallFilter(mode) {
+  const full = mode === 'full';
+  let visible = 0;
+  document.querySelectorAll('details.art').forEach((d) => {
+    const badge = d.querySelector('.badge');
+    const n = badge ? parseInt((badge.textContent || '').split('/')[0], 10) : 6;
+    const hide = full && n < 6;
+    d.style.display = hide ? 'none' : '';
+    if (!hide) visible += 1;
+  });
+  document.querySelectorAll('.wf-btn[data-mode]').forEach((b) => b.classList.toggle('is-on', b.dataset.mode === mode));
+  document.getElementById('wall-mode').textContent = full ? '仅全实测（6/6）' : '全部';
+  const empty = document.getElementById('wall-empty');
+  if (empty) empty.hidden = visible > 0;
+}
+// 排序视图：按轮次（新在前）或按完成度（徽章数降序）重排 details 条目——借鉴排行内容的排序呈现，判据=六维实测数。
+function wallSort(by) {
+  const wall = document.querySelector('.canvas-wall');
+  if (!wall) return;
+  const entries = [...wall.querySelectorAll('details.art')];
+  const key = (d) => {
+    const badge = d.querySelector('.badge');
+    const n = badge ? parseInt((badge.textContent || '').split('/')[0], 10) : 0;
+    const round = d.querySelector('.round');
+    return by === 'verified' ? n : (round ? round.textContent.trim() : '');
+  };
+  entries.sort((a, b) => by === 'verified' ? key(b) - key(a) : (key(a) < key(b) ? 1 : -1));
+  entries.forEach((d) => wall.appendChild(d));
+  document.querySelectorAll('.wf-btn[data-sort]').forEach((b) => b.classList.toggle('is-on', b.dataset.sort === by));
+}
+// 生成式微艺术：极低密度漂移粒子（纯装饰，aria-hidden）。降动效时画一帧静态构图后停止，
+// 构图与文字对比度不随动画变化（粒子仅落在画布层，文字有自己的面板底色）。
+(function ambientArt() {
+  const cv = document.getElementById('ambient-canvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  if (!ctx) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const DOTS = 26;
+  const dots = Array.from({ length: DOTS }, (_, i) => ({
+    x: ((i * 137.5) % 1) * cv.width || ((i * 7919) % cv.width),
+    y: ((i * 2459) % cv.height),
+    r: 1 + (i % 3),
+    dx: (i % 2 ? 1 : -1) * (0.06 + (i % 5) * 0.02),
+    dy: (i % 3 ? 1 : -1) * (0.04 + (i % 4) * 0.02),
+    hue: i % 3,
+  }));
+  const palette = ['rgba(124,58,237,0.30)', 'rgba(34,211,238,0.22)', 'rgba(52,211,153,0.18)'];
+  function frame() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    for (const d of dots) {
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = palette[d.hue];
+      ctx.fill();
+      d.x += d.dx; d.y += d.dy;
+      if (d.x < -10) d.x = cv.width + 10; if (d.x > cv.width + 10) d.x = -10;
+      if (d.y < -10) d.y = cv.height + 10; if (d.y > cv.height + 10) d.y = -10;
+    }
+  }
+  if (reduce.matches) { frame(); return; }
+  let raf = 0;
+  (function loop() { frame(); raf = requestAnimationFrame(loop); })();
+  reduce.addEventListener('change', (e) => { if (e.matches && raf) { cancelAnimationFrame(raf); raf = 0; frame(); } });
+})();
+</script>
+  <footer>canvas workbench · 由 canvas/render-index.mjs 生成 · npm run canvas:build 重建全部</footer>
+</main>
+</body>
+</html>

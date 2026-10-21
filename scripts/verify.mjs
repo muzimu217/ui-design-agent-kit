@@ -132,6 +132,18 @@ export async function verify(root = ROOT) {
   }
   try { await access(path.join(skillRoot, "uak-visual-critique/NOTICE.md")); }
   catch { errors.push("Missing original uak-visual-critique NOTICE.md"); }
+  // Sound-design cue sheet (knowledge card video-sound-design-layer made
+  // executable): the sheet must stay aligned to the Film.tsx scene contract,
+  // so "音效打点" is a verified artifact rather than a prose claim.
+  try {
+    await access(path.join(root, "video-production/src/sfx-cues.json"));
+    const { execFile } = await import("node:child_process");
+    const { promisify } = await import("node:util");
+    await promisify(execFile)(process.execPath, [path.join(root, "scripts/sfx-check.mjs"), "--json"], { cwd: root });
+  } catch (error) {
+    const detail = String(error.stderr ?? error.message ?? "").trim().split("\n").slice(-4).join(" ");
+    errors.push(`sfx cue sheet 校验失败: ${detail || "unknown"}`);
+  }
   for (const agentName of ["ui-design-agent", "remotion-video-agent"]) {
     if (!skills.includes(agentName)) {
       errors.push(`Missing agent entrypoint: ${agentName}`);

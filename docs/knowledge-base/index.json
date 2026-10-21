@@ -1,0 +1,336 @@
+{
+ "schemaVersion": 1,
+ "schemaMinor": 1,
+ "generatedAt": "2026-10-19",
+ "note": "机读索引（工作台知识库区块读取）。卡片本体在 docs/knowledge-base/cards/。新增卡片须同步本文件；兼容规则见 schema.md §5。v1.1 新增 layer/measurable/paramProvenance（可选，向后兼容）。",
+ "layers": {
+  "composition": "构成（静态形式）",
+  "motion": "运动（时间维度）",
+  "order": "秩序（系统维度）"
+ },
+ "cards": [
+  {
+   "id": "icon-single-stroke-constraint",
+   "title": "约束美学：单一连续笔画产生形式感",
+   "domain": "icon",
+   "layer": "composition",
+   "measurable": true,
+   "status": "active",
+   "confidence": "sourced",
+   "version": 1,
+   "relations": [
+    {
+     "type": "related",
+     "target": "layout-visual-balance"
+    }
+   ],
+   "source": {
+    "kind": "video",
+    "heat": 5888000,
+    "author": "设计师深海",
+    "ref": "https://www.bilibili.com/video/BV1qb4y1b7Hh/"
+   },
+   "codableParams": 5,
+   "learnedAt": "2026-10-19"
+  },
+  {
+   "id": "layout-visual-balance",
+   "title": "视觉平衡 = 视觉重量分布，而非几何对称",
+   "domain": "layout",
+   "layer": "composition",
+   "measurable": true,
+   "status": "active",
+   "confidence": "sourced",
+   "version": 1,
+   "relations": [
+    {
+     "type": "related",
+     "target": "motion-force-anticipation"
+    }
+   ],
+   "source": {
+    "kind": "video",
+    "heat": 3170000,
+    "author": "言九七_",
+    "ref": "https://www.bilibili.com/video/BV1yU4y1K7uL/"
+   },
+   "codableParams": 5,
+   "learnedAt": "2026-10-19",
+   "alias": "一眼稳"
+  },
+  {
+   "id": "motion-force-anticipation",
+   "title": "力量感 = 预备动作 + 加速曲线 + 跟随延迟",
+   "domain": "motion",
+   "layer": "motion",
+   "measurable": false,
+   "status": "active",
+   "confidence": "sourced",
+   "version": 1,
+   "relations": [
+    {
+     "type": "related",
+     "target": "layout-visual-balance"
+    }
+   ],
+   "source": {
+    "kind": "video",
+    "heat": 2151000,
+    "author": "喜定",
+    "ref": "https://www.bilibili.com/video/BV1uL4y1H74Q/"
+   },
+   "codableParams": 5,
+   "learnedAt": "2026-10-19"
+  },
+  {
+   "id": "icon-primitive-reduction",
+   "title": "基本形状归约：用圆/方/三角的有限组合承载识别",
+   "domain": "icon",
+   "layer": "composition",
+   "measurable": true,
+   "status": "active",
+   "confidence": "sourced",
+   "version": 1,
+   "relations": [
+    {
+     "type": "extends",
+     "target": "icon-single-stroke-constraint"
+    },
+    {
+     "type": "related",
+     "target": "layout-visual-balance"
+    }
+   ],
+   "source": {
+    "kind": "video",
+    "heat": 1165000,
+    "author": "设计师深海",
+    "ref": "https://www.bilibili.com/video/BV1MU4y1J7cv/"
+   },
+   "codableParams": 5,
+   "learnedAt": "2026-10-19"
+  },
+  {
+   "id": "illustration-minimal-constraints",
+   "title": "极简插画 = 低色数 + 无渐变 + 大负空间",
+   "domain": "illustration",
+   "layer": "composition",
+   "measurable": true,
+   "status": "active",
+   "confidence": "sourced",
+   "version": 1,
+   "relations": [
+    {
+     "type": "related",
+     "target": "icon-primitive-reduction"
+    }
+   ],
+   "source": {
+    "kind": "video",
+    "heat": 2095000,
+    "author": "设计师深海",
+    "ref": "https://www.bilibili.com/video/BV1YS4y1r7BM/"
+   },
+   "codableParams": 6,
+   "learnedAt": "2026-10-19"
+  },
+  {
+   "id": "motion-reverse-phi-illusion",
+   "title": "Reverse Phi 错觉：静止帧交替产生运动感知",
+   "domain": "motion",
+   "layer": "motion",
+   "measurable": false,
+   "status": "active",
+   "confidence": "sourced",
+   "version": 1,
+   "relations": [
+    {
+     "type": "related",
+     "target": "motion-force-anticipation"
+    }
+   ],
+   "source": {
+    "kind": "video",
+    "heat": 1757000,
+    "author": "设计师深海（原作 jagarikin）",
+    "ref": "https://www.bilibili.com/video/BV12T4y117GH/"
+   },
+   "codableParams": 7,
+   "learnedAt": "2026-10-19",
+   "safetyNote": "光敏风险：8-12fps 明暗反转落在高风险区间，research-only，默认不实现"
+  },
+  {
+   "id": "video-launch-narrative-structure",
+   "title": "发布片结构：3 秒钩子 + 每 12 秒一次 re-hook",
+   "domain": "video",
+   "layer": "order",
+   "measurable": false,
+   "status": "active",
+   "confidence": "sourced",
+   "version": 1,
+   "relations": [
+    {
+     "type": "related",
+     "target": "motion-force-anticipation"
+    }
+   ],
+   "source": {
+    "kind": "video",
+    "heat": 690000,
+    "author": "B2B but make it human（SideShift 拆解）",
+    "ref": "https://www.youtube.com/watch?v=KTqMRkSqXX4"
+   },
+   "codableParams": 5,
+   "learnedAt": "2026-10-19",
+   "alias": "3秒钩子12秒拍"
+  },
+  {
+   "id": "design-seven-principles",
+   "title": "设计七原则：Balance/Unity/Contrast/Emphasis/Repetition/Pattern/Rhythm 的可操作定义",
+   "domain": "layout",
+   "layer": "order",
+   "measurable": false,
+   "status": "active",
+   "confidence": "sourced",
+   "version": 1,
+   "relations": [
+    {
+     "type": "related",
+     "target": "layout-visual-balance"
+    },
+    {
+     "type": "related",
+     "target": "icon-primitive-reduction"
+    }
+   ],
+   "source": {
+    "kind": "video",
+    "heat": 1877000,
+    "author": "Envato",
+    "ref": "https://www.youtube.com/watch?v=9EPTM91TBDU"
+   },
+   "codableParams": 7,
+   "learnedAt": "2026-10-19"
+  },
+  {
+   "id": "icon-motion-500ms",
+   "title": "图标微动效 0.5 秒量级：入场/变化/收尾的三段近似",
+   "domain": "icon",
+   "layer": "motion",
+   "measurable": true,
+   "status": "active",
+   "confidence": "sourced",
+   "version": 1,
+   "relations": [
+    {
+     "type": "related",
+     "target": "motion-force-anticipation"
+    },
+    {
+     "type": "related",
+     "target": "icon-single-stroke-constraint"
+    }
+   ],
+   "source": {
+    "kind": "video",
+    "heat": 4768000,
+    "author": "太阳鸽鸽棒",
+    "ref": "https://www.bilibili.com/video/BV1Ub41167NE/"
+   },
+   "codableParams": 4,
+   "learnedAt": "2026-10-20",
+   "alias": "半秒动效"
+  },
+  {
+   "id": "motion-curve-soul",
+   "title": "动效的灵魂是曲线：三族缓动 + 特殊曲线的可枚举族谱",
+   "domain": "motion",
+   "layer": "order",
+   "measurable": true,
+   "status": "active",
+   "confidence": "sourced",
+   "version": 1,
+   "relations": [
+    {
+     "type": "related",
+     "target": "motion-force-anticipation"
+    },
+    {
+     "type": "related",
+     "target": "icon-motion-500ms"
+    }
+   ],
+   "source": {
+    "kind": "video",
+    "heat": 80000,
+    "author": "B 站曲线主题 Top10 交叉",
+    "ref": "https://www.bilibili.com/search?keyword=动画曲线 缓动"
+   },
+   "codableParams": 5,
+   "learnedAt": "2026-10-20"
+  },
+  {
+   "id": "video-sixty-second-delivery-form",
+   "alias": "60秒标准版",
+   "title": "60 秒是宣传片的标准交付形态：一主片 + 多时长剪辑矩阵",
+   "domain": "video",
+   "layer": "order",
+   "measurable": true,
+   "status": "active",
+   "confidence": "sourced",
+   "version": 1,
+   "relations": [
+    {
+     "type": "related",
+     "target": "video-launch-narrative-structure"
+    },
+    {
+     "type": "related",
+     "target": "video-sound-design-layer"
+    }
+   ],
+   "source": {
+    "kind": "video",
+    "heat": 308000,
+    "author": "B 站「AI产品宣传片」Top30 交叉",
+    "ref": "https://search.bilibili.com/all?keyword=AI产品宣传片&order=stow"
+   },
+   "codableParams": 6,
+   "learnedAt": "2026-10-21"
+  },
+  {
+   "id": "video-sound-design-layer",
+   "alias": "音效三件套",
+   "title": "音效设计是宣传片的第三根支柱：转场/强调/节奏三层",
+   "domain": "video",
+   "layer": "motion",
+   "measurable": true,
+   "status": "active",
+   "confidence": "sourced",
+   "version": 1,
+   "relations": [
+    {
+     "type": "related",
+     "target": "video-launch-narrative-structure"
+    },
+    {
+     "type": "related",
+     "target": "video-sixty-second-delivery-form"
+    },
+    {
+     "type": "related",
+     "target": "icon-motion-500ms"
+    }
+   ],
+   "source": {
+    "kind": "video",
+    "heat": 27000,
+    "author": "创意者动画制作公司《音效+快闪字体+UI界面完美配合》",
+    "ref": "https://www.bilibili.com/video/BV1ZwHXz7EAJ/"
+   },
+   "codableParams": 6,
+   "learnedAt": "2026-10-21"
+  }
+ ],
+ "updatedOn": "2026-10-21"
+}

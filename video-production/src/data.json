@@ -1,0 +1,317 @@
+{
+  "generatedAt": "2026-10-21T05:21:41.311Z",
+  "sources": {
+    "artifacts": "canvas/artifacts.json",
+    "capabilities": "canvas/capabilities.json",
+    "knowledgeBase": "docs/knowledge-base/index.json",
+    "regressions": "canvas/regressions.json",
+    "iterations": "docs/iteration-log.md"
+  },
+  "counts": {
+    "iterationRows": 234,
+    "knowledgeCards": 10,
+    "artifacts": 4,
+    "capabilitiesTotal": 10,
+    "capabilitiesAdopted": 4,
+    "capabilitiesEvaluating": 5,
+    "capabilitiesRejected": 1,
+    "regressions": 3,
+    "regressionsResolved": 3,
+    "regressionsDeleted": 0
+  },
+  "gates": [
+    {
+      "id": "A",
+      "name": "方向确认",
+      "desc": "确认需求摘要与范围"
+    },
+    {
+      "id": "B",
+      "name": "参考素材",
+      "desc": "确认参考来源"
+    },
+    {
+      "id": "C",
+      "name": "设计契约",
+      "desc": "确认 DESIGN.md"
+    },
+    {
+      "id": "D",
+      "name": "修订",
+      "desc": "按实测问题决定改什么"
+    },
+    {
+      "id": "E",
+      "name": "验收",
+      "desc": "看六维回执再决定"
+    },
+    {
+      "id": "F",
+      "name": "留痕",
+      "desc": "记录版本与证据路径"
+    }
+  ],
+  "guards": [
+    {
+      "id": "L1",
+      "name": "数据守卫",
+      "desc": "六维键齐全 · 判定不靠措辞"
+    },
+    {
+      "id": "L2",
+      "name": "渲染守卫",
+      "desc": "徽章有语义名 · 评分表有 caption"
+    },
+    {
+      "id": "L3",
+      "name": "分发守卫",
+      "desc": "导出包逐字节对账"
+    }
+  ],
+  "sixDim": [
+    "桌面",
+    "移动",
+    "键盘",
+    "对比度",
+    "降动效",
+    "控制台"
+  ],
+  "adoptedNames": [
+    "Remotion 视频合成",
+    "Motion 官方技能",
+    "anatomy 等距技术图",
+    "GSAP 动效技能族"
+  ],
+  "kbCards": [
+    {
+      "id": "icon-single-stroke-constraint",
+      "title": "约束美学：单一连续笔画产生形式感",
+      "domain": "icon",
+      "layer": "composition"
+    },
+    {
+      "id": "layout-visual-balance",
+      "title": "视觉平衡 = 视觉重量分布，而非几何对称",
+      "domain": "layout",
+      "layer": "composition"
+    },
+    {
+      "id": "motion-force-anticipation",
+      "title": "力量感 = 预备动作 + 加速曲线 + 跟随延迟",
+      "domain": "motion",
+      "layer": "motion"
+    },
+    {
+      "id": "icon-primitive-reduction",
+      "title": "基本形状归约：用圆/方/三角的有限组合承载识别",
+      "domain": "icon",
+      "layer": "composition"
+    },
+    {
+      "id": "illustration-minimal-constraints",
+      "title": "极简插画 = 低色数 + 无渐变 + 大负空间",
+      "domain": "illustration",
+      "layer": "composition"
+    },
+    {
+      "id": "motion-reverse-phi-illusion",
+      "title": "Reverse Phi 错觉：静止帧交替产生运动感知",
+      "domain": "motion",
+      "layer": "motion"
+    },
+    {
+      "id": "video-launch-narrative-structure",
+      "title": "发布片结构：3 秒钩子 + 每 12 秒一次 re-hook",
+      "domain": "video",
+      "layer": "order"
+    },
+    {
+      "id": "design-seven-principles",
+      "title": "设计七原则：Balance/Unity/Contrast/Emphasis/Repetition/Pattern/Rhythm 的可操作定义",
+      "domain": "layout",
+      "layer": "order"
+    },
+    {
+      "id": "icon-motion-500ms",
+      "title": "图标微动效 0.5 秒量级：入场/变化/收尾的三段近似",
+      "domain": "icon",
+      "layer": "motion"
+    },
+    {
+      "id": "motion-curve-soul",
+      "title": "动效的灵魂是曲线：三族缓动 + 特殊曲线的可枚举族谱",
+      "domain": "motion",
+      "layer": "order"
+    }
+  ],
+  "taste": {
+    "signals": [
+      {
+        "id": "sig-001",
+        "quote": "更是一个工作台界面……制作更好的界面，包括更好的艺术画面"
+      },
+      {
+        "id": "sig-002",
+        "quote": "我们主打的是工作流……专注一下我们工作流的一个监管和产品质量把控"
+      },
+      {
+        "id": "sig-003",
+        "quote": "每天都要按 KPI 这样做（高播放视觉系视频学习）"
+      },
+      {
+        "id": "sig-004",
+        "quote": "让这个工作流越用越懂用户 / 用户能每次都看到目前的方向和情况"
+      },
+      {
+        "id": "sig-005",
+        "quote": "知识库区块/产物墙/能力接入登记表被要求成为一等界面"
+      }
+    ],
+    "traits": [
+      {
+        "label": "偏好监管深度而非生成广度",
+        "confidence": 0.7,
+        "status": "shown",
+        "evidence": [
+          "sig-002"
+        ]
+      },
+      {
+        "label": "重视视觉与艺术画面质量",
+        "confidence": 0.85,
+        "status": "adopted",
+        "evidence": [
+          "sig-001",
+          "sig-005"
+        ]
+      },
+      {
+        "label": "要求方向与状态持续可见",
+        "confidence": 0.7,
+        "status": "shown",
+        "evidence": [
+          "sig-004"
+        ]
+      },
+      {
+        "label": "希望工作流随使用累积理解用户",
+        "confidence": 0.7,
+        "status": "shown",
+        "evidence": [
+          "sig-004"
+        ]
+      },
+      {
+        "label": "要求证据优先、反感夸大",
+        "confidence": 0.8,
+        "status": "adopted",
+        "evidence": [
+          "sig-003",
+          "sig-002"
+        ]
+      },
+      {
+        "label": "偏好结构化证据界面",
+        "confidence": 0.7,
+        "status": "shown",
+        "evidence": [
+          "sig-005"
+        ]
+      },
+      {
+        "label": "把工作台界面视为产品门面",
+        "confidence": 0.7,
+        "status": "shown",
+        "evidence": [
+          "sig-001"
+        ]
+      }
+    ]
+  },
+  "learning": {
+    "entries": [
+      {
+        "loop": 59,
+        "videos": 12,
+        "minutes": 6,
+        "cards": [
+          "icon-single-stroke-constraint",
+          "layout-visual-balance",
+          "motion-force-anticipation"
+        ],
+        "converted": "知识库 v1 立项"
+      },
+      {
+        "loop": 60,
+        "videos": 8,
+        "minutes": 6,
+        "cards": [
+          "icon-primitive-reduction",
+          "illustration-minimal-constraints",
+          "motion-reverse-phi-illusion"
+        ],
+        "converted": "schema v1.1（layer/measurable/paramProvenance）+ Reverse Phi 冻结"
+      },
+      {
+        "loop": 61,
+        "videos": 7,
+        "minutes": 6,
+        "cards": [
+          "video-launch-narrative-structure"
+        ],
+        "converted": "remotion 能力四问补全 + 官网重构"
+      },
+      {
+        "loop": 62,
+        "videos": 7,
+        "minutes": 4,
+        "cards": [],
+        "converted": "视频卡升 v2（9 参数）+ 能力候选 3 项登记（ai-promo-video-maker/meshy-3d/frameronin-pixel）"
+      },
+      {
+        "loop": 64,
+        "videos": 0,
+        "minutes": 3,
+        "cards": [
+          "design-seven-principles"
+        ],
+        "converted": "三层体系补齐（order 层）"
+      },
+      {
+        "loop": 65,
+        "videos": 1,
+        "minutes": 3,
+        "cards": [],
+        "converted": "Figma Make 判读+反例卡增量"
+      },
+      {
+        "loop": 66,
+        "videos": 0,
+        "minutes": 3,
+        "cards": [],
+        "converted": "styleHints 增量（七原则近似）"
+      },
+      {
+        "loop": 67,
+        "videos": 0,
+        "minutes": 2,
+        "cards": [],
+        "converted": "trending 快讯"
+      },
+      {
+        "loop": 68,
+        "videos": 0,
+        "minutes": 3,
+        "cards": [],
+        "converted": "opencode 判读+分镜模板"
+      }
+    ],
+    "totals": {
+      "videos": 35,
+      "minutes": 36,
+      "cards": 8,
+      "conversions": 9,
+      "note": "含产品复检轮（videos=0 的轮次不产视频卡，走机制/产品判读）；minutes 为各轮累计"
+    }
+  }
+}

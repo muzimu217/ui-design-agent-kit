@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>工作流画布工作台（Canvas Workbench） · 工作流画布工作台 · 实时门径</title>
+<style>
+:root{
+  --bg:#ffffff; --fg:#12181f; --muted:#5d6b7a; --line:#dfe5ec;
+  --panel:#f7f9fb; --raised:#ffffff;
+  --accent:#1f7a5c; --gate:#b3244a; --rework:#b5711b; --blocked:#c2410c;
+  /* Motion budget: control state 140–200ms; entrance may run longer but is
+     finite and skipped entirely under reduced motion or the 动效 toggle. */
+  --t-fast:.16s; --t-state:.18s; --t-drawer:.22s;
+  /* SVG theme hooks: the renderer emits var(--wf-*, <light fallback>) so the
+     same markup follows the theme without re-rendering. */
+  --wf-canvas:#ffffff;
+  --wf-line:#dfe5ec;
+  --wf-band:#c9d5e0; --wf-band-chip:#ffffff;
+  --wf-lane:#f7f9fb;
+  --wf-lane-gate:#fdf6f7;
+  --wf-lane-rework:#fbf7f4;
+  --wf-node-stage-fill:#eef6f3;
+  --wf-node-stage-stroke:#1f7a5c;
+  --wf-node-gate-fill:#fdeff2;
+  --wf-node-gate-stroke:#b3244a;
+  --wf-node-rework-fill:#fdf3e7;
+  --wf-node-rework-stroke:#b5711b;
+  --font:ui-sans-serif,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+}
+body[data-theme="dark"]{
+  --bg:#0a151c; --fg:#e6edf3; --muted:#8fa3b0; --line:#1d2c36;
+  --panel:#0f1e27; --raised:#132430;
+  --accent:#4cc38a; --gate:#e5637f; --rework:#e0a355; --blocked:#f97316;
+  --wf-canvas:#0f1e27;
+  --wf-line:#20323d;
+  --wf-band:#315061; --wf-band-chip:#12232d;
+  --wf-lane:#12232d;
+  --wf-lane-gate:#1b1a24;
+  --wf-lane-rework:#1d1c18;
+  --wf-node-stage-fill:#13302c;
+  --wf-node-stage-stroke:#4cc38a;
+  --wf-node-gate-fill:#301a24;
+  --wf-node-gate-stroke:#e5637f;
+  --wf-node-rework-fill:#2e2519;
+  --wf-node-rework-stroke:#e0a355;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+/* One screen, no page scroll: the board absorbs the remaining height. Detail
+   opens in a side drawer; summary cards open as a bottom sheet. */
+html,body{height:100%}
+body{overflow:hidden}
+.wf-shell{height:100vh;display:flex;flex-direction:column;gap:10px;
+  max-width:none;padding:12px 18px 14px}
+
+/* Top bar: brand, node search, compact toolbar. */
+.wf-topbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+  padding:14px 0 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:20;
+  transition:opacity .3s ease}
+.wf-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.wf-pulse{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;
+  box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent);animation:wf-pulse 2.6s ease-out infinite}
+@keyframes wf-pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent)}
+  70%{box-shadow:0 0 0 9px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.wf-brand-text{font-size:14.5px;font-weight:650;letter-spacing:-.01em}
+.wf-brand-task{font-size:12px;color:var(--muted);padding-left:10px;border-left:1px solid var(--line);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:34ch}
+.wf-search{position:relative;flex:0 1 260px;min-width:170px}
+.wf-search input{width:100%;min-height:34px;padding:0 12px;border:1px solid var(--line);border-radius:6px;
+  background:var(--panel);color:var(--fg);font:inherit;font-size:12.5px;outline:none;
+  transition:border-color var(--t-fast)}
+.wf-search input::placeholder{color:var(--muted)}
+.wf-search input:focus{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 22%,transparent)}
+.wf-search-pop{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:60;max-height:320px;overflow:auto;
+  border:1px solid var(--line);border-radius:10px;background:var(--panel);
+  box-shadow:0 18px 48px rgba(0,0,0,.30)}
+.wf-search-pop[hidden]{display:none}
+.wf-search-item{display:flex;align-items:center;gap:9px;width:100%;padding:8px 11px;border:0;
+  background:transparent;color:var(--fg);font:inherit;font-size:12.5px;cursor:pointer;text-align:left}
+.wf-search-item:hover{background:var(--raised)}
+.wf-search-kind{font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--muted);
+  border:1px solid var(--line);border-radius:6px;padding:1px 6px;flex:none}
+.wf-search-text{flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wf-search-status{color:var(--muted);font-size:11.5px;flex:none}
+.wf-search-empty{padding:10px 12px;font-size:12.5px;color:var(--muted)}
+.wf-toolbar{display:flex;align-items:center;gap:4px;padding:3px;border:1px solid var(--line);
+  border-radius:10px;background:var(--panel)}
+.wf-tool{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:0 12px;border:0;
+  border-radius:6px;background:transparent;color:var(--muted);font:inherit;font-size:12.5px;cursor:pointer;
+  transition:background var(--t-fast),color var(--t-fast)}
+.wf-tool:hover{background:var(--raised);color:var(--fg)}
+.wf-tool:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.wf-tool[aria-pressed="true"]{background:var(--raised);color:var(--fg)}
+.wf-tool-dot{width:11px;height:11px;border-radius:3px;background:var(--fg);flex:none;opacity:.75}
+
+/* Status bar: the answer to "where is this task" in one line. */
+.wf-status-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;flex:none;
+  transition:opacity .3s ease}
+.wf-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:650;
+  border-radius:6px;padding:3px 10px;color:#fff;background:var(--muted)}
+.wf-chip-passed{background:var(--accent)}
+.wf-chip-gated{background:var(--gate)}
+.wf-chip-blocked{background:var(--blocked)}
+.wf-chip-active{background:var(--accent)}
+.wf-status-progress{font-variant-numeric:tabular-nums;color:var(--muted)}
+.wf-status-progress strong{color:var(--fg);font-size:14px}
+.wf-status-blocked{color:var(--blocked)}
+.wf-status-where{color:var(--muted)}
+.wf-status-rev{font-family:var(--mono);font-size:11.5px;color:var(--muted);
+  border:1px solid var(--line);border-radius:6px;padding:1px 7px}
+
+
+/* Stage rail: each node lights according to its real status. */
+.wf-rail-wrap{flex:none;transition:opacity .3s ease}
+.wf-rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;
+  list-style:none;margin:0;padding:0;overflow-x:auto}
+.wf-rail-item{min-width:0}
+.wf-rail-btn{display:flex;align-items:center;gap:7px;width:100%;min-height:34px;padding:5px 9px;
+  border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--muted);
+  font:inherit;font-size:12.5px;cursor:pointer;text-align:left;
+  transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast)}
+.wf-rail-btn:hover{border-color:var(--accent)}
+.wf-rail-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wf-rail-mark{font-size:12px;width:1em;text-align:center;flex:none}
+.wf-rail-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wf-rail-item[data-status="passed"] .wf-rail-btn{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.wf-rail-item[data-status="gated"] .wf-rail-btn{color:var(--gate);border-color:color-mix(in srgb,var(--gate) 45%,var(--line))}
+.wf-rail-item[data-status="blocked"] .wf-rail-btn{color:var(--blocked);border-color:color-mix(in srgb,var(--blocked) 45%,var(--line))}
+.wf-rail-item[data-status="active"] .wf-rail-btn{color:var(--accent)}
+.wf-rail-item[data-current="true"] .wf-rail-btn{background:var(--raised);color:var(--fg);
+  box-shadow:inset 0 0 0 1.5px var(--accent);font-weight:650}
+
+/* Board: camera viewport. The inner canvas is transformed (zoom/pan); the SVG
+   scales to fit on load and the reader takes over from there. */
+.wf-board{flex:1 1 auto;min-height:0;border:1px solid var(--line);border-radius:14px;
+  background:var(--panel);position:relative;overflow:hidden}
+.wf-viewport{position:absolute;inset:0;overflow:hidden;cursor:grab;touch-action:none}
+.wf-viewport[data-panning="true"]{cursor:grabbing}
+.wf-canvas{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;padding:0}
+.wf-canvas.wf-anim{transition:transform var(--t-drawer) cubic-bezier(.22,.61,.36,1)}
+.wf-svg{display:block}
+.wf-svg text{fill:var(--fg)}
+.wf-lane-label{fill:var(--muted) !important;font-size:12px;font-weight:650}
+.wf-col-label{fill:var(--fg) !important;font-size:13px;font-weight:650}
+.wf-col-meta{fill:var(--muted) !important;font-size:11px}
+.wf-band-chip{fill:var(--muted) !important;font-size:10px;font-weight:700;letter-spacing:.08em}
+.wf-node-step{fill:var(--muted) !important;font-size:10px;font-weight:700}
+.wf-node-title{fill:var(--fg) !important;font-size:13.5px;font-weight:650}
+.wf-node-sub{fill:var(--muted) !important;font-size:11px}
+.wf-edge-label{fill:var(--muted) !important;font-size:10.5px}
+.wf-status-glyph{fill:#fff !important;font-size:10px;font-weight:700}
+.wf-node{cursor:pointer;outline:none}
+.wf-node rect{transition:stroke-width var(--t-state) ease,stroke var(--t-state) ease,fill var(--t-state) ease,opacity var(--t-state) ease}
+.wf-node:focus-visible rect{stroke-width:3.5}
+.wf-node[data-selected="true"] rect{stroke-width:3.5}
+.wf-node[data-dim="true"]{opacity:.26}
+.wf-edge{transition:opacity var(--t-state) ease}
+.wf-edge[data-dim="true"]{opacity:.16}
+body[data-labels="off"] .wf-edge-label{display:none}
+body[data-focus="on"] .wf-node[data-dim="true"]{opacity:.14}
+
+/* Motion: entrance stagger, gated pulse, reduced-motion + manual cutoff.
+   The stagger index comes from the renderer (--wf-i per node). */
+.wf-node{animation:wf-enter .5s cubic-bezier(.22,.61,.36,1) both;
+  animation-delay:calc(var(--wf-i, 0) * 42ms)}
+@keyframes wf-enter{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+.wf-node[data-status="gated"] rect{animation:wf-gate-pulse 2.4s ease-in-out infinite}
+@keyframes wf-gate-pulse{0%,100%{stroke-opacity:1}50%{stroke-opacity:.45}}
+.wf-node[data-current="true"] rect{filter:drop-shadow(0 0 7px color-mix(in srgb,var(--accent) 45%,transparent))}
+@media (prefers-reduced-motion:reduce){
+  .wf-pulse,.wf-node,.wf-node[data-status="gated"] rect{animation:none}
+  *{transition-duration:.01ms !important}
+}
+body[data-motion="off"] .wf-pulse,
+body[data-motion="off"] .wf-node,
+body[data-motion="off"] .wf-node[data-status="gated"] rect{animation:none !important}
+body[data-motion="off"] *{transition:none !important}
+
+/* Floating camera controls, bottom-right like a map instrument. */
+.wf-zoombar{position:absolute;right:12px;bottom:12px;display:flex;align-items:stretch;gap:2px;
+  padding:3px;border:1px solid var(--line);border-radius:10px;background:var(--panel);
+  box-shadow:0 10px 30px rgba(0,0,0,.22);z-index:10}
+.wf-zoombar button{min-width:34px;min-height:30px;padding:0 9px;border:0;border-radius:6px;
+  background:transparent;color:var(--muted);font:inherit;font-size:12.5px;cursor:pointer;
+  font-variant-numeric:tabular-nums;transition:background var(--t-fast),color var(--t-fast)}
+.wf-zoombar button:hover{background:var(--raised);color:var(--fg)}
+.wf-zoombar button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.wf-zoombar #wf-zoom-read{min-width:52px;text-align:center;color:var(--fg)}
+
+/* Legend: floating panel over the board, bottom-left. */
+.wf-legend{position:absolute;left:12px;bottom:12px;z-index:12;width:min(340px,86%);
+  border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px 14px;
+  box-shadow:0 18px 48px rgba(0,0,0,.30);max-height:70%;overflow:auto}
+.wf-legend[hidden]{display:none}
+.wf-legend h3{margin:10px 0 6px;font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted)}
+.wf-legend h3:first-child{margin-top:0}
+.wf-legend-list{margin:0;padding:0;list-style:none;display:grid;gap:5px}
+.wf-legend-row{display:flex;align-items:baseline;gap:8px;font-size:12px}
+.wf-legend-mark{width:1em;text-align:center;flex:none;font-weight:700}
+.wf-legend-mark[data-status="passed"],.wf-legend-mark[data-status="active"]{color:var(--accent)}
+.wf-legend-mark[data-status="gated"]{color:var(--gate)}
+.wf-legend-mark[data-status="blocked"]{color:var(--blocked)}
+.wf-legend-mark[data-status="pending"]{color:var(--muted)}
+.wf-legend-label{font-weight:650;flex:none}
+.wf-legend-meaning{color:var(--muted);font-size:11.5px;flex:1 1 auto;min-width:0}
+.wf-legend-count{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.wf-legend-swatch{width:16px;height:10px;border-radius:3px;border:1px solid var(--line);flex:none}
+.wf-legend-swatch[data-lane="gate"]{background:var(--wf-lane-gate)}
+.wf-legend-swatch[data-lane="rework"]{background:var(--wf-lane-rework)}
+.wf-legend-swatch[data-lane="agent"]{background:var(--wf-lane)}
+.wf-legend-swatch-stage{background:var(--wf-node-stage-fill);border-color:var(--wf-node-stage-stroke)}
+.wf-legend-keys{margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:11.5px;color:var(--muted)}
+.wf-legend-keys kbd{font-family:var(--mono);font-size:10.5px;border:1px solid var(--line);
+  border-radius:4px;padding:0 5px;background:var(--raised);color:var(--fg)}
+
+/* Demo preview: chrome recedes, one caption carries the narration. */
+.wf-demo-caption{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:14;
+  max-width:min(760px,92%);border:1px solid var(--line);border-radius:10px;background:var(--panel);
+  box-shadow:0 18px 48px rgba(0,0,0,.30);padding:10px 16px;font-size:13px;text-align:center}
+.wf-demo-caption b{font-weight:700}
+.wf-demo-caption[hidden]{display:none}
+.wf-cap-status{margin-left:9px;color:var(--muted)}
+.wf-cap-note{margin-left:9px;color:var(--muted)}
+.wf-cap-stop{margin-left:9px;color:var(--gate);font-weight:650}
+body[data-demo="on"] .wf-topbar,body[data-demo="on"] .wf-status-bar,
+body[data-demo="on"] .wf-rail-wrap{opacity:.07;pointer-events:none}
+
+/* Summary cards: bottom sheet over the board. */
+.wf-cards{position:absolute;left:12px;right:12px;bottom:12px;z-index:11}
+.wf-cards[hidden]{display:none}
+.wf-cards-row{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.wf-sum-card{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px 14px;
+  box-shadow:0 18px 48px rgba(0,0,0,.30)}
+.wf-sum-card h3{margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted)}
+.wf-sum-big{margin:0 0 4px;font-size:20px;font-weight:700}
+.wf-sum-dim{color:var(--muted);font-size:13px;font-weight:400}
+.wf-sum-line{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.wf-sum-blocked{color:var(--blocked)}
+.wf-sum-list{margin:0;padding:0;list-style:none;display:grid;gap:5px}
+.wf-sum-list li{display:flex;justify-content:space-between;gap:10px;font-size:12px}
+.wf-sum-list li span{color:var(--muted)}
+
+/* Detail drawer: slides in over the board instead of pushing it down. */
+.wf-drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,92vw);z-index:40;
+  background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;
+  box-shadow:-18px 0 40px rgba(0,0,0,.28);padding:18px 18px 22px}
+.wf-drawer[hidden]{display:none}
+.wf-drawer:not([hidden]){animation:wf-drawer-in var(--t-drawer) cubic-bezier(.22,.61,.36,1)}
+@keyframes wf-drawer-in{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.wf-drawer-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:6px;
+  border:1px solid var(--line);background:var(--raised);color:var(--muted);font-size:17px;line-height:1;
+  cursor:pointer}
+.wf-drawer-close:hover{color:var(--fg)}
+.wf-drawer-close:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wf-drawer .wf-card{border:0;background:transparent;padding:0}
+
+/* Embedded artifact: the document itself, readable in the drawer. */
+.wf-artifacts{display:grid;gap:14px}
+.wf-artifact{border:1px solid var(--line);border-radius:10px;background:var(--raised);overflow:hidden}
+.wf-artifact-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:9px 11px;
+  border-bottom:1px solid var(--line);background:var(--panel)}
+.wf-artifact-state{font-size:11px;color:var(--muted);margin-left:auto}
+.wf-artifact-tools{display:flex;gap:6px;padding:8px 11px;border-bottom:1px solid var(--line)}
+.wf-mini{min-height:28px;padding:0 10px;border:1px solid var(--line);border-radius:6px;
+  background:var(--panel);color:var(--muted);font:inherit;font-size:11.5px;cursor:pointer}
+.wf-mini:hover{color:var(--fg);border-color:var(--accent)}
+.wf-mini:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.wf-artifact-frame{display:block;width:100%;height:340px;border:0;background:#fff}
+.wf-artifact-src{margin:0;max-height:340px;overflow:auto;font-family:var(--mono);font-size:11px;
+  padding:10px 12px;white-space:pre-wrap}
+.wf-artifact-doc{max-height:440px;overflow:auto;padding:12px 14px}
+.wf-artifact-missing{margin:0;padding:12px 14px;font-size:12.5px;color:var(--muted)}
+.wf-artifact-doc .md-h1{font-size:16px;margin:0 0 8px}
+.wf-artifact-doc .md-h2{font-size:14px;margin:14px 0 6px}
+.wf-artifact-doc .md-h3{font-size:13px;margin:12px 0 5px;color:var(--muted)}
+.wf-artifact-doc .md-h4,.wf-artifact-doc .md-h5,.wf-artifact-doc .md-h6{font-size:12.5px;margin:10px 0 4px;color:var(--muted)}
+.wf-artifact-doc .md-p{margin:0 0 8px;font-size:12.5px;line-height:1.75}
+.wf-artifact-doc .md-list{margin:0 0 8px;padding-left:18px;font-size:12.5px;line-height:1.75}
+.wf-artifact-doc .md-quote{margin:0 0 8px;padding-left:10px;border-left:2px solid var(--line);color:var(--muted);font-size:12.5px}
+.wf-artifact-doc .md-code{font-family:var(--mono);font-size:11.5px;background:var(--panel);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.wf-artifact-doc .md-pre{margin:0 0 8px;padding:10px 12px;background:var(--panel);border:1px solid var(--line);
+  border-radius:6px;overflow:auto;font-family:var(--mono);font-size:11px;line-height:1.6}
+.wf-artifact-doc .md-hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+.wf-artifact-doc .md-table-wrap{overflow:auto;margin:0 0 10px}
+.wf-artifact-doc .md-table{border-collapse:collapse;font-size:11.5px;min-width:100%}
+.wf-artifact-doc .md-table th,.wf-artifact-doc .md-table td{border:1px solid var(--line);
+  padding:5px 8px;text-align:left;vertical-align:top}
+.wf-artifact-doc .md-table th{background:var(--panel);font-weight:650}
+.wf-artifact-doc .md-link{color:var(--accent)}
+.wf-card{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:18px 20px}
+.wf-card-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.wf-card-kind{font-size:11px;font-weight:650;letter-spacing:.04em;border-radius:6px;padding:2px 8px;
+  color:#fff;background:var(--muted)}
+.wf-card-kind-stage{background:var(--accent)}
+.wf-card-kind-gate{background:var(--gate)}
+.wf-card-kind-rework{background:var(--rework)}
+.wf-card h2{margin:0;font-size:17px;font-weight:680}
+.wf-card-status{font-size:12px;font-weight:650;border-radius:6px;padding:2px 9px;color:#fff;background:var(--muted)}
+.wf-card-status[data-status="passed"]{background:var(--accent)}
+.wf-card-status[data-status="gated"]{background:var(--gate)}
+.wf-card-status[data-status="blocked"]{background:var(--blocked)}
+.wf-card-summary{margin:12px 0 0;font-size:13.5px;color:var(--muted);max-width:74ch}
+.wf-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:16px}
+.wf-field{border-top:1px solid var(--line);padding-top:12px}
+.wf-field h3{margin:0 0 6px;font-size:11.5px;font-weight:650;letter-spacing:.04em;color:var(--muted)}
+.wf-field p{margin:0;font-size:13px}
+.wf-field ul{margin:0;padding-left:0;list-style:none;display:grid;gap:6px}
+.wf-field li{font-size:12.5px;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+.wf-path{font-family:var(--mono);font-size:11.5px;background:var(--raised);border:1px solid var(--line);
+  border-radius:6px;padding:2px 7px;color:var(--fg);word-break:break-all}
+.wf-expected{font-size:11px;color:var(--muted);border:1px dashed var(--line);border-radius:6px;padding:1px 6px}
+.wf-note-line{margin:10px 0 0;font-size:12.5px;color:var(--muted);border-left:2px solid var(--line);padding-left:10px}
+.wf-wait{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--gate);font-weight:650}
+.wf-gate-list{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.wf-gate-item{border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--raised)}
+.wf-gate-item strong{font-size:13px}
+.wf-gate-item p{margin:5px 0 0;font-size:12.5px;color:var(--muted)}
+
+@media (min-width:900px){
+  .wf-grid{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+}
+@media (max-width:640px){
+  .wf-shell{padding:10px 12px 12px;gap:8px}
+  .wf-brand-task{display:none}
+  .wf-tool-label{display:none}
+  .wf-search{flex-basis:150px}
+  .wf-tool{min-height:40px;padding:0 11px}
+  .wf-drawer{width:100vw;border-left:0}
+}
+</style>
+</head>
+<body data-theme="dark" data-motion="on" data-demo="off">
+<div class="wf-shell">
+
+<header class="wf-topbar">
+  <div class="wf-brand">
+    <span class="wf-pulse" aria-hidden="true"></span>
+    <span class="wf-brand-text">工作流画布工作台 · 实时门径</span>
+    <span class="wf-brand-task">工作流画布工作台（Canvas Workbench）</span>
+  </div>
+  <div class="wf-search" id="wf-search-wrap">
+    <input type="search" id="wf-search" placeholder="搜索节点（/）" autocomplete="off" spellcheck="false" aria-label="搜索节点"/>
+    <div class="wf-search-pop" id="wf-search-pop" hidden></div>
+  </div>
+  <div class="wf-toolbar" role="toolbar" aria-label="视图控制">
+    <button type="button" class="wf-tool" id="wf-theme" aria-pressed="true" title="切换明暗主题">
+      <span class="wf-tool-dot" aria-hidden="true"></span><span class="wf-tool-label">深色</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-motion" aria-pressed="true" title="开启动效；关闭后所有过渡静止">
+      <span class="wf-tool-label">动效</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-focus" aria-pressed="false" title="只高亮当前阶段，其余变暗">
+      <span class="wf-tool-label">聚焦</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-labels" aria-pressed="true" title="显示或隐藏连线说明">
+      <span class="wf-tool-label">标注</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-legend-btn" aria-pressed="false" aria-expanded="false" title="图例：状态、节点与泳道说明">
+      <span class="wf-tool-label">图例</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-cards-btn" aria-pressed="false" aria-expanded="false" title="要点摘要">
+      <span class="wf-tool-label">要点</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-demo-btn" aria-pressed="false" title="回放任务走过的路：到未通过的门即停（Esc 退出）">
+      <span class="wf-tool-label">回放</span>
+    </button>
+    <button type="button" class="wf-tool" id="wf-export" title="导出当前图为 SVG">
+      <span class="wf-tool-label">导出</span>
+    </button>
+  </div>
+</header>
+
+<section class="wf-status-bar" aria-label="任务状态">
+  <span class="wf-chip wf-chip-active">进行中</span>
+  <span class="wf-status-progress"><strong>2</strong> / 6 阶段</span>
+  <span class="wf-status-where">当前停在 <strong>原型与契约</strong></span>
+  <span class="wf-status-rev">P-canvas-2</span>
+  
+</section>
+
+<section class="wf-rail-wrap">
+  <ol class="wf-rail" aria-label="阶段推进">
+    <li class="wf-rail-item" data-stage="brief" data-status="passed"><button type="button" class="wf-rail-btn" data-stage="brief" aria-label="需求与方向，已通过"><span class="wf-rail-mark" aria-hidden="true">✓</span><span class="wf-rail-name">需求与方向</span></button></li><li class="wf-rail-item" data-stage="reference" data-status="passed"><button type="button" class="wf-rail-btn" data-stage="reference" aria-label="参考素材，已通过"><span class="wf-rail-mark" aria-hidden="true">✓</span><span class="wf-rail-name">参考素材</span></button></li><li class="wf-rail-item" data-stage="contract" data-status="active" data-current="true"><button type="button" class="wf-rail-btn" data-stage="contract" aria-label="原型与契约，进行中"><span class="wf-rail-mark" aria-hidden="true">▶</span><span class="wf-rail-name">原型与契约</span></button></li><li class="wf-rail-item" data-stage="build" data-status="active"><button type="button" class="wf-rail-btn" data-stage="build" aria-label="交互实现，进行中"><span class="wf-rail-mark" aria-hidden="true">▶</span><span class="wf-rail-name">交互实现</span></button></li><li class="wf-rail-item" data-stage="verify" data-status="pending"><button type="button" class="wf-rail-btn" data-stage="verify" aria-label="浏览器验证，未开始"><span class="wf-rail-mark" aria-hidden="true">○</span><span class="wf-rail-name">浏览器验证</span></button></li><li class="wf-rail-item" data-stage="deliver" data-status="pending"><button type="button" class="wf-rail-btn" data-stage="deliver" aria-label="交付与迭代，未开始"><span class="wf-rail-mark" aria-hidden="true">○</span><span class="wf-rail-name">交付与迭代</span></button></li>
+  </ol>
+</section>
+
+<section class="wf-board">
+  <div class="wf-viewport" id="wf-viewport">
+    <div class="wf-canvas" id="wf-canvas">
+      <svg style="width:1580px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1580 670" role="img" aria-labelledby="wf-title wf-desc" class="wf-svg">
+<title id="wf-title">工作流画布工作台 · 实时门径</title>
+<desc id="wf-desc">状态取自任务记录，阶段与确认门来自 tooling/workflow-stages.json。</desc>
+<defs><marker id="wf-arrow-flow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8b98a6"/></marker><marker id="wf-arrow-pass" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1f7a5c"/></marker><marker id="wf-arrow-gate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#b3244a"/></marker><marker id="wf-arrow-rework" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#b5711b"/></marker><marker id="wf-arrow-return" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#b5711b"/></marker><marker id="wf-arrow-trace" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7a8c"/></marker></defs>
+<rect x="0" y="0" width="1580" height="670" fill="var(--wf-canvas, #ffffff)"/>
+<g class="wf-lane" data-lane="main"><rect x="16" y="92" width="1548" height="90" rx="10" fill="var(--wf-lane, #f7f9fb)" stroke="var(--wf-line, #dfe5ec)" stroke-width="1"/><line x1="148" y1="100" x2="148" y2="174" stroke="var(--wf-line, #dfe5ec)" stroke-width="1"/><text x="28" y="141" class="wf-lane-label">主代理</text></g>
+<g class="wf-lane" data-lane="sub"><rect x="16" y="192" width="1548" height="164" rx="10" fill="var(--wf-lane, #f7f9fb)" stroke="var(--wf-line, #dfe5ec)" stroke-width="1"/><line x1="148" y1="200" x2="148" y2="348" stroke="var(--wf-line, #dfe5ec)" stroke-width="1"/><text x="28" y="278" class="wf-lane-label">子代理</text></g>
+<g class="wf-lane" data-lane="user"><rect x="16" y="366" width="1548" height="164" rx="10" fill="var(--wf-lane-gate, #fdf6f7)" stroke="var(--wf-line, #dfe5ec)" stroke-width="1"/><line x1="148" y1="374" x2="148" y2="522" stroke="var(--wf-line, #dfe5ec)" stroke-width="1"/><text x="28" y="452" class="wf-lane-label">确认门（用户）</text></g>
+<g class="wf-lane" data-lane="rework"><rect x="16" y="540" width="1548" height="90" rx="10" fill="var(--wf-lane-rework, #fbf7f4)" stroke="var(--wf-line, #dfe5ec)" stroke-width="1"/><line x1="148" y1="548" x2="148" y2="622" stroke="var(--wf-line, #dfe5ec)" stroke-width="1"/><text x="28" y="589" class="wf-lane-label">不通过 → 返工</text></g>
+<g class="wf-column" data-stage="brief"><text x="274" y="48" class="wf-col-label" text-anchor="middle">需求与方向</text><text x="274" y="68" class="wf-col-meta" text-anchor="middle">含确认门</text></g>
+<g class="wf-column" data-stage="reference"><text x="510" y="48" class="wf-col-label" text-anchor="middle">参考素材</text><text x="510" y="68" class="wf-col-meta" text-anchor="middle">含确认门</text></g>
+<g class="wf-column" data-stage="contract"><text x="746" y="48" class="wf-col-label" text-anchor="middle">原型与契约</text><text x="746" y="68" class="wf-col-meta" text-anchor="middle">含确认门</text></g>
+<g class="wf-column" data-stage="build"><text x="982" y="48" class="wf-col-label" text-anchor="middle">交互实现</text><text x="982" y="68" class="wf-col-meta" text-anchor="middle">无确认门</text></g>
+<g class="wf-column" data-stage="verify"><text x="1218" y="48" class="wf-col-label" text-anchor="middle">浏览器验证</text><text x="1218" y="68" class="wf-col-meta" text-anchor="middle">无确认门</text></g>
+<g class="wf-column" data-stage="deliver"><text x="1454" y="48" class="wf-col-label" text-anchor="middle">交付与迭代</text><text x="1454" y="68" class="wf-col-meta" text-anchor="middle">含确认门</text></g>
+<g class="wf-band" data-stage="brief"><rect x="164" y="16" width="220" height="638" rx="14" fill="none" stroke="var(--wf-band, #dfe5ec)" stroke-width="1.4" stroke-dasharray="7 5"/><rect x="174" y="15" width="30" height="18" rx="5" fill="var(--wf-band-chip, #ffffff)" stroke="var(--wf-band, #dfe5ec)" stroke-width="1"/><text x="189" y="28" class="wf-band-chip" text-anchor="middle">01</text></g>
+<g class="wf-band" data-stage="reference"><rect x="400" y="16" width="220" height="638" rx="14" fill="none" stroke="var(--wf-band, #dfe5ec)" stroke-width="1.4" stroke-dasharray="7 5"/><rect x="410" y="15" width="30" height="18" rx="5" fill="var(--wf-band-chip, #ffffff)" stroke="var(--wf-band, #dfe5ec)" stroke-width="1"/><text x="425" y="28" class="wf-band-chip" text-anchor="middle">02</text></g>
+<g class="wf-band" data-stage="contract"><rect x="636" y="16" width="220" height="638" rx="14" fill="none" stroke="var(--wf-band, #dfe5ec)" stroke-width="1.4" stroke-dasharray="7 5"/><rect x="646" y="15" width="30" height="18" rx="5" fill="var(--wf-band-chip, #ffffff)" stroke="var(--wf-band, #dfe5ec)" stroke-width="1"/><text x="661" y="28" class="wf-band-chip" text-anchor="middle">03</text></g>
+<g class="wf-band" data-stage="build"><rect x="872" y="16" width="220" height="638" rx="14" fill="none" stroke="var(--wf-band, #dfe5ec)" stroke-width="1.4" stroke-dasharray="7 5"/><rect x="882" y="15" width="30" height="18" rx="5" fill="var(--wf-band-chip, #ffffff)" stroke="var(--wf-band, #dfe5ec)" stroke-width="1"/><text x="897" y="28" class="wf-band-chip" text-anchor="middle">04</text></g>
+<g class="wf-band" data-stage="verify"><rect x="1108" y="16" width="220" height="638" rx="14" fill="none" stroke="var(--wf-band, #dfe5ec)" stroke-width="1.4" stroke-dasharray="7 5"/><rect x="1118" y="15" width="30" height="18" rx="5" fill="var(--wf-band-chip, #ffffff)" stroke="var(--wf-band, #dfe5ec)" stroke-width="1"/><text x="1133" y="28" class="wf-band-chip" text-anchor="middle">05</text></g>
+<g class="wf-band" data-stage="deliver"><rect x="1344" y="16" width="220" height="638" rx="14" fill="none" stroke="var(--wf-band, #dfe5ec)" stroke-width="1.4" stroke-dasharray="7 5"/><rect x="1354" y="15" width="30" height="18" rx="5" fill="var(--wf-band-chip, #ffffff)" stroke="var(--wf-band, #dfe5ec)" stroke-width="1"/><text x="1369" y="28" class="wf-band-chip" text-anchor="middle">06</text></g>
+<g class="wf-edge" data-variant="gate" data-from="stage:brief" data-to="gate:A"><path d="M274 168 L274 380" fill="none" stroke="#b3244a" stroke-width="2"  marker-end="url(#wf-arrow-gate)"/><text x="280" y="278" class="wf-edge-label" text-anchor="start">呈报</text></g>
+<g class="wf-edge" data-variant="rework" data-from="gate:A" data-to="rework:brief"><path d="M274 436 L274 554" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-rework)"/><text x="280" y="499" class="wf-edge-label" text-anchor="start">不通过</text></g>
+<g class="wf-edge" data-variant="return" data-from="rework:brief" data-to="stage:brief"><path d="M274 554 L274 168" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-return)"/><text x="280" y="365" class="wf-edge-label" text-anchor="start">调整后重走</text></g>
+<g class="wf-edge" data-variant="pass" data-from="gate:A" data-to="stage:reference"><path d="M348 408 L386 408 L386 237 L424 237" fill="none" stroke="#1f7a5c" stroke-width="2"  marker-end="url(#wf-arrow-pass)"/><text x="367" y="402" class="wf-edge-label" text-anchor="middle">通过</text></g>
+<g class="wf-edge" data-variant="gate" data-from="stage:reference" data-to="gate:B"><path d="M510 268 L510 380" fill="none" stroke="#b3244a" stroke-width="2"  marker-end="url(#wf-arrow-gate)"/><text x="516" y="328" class="wf-edge-label" text-anchor="start">呈报</text></g>
+<g class="wf-edge" data-variant="rework" data-from="gate:B" data-to="rework:reference"><path d="M510 436 L510 554" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-rework)"/><text x="516" y="499" class="wf-edge-label" text-anchor="start">不通过</text></g>
+<g class="wf-edge" data-variant="return" data-from="rework:reference" data-to="stage:reference"><path d="M510 554 L510 268" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-return)"/><text x="516" y="415" class="wf-edge-label" text-anchor="start">调整后重走</text></g>
+<g class="wf-edge" data-variant="pass" data-from="gate:B" data-to="stage:contract"><path d="M584 408 L622 408 L622 237 L660 237" fill="none" stroke="#1f7a5c" stroke-width="2"  marker-end="url(#wf-arrow-pass)"/><text x="603" y="402" class="wf-edge-label" text-anchor="middle">通过</text></g>
+<g class="wf-edge" data-variant="gate" data-from="stage:contract" data-to="gate:C"><path d="M746 268 L746 380" fill="none" stroke="#b3244a" stroke-width="2"  marker-end="url(#wf-arrow-gate)"/><text x="752" y="328" class="wf-edge-label" text-anchor="start">呈报</text></g>
+<g class="wf-edge" data-variant="rework" data-from="gate:C" data-to="rework:contract"><path d="M746 436 L746 554" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-rework)"/><text x="752" y="499" class="wf-edge-label" text-anchor="start">不通过</text></g>
+<g class="wf-edge" data-variant="return" data-from="rework:contract" data-to="stage:contract"><path d="M746 554 L746 268" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-return)"/><text x="752" y="415" class="wf-edge-label" text-anchor="start">调整后重走</text></g>
+<g class="wf-edge" data-variant="pass" data-from="gate:C" data-to="stage:build"><path d="M820 408 L858 408 L858 237 L896 237" fill="none" stroke="#1f7a5c" stroke-width="2"  marker-end="url(#wf-arrow-pass)"/><text x="839" y="402" class="wf-edge-label" text-anchor="middle">通过</text></g>
+<g class="wf-edge" data-variant="gate" data-from="stage:contract" data-to="gate:D"><path d="M746 268 L746 454" fill="none" stroke="#b3244a" stroke-width="2"  marker-end="url(#wf-arrow-gate)"/><text x="752" y="365" class="wf-edge-label" text-anchor="start">同步确认</text></g>
+<g class="wf-edge" data-variant="flow" data-from="stage:build" data-to="stage:verify"><path d="M1068 237 L1100 237 L1100 137 L1132 137" fill="none" stroke="#8b98a6" stroke-width="1.6"  marker-end="url(#wf-arrow-flow)"/></g>
+<g class="wf-edge" data-variant="trace" data-from="stage:build" data-to="gate:F"><path d="M982 268 L982 280" fill="none" stroke="#6b7a8c" stroke-width="2"  marker-end="url(#wf-arrow-trace)"/><text x="988" y="278" class="wf-edge-label" text-anchor="start">留痕要求</text></g>
+<g class="wf-edge" data-variant="gate" data-from="stage:verify" data-to="gate:E"><path d="M1218 168 L1218 380" fill="none" stroke="#b3244a" stroke-width="2"  marker-end="url(#wf-arrow-gate)"/><text x="1224" y="278" class="wf-edge-label" text-anchor="start">呈报</text></g>
+<g class="wf-edge" data-variant="rework" data-from="gate:E" data-to="rework:verify"><path d="M1218 436 L1218 554" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-rework)"/><text x="1224" y="499" class="wf-edge-label" text-anchor="start">不通过</text></g>
+<g class="wf-edge" data-variant="return" data-from="rework:verify" data-to="stage:verify"><path d="M1218 554 L1218 168" fill="none" stroke="#b5711b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#wf-arrow-return)"/><text x="1224" y="365" class="wf-edge-label" text-anchor="start">调整后重走</text></g>
+<g class="wf-edge" data-variant="pass" data-from="gate:E" data-to="stage:deliver"><path d="M1292 408 L1330 408 L1330 137 L1368 137" fill="none" stroke="#1f7a5c" stroke-width="2"  marker-end="url(#wf-arrow-pass)"/><text x="1311" y="402" class="wf-edge-label" text-anchor="middle">通过</text></g>
+<g class="wf-node" data-node="stage:brief" data-kind="stage" data-stage="brief" data-status="passed" data-current="false" style="--wf-i:0" tabindex="0" role="listitem" aria-label="需求与方向。需求说明 / 方向记录。状态：已通过。确认用户、主要任务、页面范围与视觉方向。。证据：docs/canvas-workbench-plan.md + docs/identity-and-direction.md（工作台形态与能力地平线节）"><rect x="188" y="106" width="172" height="62" rx="10" fill="var(--wf-node-stage-fill, #eef6f3)" stroke="var(--wf-node-stage-stroke, #1f7a5c)" stroke-width="2.4" opacity="1"/><text x="198" y="122" class="wf-node-step">01</text><g class="wf-status" data-status="passed"><circle cx="347" cy="119" r="8" fill="#1f7a5c"/><text x="347" y="122.5" class="wf-status-glyph" text-anchor="middle">✓</text></g><text x="274" y="136" class="wf-node-title" text-anchor="middle">需求与方向</text><text x="274" y="154" class="wf-node-sub" text-anchor="middle">需求说明 / 方向记录</text></g>
+<g class="wf-node" data-node="gate:A" data-kind="gate" data-stage="brief" data-status="passed" data-current="false" style="--wf-i:1" tabindex="0" role="listitem" aria-label="门A 设计稿。强制。状态：已通过。方向稿（named proven baseline：真实成品 URL 与拟抄关系、视觉基调、页面结构草案、动效意图、品味档案 honoring/violating 声明，不写代码）"><rect x="200" y="380" width="148" height="56" rx="10" fill="var(--wf-node-gate-fill, #fdeff2)" stroke="var(--wf-node-gate-stroke, #b3244a)" stroke-width="2.4" opacity="1"/><text x="210" y="396" class="wf-node-step">01</text><g class="wf-status" data-status="passed"><circle cx="335" cy="393" r="8" fill="#1f7a5c"/><text x="335" y="396.5" class="wf-status-glyph" text-anchor="middle">✓</text></g><text x="274" y="406" class="wf-node-title" text-anchor="middle">门A 设计稿</text><text x="274" y="424" class="wf-node-sub" text-anchor="middle">强制</text></g>
+<g class="wf-node" data-node="stage:reference" data-kind="stage" data-stage="reference" data-status="passed" data-current="false" style="--wf-i:2" tabindex="0" role="listitem" aria-label="参考素材。参考清单 / 来源记录。状态：已通过。选定可采用的参考、组件和素材，记录来源与使用边界。。证据：docs/competitive-insights/2026-10-11-onlook/insight.md"><rect x="424" y="206" width="172" height="62" rx="10" fill="var(--wf-node-stage-fill, #eef6f3)" stroke="var(--wf-node-stage-stroke, #1f7a5c)" stroke-width="2.4" opacity="1"/><text x="434" y="222" class="wf-node-step">02</text><g class="wf-status" data-status="passed"><circle cx="583" cy="219" r="8" fill="#1f7a5c"/><text x="583" y="222.5" class="wf-status-glyph" text-anchor="middle">✓</text></g><text x="510" y="236" class="wf-node-title" text-anchor="middle">参考素材</text><text x="510" y="254" class="wf-node-sub" text-anchor="middle">参考清单 / 来源记录</text></g>
+<g class="wf-node" data-node="gate:B" data-kind="gate" data-stage="reference" data-status="passed" data-current="false" style="--wf-i:3" tabindex="0" role="listitem" aria-label="门B 素材选择。采用外部素材时。状态：已通过。候选素材清单（来源 URL、拟采用部分、改编与授权边界）"><rect x="436" y="380" width="148" height="56" rx="10" fill="var(--wf-node-gate-fill, #fdeff2)" stroke="var(--wf-node-gate-stroke, #b3244a)" stroke-width="2.4" opacity="1"/><text x="446" y="396" class="wf-node-step">02</text><g class="wf-status" data-status="passed"><circle cx="571" cy="393" r="8" fill="#1f7a5c"/><text x="571" y="396.5" class="wf-status-glyph" text-anchor="middle">✓</text></g><text x="510" y="406" class="wf-node-title" text-anchor="middle">门B 素材选择</text><text x="510" y="424" class="wf-node-sub" text-anchor="middle">采用外部素材时</text></g>
+<g class="wf-node" data-node="stage:contract" data-kind="stage" data-stage="contract" data-status="active" data-current="true" style="--wf-i:4" tabindex="0" role="listitem" aria-label="原型与契约。原型 / 设计契约。状态：进行中。当前阶段。确认原型，再固定布局、交互、动效与验收条件。。证据：原型图或提示词 + DESIGN.md（含动效规格）"><rect x="660" y="206" width="172" height="62" rx="10" fill="var(--wf-node-stage-fill, #eef6f3)" stroke="var(--wf-node-stage-stroke, #1f7a5c)" stroke-width="3" opacity="1" stroke-dasharray="none"/><text x="670" y="222" class="wf-node-step">03</text><g class="wf-status" data-status="active"><circle cx="819" cy="219" r="8" fill="#1f7a5c"/><text x="819" y="222.5" class="wf-status-glyph" text-anchor="middle">▶</text></g><text x="746" y="236" class="wf-node-title" text-anchor="middle">原型与契约</text><text x="746" y="254" class="wf-node-sub" text-anchor="middle">原型 / 设计契约</text></g>
+<g class="wf-node" data-node="gate:C" data-kind="gate" data-stage="contract" data-status="active" data-current="false" style="--wf-i:5" tabindex="0" role="listitem" aria-label="门C 原型。实质性新 UI 强制。状态：进行中。无代码原型（生成图、生图提示词，或所选素材的蒙太奇/拼板；生图不可用时记录降级路径）"><rect x="672" y="380" width="148" height="56" rx="10" fill="var(--wf-node-gate-fill, #fdeff2)" stroke="var(--wf-node-gate-stroke, #b3244a)" stroke-width="2" opacity="1"/><text x="682" y="396" class="wf-node-step">03</text><g class="wf-status" data-status="active"><circle cx="807" cy="393" r="8" fill="#1f7a5c"/><text x="807" y="396.5" class="wf-status-glyph" text-anchor="middle">▶</text></g><text x="746" y="406" class="wf-node-title" text-anchor="middle">门C 原型</text><text x="746" y="424" class="wf-node-sub" text-anchor="middle">实质性新 UI 强制</text></g>
+<g class="wf-node" data-node="gate:D" data-kind="gate" data-stage="contract" data-status="pending" data-current="false" style="--wf-i:6" tabindex="0" role="listitem" aria-label="门D 契约确认。大项目/动效复杂。状态：未开始。DESIGN.md + 动效方案"><rect x="672" y="454" width="148" height="56" rx="10" fill="var(--wf-node-gate-fill, #fdeff2)" stroke="var(--wf-node-gate-stroke, #b3244a)" stroke-width="1.2" opacity="0.62"/><text x="682" y="470" class="wf-node-step">03</text><g class="wf-status" data-status="pending"><circle cx="807" cy="467" r="8" fill="#c3ccd6"/></g><text x="746" y="480" class="wf-node-title" text-anchor="middle">门D 契约确认</text><text x="746" y="498" class="wf-node-sub" text-anchor="middle">大项目/动效复杂</text></g>
+<g class="wf-node" data-node="stage:build" data-kind="stage" data-stage="build" data-status="active" data-current="false" style="--wf-i:7" tabindex="0" role="listitem" aria-label="交互实现。可运行界面 / 交互状态。状态：进行中。围绕设计契约完成界面、状态与交互，复用项目既有能力。。证据：scripts/workflow-diagram/（复用既有画布壳：自包含 HTML/相机/证据嵌入/visual 验收）"><rect x="896" y="206" width="172" height="62" rx="10" fill="var(--wf-node-stage-fill, #eef6f3)" stroke="var(--wf-node-stage-stroke, #1f7a5c)" stroke-width="2" opacity="1"/><text x="906" y="222" class="wf-node-step">04</text><g class="wf-status" data-status="active"><circle cx="1055" cy="219" r="8" fill="#1f7a5c"/><text x="1055" y="222.5" class="wf-status-glyph" text-anchor="middle">▶</text></g><text x="982" y="236" class="wf-node-title" text-anchor="middle">交互实现</text><text x="982" y="254" class="wf-node-sub" text-anchor="middle">可运行界面 / 交互状态</text></g>
+<g class="wf-node" data-node="gate:F" data-kind="gate" data-stage="build" data-status="pending" data-current="false" style="--wf-i:8" tabindex="0" role="listitem" aria-label="门F MCP 调用门禁。实质性 UI 任务。状态：未开始。验收记录中的逐环节调用痕迹（服务器 / 工具 / 结果）"><rect x="908" y="280" width="148" height="56" rx="10" fill="var(--wf-node-gate-fill, #fdeff2)" stroke="var(--wf-node-gate-stroke, #b3244a)" stroke-width="1.2" opacity="0.62"/><text x="918" y="296" class="wf-node-step">04</text><g class="wf-status" data-status="pending"><circle cx="1043" cy="293" r="8" fill="#c3ccd6"/></g><text x="982" y="306" class="wf-node-title" text-anchor="middle">门F MCP 调用门禁</text><text x="982" y="324" class="wf-node-sub" text-anchor="middle">实质性 UI 任务</text></g>
+<g class="wf-node" data-node="stage:verify" data-kind="stage" data-stage="verify" data-status="pending" data-current="false" style="--wf-i:9" tabindex="0" role="listitem" aria-label="浏览器验证。截图 / 交互检查 / 问题记录。状态：未开始。检查桌面、手机、键盘、减少动态效果与主要操作流程。。证据：走查记录（含 P0/P1/P2 与证据路径）"><rect x="1132" y="106" width="172" height="62" rx="10" fill="var(--wf-node-stage-fill, #eef6f3)" stroke="var(--wf-node-stage-stroke, #1f7a5c)" stroke-width="1.2" opacity="0.62"/><text x="1142" y="122" class="wf-node-step">05</text><g class="wf-status" data-status="pending"><circle cx="1291" cy="119" r="8" fill="#c3ccd6"/></g><text x="1218" y="136" class="wf-node-title" text-anchor="middle">浏览器验证</text><text x="1218" y="154" class="wf-node-sub" text-anchor="middle">截图 / 交互检查 / 问题记录</text></g>
+<g class="wf-node" data-node="gate:E" data-kind="gate" data-stage="verify" data-status="pending" data-current="false" style="--wf-i:10" tabindex="0" role="listitem" aria-label="门E 每轮验收。代码完成后每轮。状态：未开始。逐页问题清单（P0/P1/P2 + 证据）+ 替换建议"><rect x="1144" y="380" width="148" height="56" rx="10" fill="var(--wf-node-gate-fill, #fdeff2)" stroke="var(--wf-node-gate-stroke, #b3244a)" stroke-width="1.2" opacity="0.62"/><text x="1154" y="396" class="wf-node-step">05</text><g class="wf-status" data-status="pending"><circle cx="1279" cy="393" r="8" fill="#c3ccd6"/></g><text x="1218" y="406" class="wf-node-title" text-anchor="middle">门E 每轮验收</text><text x="1218" y="424" class="wf-node-sub" text-anchor="middle">代码完成后每轮</text></g>
+<g class="wf-node" data-node="stage:deliver" data-kind="stage" data-stage="deliver" data-status="pending" data-current="false" style="--wf-i:11" tabindex="0" role="listitem" aria-label="交付与迭代。交付说明 / 已知限制。状态：未开始。交付成果与实际检查记录，明确尚未验证的部分。。证据：commit + ACCEPTANCE.md"><rect x="1368" y="106" width="172" height="62" rx="10" fill="var(--wf-node-stage-fill, #eef6f3)" stroke="var(--wf-node-stage-stroke, #1f7a5c)" stroke-width="1.2" opacity="0.62"/><text x="1378" y="122" class="wf-node-step">06</text><g class="wf-status" data-status="pending"><circle cx="1527" cy="119" r="8" fill="#c3ccd6"/></g><text x="1454" y="136" class="wf-node-title" text-anchor="middle">交付与迭代</text><text x="1454" y="154" class="wf-node-sub" text-anchor="middle">交付说明 / 已知限制</text></g>
+<g class="wf-node" data-node="rework:brief" data-kind="rework" data-stage="brief" data-status="pending" data-current="false" style="--wf-i:12" tabindex="0" role="listitem" aria-label="返工。调整「需求与方向」。状态：未开始"><rect x="208" y="554" width="132" height="52" rx="10" fill="var(--wf-node-rework-fill, #fdf3e7)" stroke="var(--wf-node-rework-stroke, #b5711b)" stroke-width="1.2" opacity="0.62"/><g class="wf-status" data-status="pending"><circle cx="327" cy="567" r="8" fill="#c3ccd6"/></g><text x="274" y="580" class="wf-node-title" text-anchor="middle">返工</text><text x="274" y="598" class="wf-node-sub" text-anchor="middle">调整「需求与方向」</text></g>
+<g class="wf-node" data-node="rework:reference" data-kind="rework" data-stage="reference" data-status="pending" data-current="false" style="--wf-i:13" tabindex="0" role="listitem" aria-label="返工。调整「参考素材」。状态：未开始"><rect x="444" y="554" width="132" height="52" rx="10" fill="var(--wf-node-rework-fill, #fdf3e7)" stroke="var(--wf-node-rework-stroke, #b5711b)" stroke-width="1.2" opacity="0.62"/><g class="wf-status" data-status="pending"><circle cx="563" cy="567" r="8" fill="#c3ccd6"/></g><text x="510" y="580" class="wf-node-title" text-anchor="middle">返工</text><text x="510" y="598" class="wf-node-sub" text-anchor="middle">调整「参考素材」</text></g>
+<g class="wf-node" data-node="rework:contract" data-kind="rework" data-stage="contract" data-status="pending" data-current="false" style="--wf-i:14" tabindex="0" role="listitem" aria-label="返工。调整「原型与契约」。状态：未开始"><rect x="680" y="554" width="132" height="52" rx="10" fill="var(--wf-node-rework-fill, #fdf3e7)" stroke="var(--wf-node-rework-stroke, #b5711b)" stroke-width="1.2" opacity="0.62"/><g class="wf-status" data-status="pending"><circle cx="799" cy="567" r="8" fill="#c3ccd6"/></g><text x="746" y="580" class="wf-node-title" text-anchor="middle">返工</text><text x="746" y="598" class="wf-node-sub" text-anchor="middle">调整「原型与契约」</text></g>
+<g class="wf-node" data-node="rework:verify" data-kind="rework" data-stage="verify" data-status="pending" data-current="false" style="--wf-i:15" tabindex="0" role="listitem" aria-label="返工。调整「浏览器验证」。状态：未开始"><rect x="1152" y="554" width="132" height="52" rx="10" fill="var(--wf-node-rework-fill, #fdf3e7)" stroke="var(--wf-node-rework-stroke, #b5711b)" stroke-width="1.2" opacity="0.62"/><g class="wf-status" data-status="pending"><circle cx="1271" cy="567" r="8" fill="#c3ccd6"/></g><text x="1218" y="580" class="wf-node-title" text-anchor="middle">返工</text><text x="1218" y="598" class="wf-node-sub" text-anchor="middle">调整「浏览器验证」</text></g>
+</svg>
+    </div>
+  </div>
+  <div class="wf-zoombar" role="group" aria-label="缩放控制">
+    <button type="button" id="wf-zoom-out" title="缩小（-）" aria-label="缩小">−</button>
+    <button type="button" id="wf-zoom-read" title="回到 100%">100%</button>
+    <button type="button" id="wf-zoom-in" title="放大（+）" aria-label="放大">＋</button>
+    <button type="button" id="wf-zoom-fit" title="适应窗口（0）">适应</button>
+  </div>
+  <aside class="wf-legend" id="wf-legend" hidden aria-label="图例">
+    <h3>状态</h3>
+    <ul class="wf-legend-list"><li class="wf-legend-row"><span class="wf-legend-mark" data-status="pending">○</span><span class="wf-legend-label">未开始</span><span class="wf-legend-meaning">The stage has not started for this task.</span><span class="wf-legend-count">9</span></li><li class="wf-legend-row"><span class="wf-legend-mark" data-status="active">▶</span><span class="wf-legend-label">进行中</span><span class="wf-legend-meaning">Work is underway; no gate artifact has been presented yet.</span><span class="wf-legend-count">3</span></li><li class="wf-legend-row"><span class="wf-legend-mark" data-status="gated">⏸</span><span class="wf-legend-label">等待确认</span><span class="wf-legend-meaning">The gate artifact is with the user and the chain is stopped here.</span><span class="wf-legend-count">0</span></li><li class="wf-legend-row"><span class="wf-legend-mark" data-status="passed">✓</span><span class="wf-legend-label">已通过</span><span class="wf-legend-meaning">The user confirmed this gate; the next stage may start.</span><span class="wf-legend-count">4</span></li><li class="wf-legend-row"><span class="wf-legend-mark" data-status="blocked">!</span><span class="wf-legend-label">受阻</span><span class="wf-legend-meaning">An unresolved P0, a missing capability, or a failed check stops progress.</span><span class="wf-legend-count">0</span></li></ul>
+    <h3>节点与泳道</h3>
+    <ul class="wf-legend-list"><li class="wf-legend-row"><span class="wf-legend-swatch" data-lane="agent"></span><span class="wf-legend-label">主代理</span><span class="wf-legend-meaning">执行泳道</span></li><li class="wf-legend-row"><span class="wf-legend-swatch" data-lane="agent"></span><span class="wf-legend-label">子代理</span><span class="wf-legend-meaning">执行泳道</span></li><li class="wf-legend-row"><span class="wf-legend-swatch" data-lane="gate"></span><span class="wf-legend-label">确认门（用户）</span><span class="wf-legend-meaning">用户裁决停点</span></li><li class="wf-legend-row"><span class="wf-legend-swatch" data-lane="rework"></span><span class="wf-legend-label">不通过 → 返工</span><span class="wf-legend-meaning">执行泳道</span></li>
+      <li class="wf-legend-row"><span class="wf-legend-swatch wf-legend-swatch-stage"></span><span class="wf-legend-label">阶段 / 返工点</span></li>
+    </ul>
+    <h3>快捷键</h3>
+    <ul class="wf-legend-keys">
+      <li><kbd>+</kbd> / <kbd>−</kbd> 缩放</li>
+      <li><kbd>0</kbd> 适应窗口</li>
+      <li><kbd>/</kbd> 搜索节点</li>
+      <li><kbd>Esc</kbd> 关闭面板 / 退出演示</li>
+    </ul>
+  </aside>
+  <div class="wf-demo-caption" id="wf-demo-caption" hidden aria-live="polite"></div>
+</section>
+
+<aside class="wf-drawer" id="wf-drawer" aria-live="polite" hidden>
+  <button type="button" class="wf-drawer-close" id="wf-drawer-close" aria-label="关闭详情">×</button>
+  <div class="wf-drawer-body" id="wf-detail"></div>
+</aside>
+
+
+  <section class="wf-cards" id="wf-cards" aria-label="要点摘要" hidden>
+    <div class="wf-cards-row">
+      <article class="wf-sum-card">
+        <h3>当前状态</h3>
+        <p class="wf-sum-big">原型与契约</p>
+        <p class="wf-sum-line"><strong>2</strong> / 6 阶段 · P-canvas-2</p>
+        
+      </article>
+      <article class="wf-sum-card">
+        <h3>等待确认的门</h3>
+        <p class="wf-sum-line">当前没有停在门上的裁决。</p>
+      </article>
+      <article class="wf-sum-card">
+        <h3>产出速览</h3>
+        <p class="wf-sum-big">2<span class="wf-sum-dim"> / 2</span></p>
+        <p class="wf-sum-line">已内嵌稿件 / 引用总数</p>
+        <p class="wf-sum-line">6 阶段 · 6 门 · 4 返工点</p>
+      </article>
+    </div>
+  </section>
+
+</div>
+<script>
+(function(){
+  var STAGES = [{"id":"brief","name":"需求与方向","gates":["A"],"summary":"确认用户、主要任务、页面范围与视觉方向。","output":"需求说明 / 方向记录","evidence":"方向稿（DIRECTION.md 或任务内记录）","decisionPoint":true,"status":"passed","stageNote":"门 A 方向已获用户裁定（2026-10-19）：工作台形态升级+艺术画面明示要求+能力地平线四序列；阶段 4 新增","evidenceActual":"docs/canvas-workbench-plan.md + docs/identity-and-direction.md（工作台形态与能力地平线节）","isCurrent":false,"gateNodes":[{"id":"A","title":"门A 设计稿","detail":"方向稿（named proven baseline：真实成品 URL 与拟抄关系、视觉基调、页面结构草案、动效意图、品味档案 honoring/violating 声明，不写代码）","status":"passed","lane":"user"}],"artifacts":[{"path":"docs/canvas-workbench-plan.md","status":"ok","kind":"markdown","reason":null,"bytes":6518,"html":"\u003ch1 class=\"md-h1\">工作流画布工作台 · 规划 v1（Canvas Workbench Plan）\u003c/h1>\n\u003cul class=\"md-list\">\u003cli>日期：2026-10-13 ｜ 发起：用户指令（&quot;开发完善的画布界面，一步步可视化，不是黑盒；每步审查；品牌化高端化；测试样本增加；每轮小测试产物并与网上效果对比；高端化、产业化、流水线制&quot;）\u003c/li>\u003cli>状态：\u003cstrong>门 A 方向已获用户裁定（2026-10-19）\u003c/strong>——用户原话：&quot;不仅仅是个智能体编排工作流，更是一个工作台界面……制作更好的界面，包括更好的艺术画面&quot;；方向升级为\u003cstrong>工作台形态（Workbench 即产品门面）+能力地平线四序列\u003c/strong>（见 identity-and-direction.md&quot;工作台形态与能力地平线&quot;节）。阶段 1-3 照旧推进，新增阶段 4。\u003c/li>\u003cli>数据契约已存在：\u003ccode class=\"md-code\">output/task-state.json\u003c/code>（stages: brief/reference/contract/build/verify/deliver × status/evidence/note）+ \u003ccode class=\"md-code\">evals/results.json\u003c/code> 台账 + \u003ccode class=\"md-code\">docs/gates.md\u003c/code> 门账本——\u003cstrong>画布缺的只是前端壳\u003c/strong>。\u003c/li>\u003c/ul>\n\u003ch2 class=\"md-h2\">一、现状盘点（诚实回答&quot;有没有&quot;）\u003c/h2>\n\u003cdiv class=\"md-table-wrap\">\u003ctable class=\"md-table\">\u003cthead>\u003ctr>\u003cth>用户诉求\u003c/th>\u003cth>现状\u003c/th>\u003cth>判定\u003c/th>\u003c/tr>\u003c/thead>\u003ctbody>\u003ctr>\u003ctd>前端工作台界面\u003c/td>\u003ctd>无。最接近的是 \u003ccode class=\"md-code\">scripts/workflow-diagram/\u003c/code> 生成的\u003cstrong>静态\u003c/strong>流程图 HTML（6 阶段 6 门 16 节点）与 showcase 静态展厅\u003c/td>\u003ctd>❌ 缺\u003c/td>\u003c/tr>\u003ctr>\u003ctd>AI 调用技能开发\u003c/td>\u003ctd>是——核心交互模式（口语需求→六道门→22 技能编排→产物+证据）\u003c/td>\u003ctd>✅ 已有\u003c/td>\u003c/tr>\u003ctr>\u003ctd>一步步可视化、非黑盒\u003c/td>\u003ctd>静态图有；\u003cstrong>运行时逐步可视化无\u003c/strong>（过程在对话与文档里）\u003c/td>\u003ctd>⚠️ 半有\u003c/td>\u003c/tr>\u003ctr>\u003ctd>每一步审查\u003c/td>\u003ctd>六道门 A-E 人工裁决停点+门 F 留痕+门账本——机制齐，呈现是文档态\u003c/td>\u003ctd>✅ 机制有 / ⚠️ 呈现缺\u003c/td>\u003c/tr>\u003ctr>\u003ctd>按用户需求解析理解\u003c/td>\u003ctd>门 A 方向稿（需求摘要/范围/关键问题/可填写模板）\u003c/td>\u003ctd>✅ 已有\u003c/td>\u003c/tr>\u003ctr>\u003ctd>品牌化高端化（不简陋）\u003c/td>\u003ctd>案例层（12 demo）过六维验收；\u003cstrong>工作流自身的呈现无品牌壳\u003c/strong>\u003c/td>\u003ctd>⚠️ 半有\u003c/td>\u003c/tr>\u003ctr>\u003ctd>测试样本增加\u003c/td>\u003ctd>evals 73 语料/71 执行；扩量无排期\u003c/td>\u003ctd>⚠️ 需排期\u003c/td>\u003c/tr>\u003ctr>\u003ctd>每轮小测试+产物\u003c/td>\u003ctd>轮次有提交与验证，\u003cstrong>无固定 mini 产物\u003c/strong>\u003c/td>\u003ctd>❌ 缺\u003c/td>\u003c/tr>\u003ctr>\u003ctd>产物对比网上效果\u003c/td>\u003ctd>学习循环是产品级对标；\u003cstrong>产物级并排对比无\u003c/strong>\u003c/td>\u003ctd>❌ 缺\u003c/td>\u003c/tr>\u003c/tbody>\u003c/table>\u003c/div>\n\u003ch2 class=\"md-h2\">二、三阶段路线（每阶段独立可交付，过门验收）\u003c/h2>\n\u003ch3 class=\"md-h3\">阶段 1 · 门径画布 MVP（数据→可视）\u003c/h3>\n\u003cul class=\"md-list\">\u003cli>\u003cstrong>形态\u003c/strong>：本地 React 单页（复用 showcase/products 的 Vite 管线与设计 token），读 \u003ccode class=\"md-code\">output/task-state.json\u003c/code>+\u003ccode class=\"md-code\">evals/results.json\u003c/code>+\u003ccode class=\"md-code\">docs/gates.md\u003c/code> 导出的 JSON。\u003c/li>\u003cli>\u003cstrong>画面\u003c/strong>：①六道门时间轴（横向流水线，门状态 pending/approved/blocked 三色）②每门证据卡（截图缩略+链接+评分）③轮次日志流（iteration-log 尾部 N 条）。\u003c/li>\u003cli>\u003cstrong>交互\u003c/strong>：点击门/节点展开证据抽屉；键盘可达；reduced-motion 降级。\u003c/li>\u003cli>\u003cstrong>数据更新\u003c/strong>：\u003ccode class=\"md-code\">npm run canvas:build\u003c/code> 从文档/台账生成 JSON（静态生成，无后端）。\u003c/li>\u003cli>\u003cstrong>验收（门 E）\u003c/strong>：画布自身过六维（桌面/移动/键盘/对比度实测/reduced-motion/console 零错）——吃自己的狗粮。\u003c/li>\u003c/ul>\n\u003ch3 class=\"md-h3\">阶段 2 · 需求解析链路可视（黑盒→白盒）\u003c/h3>\n\u003cul class=\"md-list\">\u003cli>\u003cstrong>画面\u003c/strong>：门 A 解析卡结构化——\u003ccode class=\"md-code\">原始口语 → 需求摘要 → 范围边界 → 关键问题 → 参考素材（带来源链接）→ 设计契约摘要 → 产物 → 验收证据\u003c/code>，一条链路一屏，每步可展开&quot;AI 当时看到了什么/依据什么决定&quot;。\u003c/li>\u003cli>\u003cstrong>数据\u003c/strong>：每轮产物在 \u003ccode class=\"md-code\">output/canvas/&lt;轮次&gt;/\u003c/code> 落一份 \u003ccode class=\"md-code\">chain.json\u003c/code>（schema 复用 task-state stages + 新增 \u003ccode class=\"md-code\">decisions[]\u003c/code>（每步的依据引用））。\u003c/li>\u003cli>\u003cstrong>审查可视\u003c/strong>：每门审查记录（谁裁决/何时/依据/结论）入卡——\u003cstrong>审查从文档态升级为界面态\u003c/strong>。\u003c/li>\u003c/ul>\n\u003ch3 class=\"md-h3\">阶段 3 · 品牌化高端壳 + 产物墙对比\u003c/h3>\n\u003cul class=\"md-list\">\u003cli>\u003cstrong>品牌化\u003c/strong>：画布自身按 design-contract 走一遍（语义 token/动效弹簧参数/暗色高端视觉）——\u003cstrong>工作流的门面本身成为第 13 个案例\u003c/strong>。\u003c/li>\u003cli>\u003cstrong>产物墙（流水线可视化）\u003c/strong>：每轮开发线产出 1 个 mini 产物（mini-demo：单屏界面，2 小时粒度）入产物墙；\u003cstrong>与对标产物并排\u003c/strong>（v0/bolt/ instantaneous 同类截图，按六维并排打分）——学习循环新增 KPI4（产物级对比 ≥1/轮）。\u003c/li>\u003cli>\u003cstrong>产业化流水线\u003c/strong>：mini 产物走完整六道门（Express 档），画布实时反映其在流水线中的位置——\u003cstrong>流水线制从口号变为可视事实\u003c/strong>。\u003c/li>\u003c/ul>\n\u003ch3 class=\"md-h3\">阶段 4 · 工作台化与艺术画面（2026-10-19 用户裁定新增）\u003c/h3>\n\u003cul class=\"md-list\">\u003cli>\u003cstrong>形态\u003c/strong>：工作台从&quot;画布页集合&quot;升格为\u003cstrong>产品门面\u003c/strong>——持久化状态（task-state/chain/artifacts）+过程叙事（mission control/链路/产物墙/守卫回执）为一等公民；&quot;持久化要使用&quot;。\u003c/li>\u003cli>\u003cstrong>艺术画面\u003c/strong>：视觉质量升级为明示验收口径（更好的界面/更好的艺术画面）——工作台自身按 design-contract 走品牌化（语义 token/弹簧动效/暗色高端），并与阶段 3 合并为&quot;门面即案例&quot;的持续线。\u003c/li>\u003cli>\u003cstrong>排期\u003c/strong>：随增量滚动（当前增量 28/产物墙 3 条）；门径 tab 化（阶段→证据面板）为阶段 4 首个候选；验收仍走 canvas:check 三守卫（data/aria/导出对账）+六维直拍。\u003c/li>\u003cli>\u003cstrong>地平线衔接\u003c/strong>：阶段 4 完成后按 identity 四序列进入&quot;视频融合&quot;（序列 3）——一切经受控编码路径，验收口径随形态定义。\u003c/li>\u003c/ul>\n\u003ch2 class=\"md-h2\">三、测试样本扩量计划（并行线）\u003c/h2>\n\u003cdiv class=\"md-table-wrap\">\u003ctable class=\"md-table\">\u003cthead>\u003ctr>\u003cth>项\u003c/th>\u003cth>现状\u003c/th>\u003cth>目标\u003c/th>\u003cth>节奏\u003c/th>\u003c/tr>\u003c/thead>\u003ctbody>\u003ctr>\u003ctd>evals 语料\u003c/td>\u003ctd>73 条（71 执行）\u003c/td>\u003ctd>90+\u003c/td>\u003ctd>每轮开发线新增 ≥2 条（优先 UI 专项：深色/3D/画布类/数据密集）\u003c/td>\u003c/tr>\u003ctr>\u003ctd>mini 产物\u003c/td>\u003ctd>无固定\u003c/td>\u003ctd>每轮 1 个\u003c/td>\u003ctd>产物入墙+对比评分留档\u003c/td>\u003c/tr>\u003ctr>\u003ctd>对比基准\u003c/td>\u003ctd>产品级对标（学习循环）\u003c/td>\u003ctd>+产物级六维并排\u003c/td>\u003ctd>随 mini 产物\u003c/td>\u003c/tr>\u003c/tbody>\u003c/table>\u003c/div>\n\u003ch2 class=\"md-h2\">四、门径与节奏\u003c/h2>\n\u003cul class=\"md-list\">\u003cli>本文档=门 A 方向稿，\u003cstrong>等用户裁决\u003c/strong>（批准/修改/否决）。\u003c/li>\u003cli>批准后：阶段 1 预计 2-3 个开发线轮次出 MVP；阶段 2 再 2 轮；阶段 3 随产物墙积累滚动。\u003c/li>\u003cli>定时任务：开发线轮次的最高优先任务切换为画布工作台（经用户确认后更新轮次提示词）。\u003c/li>\u003c/ul>\n\u003ch2 class=\"md-h2\">五、风险与边界\u003c/h2>\n\u003cul class=\"md-list\">\u003cli>不做后端/账户/在线服务——画布是静态托管+本地构建（本仓&quot;不是产品运行时&quot;边界不变）。\u003c/li>\u003cli>产物对比的&quot;网上效果&quot;截图仅内部研究证据（ADR-0002 口径不变，不上 showcase）。\u003c/li>\u003cli>驱逐/降速环境风险：画布构建产物按 ignore 规则不入库，重建命令文档化。\u003c/li>\u003c/ul>","source":"# 工作流画布工作台 · 规划 v1（Canvas Workbench Plan）\n\n- 日期：2026-10-13 ｜ 发起：用户指令（\"开发完善的画布界面，一步步可视化，不是黑盒；每步审查；品牌化高端化；测试样本增加；每轮小测试产物并与网上效果对比；高端化、产业化、流水线制\"）\n- 状态：**门 A 方向已获用户裁定（2026-10-19）**——用户原话：\"不仅仅是个智能体编排工作流，更是一个工作台界面……制作更好的界面，包括更好的艺术画面\"；方向升级为**工作台形态（Workbench 即产品门面）+能力地平线四序列**（见 identity-and-direction.md\"工作台形态与能力地平线\"节）。阶段 1-3 照旧推进，新增阶段 4。\n- 数据契约已存在：`output/task-state.json`（stages: brief/reference/contract/build/verify/deliver × status/evidence/note）+ `evals/results.json` 台账 + `docs/gates.md` 门账本——**画布缺的只是前端壳**。\n\n## 一、现状盘点（诚实回答\"有没有\"）\n\n| 用户诉求 | 现状 | 判定 |\n| --- | --- | --- |\n| 前端工作台界面 | 无。最接近的是 `scripts/workflow-diagram/` 生成的**静态**流程图 HTML（6 阶段 6 门 16 节点）与 showcase 静态展厅 | ❌ 缺 |\n| AI 调用技能开发 | 是——核心交互模式（口语需求→六道门→22 技能编排→产物+证据） | ✅ 已有 |\n| 一步步可视化、非黑盒 | 静态图有；**运行时逐步可视化无**（过程在对话与文档里） | ⚠️ 半有 |\n| 每一步审查 | 六道门 A-E 人工裁决停点+门 F 留痕+门账本——机制齐，呈现是文档态 | ✅ 机制有 / ⚠️ 呈现缺 |\n| 按用户需求解析理解 | 门 A 方向稿（需求摘要/范围/关键问题/可填写模板） | ✅ 已有 |\n| 品牌化高端化（不简陋） | 案例层（12 demo）过六维验收；**工作流自身的呈现无品牌壳** | ⚠️ 半有 |\n| 测试样本增加 | evals 73 语料/71 执行；扩量无排期 | ⚠️ 需排期 |\n| 每轮小测试+产物 | 轮次有提交与验证，**无固定 mini 产物** | ❌ 缺 |\n| 产物对比网上效果 | 学习循环是产品级对标；**产物级并排对比无** | ❌ 缺 |\n\n## 二、三阶段路线（每阶段独立可交付，过门验收）\n\n### 阶段 1 · 门径画布 MVP（数据→可视）\n\n- **形态**：本地 React 单页（复用 showcase/products 的 Vite 管线与设计 token），读 `output/task-state.json`+`evals/results.json`+`docs/gates.md` 导出的 JSON。\n- **画面**：①六道门时间轴（横向流水线，门状态 pending/approved/blocked 三色）②每门证据卡（截图缩略+链接+评分）③轮次日志流（iteration-log 尾部 N 条）。\n- **交互**：点击门/节点展开证据抽屉；键盘可达；reduced-motion 降级。\n- **数据更新**：`npm run canvas:build` 从文档/台账生成 JSON（静态生成，无后端）。\n- **验收（门 E）**：画布自身过六维（桌面/移动/键盘/对比度实测/reduced-motion/console 零错）——吃自己的狗粮。\n\n### 阶段 2 · 需求解析链路可视（黑盒→白盒）\n\n- **画面**：门 A 解析卡结构化——`原始口语 → 需求摘要 → 范围边界 → 关键问题 → 参考素材（带来源链接）→ 设计契约摘要 → 产物 → 验收证据`，一条链路一屏，每步可展开\"AI 当时看到了什么/依据什么决定\"。\n- **数据**：每轮产物在 `output/canvas/\u003c轮次>/` 落一份 `chain.json`（schema 复用 task-state stages + 新增 `decisions[]`（每步的依据引用））。\n- **审查可视**：每门审查记录（谁裁决/何时/依据/结论）入卡——**审查从文档态升级为界面态**。\n\n### 阶段 3 · 品牌化高端壳 + 产物墙对比\n\n- **品牌化**：画布自身按 design-contract 走一遍（语义 token/动效弹簧参数/暗色高端视觉）——**工作流的门面本身成为第 13 个案例**。\n- **产物墙（流水线可视化）**：每轮开发线产出 1 个 mini 产物（mini-demo：单屏界面，2 小时粒度）入产物墙；**与对标产物并排**（v0/bolt/ instantaneous 同类截图，按六维并排打分）——学习循环新增 KPI4（产物级对比 ≥1/轮）。\n- **产业化流水线**：mini 产物走完整六道门（Express 档），画布实时反映其在流水线中的位置——**流水线制从口号变为可视事实**。\n\n### 阶段 4 · 工作台化与艺术画面（2026-10-19 用户裁定新增）\n\n- **形态**：工作台从\"画布页集合\"升格为**产品门面**——持久化状态（task-state/chain/artifacts）+过程叙事（mission control/链路/产物墙/守卫回执）为一等公民；\"持久化要使用\"。\n- **艺术画面**：视觉质量升级为明示验收口径（更好的界面/更好的艺术画面）——工作台自身按 design-contract 走品牌化（语义 token/弹簧动效/暗色高端），并与阶段 3 合并为\"门面即案例\"的持续线。\n- **排期**：随增量滚动（当前增量 28/产物墙 3 条）；门径 tab 化（阶段→证据面板）为阶段 4 首个候选；验收仍走 canvas:check 三守卫（data/aria/导出对账）+六维直拍。\n- **地平线衔接**：阶段 4 完成后按 identity 四序列进入\"视频融合\"（序列 3）——一切经受控编码路径，验收口径随形态定义。\n\n## 三、测试样本扩量计划（并行线）\n\n| 项 | 现状 | 目标 | 节奏 |\n| --- | --- | --- | --- |\n| evals 语料 | 73 条（71 执行） | 90+ | 每轮开发线新增 ≥2 条（优先 UI 专项：深色/3D/画布类/数据密集） |\n| mini 产物 | 无固定 | 每轮 1 个 | 产物入墙+对比评分留档 |\n| 对比基准 | 产品级对标（学习循环） | +产物级六维并排 | 随 mini 产物 |\n\n## 四、门径与节奏\n\n- 本文档=门 A 方向稿，**等用户裁决**（批准/修改/否决）。\n- 批准后：阶段 1 预计 2-3 个开发线轮次出 MVP；阶段 2 再 2 轮；阶段 3 随产物墙积累滚动。\n- 定时任务：开发线轮次的最高优先任务切换为画布工作台（经用户确认后更新轮次提示词）。\n\n## 五、风险与边界\n\n- 不做后端/账户/在线服务——画布是静态托管+本地构建（本仓\"不是产品运行时\"边界不变）。\n- 产物对比的\"网上效果\"截图仅内部研究证据（ADR-0002 口径不变，不上 showcase）。\n- 驱逐/降速环境风险：画布构建产物按 ignore 规则不入库，重建命令文档化。\n"}],"nodeIds":["stage:brief","gate:A","rework:brief"]},{"id":"reference","name":"参考素材","gates":["B"],"summary":"选定可采用的参考、组件和素材，记录来源与使用边界。","output":"参考清单 / 来源记录","evidence":"research-notes.md + 选择记录","decisionPoint":true,"status":"passed","stageNote":"对标已集：Onlook 画布机制/bolt 设计系统专题/v0 Agentic+设计系统（学习循环 20-26 轮），第四层定位论证完成","evidenceActual":"docs/competitive-insights/2026-10-11-onlook/insight.md","isCurrent":false,"gateNodes":[{"id":"B","title":"门B 素材选择","detail":"候选素材清单（来源 URL、拟采用部分、改编与授权边界）","status":"passed","lane":"user"}],"artifacts":[{"path":"docs/competitive-insights/2026-10-11-onlook/insight.md","status":"ok","kind":"markdown","reason":null,"bytes":4681,"html":"\u003ch1 class=\"md-h1\">竞品检视：Onlook（onlook-dev/onlook）\u003c/h1>\n\u003cul class=\"md-list\">\u003cli>日期：2026-10-11 ｜ 轮次：自由轮换第三检 ｜ 检视级别：\u003cstrong>unverified-partial\u003c/strong>（GitHub 仓库 README+架构图实拍，未实机运行产品）\u003c/li>\u003cli>来源：https://github.com/onlook-dev/onlook（2026-10-11 实拍 2 张：\u003ccode class=\"md-code\">repo-readme-top-2026-10-11.png\u003c/code> 门面与定位、\u003ccode class=\"md-code\">how-it-works-2026-10-11.png\u003c/code> 架构机制图）\u003c/li>\u003c/ul>\n\u003ch2 class=\"md-h2\">① 机制（看到了什么）\u003c/h2>\n\u003cul class=\"md-list\">\u003cli>\u003cstrong>定位\u003c/strong>：&quot;The Developer Tool for Visual Engineers / AI-First Design tool / design with Real Code&quot;；自称 &quot;open-source alternative to Bolt.new, Lovable, V0, Replit Agent, Figma Make, Webflow&quot;——与第一 sweep 检视对象同一赛道，但\u003cstrong>唯一以开源仓为产品主体\u003c/strong>（★26.9k / fork 2.1k / Apache-2.0 / TS 99.3% / 148 releases / 111 contributors / 1640 commits）。开源仓=起点（Next.js+Tailwind 可视化编辑器），hosted 新产品转向 waitlist 早启。\u003c/li>\u003cli>\u003cstrong>核心机制（How it works 架构图）\u003c/strong>：代码装入 web 容器→容器运行并服务→编辑器经 preview link 把应用放进 iFrame→编辑器读取并索引代码→\u003cstrong>instrument 代码把每个元素映射回代码位置\u003c/strong>→编辑先落 iFrame 再经 AST 索引+FS API 写回代码（六步操作闭环）；宣称可扩展到任何声明式 DOM 语言，当前聚焦 Next.js+Tailwind。\u003c/li>\u003cli>\u003cstrong>设计分支与检查点\u003c/strong>：功能清单含 &quot;Use Branching to experiment with designs&quot;（✔）与 &quot;Save and restore from checkpoints&quot;（✔）——设计实验分支+回滚。\u003c/li>\u003cli>\u003cstrong>品牌资产管理\u003c/strong>：&quot;Manage brand assets and tokens&quot;（✔）；packages 近期提交 &quot;Adding brand extraction from firecrawl&quot;——从目标网站自动抓取品牌要素。\u003c/li>\u003cli>\u003cstrong>AI 协作\u003c/strong>：队列式多条消息、MCP 集成（进行中）、&quot;Allow Onlook to use itself as a toolcall&quot;（进行中——自举为 agent 工具）。\u003c/li>\u003cli>\u003cstrong>agent 指令文件\u003c/strong>：仓库根同时落 AGENTS.md 与 CLAUDE.md（2025-09 起）；最新安全修复 commit 共同作者署名含 &quot;claude&quot;（AI 参与开发的公开痕迹）；CI 状态 failure 如实挂在 README 头部。\u003c/li>\u003cli>\u003cstrong>分发叙事\u003c/strong>：tagline 直书 &quot;World&#39;s best, top-most agent recommended #1 Developer tool&quot;——把&quot;被 agent 推荐&quot;当作渠道资产经营。\u003c/li>\u003c/ul>\n\u003ch2 class=\"md-h2\">② 可借鉴（抄什么机制）\u003c/h2>\n\u003col class=\"md-list\">\u003cli>\u003cstrong>元素↔代码双向映射的叙事\u003c/strong>：其 &quot;instrument+AST 索引&quot;把可视元素锚回代码位置——与我们 designContract 的&quot;界面元素↔契约条目↔验收证据&quot;锚定同构，可借其公开架构图的表达方式向用户解释契约层价值（表述借鉴，非技术引入）。\u003c/li>\u003cli>\u003cstrong>设计分支/检查点=版本对比+回滚收敛第四次出现\u003c/strong>（Pixso→MasterGo→Figma Make→Onlook，本次为开源工具侧首次）——已立 D12。\u003c/li>\u003cli>\u003cstrong>brand extraction（从官网抓品牌生成 token）\u003c/strong>：素材门 B&quot;官方渠道取材&quot;的自动化辅助思路——已立 D13 候选。\u003c/li>\u003cli>\u003cstrong>AGENTS.md+CLAUDE.md 双指令文件\u003c/strong>：ADR-0003&quot;一层转换&quot;路线的又一独立收敛证据（非上下文预算家族，是指令入口约定本身）。\u003c/li>\u003cli>\u003cstrong>&quot;agent-recommended&quot;渠道叙事\u003c/strong>：推广矩阵候选增量——面向 agent 推荐榜/目录的曝光位（与 13 宿主工作台同向）。\u003c/li>\u003c/ol>\n\u003ch2 class=\"md-h2\">③ 不抄什么（边界）\u003c/h2>\n\u003cul class=\"md-list\">\u003cli>不抄全托管 sandbox+hosting 商业形态——kit 无运行时、不做托管。\u003c/li>\u003cli>不做&quot;可视化编辑器&quot;——kit 是第四层验证纪律层，编辑器是另一赛道；其 waitlist 营销漏斗也不适合开源直连的 kit。\u003c/li>\u003cli>iFrame 容器/AST 改写技术栈不引入；外观零借鉴（学机制不抄外观）。\u003c/li>\u003c/ul>\n\u003ch2 class=\"md-h2\">④ 对本仓的落点\u003c/h2>\n\u003cul class=\"md-list\">\u003cli>K2 已落：\u003ccode class=\"md-code\">docs/uak-demand-capability-gap-roadmap.md\u003c/code> §一 追加 D12（设计实验分支/检查点回滚，收敛×4）、D13（官网品牌提取→素材门自动化候选）；\u003ccode class=\"md-code\">docs/learn-loop.md\u003c/code> 进度更新。\u003c/li>\u003cli>知识卡已入 \u003ccode class=\"md-code\">docs/iteration-log.md\u003c/code>（2026-10-11 条目）。\u003c/li>\u003c/ul>\n\u003ch2 class=\"md-h2\">⑤ 对照表\u003c/h2>\n\u003cdiv class=\"md-table-wrap\">\u003ctable class=\"md-table\">\u003cthead>\u003ctr>\u003cth>维度\u003c/th>\u003cth>Onlook\u003c/th>\u003cth>本 kit\u003c/th>\u003cth>判定\u003c/th>\u003c/tr>\u003c/thead>\u003ctbody>\u003ctr>\u003ctd>层位\u003c/td>\u003ctd>可视化编辑器（生成+编辑层）\u003c/td>\u003ctd>验证纪律层（第四层）\u003c/td>\u003ctd>互补不竞争\u003c/td>\u003c/tr>\u003ctr>\u003ctd>质量保障\u003c/td>\u003ctd>检查点回滚（事后可退）\u003c/td>\u003ctd>六道门+五级证据（事前确认+事后可证）\u003c/td>\u003ctd>门禁在前更省返工；回滚机制可借思路\u003c/td>\u003c/tr>\u003ctr>\u003ctd>设计系统\u003c/td>\u003ctd>品牌资产/ token 面板+官网抓取\u003c/td>\u003ctd>designContract 契约+素材门人工确认\u003c/td>\u003ctd>抓取可作门 B 辅助，不替代人工确认\u003c/td>\u003c/tr>\u003ctr>\u003ctd>指令入口\u003c/td>\u003ctd>AGENTS.md+CLAUDE.md\u003c/td>\u003ctd>AGENTS.md 约定+一行指针（ADR-0003）\u003c/td>\u003ctd>收敛互证\u003c/td>\u003c/tr>\u003ctr>\u003ctd>开源治理\u003c/td>\u003ctd>Apache-2.0/148 releases/111 contributors/CI 状态公开（failure 亦如实显示）\u003c/td>\u003ctd>Apache-2.0/sources.lock/131 测试计数锁\u003c/td>\u003ctd>CI 如实展示值得学习\u003c/td>\u003c/tr>\u003c/tbody>\u003c/table>\u003c/div>","source":"# 竞品检视：Onlook（onlook-dev/onlook）\n\n- 日期：2026-10-11 ｜ 轮次：自由轮换第三检 ｜ 检视级别：**unverified-partial**（GitHub 仓库 README+架构图实拍，未实机运行产品）\n- 来源：https://github.com/onlook-dev/onlook（2026-10-11 实拍 2 张：`repo-readme-top-2026-10-11.png` 门面与定位、`how-it-works-2026-10-11.png` 架构机制图）\n\n## ① 机制（看到了什么）\n\n- **定位**：\"The Developer Tool for Visual Engineers / AI-First Design tool / design with Real Code\"；自称 \"open-source alternative to Bolt.new, Lovable, V0, Replit Agent, Figma Make, Webflow\"——与第一 sweep 检视对象同一赛道，但**唯一以开源仓为产品主体**（★26.9k / fork 2.1k / Apache-2.0 / TS 99.3% / 148 releases / 111 contributors / 1640 commits）。开源仓=起点（Next.js+Tailwind 可视化编辑器），hosted 新产品转向 waitlist 早启。\n- **核心机制（How it works 架构图）**：代码装入 web 容器→容器运行并服务→编辑器经 preview link 把应用放进 iFrame→编辑器读取并索引代码→**instrument 代码把每个元素映射回代码位置**→编辑先落 iFrame 再经 AST 索引+FS API 写回代码（六步操作闭环）；宣称可扩展到任何声明式 DOM 语言，当前聚焦 Next.js+Tailwind。\n- **设计分支与检查点**：功能清单含 \"Use Branching to experiment with designs\"（✔）与 \"Save and restore from checkpoints\"（✔）——设计实验分支+回滚。\n- **品牌资产管理**：\"Manage brand assets and tokens\"（✔）；packages 近期提交 \"Adding brand extraction from firecrawl\"——从目标网站自动抓取品牌要素。\n- **AI 协作**：队列式多条消息、MCP 集成（进行中）、\"Allow Onlook to use itself as a toolcall\"（进行中——自举为 agent 工具）。\n- **agent 指令文件**：仓库根同时落 AGENTS.md 与 CLAUDE.md（2025-09 起）；最新安全修复 commit 共同作者署名含 \"claude\"（AI 参与开发的公开痕迹）；CI 状态 failure 如实挂在 README 头部。\n- **分发叙事**：tagline 直书 \"World's best, top-most agent recommended #1 Developer tool\"——把\"被 agent 推荐\"当作渠道资产经营。\n\n## ② 可借鉴（抄什么机制）\n\n1. **元素↔代码双向映射的叙事**：其 \"instrument+AST 索引\"把可视元素锚回代码位置——与我们 designContract 的\"界面元素↔契约条目↔验收证据\"锚定同构，可借其公开架构图的表达方式向用户解释契约层价值（表述借鉴，非技术引入）。\n2. **设计分支/检查点=版本对比+回滚收敛第四次出现**（Pixso→MasterGo→Figma Make→Onlook，本次为开源工具侧首次）——已立 D12。\n3. **brand extraction（从官网抓品牌生成 token）**：素材门 B\"官方渠道取材\"的自动化辅助思路——已立 D13 候选。\n4. **AGENTS.md+CLAUDE.md 双指令文件**：ADR-0003\"一层转换\"路线的又一独立收敛证据（非上下文预算家族，是指令入口约定本身）。\n5. **\"agent-recommended\"渠道叙事**：推广矩阵候选增量——面向 agent 推荐榜/目录的曝光位（与 13 宿主工作台同向）。\n\n## ③ 不抄什么（边界）\n\n- 不抄全托管 sandbox+hosting 商业形态——kit 无运行时、不做托管。\n- 不做\"可视化编辑器\"——kit 是第四层验证纪律层，编辑器是另一赛道；其 waitlist 营销漏斗也不适合开源直连的 kit。\n- iFrame 容器/AST 改写技术栈不引入；外观零借鉴（学机制不抄外观）。\n\n## ④ 对本仓的落点\n\n- K2 已落：`docs/uak-demand-capability-gap-roadmap.md` §一 追加 D12（设计实验分支/检查点回滚，收敛×4）、D13（官网品牌提取→素材门自动化候选）；`docs/learn-loop.md` 进度更新。\n- 知识卡已入 `docs/iteration-log.md`（2026-10-11 条目）。\n\n## ⑤ 对照表\n\n| 维度 | Onlook | 本 kit | 判定 |\n| --- | --- | --- | --- |\n| 层位 | 可视化编辑器（生成+编辑层） | 验证纪律层（第四层） | 互补不竞争 |\n| 质量保障 | 检查点回滚（事后可退） | 六道门+五级证据（事前确认+事后可证） | 门禁在前更省返工；回滚机制可借思路 |\n| 设计系统 | 品牌资产/ token 面板+官网抓取 | designContract 契约+素材门人工确认 | 抓取可作门 B 辅助，不替代人工确认 |\n| 指令入口 | AGENTS.md+CLAUDE.md | AGENTS.md 约定+一行指针（ADR-0003） | 收敛互证 |\n| 开源治理 | Apache-2.0/148 releases/111 contributors/CI 状态公开（failure 亦如实显示） | Apache-2.0/sources.lock/131 测试计数锁 | CI 如实展示值得学习 |\n"}],"nodeIds":["stage:reference","gate:B","rework:reference"]},{"id":"contract","name":"原型与契约","gates":["C","D"],"summary":"确认原型，再固定布局、交互、动效与验收条件。","output":"原型 / 设计契约","evidence":"原型图或提示词 + DESIGN.md（含动效规格）","decisionPoint":true,"status":"active","stageNote":"门 A 已通过：按 design-contract 定画布语义 token 与动效参数（阶段 4 艺术画面升级的契约层）","evidenceActual":null,"isCurrent":true,"gateNodes":[{"id":"C","title":"门C 原型","detail":"无代码原型（生成图、生图提示词，或所选素材的蒙太奇/拼板；生图不可用时记录降级路径）","status":"active","lane":"user"},{"id":"D","title":"门D 契约确认","detail":"DESIGN.md + 动效方案","status":"pending","lane":"user"}],"artifacts":[],"nodeIds":["stage:contract","gate:C","gate:D","rework:contract"]},{"id":"build","name":"交互实现","gates":["F"],"summary":"围绕设计契约完成界面、状态与交互，复用项目既有能力。","output":"可运行界面 / 交互状态","evidence":"代码 + 静态核查 + MCP 调用痕迹","decisionPoint":false,"status":"active","stageNote":"增量 1：接入真实任务状态（本文件即画布工作台自身的第一份活数据——吃狗粮）","evidenceActual":"scripts/workflow-diagram/（复用既有画布壳：自包含 HTML/相机/证据嵌入/visual 验收）","isCurrent":false,"gateNodes":[{"id":"F","title":"门F MCP 调用门禁","detail":"验收记录中的逐环节调用痕迹（服务器 / 工具 / 结果）","status":"pending","lane":"sub"}],"artifacts":[],"nodeIds":["stage:build","gate:F"]},{"id":"verify","name":"浏览器验证","gates":["E"],"summary":"检查桌面、手机、键盘、减少动态效果与主要操作流程。","output":"截图 / 交互检查 / 问题记录","evidence":"走查记录（含 P0/P1/P2 与证据路径）","decisionPoint":false,"status":"pending","stageNote":"每增量过 cli visual 无头多视口回执 + 六维验收","evidenceActual":null,"isCurrent":false,"gateNodes":[{"id":"E","title":"门E 每轮验收","detail":"逐页问题清单（P0/P1/P2 + 证据）+ 替换建议","status":"pending","lane":"user"}],"artifacts":[],"nodeIds":["stage:verify","gate:E","rework:verify"]},{"id":"deliver","name":"交付与迭代","gates":[],"summary":"交付成果与实际检查记录，明确尚未验证的部分。","output":"交付说明 / 已知限制","evidence":"commit + ACCEPTANCE.md","decisionPoint":true,"status":"pending","stageNote":"产物入画布产物墙，与对标产物六维并排（KPI4）","evidenceActual":null,"isCurrent":false,"gateNodes":[],"artifacts":[],"nodeIds":["stage:deliver"]}];
+  var REPLAY = [{"id":"brief","name":"需求与方向","status":"passed","summary":"确认用户、主要任务、页面范围与视觉方向。","gatedGate":null},{"id":"reference","name":"参考素材","status":"passed","summary":"选定可采用的参考、组件和素材，记录来源与使用边界。","gatedGate":null},{"id":"contract","name":"原型与契约","status":"active","summary":"确认原型，再固定布局、交互、动效与验收条件。","gatedGate":null}];
+  var REPLAY_MODE = "task";
+  var STATUS_LABEL = {"pending":"未开始","active":"进行中","gated":"等待确认","passed":"已通过","blocked":"受阻"};
+  var GATES = {"A":{"id":"A","title":"门A 设计稿","detail":"方向稿（named proven baseline：真实成品 URL 与拟抄关系、视觉基调、页面结构草案、动效意图、品味档案 honoring/violating 声明，不写代码）","status":"passed","lane":"user","stageId":"brief"},"B":{"id":"B","title":"门B 素材选择","detail":"候选素材清单（来源 URL、拟采用部分、改编与授权边界）","status":"passed","lane":"user","stageId":"reference"},"C":{"id":"C","title":"门C 原型","detail":"无代码原型（生成图、生图提示词，或所选素材的蒙太奇/拼板；生图不可用时记录降级路径）","status":"active","lane":"user","stageId":"contract"},"D":{"id":"D","title":"门D 契约确认","detail":"DESIGN.md + 动效方案","status":"pending","lane":"user","stageId":"contract"},"F":{"id":"F","title":"门F MCP 调用门禁","detail":"验收记录中的逐环节调用痕迹（服务器 / 工具 / 结果）","status":"pending","lane":"sub","stageId":"build"},"E":{"id":"E","title":"门E 每轮验收","detail":"逐页问题清单（P0/P1/P2 + 证据）+ 替换建议","status":"pending","lane":"user","stageId":"verify"}};
+  var svg = document.querySelector('.wf-svg');
+  var viewport = document.getElementById('wf-viewport');
+  var canvas = document.getElementById('wf-canvas');
+  var detail = document.getElementById('wf-detail');
+  var drawer = document.getElementById('wf-drawer');
+  var drawerClose = document.getElementById('wf-drawer-close');
+  var themeBtn = document.getElementById('wf-theme');
+  var motionBtn = document.getElementById('wf-motion');
+  var focusBtn = document.getElementById('wf-focus');
+  var labelsBtn = document.getElementById('wf-labels');
+  var legendBtn = document.getElementById('wf-legend-btn');
+  var legend = document.getElementById('wf-legend');
+  var cardsBtn = document.getElementById('wf-cards-btn');
+  var cards = document.getElementById('wf-cards');
+  var demoBtn = document.getElementById('wf-demo-btn');
+  var caption = document.getElementById('wf-demo-caption');
+  var exportBtn = document.getElementById('wf-export');
+  var searchInput = document.getElementById('wf-search');
+  var searchPop = document.getElementById('wf-search-pop');
+  var suppressClick = false;
+
+  function $(id){ return document.getElementById(id); }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g, function(c){
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
+  function allNodes(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-node')); }
+  function allEdges(){ return Array.prototype.slice.call(svg.querySelectorAll('.wf-edge')); }
+  function stageOf(id){ for (var i=0;i<STAGES.length;i++) if (STAGES[i].id===id) return STAGES[i]; return null; }
+
+  // ---------- camera: zoom / pan / fit ----------
+  var cam = { s:1, tx:0, ty:0, fit:true };
+  function viewBox(){ var b=(svg.getAttribute('viewBox')||'0 0 1000 700').split(/\s+/).map(Number); return {w:b[2]||1000,h:b[3]||700}; }
+  function apply(){
+    canvas.style.transform = 'translate('+cam.tx+'px,'+cam.ty+'px) scale('+cam.s+')';
+    var read = $('wf-zoom-read'); if (read) read.textContent = Math.round(cam.s*100)+'%';
+  }
+  function fit(){
+    var vb = viewBox(); var r = viewport.getBoundingClientRect();
+    if (r.width<10||r.height<10) return;
+    var s = Math.min((r.width-48)/vb.w,(r.height-48)/vb.h);
+    cam.s = Math.max(0.2,Math.min(3,s));
+    cam.tx = (r.width - vb.w*cam.s)/2; cam.ty = (r.height - vb.h*cam.s)/2;
+    cam.fit = true; apply();
+  }
+  function zoomAt(px,py,factor){
+    var ns = Math.max(0.2, Math.min(3, cam.s*factor)); var k = ns/cam.s;
+    cam.tx = px-(px-cam.tx)*k; cam.ty = py-(py-cam.ty)*k; cam.s = ns; cam.fit = false; apply();
+  }
+  function zoomCenter(f){ var r=viewport.getBoundingClientRect(); zoomAt(r.width/2,r.height/2,f); }
+  function centerOn(nodeId){
+    var n = svg.querySelector('.wf-node[data-node="'+nodeId+'"]'); if(!n) return;
+    var b = n.getBBox(); var r = viewport.getBoundingClientRect();
+    canvas.classList.add('wf-anim');
+    cam.tx = r.width/2 - (b.x+b.width/2)*cam.s;
+    cam.ty = r.height/2 - (b.y+b.height/2)*cam.s;
+    cam.fit = false; apply();
+    setTimeout(function(){ canvas.classList.remove('wf-anim'); }, 260);
+  }
+  viewport.addEventListener('wheel', function(ev){
+    ev.preventDefault();
+    var r = viewport.getBoundingClientRect();
+    zoomAt(ev.clientX-r.left, ev.clientY-r.top, Math.exp(-ev.deltaY*0.0016));
+  }, { passive:false });
+  var pan = null;
+  viewport.addEventListener('pointerdown', function(ev){
+    if (ev.button!==0) return;
+    if (ev.target && ev.target.closest && ev.target.closest('.wf-node')) return;
+    pan = { x:ev.clientX, y:ev.clientY, tx:cam.tx, ty:cam.ty, moved:0 };
+    cam.fit = false;
+    try { viewport.setPointerCapture(ev.pointerId); } catch(e){}
+    viewport.setAttribute('data-panning','true');
+  });
+  viewport.addEventListener('pointermove', function(ev){
+    if (!pan) return;
+    var dx = ev.clientX-pan.x, dy = ev.clientY-pan.y;
+    pan.moved = Math.max(pan.moved, Math.abs(dx)+Math.abs(dy));
+    cam.tx = pan.tx+dx; cam.ty = pan.ty+dy; apply();
+  });
+  function endPan(){
+    if (pan && pan.moved>4) suppressClick = true;
+    pan = null; viewport.removeAttribute('data-panning');
+  }
+  viewport.addEventListener('pointerup', endPan);
+  viewport.addEventListener('pointercancel', endPan);
+  $('wf-zoom-in').addEventListener('click', function(){ zoomCenter(1.25); });
+  $('wf-zoom-out').addEventListener('click', function(){ zoomCenter(0.8); });
+  $('wf-zoom-fit').addEventListener('click', fit);
+  $('wf-zoom-read').addEventListener('click', function(){ zoomCenter(1/cam.s); });
+  window.addEventListener('resize', function(){ if (cam.fit) fit(); });
+
+  // ---------- search ----------
+  function nodeIndex(){
+    return allNodes().map(function(n){
+      var t = n.querySelector('.wf-node-title'), s = n.querySelector('.wf-node-sub');
+      return { id:n.getAttribute('data-node'), kind:n.getAttribute('data-kind'),
+        status:n.getAttribute('data-status'), stage:n.getAttribute('data-stage'),
+        text:(t?t.textContent:''), sub:(s?s.textContent:'') };
+    });
+  }
+  function runSearch(q){
+    q = (q||'').trim().toLowerCase();
+    if (!q){ searchPop.hidden = true; searchPop.innerHTML=''; return; }
+    var hits = nodeIndex().filter(function(n){
+      return (n.text+' '+n.sub+' '+n.stage).toLowerCase().indexOf(q) >= 0;
+    }).slice(0,8);
+    searchPop.innerHTML = hits.length
+      ? hits.map(function(n){
+          return '<button type="button" class="wf-search-item" data-node="'+esc(n.id)+'">' +
+            '<span class="wf-search-kind">'+esc(n.kind)+'</span>' +
+            '<span class="wf-search-text">'+esc(n.text||n.id)+'</span>' +
+            '<span class="wf-search-status">'+esc(STATUS_LABEL[n.status]||n.status)+'</span></button>';
+        }).join('')
+      : '<div class="wf-search-empty">无匹配节点</div>';
+    searchPop.hidden = false;
+  }
+  searchInput.addEventListener('input', function(){ runSearch(searchInput.value); });
+  searchInput.addEventListener('keydown', function(ev){
+    if (ev.key === 'Enter'){
+      var first = searchPop.querySelector('.wf-search-item');
+      if (first){ pickSearch(first.getAttribute('data-node')); }
+    }
+    if (ev.key === 'Escape'){ searchInput.value=''; runSearch(''); searchInput.blur(); }
+  });
+  searchPop.addEventListener('click', function(ev){
+    var item = ev.target.closest ? ev.target.closest('.wf-search-item') : null;
+    if (item) pickSearch(item.getAttribute('data-node'));
+  });
+  function pickSearch(nodeId){
+    searchPop.hidden = true; searchInput.value=''; searchInput.blur();
+    selectNode(nodeId); centerOn(nodeId);
+  }
+
+  // ---------- panels ----------
+  function closePanels(){
+    legend.hidden = true; legendBtn.setAttribute('aria-pressed','false'); legendBtn.setAttribute('aria-expanded','false');
+    cards.hidden = true; cardsBtn.setAttribute('aria-pressed','false'); cardsBtn.setAttribute('aria-expanded','false');
+    searchPop.hidden = true;
+  }
+  legendBtn.addEventListener('click', function(){
+    var open = !legend.hidden;
+    closePanels();
+    if (open) return;
+    legend.hidden = false; legendBtn.setAttribute('aria-pressed','true'); legendBtn.setAttribute('aria-expanded','true');
+  });
+  cardsBtn.addEventListener('click', function(){
+    var open = !cards.hidden;
+    closePanels();
+    if (open) return;
+    cards.hidden = false; cardsBtn.setAttribute('aria-pressed','true'); cardsBtn.setAttribute('aria-expanded','true');
+  });
+
+  // ---------- replay: walk the journey the record actually took ----------
+  // Task mode plays stages up to the current one and STOPS at the gate that is
+  // still awaiting adjudication — the future is never played as if it happened.
+  // Process mode (no task) walks the whole pipeline as an introduction.
+  var demoTimer = null, demoStep = 0, demoActive = false;
+  function replayHold(i){
+    if (REPLAY_MODE === 'task' && i === REPLAY.length - 1) return 4400;
+    return 2300;
+  }
+  function showReplayStep(i){
+    var s = REPLAY[i]; if (!s) return;
+    highlight('stage:'+s.id); centerOn('stage:'+s.id);
+    var isLast = REPLAY_MODE === 'task' && i === REPLAY.length - 1;
+    var html = '<b>回放 ' + (i+1) + '/' + REPLAY.length + ' · ' + esc(s.name) + '</b>' +
+      '<span class="wf-cap-status">' + esc(STATUS_LABEL[s.status] || s.status) + '</span>';
+    if (isLast){
+      var stop = s.gatedGate
+        ? '⏸ 停在 ' + esc(s.gatedGate) + '：等待你的裁决，不再后放'
+        : (s.status === 'gated' ? '⏸ 停在这里等待确认，不再后放' : '');
+      html += stop
+        ? '<span class="wf-cap-stop">' + stop + '</span>'
+        : '<span class="wf-cap-stop">已回放到当前进度</span>';
+    } else if (s.summary){
+      html += '<span class="wf-cap-note">' + esc(s.summary) + '</span>';
+    }
+    caption.innerHTML = html;
+    caption.hidden = false;
+  }
+  function stepReplay(){
+    demoStep += 1;
+    if (demoStep >= REPLAY.length){ finishReplay(); return; }
+    showReplayStep(demoStep);
+    demoTimer = setTimeout(stepReplay, replayHold(demoStep));
+  }
+  function finishReplay(){
+    var last = REPLAY[REPLAY.length - 1];
+    var waiting = last && (last.gatedGate || last.status === 'gated');
+    caption.innerHTML = '<b>回放结束</b><span class="wf-cap-stop">当前停在「' +
+      esc(last ? last.name : '') + '」' +
+      (waiting ? ' · 等待你的确认' : '') + '</span>';
+    demoTimer = setTimeout(stopDemo, 3400);
+  }
+  function startDemo(){
+    if (!REPLAY.length) return;
+    document.body.setAttribute('data-demo','on');
+    demoBtn.setAttribute('aria-pressed','true');
+    closePanels(); if (drawer && !drawer.hidden) closeDrawer();
+    demoActive = true; demoStep = 0;
+    fit();
+    showReplayStep(0);
+    demoTimer = setTimeout(stepReplay, replayHold(0));
+  }
+  function stopDemo(){
+    document.body.setAttribute('data-demo','off');
+    demoBtn.setAttribute('aria-pressed','false');
+    demoActive = false;
+    if (demoTimer){ clearTimeout(demoTimer); demoTimer = null; }
+    caption.hidden = true; fit();
+    var cur = null;
+    for (var i=0;i<STAGES.length;i++) if (STAGES[i].isCurrent) cur = STAGES[i];
+    clearSelection();
+    if (cur) highlight('stage:'+cur.id);
+  }
+  demoBtn.addEventListener('click', function(){
+    if (demoActive) stopDemo(); else startDemo();
+  });
+
+  // ---------- artifact embedding (the document itself) ----------
+  function artifactBlock(stage){
+    var list = stage.artifacts || [];
+    if (!list.length){
+      return '<div class="wf-field"><h3>稿件内容</h3>' +
+        '<p class="wf-artifact-missing">该阶段尚未产出可内嵌的稿件。</p></div>';
+    }
+    var blocks = list.map(function(a, i){
+      var id = 'wf-artifact-' + stage.id + '-' + i;
+      if (a.status !== 'ok'){
+        return '<div class="wf-artifact" id="' + id + '">' +
+          '<div class="wf-artifact-head"><span class="wf-path">' + esc(a.path) + '</span>' +
+          '<span class="wf-artifact-state">文件不存在</span></div>' +
+          '<p class="wf-artifact-missing">' + esc(a.reason || '') + '</p></div>';
+      }
+      var head = '<div class="wf-artifact-head"><span class="wf-path">' + esc(a.path) + '</span>' +
+        '<span class="wf-artifact-state">' + Math.round((a.bytes || 0) / 1024) + ' KB</span></div>';
+      if (a.kind === 'html'){
+        return '<div class="wf-artifact" id="' + id + '">' + head +
+          '<div class="wf-artifact-tools">' +
+            '<button type="button" class="wf-mini" data-preview="' + id + '">预览渲染</button>' +
+            '<button type="button" class="wf-mini" data-source="' + id + '">看源码</button>' +
+          '</div>' +
+          '<iframe class="wf-artifact-frame" id="' + id + '-frame" sandbox="allow-scripts" ' +
+            'title="' + esc(a.path) + ' 渲染预览"></iframe>' +
+          '<pre class="wf-artifact-src" id="' + id + '-src" hidden></pre>' +
+        '</div>';
+      }
+      return '<div class="wf-artifact" id="' + id + '">' + head +
+        '<div class="wf-artifact-doc">' +
+          (a.html || '<pre class="md-pre"><code>' + esc(a.source || '') + '</code></pre>') +
+        '</div></div>';
+    }).join('');
+    return '<div class="wf-field"><h3>稿件内容</h3><div class="wf-artifacts">' + blocks + '</div></div>';
+  }
+
+  function wireArtifacts(stage){
+    (stage.artifacts || []).forEach(function(a, i){
+      if (a.status !== 'ok' || a.kind !== 'html') return;
+      var id = 'wf-artifact-' + stage.id + '-' + i;
+      var frame = document.getElementById(id + '-frame');
+      var src = document.getElementById(id + '-src');
+      if (frame && !frame.getAttribute('srcdoc')) frame.setAttribute('srcdoc', a.source || '');
+      if (src) src.textContent = a.source || '';
+    });
+    Array.prototype.forEach.call(detail.querySelectorAll('.wf-mini'), function(btn){
+      btn.addEventListener('click', function(){
+        var id = btn.getAttribute('data-preview') || btn.getAttribute('data-source');
+        var frame = document.getElementById(id + '-frame');
+        var src = document.getElementById(id + '-src');
+        var showSource = !!btn.getAttribute('data-source');
+        if (frame) frame.hidden = showSource;
+        if (src) src.hidden = !showSource;
+      });
+    });
+  }
+
+  function clearSelection(){
+    allNodes().forEach(function(n){ n.removeAttribute('data-selected'); n.removeAttribute('data-dim'); });
+    allEdges().forEach(function(e){ e.removeAttribute('data-dim'); });
+  }
+
+  function selectNode(nodeId){
+    var node = svg.querySelector('.wf-node[data-node="'+nodeId+'"]');
+    if (!node) return;
+    highlight(nodeId);
+    var stageId = node.getAttribute('data-stage');
+    var kind = node.getAttribute('data-kind');
+    if (kind === 'gate') renderGate(node.getAttribute('data-node').replace('gate:',''), stageId);
+    else renderStage(stageId);
+    if (drawer) drawer.hidden = false;
+  }
+
+  function highlight(nodeId){
+    allNodes().forEach(function(n){
+      var on = n.getAttribute('data-node') === nodeId;
+      n.setAttribute('data-selected', on ? 'true' : 'false');
+      n.setAttribute('data-dim', on ? 'false' : 'true');
+    });
+    allEdges().forEach(function(e){
+      var hit = e.getAttribute('data-from') === nodeId || e.getAttribute('data-to') === nodeId;
+      e.setAttribute('data-dim', hit ? 'false' : 'true');
+    });
+  }
+
+  function closeDrawer(){
+    if (drawer) drawer.hidden = true;
+    clearSelection();
+  }
+  if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+
+  function pathRow(label, path, expected){
+    if (!path && !expected) return '';
+    if (path) return '<li><span class="wf-path">'+esc(path)+'</span></li>';
+    return '<li><span class="wf-path">'+esc(expected)+'</span><span class="wf-expected">预期位置，尚未产出</span></li>';
+  }
+
+  function renderStage(stageId){
+    var stage = stageOf(stageId);
+    if (!stage){ detail.innerHTML=''; return; }
+    var actual = stage.evidenceActual;
+    var expected = stage.evidence;
+    var gates = stage.gateNodes.map(function(g){
+      return '<li class="wf-gate-item"><strong>'+esc(g.title)+'</strong>'+
+        '<p>'+esc(STATUS_LABEL[g.status] || g.status)+(g.lane==='user' ? ' · 用户确认门' : ' · 留痕要求（不阻塞）')+'</p>'+
+        '<p>'+esc(g.detail || '')+'</p></li>';
+    }).join('');
+    detail.innerHTML =
+      '<div class="wf-card">'+
+        '<div class="wf-card-head">'+
+          '<span class="wf-card-kind wf-card-kind-stage">阶段</span>'+
+          '<h2>'+esc(stage.name)+'</h2>'+
+          '<span class="wf-card-status" data-status="'+esc(stage.status)+'">'+esc(STATUS_LABEL[stage.status]||stage.status)+'</span>'+
+        '</div>'+
+        '<p class="wf-card-summary">'+esc(stage.summary)+'</p>'+
+        '<div class="wf-grid">'+
+          '<div class="wf-field"><h3>产物与证据</h3><ul>'+
+            pathRow('证据', actual, expected)+
+          '</ul>'+
+          (stage.stageNote ? '<p class="wf-note-line">'+esc(stage.stageNote)+'</p>' : '')+
+          '</div>'+
+          '<div class="wf-field"><h3>阶段产出</h3><p>'+esc(stage.output || '—')+'</p>'+
+            '<h3 style="margin-top:12px">决策</h3><p>'+esc(stage.decisionPoint ? '用户确认' : '按规则推进')+'</p>'+
+          '</div>'+
+        '</div>'+
+        artifactBlock(stage)+
+        (gates ? '<div class="wf-field"><h3>该阶段的门</h3><ul class="wf-gate-list">'+gates+'</ul></div>' : '')+
+      '</div>';
+    wireArtifacts(stage);
+  }
+
+  function renderGate(gateId, stageId){
+    var gate = GATES[gateId];
+    var stage = stageOf(stageId);
+    if (!gate || !stage){ detail.innerHTML=''; return; }
+    var waiting = gate.status === 'gated';
+    detail.innerHTML =
+      '<div class="wf-card">'+
+        '<div class="wf-card-head">'+
+          '<span class="wf-card-kind wf-card-kind-gate">确认门</span>'+
+          '<h2>'+esc(gate.title)+'</h2>'+
+          '<span class="wf-card-status" data-status="'+esc(gate.status)+'">'+esc(STATUS_LABEL[gate.status]||gate.status)+'</span>'+
+        '</div>'+
+        (waiting ? '<p class="wf-card-summary"><span class="wf-wait">⏸ 等待确认</span></p>' : '')+
+        '<div class="wf-grid">'+
+          '<div class="wf-field"><h3>本门需要确认的稿件</h3><p>'+esc(gate.detail || '—')+'</p>'+
+            '<h3 style="margin-top:12px">稿件位置</h3><ul>'+
+              pathRow('证据', stage.evidenceActual, stage.evidence)+
+            '</ul></div>'+
+          '<div class="wf-field"><h3>所属阶段</h3><p>'+esc(stage.name)+'</p>'+
+            '<h3 style="margin-top:12px">裁决方式</h3><p>'+
+              esc(gate.lane === 'user' ? '用户确认后放行' : '留痕要求，不阻塞流程')+'</p>'+
+          '</div>'+
+        '</div>'+
+        (stage.stageNote ? '<p class="wf-note-line">'+esc(stage.stageNote)+'</p>' : '')+
+        artifactBlock(stage)+
+      '</div>';
+    wireArtifacts(stage);
+  }
+
+  svg.addEventListener('click', function(ev){
+    if (suppressClick){ suppressClick = false; return; }
+    var node = ev.target.closest ? ev.target.closest('.wf-node') : null;
+    if (!node) return;
+    selectNode(node.getAttribute('data-node'));
+  });
+  svg.addEventListener('keydown', function(ev){
+    if (ev.key !== 'Enter' && ev.key !== ' ') return;
+    var node = ev.target.closest ? ev.target.closest('.wf-node') : null;
+    if (!node) return;
+    ev.preventDefault();
+    selectNode(node.getAttribute('data-node'));
+  });
+
+  var railBtns = document.querySelectorAll('.wf-rail-btn');
+  Array.prototype.forEach.call(railBtns, function(btn){
+    btn.addEventListener('click', function(){
+      var stageId = btn.getAttribute('data-stage');
+      selectNode('stage:'+stageId); centerOn('stage:'+stageId);
+    });
+  });
+
+  // ---------- theme / motion / focus / labels ----------
+  if (themeBtn) themeBtn.addEventListener('click', function(){
+    var dark = document.body.getAttribute('data-theme') === 'dark';
+    document.body.setAttribute('data-theme', dark ? 'light' : 'dark');
+    themeBtn.setAttribute('aria-pressed', dark ? 'false' : 'true');
+    themeBtn.querySelector('.wf-tool-label').textContent = dark ? '浅色' : '深色';
+  });
+  if (motionBtn) motionBtn.addEventListener('click', function(){
+    var on = document.body.getAttribute('data-motion') === 'on';
+    document.body.setAttribute('data-motion', on ? 'off' : 'on');
+    motionBtn.setAttribute('aria-pressed', on ? 'false' : 'true');
+  });
+  if (focusBtn) focusBtn.addEventListener('click', function(){
+    var on = document.body.getAttribute('data-focus') === 'on';
+    document.body.setAttribute('data-focus', on ? 'off' : 'on');
+    focusBtn.setAttribute('aria-pressed', on ? 'false' : 'true');
+  });
+  if (labelsBtn) labelsBtn.addEventListener('click', function(){
+    var off = document.body.getAttribute('data-labels') === 'off';
+    document.body.setAttribute('data-labels', off ? 'on' : 'off');
+    labelsBtn.setAttribute('aria-pressed', off ? 'true' : 'false');
+  });
+  if (exportBtn) exportBtn.addEventListener('click', function(){
+    var clone = svg.cloneNode(true);
+    // Export cleanup: viewer state (focus, dim, selection, keyboard hooks) is
+    // stripped, and paint styles are inlined because the standalone file has
+    // no stylesheet — class-based fills would fall back to black.
+    clone.querySelectorAll('[data-dim]').forEach(function(el){ el.removeAttribute('data-dim'); });
+    clone.querySelectorAll('[data-selected]').forEach(function(el){ el.removeAttribute('data-selected'); });
+    clone.querySelectorAll('[tabindex]').forEach(function(el){ el.removeAttribute('tabindex'); });
+    var source = svg.querySelectorAll('*');
+    var target = clone.querySelectorAll('*');
+    var props = ['fill','stroke','stroke-width','stroke-dasharray','opacity','font-size','font-weight','font-family'];
+    for (var i=0;i<source.length && i<target.length;i++){
+      var cs = window.getComputedStyle(source[i]);
+      if (!cs) continue;
+      for (var p=0;p<props.length;p++){
+        var v = cs.getPropertyValue(props[p]);
+        if (v) target[i].setAttribute(props[p], v);
+      }
+    }
+    var vb = viewBox();
+    clone.setAttribute('width', vb.w); clone.setAttribute('height', vb.h);
+    var blob = new Blob([new XMLSerializer().serializeToString(clone)], {type:'image/svg+xml'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'workflow-diagram.svg';
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+  });
+
+  // ---------- keys ----------
+  document.addEventListener('keydown', function(ev){
+    var t = ev.target;
+    var typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA');
+    if (ev.key === 'Escape'){
+      if (typing){ t.blur(); return; }
+      if (document.body.getAttribute('data-demo')==='on'){ stopDemo(); return; }
+      closePanels();
+      if (drawer && !drawer.hidden) closeDrawer();
+      return;
+    }
+    if (typing) return;
+    if (ev.key === '/' ){ ev.preventDefault(); searchInput.focus(); return; }
+    var r = viewport.getBoundingClientRect();
+    if (ev.key === '+' || ev.key === '=') zoomAt(r.width/2, r.height/2, 1.25);
+    else if (ev.key === '-' || ev.key === '_') zoomAt(r.width/2, r.height/2, 0.8);
+    else if (ev.key === '0') fit();
+  });
+
+  // ---------- theme from URL (?theme=light for captures) ----------
+  try {
+    var q = new URLSearchParams(location.search);
+    if (q.get('theme') === 'light' && themeBtn){
+      document.body.setAttribute('data-theme','light');
+      themeBtn.setAttribute('aria-pressed','false');
+      themeBtn.querySelector('.wf-tool-label').textContent = '浅色';
+    }
+  } catch(e){}
+
+  // Open on the stage the record says the task is on, so the first thing the
+  // reader sees is where the work actually stands. Demo stays off by default.
+  var current = null;
+  for (var i=0;i<STAGES.length;i++) if (STAGES[i].isCurrent) current = STAGES[i];
+  if (current) highlight('stage:'+current.id);
+  else clearSelection();
+
+  fit();
+})();
+</script>
+</body>
+</html>

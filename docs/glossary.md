@@ -40,7 +40,7 @@
 
 ## 决议与账本
 
-- **裁决包（包 A/B/C）**：`docs/archive/d7-decision-packet.md` 的 D7 决议
+- **裁决包（包 A/B/C）**：`docs/decisions/d7-decision-packet.md` 的 D7 决议
   分组——A 证据发布完整性、B 知识密度、C 机制升级。各项独立裁决。
 - **D1-D8**：`docs/product-review-2026-09.md` 产品评审的决议编号（D5 =
   评测对称性缺口等）。

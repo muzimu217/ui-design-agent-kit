@@ -6,6 +6,7 @@ __pycache__/
 .env.*
 !.env.example
 output/
+out/
 paper/out/
 paper/submission/arxiv-bundle/
 paper/submission/*.zip
@@ -51,6 +52,10 @@ showcase/products/node_modules/
 # Mimosa security plugin runtime state
 .mimosa/
 
+# ZCode workspace local state
+.atomcode/
+
 # Competitive screenshots are kept local-only (ADR-0002); the generated
 # local viewer page stays out of git too, the generator script is tracked.
+docs/competitive-insights/**/*.png
 docs/competitive-insights/viewer.html

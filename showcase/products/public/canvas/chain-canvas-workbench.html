@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>工作流画布工作台 · 需求解析链路</title>
+<style>
+  :root { color-scheme: dark; --bg:#0a0a0f; --panel:#141420; --line:#26263a; --text:#e6e6f0; --dim:#9a9ab0; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.65 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif; padding:32px 20px 64px; overflow-x:hidden; overflow-wrap:anywhere; }
+  main { max-width: 860px; margin: 0 auto; }
+  h1 { font-size:22px; letter-spacing:-0.01em; margin:0 0 4px; }
+  .meta { color:var(--dim); font-size:13px; margin-bottom:24px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:14px; }
+  .card h2 { font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--dim); margin:0 0 10px; }
+  .kv { display:flex; gap:10px; margin:6px 0; min-width:0; }
+  .kv .v { min-width:0; overflow-wrap:anywhere; }
+  .k { color:var(--dim); min-width:72px; flex:none; font-size:13px; }
+  .v { flex:1; }
+  .raw { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:10px 12px; font-size:14px; color:#d8d8e8; overflow-wrap:anywhere; }
+  .compare { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .compare .col h3 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); margin:0 0 6px; }
+  .compare .col .raw { font-size:13px; }
+  .vu-badge { display:inline-block; border:1px solid #34d399; border-radius:99px; padding:2px 10px; font-size:12px; color:#34d399; }
+  .vu-badge.pending { border-color:#fbbf24; color:#fbbf24; }
+  @media (max-width: 640px) { .compare { grid-template-columns:1fr; } }
+  a.basis-link { color:#8ab4ff; text-decoration:none; border-bottom:1px dotted #3b5b8f; }
+  a.basis-link:hover { border-bottom-color:#8ab4ff; }
+  code { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:12px; color:#8ab4ff; word-break:break-all; }
+  details.step { background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--c,#6b7280); border-radius:10px; margin-bottom:10px; }
+  details.step summary { cursor:pointer; display:flex; align-items:center; gap:10px; padding:12px 16px; list-style:none; }
+  details.step summary::-webkit-details-marker { display:none; }
+  .dot { width:9px; height:9px; border-radius:50%; background:var(--c); flex:none; }
+  .idx { color:var(--dim); font-size:12px; }
+  .t { font-weight:600; flex:1; }
+  .st { font-size:12px; }
+  .body { padding:0 16px 14px 35px; }
+  .body p { margin:0 0 10px; }
+  .decision { background:#0d0d15; border:1px solid var(--line); border-radius:6px; padding:10px 12px; margin-bottom:8px; font-size:13px; }
+  .decision.warn { color:#fbbf24; border-color:#4a3b12; }
+  .d-row { margin:3px 0; }
+  .q::before { content:""; }
+  .a { color:#a7f3d0; }
+  .basis code { margin-right:4px; }
+  .ev { font-size:12px; }
+  footer { margin-top:20px; color:var(--dim); font-size:12px; text-align:center; }
+  footer a { color:#8ab4ff; }
+  @media (max-width: 640px) { body { padding:20px 12px 48px; } .kv { flex-direction:column; gap:2px; } }
+  @media (prefers-reduced-motion: no-preference) { details.step { transition: border-color .15s ease; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>工作流画布工作台 · 需求解析链路</h1>
+  <div class="meta">chainId canvas-workbench · 轮次 2026-10-13-08 · 6 步 · 深色 · 自包含离线页</div>
+
+  <section class="card" style="border-left:3px solid #7c3aed">
+    <h2>原始口语需求（逐字锚点）</h2>
+    <div class="raw">我们这个项目整体的架构怎么样？它有没有前端的工作台界面？……我觉得这样挺好的。有AI调用技能，开发个完善的画布界面，包括这个项目是如何实现的，一步步能可视化，而且不是黑盒状态。还有审查，每一步都审查，对吧？就是按照用户的需求进行解析理解，跟做品牌化、高端化方向走，不可能做一个很简陋的画面……还有相关的测试样本还需要增加，和每一次都要进行一些一系列小测试和测试产物。看看每次产物对比网上那些做出来的效果如何？产品质量如何？我们要走高端化，产业化、流水线制的路线。</div>
+  </section>
+  <section class="card" style="border-left:3px solid #7c3aed">
+    <h2>解析摘要与范围</h2>
+    <div class="kv"><span class="k">摘要</span><span class="v">为六道门流水线建可视化工作台：画布界面逐步呈现项目实现过程（非黑盒）、每步审查记录界面化、品牌化高端视觉、测试样本扩量、每轮 mini 产物并与网上同类效果六维对比，走高端化/产业化/流水线制路线。</span></div><div class="kv"><span class="k">范围·做</span><span class="v">门径画布 MVP、需求解析链路可视、品牌化壳、产物墙与六维对比、evals 扩量</span></div><div class="kv"><span class="k">范围·不做</span><span class="v">后端/账户/在线服务、重写既有 workflow-diagram 壳、非 UI 领域功能</span></div><div class="kv"><span class="k">关键问题</span><span class="v">画布数据源与既有可视化资产的边界（结论：复用 workflow-diagram 壳，不重写）；审查记录如何从文档态升级为界面态（结论：chain.json decisions[]）；对比基准如何选取（结论：v0/bolt 同类产物六维并排）</span></div>
+  </section>
+  <section class="card" style="border-left:3px solid #22d3ee">
+    <h2>理解验证（AI 复述 · 用户比对）</h2>
+    <div class="compare">
+      <div class="col"><h3>原始口语（锚点）</h3><div class="raw">我们这个项目整体的架构怎么样？它有没有前端的工作台界面？……我觉得这样挺好的。有AI调用技能，开发个完善的画布界面，包括这个项目是如何实现的，一步步能可视化，而且不是黑盒状态。还有审查，每一步都审查，对吧？就是按照用户的需求进行解析理解，跟做品牌化、高端化方向走，不可能做一个很简陋的画面……还有相关的测试样本还需要增加，和每一次都要进行一些一系列小测试和测试产物。看看每次产物对比网上那些做出来的效果如何？产品质量如何？我们要走高端化，产业化、流水线制的路线。</div></div>
+      <div class="col"><h3>AI 复述（供比对）</h3><div class="raw">你要的不是新功能堆叠，而是把已经存在的六道门流水线『打开给人看』：画布上能看到每一步怎么做的、依据什么、审查结论是什么；门面要高端品牌质感；每轮都要有小产物和与网上同类效果的质量对比；样本库持续扩量——整体走产业化流水线。</div></div>
+    </div><div style="margin-top:10px"><span class="vu-badge ">✓ 用户已比对确认</span> <span class="k">2026-10-13（用户 10-13 指令即包含对本仓现状的追问与方向确认，视为门 A 通过）</span></div>
+  </section>
+  <h2 style="font-size:13px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin:22px 0 10px">六步链路（点击展开决策依据）</h2>
+  <details class="step" style="--c:#34d399" >
+    <summary><span class="dot"></span><span class="idx">01</span>
+      <span class="t">需求与方向</span><span class="st" style="color:#34d399">passed</span></summary>
+    <div class="body"><p>现状对账表（9 项诉求逐条判定有/无/半有）+三阶段路线+扩量计划，落 docs/canvas-workbench-plan.md 并入 goal.md G5</p><div class="decision"><div class="d-row"><span class="q">面对：重写新画布还是复用既有壳？</span></div>
+       <div class="d-row"><span class="a">选择：复用 workflow-diagram 壳接数据流</span></div>
+       <div class="d-row basis">依据：<a class="basis-link" href="scripts/workflow-diagram/ 已有自包含 HTML/相机/证据嵌入/状态机/visual 验收（增量 1 实测 107KB check 零问题）" target="_blank" rel="noreferrer"><code>scripts/workflow-diagram/ 已有自包含 HTML/相机/证据嵌入/状态机/visual 验收（增量 1 实测 107KB check 零问题）</code></a></div></div><div class="ev"><code>docs/canvas-workbench-plan.md</code> <code>docs/goal.md#G5</code></div></div>
+  </details>
+<details class="step" style="--c:#34d399" >
+    <summary><span class="dot"></span><span class="idx">02</span>
+      <span class="t">参考素材</span><span class="st" style="color:#34d399">passed</span></summary>
+    <div class="body"><p>对标已集：Onlook 画布机制、bolt 设计系统专题、v0 Agentic+DS 2.0（学习循环 20-27 轮）</p><div class="decision"><div class="d-row"><span class="q">面对：画布交互参考谁的机制？</span></div>
+       <div class="d-row"><span class="a">选择：时间轴+证据抽屉+状态三色（Onlook/v0 机制抽象，外观自主）</span></div>
+       <div class="d-row basis">依据：<a class="basis-link" href="docs/competitive-insights/2026-10-11-onlook/insight.md ⑤对照表" target="_blank" rel="noreferrer"><code>docs/competitive-insights/2026-10-11-onlook/insight.md ⑤对照表</code></a></div></div><div class="ev"><code>docs/competitive-insights/2026-10-11-onlook/insight.md</code> <code>docs/competitive-insights/2026-10-13-v0-docs-design-systems/insight.md</code></div></div>
+  </details>
+<details class="step" style="--c:#22d3ee" open>
+    <summary><span class="dot"></span><span class="idx">03</span>
+      <span class="t">原型与契约</span><span class="st" style="color:#22d3ee">active</span></summary>
+    <div class="body"><p>chain.json schema v1 落盘（含 v0 式理解验证步）+画布自身 design-contract 待定稿</p><div class="decision"><div class="d-row"><span class="q">面对：审查记录如何从文档态升级为界面态？</span></div>
+       <div class="d-row"><span class="a">选择：chain.json decisions[]（每步 question/chose/basis）+verifyUnderstanding 复述比对门</span></div>
+       <div class="d-row basis">依据：<a class="basis-link" href="canvas/chain.schema.md 规则 1-4" target="_blank" rel="noreferrer"><code>canvas/chain.schema.md 规则 1-4</code></a></div></div><div class="ev"><code>canvas/chain.schema.md</code> <code>canvas/chain-canvas-workbench.json</code></div></div>
+  </details>
+<details class="step" style="--c:#22d3ee" open>
+    <summary><span class="dot"></span><span class="idx">04</span>
+      <span class="t">交互实现</span><span class="st" style="color:#22d3ee">active</span></summary>
+    <div class="body"><p>增量 1：state 接入 workflow-diagram 壳生成自包含画布 HTML（107KB，check 零问题）；增量 2：cli visual Chrome --user-data-dir 隔离修复（三视口回执 ok:true）</p><div class="decision"><div class="d-row"><span class="q">面对：MVP 形态选 React 管线还是自包含 HTML？</span></div>
+       <div class="d-row"><span class="a">选择：先自包含 HTML（复用既有生成器），React 壳阶段 3 再评估</span></div>
+       <div class="d-row basis">依据：<a class="basis-link" href="scripts/workflow-diagram/html.mjs 既有模式" target="_blank" rel="noreferrer"><code>scripts/workflow-diagram/html.mjs 既有模式</code></a> <a class="basis-link" href="output/canvas-workbench-visual.json 三视口捕获" target="_blank" rel="noreferrer"><code>output/canvas-workbench-visual.json 三视口捕获</code></a></div></div><div class="ev"><code>canvas/canvas-workbench.state.json</code> <code>output/canvas-workbench-visual.json</code></div></div>
+  </details>
+<details class="step" style="--c:#22d3ee" open>
+    <summary><span class="dot"></span><span class="idx">05</span>
+      <span class="t">浏览器验证</span><span class="st" style="color:#22d3ee">active</span></summary>
+    <div class="body"><p>visual 回执三视口（1440 暗亮/2048 暗）全过 18-26 万字节非空白；六维全量验收待 React 壳或链路渲染页成型</p><div class="decision warn">⚠ 无决策记录（黑盒步骤）</div><div class="ev"><code>output/canvas-workbench-visual.json</code></div></div>
+  </details>
+<details class="step" style="--c:#6b7280" >
+    <summary><span class="dot"></span><span class="idx">06</span>
+      <span class="t">交付与迭代</span><span class="st" style="color:#6b7280">pending</span></summary>
+    <div class="body"><p>产物墙与 KPI4 对比机制待立（下轮）</p><div class="decision warn">⚠ 无决策记录（黑盒步骤）</div></div>
+  </details>
+  <section class="card" style="border-left:3px solid #34d399">
+    <h2>产物</h2>
+    <div class="kv"><span class="k">路径</span><span class="v"><code>output/canvas-workbench.html</code></span></div><div class="kv"><span class="k">类型</span><span class="v">canvas</span></div>
+  </section>
+  <section class="card" style="border-left:3px solid #34d399">
+    <h2>验收</h2>
+    <div class="kv"><span class="k">六维</span><span class="v">visual 回执三视口非空白（全量六维待链路渲染页）</span></div>
+  </section>
+  <footer>canvas workbench · chain.schema.md v1 · 本页由 canvas/render-chain.mjs 生成，离线可开 ·
+    <a href="canvas-workbench.html">门径画布</a> · <a href="canvas-index.html">工作台入口</a></footer>
+</main>
+</body>
+</html>

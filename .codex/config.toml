@@ -38,6 +38,22 @@ enabled = false
 # (export STITCH_API_KEY=... before starting the host). The key is referenced,
 # never stored inline. Disabled until the user sets the variable and enables
 # the server; free-quota behavior and call results must be verified per call.
+# Gmail MCP (local stdio, Google official OAuth). Authorized 2026-10-09 for
+# sucipnoto5@gmail.com. Credentials/token live in ~/.config/gmail-mcp/env
+# (chmod 600, outside the repo). To start the host with the server enabled:
+#   set -a; source ~/.config/gmail-mcp/env; set +a
+[mcp_servers.gmail]
+command = "npx"
+args = ["-y", "@gongrzhe/server-gmail-autoauth-mcp"]
+startup_timeout_sec = 90
+tool_timeout_sec = 120
+enabled = true
+
+[mcp_servers.gmail.env]
+GOOGLE_CLIENT_ID = "${GMAIL_CLIENT_ID}"
+GOOGLE_CLIENT_SECRET = "${GMAIL_CLIENT_SECRET}"
+GOOGLE_REFRESH_TOKEN = "${GMAIL_REFRESH_TOKEN}"
+
 [mcp_servers.stitch]
 url = "https://stitch.googleapis.com/mcp"
 enabled = false

@@ -26,7 +26,8 @@ const ROOT_FILES = new Set([
 ]);
 // ico：接入工作台宿主官方图标（cursor/hermes/windsurf）为 Vite 打包的公开图片资源；
 // html + canvas：画布工作台页（public/canvas/*.html）随构建分发，html 本身即公开网页
-const ASSET_PATTERN = /^(?:assets|models|photos|Textures|canvas)\/[A-Za-z0-9_./-]+\.(?:html|js|css|png|jpe?g|webp|avif|svg|ico|woff2?|ttf|fbx|glb|gltf|bin|json|mp4)$/;
+// gif + webm：画布微循环预览（stroke-loop.gif / .webm，同一动画的两种编码，均为本仓自产）
+const ASSET_PATTERN = /^(?:assets|models|photos|Textures|canvas)\/[A-Za-z0-9_./-]+\.(?:html|js|css|png|jpe?g|webp|avif|gif|svg|ico|woff2?|ttf|fbx|glb|gltf|bin|json|mp4|webm)$/;
 
 export function normalizeBase(value = '/') {
   if (typeof value !== 'string' || !/^\/(?:[A-Za-z0-9_-]+\/)*$/.test(value)) {

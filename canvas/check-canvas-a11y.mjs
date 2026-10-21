@@ -88,6 +88,16 @@ try {
 if (dataIssues.length) receipt.ok = false;
 receipt.dataGuard = { ok: dataIssues.length === 0, source: path.relative(ROOT, guardSource) || guardSource, issues: dataIssues };
 
+// Alias names from the knowledge base — pages that render knowledge cards must
+// surface every declared alias in their text. Guards the dead-data defect
+// class (增量 52 stored alias without rendering it; 增量 53 surfaced it on the
+// workbench, 增量 54 on the site; this keeps both surfaces honest).
+let kbAliases = [];
+try {
+  const kbIndex = JSON.parse(await readFile(path.join(ROOT, "docs", "knowledge-base", "index.json"), "utf8"));
+  kbAliases = (kbIndex.cards ?? []).map((c) => c.alias).filter(Boolean);
+} catch { /* 缺文件时不设别名断言 */ }
+
 for (const page of dataOnly ? [] : pages) {
   const bg = { chromium, ctx: null, pageObj: null };
   const ctx = await browser.newContext();
@@ -181,6 +191,43 @@ for (const page of dataOnly ? [] : pages) {
   pageResult.ariaGuard = ariaGuard;
   if (!ariaGuard.ok) { receipt.ok = false; pageResult.fail = (pageResult.fail ? pageResult.fail + "; " : "") + "aria guard"; }
 
+  // Alias guard — on a page that renders knowledge cards (.kb-table on the
+  // workbench, #kb on the site), every .kb-alias chip must be a declared alias
+  // carrying the contracted aria-label. Completeness is asserted cross-page
+  // after the loop: the workbench intentionally renders only the recent slice,
+  // the site renders all cards, so "declared but surfaced nowhere" is the
+  // dead-data failure (增量 52 stored alias without rendering it).
+  const aliasGuard = await p.evaluate((aliases) => {
+    const kbSurface = document.querySelector(".kb-table, #kb");
+    if (!kbSurface) return { ok: true, skipped: true, issues: [], present: [] };
+    const issues = [];
+    const present = [];
+    document.querySelectorAll(".kb-alias").forEach((el, i) => {
+      const t = (el.textContent ?? "").trim();
+      const label = el.getAttribute("aria-label") ?? "";
+      if (t && !aliases.includes(t)) issues.push(`.kb-alias#${i} 非声明别名: ${t}`);
+      if (!label.startsWith("场景化别名")) issues.push(`.kb-alias#${i} aria-label 非契约格式`);
+      if (t) present.push(t);
+    });
+    return { ok: issues.length === 0, skipped: false, issues, present };
+  }, kbAliases);
+  pageResult.aliasGuard = aliasGuard;
+  if (!aliasGuard.ok) { receipt.ok = false; pageResult.fail = (pageResult.fail ? pageResult.fail + "; " : "") + "alias guard"; }
+
+  // Overflow guard — horizontal scroll at the two shipping widths means a
+  // clipped/overflowing layout (guards the 520px .step pre min-content
+  // overflow found in 增量 54; the "无裁切" sixDim claims get a real probe).
+  await p.setViewportSize({ width: 520, height: 1200 });
+  const overflow520 = await p.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  await p.setViewportSize({ width: 1280, height: 900 });
+  const overflow1280 = await p.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  const overflowGuard = {
+    ok: overflow520 <= 0 && overflow1280 <= 0,
+    issues: [overflow520 > 0 ? `520px 横向溢出 ${overflow520}px` : null, overflow1280 > 0 ? `1280px 横向溢出 ${overflow1280}px` : null].filter(Boolean),
+  };
+  pageResult.overflowGuard = overflowGuard;
+  if (!overflowGuard.ok) { receipt.ok = false; pageResult.fail = (pageResult.fail ? pageResult.fail + "; " : "") + "overflow guard"; }
+
   // SVG heuristics — knowledge cards icon-single-stroke-constraint and
   // illustration-minimal-constraints turned into NON-BLOCKING hints: count
   // M commands per path (single-stroke) and distinct fill colours (colour
@@ -246,6 +293,14 @@ for (const page of dataOnly ? [] : pages) {
   receipt.pages.push(pageResult);
   await ctx.close();
 }
+
+// Cross-page alias coverage — every declared alias must be surfaced on at
+// least one knowledge-card page (the site renders all cards; the workbench a
+// recent slice by design). Missing everywhere = dead data, fail the receipt.
+const kbSurfaced = new Set(receipt.pages.flatMap((p) => (p.aliasGuard && !p.aliasGuard.skipped ? p.aliasGuard.present : [])));
+const aliasMissing = kbAliases.filter((a) => !kbSurfaced.has(a));
+receipt.aliasCoverage = { ok: kbAliases.length === 0 || aliasMissing.length === 0, missing: aliasMissing };
+if (aliasMissing.length) receipt.ok = false;
 
 await browser.close();
 server.close();

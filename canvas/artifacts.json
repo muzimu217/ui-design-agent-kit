@@ -21,8 +21,22 @@
     "verdict": "本产物以竖向链路+决策抽屉呈现'如何做的'（白盒），v0 stepper 呈现'导入四步操作'（流程）——形态不同层位不同；可借鉴其 stepper 的必经门视觉（approval disabled 态）用于 chain 页 verifyUnderstanding 卡",
     "score": {
      "rubric": "六维各 1 分：1=有本轮实测/实看证据，0=实测缺失，null=公开渠道不可观测（不计分母）；对标侧检视级别见 level，不虚记不可测维度",
-     "us": { "desktop": 1, "mobile": 1, "keyboard": 1, "contrast": 1, "reducedMotion": 1, "console": 1 },
-     "them": { "desktop": 1, "mobile": null, "keyboard": null, "contrast": null, "reducedMotion": null, "console": null },
+     "us": {
+      "desktop": 1,
+      "mobile": 1,
+      "keyboard": 1,
+      "contrast": 1,
+      "reducedMotion": 1,
+      "console": 1
+     },
+     "them": {
+      "desktop": 1,
+      "mobile": null,
+      "keyboard": null,
+      "contrast": null,
+      "reducedMotion": null,
+      "console": null
+     },
      "level": "unverified-partial",
      "themNote": "对标侧为公开文档页实看：仅桌面呈现可观测，键盘可达性/对比度/降动效/console 均无公开可验证证据，记 null 不虚记"
     }
@@ -52,8 +66,22 @@
     "verdict": "本页以状态卡片墙呈现工作台全景（门径/阶段/产物），Figma Make 首屏为单 prompt 入口——形态不同目标不同；借鉴示例 pill 的低门槛入口思路",
     "score": {
      "rubric": "六维各 1 分：1=有本轮实测/实看证据，0=实测缺失，null=公开渠道不可观测（不计分母）；对标侧检视级别见 level，不虚记不可测维度",
-     "us": { "desktop": 1, "mobile": 1, "keyboard": 1, "contrast": 1, "reducedMotion": 1, "console": 1 },
-     "them": { "desktop": 1, "mobile": null, "keyboard": null, "contrast": null, "reducedMotion": null, "console": null },
+     "us": {
+      "desktop": 1,
+      "mobile": 1,
+      "keyboard": 1,
+      "contrast": 1,
+      "reducedMotion": 1,
+      "console": 1
+     },
+     "them": {
+      "desktop": 1,
+      "mobile": null,
+      "keyboard": null,
+      "contrast": null,
+      "reducedMotion": null,
+      "console": null
+     },
      "level": "unverified-partial",
      "themNote": "对标侧为公开首屏实看（未注册实测）：仅首屏呈现可观测，其余四维无公开可验证证据，记 null 不虚记"
     }
@@ -84,8 +112,22 @@
     "verdict": "同为'阶段×状态'信息架构：他们=营销功能面板（无门无证据无停点），本产物=门态+证据数台账快照（口径脚注明示非进度百分比）——同形状不同物种判读的产物级实证",
     "score": {
      "rubric": "六维各 1 分：1=有本轮实测/实看证据，0=实测缺失，null=公开渠道不可观测（不计分母）；对标侧检视级别见 level，不虚记不可测维度",
-     "us": { "desktop": 1, "mobile": 1, "keyboard": 1, "contrast": 1, "reducedMotion": 1, "console": 1 },
-     "them": { "desktop": 1, "mobile": null, "keyboard": null, "contrast": null, "reducedMotion": null, "console": null },
+     "us": {
+      "desktop": 1,
+      "mobile": 1,
+      "keyboard": 1,
+      "contrast": 1,
+      "reducedMotion": 1,
+      "console": 1
+     },
+     "them": {
+      "desktop": 1,
+      "mobile": null,
+      "keyboard": null,
+      "contrast": null,
+      "reducedMotion": null,
+      "console": null
+     },
      "level": "unverified-partial",
      "themNote": "对标侧为公开营销页实看：仅桌面呈现可观测，其余维度无公开可验证证据，记 null 不虚记"
     }
@@ -104,10 +146,10 @@
    "path": "canvas/render-site.mjs + canvas/{artifacts,capabilities,taste-profile}.json → output/site.html（离线自包含）",
    "viewUrl": "site.html",
    "sixDim": {
-    "desktop": "Chrome headless 1280 直拍通过（22.4 万字节非空白，含描边循环动画）",
-    "mobile": "520px Chrome headless 直拍通过（17.7 万字节，导航/网格响应式无裁切）",
-    "keyboard": "playwright Tab 序列实测：12 项 tab 停留全可达（focusable 12/12——锚点导航 7+CTA 2+描边层不占焦点）",
-    "contrast": "playwright computed-style WCAG 实测：32 项文本全过 4.5:1（低于标准 0 项）",
+    "desktop": "Chrome headless 1280 直拍通过（667KB 非空白；scrollWidth=1280 无横向溢出，增量 54 overflowGuard 实测）",
+    "mobile": "520px Chrome headless 直拍通过（648KB，scrollWidth=520 无横向溢出——v2.1 修复 reg-004 后实测；390px 依赖 viewport meta+防御 CSS）",
+    "keyboard": "playwright Tab 序列实测：14 项可聚焦全可达（导航锚点 8+CTA 2+介绍片链接+页脚 3；alias chip 为非交互 span 不占焦点，增量 54 复测）",
+    "contrast": "playwright computed-style WCAG 实测：34 项文本全过 4.5:1（低于标准 0 项，增量 54 复测含视频区）",
     "reducedMotion": "描边循环动画在 prefers-reduced-motion 下停帧显示完整路径（dashoffset=0），静态检查通过",
     "console": "playwright 实测 0 错误"
    },
@@ -117,15 +159,29 @@
     "verdict": "同为 design agent 定位页：Framer 的 Agent/Style 双模式与'alongside you not instead of you'句式与本仓'监管而非生成'同源；本页差异=数字全部从工作台 JSON 实时计算（宣称不超证据）",
     "score": {
      "rubric": "六维各 1 分：1=有本轮实测/实看证据，0=实测缺失，null=公开渠道不可观测（不计分母）；对标侧检视级别见 level，不虚记不可测维度",
-     "us": { "desktop": 1, "mobile": 1, "keyboard": 1, "contrast": 1, "reducedMotion": 1, "console": 1 },
-     "them": { "desktop": 1, "mobile": null, "keyboard": null, "contrast": null, "reducedMotion": null, "console": null },
+     "us": {
+      "desktop": 1,
+      "mobile": 1,
+      "keyboard": 1,
+      "contrast": 1,
+      "reducedMotion": 1,
+      "console": 1
+     },
+     "them": {
+      "desktop": 1,
+      "mobile": null,
+      "keyboard": null,
+      "contrast": null,
+      "reducedMotion": null,
+      "console": null
+     },
      "level": "unverified-partial",
      "themNote": "对标侧为公开首屏实看：仅桌面呈现可观测，其余维度无公开可验证证据，记 null 不虚记"
     }
    },
-   "status": "v2.0（描边循环动画+入墙）",
-   "version": 1,
-   "changeSummary": "v1.0 首版（展示/三步/六道门/能力/知识库/品味/条款，数字从工作台 JSON 计算）→ v2.0 单笔描边循环动画（reduced-motion 停帧）+ 入产物墙",
+   "status": "v2.1（知识库表 alias 可见+横向溢出修复）",
+   "version": 2,
+   "changeSummary": "v1.0 首版（展示/三步/六道门/能力/知识库/品味/条款，数字从工作台 JSON 计算）→ v2.0 单笔描边循环动画（reduced-motion 停帧）+ 入产物墙 → v2.1 知识库表场景化别名 chip（与工作台同 aria 契约）+ 修复 520px 横向溢出 115px（.step pre 最小内容宽+kb 表 min-content，reg-004）+ check 新增 aliasGuard/aliasCoverage/overflowGuard 三守卫",
    "origin": "ai-draft+human-revision",
    "originNote": "页面由代理编写；定位句式借鉴 Framer'alongside not instead'（知识卡判读）与 10-19 用户方向裁定"
   }

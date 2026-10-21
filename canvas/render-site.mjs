@@ -62,7 +62,7 @@ const capRows = (caps.capabilities ?? [])
   .join("\n");
 
 const kbRows = (kb.cards ?? [])
-  .map((c) => `<tr><td><span class="dom">${esc(c.layer ?? c.domain)}</span></td><td>${esc(c.title)}</td><td class="dim">${esc(c.source?.author ?? "")}${c.source?.heat ? ` · ${(c.source.heat / 10000).toFixed(1)} 万播放` : ""}</td></tr>`)
+  .map((c) => `<tr><td><span class="dom">${esc(c.layer ?? c.domain)}</span></td><td>${esc(c.title)}${c.alias ? `<span class="kb-alias" aria-label="场景化别名 ${esc(c.alias)}">${esc(c.alias)}</span>` : ""}</td><td class="dim">${esc(c.source?.author ?? "")}${c.source?.heat ? ` · ${(c.source.heat / 10000).toFixed(1)} 万播放` : ""}</td></tr>`)
   .join("\n");
 
 const tasteRows = (taste.traits ?? [])
@@ -132,7 +132,8 @@ const html = `<!doctype html>
   .card h3 { margin:0 0 8px; font-size:14.5px; font-weight:620; }
   .card p { margin:0; color:var(--dim); font-size:13px; }
   .steps { display:grid; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; counter-reset:step; }
-  .step { background:var(--panel); padding:20px 22px; display:grid; grid-template-columns:30px 1fr; gap:16px; }
+  .step { background:var(--panel); padding:20px 22px; display:grid; grid-template-columns:30px minmax(0,1fr); gap:16px; }
+  .step > div { min-width:0; }
   .step::before { counter-increment:step; content:counter(step); display:grid; place-items:center; width:26px; height:26px; border-radius:6px; border:1px solid var(--line); color:var(--accent); font:600 12px/1 ui-monospace,monospace; }
   .step h3 { margin:0 0 4px; font-size:14.5px; font-weight:620; }
   .step p { margin:0; color:var(--dim); font-size:13px; }
@@ -152,6 +153,9 @@ const html = `<!doctype html>
   .pill.yes { color:var(--ok); border-color:rgba(52,211,153,.45); }
   .pill.no { color:var(--warn); border-color:rgba(251,191,36,.4); }
   .dom { color:var(--accent2); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; }
+  .kb-alias { display:inline-block; margin-left:8px; border:1px solid rgba(167,139,250,.4); color:var(--accent); border-radius:99px; padding:0 8px; font-size:10.5px; }
+  #kb table { table-layout:fixed; }
+  #kb th, #kb td { overflow-wrap:anywhere; }
   .terms { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
   .film-wrap { border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#000; }
   .film { display:block; width:100%; height:auto; aspect-ratio:16/9; background:#000; }

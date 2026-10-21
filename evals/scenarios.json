@@ -3135,5 +3135,37 @@
    "Prior recheck not referenced",
    "Parity claimed between optional and mandatory models"
   ]
+ },
+ {
+  "id": "alias-surface-dual-surfaces",
+  "request": "When a knowledge-base field is promoted into the schema as a retrieval handle (alias), it must be surfaced on every page that renders knowledge cards with the contracted accessible name — a field stored in data but rendered nowhere is dead data and fails the round.",
+  "context": "schema v1.2 added alias; the workbench rendered it from 增量 53, the site only from 增量 54.",
+  "passCriteria": [
+   "Every page rendering knowledge cards shows aliases as declared (no fabricated chips)",
+   "Chips carry the contracted aria-label format",
+   "Cross-page coverage: every declared alias appears on at least one knowledge-card page",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Field present in JSON but absent from all rendered pages",
+   "Chip rendered without accessible name",
+   "Guard skips the page set entirely"
+  ]
+ },
+ {
+  "id": "horizontal-overflow-two-widths",
+  "request": "A page claiming responsive no-clipping must measure document scrollWidth against viewport width at both shipping widths (desktop 1280 and mobile 520); grid children containing pre/code/tables need minmax(0,1fr) plus min-width:0 so long unbreakable content scrolls internally instead of stretching the page.",
+  "context": "site 520px overflowed 115px since v1.0 (.step pre + kb table min-content) and the sixDim mobile claim said 无裁切 without a scrollWidth probe.",
+  "passCriteria": [
+   "scrollWidth <= clientWidth at 1280 and 520",
+   "Long code lines scroll inside their pre rather than widening the page",
+   "Fix recorded in the regressions wall with root cause",
+   "The overflow probe becomes a standing check, not a one-off"
+  ],
+  "failConditions": [
+   "Screenshot-only evidence used to claim no clipping",
+   "Overflow fixed by hiding content instead of internal scroll",
+   "Guard added but only run on the page that regressed"
+  ]
  }
 ]

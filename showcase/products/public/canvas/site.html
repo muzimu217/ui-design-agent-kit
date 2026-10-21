@@ -57,7 +57,8 @@
   .card h3 { margin:0 0 8px; font-size:14.5px; font-weight:620; }
   .card p { margin:0; color:var(--dim); font-size:13px; }
   .steps { display:grid; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; counter-reset:step; }
-  .step { background:var(--panel); padding:20px 22px; display:grid; grid-template-columns:30px 1fr; gap:16px; }
+  .step { background:var(--panel); padding:20px 22px; display:grid; grid-template-columns:30px minmax(0,1fr); gap:16px; }
+  .step > div { min-width:0; }
   .step::before { counter-increment:step; content:counter(step); display:grid; place-items:center; width:26px; height:26px; border-radius:6px; border:1px solid var(--line); color:var(--accent); font:600 12px/1 ui-monospace,monospace; }
   .step h3 { margin:0 0 4px; font-size:14.5px; font-weight:620; }
   .step p { margin:0; color:var(--dim); font-size:13px; }
@@ -77,6 +78,9 @@
   .pill.yes { color:var(--ok); border-color:rgba(52,211,153,.45); }
   .pill.no { color:var(--warn); border-color:rgba(251,191,36,.4); }
   .dom { color:var(--accent2); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; }
+  .kb-alias { display:inline-block; margin-left:8px; border:1px solid rgba(167,139,250,.4); color:var(--accent); border-radius:99px; padding:0 8px; font-size:10.5px; }
+  #kb table { table-layout:fixed; }
+  #kb th, #kb td { overflow-wrap:anywhere; }
   .terms { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
   .film-wrap { border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#000; }
   .film { display:block; width:100%; height:auto; aspect-ratio:16/9; background:#000; }
@@ -197,14 +201,14 @@ npm run canvas:export  # 离线复核包（含 COMPARE.md）</code></pre></div><
     <h2>知识库</h2>
     <p class="sub">每日从高播放视觉系内容中提炼机制，写成带<strong>可编码参数</strong>与适用边界的卡片；卡片只增不删，冲突以证据消解。</p>
     <table><thead><tr><th>层</th><th>机制</th><th>来源</th></tr></thead><tbody><tr><td><span class="dom">composition</span></td><td>约束美学：单一连续笔画产生形式感</td><td class="dim">设计师深海 · 588.8 万播放</td></tr>
-<tr><td><span class="dom">composition</span></td><td>视觉平衡 = 视觉重量分布，而非几何对称</td><td class="dim">言九七_ · 317.0 万播放</td></tr>
+<tr><td><span class="dom">composition</span></td><td>视觉平衡 = 视觉重量分布，而非几何对称<span class="kb-alias" aria-label="场景化别名 一眼稳">一眼稳</span></td><td class="dim">言九七_ · 317.0 万播放</td></tr>
 <tr><td><span class="dom">motion</span></td><td>力量感 = 预备动作 + 加速曲线 + 跟随延迟</td><td class="dim">喜定 · 215.1 万播放</td></tr>
 <tr><td><span class="dom">composition</span></td><td>基本形状归约：用圆/方/三角的有限组合承载识别</td><td class="dim">设计师深海 · 116.5 万播放</td></tr>
 <tr><td><span class="dom">composition</span></td><td>极简插画 = 低色数 + 无渐变 + 大负空间</td><td class="dim">设计师深海 · 209.5 万播放</td></tr>
 <tr><td><span class="dom">motion</span></td><td>Reverse Phi 错觉：静止帧交替产生运动感知</td><td class="dim">设计师深海（原作 jagarikin） · 175.7 万播放</td></tr>
-<tr><td><span class="dom">order</span></td><td>发布片结构：3 秒钩子 + 每 12 秒一次 re-hook</td><td class="dim">B2B but make it human（SideShift 拆解） · 69.0 万播放</td></tr>
+<tr><td><span class="dom">order</span></td><td>发布片结构：3 秒钩子 + 每 12 秒一次 re-hook<span class="kb-alias" aria-label="场景化别名 3秒钩子12秒拍">3秒钩子12秒拍</span></td><td class="dim">B2B but make it human（SideShift 拆解） · 69.0 万播放</td></tr>
 <tr><td><span class="dom">order</span></td><td>设计七原则：Balance/Unity/Contrast/Emphasis/Repetition/Pattern/Rhythm 的可操作定义</td><td class="dim">Envato · 187.7 万播放</td></tr>
-<tr><td><span class="dom">motion</span></td><td>图标微动效 0.5 秒量级：入场/变化/收尾的三段近似</td><td class="dim">太阳鸽鸽棒 · 476.8 万播放</td></tr>
+<tr><td><span class="dom">motion</span></td><td>图标微动效 0.5 秒量级：入场/变化/收尾的三段近似<span class="kb-alias" aria-label="场景化别名 半秒动效">半秒动效</span></td><td class="dim">太阳鸽鸽棒 · 476.8 万播放</td></tr>
 <tr><td><span class="dom">order</span></td><td>动效的灵魂是曲线：三族缓动 + 特殊曲线的可枚举族谱</td><td class="dim">B 站曲线主题 Top10 交叉 · 8.0 万播放</td></tr></tbody></table>
   </section>
 

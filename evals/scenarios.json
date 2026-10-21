@@ -3167,5 +3167,37 @@
    "Overflow fixed by hiding content instead of internal scroll",
    "Guard added but only run on the page that regressed"
   ]
+ },
+ {
+  "id": "video-delivery-form-matrix",
+  "request": "When producing a product promo video, deliver a duration matrix (hero 90-165s, standard 60s, social 30s) sharing one narrative skeleton rather than a single cut; each length gets its own silent-readable first frame and re-hook count.",
+  "context": "B站 AI产品宣传片 Top30 shows 60s named as the standard form while 3min+ only holds for tutorials; our pipeline had only a 165s hero cut.",
+  "passCriteria": [
+   "Duration matrix declared with per-length purpose",
+   "All lengths reuse one narrative skeleton (hook/re-hook/evidence)",
+   "Short cuts are re-edited, not mechanically cropped from the hero",
+   "Each length has a silent-readable first frame"
+  ],
+  "failConditions": [
+   "Single cut shipped to every channel",
+   "Short version produced by trimming the hero without reordering",
+   "First frame depends on audio to be understood"
+  ]
+ },
+ {
+  "id": "sound-design-as-separate-layer",
+  "request": "Sound design is an independent layer from BGM: transition whooshes, emphasis clicks and rhythm ticks must be authored on separate tracks, frame-aligned to picture events, with BGM ducking — a BGM-only cut reads flat and must be reported as a gap, not as finished.",
+  "context": "The highest-engagement promo titles name 音效+快闪字体+UI界面 as the formula; our 165s cut had BGM with zero sound-effect events.",
+  "passCriteria": [
+   "SFX track separate from BGM track",
+   "Each SFX aligned to its picture event within 2 frames",
+   "BGM ducks under SFX",
+   "Silent playback remains fully understandable"
+  ],
+  "failConditions": [
+   "SFX baked into the BGM file",
+   "Sound effects used to carry information unavailable visually",
+   "BGM-only cut reported as complete without flagging the gap"
+  ]
  }
 ]

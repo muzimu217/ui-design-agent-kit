@@ -1,6 +1,6 @@
 {
  "note": "能力接入登记表（契约见 docs/capability-adapters.md）。外部生成能力进入工作流必须回答四问：谁产出/边界在哪/如何验收/证据在哪。未接入项保持空缺——空缺是诚实状态。",
- "updatedOn": "2026-10-19",
+ "updatedOn": "2026-10-21",
  "capabilities": [
   {
    "id": "remotion-video",
@@ -131,6 +131,19 @@
    "evidence": "docs/competitive-insights/2026-10-19-user-recommended-videos/insight.md（B站 BV16xH966EMZ）",
    "inspectionLevel": "unverified-partial",
    "note": "用户判断：可作素材模块，游戏类项目可介入；作为像素风/小游戏方向的素材源候选"
+  },
+  {
+   "id": "remotion-agent-skill",
+   "name": "Remotion Agent Skill（社区「视频导演级」工作流）",
+   "provider": "社区实践（B 站 jeffzhengye《AI视频导演级Skill：Codex装上它5分钟出电影感产品宣传片》），同栈于本仓 remotion-video",
+   "pinned": "—（社区实践，不钉版；技术栈已由 remotion-video 钉版覆盖）",
+   "status": "evaluating",
+   "kind": "视频（工作流范式）",
+   "limits": "宣传为「5 分钟出电影感」的端到端自动化；实际质量依赖素材与提示词，无公开验收口径；不提供证据链/门禁/六维实测",
+   "acceptance": "若纳入：需以本仓视频口径复核（时长/帧率/确定性帧/音画同步/首帧静音可读/字幕对比度）+ 叙事节拍（video-launch-narrative-structure）+ 音效层（video-sound-design-layer）；不接受「5 分钟」作为质量声明",
+   "evidence": "docs/competitive-insights/2026-10-21-bili-ai-promo/insight.md",
+   "inspectionLevel": "unverified-partial",
+   "note": "同栈第三方验证信号：受控编码路径（Remotion + Agent Skill）已是 agent 产片的市场主流路线，本仓方向被独立印证；但**栈不是差异点**——对方卖「快」，本仓差异=工作流监管（证据链/六道门/品味档案）。登记为待评估，不接入其产物"
   }
  ]
 }

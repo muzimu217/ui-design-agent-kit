@@ -1,19 +1,137 @@
 {
-  "schemaVersion": 1,
-  "note": "自学机制每日执行记录（docs/self-learning-loop.md L1-L4）。每轮一条：视频数、学习时长（分钟）、入库卡片、转化。**时长与条数来自真实计时与会话记录，未看完整视频的按 title-only 标注不计入 L1。**回填口径：60/61 轮为计时实测；62/65/66/67/68 轮按会话操作时间与素材条数如实估计并标 estimated。",
-  "updatedOn": "2026-10-19",
-  "entries": [
-    { "date": "2026-10-19", "loop": 59, "videos": 12, "minutes": 6, "estimated": false, "cards": ["icon-single-stroke-constraint", "layout-visual-balance", "motion-force-anticipation"], "converted": "知识库 v1 立项", "kpiMet": true },
-    { "date": "2026-10-19", "loop": 60, "videos": 8, "minutes": 6, "estimated": false, "cards": ["icon-primitive-reduction", "illustration-minimal-constraints", "motion-reverse-phi-illusion"], "converted": "schema v1.1（layer/measurable/paramProvenance）+ Reverse Phi 冻结", "kpiMet": true },
-    { "date": "2026-10-19", "loop": 61, "videos": 7, "minutes": 6, "estimated": false, "cards": ["video-launch-narrative-structure"], "converted": "remotion 能力四问补全 + 官网重构", "kpiMet": true },
-    { "date": "2026-10-19", "loop": 62, "videos": 7, "minutes": 4, "estimated": true, "cards": [], "converted": "视频卡升 v2（9 参数）+ 能力候选 3 项登记（ai-promo-video-maker/meshy-3d/frameronin-pixel）", "kpiMet": true, "note": "用户推荐系列：6 视频+1 开源仓库，README 深读为主" },
-    { "date": "2026-10-19", "loop": 64, "videos": 0, "minutes": 3, "estimated": true, "cards": ["design-seven-principles"], "converted": "三层体系补齐（order 层）", "kpiMet": true, "note": "类目级两屏实看（L1 走类目粒度），视频实体未点开——如实标注 videos:0" },
-    { "date": "2026-10-19", "loop": 65, "videos": 1, "minutes": 3, "estimated": true, "cards": [], "converted": "Figma Make 判读+反例卡增量", "kpiMet": true, "note": "产品复检轮（非视频学习轮）" },
-    { "date": "2026-10-19", "loop": 66, "videos": 0, "minutes": 3, "estimated": true, "cards": [], "converted": "styleHints 增量（七原则近似）", "kpiMet": true, "note": "产品复检轮" },
-    { "date": "2026-10-19", "loop": 67, "videos": 0, "minutes": 2, "estimated": true, "cards": [], "converted": "trending 快讯", "kpiMet": true, "note": "快讯粒度轮" },
-    { "date": "2026-10-19", "loop": 68, "videos": 0, "minutes": 3, "estimated": true, "cards": [], "converted": "opencode 判读+分镜模板", "kpiMet": true, "note": "工具首检轮" }
-  ],
-  "dailyTotals": {
-    "2026-10-19": { "videos": 35, "minutes": 36, "cards": 8, "conversions": 9, "note": "含产品复检轮（videos=0 的轮次不产视频卡，走机制/产品判读）；minutes 为各轮累计" }
+ "schemaVersion": 1,
+ "note": "自学机制每日执行记录（docs/self-learning-loop.md L1-L4）。每轮一条：视频数、学习时长（分钟）、入库卡片、转化。**时长与条数来自真实计时与会话记录，未看完整视频的按 title-only 标注不计入 L1。**回填口径：60/61 轮为计时实测；62/65/66/67/68 轮按会话操作时间与素材条数如实估计并标 estimated。",
+ "updatedOn": "2026-10-21",
+ "entries": [
+  {
+   "date": "2026-10-19",
+   "loop": 59,
+   "videos": 12,
+   "minutes": 6,
+   "estimated": false,
+   "cards": [
+    "icon-single-stroke-constraint",
+    "layout-visual-balance",
+    "motion-force-anticipation"
+   ],
+   "converted": "知识库 v1 立项",
+   "kpiMet": true
+  },
+  {
+   "date": "2026-10-19",
+   "loop": 60,
+   "videos": 8,
+   "minutes": 6,
+   "estimated": false,
+   "cards": [
+    "icon-primitive-reduction",
+    "illustration-minimal-constraints",
+    "motion-reverse-phi-illusion"
+   ],
+   "converted": "schema v1.1（layer/measurable/paramProvenance）+ Reverse Phi 冻结",
+   "kpiMet": true
+  },
+  {
+   "date": "2026-10-19",
+   "loop": 61,
+   "videos": 7,
+   "minutes": 6,
+   "estimated": false,
+   "cards": [
+    "video-launch-narrative-structure"
+   ],
+   "converted": "remotion 能力四问补全 + 官网重构",
+   "kpiMet": true
+  },
+  {
+   "date": "2026-10-19",
+   "loop": 62,
+   "videos": 7,
+   "minutes": 4,
+   "estimated": true,
+   "cards": [],
+   "converted": "视频卡升 v2（9 参数）+ 能力候选 3 项登记（ai-promo-video-maker/meshy-3d/frameronin-pixel）",
+   "kpiMet": true,
+   "note": "用户推荐系列：6 视频+1 开源仓库，README 深读为主"
+  },
+  {
+   "date": "2026-10-19",
+   "loop": 64,
+   "videos": 0,
+   "minutes": 3,
+   "estimated": true,
+   "cards": [
+    "design-seven-principles"
+   ],
+   "converted": "三层体系补齐（order 层）",
+   "kpiMet": true,
+   "note": "类目级两屏实看（L1 走类目粒度），视频实体未点开——如实标注 videos:0"
+  },
+  {
+   "date": "2026-10-19",
+   "loop": 65,
+   "videos": 1,
+   "minutes": 3,
+   "estimated": true,
+   "cards": [],
+   "converted": "Figma Make 判读+反例卡增量",
+   "kpiMet": true,
+   "note": "产品复检轮（非视频学习轮）"
+  },
+  {
+   "date": "2026-10-19",
+   "loop": 66,
+   "videos": 0,
+   "minutes": 3,
+   "estimated": true,
+   "cards": [],
+   "converted": "styleHints 增量（七原则近似）",
+   "kpiMet": true,
+   "note": "产品复检轮"
+  },
+  {
+   "date": "2026-10-19",
+   "loop": 67,
+   "videos": 0,
+   "minutes": 2,
+   "estimated": true,
+   "cards": [],
+   "converted": "trending 快讯",
+   "kpiMet": true,
+   "note": "快讯粒度轮"
+  },
+  {
+   "date": "2026-10-19",
+   "loop": 68,
+   "videos": 0,
+   "minutes": 3,
+   "estimated": true,
+   "cards": [],
+   "converted": "opencode 判读+分镜模板",
+   "kpiMet": true,
+   "note": "工具首检轮"
+  },
+  {
+   "date": "2026-10-21",
+   "loop": 84,
+   "videos": 32,
+   "minutes": 6,
+   "estimated": true,
+   "cards": [
+    "video-sixty-second-delivery-form",
+    "video-sound-design-layer"
+   ],
+   "converted": "视频交付形态矩阵 + 音效三层（增量候选：60s 配置与 sfx 音轨，不重拍素材）",
+   "kpiMet": true
   }
+ ],
+ "dailyTotals": {
+  "2026-10-19": {
+   "videos": 35,
+   "minutes": 36,
+   "cards": 8,
+   "conversions": 9,
+   "note": "含产品复检轮（videos=0 的轮次不产视频卡，走机制/产品判读）；minutes 为各轮累计"
+  }
+ }
 }

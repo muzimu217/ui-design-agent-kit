@@ -70,6 +70,12 @@
   .gname { font-weight:600; }
   .gdesc { color:var(--dim); }
   table { width:100%; border-collapse:collapse; font-size:13px; }
+  /* 宽表在窄屏内滚而非撑破页面（reg-005：360/390/414px 能力表最小内容宽 413px 溢出）。
+     表格内容不裁切、不隐藏——只在容器内横向滚动。 */
+  .table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .table-wrap > table { min-width:var(--table-min, 420px); }
+  #caps .table-wrap { --table-min:520px; }
+  #kb .table-wrap { --table-min:440px; }
   thead th { text-align:left; color:var(--dim); font-weight:500; font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; padding:0 14px 10px; }
   tbody td { padding:12px 14px; border-top:1px solid var(--line); }
   tbody tr:hover { background:var(--panel); }
@@ -124,8 +130,8 @@
     </div>
     <div class="stats">
       <div class="stat"><b>4/4</b><span>产物六维全实测</span></div>
-      <div class="stat"><b>4/10</b><span>能力接入 · 已接入/登记</span></div>
-      <div class="stat"><b>10</b><span>机制知识卡</span></div>
+      <div class="stat"><b>4/11</b><span>能力接入 · 已接入/登记</span></div>
+      <div class="stat"><b>12</b><span>机制知识卡</span></div>
       <div class="stat"><b>2</b><span>已采用品味特质</span></div>
     </div>
   </div>
@@ -185,7 +191,7 @@ npm run canvas:export  # 离线复核包（含 COMPARE.md）</code></pre></div><
   <section id="caps">
     <h2>能力接入</h2>
     <p class="sub">外部能力要进来必须回答四问：谁产出、边界在哪、如何验收、证据在哪。<strong>空槽位是诚实状态</strong>——没找到满足条件的候选就不接。</p>
-    <table><thead><tr><th>状态</th><th>能力</th><th>提供方</th><th>验收口径</th></tr></thead><tbody><tr><td><span class="pill" style="border-color:#34d399;color:#34d399">已接入</span></td><td>Remotion 视频合成</td><td class="dim">Remotion 官方 skills</td><td class="dim">视频口径：时长/帧率/确定性帧/音画同步/首帧静音可读/字幕对比度；叙事节拍见知识卡 video-launch-narrative-structure</td></tr>
+    <div class="table-wrap"><table><thead><tr><th>状态</th><th>能力</th><th>提供方</th><th>验收口径</th></tr></thead><tbody><tr><td><span class="pill" style="border-color:#34d399;color:#34d399">已接入</span></td><td>Remotion 视频合成</td><td class="dim">Remotion 官方 skills</td><td class="dim">视频口径：时长/帧率/确定性帧/音画同步/首帧静音可读/字幕对比度；叙事节拍见知识卡 video-launch-narrative-structure</td></tr>
 <tr><td><span class="pill" style="border-color:#34d399;color:#34d399">已接入</span></td><td>Motion 官方技能</td><td class="dim">Motion (motion.dev)</td><td class="dim">网页六维（含降动效降级）</td></tr>
 <tr><td><span class="pill" style="border-color:#34d399;color:#34d399">已接入</span></td><td>anatomy 等距技术图</td><td class="dim">wheresryan22/anatomy (MIT)</td><td class="dim">静态图像口径：来源血缘+可复现（构建脚本+参数）</td></tr>
 <tr><td><span class="pill" style="border-color:#34d399;color:#34d399">已接入</span></td><td>GSAP 动效技能族</td><td class="dim">GSAP 官方</td><td class="dim">网页六维（含降动效降级）</td></tr>
@@ -194,13 +200,14 @@ npm run canvas:export  # 离线复核包（含 COMPARE.md）</code></pre></div><
 <tr><td><span class="pill" style="border-color:#f87171;color:#f87171">不接入</span></td><td>Mobbin MCP（设计参考检索）</td><td class="dim">Mobbin（Pro/Team 订阅）</td><td class="dim">若接入需：订阅成本确认、检索结果可本地留存、检视级别如实标</td></tr>
 <tr><td><span class="pill" style="border-color:#fbbf24;color:#fbbf24">待接入</span></td><td>AI 宣传片制作器（liyupi）</td><td class="dim">liyupi（MIT）</td><td class="dim">其自带闸门（渲染前后检查+按场景截图审查）之上，再叠本仓视频口径复核；节奏数值已并入知识卡 video-launch-narrative-structure v2</td></tr>
 <tr><td><span class="pill" style="border-color:#fbbf24;color:#fbbf24">待接入</span></td><td>Meshy（AI 3D 生成）</td><td class="dim">Meshy</td><td class="dim">3D 口径：面数/包围盒/材质完整性/浏览器实测加载</td></tr>
-<tr><td><span class="pill" style="border-color:#fbbf24;color:#fbbf24">待接入</span></td><td>Frameronin（像素序列/多向动作）</td><td class="dim">frameronin.com</td><td class="dim">素材口径：来源血缘+序列完整性+帧率一致</td></tr></tbody></table>
+<tr><td><span class="pill" style="border-color:#fbbf24;color:#fbbf24">待接入</span></td><td>Frameronin（像素序列/多向动作）</td><td class="dim">frameronin.com</td><td class="dim">素材口径：来源血缘+序列完整性+帧率一致</td></tr>
+<tr><td><span class="pill" style="border-color:#fbbf24;color:#fbbf24">待接入</span></td><td>Remotion Agent Skill（社区「视频导演级」工作流）</td><td class="dim">社区实践（B 站 jeffzhengye《AI视频导演级Skill：Codex装上它5分钟出电影感产品宣传片》），同栈于本仓 remotion-video</td><td class="dim">若纳入：需以本仓视频口径复核（时长/帧率/确定性帧/音画同步/首帧静音可读/字幕对比度）+ 叙事节拍（video-launch-narrative-structure）+ 音效层（video-sound-design-layer）；不接受「5 分钟」作为质量声明</td></tr></tbody></table></div>
   </section>
 
   <section id="kb">
     <h2>知识库</h2>
     <p class="sub">每日从高播放视觉系内容中提炼机制，写成带<strong>可编码参数</strong>与适用边界的卡片；卡片只增不删，冲突以证据消解。</p>
-    <table><thead><tr><th>层</th><th>机制</th><th>来源</th></tr></thead><tbody><tr><td><span class="dom">composition</span></td><td>约束美学：单一连续笔画产生形式感</td><td class="dim">设计师深海 · 588.8 万播放</td></tr>
+    <div class="table-wrap"><table><thead><tr><th>层</th><th>机制</th><th>来源</th></tr></thead><tbody><tr><td><span class="dom">composition</span></td><td>约束美学：单一连续笔画产生形式感</td><td class="dim">设计师深海 · 588.8 万播放</td></tr>
 <tr><td><span class="dom">composition</span></td><td>视觉平衡 = 视觉重量分布，而非几何对称<span class="kb-alias" aria-label="场景化别名 一眼稳">一眼稳</span></td><td class="dim">言九七_ · 317.0 万播放</td></tr>
 <tr><td><span class="dom">motion</span></td><td>力量感 = 预备动作 + 加速曲线 + 跟随延迟</td><td class="dim">喜定 · 215.1 万播放</td></tr>
 <tr><td><span class="dom">composition</span></td><td>基本形状归约：用圆/方/三角的有限组合承载识别</td><td class="dim">设计师深海 · 116.5 万播放</td></tr>
@@ -209,19 +216,21 @@ npm run canvas:export  # 离线复核包（含 COMPARE.md）</code></pre></div><
 <tr><td><span class="dom">order</span></td><td>发布片结构：3 秒钩子 + 每 12 秒一次 re-hook<span class="kb-alias" aria-label="场景化别名 3秒钩子12秒拍">3秒钩子12秒拍</span></td><td class="dim">B2B but make it human（SideShift 拆解） · 69.0 万播放</td></tr>
 <tr><td><span class="dom">order</span></td><td>设计七原则：Balance/Unity/Contrast/Emphasis/Repetition/Pattern/Rhythm 的可操作定义</td><td class="dim">Envato · 187.7 万播放</td></tr>
 <tr><td><span class="dom">motion</span></td><td>图标微动效 0.5 秒量级：入场/变化/收尾的三段近似<span class="kb-alias" aria-label="场景化别名 半秒动效">半秒动效</span></td><td class="dim">太阳鸽鸽棒 · 476.8 万播放</td></tr>
-<tr><td><span class="dom">order</span></td><td>动效的灵魂是曲线：三族缓动 + 特殊曲线的可枚举族谱</td><td class="dim">B 站曲线主题 Top10 交叉 · 8.0 万播放</td></tr></tbody></table>
+<tr><td><span class="dom">order</span></td><td>动效的灵魂是曲线：三族缓动 + 特殊曲线的可枚举族谱</td><td class="dim">B 站曲线主题 Top10 交叉 · 8.0 万播放</td></tr>
+<tr><td><span class="dom">order</span></td><td>60 秒是宣传片的标准交付形态：一主片 + 多时长剪辑矩阵<span class="kb-alias" aria-label="场景化别名 60秒标准版">60秒标准版</span></td><td class="dim">B 站「AI产品宣传片」Top30 交叉 · 30.8 万播放</td></tr>
+<tr><td><span class="dom">motion</span></td><td>音效设计是宣传片的第三根支柱：转场/强调/节奏三层<span class="kb-alias" aria-label="场景化别名 音效三件套">音效三件套</span></td><td class="dim">创意者动画制作公司《音效+快闪字体+UI界面完美配合》 · 2.7 万播放</td></tr></tbody></table></div>
   </section>
 
   <section id="taste">
     <h2>越用越懂你</h2>
     <p class="sub">品味档案只记录可复核信号（你的原话、明确选择），每条特质可回溯到具体信号；置信度不足只展示不采用，你可以随时要求删除。</p>
-    <table><thead><tr><th>状态</th><th>特质</th><th>置信度</th></tr></thead><tbody><tr><td><span class="pill no">仅展示</span></td><td>偏好监管深度而非生成广度</td><td class="dim">70%</td></tr>
+    <div class="table-wrap"><table><thead><tr><th>状态</th><th>特质</th><th>置信度</th></tr></thead><tbody><tr><td><span class="pill no">仅展示</span></td><td>偏好监管深度而非生成广度</td><td class="dim">70%</td></tr>
 <tr><td><span class="pill yes">已采用</span></td><td>重视视觉与艺术画面质量</td><td class="dim">85%</td></tr>
 <tr><td><span class="pill no">仅展示</span></td><td>要求方向与状态持续可见</td><td class="dim">70%</td></tr>
 <tr><td><span class="pill no">仅展示</span></td><td>希望工作流随使用累积理解用户</td><td class="dim">70%</td></tr>
 <tr><td><span class="pill yes">已采用</span></td><td>要求证据优先、反感夸大</td><td class="dim">80%</td></tr>
 <tr><td><span class="pill no">仅展示</span></td><td>偏好结构化证据界面</td><td class="dim">70%</td></tr>
-<tr><td><span class="pill no">仅展示</span></td><td>把工作台界面视为产品门面</td><td class="dim">70%</td></tr></tbody></table>
+<tr><td><span class="pill no">仅展示</span></td><td>把工作台界面视为产品门面</td><td class="dim">70%</td></tr></tbody></table></div>
   </section>
 
   <section id="terms">

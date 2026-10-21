@@ -243,7 +243,7 @@
         <span class="taste-conf" aria-label="置信度 70%">70%</span>
         <span class="taste-ev">sig-001</span>
       </div></div>
-  <h2 class="sec">能力接入（工作流监管层 · 4 已接入 / 10 登记）</h2>
+  <h2 class="sec">能力接入（工作流监管层 · 4 已接入 / 11 登记）</h2>
        <p class="cap-intro">本仓不做生成引擎：外部能力按契约接入，工作流负责门径、验收与证据（<code>docs/capability-adapters.md</code>）。待接入项为空缺状态，不得用于交付。</p>
        <div class="cap-table"><div class="cap-row">
         <span class="cap-st" style="color:#34d399;border-color:#34d399" aria-label="接入状态：已接入">已接入</span>
@@ -304,26 +304,32 @@
         <span class="cap-name">Frameronin（像素序列/多向动作）<span class="cap-kind">素材（像素动画）</span></span>
         <span class="cap-prov">frameronin.com</span>
         <span class="cap-acc">素材口径：来源血缘+序列完整性+帧率一致</span>
+      </div>
+<div class="cap-row">
+        <span class="cap-st" style="color:#fbbf24;border-color:#fbbf24" aria-label="接入状态：待接入">待接入</span>
+        <span class="cap-name">Remotion Agent Skill（社区「视频导演级」工作流）<span class="cap-kind">视频（工作流范式）</span></span>
+        <span class="cap-prov">社区实践（B 站 jeffzhengye《AI视频导演级Skill：Codex装上它5分钟出电影感产品宣传片》），同栈于本仓 remotion-video · —（社区实践，不钉版；技术栈已由 remotion-video 钉版覆盖）</span>
+        <span class="cap-acc">若纳入：需以本仓视频口径复核（时长/帧率/确定性帧/音画同步/首帧静音可读/字幕对比度）+ 叙事节拍（video-launch-narrative-structure）+ 音效层（video-sound-design-layer）；不接受「5 分钟」作为质量声明</span>
       </div></div>
-  <h2 class="sec">知识库（自学机制 · schema v1.1 · 10 卡 / 5 域 · 构成（静态形式） 4 · 运动（时间维度） 3 · 秩序（系统维度） 3）</h2>
+  <h2 class="sec">知识库（自学机制 · schema v1.1 · 12 卡 / 5 域 · 构成（静态形式） 4 · 运动（时间维度） 4 · 秩序（系统维度） 4）</h2>
        <p class="cap-intro">每日视频学习 → 机制卡片（可编码参数+适用边界）→ 兼容性声明（extends/supersedes/conflicts）→ 转化。规范 <code>docs/self-learning-loop.md</code> · <code>docs/knowledge-base/schema.md</code>。</p>
        
        <div class="kb-table"><div class="kb-row">
+        <span class="kb-dom">motion</span>
+        <span class="kb-title">音效设计是宣传片的第三根支柱：转场/强调/节奏三层<span class="kb-alias" aria-label="场景化别名 音效三件套">音效三件套</span><span class="kb-m" aria-label="可被脚本启发式检测">可测</span></span>
+        <span class="kb-meta">创意者动画制作公司《音效+快闪字体+UI界面完美配合》 · 2.7 万播放 · 参数 6 条</span>
+      </div>
+<div class="kb-row">
+        <span class="kb-dom">order</span>
+        <span class="kb-title">60 秒是宣传片的标准交付形态：一主片 + 多时长剪辑矩阵<span class="kb-alias" aria-label="场景化别名 60秒标准版">60秒标准版</span><span class="kb-m" aria-label="可被脚本启发式检测">可测</span></span>
+        <span class="kb-meta">B 站「AI产品宣传片」Top30 交叉 · 30.8 万播放 · 参数 6 条</span>
+      </div>
+<div class="kb-row">
         <span class="kb-dom">order</span>
         <span class="kb-title">动效的灵魂是曲线：三族缓动 + 特殊曲线的可枚举族谱<span class="kb-m" aria-label="可被脚本启发式检测">可测</span></span>
         <span class="kb-meta">B 站曲线主题 Top10 交叉 · 8.0 万播放 · 参数 5 条</span>
-      </div>
-<div class="kb-row">
-        <span class="kb-dom">motion</span>
-        <span class="kb-title">图标微动效 0.5 秒量级：入场/变化/收尾的三段近似<span class="kb-alias" aria-label="场景化别名 半秒动效">半秒动效</span><span class="kb-m" aria-label="可被脚本启发式检测">可测</span></span>
-        <span class="kb-meta">太阳鸽鸽棒 · 476.8 万播放 · 参数 4 条</span>
-      </div>
-<div class="kb-row">
-        <span class="kb-dom">order</span>
-        <span class="kb-title">设计七原则：Balance/Unity/Contrast/Emphasis/Repetition/Pattern/Rhythm 的可操作定义</span>
-        <span class="kb-meta">Envato · 187.7 万播放 · 参数 7 条</span>
       </div></div>
-  <h2 class="sec">反例记录（只增不删 · 3 条 · 3 已修复）</h2>
+  <h2 class="sec">反例记录（只增不删 · 5 条 · 5 已修复）</h2>
        <p class="cap-intro">本仓产物的真实缺陷与漏计：失败记录的传播力不低于成功案例（59 轮判读）。修复后标 resolved 并写明提交，<strong>绝不删除</strong>——反例是证据的一部分。</p>
        <div class="reg-table"><div class="reg-row">
         <span class="reg-st" style="color:#34d399;border-color:#34d399" aria-label="反例状态：已修复">已修复</span>
@@ -339,6 +345,16 @@
         <span class="reg-st" style="color:#34d399;border-color:#34d399" aria-label="反例状态：已修复">已修复</span>
         <span class="reg-body"><strong>产物墙空态永不显示</strong><span class="reg-what">wall-empty 空态区块被加入页面时未接显隐逻辑（hidden 属性从不被 JS 更新），若过滤结果为空用户会看到空白而非提示——增量 29 加入插画时发现并顺带修复。</span><span class="reg-lesson">教训：加任何&#39;条件显示&#39;的区块，必须同时接状态更新逻辑；空态是最容易被忘记接线的区块</span></span>
         <span class="reg-meta">2026-10-19 · 增量 29</span>
+      </div>
+<div class="reg-row">
+        <span class="reg-st" style="color:#34d399;border-color:#34d399" aria-label="反例状态：已修复">已修复</span>
+        <span class="reg-body"><strong>官网 520px 横向溢出 115px</strong><span class="reg-what">三步卡 .step 内 pre（长 git clone URL 最小内容宽度）撑破 grid 1fr 列 + 知识库表 min-content 611px——520px 视口 scrollWidth=635，六维 mobile&#39;无裁切&#39;宣称失真。v1.0 起潜伏，增量 54 为 alias chip 复拍时新加 scrollWidth 探针才发现。</span><span class="reg-lesson">教训：&#39;无裁切/无溢出&#39;类宣称必须有 scrollWidth 实测背书；grid 子项放 pre/表格等宽内容时必须 minmax(0,1fr)+min-width:0</span></span>
+        <span class="reg-meta">2026-10-21 · 增量 54</span>
+      </div>
+<div class="reg-row">
+        <span class="reg-st" style="color:#34d399;border-color:#34d399" aria-label="反例状态：已修复">已修复</span>
+        <span class="reg-body"><strong>360/390/414px 横向溢出（能力表撑破）</strong><span class="reg-what">增量 54 修了 520px 的 .step 与 kb 表，但 overflowGuard 只测 520/1280 两个宽度，恰好跳过真实手机宽度。用户复核后发现 360px 溢出 77px、390px 47px、414px 23px——元凶是四列能力接入表（min-content 413px）。</span><span class="reg-lesson">教训：响应式断言必须扫真实设备宽度带（320/360/375/390/414/768…），不能只挑两档代表性宽度；&#39;我测过两个宽度&#39;不是&#39;响应式没问题&#39;</span></span>
+        <span class="reg-meta">2026-10-21 · 增量 55</span>
       </div></div>
   <h2 class="sec">产物墙（KPI4 · 4 件 · <span id="wall-mode">全部</span>）</h2>
   <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
@@ -349,10 +365,10 @@
     <button type="button" class="wf-btn" data-sort="verified" onclick="wallSort('verified')">按完成度</button>
   </div>
   <p class="wall-legend" id="wall-legend">徽章口径：n/6=六维实测数（桌面/移动/键盘/对比度/降动效/控制台各 1 分）；vN=版本序号；检视级别 unverified-partial=仅公开页面检视，未公开验证的维度记 — 不虚记。</p>
-  <details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">产品官网页（公开展示/使用指南/条款入口）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v1">v1</span><span class="round">2026-10-19-20</span></summary>
+  <details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">产品官网页（公开展示/使用指南/条款入口）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v3">v3</span><span class="round">2026-10-19-20</span></summary>
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-site.mjs + canvas/{artifacts,capabilities,taste-profile}.json → output/site.html（离线自包含）</code> <a class="art-open" href="site.html">打开产物 ↗</a></span></div>
-        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（22.4 万字节非空白，含描边循环动画）；mobile: 520px Chrome headless 直拍通过（17.7 万字节，导航/网格响应式无裁切）；keyboard: playwright Tab 序列实测：12 项 tab 停留全可达（focusable 12/12——锚点导航 7+CTA 2+描边层不占焦点）；contrast: playwright computed-style WCAG 实测：32 项文本全过 4.5:1（低于标准 0 项）；reducedMotion: 描边循环动画在 prefers-reduced-motion 下停帧显示完整路径（dashoffset=0），静态检查通过；console: playwright 实测 0 错误</span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过；scrollWidth=1280 无横向溢出（17 宽度扫描 320→1920 全 clean，增量 55 实测）；mobile: 320/360/375/390/414/480/520px 七档全无横向溢出（scrollWidth=clientWidth，增量 55 实测）；宽表在容器内横向滚动、内容不裁切；390px 依赖 viewport meta+防御 CSS；keyboard: playwright Tab 序列实测：14 项可聚焦全可达（导航锚点 8+CTA 2+介绍片链接+页脚 3；alias chip 为非交互 span 不占焦点，增量 54 复测）；contrast: playwright computed-style WCAG 实测：34 项文本全过 4.5:1（低于标准 0 项，增量 54 复测含视频区）；reducedMotion: 描边循环动画在 prefers-reduced-motion 下停帧显示完整路径（dashoffset=0），静态检查通过；console: playwright</span></div>
         <div class="row"><span class="k">对比</span><span class="v">
       <div class="cmp">
         <div class="cmp-head"><span class="cmp-vs">vs Framer 首屏（design agent 定位页）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level" aria-label="检视级别 unverified-partial：仅公开页面检视，未实测维度记 null">检视级别 unverified-partial</span></div>
@@ -362,7 +378,7 @@
         <div class="cmp-note">证据（仓内路径）：docs/competitive-insights/2026-10-19-framer-firstlook/insight.md</div>
       </div>
     </span></div>
-        <div class="row"><span class="k">状态</span><span class="v">v2.0（描边循环动画+入墙）</span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订 — 页面由代理编写；定位句式借鉴 Framer&#39;alongside not instead&#39;（知识卡判读）与 10-19 用户方向裁定</span></div><div class="row"><span class="k">变更</span><span class="v">v1.0 首版（展示/三步/六道门/能力/知识库/品味/条款，数字从工作台 JSON 计算）→ v2.0 单笔描边循环动画（reduced-motion 停帧）+ 入产物墙</span></div>
+        <div class="row"><span class="k">状态</span><span class="v">v2.2（宽表容器内滚+17 宽度溢出扫描）</span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订 — 页面由代理编写；定位句式借鉴 Framer&#39;alongside not instead&#39;（知识卡判读）与 10-19 用户方向裁定</span></div><div class="row"><span class="k">变更</span><span class="v">v1.0 首版（展示/三步/六道门/能力/知识库/品味/条款，数字从工作台 JSON 计算）→ v2.0 单笔描边循环动画（reduced-motion 停帧）+ 入产物墙 → v2.1 知识库表场景化别名 chip（与工作台同 aria 契约）+ 修复 520px 横向溢出 115px（.step pre 最小内容宽+kb 表 min-content，reg-004）+ check 新增 aliasGuard/aliasCoverage/overflowGuard 三守卫 → v2.2 三张宽表包 .table-wrap 容器内滚（reg-005：360/390/414px 能力表 min-content 413px 撑破）；overflowGuard 2→17 宽度</span></div>
       </div>
     </details>
 <details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">画布流水线指标 mini 看板（产物墙首件 mini 产物）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v2">v2</span><span class="round">2026-10-19-00</span></summary>

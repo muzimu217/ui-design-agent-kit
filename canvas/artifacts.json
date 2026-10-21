@@ -146,8 +146,8 @@
    "path": "canvas/render-site.mjs + canvas/{artifacts,capabilities,taste-profile}.json → output/site.html（离线自包含）",
    "viewUrl": "site.html",
    "sixDim": {
-    "desktop": "Chrome headless 1280 直拍通过（667KB 非空白；scrollWidth=1280 无横向溢出，增量 54 overflowGuard 实测）",
-    "mobile": "520px Chrome headless 直拍通过（648KB，scrollWidth=520 无横向溢出——v2.1 修复 reg-004 后实测；390px 依赖 viewport meta+防御 CSS）",
+    "desktop": "Chrome headless 1280 直拍通过；scrollWidth=1280 无横向溢出（17 宽度扫描 320→1920 全 clean，增量 55 实测）",
+    "mobile": "320/360/375/390/414/480/520px 七档全无横向溢出（scrollWidth=clientWidth，增量 55 实测）；宽表在容器内横向滚动、内容不裁切；390px 依赖 viewport meta+防御 CSS",
     "keyboard": "playwright Tab 序列实测：14 项可聚焦全可达（导航锚点 8+CTA 2+介绍片链接+页脚 3；alias chip 为非交互 span 不占焦点，增量 54 复测）",
     "contrast": "playwright computed-style WCAG 实测：34 项文本全过 4.5:1（低于标准 0 项，增量 54 复测含视频区）",
     "reducedMotion": "描边循环动画在 prefers-reduced-motion 下停帧显示完整路径（dashoffset=0），静态检查通过",
@@ -179,9 +179,9 @@
      "themNote": "对标侧为公开首屏实看：仅桌面呈现可观测，其余维度无公开可验证证据，记 null 不虚记"
     }
    },
-   "status": "v2.1（知识库表 alias 可见+横向溢出修复）",
-   "version": 2,
-   "changeSummary": "v1.0 首版（展示/三步/六道门/能力/知识库/品味/条款，数字从工作台 JSON 计算）→ v2.0 单笔描边循环动画（reduced-motion 停帧）+ 入产物墙 → v2.1 知识库表场景化别名 chip（与工作台同 aria 契约）+ 修复 520px 横向溢出 115px（.step pre 最小内容宽+kb 表 min-content，reg-004）+ check 新增 aliasGuard/aliasCoverage/overflowGuard 三守卫",
+   "status": "v2.2（宽表容器内滚+17 宽度溢出扫描）",
+   "version": 3,
+   "changeSummary": "v1.0 首版（展示/三步/六道门/能力/知识库/品味/条款，数字从工作台 JSON 计算）→ v2.0 单笔描边循环动画（reduced-motion 停帧）+ 入产物墙 → v2.1 知识库表场景化别名 chip（与工作台同 aria 契约）+ 修复 520px 横向溢出 115px（.step pre 最小内容宽+kb 表 min-content，reg-004）+ check 新增 aliasGuard/aliasCoverage/overflowGuard 三守卫 → v2.2 三张宽表包 .table-wrap 容器内滚（reg-005：360/390/414px 能力表 min-content 413px 撑破）；overflowGuard 2→17 宽度",
    "origin": "ai-draft+human-revision",
    "originNote": "页面由代理编写；定位句式借鉴 Framer'alongside not instead'（知识卡判读）与 10-19 用户方向裁定"
   }

@@ -214,17 +214,19 @@ for (const page of dataOnly ? [] : pages) {
   pageResult.aliasGuard = aliasGuard;
   if (!aliasGuard.ok) { receipt.ok = false; pageResult.fail = (pageResult.fail ? pageResult.fail + "; " : "") + "alias guard"; }
 
-  // Overflow guard — horizontal scroll at the two shipping widths means a
-  // clipped/overflowing layout (guards the 520px .step pre min-content
-  // overflow found in 增量 54; the "无裁切" sixDim claims get a real probe).
-  await p.setViewportSize({ width: 520, height: 1200 });
-  const overflow520 = await p.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  // Overflow guard — horizontal scroll at any shipping width means a clipped or
+  // overflowing layout. Sweeps real device widths, not just two probes: the
+  // 增量 54 version tested only 520/1280 and missed 360/390/414 where the
+  // four-column capability table (min-content 413px) burst the page (reg-005).
+  const OVERFLOW_WIDTHS = [320, 360, 375, 390, 414, 480, 520, 600, 640, 768, 820, 1024, 1180, 1280, 1440, 1600, 1920];
+  const overflowIssues = [];
+  for (const w of OVERFLOW_WIDTHS) {
+    await p.setViewportSize({ width: w, height: 900 });
+    const delta = await p.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    if (delta > 0) overflowIssues.push(`${w}px 横向溢出 ${delta}px`);
+  }
   await p.setViewportSize({ width: 1280, height: 900 });
-  const overflow1280 = await p.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-  const overflowGuard = {
-    ok: overflow520 <= 0 && overflow1280 <= 0,
-    issues: [overflow520 > 0 ? `520px 横向溢出 ${overflow520}px` : null, overflow1280 > 0 ? `1280px 横向溢出 ${overflow1280}px` : null].filter(Boolean),
-  };
+  const overflowGuard = { ok: overflowIssues.length === 0, widths: OVERFLOW_WIDTHS.length, issues: overflowIssues };
   pageResult.overflowGuard = overflowGuard;
   if (!overflowGuard.ok) { receipt.ok = false; pageResult.fail = (pageResult.fail ? pageResult.fail + "; " : "") + "overflow guard"; }
 

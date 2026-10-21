@@ -49,6 +49,18 @@
    "status": "resolved",
    "fixCommit": "增量 54",
    "lesson": "'无裁切/无溢出'类宣称必须有 scrollWidth 实测背书；grid 子项放 pre/表格等宽内容时必须 minmax(0,1fr)+min-width:0"
+  },
+  {
+   "id": "reg-005",
+   "date": "2026-10-21",
+   "artifact": "product-site",
+   "title": "360/390/414px 横向溢出（能力表撑破）",
+   "what": "增量 54 修了 520px 的 .step 与 kb 表，但 overflowGuard 只测 520/1280 两个宽度，恰好跳过真实手机宽度。用户复核后发现 360px 溢出 77px、390px 47px、414px 23px——元凶是四列能力接入表（min-content 413px）。",
+   "root": "守卫宽度取样太少（2 个），且两档都不在主流手机区间——'双宽度'给人已覆盖的错觉",
+   "fix": "三张宽表包 .table-wrap（容器内横向滚动，内容不裁切不隐藏）+ 各表 min-width 分档；overflowGuard 从 2 宽度扩到 17 宽度（320→1920 含 360/375/390/414），4 页 × 17 宽度全测",
+   "status": "resolved",
+   "fixCommit": "增量 55",
+   "lesson": "响应式断言必须扫真实设备宽度带（320/360/375/390/414/768…），不能只挑两档代表性宽度；'我测过两个宽度'不是'响应式没问题'"
   }
  ]
 }

@@ -145,6 +145,12 @@ const html = `<!doctype html>
   .gname { font-weight:600; }
   .gdesc { color:var(--dim); }
   table { width:100%; border-collapse:collapse; font-size:13px; }
+  /* 宽表在窄屏内滚而非撑破页面（reg-005：360/390/414px 能力表最小内容宽 413px 溢出）。
+     表格内容不裁切、不隐藏——只在容器内横向滚动。 */
+  .table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .table-wrap > table { min-width:var(--table-min, 420px); }
+  #caps .table-wrap { --table-min:520px; }
+  #kb .table-wrap { --table-min:440px; }
   thead th { text-align:left; color:var(--dim); font-weight:500; font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; padding:0 14px 10px; }
   tbody td { padding:12px 14px; border-top:1px solid var(--line); }
   tbody tr:hover { background:var(--panel); }
@@ -255,19 +261,19 @@ npm run canvas:export  # 离线复核包（含 COMPARE.md）</code></pre></div><
   <section id="caps">
     <h2>能力接入</h2>
     <p class="sub">外部能力要进来必须回答四问：谁产出、边界在哪、如何验收、证据在哪。<strong>空槽位是诚实状态</strong>——没找到满足条件的候选就不接。</p>
-    <table><thead><tr><th>状态</th><th>能力</th><th>提供方</th><th>验收口径</th></tr></thead><tbody>${capRows}</tbody></table>
+    <div class="table-wrap"><table><thead><tr><th>状态</th><th>能力</th><th>提供方</th><th>验收口径</th></tr></thead><tbody>${capRows}</tbody></table></div>
   </section>
 
   <section id="kb">
     <h2>知识库</h2>
     <p class="sub">每日从高播放视觉系内容中提炼机制，写成带<strong>可编码参数</strong>与适用边界的卡片；卡片只增不删，冲突以证据消解。</p>
-    <table><thead><tr><th>层</th><th>机制</th><th>来源</th></tr></thead><tbody>${kbRows}</tbody></table>
+    <div class="table-wrap"><table><thead><tr><th>层</th><th>机制</th><th>来源</th></tr></thead><tbody>${kbRows}</tbody></table></div>
   </section>
 
   <section id="taste">
     <h2>越用越懂你</h2>
     <p class="sub">品味档案只记录可复核信号（你的原话、明确选择），每条特质可回溯到具体信号；置信度不足只展示不采用，你可以随时要求删除。</p>
-    <table><thead><tr><th>状态</th><th>特质</th><th>置信度</th></tr></thead><tbody>${tasteRows}</tbody></table>
+    <div class="table-wrap"><table><thead><tr><th>状态</th><th>特质</th><th>置信度</th></tr></thead><tbody>${tasteRows}</tbody></table></div>
   </section>
 
   <section id="terms">

@@ -3103,5 +3103,37 @@
    "Positioning camp (local vs cloud) absent from public copy",
    "Identity doc contradicts the site positioning"
   ]
+ },
+ {
+  "id": "alias-surfaced-not-just-stored",
+  "request": "A structured field added to a data schema must be surfaced in the consuming UI in the same cycle it is introduced — an alias stored in the index but never rendered is dead data, and reviewers cannot tell the schema change from an unused field.",
+  "context": "Knowledge base v1.2 added an alias field; the workbench card list initially rendered only the mechanism title.",
+  "passCriteria": [
+   "Alias rendered next to the mechanism title in the card list",
+   "Alias carries an accessible name stating it is a scene alias",
+   "Cards without an alias render unchanged",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Schema field stored but never displayed",
+   "Alias rendered without accessible semantics",
+   "Missing alias breaks the row layout"
+  ]
+ },
+ {
+  "id": "design-system-as-capability-item",
+  "request": "When an incumbent promotes design-system definition from documentation guidance to a first-class product capability, the recheck must record the delta and compare enforcement models — mandatory gate (ours) vs optional capability (theirs) — rather than reporting feature parity.",
+  "context": "v0 added a Create design systems capability item beside templates and design mode.",
+  "passCriteria": [
+   "Delta recorded against the previous recheck",
+   "Enforcement model compared explicitly (gate vs optional)",
+   "Cross-incumbent convergence noted where applicable",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Feature listed without the enforcement comparison",
+   "Prior recheck not referenced",
+   "Parity claimed between optional and mandatory models"
+  ]
  }
 ]

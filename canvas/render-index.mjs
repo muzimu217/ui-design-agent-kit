@@ -63,7 +63,7 @@ async function main() {
     .map(
       (c) => `<div class="kb-row">
         <span class="kb-dom">${esc(c.layer ?? c.domain)}</span>
-        <span class="kb-title">${esc(c.title)}${c.measurable ? '<span class="kb-m" aria-label="可被脚本启发式检测">可测</span>' : ""}${c.safetyNote ? '<span class="kb-risk" aria-label="含安全风险，仅研究">风险</span>' : ""}</span>
+        <span class="kb-title">${esc(c.title)}${c.alias ? `<span class="kb-alias" aria-label="场景化别名 ${esc(c.alias)}">${esc(c.alias)}</span>` : ""}${c.measurable ? '<span class="kb-m" aria-label="可被脚本启发式检测">可测</span>' : ""}${c.safetyNote ? '<span class="kb-risk" aria-label="含安全风险，仅研究">风险</span>' : ""}</span>
         <span class="kb-meta">${esc(c.source?.author ?? "")} · ${c.source?.heat ? `${(c.source.heat / 10000).toFixed(1)} 万播放` : ""} · 参数 ${esc(c.codableParams ?? 0)} 条</span>
       </div>`
     )
@@ -371,6 +371,7 @@ async function main() {
   .kb-row { display:grid; grid-template-columns:56px 1fr minmax(160px,auto); gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-left:3px solid #22d3ee; border-radius:10px; padding:10px 14px; font-size:12px; }
   .kb-dom { color:#22d3ee; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
   .kb-title { font-weight:600; overflow-wrap:anywhere; }
+  .kb-alias { display:inline-block; margin-left:6px; font-size:10px; color:#c4b5fd; border:1px solid #3f3a5e; border-radius:99px; padding:0 6px; vertical-align:middle; font-weight:400; }
   .kb-m { display:inline-block; margin-left:6px; font-size:10px; border:1px solid #1f4d3a; color:#a7f3d0; border-radius:99px; padding:0 6px; vertical-align:middle; }
   .kb-risk { display:inline-block; margin-left:6px; font-size:10px; border:1px solid #4a1d1d; color:#fca5a5; border-radius:99px; padding:0 6px; vertical-align:middle; }
   .kb-learn { color:var(--dim); font-size:12px; margin:0 0 10px; }

@@ -237,6 +237,34 @@
       },
       "codableParams": 4,
       "learnedAt": "2026-10-20"
+    },
+    {
+      "id": "motion-curve-soul",
+      "title": "动效的灵魂是曲线：三族缓动 + 特殊曲线的可枚举族谱",
+      "domain": "motion",
+      "layer": "order",
+      "measurable": true,
+      "status": "active",
+      "confidence": "sourced",
+      "version": 1,
+      "relations": [
+        {
+          "type": "related",
+          "target": "motion-force-anticipation"
+        },
+        {
+          "type": "related",
+          "target": "icon-motion-500ms"
+        }
+      ],
+      "source": {
+        "kind": "video",
+        "heat": 80000,
+        "author": "B 站曲线主题 Top10 交叉",
+        "ref": "https://www.bilibili.com/search?keyword=动画曲线 缓动"
+      },
+      "codableParams": 5,
+      "learnedAt": "2026-10-20"
     }
   ]
 }

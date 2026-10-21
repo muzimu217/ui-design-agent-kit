@@ -3007,5 +3007,37 @@
    "No concrete values per family",
    "Family-to-usecase mapping absent"
   ]
+ },
+ {
+  "id": "curve-family-scene-mapping",
+  "request": "Easing curve selection must map curve families to scenes — ease-out family for feedback (buttons/entrance/hover), spring family with overshoot for physics (toggles/drag release), linear or near-linear for data flow (progress/numbers/charts) — and must include a disable list (no linear for feedback, no spring for data, no bounce outside gamified contexts); curve choice precedes duration.",
+  "context": "Motion knowledge base curve taxonomy consumed by implementers choosing CSS transitions.",
+  "passCriteria": [
+   "Three families + special cases enumerated with concrete bezier values",
+   "Disable list present (which curve must not appear in which scene)",
+   "Cross-referenced with the motion contract spring presets",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Curve selection as infinite free choice with no scene mapping",
+   "No disable list",
+   "Curve family chosen after duration is fixed"
+  ]
+ },
+ {
+  "id": "tool-tutorial-vs-principle-scarcity",
+  "request": "Sweep-level ecosystem checks must distinguish tool-operation content from principle content and record which is scarce; when principle content is absent from a topic top results, the absence itself is recorded as a content gap and a knowledge-base opportunity.",
+  "context": "A learning loop sweep over a motion topic where top results are all software tutorials.",
+  "passCriteria": [
+   "Top results categorized as tool-operation vs principle",
+   "Principle scarcity recorded as a finding",
+   "Knowledge card fills the gap with mechanism-level content",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Tutorial abundance mistaken for principle coverage",
+   "Sweep findings recorded as a raw list",
+   "Gap finding made without categorizing the results"
+  ]
  }
 ]

@@ -1,5 +1,6 @@
 ---
 id: video-launch-narrative-structure
+alias: 3秒钩子12秒拍
 title: 发布片结构：3 秒钩子 + 每 12 秒一次 re-hook
 domain: video
 status: active

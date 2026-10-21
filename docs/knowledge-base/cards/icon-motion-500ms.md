@@ -1,5 +1,6 @@
 ---
 id: icon-motion-500ms
+alias: 半秒动效
 title: 图标微动效 0.5 秒量级：入场/变化/收尾的三段近似
 domain: icon
 layer: motion

@@ -3071,5 +3071,37 @@
    "Math description present but params not derived from it",
    "Card marked active without codable mechanism"
   ]
+ },
+ {
+  "id": "alias-is-handle-not-replacement",
+  "request": "Knowledge card aliases (scene-named handles) must coexist with the mechanism title — formal citations use the title, aliases aid retrieval and transmission — and an alias invented without the card provenance must not be accepted; the alias field is optional and back-compatible.",
+  "context": "Knowledge base v1.2 adding an optional alias field for scene-named handles.",
+  "passCriteria": [
+   "Alias present alongside (not replacing) the mechanism title",
+   "Alias carries the card provenance (source noted)",
+   "Formal citations still use the mechanism title",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Alias silently replacing the title in citations",
+   "Alias with no provenance accepted",
+   "Back-compatibility broken for cards without aliases"
+  ]
+ },
+ {
+  "id": "local-first-positioning-language",
+  "request": "Products that keep all state and builds local must consistently use the local-first positioning term across identity and public pages — replacing scattered phrases like all-local or no-backend — so that the positioning camp (local-first vs cloud) is legible to users comparing tools.",
+  "context": "Identity doc and public site for a workflow whose privacy boundary depends on local operation.",
+  "passCriteria": [
+   "local-first used as the single positioning term in identity and site",
+   "Scattered equivalent phrases consolidated",
+   "The term appears in the public site positioning copy",
+   "Console has zero errors"
+  ],
+  "failConditions": [
+   "Three different phrases for the same local boundary",
+   "Positioning camp (local vs cloud) absent from public copy",
+   "Identity doc contradicts the site positioning"
+  ]
  }
 ]

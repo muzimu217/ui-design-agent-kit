@@ -55,7 +55,8 @@
         "ref": "https://www.bilibili.com/video/BV1yU4y1K7uL/"
       },
       "codableParams": 5,
-      "learnedAt": "2026-10-19"
+      "learnedAt": "2026-10-19",
+      "alias": "一眼稳"
     },
     {
       "id": "motion-force-anticipation",
@@ -180,7 +181,8 @@
         "ref": "https://www.youtube.com/watch?v=KTqMRkSqXX4"
       },
       "codableParams": 5,
-      "learnedAt": "2026-10-19"
+      "learnedAt": "2026-10-19",
+      "alias": "3秒钩子12秒拍"
     },
     {
       "id": "design-seven-principles",
@@ -236,7 +238,8 @@
         "ref": "https://www.bilibili.com/video/BV1Ub41167NE/"
       },
       "codableParams": 4,
-      "learnedAt": "2026-10-20"
+      "learnedAt": "2026-10-20",
+      "alias": "半秒动效"
     },
     {
       "id": "motion-curve-soul",

@@ -1,5 +1,6 @@
 ---
 id: layout-visual-balance
+alias: 一眼稳
 title: 视觉平衡 = 视觉重量分布，而非几何对称
 domain: layout
 status: active

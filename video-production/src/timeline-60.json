@@ -1,0 +1,55 @@
+{
+  "note": "60 秒标准版时间轴契约（知识卡 video-sixty-second-delivery-form 的 L4 落地）。共享 165s 主片的叙事骨架（hook→proof→UI 三连→反例墙→六道门→守卫→知识库→收尾），裁掉 taste/learning/mini 三个纵深段——短版是重排与取舍，不是机械裁切。本文件只定义契约：场景表+字幕表+混音约定。渲染需用户放行（npx remotion render UakIntro60）。音效轨待渲染裁决后按 sfx-cues.json 同款三层规则为本时间轴打点。",
+  "sourceCard": "video-sixty-second-delivery-form",
+  "composition": "UakIntro60",
+  "fps": 30,
+  "durationInFrames": 1800,
+  "durationSeconds": 60,
+  "sourceComposition": {
+    "id": "UakIntro",
+    "durationInFrames": 4950,
+    "timelineContract": "video-production/src/Film.tsx const T"
+  },
+  "scenes": [
+    {"id": "hook", "from": 0, "dur": 90},
+    {"id": "proof", "from": 90, "dur": 150},
+    {"id": "workbench", "from": 240, "dur": 180},
+    {"id": "wall", "from": 420, "dur": 150},
+    {"id": "chain", "from": 570, "dur": 150},
+    {"id": "regressions", "from": 720, "dur": 210},
+    {"id": "gates", "from": 930, "dur": 240},
+    {"id": "guards", "from": 1170, "dur": 210},
+    {"id": "knowledge", "from": 1380, "dur": 210},
+    {"id": "end", "from": 1590, "dur": 210}
+  ],
+  "dropped": [
+    {"id": "taste", "why": "纵深段（品味档案），60s 版让位给唯一性更强的反例墙"},
+    {"id": "learning", "why": "纵深段（自学机制），同上"},
+    {"id": "mini", "why": "指标看板细节，官网 hero 已承载"}
+  ],
+  "captions": [
+    {"from": 6, "to": 84, "text": "AI 能写出整个界面 —— 但你怎么知道它做得对？", "accent": "cyan"},
+    {"from": 100, "to": 234, "text": "工作台、产物墙、指标看板：仓库自己跑出来的真实页面", "accent": "violet"},
+    {"from": 252, "to": 414, "text": "工作台：左边「走到哪」，右边「有什么可复核」", "accent": "cyan"},
+    {"from": 432, "to": 564, "text": "产物墙：每件产物都带着六维实测体检报告", "accent": "violet"},
+    {"from": 582, "to": 714, "text": "解析链路：它怎么想的，一步一步摊开给你", "accent": "cyan"},
+    {"from": 732, "to": 918, "text": "它把自己的事故也挂在墙上：三条反例全部已修复，一条都没删", "accent": "red"},
+    {"from": 942, "to": 1158, "text": "六道门：每一道都要你点头，没确认就不往下走", "accent": "cyan"},
+    {"from": 1182, "to": 1368, "text": "三层守卫 + 六维实测：没测的维度记「—」，不虚记", "accent": "ok"},
+    {"from": 1392, "to": 1452, "text": "知识库 12 卡，按构成 / 运动 / 秩序三层归档", "accent": "violet"},
+    {"from": 1458, "to": 1584, "text": "每条机制都带可编码参数，能直接变成代码", "accent": "cyan"},
+    {"from": 1602, "to": 1740, "text": "不做生成引擎，做生成过程的监管与质量把控", "accent": "cyan"},
+    {"from": 1746, "to": 1794, "text": "把界面和证据，一起交付", "accent": "violet"}
+  ],
+  "audio": {
+    "bgm": "public/music.wav",
+    "bgmGain": 0.85,
+    "silentReadable": "全部 12 条字幕独立承载信息，静音完整可读",
+    "sfxPlan": "渲染裁决后按 sfx-cues.json 三层规则为本轴打点（约 12-16 点：10 转场 + 强调若干）"
+  },
+  "acceptance": {
+    "reHooks": "10 场景 = 9 个切点 ≥ 知识卡 60s 片 ≥5 次 re-hook 门槛",
+    "trimOnly": "每个场景时长 ≤ 其在 165s 主片中的时长（只裁不延）",
+    "skeleton": "与主片共享叙事骨架：场景顺序不变，只做取舍"
+  }
+}

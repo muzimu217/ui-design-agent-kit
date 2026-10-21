@@ -144,6 +144,18 @@ export async function verify(root = ROOT) {
     const detail = String(error.stderr ?? error.message ?? "").trim().split("\n").slice(-4).join(" ");
     errors.push(`sfx cue sheet 校验失败: ${detail || "unknown"}`);
   }
+  // 60s composition contract (knowledge card video-sixty-second-delivery-form
+  // made executable): the short cut must stay a valid re-edit of the hero —
+  // continuity, trim-only, shared skeleton, caption bounds, re-hook budget.
+  try {
+    await access(path.join(root, "video-production/src/timeline-60.json"));
+    const { execFile } = await import("node:child_process");
+    const { promisify } = await import("node:util");
+    await promisify(execFile)(process.execPath, [path.join(root, "scripts/timeline-check.mjs"), "--json"], { cwd: root });
+  } catch (error) {
+    const detail = String(error.stderr ?? error.message ?? "").trim().split("\n").slice(-4).join(" ");
+    errors.push(`60s 时间轴契约校验失败: ${detail || "unknown"}`);
+  }
   for (const agentName of ["ui-design-agent", "remotion-video-agent"]) {
     if (!skills.includes(agentName)) {
       errors.push(`Missing agent entrypoint: ${agentName}`);

@@ -3231,5 +3231,38 @@
    "Single evidence level conflating ecosystem facts with artifact claims",
    "Competitor framing applied to an ecosystem participant"
   ]
+ },
+ {
+  "id": "short-cut-as-data-contract",
+  "request": "A second-length video cut must be defined as a machine-checked data contract (scene table with from/dur, caption table, dropped-scenes with reasons) validated for continuity, trim-only durations, shared skeleton order, caption bounds and re-hook budget — not as prose intent or a mechanical crop of the hero file.",
+  "context": "The 60s standard cut (timeline-60.json + Film60) shares the 165s hero's skeleton, drops three depth scenes with reasons, and every kept scene is trimmed within its hero duration.",
+  "passCriteria": [
+   "Scene totals match declared composition length exactly with zero gaps/overlaps",
+   "Every kept scene shorter or equal to its hero duration",
+   "Scene order is a subsequence of the hero order; drops carry reasons",
+   "Captions within single scene spans, non-empty (silent-readable), non-overlapping",
+   "Cut points meet the re-hook budget for the length"
+  ],
+  "failConditions": [
+   "Short cut produced by trimming the hero render without re-timing captions",
+   "Contract drift caught only at render time",
+   "Dropped scenes undocumented"
+  ]
+ },
+ {
+  "id": "delivery-matrix-one-composition-per-length",
+  "request": "Each length in a video delivery matrix is a separate registered composition with its own checked timeline contract, sharing scene components and narrative skeleton with the hero — adding a length must not fork the scene code or mutate the hero timeline.",
+  "context": "UakIntro60 registered beside UakIntro in Root.tsx; both consume the same scene components, the 60s one driven entirely by timeline-60.json.",
+  "passCriteria": [
+   "New composition registered with correct fps/width/height",
+   "Zero edits to the hero timeline when adding the new length",
+   "Scene components reused, not duplicated",
+   "Timeline data validated by a standing checker wired into verify"
+  ],
+  "failConditions": [
+   "Copy-pasted scene components per length",
+   "Hero timeline edited to accommodate the short cut",
+   "Contract unchecked until a human watches a render"
+  ]
  }
 ]

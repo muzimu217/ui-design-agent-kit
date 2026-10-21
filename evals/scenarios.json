@@ -3199,5 +3199,37 @@
    "Sound effects used to carry information unavailable visually",
    "BGM-only cut reported as complete without flagging the gap"
   ]
+ },
+ {
+  "id": "upstream-officialization-check",
+  "request": "On each recheck of an adopted open-source capability, diff the locally pinned skill set against the upstream's current official skill family; record the delta with per-item relevance, and install only what a real requirement triggers — an outdated pin set must be surfaced, not silently tolerated.",
+  "context": "Remotion's official family grew to 13 skills + 5 host plugins; our pin set had 10 core + lacked 3 situational skills (maps/saas/upgrade).",
+  "passCriteria": [
+   "Delta enumerated item-by-item with relevance verdict per item",
+   "No installation without a triggering requirement",
+   "Pin set recorded in the lock file with revisions",
+   "The recheck updates the adopted entry's evidence rather than only the evaluating entry"
+  ],
+  "failConditions": [
+   "Pin set assumed complete without checking upstream",
+   "Bulk install justified by 'official has it'",
+   "Delta noted only in chat without landing in the registry"
+  ]
+ },
+ {
+  "id": "capability-verdict-from-ecosystem-position",
+  "request": "When a third-party same-stack signal appears, adjudicate it by what it changes about the position of our already-adopted entry (is our route now upstream-productized?) rather than by whether to install theirs; keep evidence levels split — ecosystem-layer facts verified from official pages, artifact-layer claims unverified until the artifact is run.",
+  "context": "A B站 video about a Codex video skill turned out to be an ecosystem-usage signal, not a competitor; the real finding was Remotion's official 5 host plugins.",
+  "passCriteria": [
+   "Verdict sentence addresses OUR adopted entry's position",
+   "Ecosystem-layer and artifact-layer evidence levels recorded separately",
+   "Marketing claims ('5-minute output') rejected as acceptance criteria",
+   "The evaluating entry is re-scoped or closed based on the position finding"
+  ],
+  "failConditions": [
+   "Third-party skill installed or rejected without a position analysis",
+   "Single evidence level conflating ecosystem facts with artifact claims",
+   "Competitor framing applied to an ecosystem participant"
+  ]
  }
 ]

@@ -91,7 +91,9 @@
 - **需求解析链路**：原始口语 → 解析摘要 → 理解验证 → 六步决策抽屉，黑盒步骤自动标黄；
 - **工作台入口**：三卡入口 + 门径状态 + 产物墙（排序视图+六维完成度徽章）。
 
-验收命令 `npm run canvas:check`（playwright 实测：WCAG 对比度 / 键盘 Tab 序列 / console 回执）。线上展厅的「画布工作台」页签即这三件产物的构建时快照。规划详见 [docs/canvas-workbench-plan.md](docs/canvas-workbench-plan.md)。
+验收命令 `npm run canvas:check`（playwright 实测：WCAG 对比度 / 键盘 Tab 序列 / 17 档宽度横向溢出扫描 / 别名可见性 / console 回执）。线上展厅的「画布工作台」页签即这三件产物的构建时快照。规划详见 [docs/canvas-workbench-plan.md](docs/canvas-workbench-plan.md)。
+
+视频线的音效打点表同样可验：`npm run sfx:check` 校验 `video-production/src/sfx-cues.json` 的每个音效点是否落在真实场景边界、轨道声明是否有效、密度是否超标——知识卡里的音效参数由此变成可执行断言，而不是散文描述。
 
 ## 为什么需要它
 

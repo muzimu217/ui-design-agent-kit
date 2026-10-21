@@ -153,6 +153,9 @@ const html = `<!doctype html>
   .pill.no { color:var(--warn); border-color:rgba(251,191,36,.4); }
   .dom { color:var(--accent2); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; }
   .terms { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .film-wrap { border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#000; }
+  .film { display:block; width:100%; height:auto; aspect-ratio:16/9; background:#000; }
+  .film-meta { display:flex; flex-wrap:wrap; gap:16px; padding:11px 16px; background:var(--panel); border-top:1px solid var(--line); color:var(--dim); font-size:12px; }
   .term { background:var(--panel); padding:20px 22px; }
   .term h3 { margin:0 0 6px; font-size:13.5px; font-weight:620; }
   .term p { margin:0; color:var(--dim); font-size:12.5px; }
@@ -176,7 +179,7 @@ const html = `<!doctype html>
 <header><div class="wrap nav">
   <div class="brand">UI Design <span>Agent Kit</span></div>
   <nav>
-    <a href="#what">是什么</a><a href="#how">怎么用</a><a href="#gates">六道门</a>
+    <a href="#film">介绍片</a><a href="#what">是什么</a><a href="#how">怎么用</a><a href="#gates">六道门</a>
     <a href="#caps">能力接入</a><a href="#kb">知识库</a><a href="#taste">品味</a><a href="#terms">条款</a>
   </nav>
 </div></header>
@@ -197,6 +200,22 @@ const html = `<!doctype html>
       <div class="stat"><b>${adoptedTraits}</b><span>已采用品味特质</span></div>
     </div>
   </div>
+
+  <section id="film">
+    <h2>介绍片 · 2 分 45 秒</h2>
+    <p class="sub">这支片子本身也是产物：Remotion 代码渲染、three.js 真实三维门廊、程序化合成配乐，画面全部来自本仓真实运行的界面。</p>
+    <div class="film-wrap">
+      <video class="film" controls preload="metadata" playsinline poster="">
+        <source src="video/uak-intro.mp4" type="video/mp4">
+        你的浏览器不支持 video 标签，可直接打开 <a href="video/uak-intro.mp4">video/uak-intro.mp4</a>。
+      </video>
+      <div class="film-meta">
+        <span>165s · 1080p30 源 / 720p 分发</span>
+        <span>13 场景 · 31 条字幕</span>
+        <span>Remotion + three.js + 程序化配乐</span>
+      </div>
+    </div>
+  </section>
 
   <section id="what">
     <h2>是什么</h2>

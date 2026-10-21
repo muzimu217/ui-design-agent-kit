@@ -1,0 +1,26 @@
+{
+  "name": "uak-video-production",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "UI Design Agent Kit intro film — Remotion + Three.js production",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render UakIntro out/uak-intro.mp4",
+    "still": "remotion still UakIntro"
+  },
+  "dependencies": {
+    "@react-three/fiber": "9.8.2",
+    "@remotion/cli": "4.0.537",
+    "@remotion/three": "4.0.537",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.537",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "@types/three": "0.186.0",
+    "typescript": "5.9.3"
+  }
+}

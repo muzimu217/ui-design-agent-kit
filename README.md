@@ -46,7 +46,7 @@
 
 <video src="showcase/products/media/intro.mp4" controls muted loop playsInline preload="metadata"></video>
 
-<sub>产品介绍视频（20 秒）：由仓库 <code>intro-video/</code> 的 Remotion 管线渲染，先学最好的界面，再交付有证据的产品。</sub>
+<sub>产品介绍视频（2 分 45 秒）：由仓库 <code>video-production/</code> 的 Remotion + three.js 管线渲染，先学最好的界面，再交付有证据的产品。</sub>
 
 </div>
 

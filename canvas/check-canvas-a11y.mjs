@@ -186,6 +186,11 @@ for (const page of dataOnly ? [] : pages) {
     });
     const legend = document.querySelector("#wall-legend");
     if (legend !== null && !legend.textContent.trim()) issues.push("#wall-legend 为空");
+    // 墙条目缩略图（增量 60）：任何 img 必须带 alt 属性（装饰图允许 alt=""，
+    // 但不允许缺属性）——墙引入图片后立刻立此契约。
+    document.querySelectorAll("img").forEach((el, i) => {
+      if (!el.hasAttribute("alt")) issues.push(`img#${i}（${(el.getAttribute("src") ?? "").slice(0, 40)}）缺 alt 属性`);
+    });
     return { ok: issues.length === 0, issues };
   });
   pageResult.ariaGuard = ariaGuard;

@@ -552,10 +552,10 @@ function HostWorkbenchSection() {
 function IntroVideoSection() {
   const reducedMotion = useReducedMotion();
   return <section className="intro-video-band" id="intro-video" aria-labelledby="intro-video-heading"><div className="content-width">
-    <div className="section-heading"><div><h2 id="intro-video-heading">20 秒，看懂这条工作流。</h2><p>产品介绍视频：从口语需求，到有证据的交付。</p></div><Play size={28} strokeWidth={1.5} aria-hidden="true" /></div>
+    <div className="section-heading"><div><h2 id="intro-video-heading">2 分 45 秒，看懂这条工作流。</h2><p>产品介绍视频：从口语需求，到有证据的交付。</p></div><Play size={28} strokeWidth={1.5} aria-hidden="true" /></div>
     <figure className="intro-video-figure">
-      <video className="intro-video" src={introVideo} width={1920} height={1080} controls muted loop playsInline preload="metadata" autoPlay={!reducedMotion} aria-label="UI Design Agent Kit 介绍视频：标题、六道确认门、showcase 案例与测试数字"></video>
-      <figcaption>由本仓库 <code>intro-video/</code> 的 Remotion 管线渲染。画面全部来自仓库内第一方案例截图，配乐与音效为程序化合成，不含真实用户数据。</figcaption>
+      <video className="intro-video" src={introVideo} width={1280} height={720} controls muted loop playsInline preload="metadata" autoPlay={!reducedMotion} aria-label="UI Design Agent Kit 介绍视频：标题、六道确认门、showcase 案例与测试数字"></video>
+      <figcaption>由本仓库 <code>video-production/</code> 的 Remotion 管线渲染。画面全部来自仓库内第一方案例截图，配乐为 AC 混剪，不含真实用户数据。</figcaption>
     </figure>
   </div></section>;
 }

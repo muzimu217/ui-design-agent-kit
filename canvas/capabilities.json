@@ -13,7 +13,7 @@
    "acceptance": "视频口径：时长/帧率/确定性帧/音画同步/首帧静音可读/字幕对比度；叙事节拍见知识卡 video-launch-narrative-structure",
    "evidence": ".agents/skills/remotion-*/；docs/competitive-insights/2026-10-19-video-production-study/insight.md",
    "inspectionLevel": "verified",
-   "note": "官方支持 Agent Skills（npx skills add remotion-dev/skills），库内已钉版；渲染链 CLI/SSR/Lambda/GH Actions 全支持"
+   "note": "官方支持 Agent Skills（npx skills add remotion-dev/skills），库内已钉版；渲染链 CLI/SSR/Lambda/GH Actions 全支持。85 轮深访升级：官方另维护 5 宿主插件（Claude Code/Codex/Cursor/Kimi Code/Copilot，remotion.dev/docs/ai/codex-plugin）——本仓路线已获上游官方产品化背书；官方 12 具名 skill 中本仓缺 3 个场景性技能（maps/saas/upgrade），差集已记录、按需求触发再装"
   },
   {
    "id": "motion-official",
@@ -141,9 +141,9 @@
    "kind": "视频（工作流范式）",
    "limits": "宣传为「5 分钟出电影感」的端到端自动化；实际质量依赖素材与提示词，无公开验收口径；不提供证据链/门禁/六维实测",
    "acceptance": "若纳入：需以本仓视频口径复核（时长/帧率/确定性帧/音画同步/首帧静音可读/字幕对比度）+ 叙事节拍（video-launch-narrative-structure）+ 音效层（video-sound-design-layer）；不接受「5 分钟」作为质量声明",
-   "evidence": "docs/competitive-insights/2026-10-21-bili-ai-promo/insight.md",
-   "inspectionLevel": "unverified-partial",
-   "note": "同栈第三方验证信号：受控编码路径（Remotion + Agent Skill）已是 agent 产片的市场主流路线，本仓方向被独立印证；但**栈不是差异点**——对方卖「快」，本仓差异=工作流监管（证据链/六道门/品味档案）。登记为待评估，不接入其产物"
+   "evidence": "docs/competitive-insights/2026-10-21-remotion-agent-skill-deep/insight.md（含官方 skills 页与 Codex plugin 页实看）",
+   "inspectionLevel": "unverified-partial（其 skill 未实测）；生态层证据 verified-partial（官方两页实看）",
+   "note": "85 轮深访重估：作者 jeffzhengye（AI 量化）无公开 skill 仓库，收藏 220>点赞 69（收藏比 3 倍=工具参考型内容）——其为官方生态的使用者与传播者，非竞争者。本条目的裁决价值=确认 remotion-video adopted 条目站在官方产品化主线上（生态位证据 verified-partial，其 skill 本身仍未实测 unverified-partial）。不接入其产物；「5 分钟出片」话术不采（无验收口径）。B 站相关区暴露「Codex+视频 Skill」内容簇 ≥7 条，多技能编排（HyperFrames+Remotion+FFmpeg 链）为下一步生态方向"
   }
  ]
 }

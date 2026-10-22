@@ -3199,5 +3199,134 @@
    "Sound effects used to carry information unavailable visually",
    "BGM-only cut reported as complete without flagging the gap"
   ]
+ },
+ {
+  "id": "upstream-officialization-check",
+  "request": "On each recheck of an adopted open-source capability, diff the locally pinned skill set against the upstream's current official skill family; record the delta with per-item relevance, and install only what a real requirement triggers — an outdated pin set must be surfaced, not silently tolerated.",
+  "context": "Remotion's official family grew to 13 skills + 5 host plugins; our pin set had 10 core + lacked 3 situational skills (maps/saas/upgrade).",
+  "passCriteria": [
+   "Delta enumerated item-by-item with relevance verdict per item",
+   "No installation without a triggering requirement",
+   "Pin set recorded in the lock file with revisions",
+   "The recheck updates the adopted entry's evidence rather than only the evaluating entry"
+  ],
+  "failConditions": [
+   "Pin set assumed complete without checking upstream",
+   "Bulk install justified by 'official has it'",
+   "Delta noted only in chat without landing in the registry"
+  ]
+ },
+ {
+  "id": "capability-verdict-from-ecosystem-position",
+  "request": "When a third-party same-stack signal appears, adjudicate it by what it changes about the position of our already-adopted entry (is our route now upstream-productized?) rather than by whether to install theirs; keep evidence levels split — ecosystem-layer facts verified from official pages, artifact-layer claims unverified until the artifact is run.",
+  "context": "A B站 video about a Codex video skill turned out to be an ecosystem-usage signal, not a competitor; the real finding was Remotion's official 5 host plugins.",
+  "passCriteria": [
+   "Verdict sentence addresses OUR adopted entry's position",
+   "Ecosystem-layer and artifact-layer evidence levels recorded separately",
+   "Marketing claims ('5-minute output') rejected as acceptance criteria",
+   "The evaluating entry is re-scoped or closed based on the position finding"
+  ],
+  "failConditions": [
+   "Third-party skill installed or rejected without a position analysis",
+   "Single evidence level conflating ecosystem facts with artifact claims",
+   "Competitor framing applied to an ecosystem participant"
+  ]
+ },
+ {
+  "id": "short-cut-as-data-contract",
+  "request": "A second-length video cut must be defined as a machine-checked data contract (scene table with from/dur, caption table, dropped-scenes with reasons) validated for continuity, trim-only durations, shared skeleton order, caption bounds and re-hook budget — not as prose intent or a mechanical crop of the hero file.",
+  "context": "The 60s standard cut (timeline-60.json + Film60) shares the 165s hero's skeleton, drops three depth scenes with reasons, and every kept scene is trimmed within its hero duration.",
+  "passCriteria": [
+   "Scene totals match declared composition length exactly with zero gaps/overlaps",
+   "Every kept scene shorter or equal to its hero duration",
+   "Scene order is a subsequence of the hero order; drops carry reasons",
+   "Captions within single scene spans, non-empty (silent-readable), non-overlapping",
+   "Cut points meet the re-hook budget for the length"
+  ],
+  "failConditions": [
+   "Short cut produced by trimming the hero render without re-timing captions",
+   "Contract drift caught only at render time",
+   "Dropped scenes undocumented"
+  ]
+ },
+ {
+  "id": "delivery-matrix-one-composition-per-length",
+  "request": "Each length in a video delivery matrix is a separate registered composition with its own checked timeline contract, sharing scene components and narrative skeleton with the hero — adding a length must not fork the scene code or mutate the hero timeline.",
+  "context": "UakIntro60 registered beside UakIntro in Root.tsx; both consume the same scene components, the 60s one driven entirely by timeline-60.json.",
+  "passCriteria": [
+   "New composition registered with correct fps/width/height",
+   "Zero edits to the hero timeline when adding the new length",
+   "Scene components reused, not duplicated",
+   "Timeline data validated by a standing checker wired into verify"
+  ],
+  "failConditions": [
+   "Copy-pasted scene components per length",
+   "Hero timeline edited to accommodate the short cut",
+   "Contract unchecked until a human watches a render"
+  ]
+ },
+ {
+  "id": "multi-sheet-cue-validation",
+  "request": "When a delivery matrix adds a second video length, its sound-design cue sheet must be validated against its own timeline contract (not the hero's), with the checker generalized to multiple sheets rather than duplicated per composition; every sheet stays wired into standing verification.",
+  "context": "The 60s cut got its own 18-cue sheet; sfx-check grew a --sheet flag and timeline-source dispatch instead of a second checker script.",
+  "passCriteria": [
+   "Each sheet declares its timeline source and is checked against it",
+   "One generalized checker, not per-composition copies",
+   "All sheets run in standing verification",
+   "Negative fixtures prove each sheet's checker fails on drift"
+  ],
+  "failConditions": [
+   "Second composition's cues checked against the hero's boundaries",
+   "Checker forked per composition",
+   "Sheet added without wiring into verification"
+  ]
+ },
+ {
+  "id": "blocked-recheck-retry-discipline",
+  "request": "A competitor site that blocked automated access (captcha) goes on a pending-pool list with the block reason recorded, and is retried after a cooldown; when the retry succeeds the pending item is closed in the object-pool doc, and failure observations (like scale claims without verifiable methodology) are recorded without copying them.",
+  "context": "lovable.dev blocked the IAB on 2026-10-11, passed on retry after 10 days; the pending entry in learn-loop's object pool was closed.",
+  "passCriteria": [
+   "Block recorded with date and reason at first failure",
+   "Retry after a cooldown, not in the same round",
+   "Object-pool doc updated on retry success or repeated failure",
+   "Findings judged on mechanism, marketing claims noted but not adopted"
+  ],
+  "failConditions": [
+   "Blocked site silently dropped without a pool entry",
+   "Same-session retry loops against a captcha",
+   "Scale/marketing numbers copied into our materials as facts"
+  ]
+ },
+ {
+  "id": "wall-thumbnails-build-time-snapshots",
+  "request": "Artifact-wall thumbnails must be build-time screenshots generated by the same chain that renders the pages (render → capture → distribute), injected by existence (missing thumbs degrade to text, never broken images), carry descriptive alt text, and never be treated as acceptance evidence — the six-dim receipts remain the only acceptance claim.",
+  "context": "The wall was text-only; trending-style card walls showed thumbnail value, so each artifact entry now carries a real build snapshot with alt text and an img-alt guard in ariaGuard.",
+  "passCriteria": [
+   "Thumbnails generated in the build chain after page rendering",
+   "Missing thumbnail degrades silently to text entry",
+   "Every img has an alt attribute, guarded in standing checks",
+   "Snapshot labeled as snapshot, not as verification"
+  ],
+  "failConditions": [
+   "Hand-maintained screenshots drifting from the built pages",
+   "Broken image placeholders when thumbs are absent",
+   "Screenshot presented as acceptance evidence"
+  ]
+ },
+ {
+  "id": "audit-skill-category-signal",
+  "request": "When an audit/verification workflow reaches category status externally (e.g. a multi-phase audit skill topping trending with machine-readable findings), record the convergence explicitly: what they audit, what delivery form they use, and what remains different in ours (domain layer, acceptance narrative) — without pivoting the repo's identity or copying the category framing wholesale.",
+  "context": "cloudflare/security-audit-skill topped GitHub daily trending (36.9k stars) describing multi-phase audits with independently verified machine-readable findings — word-level isomorphic to our six-gates + JSON receipts.",
+  "passCriteria": [
+   "Convergence recorded with the exact overlapping vocabulary",
+   "Domain difference stated (code security vs UI-generation evidence)",
+   "Delivery-form lesson noted as a candidate card, not immediately built",
+   "Identity unchanged; no pivot declared"
+  ],
+  "failConditions": [
+   "Claiming the trending project validates our repo without the domain-layer distinction",
+   "Abandoning current roadmap to chase the category",
+   "Star counts adopted as success metrics"
+  ]
  }
 ]

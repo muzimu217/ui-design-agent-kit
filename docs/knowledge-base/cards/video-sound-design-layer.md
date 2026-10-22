@@ -73,4 +73,4 @@ BGM 是底色，音效是标点。只有底色没有标点的片子，观众会�
 
 ## 打点实现（L4 转化）
 
-本卡的参数已落成可执行打点表：`video-production/src/sfx-cues.json`（36 个点：转场 12 / 强调 18 / 节奏 6，165 秒片每 4.6 秒 1 点），校验脚本 `scripts/sfx-check.mjs` 断言帧对齐 ≤2 帧、轨道声明有效、密度不超标，已接入 `npm run verify`。
+本卡的参数已落成可执行打点表：165s 主片 `video-production/src/sfx-cues.json`（36 点：转场 12 / 强调 18 / 节奏 6，每 4.6 秒 1 点）与 60s 标准版 `video-production/src/sfx-cues-60.json`（18 点：转场 9 / 强调 7 / 节奏 2，每 3.3 秒 1 点，转场以 timeline-60.json 场景边界为准）。校验脚本 `scripts/sfx-check.mjs` 支持多表（--sheet），断言帧对齐 ≤2 帧、轨道声明有效、密度不超标，双表均接入 `npm run verify`。

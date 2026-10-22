@@ -21,5 +21,13 @@ for (const f of pages) {
 for (const f of media) {
   await copyFile(path.join(SRC, f), path.join(DST, f)).catch(() => {});
 }
+// 墙条目缩略图（增量 60）：构建时快照随分发进 showcase，缺失不报错（墙回退纯文字）。
+try {
+  const thumbs = await readdir(path.join(SRC, "thumbs"));
+  await mkdir(path.join(DST, "thumbs"), { recursive: true });
+  for (const f of thumbs.filter((x) => x.endsWith(".png"))) {
+    await copyFile(path.join(SRC, "thumbs", f), path.join(DST, "thumbs", f));
+  }
+} catch { /* thumbs 未生成时跳过 */ }
 const listed = await readdir(DST);
 console.log(`canvas distributed to showcase: ${DST} (${listed.length} files)`);

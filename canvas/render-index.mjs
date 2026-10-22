@@ -20,6 +20,13 @@ async function main() {
   const artifacts = JSON.parse(await readFile(path.join(ROOT, "canvas", "artifacts.json"), "utf8"));
   const state = JSON.parse(await readFile(path.join(ROOT, "canvas", "canvas-workbench.state.json"), "utf8"));
 
+  // 墙条目缩略图（增量 60）：构建时 capture-thumbs 截图进 output/thumbs/，
+  // 渲染时按存在性注入——缺图不破版式（墙回退为纯文字，非错误）。
+  let thumbs = new Set();
+  try {
+    thumbs = new Set((await readdir(path.join(ROOT, "output", "thumbs"))).filter((f) => f.endsWith(".png")));
+  } catch { /* 缩略目录不存在时不注入 */ }
+
   // 能力接入登记表：外部生成能力按契约登记（谁产出/边界/验收/证据），
   // adopted 才可用于交付；空缺（evaluating）如实展示为"未接入"而非隐藏。
   let capabilities = { capabilities: [] };
@@ -247,7 +254,7 @@ async function main() {
   const sorted = [...artifacts.artifacts].sort((a, b) => (a.round < b.round ? 1 : a.round > b.round ? -1 : 0));
   const rows = sorted
     .map(
-      (a) => `<details class="art"><summary><span class="badge" aria-label="六维完成度 ${measured(a)}/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">${measured(a)}/6</span><span class="t">${esc(a.title)}</span><span class="src ${a.origin === "ai-only" ? "src-ai" : "src-mixed"}" aria-label="来源：${a.origin === "ai-only" ? "AI 直出，未经人工修订" : "AI 起草加人工修订"}">${a.origin === "ai-only" ? "AI 直出" : "AI+人工"}</span><span class="ver" aria-label="版本 v${esc(a.version ?? "?")}">v${esc(a.version ?? "?")}</span><span class="round">${esc(a.round)}</span></summary>
+      (a) => `<details class="art"><summary><span class="badge" aria-label="六维完成度 ${measured(a)}/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">${measured(a)}/6</span><span class="t">${esc(a.title)}</span><span class="src ${a.origin === "ai-only" ? "src-ai" : "src-mixed"}" aria-label="来源：${a.origin === "ai-only" ? "AI 直出，未经人工修订" : "AI 起草加人工修订"}">${a.origin === "ai-only" ? "AI 直出" : "AI+人工"}</span><span class="ver" aria-label="版本 v${esc(a.version ?? "?")}">v${esc(a.version ?? "?")}</span><span class="round">${esc(a.round)}</span>${thumbs.has(`${a.id}.png`) ? `<img class="art-thumb" src="thumbs/${esc(a.id)}.png" alt="产物缩略图：${esc(a.title)}（构建时快照，非验收依据）" loading="lazy" width="84" height="53">` : ""}</summary>
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>${esc(a.path)}</code>${a.viewUrl ? ` <a class="art-open" href="${esc(a.viewUrl)}">打开产物 ↗</a>` : ` <span class="art-self">— 本页自指，不设自链</span>`}</span></div>
         <div class="row"><span class="k">六维</span><span class="v">${esc(Object.entries(a.sixDim ?? {}).map(([k, v]) => `${k}: ${v}`).join("；")).slice(0, 500)}</span></div>
@@ -306,6 +313,9 @@ async function main() {
   details.art summary .badge { transition:transform .2s cubic-bezier(.2,0,0,1), box-shadow .2s cubic-bezier(.2,0,0,1), border-color .1s ease; }
   details.art:hover summary .badge, details.art[open] summary .badge { transform:translateY(-1px); box-shadow:0 1px 4px rgba(167,139,250,.35); border-color:var(--accent); }
   details.art summary { cursor:pointer; display:flex; gap:10px; align-items:baseline; padding:12px 16px; list-style:none; }
+  /* 墙条目缩略图（增量 60）：构建时真实快照，圆角描边随主题；窄屏让位给文字。 */
+  details.art summary .art-thumb { margin-left:auto; flex:none; width:84px; height:53px; object-fit:cover; object-position:top left; border:1px solid var(--line); border-radius:6px; opacity:.92; }
+  @media (max-width:640px) { details.art summary .art-thumb { display:none; } }
   @media (prefers-reduced-motion: reduce) { details.art summary .badge { transform:none !important; box-shadow:none !important; transition:none !important; } }
   details.art summary::-webkit-details-marker { display:none; }
   .t { font-weight:600; flex:1; }

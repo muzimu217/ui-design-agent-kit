@@ -3264,5 +3264,37 @@
    "Hero timeline edited to accommodate the short cut",
    "Contract unchecked until a human watches a render"
   ]
+ },
+ {
+  "id": "multi-sheet-cue-validation",
+  "request": "When a delivery matrix adds a second video length, its sound-design cue sheet must be validated against its own timeline contract (not the hero's), with the checker generalized to multiple sheets rather than duplicated per composition; every sheet stays wired into standing verification.",
+  "context": "The 60s cut got its own 18-cue sheet; sfx-check grew a --sheet flag and timeline-source dispatch instead of a second checker script.",
+  "passCriteria": [
+   "Each sheet declares its timeline source and is checked against it",
+   "One generalized checker, not per-composition copies",
+   "All sheets run in standing verification",
+   "Negative fixtures prove each sheet's checker fails on drift"
+  ],
+  "failConditions": [
+   "Second composition's cues checked against the hero's boundaries",
+   "Checker forked per composition",
+   "Sheet added without wiring into verification"
+  ]
+ },
+ {
+  "id": "blocked-recheck-retry-discipline",
+  "request": "A competitor site that blocked automated access (captcha) goes on a pending-pool list with the block reason recorded, and is retried after a cooldown; when the retry succeeds the pending item is closed in the object-pool doc, and failure observations (like scale claims without verifiable methodology) are recorded without copying them.",
+  "context": "lovable.dev blocked the IAB on 2026-10-11, passed on retry after 10 days; the pending entry in learn-loop's object pool was closed.",
+  "passCriteria": [
+   "Block recorded with date and reason at first failure",
+   "Retry after a cooldown, not in the same round",
+   "Object-pool doc updated on retry success or repeated failure",
+   "Findings judged on mechanism, marketing claims noted but not adopted"
+  ],
+  "failConditions": [
+   "Blocked site silently dropped without a pool entry",
+   "Same-session retry loops against a captcha",
+   "Scale/marketing numbers copied into our materials as facts"
+  ]
  }
 ]

@@ -132,17 +132,21 @@ export async function verify(root = ROOT) {
   }
   try { await access(path.join(skillRoot, "uak-visual-critique/NOTICE.md")); }
   catch { errors.push("Missing original uak-visual-critique NOTICE.md"); }
-  // Sound-design cue sheet (knowledge card video-sound-design-layer made
-  // executable): the sheet must stay aligned to the Film.tsx scene contract,
+  // Sound-design cue sheets (knowledge card video-sound-design-layer made
+  // executable): every sheet must stay aligned to its declared timeline
+  // contract (hero parses Film.tsx `const T`; the 60s cut uses timeline-60.json),
   // so "音效打点" is a verified artifact rather than a prose claim.
-  try {
-    await access(path.join(root, "video-production/src/sfx-cues.json"));
-    const { execFile } = await import("node:child_process");
-    const { promisify } = await import("node:util");
-    await promisify(execFile)(process.execPath, [path.join(root, "scripts/sfx-check.mjs"), "--json"], { cwd: root });
-  } catch (error) {
-    const detail = String(error.stderr ?? error.message ?? "").trim().split("\n").slice(-4).join(" ");
-    errors.push(`sfx cue sheet 校验失败: ${detail || "unknown"}`);
+  const { execFile } = await import("node:child_process");
+  const { promisify } = await import("node:util");
+  const runCheck = promisify(execFile);
+  for (const rel of ["video-production/src/sfx-cues.json", "video-production/src/sfx-cues-60.json"]) {
+    try {
+      await access(path.join(root, rel));
+      await runCheck(process.execPath, [path.join(root, "scripts/sfx-check.mjs"), "--sheet", rel, "--json"], { cwd: root });
+    } catch (error) {
+      const detail = String(error.stderr ?? error.message ?? "").trim().split("\n").slice(-4).join(" ");
+      errors.push(`sfx cue sheet 校验失败（${path.basename(rel)}）: ${detail || "unknown"}`);
+    }
   }
   // 60s composition contract (knowledge card video-sixty-second-delivery-form
   // made executable): the short cut must stay a valid re-edit of the hero —

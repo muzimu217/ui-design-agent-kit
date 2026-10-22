@@ -14,15 +14,22 @@
 //   4. cue density stays inside the card's stated budget
 //   5. every scene boundary gets exactly one transition cue
 //
-// Usage: node scripts/sfx-check.mjs [--json]
+// Usage: node scripts/sfx-check.mjs [--json] [--sheet <path>]
+//   --sheet  validate an alternate cue sheet (default: sfx-cues.json, the
+//            165s hero). A sheet declares its timeline source: "hero" parses
+//            the Film.tsx `const T` contract; "timeline-json" loads the scene
+//            table from a timeline JSON (the 60s cut's timeline-60.json).
 
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SHEET = path.join(ROOT, "video-production", "src", "sfx-cues.json");
+const DEFAULT_SHEET = path.join(ROOT, "video-production", "src", "sfx-cues.json");
 const FILM = path.join(ROOT, "video-production", "src", "Film.tsx");
+
+const sheetIdx = process.argv.indexOf("--sheet");
+const SHEET = sheetIdx > -1 ? path.resolve(ROOT, process.argv[sheetIdx + 1]) : DEFAULT_SHEET;
 
 const issues = [];
 let sheet;
@@ -33,15 +40,23 @@ try {
   process.exit(1);
 }
 
-// Scene boundaries come from the Film.tsx timeline contract (the single source
-// of truth for what is on screen when).
+// Scene boundaries come from the sheet's declared timeline source — the single
+// source of truth for what is on screen when.
 let boundaries = [];
 try {
-  const film = await readFile(FILM, "utf8");
-  const block = film.match(/const T = \{([\s\S]*?)\n\};/);
-  if (!block) throw new Error("Film.tsx 未找到 const T 时间轴契约");
-  for (const m of block[1].matchAll(/(\w+):\s*\{from:\s*(\d+),\s*dur:\s*(\d+)\}/g)) {
-    boundaries.push({ scene: m[1], from: +m[2], dur: +m[3] });
+  const src = sheet.timelineSource ?? { kind: "hero" };
+  if (src.kind === "hero") {
+    const film = await readFile(FILM, "utf8");
+    const block = film.match(/const T = \{([\s\S]*?)\n\};/);
+    if (!block) throw new Error("Film.tsx 未找到 const T 时间轴契约");
+    for (const m of block[1].matchAll(/(\w+):\s*\{from:\s*(\d+),\s*dur:\s*(\d+)\}/g)) {
+      boundaries.push({ scene: m[1], from: +m[2], dur: +m[3] });
+    }
+  } else if (src.kind === "timeline-json") {
+    const tl = JSON.parse(await readFile(path.join(path.dirname(SHEET), src.file), "utf8"));
+    boundaries = (tl.scenes ?? []).map((s) => ({ scene: s.id, from: s.from, dur: s.dur }));
+  } else {
+    throw new Error(`未知 timelineSource.kind: ${src.kind}`);
   }
   if (!boundaries.length) throw new Error("时间轴解析为空");
 } catch (e) {
@@ -92,6 +107,7 @@ for (let i = 1; i < cues.length; i++) {
 const byTrack = cues.reduce((a, c) => ((a[c.track] = (a[c.track] ?? 0) + 1), a), {});
 const receipt = {
   ok: issues.length === 0,
+  sheet: path.relative(ROOT, SHEET),
   composition: sheet.composition,
   fps,
   seconds,

@@ -1,0 +1,54 @@
+{
+  "$schema": "./sfx-cues.schema.json",
+  "note": "60 秒标准版音效打点表（UakIntro60）。与 sfx-cues.json（165s 主片）同款三层规则，转场层以 timeline-60.json 的场景边界为准（机验：scripts/sfx-check.mjs --sheet video-production/src/sfx-cues-60.json，已接入 verify）。渲染需用户放行。",
+  "sourceCard": "video-sound-design-layer",
+  "timelineSource": {"kind": "timeline-json", "file": "timeline-60.json"},
+  "fps": 30,
+  "durationInFrames": 1800,
+  "durationSeconds": 60,
+  "composition": "UakIntro60",
+  "mixContract": {
+    "bgmTrack": "public/music.wav",
+    "bgmBaseGainDb": 0,
+    "duck": {"depthDb": -4.5, "attackFrames": 2, "releaseFrames": 3},
+    "sfxGainRangeDb": [-14, -6],
+    "silentPlayback": "全部 12 条字幕独立承载信息，静音完整可读"
+  },
+  "tracks": {
+    "transition": {"role": "转场层", "samples": ["whoosh-soft", "riser-1s"], "gainDb": -8},
+    "emphasis": {"role": "强调层", "samples": ["click-tight", "pop-low"], "gainDb": -11},
+    "rhythm": {"role": "节奏层", "samples": ["tick-subtle"], "gainDb": -14}
+  },
+  "cues": [
+    {"frame": 90, "scene": "proof", "track": "transition", "sample": "whoosh-soft", "why": "HOOK→PROOF 硬切"},
+    {"frame": 100, "scene": "proof", "track": "emphasis", "sample": "click-tight", "why": "首条字幕入（真实页面主张）"},
+    {"frame": 240, "scene": "workbench", "track": "transition", "sample": "whoosh-soft", "why": "PROOF→WORKBENCH 硬切"},
+    {"frame": 252, "scene": "workbench", "track": "rhythm", "sample": "tick-subtle", "why": "UI 01 字幕入"},
+    {"frame": 420, "scene": "wall", "track": "transition", "sample": "whoosh-soft", "why": "WORKBENCH→WALL 硬切"},
+    {"frame": 432, "scene": "wall", "track": "emphasis", "sample": "click-tight", "why": "产物墙字幕入"},
+    {"frame": 570, "scene": "chain", "track": "transition", "sample": "whoosh-soft", "why": "WALL→CHAIN 硬切"},
+    {"frame": 720, "scene": "regressions", "track": "transition", "sample": "riser-1s", "why": "CHAIN→REGRESSIONS 段落升级（唯一性卖点前置）"},
+    {"frame": 732, "scene": "regressions", "track": "emphasis", "sample": "pop-low", "why": "反例墙字幕入（低音更沉）"},
+    {"frame": 930, "scene": "gates", "track": "transition", "sample": "riser-1s", "why": "REGRESSIONS→GATES 进 3D 段（段前蓄势）"},
+    {"frame": 942, "scene": "gates", "track": "emphasis", "sample": "pop-low", "why": "六道门字幕入"},
+    {"frame": 1170, "scene": "guards", "track": "transition", "sample": "whoosh-soft", "why": "GATES→GUARDS 硬切"},
+    {"frame": 1182, "scene": "guards", "track": "emphasis", "sample": "click-tight", "why": "三层守卫字幕入"},
+    {"frame": 1380, "scene": "knowledge", "track": "transition", "sample": "whoosh-soft", "why": "GUARDS→KNOWLEDGE 硬切"},
+    {"frame": 1392, "scene": "knowledge", "track": "emphasis", "sample": "click-tight", "why": "知识库 12 卡字幕入"},
+    {"frame": 1458, "scene": "knowledge", "track": "rhythm", "sample": "tick-subtle", "why": "可编码参数字幕入"},
+    {"frame": 1590, "scene": "end", "track": "transition", "sample": "riser-1s", "why": "KNOWLEDGE→END 收束（段末抬）"},
+    {"frame": 1602, "scene": "end", "track": "emphasis", "sample": "pop-low", "why": "主张句入"}
+  ],
+  "counts": {
+    "total": 18,
+    "transition": 9,
+    "emphasis": 7,
+    "rhythm": 2
+  },
+  "acceptance": {
+    "alignmentToleranceFrames": 2,
+    "densityCheck": "60s 片 18 点 ≈ 每 3.3 秒 1 点（知识卡建议 12-20 点区间内）",
+    "duckingCheck": "每个 emphasis/transition cue 触发 BGM duck -4.5dB",
+    "silentCheck": "静音播放完整可读"
+  }
+}

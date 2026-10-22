@@ -47,10 +47,10 @@
 
 ## 产品介绍视频
 
-- 日期：2026-09-09。
-- 位置：`showcase/products/media/intro.mp4`（1920×1080，20 秒，h264+AAC，
-  5.3MB），README 与展厅站点共同引用这一份文件。
-- 制作：`intro-video/` 目录的 Remotion 管线（React/TS 代码逐帧渲染）。按
+- 日期：2026-09-09（首版 20 秒）；2026-10-21 更新为 2 分 45 秒版。
+- 位置：`showcase/products/media/intro.mp4`（1280×720，165 秒，h264+AAC，
+  7.9MB），README 与展厅站点共同引用这一份文件。
+- 制作：`video-production/` 目录的 Remotion + three.js 管线（React/TS 代码逐帧渲染；旧 `intro-video/` 工程已于 2026-10-22 退役删除）。按
   「渲染 → 抽帧 → 目检 → 修复 → 重渲染」闭环执行：六帧关键帧逐一目检，
   修复尾幕标语揭示与退场重叠的时序问题后复验交付；编码后再次用 ffmpeg
   抽帧复核转场与尾幕，音轨实测均值 -33dB / 峰值 -7dB。

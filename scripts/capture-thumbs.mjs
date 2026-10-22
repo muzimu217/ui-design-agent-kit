@@ -53,10 +53,30 @@ for (const a of artifacts) {
   const page = a.viewUrl ?? SELF_PORTRAIT[a.id];
   if (!page) { skipped.push({ id: a.id, why: "无 viewUrl 且非自指产物" }); continue; }
   if (!pagesOnDisk.has(page)) { skipped.push({ id: a.id, why: `页面不存在: ${page}` }); continue; }
-  const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  const ctx = await browser.newContext({
+    viewport: { width: 1280, height: 800 },
+    // 缩略图必须确定性可复现：关动画、固定时钟/时区，否则每次构建都产生新哈希，
+    // 分发副本入库后形成噪声 diff（reg-006）。
+    reducedMotion: "reduce",
+    colorScheme: "dark",
+    timezoneId: "UTC",
+  });
   const p = await ctx.newPage();
+  await p.addInitScript(() => {
+    // 冻结动画与过渡到起始帧；Date.now 固定，避免"今日"类文案随日期漂移。
+    const FIXED = new Date("2026-01-01T00:00:00Z").valueOf();
+    const RealDate = Date;
+    // @ts-ignore
+    globalThis.Date = class extends RealDate {
+      constructor(...args) { super(...(args.length ? args : [FIXED])); }
+      static now() { return FIXED; }
+    };
+    const css = document.createElement("style");
+    css.textContent = "*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}";
+    document.addEventListener("DOMContentLoaded", () => document.head.appendChild(css));
+  });
   await p.goto(`${base}/${page}`, { waitUntil: "domcontentloaded" });
-  await p.waitForTimeout(400); // 让描边动画/字体就位（截图是快照，非验收）
+  await p.waitForTimeout(300); // 字体/布局就位；动画已在 init 阶段禁用
   const file = path.join(THUMBS, `${a.id}.png`);
   await p.screenshot({ path: file, fullPage: false });
   captured.push({ id: a.id, page, file: path.relative(ROOT, file) });

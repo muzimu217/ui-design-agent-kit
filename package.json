@@ -38,6 +38,7 @@
     "canvas:check": "node canvas/check-canvas-a11y.mjs",
     "sfx:check": "node scripts/sfx-check.mjs",
     "timeline:check": "node scripts/timeline-check.mjs",
+    "submission:check": "node scripts/build-submission-pdf.mjs --check-only",
     "canvas:export": "node canvas/export-canvas.mjs"
   },
   "devDependencies": {

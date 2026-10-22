@@ -1,6 +1,6 @@
 {
   "name": "ui-design-agent-kit",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "type": "module",
   "description": "Project-scoped UI design agent instructions, skills, and verified MCP integrations. Turn a spoken requirement into a verifiable, evidence-backed interface.",
   "engines": {

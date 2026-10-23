@@ -160,6 +160,18 @@ export async function verify(root = ROOT) {
     const detail = String(error.stderr ?? error.message ?? "").trim().split("\n").slice(-4).join(" ");
     errors.push(`60s 时间轴契约校验失败: ${detail || "unknown"}`);
   }
+  // Aggregate audit report (form adopted from cloudflare/security-audit-skill,
+  // 学循环 89): every machine-checkable verdict rolls up into one findings
+  // report whose terminal state must be "complete" — "incomplete" is a legal
+  // state for the report itself, but not for a verify run.
+  try {
+    const { execFile } = await import("node:child_process");
+    const { promisify } = await import("node:util");
+    await promisify(execFile)(process.execPath, [path.join(root, "scripts/audit-report.mjs"), "--json"], { cwd: root });
+  } catch (error) {
+    const detail = String(error.stderr ?? error.message ?? "").trim().split("\n").slice(-4).join(" ");
+    errors.push(`聚合审计报告未达 complete: ${detail || "unknown"}`);
+  }
   for (const agentName of ["ui-design-agent", "remotion-video-agent"]) {
     if (!skills.includes(agentName)) {
       errors.push(`Missing agent entrypoint: ${agentName}`);

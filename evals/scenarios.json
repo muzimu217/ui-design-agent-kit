@@ -3328,5 +3328,37 @@
    "Abandoning current roadmap to chase the category",
    "Star counts adopted as success metrics"
   ]
+ },
+ {
+  "id": "terminal-state-contract",
+  "request": "A validation run has exactly two legal terminal states: (a) all artifacts written and every validator passing, or (b) run_status 'incomplete' recorded with its exact reason disclosed in the report — never a silent partial run; crashes must surface as failed invocations, not truncated reports.",
+  "context": "cloudflare/security-audit-skill's contract: 'Do not end the run before one of exactly two terminal states... Never stop mid-phase.'",
+  "passCriteria": [
+   "Run ends only in complete or incomplete-with-reason",
+   "Incomplete reason names the exact missing fact",
+   "The report is written even when incomplete",
+   "Exit code distinguishes complete (0) from incomplete (1)"
+  ],
+  "failConditions": [
+   "Partial reports presented as finished",
+   "Crash swallowed into a 'passed' result",
+   "Incomplete without a stated reason"
+  ]
+ },
+ {
+  "id": "needs-validation-verdict-discipline",
+  "request": "A checked-but-unresolved item carries the verdict needs_validation with the exact missing fact and no severity — it is not a low-confidence pass, not a failure, and must not be graded beyond what was observed; unobserved and observed-but-blocked are distinct states.",
+  "context": "cloudflare's three-verdict model: confirmed has a complete source trace; needs_validation names the exact unresolved fact and carries no severity.",
+  "passCriteria": [
+   "Three-state verdicts: confirmed / needs_validation / (rejected or fail)",
+   "needs_validation carries the exact missing fact",
+   "No severity/grade assigned to needs_validation items",
+   "Aggregates report counts per verdict, not a single boolean"
+  ],
+  "failConditions": [
+   "Binary pass/fail collapsing observed-but-blocked into unobserved",
+   "Grading a needs_validation item anyway",
+   "Vague 'unknown' without the exact missing fact"
+  ]
  }
 ]

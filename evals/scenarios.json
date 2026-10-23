@@ -3360,5 +3360,37 @@
    "Grading a needs_validation item anyway",
    "Vague 'unknown' without the exact missing fact"
   ]
+ },
+ {
+  "id": "survival-position-cloud-lock-in",
+  "request": "Track the survival position of generation-only cloud tools: when a tracked tool announces discontinuation with a data-export window, record the closure timeline, update the market landscape (remove from living-competitor charts), and read the export window as evidence that cloud lock-in is the vulnerability — our own artifacts must stay exportable and rebuildable offline.",
+  "context": "Motiff (international) discontinued with export until Oct 31, following its Chinese counterpart's closure recorded 2026-10-11; the whole product line is dead.",
+  "passCriteria": [
+   "Closure recorded with dates and screenshot at first observation",
+   "Landscape chart updated (tool removed from living competitors)",
+   "Export-window pattern named as the lock-in tell",
+   "Our offline-export story verified rather than merely claimed"
+  ],
+  "failConditions": [
+   "Dead tool left in living-competitor comparisons",
+   "Local-first claimed without an actual export/rebuild path",
+   "Schadenfreude framing instead of survival-position analysis"
+  ]
+ },
+ {
+  "id": "measure-it-claim-needs-published-methodology",
+  "request": "A 'we measure it' marketing claim counts as fourth-layer periphery only when a published, reproducible methodology exists; scoring text without receipts, samples, or criteria never earns observation credit and is recorded as unobservable (null), not as a competitor in the verification layer.",
+  "context": "A dying product's homepage said 'We don't just call it the best. We measure it' with 24/7 testing and expert review — no methodology, samples, or receipts anywhere.",
+  "passCriteria": [
+   "Claim recorded with its exact wording and location",
+   "Methodology/receipts checked and marked unobservable when absent",
+   "Verification-layer occupancy unchanged (claim ≠ occupant)",
+   "The contrast with our machine-readable receipts stated in the insight"
+  ],
+  "failConditions": [
+   "Counting marketing measurement text as fourth-layer occupancy",
+   "Quoting the claim as evidence the layer is contested",
+   "Skipping the check because the product is dying"
+  ]
  }
 ]

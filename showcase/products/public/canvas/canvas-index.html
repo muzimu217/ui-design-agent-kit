@@ -48,6 +48,13 @@
   .mc-col { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
   .mc-col h3 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); margin:0 0 10px; }
   .mc-row { display:flex; gap:10px; margin:6px 0; min-width:0; }
+  /* 审计报告区（增量 62）：每行=判定徽章+发现 id+证据摘要；徽章沿用 .badge 以共享 aria 守卫。 */
+  .audit-rows { display:grid; gap:6px; margin-bottom:10px; }
+  .audit-row { display:flex; gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 12px; min-width:0; }
+  .audit-row .badge { flex:none; }
+  .audit-id { font-family:ui-monospace,monospace; font-size:12px; color:var(--accent); flex:none; }
+  .audit-ev { color:var(--dim); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+  @media (max-width:640px) { .audit-ev { white-space:normal; } }
   .mc-k { color:var(--dim); min-width:76px; flex:none; font-size:12px; }
   .mc-v { flex:1; min-width:0; overflow-wrap:anywhere; font-size:13px; }
   @media (max-width: 640px) { .mc { grid-template-columns:1fr; } }
@@ -359,6 +366,10 @@
         <span class="reg-body"><strong>360/390/414px 横向溢出（能力表撑破）</strong><span class="reg-what">增量 54 修了 520px 的 .step 与 kb 表，但 overflowGuard 只测 520/1280 两个宽度，恰好跳过真实手机宽度。用户复核后发现 360px 溢出 77px、390px 47px、414px 23px——元凶是四列能力接入表（min-content 413px）。</span><span class="reg-lesson">教训：响应式断言必须扫真实设备宽度带（320/360/375/390/414/768…），不能只挑两档代表性宽度；&#39;我测过两个宽度&#39;不是&#39;响应式没问题&#39;</span></span>
         <span class="reg-meta">2026-10-21 · 增量 55</span>
       </div></div>
+  <h2 class="sec">审计报告（聚合机验 · <span class="badge" aria-label="聚合审计终态 完整">complete</span> · 7/7 confirmed）</h2>
+       <p class="cap-intro">聚合七项机验为一份机器可读发现报告（output/audit-report.json）；终态只有 complete 与 incomplete+确切原因 两种——adopted 自 cloudflare/security-audit-skill（学循环 89）。复核命令 <code>npm run audit:report</code>。</p>
+       <div class="audit-rows"><div class="audit-row"><span class="badge" aria-label="发现 kb-integrity 判定 已确认">✓ confirmed</span><span class="audit-id">kb-integrity</span><span class="audit-ev">docs/knowledge-base/index.json: 12 cards, layers={&quot;composition&quot;:4,&quot;motion&quot;:4,&quot;order&quot;:4}</span></div><div class="audit-row"><span class="badge" aria-label="发现 caps-integrity 判定 已确认">✓ confirmed</span><span class="audit-id">caps-integrity</span><span class="audit-ev">canvas/capabilities.json: 11 entries, statuses valid=true</span></div><div class="audit-row"><span class="badge" aria-label="发现 regressions-append-only 判定 已确认">✓ confirmed</span><span class="audit-id">regressions-append-only</span><span class="audit-ev">canvas/regressions.json: 5 entries, all carry id/date/lesson=true</span></div><div class="audit-row"><span class="badge" aria-label="发现 sfx-hero 判定 已确认">✓ confirmed</span><span class="audit-id">sfx-hero</span><span class="audit-ev">scripts/sfx-check.mjs: 36 items, issues=[]</span></div><div class="audit-row"><span class="badge" aria-label="发现 sfx-60 判定 已确认">✓ confirmed</span><span class="audit-id">sfx-60</span><span class="audit-ev">scripts/sfx-check.mjs: 18 items, issues=[]</span></div><div class="audit-row"><span class="badge" aria-label="发现 timeline-60 判定 已确认">✓ confirmed</span><span class="audit-id">timeline-60</span><span class="audit-ev">scripts/timeline-check.mjs: 10 items, issues=[]</span></div><div class="audit-row"><span class="badge" aria-label="发现 submission-numbers 判定 已确认">✓ confirmed</span><span class="audit-id">submission-numbers</span><span class="audit-ev">数字对账通过：语料 200 / 知识卡 12 / 能力 11(4+6+1) / 产物 4 / 反例 5</span></div></div>
+       <p class="wall-legend">报告头：4c0912d · 工作区有未提交改动（如实记录） · 生成于 2026-10-23T20:05:24</p>
   <h2 class="sec">产物墙（KPI4 · 4 件 · <span id="wall-mode">全部</span>）</h2>
   <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
     <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>

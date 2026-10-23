@@ -40,6 +40,7 @@
     "timeline:check": "node scripts/timeline-check.mjs",
     "submission:check": "node scripts/build-submission-pdf.mjs --check-only",
     "audit:report": "node scripts/audit-report.mjs",
+    "uak60:probe": "node scripts/uak60-probe.mjs",
     "canvas:export": "node canvas/export-canvas.mjs"
   },
   "devDependencies": {

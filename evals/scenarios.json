@@ -3392,5 +3392,37 @@
    "Quoting the claim as evidence the layer is contested",
    "Skipping the check because the product is dying"
   ]
+ },
+ {
+  "id": "survivor-anti-lockin-behaviors",
+  "request": "After a tracked competitor dies from cloud lock-in, recheck the survivors for anti-lock-in behaviors (export interoperability, offline saving, private deployment) and record whether those behaviors are new adaptations or standing strategy; position our own offline-rebuild guarantee against them without claiming parity of scope.",
+  "context": "16 days after Motiff's closure, survivor js.design's homepage prominently features import/export ('进得来出得去'), offline file saving, and private-deployment consulting — while its AI-generation positioning receded to a secondary section.",
+  "passCriteria": [
+   "Survivor behaviors enumerated with homepage evidence",
+   "Contrast drawn with the dead tool's lock-in failure mode",
+   "Our offline guarantee described by its actual mechanism (export reconciliation, rebuild-from-source)",
+   "AI-narrative recession noted as a market signal"
+  ],
+  "failConditions": [
+   "Survival lessons drawn without homepage-level evidence",
+   "Claiming our guarantee exceeds its actual mechanism",
+   "Ignoring the death that motivated the recheck"
+  ]
+ },
+ {
+  "id": "renderable-evidence-contract-verified",
+  "request": "A video composition with a machine-checked timeline contract must also prove renderability: probe stills from the actual renderer at key scenes, verified for dimensions, non-degenerate size, and luma band — contract checks alone leave the composition at Installed, not Visually Verified; probe frames are evidence, never a video deliverable.",
+  "context": "UakIntro60 had timeline + sfx contracts but had never emitted a frame; a 6-frame probe (including the three.js scene) confirmed 1920×1080, 0.6-1.5MB, YAVG 27-39 per frame.",
+  "passCriteria": [
+   "Still rendered per key scene family including the heaviest (3D) scene",
+   "Each frame verified: exact dimensions, byte-size floor, luma band",
+   "Receipt written with explicit run_status and terminal-state contract",
+   "Probe frames labeled as evidence, full render still gated on user approval"
+  ],
+  "failConditions": [
+   "Contract checks cited as proof the video renders",
+   "Blank or wrong-dimension frames counted as verified",
+   "Probe stills shipped as if they were the deliverable video"
+  ]
  }
 ]

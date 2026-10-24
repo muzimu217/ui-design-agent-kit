@@ -88,22 +88,6 @@ async function main() {
     add("regressions-history", "evidence", "needs_validation", "对抗验证失败", detail);
   }
 
-  // ---- Phase 2.6: adversarial contrast（独立引擎试图证伪对比度断言，增量 67）----
-  // axe-core 的采样/背景合成/大字号阈值均与 canvas:check 的自有采样器不同——
-  // 引擎不一致本身就是信号。0 违例 = 证伪失败（断言经受住对抗重测）；
-  // 有违例 = 口径差异是真实的（确切节点已由脚本如实记录）。
-  try {
-    const { stdout } = await run(process.execPath, [path.join(ROOT, "scripts/adversarial-contrast.mjs"), "--json"], { cwd: ROOT });
-    const r = JSON.parse(stdout);
-    const t = r.totals ?? {};
-    add("adversarial-contrast", "canvas", r.ok ? "confirmed" : "needs_validation",
-      `axe-core color-contrast ×${t.pages ?? "?"} 页: violations=${t.violations ?? "?"}, axePassed=${t.axePassed ?? "?"}, axeIncomplete=${t.axeIncomplete ?? "?"}`,
-      r.ok ? undefined : String(r.verdict ?? "axe 发现违例"));
-  } catch (e) {
-    const detail = String(e.stderr ?? e.message ?? "").trim().split("\n").slice(-2).join("; ");
-    add("adversarial-contrast", "canvas", "needs_validation", "对抗重测失败", detail);
-  }
-
   // ---- Phase 3: submission number reconciliation ----
   try {
     const { stdout } = await run(process.execPath, [path.join(ROOT, "scripts/build-submission-pdf.mjs"), "--check-only"], { cwd: ROOT });

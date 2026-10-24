@@ -75,6 +75,19 @@ async function main() {
     }
   }
 
+  // ---- Phase 2.5: adversarial append-only (独立证据路径：git 全历史试图证伪
+  // "只增不删"——当前形态检查的另一面，学循环 93 采纳的对抗验证轻量版) ----
+  try {
+    const { stdout } = await run(process.execPath, [path.join(ROOT, "scripts/adversarial-append-only.mjs"), "--json"], { cwd: ROOT });
+    const r = JSON.parse(stdout);
+    add("regressions-history", "evidence", r.run_status === "complete" ? "confirmed" : "needs_validation",
+      `${r.method}: ${r.versionsExamined} versions / ${r.entriesCurrent} entries`,
+      r.run_status === "complete" ? r.verdict : (r.findings ?? []).join("; "));
+  } catch (e) {
+    const detail = String(e.stderr ?? e.message ?? "").trim().split("\n").slice(-2).join("; ");
+    add("regressions-history", "evidence", "needs_validation", "对抗验证失败", detail);
+  }
+
   // ---- Phase 3: submission number reconciliation ----
   try {
     const { stdout } = await run(process.execPath, [path.join(ROOT, "scripts/build-submission-pdf.mjs"), "--check-only"], { cwd: ROOT });

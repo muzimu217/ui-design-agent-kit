@@ -3456,5 +3456,37 @@
    "Ignoring the form overlap entirely",
    "Treating governance vocabulary as verification-layer occupancy"
   ]
+ },
+ {
+  "id": "sustained-presence-vs-spike",
+  "request": "A trending/category signal must be re-observed after a cooldown before it upgrades from spike to trend: single-day #1 can be a news pulse, while repeated top presence with continued daily growth across 48h+ is category-formation evidence; interval re-observation, not memory, is the upgrade path.",
+  "context": "cloudflare/security-audit-skill stayed #1 across 48h (36.9k→42.4k stars, +2716/day) — upgrading the earlier 'window is shrinking' inference to an observation.",
+  "passCriteria": [
+   "Cooldown re-observation performed with delta numbers",
+   "Spike vs trend distinction explicitly drawn",
+   "Prior inference re-graded (inference → observation)",
+   "New family members recorded, not just the original signal"
+  ],
+  "failConditions": [
+   "Single observation treated as trend",
+   "Re-observation skipped because 'we already know'",
+   "Deltas asserted without numbers"
+  ]
+ },
+ {
+  "id": "append-only-historical-proof",
+  "request": "An append-only claim (nothing ever deleted) must be provable from history, not just current shape: diff every historical version's entry-id set against the next, verify no id ever disappears, flag post-hoc edits of existing entries as needs_validation, and check the working tree against HEAD so uncommitted deletions surface — a claim that cannot be refuted from evidence is a claim that was never tested.",
+  "context": "The regressions wall claimed 只增不删; the adversarial script tried to disprove it via git history (3 versions, 5 entries, zero deletions, zero mutations) — refutation failed, claim survives.",
+  "passCriteria": [
+   "Every historical version examined, not just HEAD",
+   "Id disappearance anywhere in history = refutation",
+   "Post-hoc edits flagged as needs_validation with entry names",
+   "Working tree compared against HEAD (uncommitted deletions surface)"
+  ],
+  "failConditions": [
+   "Current-file shape check cited as append-only proof",
+   "History read failures silently swallowed into 'complete'",
+   "Uncommitted deletions invisible to the verifier"
+  ]
  }
 ]

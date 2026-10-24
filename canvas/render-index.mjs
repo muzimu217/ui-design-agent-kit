@@ -154,7 +154,7 @@ async function main() {
     : "";
   const stageEntries = Object.entries(state.stages ?? {});
   const gates = state.gates ?? {};
-  const gateColor = { passed: "#34d399", gated: "#f472b6", active: "#22d3ee", blocked: "#f87171", pending: "#6b7280" };
+  const gateColor = { passed: "#34d399", gated: "#f472b6", active: "#22d3ee", blocked: "#f87171", pending: "#9ca3af" };
 
   const gatePills = Object.entries(gates)
     .map(([id, st]) => `<span class="pill" style="border-color:${gateColor[st] ?? gateColor.pending}">${esc(id)} · ${esc(st)}</span>`)
@@ -349,7 +349,7 @@ async function main() {
   .audit-rows { display:grid; gap:6px; margin-bottom:10px; }
   .audit-row { display:flex; gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 12px; min-width:0; }
   .audit-row .badge { flex:none; }
-  .audit-id { font-family:ui-monospace,monospace; font-size:12px; color:var(--accent); flex:none; }
+  .audit-id { font-family:ui-monospace,monospace; font-size:12px; color:#a78bfa; flex:none; }
   .audit-ev { color:var(--dim); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
   @media (max-width:640px) { .audit-ev { white-space:normal; } }
   .mc-k { color:var(--dim); min-width:76px; flex:none; font-size:12px; }

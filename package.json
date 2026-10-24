@@ -42,6 +42,7 @@
     "audit:report": "node scripts/audit-report.mjs",
     "uak60:probe": "node scripts/uak60-probe.mjs",
     "adversarial:check": "node scripts/adversarial-append-only.mjs",
+    "adversarial:contrast": "node scripts/adversarial-contrast.mjs",
     "canvas:export": "node canvas/export-canvas.mjs"
   },
   "devDependencies": {

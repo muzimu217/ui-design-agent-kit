@@ -200,9 +200,9 @@ npm run prompt:build:lean  # 重建精简导出（契约/动效/验收/品味四
 
 | 指标 | 当前值 | 达标线 |
 | --- | --- | --- |
-| 评测场景数 | 210（doc-drift 测试锁口径，quality-monitor 本行已入守卫；2026-10-24 幸存者收敛与断言对账两条（survivor-behavior-convergence/six-dim-claims-receipt-reconciliation），画布场景累计 +137） | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 | | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 |
+| 评测场景数 | 212（doc-drift 测试锁口径，quality-monitor 本行已入守卫；2026-10-24 幸存者收敛与断言对账两条 + 95 轮工具即资源与契约收敛两条（mastergo-mcp-writeback-tool-as-resource/design-md-input-contract-convergence），画布场景累计 +139） | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 | | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 |
 | verify 错误数 | 0 | 0 |
-| 测试通过数 | 122/122（doc-drift 守护：与 tests/*.test.mjs 静态 test() 计数一致，加测试须同笔更新本行；2026-10-08 uak-init +8 后由 114 更新）| 全过 |
+| 测试通过数 | 123/123（doc-drift 守护：与 tests/*.test.mjs 静态 test() 计数一致，加测试须同笔更新本行；2026-10-08 uak-init +8 后由 114 更新，2026-10-24 增量 67 对抗对比度负自测 +1 后由 122 更新；全量含 showcase/tests 9 项=132，README/identity 口径）| 全过 |
 | 已装 skill 锁定率 | 20/23 锁定；未锁 3 = ui-design-agent、remotion-video-agent、promotion-playbook（三者本 kit 自有，无需 pin）；上游第三方 20/20 全锁定（含 anatomy 2026-10-16 钉版；2026-09-30 本地化后口径 25→22，10-16 anatomy 入册 22→23） | 上游第三方 skill 100% 锁定 |
 | 素材库检查日期 | 灵感库 2026-09-21（案例样板批次 13 站 curl+浏览器实拍入册）/ 预清组件源表 2026-09-07 | 每次抽查后更新 |
 

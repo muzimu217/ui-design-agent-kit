@@ -3520,5 +3520,37 @@
    "Prose counts asserted without a reconciliation pass",
    "Composition details invented when the enumeration is uncertain"
   ]
+ },
+ {
+  "id": "mastergo-mcp-writeback-tool-as-resource",
+  "request": "When a design tool exposes an MCP server that lets coding agents write back to the canvas (create layers, modify properties, adjust layout), treat the tool as an agent-addressable resource rather than a competitor surface: record the capability with its exact bidirectional scope, and note that official marketing for such integrations describes intent, not a verified tool-call — the kit's evidence ladder (Installed ≠ Configured ≠ Connected ≠ Tool-callable ≠ Visually Verified) applies to external products too.",
+  "context": "Round-95 MasterGo recheck: the AI page's fourth capability is MCP protocol support ('break the read-only limit, bidirectional interaction', explicitly naming Cursor/Codex), captured first-hand from the rendered page; no tool-call was attempted.",
+  "passCriteria": [
+   "Capability recorded at the level actually observed (official page text, not tool-call)",
+   "Bidirectional scope stated exactly (layer create / property modify / layout adjust)",
+   "No severity or capability graded beyond the observed level",
+   "Kit position unchanged: gating workflow stays complementary (agent writes need acceptance, not just access)"
+  ],
+  "failConditions": [
+   "Recording the MCP integration as verified or tool-callable",
+   "Treating a survivor's write-back API as a reason to drop acceptance gates",
+   "Conflating vendor names (MasterGo/蓝湖 vs Motiff/幽澜)"
+  ]
+ },
+ {
+  "id": "design-md-input-contract-convergence",
+  "request": "When a generation product accepts a markdown design contract (design.md) as an input format alongside natural language and reference images, recognize it as industry convergence toward design-as-contract and position your own contract artifact by direction: their markdown describes what to generate before generation; your contract locks what was generated and how it is accepted after — the two are complementary ends of one pipeline, not competing features.",
+  "context": "Round-95 MasterGo AI 快搭 lists 'natural language / reference image / design.md' as peer input formats on the official AI page; the kit's gate D delivers a design contract as the acceptance-side artifact.",
+  "passCriteria": [
+   "Convergence recorded with the exact input-format list observed",
+   "Direction distinction stated (input-side intent vs acceptance-side evidence)",
+   "No redesign of the kit's contract to mimic the vendor's format",
+   "Independent-engine verification stance preserved (vendor self-checks noted as self-scoped)"
+  ],
+  "failConditions": [
+   "Declaring the kit's contract obsolete because vendors accept design.md",
+   "Copying the vendor's input format into the kit without a gate decision",
+   "Treating vendor-side 'generation with check & repair' as independent verification"
+  ]
  }
 ]

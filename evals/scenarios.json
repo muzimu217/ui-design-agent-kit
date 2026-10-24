@@ -3424,5 +3424,37 @@
    "Blank or wrong-dimension frames counted as verified",
    "Probe stills shipped as if they were the deliverable video"
   ]
+ },
+ {
+  "id": "absorbed-product-capability-tracking",
+  "request": "When a tracked standalone product is absorbed into a parent platform (URL dies, capability survives as a feature), record the absorption — update the host-integration list and object pool to the new name and surface, judge survival by capability continuity rather than product-name mortality, and re-verify any integration instructions still point at a live surface.",
+  "context": "github.com/copilot/workspace 404s; Copilot Workspace's spec→plan→implement form was absorbed into the desktop app's unified 'Manage agent-driven work' workspace.",
+  "passCriteria": [
+   "Dead URL recorded by direct test, not assumption",
+   "Object pool and host list renamed to the living surface",
+   "Survival judged on capability continuity",
+   "Absorption contrasted with outright closure (Motiff)"
+  ],
+  "failConditions": [
+   "Integration docs still naming the dead product URL",
+   "Counting absorption as closure",
+   "Pool entry silently dropped without a disposition"
+  ]
+ },
+ {
+  "id": "mission-control-form-vs-species",
+  "request": "When a major platform ships a mission-control surface for managing agent-driven work, compare form against species: their panel manages agent progress and usage quota, ours separates execution state from evidence state with per-artifact receipts — same information architecture does not mean same product, and the difference must be stated with the exact vocabulary of each side.",
+  "context": "Copilot's desktop workspace manages multi-agent tasks from one place; our canvas workbench separates 执行态 from 证据态 with evidence counts per artifact.",
+  "passCriteria": [
+   "Both sides' exact framing quoted",
+   "Form similarity acknowledged explicitly",
+   "Species difference (what the panel is FOR) argued with specifics",
+   "Fourth-layer occupancy assessment updated (governance vocabulary ≠ evidence receipts)"
+  ],
+  "failConditions": [
+   "Claiming the platform copied or validated us without the species argument",
+   "Ignoring the form overlap entirely",
+   "Treating governance vocabulary as verification-layer occupancy"
+  ]
  }
 ]

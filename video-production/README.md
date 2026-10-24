@@ -34,7 +34,7 @@ npx remotion render UakIntro out/uak-intro-ac.mp4 --concurrency=4
 
 ## 约束
 
-- 不使用仓库既有素材（`intro-video/`、`showcase/products/media/`、`demo/*/screenshots/`）；
+- 不使用仓库既有素材（`showcase/products/media/`、`demo/*/screenshots/`；旧 `intro-video/` 工程已退役删除）；
   界面画面全部为**现场截取**的真实运行页面。
 - 配乐全部程序化合成，无第三方版权义务。
 - 3D 段落为真实三维（three.js，相机推进 + 深度雾 + 视差），非平面伪 3D。

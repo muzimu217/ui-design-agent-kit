@@ -128,13 +128,13 @@ Apache-2.0；`npm ci --ignore-scripts && npm run verify && npm test` 三步复�
 | --- | --- | --- |
 | 自动化测试 | 131 项全绿 | `npm test` |
 | 静态校验 | 0 错误 0 警告 | `npm run verify` |
-| 评测场景语料 | 208 条 | `evals/scenarios.json` |
+| 评测场景语料 | 210 条 | `evals/scenarios.json` |
 | 知识库机制卡 | 12 张（构成 4 / 运动 4 / 秩序 4） | `docs/knowledge-base/index.json` |
 | 能力登记 | 11 项（4 已接入 / 6 评估中 / 1 不接入） | `canvas/capabilities.json` |
 | 产物墙 | 4 件，六维实测入墙 | `canvas/artifacts.json` |
 | 反例墙 | 5 条，全部已修复，已删除 0 | `canvas/regressions.json` |
 | 接入宿主 | 13 家 | `README.md` |
-| 迭代记录 | 248 条 | `docs/iteration-log.md` |
+| 迭代记录 | 249 条 | `docs/iteration-log.md` |
 
 > 所有数字均从仓库内结构化数据文件读取，可在克隆后自行核对；工作台页面上的同一组数字由同一份数据计算。
 

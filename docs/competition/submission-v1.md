@@ -68,7 +68,7 @@ Installed  ≠  Configured  ≠  Connected  ≠  Tool-callable  ≠  Visually Ve
 仓库内置的画布工作台不是营销页，而是**从仓库自身 JSON 数据计算出来的**证据面板：
 
 - **产物墙**：每件产物带六维实测徽章（桌面/移动/键盘/对比度/降动效/控制台）、版本、来源（AI 直出 / AI+人工）、构建时缩略图快照
-- **反例墙**：本项目自己的真实缺陷，只增不删（当前 5 条，全部已修复，`已删除：0`）
+- **反例墙**：本项目自己的真实缺陷，只增不删（当前 6 条，全部已修复，`已删除：0`）
 - **知识库**：12 张机制卡，按构成/运动/秩序三层归档，每张带可编码参数
 - **能力登记**：11 项外部能力按四问契约登记（谁产出/边界/验收口径/证据），4 项已接入
 
@@ -102,7 +102,7 @@ Installed  ≠  Configured  ≠  Connected  ≠  Tool-callable  ≠  Visually Ve
 
 ### 4.1 占据行业图谱的第四层：验证纪律层
 
-对头部工具的持续对标（v0 / bolt.new / Lovable / Figma Make / Onlook / 国产三强等，累计 88 轮）显示：生成层、模型层、托管层均有强手，**验证纪律层长期空置**。本项目的六道门 + 五级证据 + 可复核产物墙是这一层的完整实现。
+对头部工具的持续对标（v0 / bolt.new / Lovable / Figma Make / Onlook / 国产三强等，累计 89 轮）显示：生成层、模型层、托管层均有强手，**验证纪律层长期空置**。本项目的六道门 + 五级证据 + 可复核产物墙是这一层的完整实现。
 
 ### 4.2 证据链可审计，且审计本身被审计
 
@@ -122,19 +122,19 @@ Apache-2.0；`npm ci --ignore-scripts && npm run verify && npm test` 三步复�
 
 ---
 
-## 五、当前状态（截至 2026-10-21）
+## 五、当前状态（截至 2026-10-23）
 
 | 指标 | 数值 | 复核方式 |
 | --- | --- | --- |
 | 自动化测试 | 131 项全绿 | `npm test` |
 | 静态校验 | 0 错误 0 警告 | `npm run verify` |
-| 评测场景语料 | 198 条 | `evals/scenarios.json` |
+| 评测场景语料 | 212 条 | `evals/scenarios.json` |
 | 知识库机制卡 | 12 张（构成 4 / 运动 4 / 秩序 4） | `docs/knowledge-base/index.json` |
 | 能力登记 | 11 项（4 已接入 / 6 评估中 / 1 不接入） | `canvas/capabilities.json` |
 | 产物墙 | 4 件，六维实测入墙 | `canvas/artifacts.json` |
-| 反例墙 | 5 条，全部已修复，已删除 0 | `canvas/regressions.json` |
+| 反例墙 | 6 条，全部已修复，已删除 0 | `canvas/regressions.json` |
 | 接入宿主 | 13 家 | `README.md` |
-| 迭代记录 | 242 条 | `docs/iteration-log.md` |
+| 迭代记录 | 249 条 | `docs/iteration-log.md` |
 
 > 所有数字均从仓库内结构化数据文件读取，可在克隆后自行核对；工作台页面上的同一组数字由同一份数据计算。
 

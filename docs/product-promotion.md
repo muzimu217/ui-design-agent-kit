@@ -280,7 +280,7 @@ Repo: https://github.com/muzimu217/ui-design-agent-kit
 仓库：https://github.com/muzimu217/ui-design-agent-kit
 ```
 
-发布建议：英文版先发，附上展厅首屏截图或 20 秒介绍视频；中文版间隔 2 小时以上再发。
+发布建议：英文版先发，附上展厅首屏截图或 2 分 45 秒介绍视频；中文版间隔 2 小时以上再发。
 
 ## 反馈方向
 

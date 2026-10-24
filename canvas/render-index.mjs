@@ -27,6 +27,19 @@ async function main() {
     thumbs = new Set((await readdir(path.join(ROOT, "output", "thumbs"))).filter((f) => f.endsWith(".png")));
   } catch { /* 缩略目录不存在时不注入 */ }
 
+  // 审计报告区（增量 62）：聚合器 output/audit-report.json 上界面——
+  // "持久化要使用"：机验回执不只落盘，还要可见。缺文件不渲染区块（回退非错误）。
+  let audit = null;
+  try {
+    audit = JSON.parse(await readFile(path.join(ROOT, "output", "audit-report.json"), "utf8"));
+  } catch { /* 未生成时不渲染 */ }
+  const auditSection = audit
+    ? `<h2 class="sec">审计报告（聚合机验 · <span class="badge" aria-label="聚合审计终态 ${esc(audit.run_status === "complete" ? "完整" : "未完整 + 确切原因已披露")}">${esc(audit.run_status)}</span> · ${audit.counts?.confirmed ?? 0}/${audit.counts?.total ?? 0} confirmed）</h2>
+       <p class="cap-intro">聚合七项机验为一份机器可读发现报告（output/audit-report.json）；终态只有 complete 与 incomplete+确切原因 两种——adopted 自 cloudflare/security-audit-skill（学循环 89）。复核命令 <code>npm run audit:report</code>。</p>
+       <div class="audit-rows">${(audit.findings ?? []).map((f) => `<div class="audit-row"><span class="badge" aria-label="发现 ${esc(f.id)} 判定 ${f.status === "confirmed" ? "已确认" : "待验证"}">${f.status === "confirmed" ? "✓" : "?"} ${esc(f.status)}</span><span class="audit-id">${esc(f.id)}</span><span class="audit-ev">${esc(String(f.evidence)).slice(0, 120)}</span></div>`).join("")}</div>
+       <p class="wall-legend">报告头：${esc(audit.head ?? "?")}${audit.workingTreeDirty ? " · 工作区有未提交改动（如实记录）" : " · 工作区干净"} · 生成于 ${esc(String(audit.generatedAt ?? "").slice(0, 19))}${audit.run_status === "incomplete" ? ` · 原因：${esc(audit.incomplete_reason ?? "")}` : ""}</p>`
+    : "";
+
   // 能力接入登记表：外部生成能力按契约登记（谁产出/边界/验收/证据），
   // adopted 才可用于交付；空缺（evaluating）如实展示为"未接入"而非隐藏。
   let capabilities = { capabilities: [] };
@@ -141,7 +154,7 @@ async function main() {
     : "";
   const stageEntries = Object.entries(state.stages ?? {});
   const gates = state.gates ?? {};
-  const gateColor = { passed: "#34d399", gated: "#f472b6", active: "#22d3ee", blocked: "#f87171", pending: "#6b7280" };
+  const gateColor = { passed: "#34d399", gated: "#f472b6", active: "#22d3ee", blocked: "#f87171", pending: "#9ca3af" };
 
   const gatePills = Object.entries(gates)
     .map(([id, st]) => `<span class="pill" style="border-color:${gateColor[st] ?? gateColor.pending}">${esc(id)} · ${esc(st)}</span>`)
@@ -332,6 +345,13 @@ async function main() {
   .mc-col { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
   .mc-col h3 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); margin:0 0 10px; }
   .mc-row { display:flex; gap:10px; margin:6px 0; min-width:0; }
+  /* 审计报告区（增量 62）：每行=判定徽章+发现 id+证据摘要；徽章沿用 .badge 以共享 aria 守卫。 */
+  .audit-rows { display:grid; gap:6px; margin-bottom:10px; }
+  .audit-row { display:flex; gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 12px; min-width:0; }
+  .audit-row .badge { flex:none; }
+  .audit-id { font-family:ui-monospace,monospace; font-size:12px; color:#a78bfa; flex:none; }
+  .audit-ev { color:var(--dim); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+  @media (max-width:640px) { .audit-ev { white-space:normal; } }
   .mc-k { color:var(--dim); min-width:76px; flex:none; font-size:12px; }
   .mc-v { flex:1; min-width:0; overflow-wrap:anywhere; font-size:13px; }
   @media (max-width: 640px) { .mc { grid-template-columns:1fr; } }
@@ -451,6 +471,7 @@ async function main() {
   ${capSection}
   ${kbSection}
   ${regSection}
+  ${auditSection}
   <h2 class="sec">产物墙（KPI4 · ${artifacts.artifacts.length} 件 · <span id="wall-mode">全部</span>）</h2>
   <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
     <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>

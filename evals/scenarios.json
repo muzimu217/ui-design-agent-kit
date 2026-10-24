@@ -3328,5 +3328,229 @@
    "Abandoning current roadmap to chase the category",
    "Star counts adopted as success metrics"
   ]
+ },
+ {
+  "id": "terminal-state-contract",
+  "request": "A validation run has exactly two legal terminal states: (a) all artifacts written and every validator passing, or (b) run_status 'incomplete' recorded with its exact reason disclosed in the report — never a silent partial run; crashes must surface as failed invocations, not truncated reports.",
+  "context": "cloudflare/security-audit-skill's contract: 'Do not end the run before one of exactly two terminal states... Never stop mid-phase.'",
+  "passCriteria": [
+   "Run ends only in complete or incomplete-with-reason",
+   "Incomplete reason names the exact missing fact",
+   "The report is written even when incomplete",
+   "Exit code distinguishes complete (0) from incomplete (1)"
+  ],
+  "failConditions": [
+   "Partial reports presented as finished",
+   "Crash swallowed into a 'passed' result",
+   "Incomplete without a stated reason"
+  ]
+ },
+ {
+  "id": "needs-validation-verdict-discipline",
+  "request": "A checked-but-unresolved item carries the verdict needs_validation with the exact missing fact and no severity — it is not a low-confidence pass, not a failure, and must not be graded beyond what was observed; unobserved and observed-but-blocked are distinct states.",
+  "context": "cloudflare's three-verdict model: confirmed has a complete source trace; needs_validation names the exact unresolved fact and carries no severity.",
+  "passCriteria": [
+   "Three-state verdicts: confirmed / needs_validation / (rejected or fail)",
+   "needs_validation carries the exact missing fact",
+   "No severity/grade assigned to needs_validation items",
+   "Aggregates report counts per verdict, not a single boolean"
+  ],
+  "failConditions": [
+   "Binary pass/fail collapsing observed-but-blocked into unobserved",
+   "Grading a needs_validation item anyway",
+   "Vague 'unknown' without the exact missing fact"
+  ]
+ },
+ {
+  "id": "survival-position-cloud-lock-in",
+  "request": "Track the survival position of generation-only cloud tools: when a tracked tool announces discontinuation with a data-export window, record the closure timeline, update the market landscape (remove from living-competitor charts), and read the export window as evidence that cloud lock-in is the vulnerability — our own artifacts must stay exportable and rebuildable offline.",
+  "context": "Motiff (international) discontinued with export until Oct 31, following its Chinese counterpart's closure recorded 2026-10-11; the whole product line is dead.",
+  "passCriteria": [
+   "Closure recorded with dates and screenshot at first observation",
+   "Landscape chart updated (tool removed from living competitors)",
+   "Export-window pattern named as the lock-in tell",
+   "Our offline-export story verified rather than merely claimed"
+  ],
+  "failConditions": [
+   "Dead tool left in living-competitor comparisons",
+   "Local-first claimed without an actual export/rebuild path",
+   "Schadenfreude framing instead of survival-position analysis"
+  ]
+ },
+ {
+  "id": "measure-it-claim-needs-published-methodology",
+  "request": "A 'we measure it' marketing claim counts as fourth-layer periphery only when a published, reproducible methodology exists; scoring text without receipts, samples, or criteria never earns observation credit and is recorded as unobservable (null), not as a competitor in the verification layer.",
+  "context": "A dying product's homepage said 'We don't just call it the best. We measure it' with 24/7 testing and expert review — no methodology, samples, or receipts anywhere.",
+  "passCriteria": [
+   "Claim recorded with its exact wording and location",
+   "Methodology/receipts checked and marked unobservable when absent",
+   "Verification-layer occupancy unchanged (claim ≠ occupant)",
+   "The contrast with our machine-readable receipts stated in the insight"
+  ],
+  "failConditions": [
+   "Counting marketing measurement text as fourth-layer occupancy",
+   "Quoting the claim as evidence the layer is contested",
+   "Skipping the check because the product is dying"
+  ]
+ },
+ {
+  "id": "survivor-anti-lockin-behaviors",
+  "request": "After a tracked competitor dies from cloud lock-in, recheck the survivors for anti-lock-in behaviors (export interoperability, offline saving, private deployment) and record whether those behaviors are new adaptations or standing strategy; position our own offline-rebuild guarantee against them without claiming parity of scope.",
+  "context": "16 days after Motiff's closure, survivor js.design's homepage prominently features import/export ('进得来出得去'), offline file saving, and private-deployment consulting — while its AI-generation positioning receded to a secondary section.",
+  "passCriteria": [
+   "Survivor behaviors enumerated with homepage evidence",
+   "Contrast drawn with the dead tool's lock-in failure mode",
+   "Our offline guarantee described by its actual mechanism (export reconciliation, rebuild-from-source)",
+   "AI-narrative recession noted as a market signal"
+  ],
+  "failConditions": [
+   "Survival lessons drawn without homepage-level evidence",
+   "Claiming our guarantee exceeds its actual mechanism",
+   "Ignoring the death that motivated the recheck"
+  ]
+ },
+ {
+  "id": "renderable-evidence-contract-verified",
+  "request": "A video composition with a machine-checked timeline contract must also prove renderability: probe stills from the actual renderer at key scenes, verified for dimensions, non-degenerate size, and luma band — contract checks alone leave the composition at Installed, not Visually Verified; probe frames are evidence, never a video deliverable.",
+  "context": "UakIntro60 had timeline + sfx contracts but had never emitted a frame; a 6-frame probe (including the three.js scene) confirmed 1920×1080, 0.6-1.5MB, YAVG 27-39 per frame.",
+  "passCriteria": [
+   "Still rendered per key scene family including the heaviest (3D) scene",
+   "Each frame verified: exact dimensions, byte-size floor, luma band",
+   "Receipt written with explicit run_status and terminal-state contract",
+   "Probe frames labeled as evidence, full render still gated on user approval"
+  ],
+  "failConditions": [
+   "Contract checks cited as proof the video renders",
+   "Blank or wrong-dimension frames counted as verified",
+   "Probe stills shipped as if they were the deliverable video"
+  ]
+ },
+ {
+  "id": "absorbed-product-capability-tracking",
+  "request": "When a tracked standalone product is absorbed into a parent platform (URL dies, capability survives as a feature), record the absorption — update the host-integration list and object pool to the new name and surface, judge survival by capability continuity rather than product-name mortality, and re-verify any integration instructions still point at a live surface.",
+  "context": "github.com/copilot/workspace 404s; Copilot Workspace's spec→plan→implement form was absorbed into the desktop app's unified 'Manage agent-driven work' workspace.",
+  "passCriteria": [
+   "Dead URL recorded by direct test, not assumption",
+   "Object pool and host list renamed to the living surface",
+   "Survival judged on capability continuity",
+   "Absorption contrasted with outright closure (Motiff)"
+  ],
+  "failConditions": [
+   "Integration docs still naming the dead product URL",
+   "Counting absorption as closure",
+   "Pool entry silently dropped without a disposition"
+  ]
+ },
+ {
+  "id": "mission-control-form-vs-species",
+  "request": "When a major platform ships a mission-control surface for managing agent-driven work, compare form against species: their panel manages agent progress and usage quota, ours separates execution state from evidence state with per-artifact receipts — same information architecture does not mean same product, and the difference must be stated with the exact vocabulary of each side.",
+  "context": "Copilot's desktop workspace manages multi-agent tasks from one place; our canvas workbench separates 执行态 from 证据态 with evidence counts per artifact.",
+  "passCriteria": [
+   "Both sides' exact framing quoted",
+   "Form similarity acknowledged explicitly",
+   "Species difference (what the panel is FOR) argued with specifics",
+   "Fourth-layer occupancy assessment updated (governance vocabulary ≠ evidence receipts)"
+  ],
+  "failConditions": [
+   "Claiming the platform copied or validated us without the species argument",
+   "Ignoring the form overlap entirely",
+   "Treating governance vocabulary as verification-layer occupancy"
+  ]
+ },
+ {
+  "id": "sustained-presence-vs-spike",
+  "request": "A trending/category signal must be re-observed after a cooldown before it upgrades from spike to trend: single-day #1 can be a news pulse, while repeated top presence with continued daily growth across 48h+ is category-formation evidence; interval re-observation, not memory, is the upgrade path.",
+  "context": "cloudflare/security-audit-skill stayed #1 across 48h (36.9k→42.4k stars, +2716/day) — upgrading the earlier 'window is shrinking' inference to an observation.",
+  "passCriteria": [
+   "Cooldown re-observation performed with delta numbers",
+   "Spike vs trend distinction explicitly drawn",
+   "Prior inference re-graded (inference → observation)",
+   "New family members recorded, not just the original signal"
+  ],
+  "failConditions": [
+   "Single observation treated as trend",
+   "Re-observation skipped because 'we already know'",
+   "Deltas asserted without numbers"
+  ]
+ },
+ {
+  "id": "append-only-historical-proof",
+  "request": "An append-only claim (nothing ever deleted) must be provable from history, not just current shape: diff every historical version's entry-id set against the next, verify no id ever disappears, flag post-hoc edits of existing entries as needs_validation, and check the working tree against HEAD so uncommitted deletions surface — a claim that cannot be refuted from evidence is a claim that was never tested.",
+  "context": "The regressions wall claimed 只增不删; the adversarial script tried to disprove it via git history (3 versions, 5 entries, zero deletions, zero mutations) — refutation failed, claim survives.",
+  "passCriteria": [
+   "Every historical version examined, not just HEAD",
+   "Id disappearance anywhere in history = refutation",
+   "Post-hoc edits flagged as needs_validation with entry names",
+   "Working tree compared against HEAD (uncommitted deletions surface)"
+  ],
+  "failConditions": [
+   "Current-file shape check cited as append-only proof",
+   "History read failures silently swallowed into 'complete'",
+   "Uncommitted deletions invisible to the verifier"
+  ]
+ },
+ {
+  "id": "survivor-behavior-convergence",
+  "request": "After a market death, survivor rechecks must test for behavioral convergence: do multiple survivors independently converge on anti-lock-in behaviors (interoperability, offline saving, private deployment, version history)? Convergence across brands upgrades a single observation into a market pattern; our own offline-rebuild position is plotted at the far end of that spectrum.",
+  "context": "After Motiff's closure, both js.design (91) and Pixso (94) prominently feature export interoperability, history/version recovery, and deployment options — the same anti-lock-in family across brands.",
+  "passCriteria": [
+   "Each survivor's behaviors evidenced from its own homepage",
+   "Cross-brand convergence named as a pattern, not coincidence",
+   "Our position located on the spectrum with its actual mechanism",
+   "Landscape chart updated per survivor"
+  ],
+  "failConditions": [
+   "Single-survivor behavior generalized without a second data point",
+   "Survivors treated as identical (differences flattened)",
+   "Our advantage claimed beyond its mechanism"
+  ]
+ },
+ {
+  "id": "six-dim-claims-receipt-reconciliation",
+  "request": "The artifact wall's six-dim prose asserts measured numbers (items checked, focusables reachable); those claims must be reconciled against the live measurement receipt on every audit run — a claim whose number no longer matches the receipt is stale memory presented as verification, and the fix is re-measurement plus honest re-enumeration, not editing the receipt.",
+  "context": "wall-reconcile caught canvas-index-hub's keyboard claim stuck at 增量 28's '11 项' while the live receipt measured 12/15 focusables (the page gained the audit section since).",
+  "passCriteria": [
+   "Live receipt generated by the real checker at reconcile time",
+   "Every numeric claim in the prose checked against receipt numbers",
+   "Mismatch → needs_validation with exact claimed vs measured values",
+   "Fix = re-measure and honestly re-enumerate (no fabrication)"
+  ],
+  "failConditions": [
+   "Editing the receipt to match stale prose",
+   "Prose counts asserted without a reconciliation pass",
+   "Composition details invented when the enumeration is uncertain"
+  ]
+ },
+ {
+  "id": "mastergo-mcp-writeback-tool-as-resource",
+  "request": "When a design tool exposes an MCP server that lets coding agents write back to the canvas (create layers, modify properties, adjust layout), treat the tool as an agent-addressable resource rather than a competitor surface: record the capability with its exact bidirectional scope, and note that official marketing for such integrations describes intent, not a verified tool-call — the kit's evidence ladder (Installed ≠ Configured ≠ Connected ≠ Tool-callable ≠ Visually Verified) applies to external products too.",
+  "context": "Round-95 MasterGo recheck: the AI page's fourth capability is MCP protocol support ('break the read-only limit, bidirectional interaction', explicitly naming Cursor/Codex), captured first-hand from the rendered page; no tool-call was attempted.",
+  "passCriteria": [
+   "Capability recorded at the level actually observed (official page text, not tool-call)",
+   "Bidirectional scope stated exactly (layer create / property modify / layout adjust)",
+   "No severity or capability graded beyond the observed level",
+   "Kit position unchanged: gating workflow stays complementary (agent writes need acceptance, not just access)"
+  ],
+  "failConditions": [
+   "Recording the MCP integration as verified or tool-callable",
+   "Treating a survivor's write-back API as a reason to drop acceptance gates",
+   "Conflating vendor names (MasterGo/蓝湖 vs Motiff/幽澜)"
+  ]
+ },
+ {
+  "id": "design-md-input-contract-convergence",
+  "request": "When a generation product accepts a markdown design contract (design.md) as an input format alongside natural language and reference images, recognize it as industry convergence toward design-as-contract and position your own contract artifact by direction: their markdown describes what to generate before generation; your contract locks what was generated and how it is accepted after — the two are complementary ends of one pipeline, not competing features.",
+  "context": "Round-95 MasterGo AI 快搭 lists 'natural language / reference image / design.md' as peer input formats on the official AI page; the kit's gate D delivers a design contract as the acceptance-side artifact.",
+  "passCriteria": [
+   "Convergence recorded with the exact input-format list observed",
+   "Direction distinction stated (input-side intent vs acceptance-side evidence)",
+   "No redesign of the kit's contract to mimic the vendor's format",
+   "Independent-engine verification stance preserved (vendor self-checks noted as self-scoped)"
+  ],
+  "failConditions": [
+   "Declaring the kit's contract obsolete because vendors accept design.md",
+   "Copying the vendor's input format into the kit without a gate decision",
+   "Treating vendor-side 'generation with check & repair' as independent verification"
+  ]
  }
 ]

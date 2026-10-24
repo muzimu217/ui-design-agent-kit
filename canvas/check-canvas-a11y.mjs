@@ -109,7 +109,10 @@ for (const page of dataOnly ? [] : pages) {
   const url = `${base}/${page}`;
   await p.goto(url, { waitUntil: "domcontentloaded" });
 
-  // Contrast on real computed styles of text-bearing elements.
+  // Contrast on real computed styles of text-bearing elements. reg-006 类修复：
+  // 旧采样器按选择器白名单取 ≤40 个节点，.sst/.audit-id/超位 .st 徽标从未
+  // 入样——axe-core 对抗重测（增量 67）恰好在盲区抓到 10 个真违例。现在改为
+  // 全部带直接文本的元素，上限 200 并如实记 truncated 旗标（截断也是数据）。
   const contrast = await p.evaluate(() => {
     const parse = (c) => {
       const m = (c || "").match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
@@ -125,12 +128,12 @@ for (const page of dataOnly ? [] : pages) {
     };
     const bodyBg = parse(getComputedStyle(document.body).backgroundColor) ?? [10, 10, 15];
     const samples = [];
-    const nodes = document.querySelectorAll("h1, h2, p, summary, .raw, .k, .v, .st, .snote, .round, footer, code");
-    let i = 0;
-    for (const el of nodes) {
-      if (i >= 40) break;
-      const text = (el.textContent || "").trim();
-      if (!text) continue;
+    let truncated = false;
+    for (const el of document.querySelectorAll("body *")) {
+      if (samples.length >= 200) { truncated = true; break; }
+      // 只取"直接持有文本"的元素（文本在子元素里的容器不重复采样）
+      const direct = Array.from(el.childNodes).some((n) => n.nodeType === 3 && n.textContent.trim());
+      if (!direct) continue;
       // effective panel background: nearest ancestor with non-transparent bg
       let bgc = bodyBg, node = el;
       while (node && node !== document.body) {
@@ -141,11 +144,10 @@ for (const page of dataOnly ? [] : pages) {
       }
       const fg = parse(getComputedStyle(el).color);
       if (!fg) continue;
-      samples.push({ tag: el.tagName.toLowerCase(), ratio: +ratio(fg, bgc).toFixed(2), text: text.slice(0, 24) });
-      i++;
+      samples.push({ tag: el.tagName.toLowerCase(), cls: String(el.className && el.className.baseVal === undefined ? el.className : "").split(" ")[0] || el.tagName.toLowerCase(), ratio: +ratio(fg, bgc).toFixed(2), text: (el.textContent || "").trim().slice(0, 24) });
     }
     const below = samples.filter((s) => s.ratio < 4.5);
-    return { checked: samples.length, below };
+    return { checked: samples.length, truncated, below };
   });
 
   // Keyboard: tab through the page, record focusable sequence.
@@ -304,10 +306,13 @@ for (const page of dataOnly ? [] : pages) {
 // Cross-page alias coverage — every declared alias must be surfaced on at
 // least one knowledge-card page (the site renders all cards; the workbench a
 // recent slice by design). Missing everywhere = dead data, fail the receipt.
+// --data-only 模式没有访问任何页面，跨页断言不适用（否则 pages 为空把全部
+// 别名误判为缺失，回执恒 false）。
 const kbSurfaced = new Set(receipt.pages.flatMap((p) => (p.aliasGuard && !p.aliasGuard.skipped ? p.aliasGuard.present : [])));
 const aliasMissing = kbAliases.filter((a) => !kbSurfaced.has(a));
-receipt.aliasCoverage = { ok: kbAliases.length === 0 || aliasMissing.length === 0, missing: aliasMissing };
-if (aliasMissing.length) receipt.ok = false;
+const aliasApplicable = !dataOnly;
+receipt.aliasCoverage = { ok: !aliasApplicable || kbAliases.length === 0 || aliasMissing.length === 0, ...(aliasApplicable ? { missing: aliasMissing } : { skipped: "data-only" }) };
+if (aliasApplicable && aliasMissing.length) receipt.ok = false;
 
 await browser.close();
 server.close();

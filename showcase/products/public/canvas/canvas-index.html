@@ -23,6 +23,7 @@
   .sid { font-weight:600; }
   .sst { font-size:12px; margin:2px 0 6px; }
   .snote { color:var(--dim); font-size:12px; }
+  .sev { color:var(--dim); font-size:11.5px; margin-top:6px; padding-top:6px; border-top:1px dashed var(--line); overflow-wrap:anywhere; }
   h2.sec { font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--dim); margin:22px 0 10px; }
   details.art { background:var(--panel); border:1px solid var(--line); border-radius:10px; margin-bottom:10px; }
   // 图标/条目微动效 0.5s 三段式（知识卡 icon-motion-500ms）：badge hover 时 0.5s 内完成抬起-高亮-回稳，降动效直接高亮无位移。
@@ -40,9 +41,10 @@
   .chain-row:hover { border-color:var(--accent); }
   .chain-row .t { font-weight:600; flex:1; min-width:0; overflow-wrap:anywhere; }
   .chain-row .round, .chain-row .open { color:var(--dim); font-size:12px; flex:none; }
-  .wall-filter { display:flex; gap:8px; margin-bottom:10px; }
+  .wall-filter { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; } /* wrap 为类级修复：此前靠 shrink 硬压按钮，320px 曾溢出 4px（增量 70） */
   .wf-sep { color:var(--dim); font-size:12px; margin:0 4px; }
   .wf-btn { background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:3px 12px; font:inherit; font-size:12px; color:var(--dim); cursor:pointer; }
+  #stage-mode { flex-basis:100%; } /* 状态徽标独占一行：末行挤压曾在 320px 溢出 4px（增量 70 实测） */
   .wf-btn.is-on { border-color:var(--accent); color:#c4b5fd; }
   .mc { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
   .mc-col { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
@@ -171,37 +173,48 @@
         <span class="task-exec">执行：contract/build</span>
         <span class="task-ev">证据：2/6 阶段通过</span>
       </div>
-  <h2 class="sec">门径状态</h2>
+  <h2 class="sec">门径状态（阶段→证据面板 · tab 过滤）</h2>
   <div><span class="pill" style="border-color:#34d399">A · passed</span><span class="pill" style="border-color:#34d399">B · passed</span><span class="pill" style="border-color:#22d3ee">C · active</span><span class="pill" style="border-color:#9ca3af">D · pending</span><span class="pill" style="border-color:#9ca3af">E · pending</span><span class="pill" style="border-color:#9ca3af">F · pending</span></div>
-  <div class="stages"><div class="stage" style="--c:#34d399">
+  <div class="wall-filter" role="group" aria-label="阶段过滤">
+    <button type="button" class="wf-btn is-on" data-stage-mode="all" aria-pressed="true" aria-label="过滤阶段：全部" onclick="stageFilter('all')">全部</button><button type="button" class="wf-btn" data-stage-mode="brief" aria-pressed="false" aria-label="过滤阶段：brief" onclick="stageFilter('brief')">brief</button><button type="button" class="wf-btn" data-stage-mode="reference" aria-pressed="false" aria-label="过滤阶段：reference" onclick="stageFilter('reference')">reference</button><button type="button" class="wf-btn" data-stage-mode="contract" aria-pressed="false" aria-label="过滤阶段：contract" onclick="stageFilter('contract')">contract</button><button type="button" class="wf-btn" data-stage-mode="build" aria-pressed="false" aria-label="过滤阶段：build" onclick="stageFilter('build')">build</button><button type="button" class="wf-btn" data-stage-mode="verify" aria-pressed="false" aria-label="过滤阶段：verify" onclick="stageFilter('verify')">verify</button><button type="button" class="wf-btn" data-stage-mode="deliver" aria-pressed="false" aria-label="过滤阶段：deliver" onclick="stageFilter('deliver')">deliver</button>
+    <span class="snote" id="stage-mode">全部</span>
+  </div>
+  <p class="snote" id="stage-empty" hidden>该阶段无卡片（过滤结果为空）</p>
+  <div class="stages"><div class="stage" style="--c:#34d399" data-stage="brief">
         <div class="sid">brief</div>
         <div class="sst" style="color:#34d399">passed</div>
         <div class="snote">门 A 方向已获用户裁定（2026-10-19）：工作台形态升级+艺术画面明示要求+能力地平线四序列；阶段 4 新增</div>
+        <div class="sev">docs/canvas-workbench-plan.md + docs/identity-and-direction.md（工作台形态与能力地平线节）</div>
       </div>
-<div class="stage" style="--c:#34d399">
+<div class="stage" style="--c:#34d399" data-stage="reference">
         <div class="sid">reference</div>
         <div class="sst" style="color:#34d399">passed</div>
         <div class="snote">对标已集：Onlook 画布机制/bolt 设计系统专题/v0 Agentic+设计系统（学习循环 20-26 轮），第四层定位论证完成</div>
+        <div class="sev">docs/competitive-insights/2026-10-11-onlook/insight.md</div>
       </div>
-<div class="stage" style="--c:#22d3ee">
+<div class="stage" style="--c:#22d3ee" data-stage="contract">
         <div class="sid">contract</div>
         <div class="sst" style="color:#22d3ee">active</div>
         <div class="snote">门 A 已通过：按 design-contract 定画布语义 token 与动效参数（阶段 4 艺术画面升级的契约层）</div>
+        
       </div>
-<div class="stage" style="--c:#22d3ee">
+<div class="stage" style="--c:#22d3ee" data-stage="build">
         <div class="sid">build</div>
         <div class="sst" style="color:#22d3ee">active</div>
         <div class="snote">增量 1：接入真实任务状态（本文件即画布工作台自身的第一份活数据——吃狗粮）</div>
+        <div class="sev">scripts/workflow-diagram/（复用既有画布壳：自包含 HTML/相机/证据嵌入/visual 验收）</div>
       </div>
-<div class="stage" style="--c:#9ca3af">
+<div class="stage" style="--c:#9ca3af" data-stage="verify">
         <div class="sid">verify</div>
         <div class="sst" style="color:#9ca3af">pending</div>
         <div class="snote">每增量过 cli visual 无头多视口回执 + 六维验收</div>
+        
       </div>
-<div class="stage" style="--c:#9ca3af">
+<div class="stage" style="--c:#9ca3af" data-stage="deliver">
         <div class="sid">deliver</div>
         <div class="sst" style="color:#9ca3af">pending</div>
         <div class="snote">产物入画布产物墙，与对标产物六维并排（KPI4）</div>
+        
       </div></div>
   <h2 class="sec">解析链路（1 条）</h2><a class="chain-row" href="chain-canvas-workbench.html">
         <span class="badge" aria-label="解析链路确认状态：用户已比对确认">✓ 已确认</span>
@@ -374,7 +387,7 @@
   <h2 class="sec">审计报告（聚合机验 · <span class="badge" aria-label="聚合审计终态 完整">complete</span> · 8/8 confirmed）</h2>
        <p class="cap-intro">聚合多项机验为一份机器可读发现报告（计数以 findings 行为准）（output/audit-report.json）；终态只有 complete 与 incomplete+确切原因 两种——adopted 自 cloudflare/security-audit-skill（学循环 89）。复核命令 <code>npm run audit:report</code>。</p>
        <div class="audit-rows"><div class="audit-row"><span class="badge" aria-label="发现 kb-integrity 判定 已确认">✓ confirmed</span><span class="audit-id">kb-integrity</span><span class="audit-ev">docs/knowledge-base/index.json: 12 cards, layers={&quot;composition&quot;:4,&quot;motion&quot;:4,&quot;order&quot;:4}</span></div><div class="audit-row"><span class="badge" aria-label="发现 caps-integrity 判定 已确认">✓ confirmed</span><span class="audit-id">caps-integrity</span><span class="audit-ev">canvas/capabilities.json: 11 entries, statuses valid=true</span></div><div class="audit-row"><span class="badge" aria-label="发现 regressions-append-only 判定 已确认">✓ confirmed</span><span class="audit-id">regressions-append-only</span><span class="audit-ev">canvas/regressions.json: 6 entries, all carry id/date/lesson=true</span></div><div class="audit-row"><span class="badge" aria-label="发现 sfx-hero 判定 已确认">✓ confirmed</span><span class="audit-id">sfx-hero</span><span class="audit-ev">scripts/sfx-check.mjs: 36 items, issues=[]</span></div><div class="audit-row"><span class="badge" aria-label="发现 sfx-60 判定 已确认">✓ confirmed</span><span class="audit-id">sfx-60</span><span class="audit-ev">scripts/sfx-check.mjs: 18 items, issues=[]</span></div><div class="audit-row"><span class="badge" aria-label="发现 timeline-60 判定 已确认">✓ confirmed</span><span class="audit-id">timeline-60</span><span class="audit-ev">scripts/timeline-check.mjs: 10 items, issues=[]</span></div><div class="audit-row"><span class="badge" aria-label="发现 regressions-history 判定 已确认">✓ confirmed</span><span class="audit-id">regressions-history</span><span class="audit-ev">git 全历史逐版本 id 集合对比（独立于当前形态检查的证据路径）: 4 versions / 6 entries</span></div><div class="audit-row"><span class="badge" aria-label="发现 submission-numbers 判定 已确认">✓ confirmed</span><span class="audit-id">submission-numbers</span><span class="audit-ev">数字对账通过：语料 216 / 知识卡 12 / 能力 11(4+6+1) / 产物 4 / 反例 6</span></div></div>
-       <p class="wall-legend">报告头：4239c40 · 工作区有未提交改动（如实记录） · 生成于 2026-10-25T19:07:56</p>
+       <p class="wall-legend">报告头：5cd98a1 · 工作区有未提交改动（如实记录） · 生成于 2026-10-25T20:04:30</p>
   <h2 class="sec">对抗验证回执（独立引擎证伪 · <span class="badge" aria-label="对抗仪器两台，本地运行">axe-core ×2</span>）</h2>
      <p class="cap-intro">axe-core 独立引擎试图证伪自有断言（color-contrast 单规则 / WCAG A/AA 全规则，serious+critical 门）；负自测先于真实扫描（引擎静默即测试无效）。回执落 output/adversarial-*.json；本地仪器不入 CI 路线。</p>
      <div class="audit-rows"><div class="audit-row"><span class="badge" aria-label="对抗回执 adversarial-contrast 终态 完整">complete ✓</span><span class="audit-id">adversarial-contrast</span><span class="audit-ev">独立引擎证伪失败：axe 在 4 页扫过 500 个文本节点，0 个 color-contrast 违例（另有 35 个 axe 无法判定节点如实记录）——自有断言经受住对抗重测</span></div><div class="audit-row"><span class="badge" aria-label="对抗回执 adversarial-a11y 终态 完整">complete ✓</span><span class="audit-id">adversarial-a11y</span><span class="audit-ev">独立引擎 WCAG A/AA 证伪失败：4 页 0 个 serious/critical 违例（0 条 moderate 以下提示如实记录，86 个 axe 无法判定节点）</span></div></div>
@@ -464,6 +477,24 @@
   </div>
 <script>
 // 六维过滤：measured 徽章 < 6 的条目在 full 模式下隐藏（纯展示切换，无网络无构建逻辑）。
+// 门径 tab 过滤（增量 70）：点阶段只看该阶段卡；空态必须接显隐（reg-003 类）。
+function stageFilter(stage) {
+  let visible = 0;
+  document.querySelectorAll('.stage[data-stage]').forEach((el) => {
+    const hide = stage !== 'all' && el.dataset.stage !== stage;
+    el.style.display = hide ? 'none' : '';
+    if (!hide) visible += 1;
+  });
+  document.querySelectorAll('.wf-btn[data-stage-mode]').forEach((b) => {
+    const on = b.dataset.stageMode === stage;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  document.getElementById('stage-mode').textContent = stage === 'all' ? '全部' : stage;
+  const empty = document.getElementById('stage-empty');
+  if (empty) empty.hidden = visible > 0;
+}
+
 function wallFilter(mode) {
   const full = mode === 'full';
   let visible = 0;

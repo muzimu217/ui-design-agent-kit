@@ -307,16 +307,26 @@ async function main() {
   const activeStages = stageEntries.filter(([, s]) => s.status === "active").map(([id]) => id);
   const gatedStages = stageEntries.filter(([, s]) => s.status === "gated").map(([id]) => id);
   const fullyVerified = artifacts.artifacts.filter((a) => sixKeys.filter((k) => /通过|实测|直拍|可达|全过/.test(String((a.sixDim ?? {})[k] ?? ""))).length === 6).length;
+  // 门径 tab 化（增量 70，阶段 4 首候选）：阶段卡带 data-stage 供过滤；
+  // evidence 字段此前从未渲染（增量 52 死数据缺陷类）——本轮随 tab 化一并
+  // 浮出：阶段卡补证据行，"该阶段的依据是什么"点开可见。
   const stageCards = stageEntries
     .map(([id, s]) => {
       const color = gateColor[s.status] ?? gateColor.pending;
-      return `<div class="stage" style="--c:${color}">
+      return `<div class="stage" style="--c:${color}" data-stage="${esc(id)}">
         <div class="sid">${esc(id)}</div>
         <div class="sst" style="color:${color}">${esc(s.status)}</div>
         <div class="snote">${esc(s.note ?? "")}</div>
+        ${(s.evidence ?? "").trim() ? `<div class="sev">${esc(s.evidence)}</div>` : ""}
       </div>`;
     })
     .join("\n");
+  const stageTabs = ["all", ...stageEntries.map(([id]) => id)];
+  const stageTabBar = `<div class="wall-filter" role="group" aria-label="阶段过滤">
+    ${stageTabs.map((id) => `<button type="button" class="wf-btn${id === "all" ? " is-on" : ""}" data-stage-mode="${id}" aria-pressed="${id === "all" ? "true" : "false"}" aria-label="过滤阶段：${id === "all" ? "全部" : esc(id)}" onclick="stageFilter('${id}')">${id === "all" ? "全部" : esc(id)}</button>`).join("")}
+    <span class="snote" id="stage-mode">全部</span>
+  </div>
+  <p class="snote" id="stage-empty" hidden>该阶段无卡片（过滤结果为空）</p>`;
 
   const html = `<!doctype html>
 <html lang="zh-CN" data-theme="dark">
@@ -343,6 +353,7 @@ async function main() {
   .sid { font-weight:600; }
   .sst { font-size:12px; margin:2px 0 6px; }
   .snote { color:var(--dim); font-size:12px; }
+  .sev { color:var(--dim); font-size:11.5px; margin-top:6px; padding-top:6px; border-top:1px dashed var(--line); overflow-wrap:anywhere; }
   h2.sec { font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--dim); margin:22px 0 10px; }
   details.art { background:var(--panel); border:1px solid var(--line); border-radius:10px; margin-bottom:10px; }
   // 图标/条目微动效 0.5s 三段式（知识卡 icon-motion-500ms）：badge hover 时 0.5s 内完成抬起-高亮-回稳，降动效直接高亮无位移。
@@ -360,9 +371,10 @@ async function main() {
   .chain-row:hover { border-color:var(--accent); }
   .chain-row .t { font-weight:600; flex:1; min-width:0; overflow-wrap:anywhere; }
   .chain-row .round, .chain-row .open { color:var(--dim); font-size:12px; flex:none; }
-  .wall-filter { display:flex; gap:8px; margin-bottom:10px; }
+  .wall-filter { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; } /* wrap 为类级修复：此前靠 shrink 硬压按钮，320px 曾溢出 4px（增量 70） */
   .wf-sep { color:var(--dim); font-size:12px; margin:0 4px; }
   .wf-btn { background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:3px 12px; font:inherit; font-size:12px; color:var(--dim); cursor:pointer; }
+  #stage-mode { flex-basis:100%; } /* 状态徽标独占一行：末行挤压曾在 320px 溢出 4px（增量 70 实测） */
   .wf-btn.is-on { border-color:var(--accent); color:#c4b5fd; }
   .mc { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
   .mc-col { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
@@ -486,8 +498,9 @@ async function main() {
     </div>
   </div>
   ${taskSection}
-  <h2 class="sec">门径状态</h2>
+  <h2 class="sec">门径状态（阶段→证据面板 · tab 过滤）</h2>
   <div>${gatePills}</div>
+  ${stageTabBar}
   <div class="stages">${stageCards}</div>
   ${chainSection}
   ${tasteSection}
@@ -519,6 +532,24 @@ async function main() {
   </div>
 <script>
 // 六维过滤：measured 徽章 < 6 的条目在 full 模式下隐藏（纯展示切换，无网络无构建逻辑）。
+// 门径 tab 过滤（增量 70）：点阶段只看该阶段卡；空态必须接显隐（reg-003 类）。
+function stageFilter(stage) {
+  let visible = 0;
+  document.querySelectorAll('.stage[data-stage]').forEach((el) => {
+    const hide = stage !== 'all' && el.dataset.stage !== stage;
+    el.style.display = hide ? 'none' : '';
+    if (!hide) visible += 1;
+  });
+  document.querySelectorAll('.wf-btn[data-stage-mode]').forEach((b) => {
+    const on = b.dataset.stageMode === stage;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  document.getElementById('stage-mode').textContent = stage === 'all' ? '全部' : stage;
+  const empty = document.getElementById('stage-empty');
+  if (empty) empty.hidden = visible > 0;
+}
+
 function wallFilter(mode) {
   const full = mode === 'full';
   let visible = 0;

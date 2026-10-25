@@ -3616,5 +3616,37 @@
    "Leaving checkedOn stale after observing the drift",
    "Framing the popularity spike as a reason to skip the ruling chain"
   ]
+ },
+ {
+  "id": "stage-evidence-dead-data-closure",
+  "request": "When a state schema carries a field (e.g. per-stage evidence paths) that the renderer never outputs, treat it as the dead-data defect class: surfacing it is not cosmetic — the interactive rework (tabs/filter) is the moment to close it, and the closure must be verifiable in the DOM (evidence line rendered per stage), not just claimed in the schema.",
+  "context": "Round-98 gate-path tabbing: canvas-workbench.state.json stages carried status/note/evidence, but the renderer output only status and note — evidence paths were stored since the state's creation and never surfaced; the tab rework rendered .sev lines and a live click test confirmed the evidence text appears when a stage is selected.",
+  "passCriteria": [
+   "Stored-but-unrendered field identified before adding new interactive layers",
+   "Evidence line rendered per stage and confirmed by a DOM-level interaction test",
+   "Filter interaction keeps the data one click away (select stage → see its evidence)",
+   "Schema, render, and receipt stay consistent (no second source of truth)"
+  ],
+  "failConditions": [
+   "Adding tabs/filter chrome while the underlying field stays unrendered",
+   "Claiming evidence surfacing without a DOM-level confirmation",
+   "Rendering evidence outside the aria/contrast guard coverage"
+  ]
+ },
+ {
+  "id": "flex-wrap-vs-shrink-overflow",
+  "request": "When a button/filter bar relies on flex-shrink to fit narrow viewports, recognize it as deferred overflow: shrinking works until the item count grows past the shrink floor, then the bar overflows by a few pixels at the smallest width — the class fix is flex-wrap:wrap (items wrap instead of squeezing), and the guard that catches it must sweep real device widths, not snapshots at one size.",
+  "context": "Round-98: adding 7 stage-filter buttons to a .wall-filter bar without flex-wrap made the status span overflow 4px at 320px only (17-width guard caught it); the earlier 5-button wall bar had been silently held together by shrink.",
+  "passCriteria": [
+   "Overflow attributed to the missing wrap, not to the newest button's text",
+   "Fix applied at the container class level (both filter bars benefit)",
+   "17-width sweep re-run green after the fix",
+   "The near-miss history (shrink-held bar) recorded so the pattern is searchable"
+  ],
+  "failConditions": [
+   "Fixing by shortening the new button labels instead of enabling wrap",
+   "Adjusting only the 320px case while other widths still rely on shrink",
+   "Removing the wide-sweep guard because 'it passes now'"
+  ]
  }
 ]

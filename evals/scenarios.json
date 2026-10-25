@@ -3552,5 +3552,37 @@
    "Copying the vendor's input format into the kit without a gate decision",
    "Treating vendor-side 'generation with check & repair' as independent verification"
   ]
+ },
+ {
+  "id": "miaoduo-entity-icp-anchor-frozen-marketing",
+  "request": "When a competitor brand appears active in ads while the same brand is recorded as discontinued, resolve entity attribution with first-hand page evidence before updating any landscape chart: the shutdown banner matching the official timeline anchors the site's identity, the ICP filing entity anchors its legal operator, and everything past that (corporate-registry relations) stays needs_validation — while the frozen marketing page itself (pricing, migration promises, performance claims) counts as claims that lost executability, not as product evidence.",
+  "context": "Round-96 miaoduo.com visit: the top banner text matches the recorded 07-31 shutdown / 11-01 deletion timeline exactly, footer ICP reads 北京看云软件有限公司, and pricing/MCP/Figma-migration copy still renders in operational tone — the third frozen-marketing-page instance.",
+  "passCriteria": [
+   "Entity attribution cites the exact banner text and ICP entity as first-hand evidence",
+   "Landscape chart updated without grading the unverified corporate-registry relation",
+   "Frozen marketing claims recorded as non-evidence (no baseline, no executable promise)",
+   "MCP-path comparison across dead/surviving tools kept at mechanism level"
+  ],
+  "failConditions": [
+   "Treating the still-rendered pricing table as evidence of an operating product",
+   "Filling the corporate-registry gap with assumption instead of needs_validation",
+   "Erasing the prior brand-conflation correction instead of closing it with evidence"
+  ]
+ },
+ {
+  "id": "axe-wcag-a11y-adversarial-extension",
+  "request": "When extending self-scoped accessibility checks with an independent engine, gate on serious/critical WCAG A/AA violations only, record moderate findings and axe-incomplete nodes honestly without gating, prove the engine with a negative self-test before trusting a zero-violation result, and keep the scanner a local instrument — never wired into CI-locked aggregation that cannot launch a browser or build pages.",
+  "context": "Round-96 adversarial-a11y: axe wcag2a+wcag2aa over the four canvas pages found 0 serious/critical violations (86 axe-incomplete nodes recorded); the self-test's first run caught a real fixture bug — an unstyled <a> uses the UA default blue and genuinely fails contrast, so the 'false positive' was the engine being right.",
+  "passCriteria": [
+   "Gate semantics explicit (serious/critical fail; moderate = recorded hints)",
+   "Negative self-test proves both catch and clear before any real scan is trusted",
+   "Fixture surprises recorded as engine-correct findings, not suppressed",
+   "Scanner stays outside CI-locked aggregation per the 3ced712 lesson"
+  ],
+  "failConditions": [
+   "Gating on best-practice noise (landmark/region) as if it were WCAG failure",
+   "Trusting a zero-violation scan whose engine was never negatively tested",
+   "Wiring browser-dependent scans into CI-locked reports"
+  ]
  }
 ]

@@ -43,6 +43,7 @@
     "uak60:probe": "node scripts/uak60-probe.mjs",
     "adversarial:check": "node scripts/adversarial-append-only.mjs",
     "adversarial:contrast": "node scripts/adversarial-contrast.mjs",
+    "adversarial:a11y": "node scripts/adversarial-a11y.mjs",
     "canvas:export": "node canvas/export-canvas.mjs"
   },
   "devDependencies": {

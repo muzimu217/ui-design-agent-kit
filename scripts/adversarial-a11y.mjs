@@ -149,6 +149,13 @@ if (selftest) {
   }
 }
 await browser.close();
+// 回执持久化（增量 69"持久化要使用"）：真实扫描落 output/，供工作台审计区
+// 渲染。自测模式不落盘（夹具噪声不入界面）。
+if (!selftest) {
+  const { mkdir } = await import("node:fs/promises");
+  await mkdir(path.join(ROOT, "output"), { recursive: true });
+  await writeFile(path.join(ROOT, "output/adversarial-a11y.json"), JSON.stringify(receipt, null, 1) + "\n", "utf8");
+}
 if (jsonOut) console.log(JSON.stringify(receipt, null, 1));
 else {
   console.log(`adversarial-a11y: run_status=${receipt.run_status}`);

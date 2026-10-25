@@ -143,6 +143,13 @@ if (selftest) {
     : `独立引擎发现 ${totalViolations} 个违例（确切节点见 pages[].samples；另有 ${totalIncomplete} 个 axe 无法判定节点）——自有采样器与 axe 口径存在真实差异`;
 }
 await browser.close();
+// 回执持久化（增量 69"持久化要使用"）：真实扫描落 output/，供工作台审计区
+// 渲染——仪器证据自己先活着。自测模式不落盘（避免夹具噪声入界面）。
+if (!selftest) {
+  const { mkdir } = await import("node:fs/promises");
+  await mkdir(path.join(ROOT, "output"), { recursive: true });
+  await writeFile(path.join(ROOT, "output/adversarial-contrast.json"), JSON.stringify(receipt, null, 1) + "\n", "utf8");
+}
 if (jsonOut) console.log(JSON.stringify(receipt, null, 1));
 else {
   console.log(`adversarial-contrast: run_status=${receipt.run_status}`);

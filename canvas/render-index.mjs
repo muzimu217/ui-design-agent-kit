@@ -35,10 +35,33 @@ async function main() {
   } catch { /* 未生成时不渲染 */ }
   const auditSection = audit
     ? `<h2 class="sec">审计报告（聚合机验 · <span class="badge" aria-label="聚合审计终态 ${esc(audit.run_status === "complete" ? "完整" : "未完整 + 确切原因已披露")}">${esc(audit.run_status)}</span> · ${audit.counts?.confirmed ?? 0}/${audit.counts?.total ?? 0} confirmed）</h2>
-       <p class="cap-intro">聚合七项机验为一份机器可读发现报告（output/audit-report.json）；终态只有 complete 与 incomplete+确切原因 两种——adopted 自 cloudflare/security-audit-skill（学循环 89）。复核命令 <code>npm run audit:report</code>。</p>
+       <p class="cap-intro">聚合多项机验为一份机器可读发现报告（计数以 findings 行为准）（output/audit-report.json）；终态只有 complete 与 incomplete+确切原因 两种——adopted 自 cloudflare/security-audit-skill（学循环 89）。复核命令 <code>npm run audit:report</code>。</p>
        <div class="audit-rows">${(audit.findings ?? []).map((f) => `<div class="audit-row"><span class="badge" aria-label="发现 ${esc(f.id)} 判定 ${f.status === "confirmed" ? "已确认" : "待验证"}">${f.status === "confirmed" ? "✓" : "?"} ${esc(f.status)}</span><span class="audit-id">${esc(f.id)}</span><span class="audit-ev">${esc(String(f.evidence)).slice(0, 120)}</span></div>`).join("")}</div>
        <p class="wall-legend">报告头：${esc(audit.head ?? "?")}${audit.workingTreeDirty ? " · 工作区有未提交改动（如实记录）" : " · 工作区干净"} · 生成于 ${esc(String(audit.generatedAt ?? "").slice(0, 19))}${audit.run_status === "incomplete" ? ` · 原因：${esc(audit.incomplete_reason ?? "")}` : ""}</p>`
     : "";
+
+  // 对抗验证回执区（增量 69）：contrast/a11y 两台独立引擎仪器的回执上界面
+  // ——审计区机验回执之后，对抗家族的证据也要可见。本地仪器（不入 CI 路线，
+  // 3ced712 教训）：缺回执渲染"未运行"而非隐藏——未运行也是状态，藏起来
+  // 才是假话。纯静态文本不加焦点元素，键盘可达回执数字保持稳定。
+  const adversarialInstruments = [
+    { id: "adversarial-contrast", npm: "adversarial:contrast" },
+    { id: "adversarial-a11y", npm: "adversarial:a11y" },
+  ];
+  const adversarialRows = [];
+  for (const inst of adversarialInstruments) {
+    try {
+      const r = JSON.parse(await readFile(path.join(ROOT, "output", `${inst.id}.json`), "utf8"));
+      const detail = r.verdict ?? r.incomplete_reason ?? JSON.stringify(r.totals ?? {});
+      const st = r.run_status === "complete" ? "complete ✓" : `? ${r.run_status ?? "unknown"}`;
+      adversarialRows.push(`<div class="audit-row"><span class="badge" aria-label="对抗回执 ${esc(inst.id)} 终态 ${r.run_status === "complete" ? "完整" : "未完整+原因已披露"}">${esc(st)}</span><span class="audit-id">${esc(inst.id)}</span><span class="audit-ev">${esc(String(detail)).slice(0, 140)}</span></div>`);
+    } catch {
+      adversarialRows.push(`<div class="audit-row"><span class="badge" aria-label="对抗回执 ${esc(inst.id)} 未运行">? 未运行</span><span class="audit-id">${esc(inst.id)}</span><span class="audit-ev">回执缺失——本地仪器未在本机执行（npm run ${esc(inst.npm)} 后重建画布）</span></div>`);
+    }
+  }
+  const adversarialSection = `<h2 class="sec">对抗验证回执（独立引擎证伪 · <span class="badge" aria-label="对抗仪器两台，本地运行">axe-core ×2</span>）</h2>
+     <p class="cap-intro">axe-core 独立引擎试图证伪自有断言（color-contrast 单规则 / WCAG A/AA 全规则，serious+critical 门）；负自测先于真实扫描（引擎静默即测试无效）。回执落 output/adversarial-*.json；本地仪器不入 CI 路线。</p>
+     <div class="audit-rows">${adversarialRows.join("")}</div>`;
 
   // 能力接入登记表：外部生成能力按契约登记（谁产出/边界/验收/证据），
   // adopted 才可用于交付；空缺（evaluating）如实展示为"未接入"而非隐藏。
@@ -472,6 +495,7 @@ async function main() {
   ${kbSection}
   ${regSection}
   ${auditSection}
+  ${adversarialSection}
   <h2 class="sec">产物墙（KPI4 · ${artifacts.artifacts.length} 件 · <span id="wall-mode">全部</span>）</h2>
   <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
     <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>

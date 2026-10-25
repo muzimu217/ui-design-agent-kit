@@ -3584,5 +3584,37 @@
    "Trusting a zero-violation scan whose engine was never negatively tested",
    "Wiring browser-dependent scans into CI-locked reports"
   ]
+ },
+ {
+  "id": "audit-skill-sustained-presence-third-recheck",
+  "request": "When re-testing a 'sustained presence vs spike' verdict about a trending signal, pre-commit the re-test moment and read rank and star-velocity separately: a rank drop with the highest daily gain in the field confirms sustained heat (rank rotation is normal), while a rank drop with collapsing velocity would confirm the spike reading — never let rank position alone decide the verdict.",
+  "context": "Round-97 trending recheck: cloudflare/security-audit-skill at #10 with +2,874 stars today (highest of all 11 rows), after two consecutive #1 days on 10-22/10-23 — the third independent observation for the sustained-presence reading.",
+  "passCriteria": [
+   "Re-test interval declared against the pre-committed moment (2 days after round 93)",
+   "Rank and daily star velocity read as separate variables",
+   "Verdict names the observation count (third), not just the latest snapshot",
+   "Adjacent category rows (design/security/SEO skills) recorded for category-depth evidence"
+  ],
+  "failConditions": [
+   "Declaring the spike dead because rank slipped from #1 to #10",
+   "Treating a single snapshot as a re-test without citing the prior readings",
+   "Silently dropping the category-structure observation"
+  ]
+ },
+ {
+  "id": "upstream-drift-pin-freshness-recording",
+  "request": "When a pinned upstream skill shows drift (HEAD moved, new releases) after market popularity hits it, separate freshness maintenance from content upgrade: refresh the lock's checkedOn date and record the drift facts immediately, but leave re-vendoring to a user-ruled batch — a popular upstream raises re-sync pressure, and pressure is exactly when the no-tree-change-without-ruling discipline matters most.",
+  "context": "Round-97: uak-visual-critique pinned at e103efe7 (upstream 4.5.0, re-vendored 10-03) while upstream HEAD reached 3671d50f (10-25) plus an engine release on 10-23 — 22 days of drift, checkedOn stale at 10-04, upstream now trending at 87k stars.",
+  "passCriteria": [
+   "Drift facts recorded with exact shas and dates (pinned vs HEAD, release tags)",
+   "checkedOn refreshed as routine freshness maintenance",
+   "Re-vendor decision deferred with the ruling precedent cited (R285-01 batch)",
+   "No silent content change to the installed skill"
+  ],
+  "failConditions": [
+   "Re-vendoring upstream HEAD into the kit without a batch ruling",
+   "Leaving checkedOn stale after observing the drift",
+   "Framing the popularity spike as a reason to skip the ruling chain"
+  ]
  }
 ]

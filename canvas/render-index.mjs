@@ -33,10 +33,22 @@ async function main() {
   try {
     audit = JSON.parse(await readFile(path.join(ROOT, "output", "audit-report.json"), "utf8"));
   } catch { /* 未生成时不渲染 */ }
+  // 审计区按域过滤（增量 71）：findings 达 8 项后检索成本出现——域 tab 复用
+  // stageFilter 模式；对抗行不带 data-domain 不入过滤范围。
+  const auditDomains = [...new Set((audit?.findings ?? []).map((f) => f.domain))].sort();
+  const auditFilterBar = auditDomains.length > 1
+    ? `<div class="wall-filter" role="group" aria-label="审计发现按域过滤">
+        <button type="button" class="wf-btn is-on" data-audit-mode="all" aria-pressed="true" aria-label="过滤审计域：全部" onclick="auditFilter('all')">全部</button>
+        ${auditDomains.map((d) => `<button type="button" class="wf-btn" data-audit-mode="${esc(d)}" aria-pressed="false" aria-label="过滤审计域：${esc(d)}" onclick="auditFilter('${esc(d)}')">${esc(d)}</button>`).join("")}
+        <span class="snote" id="audit-mode">全部</span>
+      </div>
+      <p class="snote" id="audit-empty" hidden>该域无发现（过滤结果为空）</p>`
+    : "";
   const auditSection = audit
     ? `<h2 class="sec">审计报告（聚合机验 · <span class="badge" aria-label="聚合审计终态 ${esc(audit.run_status === "complete" ? "完整" : "未完整 + 确切原因已披露")}">${esc(audit.run_status)}</span> · ${audit.counts?.confirmed ?? 0}/${audit.counts?.total ?? 0} confirmed）</h2>
-       <p class="cap-intro">聚合多项机验为一份机器可读发现报告（计数以 findings 行为准）（output/audit-report.json）；终态只有 complete 与 incomplete+确切原因 两种——adopted 自 cloudflare/security-audit-skill（学循环 89）。复核命令 <code>npm run audit:report</code>。</p>
-       <div class="audit-rows">${(audit.findings ?? []).map((f) => `<div class="audit-row"><span class="badge" aria-label="发现 ${esc(f.id)} 判定 ${f.status === "confirmed" ? "已确认" : "待验证"}">${f.status === "confirmed" ? "✓" : "?"} ${esc(f.status)}</span><span class="audit-id">${esc(f.id)}</span><span class="audit-ev">${esc(String(f.evidence)).slice(0, 120)}</span></div>`).join("")}</div>
+       <p class="cap-intro">聚合多项机验为一份机器可读发现报告（计数以 findings 行为准，output/audit-report.json）；终态只有 complete 与 incomplete+确切原因 两种——adopted 自 cloudflare/security-audit-skill（学循环 89）。复核命令 <code>npm run audit:report</code>。</p>
+       ${auditFilterBar}
+       <div class="audit-rows">${(audit.findings ?? []).map((f) => `<div class="audit-row" data-domain="${esc(f.domain ?? "")}"><span class="badge" aria-label="发现 ${esc(f.id)} 判定 ${f.status === "confirmed" ? "已确认" : "待验证"}">${f.status === "confirmed" ? "✓" : "?"} ${esc(f.status)}</span><span class="audit-id">${esc(f.id)}</span><span class="audit-ev">${esc(String(f.evidence)).slice(0, 120)}</span></div>`).join("")}</div>
        <p class="wall-legend">报告头：${esc(audit.head ?? "?")}${audit.workingTreeDirty ? " · 工作区有未提交改动（如实记录）" : " · 工作区干净"} · 生成于 ${esc(String(audit.generatedAt ?? "").slice(0, 19))}${audit.run_status === "incomplete" ? ` · 原因：${esc(audit.incomplete_reason ?? "")}` : ""}</p>`
     : "";
 
@@ -547,6 +559,25 @@ function stageFilter(stage) {
   });
   document.getElementById('stage-mode').textContent = stage === 'all' ? '全部' : stage;
   const empty = document.getElementById('stage-empty');
+  if (empty) empty.hidden = visible > 0;
+}
+
+// 审计域过滤（增量 71）：点域只看该域 findings；空态显隐接线（reg-003 类）。
+function auditFilter(domain) {
+  let visible = 0;
+  document.querySelectorAll('.audit-row[data-domain]').forEach((el) => {
+    const hide = domain !== 'all' && el.dataset.domain !== domain;
+    el.style.display = hide ? 'none' : '';
+    if (!hide) visible += 1;
+  });
+  document.querySelectorAll('.wf-btn[data-audit-mode]').forEach((b) => {
+    const on = b.dataset.auditMode === domain;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  const mode = document.getElementById('audit-mode');
+  if (mode) mode.textContent = domain === 'all' ? '全部' : domain;
+  const empty = document.getElementById('audit-empty');
   if (empty) empty.hidden = visible > 0;
 }
 

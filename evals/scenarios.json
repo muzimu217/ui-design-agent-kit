@@ -3648,5 +3648,37 @@
    "Adjusting only the 320px case while other widths still rely on shrink",
    "Removing the wide-sweep guard because 'it passes now'"
   ]
+ },
+ {
+  "id": "d14-blackbox-claim-longevity",
+  "request": "When re-checking a competitor's unverifiable quality claim (e.g. 'automatically tests, N% fewer errors'), record the claim's longevity as data in itself: an unchanged black-box claim after two weeks means verification-free marketing is a stable strategy, not an oversight — the absence of a methodology is the finding, and the correct response is keeping your own receipts machine-checkable, not waiting for them to publish theirs.",
+  "context": "Round-99 bolt.new recheck: the '98% fewer errors — automatically tests' claim stands verbatim 14 days after D14 was raised, still with no methodology, no receipt samples, no reproducible criteria.",
+  "passCriteria": [
+   "Claim quoted verbatim with the days-since-first-seen interval",
+   "Absence recorded as a stable-state finding (three absences: methodology/receipts/criteria)",
+   "No capability inference drawn from the unverified percentage",
+   "Fourth-layer vacancy counter updated (29 consecutive rounds without a live counterpart)"
+  ],
+  "failConditions": [
+   "Treating claim persistence as evidence of the claim's truth",
+   "Predicting the competitor will publish methodology (unfalsifiable forecast)",
+   "Dropping the counter because 'everyone knows it's marketing'"
+  ]
+ },
+ {
+  "id": "agent-tiering-self-reported-metrics",
+  "request": "When an agent product tiers its capability by subscription (Standard/Max) with a Speed/Intelligence/Cost matrix, read it as a market signal that agent quality has become priceable — while noting every matrix cell is vendor-self-reported with no third-party verification; your differentiating surface stays independently measurable receipts, not a competing self-reported matrix.",
+  "context": "Round-99 bolt.new: Bolt Agent Standard/Max tiers with Speed/Intelligence/Token cost ratings, plus explicit model-routing as a feature; all cells are self-reported.",
+  "passCriteria": [
+   "Tiering recorded as a market-pricing signal, separate from capability truth",
+   "Matrix cells labeled vendor-self-reported (null for observability in comparisons)",
+   "Kit positioning unchanged: receipts over ratings",
+   "Model-routing noted as non-conflicting with a supervision-layer product"
+  ],
+  "failConditions": [
+   "Building a competing self-reported capability matrix",
+   "Treating tier names as evidence of capability differences",
+   "Copying subscription-tier vocabulary into the kit's free local tooling"
+  ]
  }
 ]

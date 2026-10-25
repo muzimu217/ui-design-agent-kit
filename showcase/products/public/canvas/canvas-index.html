@@ -385,9 +385,15 @@
         <span class="reg-meta">2026-10-24 · 增量 67</span>
       </div></div>
   <h2 class="sec">审计报告（聚合机验 · <span class="badge" aria-label="聚合审计终态 完整">complete</span> · 8/8 confirmed）</h2>
-       <p class="cap-intro">聚合多项机验为一份机器可读发现报告（计数以 findings 行为准）（output/audit-report.json）；终态只有 complete 与 incomplete+确切原因 两种——adopted 自 cloudflare/security-audit-skill（学循环 89）。复核命令 <code>npm run audit:report</code>。</p>
-       <div class="audit-rows"><div class="audit-row"><span class="badge" aria-label="发现 kb-integrity 判定 已确认">✓ confirmed</span><span class="audit-id">kb-integrity</span><span class="audit-ev">docs/knowledge-base/index.json: 12 cards, layers={&quot;composition&quot;:4,&quot;motion&quot;:4,&quot;order&quot;:4}</span></div><div class="audit-row"><span class="badge" aria-label="发现 caps-integrity 判定 已确认">✓ confirmed</span><span class="audit-id">caps-integrity</span><span class="audit-ev">canvas/capabilities.json: 11 entries, statuses valid=true</span></div><div class="audit-row"><span class="badge" aria-label="发现 regressions-append-only 判定 已确认">✓ confirmed</span><span class="audit-id">regressions-append-only</span><span class="audit-ev">canvas/regressions.json: 6 entries, all carry id/date/lesson=true</span></div><div class="audit-row"><span class="badge" aria-label="发现 sfx-hero 判定 已确认">✓ confirmed</span><span class="audit-id">sfx-hero</span><span class="audit-ev">scripts/sfx-check.mjs: 36 items, issues=[]</span></div><div class="audit-row"><span class="badge" aria-label="发现 sfx-60 判定 已确认">✓ confirmed</span><span class="audit-id">sfx-60</span><span class="audit-ev">scripts/sfx-check.mjs: 18 items, issues=[]</span></div><div class="audit-row"><span class="badge" aria-label="发现 timeline-60 判定 已确认">✓ confirmed</span><span class="audit-id">timeline-60</span><span class="audit-ev">scripts/timeline-check.mjs: 10 items, issues=[]</span></div><div class="audit-row"><span class="badge" aria-label="发现 regressions-history 判定 已确认">✓ confirmed</span><span class="audit-id">regressions-history</span><span class="audit-ev">git 全历史逐版本 id 集合对比（独立于当前形态检查的证据路径）: 4 versions / 6 entries</span></div><div class="audit-row"><span class="badge" aria-label="发现 submission-numbers 判定 已确认">✓ confirmed</span><span class="audit-id">submission-numbers</span><span class="audit-ev">数字对账通过：语料 216 / 知识卡 12 / 能力 11(4+6+1) / 产物 4 / 反例 6</span></div></div>
-       <p class="wall-legend">报告头：5cd98a1 · 工作区有未提交改动（如实记录） · 生成于 2026-10-25T20:04:30</p>
+       <p class="cap-intro">聚合多项机验为一份机器可读发现报告（计数以 findings 行为准，output/audit-report.json）；终态只有 complete 与 incomplete+确切原因 两种——adopted 自 cloudflare/security-audit-skill（学循环 89）。复核命令 <code>npm run audit:report</code>。</p>
+       <div class="wall-filter" role="group" aria-label="审计发现按域过滤">
+        <button type="button" class="wf-btn is-on" data-audit-mode="all" aria-pressed="true" aria-label="过滤审计域：全部" onclick="auditFilter('all')">全部</button>
+        <button type="button" class="wf-btn" data-audit-mode="docs" aria-pressed="false" aria-label="过滤审计域：docs" onclick="auditFilter('docs')">docs</button><button type="button" class="wf-btn" data-audit-mode="evidence" aria-pressed="false" aria-label="过滤审计域：evidence" onclick="auditFilter('evidence')">evidence</button><button type="button" class="wf-btn" data-audit-mode="knowledge" aria-pressed="false" aria-label="过滤审计域：knowledge" onclick="auditFilter('knowledge')">knowledge</button><button type="button" class="wf-btn" data-audit-mode="registry" aria-pressed="false" aria-label="过滤审计域：registry" onclick="auditFilter('registry')">registry</button><button type="button" class="wf-btn" data-audit-mode="video" aria-pressed="false" aria-label="过滤审计域：video" onclick="auditFilter('video')">video</button>
+        <span class="snote" id="audit-mode">全部</span>
+      </div>
+      <p class="snote" id="audit-empty" hidden>该域无发现（过滤结果为空）</p>
+       <div class="audit-rows"><div class="audit-row" data-domain="knowledge"><span class="badge" aria-label="发现 kb-integrity 判定 已确认">✓ confirmed</span><span class="audit-id">kb-integrity</span><span class="audit-ev">docs/knowledge-base/index.json: 12 cards, layers={&quot;composition&quot;:4,&quot;motion&quot;:4,&quot;order&quot;:4}</span></div><div class="audit-row" data-domain="registry"><span class="badge" aria-label="发现 caps-integrity 判定 已确认">✓ confirmed</span><span class="audit-id">caps-integrity</span><span class="audit-ev">canvas/capabilities.json: 11 entries, statuses valid=true</span></div><div class="audit-row" data-domain="evidence"><span class="badge" aria-label="发现 regressions-append-only 判定 已确认">✓ confirmed</span><span class="audit-id">regressions-append-only</span><span class="audit-ev">canvas/regressions.json: 6 entries, all carry id/date/lesson=true</span></div><div class="audit-row" data-domain="video"><span class="badge" aria-label="发现 sfx-hero 判定 已确认">✓ confirmed</span><span class="audit-id">sfx-hero</span><span class="audit-ev">scripts/sfx-check.mjs: 36 items, issues=[]</span></div><div class="audit-row" data-domain="video"><span class="badge" aria-label="发现 sfx-60 判定 已确认">✓ confirmed</span><span class="audit-id">sfx-60</span><span class="audit-ev">scripts/sfx-check.mjs: 18 items, issues=[]</span></div><div class="audit-row" data-domain="video"><span class="badge" aria-label="发现 timeline-60 判定 已确认">✓ confirmed</span><span class="audit-id">timeline-60</span><span class="audit-ev">scripts/timeline-check.mjs: 10 items, issues=[]</span></div><div class="audit-row" data-domain="evidence"><span class="badge" aria-label="发现 regressions-history 判定 已确认">✓ confirmed</span><span class="audit-id">regressions-history</span><span class="audit-ev">git 全历史逐版本 id 集合对比（独立于当前形态检查的证据路径）: 4 versions / 6 entries</span></div><div class="audit-row" data-domain="docs"><span class="badge" aria-label="发现 submission-numbers 判定 已确认">✓ confirmed</span><span class="audit-id">submission-numbers</span><span class="audit-ev">数字对账通过：语料 218 / 知识卡 12 / 能力 11(4+6+1) / 产物 4 / 反例 6</span></div></div>
+       <p class="wall-legend">报告头：5d0fec4 · 工作区有未提交改动（如实记录） · 生成于 2026-10-25T23:03:15</p>
   <h2 class="sec">对抗验证回执（独立引擎证伪 · <span class="badge" aria-label="对抗仪器两台，本地运行">axe-core ×2</span>）</h2>
      <p class="cap-intro">axe-core 独立引擎试图证伪自有断言（color-contrast 单规则 / WCAG A/AA 全规则，serious+critical 门）；负自测先于真实扫描（引擎静默即测试无效）。回执落 output/adversarial-*.json；本地仪器不入 CI 路线。</p>
      <div class="audit-rows"><div class="audit-row"><span class="badge" aria-label="对抗回执 adversarial-contrast 终态 完整">complete ✓</span><span class="audit-id">adversarial-contrast</span><span class="audit-ev">独立引擎证伪失败：axe 在 4 页扫过 500 个文本节点，0 个 color-contrast 违例（另有 35 个 axe 无法判定节点如实记录）——自有断言经受住对抗重测</span></div><div class="audit-row"><span class="badge" aria-label="对抗回执 adversarial-a11y 终态 完整">complete ✓</span><span class="audit-id">adversarial-a11y</span><span class="audit-ev">独立引擎 WCAG A/AA 证伪失败：4 页 0 个 serious/critical 违例（0 条 moderate 以下提示如实记录，86 个 axe 无法判定节点）</span></div></div>
@@ -435,7 +441,7 @@
 <details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">画布工作台入口页（门径+链路+产物墙三合一）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v8">v8</span><span class="round">2026-10-13-08</span><img class="art-thumb" src="thumbs/canvas-index-hub.png" alt="产物缩略图：画布工作台入口页（门径+链路+产物墙三合一）（构建时快照，非验收依据）" loading="lazy" width="84" height="53"></summary>
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-index.mjs + canvas/artifacts.json + canvas-workbench.state.json → output/canvas-index.html（离线自包含）</code> <span class="art-self">— 本页自指，不设自链</span></span></div>
-        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（15.8 万字节非空白，增量 29 艺术画面复拍）；mobile: 520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）；keyboard: playwright Tab 序列实测：15 项可聚焦全可达（3 卡片链接+墙过滤 4 按钮+墙 4 条目 summary+3 条目内产物链接+1 已确认态锚点（审计区块引入）——增量 66 复测口径；元素构成随区块增减变化，对账器 wall-reconcile 常测）；contrast: playwright computed-style WCAG 实测：200 项文本全过 4.5:1（低于标准 0 项，采样触 200 上限如实记 truncated；增量 29 复测——生成式背景为独立装饰层，文字在面板底色上；增量 67 axe-core 独立引擎对抗重测 0 违例并抓出 pending/紫文本真违例已修）；reducedMo</span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（15.8 万字节非空白，增量 29 艺术画面复拍）；mobile: 520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）；keyboard: playwright Tab 序列实测：22 项可聚焦全可达（3 卡片链接+墙过滤 4 按钮+墙 4 条目 summary+3 条目内产物链接+1 已确认态锚点（审计区块引入）+阶段过滤 7 按钮（增量 70 门径 tab 化引入）——增量 70 复测口径；元素构成随区块增减变化，对账器 wall-reconcile 常测）；contrast: playwright computed-style WCAG 实测：200 项文本全过 4.5:1（低于标准 0 项，采样触 200 上限如实记 truncated；增量 29 复测——生成式背景为独立装饰层，文字在面板底色上；增量 67 axe-core 独立引擎对抗重测 0 违例并抓出</span></div>
         <div class="row"><span class="k">对比</span><span class="v">
       <div class="cmp">
         <div class="cmp-head"><span class="cmp-vs">vs Figma Make 首屏（prompt 框+示例 pill 模式）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level" aria-label="检视级别 unverified-partial：仅公开页面检视，未实测维度记 null">检视级别 unverified-partial</span></div>
@@ -492,6 +498,25 @@ function stageFilter(stage) {
   });
   document.getElementById('stage-mode').textContent = stage === 'all' ? '全部' : stage;
   const empty = document.getElementById('stage-empty');
+  if (empty) empty.hidden = visible > 0;
+}
+
+// 审计域过滤（增量 71）：点域只看该域 findings；空态显隐接线（reg-003 类）。
+function auditFilter(domain) {
+  let visible = 0;
+  document.querySelectorAll('.audit-row[data-domain]').forEach((el) => {
+    const hide = domain !== 'all' && el.dataset.domain !== domain;
+    el.style.display = hide ? 'none' : '';
+    if (!hide) visible += 1;
+  });
+  document.querySelectorAll('.wf-btn[data-audit-mode]').forEach((b) => {
+    const on = b.dataset.auditMode === domain;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  const mode = document.getElementById('audit-mode');
+  if (mode) mode.textContent = domain === 'all' ? '全部' : domain;
+  const empty = document.getElementById('audit-empty');
   if (empty) empty.hidden = visible > 0;
 }
 

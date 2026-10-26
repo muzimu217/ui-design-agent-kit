@@ -202,6 +202,32 @@ async function main() {
        <p class="cap-intro">本仓产物的真实缺陷与漏计：失败记录的传播力不低于成功案例（59 轮判读）。修复后标 resolved 并写明提交，<strong>绝不删除</strong>——反例是证据的一部分。</p>
        <div class="reg-table">${regRows}</div>`
     : "";
+  // references 索引区（增量 79，学循环 107 claude-mem 立卡兑现·索引层）：
+  // 61 个知识文件按技能分包的静态目录（零焦点件——检索靠页面内查找，详情
+  // 走仓库）；JSON 层供脚本消费（output/references-index.json，构建期生成
+  // 且自证计数无漏）。缺索引渲染"未生成"而非隐藏。
+  let refIndex = null;
+  try {
+    refIndex = JSON.parse(await readFile(path.join(ROOT, "output", "references-index.json"), "utf8"));
+  } catch { /* 未生成时不渲染明细 */ }
+  let refSection = "";
+  if (refIndex) {
+    const bySkill = {};
+    for (const e of refIndex.entries ?? []) {
+      (bySkill[e.skill] = bySkill[e.skill] ?? []).push(e);
+    }
+    const skillLines = Object.entries(bySkill)
+      .sort((a, b) => b[1].length - a[1].length)
+      .map(([skill, list]) => `<div class="ref-line"><span class="ref-skill">${esc(skill)}（${list.length}）</span><span class="ref-files">${list.map((e) => esc(e.file.replace(".agents/skills/", "").replace(/^[^/]+\/references\//, ""))).join(" · ")}</span></div>`)
+      .join("");
+    refSection = `<h2 class="sec">references 索引（知识检索第一层 · ${refIndex.count} 文件）</h2>
+       <p class="cap-intro">先索引后详情（claude-mem 三层模式第一层，增量 79 立卡兑现）：全部技能 references 文件的构建期索引，页内查找（Ctrl/Cmd+F）定位、仓库打开详情；机读层 output/references-index.json 供脚本消费，构建期自证计数与枚举一致。</p>
+       <div class="ref-list">${skillLines}</div>`;
+  } else {
+    refSection = `<h2 class="sec">references 索引（知识检索第一层）</h2>
+       <p class="cap-intro">索引未生成——node scripts/gen-references-index.mjs 后重建画布（缺索引渲染提示而非隐藏）。</p>`;
+  }
+
   const stageEntries = Object.entries(state.stages ?? {});
   const gates = state.gates ?? {};
   const gateColor = { passed: "#34d399", gated: "#f472b6", active: "#22d3ee", blocked: "#f87171", pending: "#9ca3af" };
@@ -431,6 +457,9 @@ async function main() {
   /* 审计报告区（增量 62）：每行=判定徽章+发现 id+证据摘要；徽章沿用 .badge 以共享 aria 守卫。 */
   .audit-rows { display:grid; gap:6px; margin-bottom:10px; }
   .audit-row { display:flex; gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 12px; min-width:0; }
+  .ref-line { display:flex; gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin-bottom:6px; min-width:0; }
+  .ref-skill { color:#a78bfa; font-size:12px; font-family:ui-monospace,monospace; flex:none; }
+  .ref-files { color:var(--dim); font-size:11.5px; overflow-wrap:anywhere; min-width:0; }
   .audit-row .badge { flex:none; }
   .audit-id { font-family:ui-monospace,monospace; font-size:12px; color:#a78bfa; min-width:0; overflow-wrap:anywhere; } /* 增量 78 类修复：对账行 id 含"产物.维度"长串，flex:none 曾在 320px 溢出 28px */
   .audit-ev { color:var(--dim); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
@@ -555,6 +584,7 @@ async function main() {
   ${tasteSection}
   ${capSection}
   ${kbSection}
+  ${refSection}
   ${regSection}
   ${auditSection}
   ${adversarialSection}

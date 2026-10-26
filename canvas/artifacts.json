@@ -55,7 +55,7 @@
    "sixDim": {
     "desktop": "Chrome headless 1280 直拍通过（15.8 万字节非空白，增量 29 艺术画面复拍）",
     "mobile": "520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）",
-    "keyboard": "playwright Tab 序列实测：45 项 tab 停留/52 项静态可聚焦（全量枚举：锚点目录 12 链接（含增量 78 断言对账回执区块入目录）+两过滤栏 17 按钮+门径 10（6 抽屉 summary+4 证据链接）+产物墙 9（4 summary+3 条目链接+2）+3 卡片链接+1 已确认态锚点；Tab 检测上限 96；增量 78 复测口径；对账器 wall-reconcile 常测）",
+    "keyboard": "playwright Tab 序列实测：46 项 tab 停留/53 项静态可聚焦（全量枚举：锚点目录 13 链接（含增量 79 references 索引区入目录）+两过滤栏 17 按钮+门径 10（6 抽屉 summary+4 证据链接）+产物墙 9+3 卡片链接+1 已确认态锚点；Tab 检测上限 96；增量 79 复测口径；对账器 wall-reconcile 常测）",
     "contrast": "playwright computed-style WCAG 实测：200 项文本全过 4.5:1（低于标准 0 项，采样触 200 上限如实记 truncated；增量 29 复测——生成式背景为独立装饰层，文字在面板底色上；增量 67 axe-core 独立引擎对抗重测 0 违例并抓出 pending/紫文本真违例已修）",
     "reducedMotion": "生成式背景在 prefers-reduced-motion 下画一帧静态构图后停止（media query 监听切换即停帧）；静态检查通过",
     "console": "playwright 实测 0 错误（favicon data-URI 修复后）"

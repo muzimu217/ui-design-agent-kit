@@ -3904,5 +3904,37 @@
    "Pivoting to an object checked days ago",
    "Dropping the blocked object from the pool instead of annotating it"
   ]
+ },
+ {
+  "id": "indexed-card-trigger-condition-honored",
+  "request": "When a deferred card (立卡) carries an explicit numeric trigger condition (e.g. adopt retrieval indexing when knowledge files exceed 40), check the counter on every revisit and start the work the moment the condition is met — a card with a measurable trigger is a conditional promise, not a wishlist entry, and honoring it (or recording why the condition no longer applies) is the whole discipline.",
+  "context": "Round-107 claude-mem recheck: the round-17 card deferred three-layer retrieval until knowledge files exceeded 40; the count now measures 61 references files across skills — trigger met, first layer (build-time index) shipped the same round.",
+  "passCriteria": [
+   "Trigger counter re-measured with the current number vs the promised threshold",
+   "Work started scoped to the first layer, not the whole deferred system",
+   "Later layers remain conditional on actual retrieval pain",
+   "Card status updated from deferred to partially-honored with the count cited"
+  ],
+  "failConditions": [
+   "Leaving the card deferred after its trigger condition is met",
+   "Shipping all three layers at once because the trigger fired",
+   "Inventing a new threshold because the original felt inconvenient"
+  ]
+ },
+ {
+  "id": "references-index-first-layer",
+  "request": "When implementing an index layer for a growing knowledge corpus, generate it at build time from the file tree (not hand-maintained), self-verify the count against a fresh enumeration in the same run (a missing file is dead data, an extra one is an enumerator gap), render the human layer as a static zero-focusable catalog (retrieval via in-page find, details via the repository), and surface absence as 'not generated' rather than hiding it.",
+  "context": "Round-104's stage-evidence linkification covers detail access; round-107 adds layer one: output/references-index.json with 61 entries, rendered as per-skill catalog lines on the workbench with zero new focusables.",
+  "passCriteria": [
+   "Index generated at build time and wired into the build chain",
+   "Count self-verified against fresh enumeration in the same run",
+   "Human layer static and complete (no truncation, no new focusables)",
+   "Missing-index state renders as an explicit prompt, not a hidden section"
+  ],
+  "failConditions": [
+   "Hand-maintaining an index that drifts from the file tree",
+   "Rendering 60+ links as focusables and churning the keyboard receipt",
+   "Hiding the section when the index file is absent"
+  ]
  }
 ]

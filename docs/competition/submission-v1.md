@@ -102,7 +102,7 @@ Installed  ≠  Configured  ≠  Connected  ≠  Tool-callable  ≠  Visually Ve
 
 ### 4.1 占据行业图谱的第四层：验证纪律层
 
-对头部工具的持续对标（v0 / bolt.new / Lovable / Figma Make / Onlook / 国产三强等，累计 89 轮）显示：生成层、模型层、托管层均有强手，**验证纪律层长期空置**。本项目的六道门 + 五级证据 + 可复核产物墙是这一层的完整实现。
+对头部工具的持续对标（v0 / bolt.new / Lovable / Figma Make / Onlook / 国产三强等，累计 109 轮）显示：生成层、模型层、托管层均有强手，验证纪律层长期空置，**近期开始出现机制级邻居**（生成前预览对齐、生成器自带检查）——但**预览与自查止于厂商自报口径，可第三方复核的验收证据层仍无对手**。本项目的六道门 + 五级证据 + 可复核产物墙是这一层的完整实现：他们 stop at preview, we continue to receipts。
 
 ### 4.2 证据链可审计，且审计本身被审计
 
@@ -128,7 +128,7 @@ Apache-2.0；`npm ci --ignore-scripts && npm run verify && npm test` 三步复�
 | --- | --- | --- |
 | 自动化测试 | 131 项全绿 | `npm test` |
 | 静态校验 | 0 错误 0 警告 | `npm run verify` |
-| 评测场景语料 | 238 条 | `evals/scenarios.json` |
+| 评测场景语料 | 240 条 | `evals/scenarios.json` |
 | 知识库机制卡 | 12 张（构成 4 / 运动 4 / 秩序 4） | `docs/knowledge-base/index.json` |
 | 能力登记 | 11 项（4 已接入 / 6 评估中 / 1 不接入） | `canvas/capabilities.json` |
 | 产物墙 | 5 件，六维实测入墙 | `canvas/artifacts.json` |

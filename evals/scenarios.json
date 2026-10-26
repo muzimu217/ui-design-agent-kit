@@ -3968,5 +3968,37 @@
    "Dropping the object because the canonical page 404'd",
    "Fabricating the product page content from memory"
   ]
+ },
+ {
+  "id": "death-timeline-window-penultimate-record",
+  "request": "When recording a discontinued product with a data-export window, treat the window as a process with dated checkpoints (notice → shutdown → export deadline → data deletion) and log the penultimate checkpoint from both regional domains first-hand — timezone expression differences of one day across domains describe the same deadline and must be noted as expression, not contradiction; schedule the final checkpoint (post-deletion form) explicitly.",
+  "context": "Round-109: motiff.com still shows 'until October 31, 2026' and miaoduo.com '11 月 1 日前' five days before the deadline, wording unchanged since rounds 90/96; capability marketing still shares the screen with the death banner on day 26.",
+  "passCriteria": [
+   "Both domains' banner text quoted verbatim with the timezone note",
+   "Prior checkpoints cross-referenced (rounds 90/96/102) forming a complete dated chain",
+   "Frozen-marketing duration quantified (26 days unchanged)",
+   "Final post-deletion checkpoint scheduled with both possible outcomes named"
+  ],
+  "failConditions": [
+   "Treating the one-day wording difference as contradictory facts",
+   "Skipping the penultimate record because the final one is 'more interesting'",
+   "Assuming deletion will happen on time without scheduling the verification"
+  ]
+ },
+ {
+  "id": "narrative-sync-after-verdict-evolution",
+  "request": "When a headline verdict evolves (e.g. 'layer long vacant' → 'vacancy with first mechanism-level neighbor'), sweep every narrative surface that cites the old wording — competition submissions and papers included — and restate it with the dated evolution; a stale headline in a submission document is the same defect as a stale number, and the update must name what changed and when rather than silently rewriting history.",
+  "context": "Round-109: the submission's '验证纪律层长期空置' rested on 89 rounds of checks; rounds 106/108 added a mechanism-level neighbor (pre-touch preview) and a giant productized agent — the paragraph now cites 109 rounds and states the receipts layer remains uncontested.",
+  "passCriteria": [
+   "Every surface citing the old verdict found and updated in one pass",
+   "Evolution stated with round numbers, not silently replaced",
+   "The stable core of the verdict (receipts layer uncontested) kept prominent",
+   "Round count in the narrative updated to current"
+  ],
+  "failConditions": [
+   "Updating only the JSON/eval layer while submission prose stays stale",
+   "Rewriting the verdict without dating the evolution",
+   "Weakening the receipts claim because neighbors appeared at the preview layer"
+  ]
  }
 ]

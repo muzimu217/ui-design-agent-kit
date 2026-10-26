@@ -3872,5 +3872,37 @@
    "Suppressing embedded focusables to force the numbers to match",
    "Raising walk caps as a fix when the cap was never binding"
   ]
+ },
+ {
+  "id": "pre-touch-preview-gate-germination",
+  "request": "When a generation tool ships pre-touch preview (AI shows options before modifying anything), recognize it as the closest-yet germination of gating on the generation side — mechanism-level pre-alignment rather than black-box measurement claims — and sharpen the differentiation one step further: they stop at preview, we continue to receipts. Update the fourth-layer competitive reading from 'vacancy' to 'vacancy with first mechanism-level neighbor' without conceding the evidence layer.",
+  "context": "Round-106 Base44 recheck: 'AI shows previews before it touches anything' on the homepage redesign feature, 16 days after the first check recorded none of this; the fourth layer had 34 consecutive rounds without a live counterpart but now has a mechanism-level neighbor.",
+  "passCriteria": [
+   "Quote the preview mechanism verbatim and classify it as pre-alignment, not verification",
+   "Competitive reading updated (neighbor exists) while the receipts layer stays uncontested",
+   "Differentiation sharpened to preview-vs-receipts explicitly",
+   "Agent-delegation narrative counted across vendors for the supply-side pattern"
+  ],
+  "failConditions": [
+   "Dismissing pre-touch preview as 'just marketing' after classifying earlier claims that way",
+   "Claiming the kit is still unopposed at the alignment layer",
+   "Adopting preview-without-receipts as sufficient"
+  ]
+ },
+ {
+  "id": "honest-pivot-on-channel-block",
+  "request": "When a signal channel is blocked by bot verification mid-round, record the block with its Ray-ID-class evidence, pivot to a pre-declared alternate from the object pool in the same round, and note the block history on the object's record — a blocked channel is a scheduling fact, not a failed inspection, and the pivot must be to an object with a real check-due date, not a convenient one.",
+  "context": "Round-106: lovable.dev fifth check hit a Cloudflare verification page (same class as its 10-11 block that eventually cleared on the fourth retry); the round pivoted to Base44 (last checked 10-10, the only unchecked member of the western layer map) rather than an already-recent object.",
+  "passCriteria": [
+   "Block recorded with the verification-page evidence and block history",
+   "Pivot target justified by check-due date, not recency convenience",
+   "Original object remains scheduled with its retry cadence",
+   "Round still delivers all three KPIs despite the pivot"
+  ],
+  "failConditions": [
+   "Counting the blocked page as inspected",
+   "Pivoting to an object checked days ago",
+   "Dropping the blocked object from the pool instead of annotating it"
+  ]
  }
 ]

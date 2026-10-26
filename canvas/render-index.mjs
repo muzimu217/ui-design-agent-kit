@@ -75,6 +75,21 @@ async function main() {
      <p class="cap-intro">axe-core 独立引擎试图证伪自有断言（color-contrast 单规则 / WCAG A/AA 全规则，serious+critical 门）；负自测先于真实扫描（引擎静默即测试无效）。回执落 output/adversarial-*.json；本地仪器不入 CI 路线。</p>
      <div class="audit-rows">${adversarialRows.join("")}</div>`;
 
+  // 断言对账回执区（增量 78）：wall-reconcile（增量 66）的 claims vs receipts
+  // 对账结果上界面——66 轮曾宣称"接入 audit-report"但从未落地（105 轮 CI
+  // 修正时如实更正），本轮补上真实的接线：读 output/wall-reconcile.json 渲染，
+  // 缺回执渲染"未运行"而非隐藏。本地仪器不入 CI 路线，与对抗回执同款语义。
+  let reconcile = null;
+  try {
+    reconcile = JSON.parse(await readFile(path.join(ROOT, "output", "wall-reconcile.json"), "utf8"));
+  } catch { /* 未运行时不渲染明细 */ }
+  const reconcileRows = reconcile
+    ? (reconcile.findings ?? []).map((c) => `<div class="audit-row"><span class="badge" aria-label="对账 ${esc(c.id)}.${esc(c.dim ?? "")} 判定 ${c.status === "confirmed" ? "已确认" : "待验证"}">${c.status === "confirmed" ? "✓" : "?"} ${esc(c.status)}</span><span class="audit-id">${esc(c.id)}.${esc(c.dim ?? "")}</span><span class="audit-ev">${esc(String(c.detail ?? "")).slice(0, 140)}</span></div>`).join("")
+    : `<div class="audit-row"><span class="badge" aria-label="断言对账未运行">? 未运行</span><span class="audit-id">wall-reconcile</span><span class="audit-ev">回执缺失——本地仪器未在本机执行（node scripts/wall-reconcile.mjs 后重建画布）</span></div>`;
+  const reconcileSection = `<h2 class="sec">断言对账回执（claims vs receipts · <span class="badge" aria-label="对账终态 ${reconcile ? esc(reconcile.run_status === "complete" ? "完整" : "未完整") : "未运行"}">${reconcile ? esc(reconcile.run_status ?? "?") : "未运行"}${reconcile?.counts ? ` · ${reconcile.counts?.confirmed ?? 0}/${reconcile.counts?.total ?? 0} confirmed` : ""}</span>）</h2>
+     <p class="cap-intro">产物墙六维散文断言逐条对账真实检查器回执（node scripts/wall-reconcile.mjs）：断言数字不在回执中→needs_validation+确切差异——修正=重测+如实枚举，不是改回执。回执落 output/wall-reconcile.json；本地仪器不入 CI 路线。</p>
+     <div class="audit-rows">${reconcileRows}</div>`;
+
   // 能力接入登记表：外部生成能力按契约登记（谁产出/边界/验收/证据），
   // adopted 才可用于交付；空缺（evaluating）如实展示为"未接入"而非隐藏。
   let capabilities = { capabilities: [] };
@@ -417,7 +432,7 @@ async function main() {
   .audit-rows { display:grid; gap:6px; margin-bottom:10px; }
   .audit-row { display:flex; gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 12px; min-width:0; }
   .audit-row .badge { flex:none; }
-  .audit-id { font-family:ui-monospace,monospace; font-size:12px; color:#a78bfa; flex:none; }
+  .audit-id { font-family:ui-monospace,monospace; font-size:12px; color:#a78bfa; min-width:0; overflow-wrap:anywhere; } /* 增量 78 类修复：对账行 id 含"产物.维度"长串，flex:none 曾在 320px 溢出 28px */
   .audit-ev { color:var(--dim); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
   @media (max-width:640px) { .audit-ev { white-space:normal; } }
   .mc-k { color:var(--dim); min-width:76px; flex:none; font-size:12px; }
@@ -543,6 +558,7 @@ async function main() {
   ${regSection}
   ${auditSection}
   ${adversarialSection}
+  ${reconcileSection}
   <h2 class="sec">产物墙（KPI4 · ${artifacts.artifacts.length} 件 · <span id="wall-mode">全部</span>）</h2>
   <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
     <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>

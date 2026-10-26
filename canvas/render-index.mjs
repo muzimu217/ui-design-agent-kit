@@ -325,12 +325,11 @@ async function main() {
   const stageCards = stageEntries
     .map(([id, s]) => {
       const color = gateColor[s.status] ?? gateColor.pending;
-      return `<div class="stage" style="--c:${color}" data-stage="${esc(id)}">
-        <div class="sid">${esc(id)}</div>
-        <div class="sst" style="color:${color}">${esc(s.status)}</div>
+      return `<details class="stage" style="--c:${color}" data-stage="${esc(id)}"${s.status === "active" ? " open" : ""}>
+        <summary><span class="sid">${esc(id)}</span><span class="sst" style="color:${color}">${esc(s.status)}</span></summary>
         <div class="snote">${esc(s.note ?? "")}</div>
         ${(s.evidence ?? "").trim() ? `<div class="sev">${esc(s.evidence)}</div>` : ""}
-      </div>`;
+      </details>`;
     })
     .join("\n");
   const stageTabs = ["all", ...stageEntries.map(([id]) => id)];
@@ -362,8 +361,12 @@ async function main() {
   .pill { display:inline-block; border:1px solid var(--line); border-radius:99px; padding:2px 10px; font-size:12px; margin:2px 4px 2px 0; }
   .stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:22px; }
   .stage { background:var(--panel); border:1px solid var(--line); border-top:3px solid var(--c); border-radius:10px; padding:12px; }
+  .stage summary { cursor:pointer; display:flex; justify-content:space-between; align-items:baseline; gap:8px; list-style:none; }
+  .stage summary::-webkit-details-marker { display:none; }
+  .stage summary::after { content:"▸"; color:var(--dim); font-size:11px; transition:transform .15s ease; }
+  .stage[open] summary::after { transform:rotate(90deg); }
   .sid { font-weight:600; }
-  .sst { font-size:12px; margin:2px 0 6px; }
+  .sst { font-size:12px; }
   .snote { color:var(--dim); font-size:12px; }
   .sev { color:var(--dim); font-size:11.5px; margin-top:6px; padding-top:6px; border-top:1px dashed var(--line); overflow-wrap:anywhere; }
   h2.sec { font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--dim); margin:22px 0 10px; }

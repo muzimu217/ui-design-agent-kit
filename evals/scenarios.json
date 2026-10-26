@@ -3712,5 +3712,37 @@
    "Letting storage errors surface as UI breakage in restricted environments",
    "Adding focusable chrome as a side effect of a persistence feature"
   ]
+ },
+ {
+  "id": "bilibili-painpoint-comment-layer",
+  "request": "When sampling video-platform demand signals by a pain-point keyword, record the supply mismatch honestly: title-layer results return capability marketing (one-click/free/nanny-level) while pain-point narration lives in comment layers that are not samplable at title level — calibrate the next sweep's entry point (comments/danmaku or failure-vocabulary keywords) instead of over-reading marketing titles as demand evidence.",
+  "context": "Round-101 bilibili sweep: searching 'AI 生成页面 痛点' by publish date returned a 1.7M-view one-click-prototype video and capability tutorials; pain-point vocabulary appeared in no title.",
+  "passCriteria": [
+   "Supply mismatch recorded (keyword vs returned content type)",
+   "View counts quoted as demand-volume evidence with the marketing caveat",
+   "Next-sweep calibration proposed (comment layer or failure vocabulary)",
+   "Kit positioning contrast maintained (pre-generation gating vs post-generation demand)"
+  ],
+  "failConditions": [
+   "Reading marketing titles as pain-point evidence",
+   "Claiming comment-layer sentiment without sampling it",
+   "Ignoring the noise entries in the result set"
+  ]
+ },
+ {
+  "id": "skill-ecosystem-mass-market-terminology",
+  "request": "When 'Skill' appears as a product word in mass-market tutorial titles (video platforms), record it as evidence that the agent-skill ecosystem has crossed into general-user awareness — a tailwind for skill-heavy assets — while keeping the positioning boundary: selling workflow supervision with embedded skills is a different product from selling a single quality skill, and the difference must survive contact with mass-market framing.",
+  "context": "Round-101: a bilibili title 'UI UX Pro Max Skill' (19k views) puts the word Skill in mass-market design-quality content, corroborating the trending-side category verticalization (round 97 hallmark/impeccable).",
+  "passCriteria": [
+   "Mass-market terminology adoption cited with view counts as awareness evidence",
+   "Cross-platform corroboration noted (trending side + video side)",
+   "Positioning boundary stated (workflow supervision ≠ single quality skill)",
+   "No pivot of the kit toward single-skill marketing"
+  ],
+  "failConditions": [
+   "Reframing the kit as a single quality skill to ride the mass-market word",
+   "Treating one tutorial title as proof of sustained awareness",
+   "Omitting the noise/entertainment entries from the sample record"
+  ]
  }
 ]

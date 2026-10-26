@@ -55,7 +55,7 @@
    "sixDim": {
     "desktop": "Chrome headless 1280 直拍通过（15.8 万字节非空白，增量 29 艺术画面复拍）",
     "mobile": "520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）",
-    "keyboard": "playwright Tab 序列实测：28 项可聚焦全可达（3 卡片链接+墙过滤 4 按钮+墙 4 条目 summary+3 条目内产物链接+1 已确认态锚点（审计区块引入）+阶段过滤 7 按钮（增量 70）+审计域过滤 6 按钮（增量 71：全部+knowledge/registry/evidence/video/docs 五域）——增量 71 复测口径；元素构成随区块增减变化，对账器 wall-reconcile 常测）",
+    "keyboard": "playwright Tab 序列实测：34 项可聚焦全可达（3 卡片链接+墙过滤 4 按钮+墙 4 条目 summary+3 条目内产物链接+1 已确认态锚点（审计区块引入）+阶段过滤 7 按钮（增量 70）+审计域过滤 6 按钮（增量 71）+阶段抽屉 6 summary（增量 73 门径抽屉化）——增量 73 复测口径；元素构成随区块增减变化，对账器 wall-reconcile 常测）",
     "contrast": "playwright computed-style WCAG 实测：200 项文本全过 4.5:1（低于标准 0 项，采样触 200 上限如实记 truncated；增量 29 复测——生成式背景为独立装饰层，文字在面板底色上；增量 67 axe-core 独立引擎对抗重测 0 违例并抓出 pending/紫文本真违例已修）",
     "reducedMotion": "生成式背景在 prefers-reduced-motion 下画一帧静态构图后停止（media query 监听切换即停帧）；静态检查通过",
     "console": "playwright 实测 0 错误（favicon data-URI 修复后）"

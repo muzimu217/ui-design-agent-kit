@@ -544,6 +544,26 @@ async function main() {
   </div>
 <script>
 // 六维过滤：measured 徽章 < 6 的条目在 full 模式下隐藏（纯展示切换，无网络无构建逻辑）。
+// 状态持久化（增量 72，学循环 100 Onlook local-first 定位词的界面对应物）：
+// 用户的选择存 localStorage（留在用户机器上）；读写全部 try/catch 降级——
+// file:// 或隐私模式下存储不可用是环境事实，降级为会话内状态，不假装成功。
+const WS_KEY = 'uak-workbench-state';
+function wsSave(patch) {
+  try {
+    const cur = JSON.parse(localStorage.getItem(WS_KEY) ?? '{}');
+    localStorage.setItem(WS_KEY, JSON.stringify({ ...cur, ...patch }));
+  } catch { /* 存储不可用：降级 */ }
+}
+function wsRestore() {
+  try {
+    const st = JSON.parse(localStorage.getItem(WS_KEY) ?? '{}');
+    if (st.stage) stageFilter(st.stage);
+    if (st.audit) auditFilter(st.audit);
+    if (st.wall) wallFilter(st.wall);
+    if (st.sort) wallSort(st.sort);
+  } catch { /* 无存量或损坏：默认视图 */ }
+}
+
 // 门径 tab 过滤（增量 70）：点阶段只看该阶段卡；空态必须接显隐（reg-003 类）。
 function stageFilter(stage) {
   let visible = 0;
@@ -558,6 +578,7 @@ function stageFilter(stage) {
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
   document.getElementById('stage-mode').textContent = stage === 'all' ? '全部' : stage;
+  wsSave({ stage });
   const empty = document.getElementById('stage-empty');
   if (empty) empty.hidden = visible > 0;
 }
@@ -577,6 +598,7 @@ function auditFilter(domain) {
   });
   const mode = document.getElementById('audit-mode');
   if (mode) mode.textContent = domain === 'all' ? '全部' : domain;
+  wsSave({ audit: domain });
   const empty = document.getElementById('audit-empty');
   if (empty) empty.hidden = visible > 0;
 }
@@ -593,6 +615,7 @@ function wallFilter(mode) {
   });
   document.querySelectorAll('.wf-btn[data-mode]').forEach((b) => b.classList.toggle('is-on', b.dataset.mode === mode));
   document.getElementById('wall-mode').textContent = full ? '仅全实测（6/6）' : '全部';
+  wsSave({ wall: mode });
   const empty = document.getElementById('wall-empty');
   if (empty) empty.hidden = visible > 0;
 }
@@ -610,7 +633,10 @@ function wallSort(by) {
   entries.sort((a, b) => by === 'verified' ? key(b) - key(a) : (key(a) < key(b) ? 1 : -1));
   entries.forEach((d) => wall.appendChild(d));
   document.querySelectorAll('.wf-btn[data-sort]').forEach((b) => b.classList.toggle('is-on', b.dataset.sort === by));
+  wsSave({ sort: by });
 }
+
+wsRestore();
 // 生成式微艺术：极低密度漂移粒子（纯装饰，aria-hidden）。降动效时画一帧静态构图后停止，
 // 构图与文字对比度不随动画变化（粒子仅落在画布层，文字有自己的面板底色）。
 (function ambientArt() {

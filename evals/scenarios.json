@@ -3680,5 +3680,37 @@
    "Treating tier names as evidence of capability differences",
    "Copying subscription-tier vocabulary into the kit's free local tooling"
   ]
+ },
+ {
+  "id": "local-first-as-positioning-word",
+  "request": "When a commercial competitor promotes local-first as its headline positioning (not just a technical attribute), recognize the three-step validation chain of your own survival-position judgment: derived from a death case (cloud lock-in), converged across survivors (interoperability/history/private deployment), finally adopted as a competitor's main headline — and hold your own implementation bar higher than the wording: local-first must mean machine-checkable receipts and offline rebuild, not merely files on disk.",
+  "context": "Round-100 Onlook recheck: homepage headline reads 'free, local-first editor' where earlier visits showed open-source-editor positioning; the kit's local-first judgment originated from the Motiff shutdown analysis (round 90) and converged across survivor rechecks (rounds 91/94/95).",
+  "passCriteria": [
+   "Positioning change quoted verbatim with prior-visit contrast",
+   "Three-step chain named (death case → survivor convergence → competitor adoption)",
+   "Own implementation bar stated above positioning wording",
+   "Category-creation tactics (e.g. 'Visual Engineers') recorded as not-to-copy with reasons"
+  ],
+  "failConditions": [
+   "Treating a competitor's headline as validation of your mechanism without your own receipts",
+   "Dropping the local-first discipline because 'everyone says it now'",
+   "Copying category-creation vocabulary without a funding-narrative need"
+  ]
+ },
+ {
+  "id": "workspace-state-user-machine-persistence",
+  "request": "When persisting user UI state on a static local page, store it in the user's localStorage (not a server, not a config file the tool owns), wrap every read/write in try/catch with silent degradation to session-only state (storage unavailability is an environment fact, not an error), and verify end-to-end: write on selection, restore on reload, write-back on reset — a persistence feature without the reload test is a claim, not a receipt.",
+  "context": "Round-100 workbench state persistence: stage/audit/wall tab selections saved under one key, restored on load, degrade gracefully in file:// or private mode; verified by a live write→reload→restore→reset cycle.",
+  "passCriteria": [
+   "State stored on the user's machine only (no network, no owned config)",
+   "All storage access degrades explicitly on failure",
+   "Reload restore verified at DOM level (filters active, badge text correct)",
+   "Keyboard/contrast/overflow receipts unchanged (no new focusable surface)"
+  ],
+  "failConditions": [
+   "Persisting state server-side or claiming persistence without the reload test",
+   "Letting storage errors surface as UI breakage in restricted environments",
+   "Adding focusable chrome as a side effect of a persistence feature"
+  ]
  }
 ]

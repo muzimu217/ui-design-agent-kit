@@ -3840,5 +3840,37 @@
    "Assuming the page was fine because it rendered",
    "Leaving the wall count and the checker list inconsistent"
   ]
+ },
+ {
+  "id": "goflygen-complementary-layer-recheck",
+  "request": "When re-checking a same-problem-different-layer product (a code-level framework constraining AI generation vs your workflow-level gating), verify survival and claim stability, and restate the complementarity rather than drifting into competition framing — two layers constraining the same pain from different altitudes are mutual market validation, and the layered-case pairing (framework-level type safety + instruction-level gating) is usable as a dual-case narrative without adopting either layer's stack or pricing.",
+  "context": "Round-105 GoFlyGen recheck after 17 days: alive at v3.0.0, all three first-check claims verbatim intact (framework constrains AI generation / AI-adaptation as an architecture dimension / strongly-typed zero-magic), pricing model unchanged.",
+  "passCriteria": [
+   "Survival and claim stability quoted against the dated first check",
+   "Complementarity restated without competition framing",
+   "Dual-layer case pairing noted for narrative use",
+   "Fourth-layer vacancy counter maintained"
+  ],
+  "failConditions": [
+   "Reframing a complementary layer as a competitor after its growth",
+   "Copying pricing vocabulary or stack",
+   "Dropping the recheck because 'nothing will have changed'"
+  ]
+ },
+ {
+  "id": "tabbed-total-iframe-focus-attribution",
+  "request": "When a keyboard receipt reports a tabbed>total pair, attribute the delta before wording anything as anomalous: embedded content (video shadow controls, natively-focusable SVG nodes, sandboxed iframes) legitimately contributes focus stops that a static selector count cannot see — the two numbers are different rulers (focus-cycle length vs static selector matches), and the honest receipt names both rulers and the embedded-focus root cause instead of smoothing the pair.",
+  "context": "Round-105 joint investigation: site.html's 20/14 traced to 7 focus stops inside video shadow controls; canvas-workbench's 27/19 traced to SVG diagram nodes entering the tab order 30 times (a completeness feature, not a defect). Raising the walk cap changed nothing — the walk ends when focus returns to body.",
+  "passCriteria": [
+   "Root cause proven by an attributed focus walk, not assumed",
+   "Both rulers named in the receipt (cycle length vs static count)",
+   "Embedded-focus stops recorded as completeness where they aid reachability",
+   "Annotated claims reconcile against live receipts"
+  ],
+  "failConditions": [
+   "Calling the pair an anomaly after attribution proves embedded focus",
+   "Suppressing embedded focusables to force the numbers to match",
+   "Raising walk caps as a fix when the cap was never binding"
+  ]
  }
 ]

@@ -128,7 +128,7 @@ Apache-2.0；`npm ci --ignore-scripts && npm run verify && npm test` 三步复�
 | --- | --- | --- |
 | 自动化测试 | 131 项全绿 | `npm test` |
 | 静态校验 | 0 错误 0 警告 | `npm run verify` |
-| 评测场景语料 | 230 条 | `evals/scenarios.json` |
+| 评测场景语料 | 232 条 | `evals/scenarios.json` |
 | 知识库机制卡 | 12 张（构成 4 / 运动 4 / 秩序 4） | `docs/knowledge-base/index.json` |
 | 能力登记 | 11 项（4 已接入 / 6 评估中 / 1 不接入） | `canvas/capabilities.json` |
 | 产物墙 | 5 件，六维实测入墙 | `canvas/artifacts.json` |

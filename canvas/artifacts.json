@@ -148,7 +148,7 @@
    "sixDim": {
     "desktop": "Chrome headless 1280 直拍通过；scrollWidth=1280 无横向溢出（17 宽度扫描 320→1920 全 clean，增量 55 实测）",
     "mobile": "320/360/375/390/414/480/520px 七档全无横向溢出（scrollWidth=clientWidth，增量 55 实测）；宽表在容器内横向滚动、内容不裁切；390px 依赖 viewport meta+防御 CSS",
-    "keyboard": "playwright Tab 序列实测：20 项 tab 停留/14 项可聚焦（Tab 检测上限 30→64 后首测 20>14：tab 序列含焦点移动中重复到达的元素，双数字如实呈报差异不做抹平；增量 75 复测口径）",
+    "keyboard": "playwright Tab 序列实测：20 步焦点循环/14 项静态可聚焦（双尺子口径：差值 6=video 元素内部 shadow 控件焦点位（增量 77 取证实锤：Tab 20 步中 7 步停在 video 控件），如实呈报不抹平——增量 75 复测口径+77 根因注）",
     "contrast": "playwright computed-style WCAG 实测：200 项文本全过 4.5:1（低于标准 0 项，采样触 200 上限如实记 truncated；增量 54 复测含视频区；增量 67 axe-core 独立引擎对抗重测 0 违例）",
     "reducedMotion": "描边循环动画在 prefers-reduced-motion 下停帧显示完整路径（dashoffset=0），静态检查通过",
     "console": "playwright 实测 0 错误"
@@ -194,7 +194,7 @@
    "sixDim": {
     "desktop": "Chrome headless 1280 直拍通过（11.3 万字节非空白，任务态渲染）",
     "mobile": "520px Chrome headless 直拍通过（无横向裁切，17 宽度守卫 5 页全过）",
-    "keyboard": "playwright Tab 序列实测：27 项 tab 停留/19 项页内可聚焦（27>19=沙箱产物 iframe 内部焦点计入 tab 序列不计入页内计数——双数字如实呈报不抹平；增量 76 首测口径）",
+    "keyboard": "playwright Tab 序列实测：27 步焦点循环/19 项静态可聚焦（双尺子口径：tabbed=循环回到 body 前的步数含 SVG 流程图节点可聚焦（增量 77 取证实锤：g 节点 30 次进 tab 序列=键盘可达性完整性，非异常）；focusableTotal=summary/a/button 静态计数——增量 76 首测口径+77 根因注）",
     "contrast": "playwright computed-style WCAG 实测：179 项文本全过 4.5:1（低于标准 0 项；增量 76 首测 wf-chip 白字对 accent 仅 2.2:1 违例——四色 chip 统一改深字 var(--bg) 后修复，四底全 ≥5.6:1）",
     "reducedMotion": "过渡动画 0.3s ease 且 prefers-reduced-motion 媒体查询降级（静态检查通过）",
     "console": "playwright 实测 0 错误（增量 76 修复：无 icon 时 Chrome 自动请求 /favicon.ico 404 污染 console——data: 占位与兄弟页同款）"

@@ -403,6 +403,11 @@ async function main() {
   .wf-sep { color:var(--dim); font-size:12px; margin:0 4px; }
   .wf-btn { background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:3px 12px; font:inherit; font-size:12px; color:var(--dim); cursor:pointer; }
   #stage-mode { flex-basis:100%; } /* 状态徽标独占一行：末行挤压曾在 320px 溢出 4px（增量 70 实测） */
+  .sec-toc { position:sticky; top:0; z-index:6; display:flex; flex-wrap:wrap; gap:2px 12px; padding:8px 14px; margin:14px -14px 4px; background:rgba(10,10,15,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  .sec-toc a { color:var(--dim); text-decoration:none; font-size:12px; white-space:nowrap; }
+  .sec-toc a:hover { color:var(--text); }
+  html { scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } } /* 平滑滚动随系统降级 */
   .wf-btn.is-on { border-color:var(--accent); color:#c4b5fd; }
   .mc { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
   .mc-col { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
@@ -505,6 +510,7 @@ async function main() {
 <main>
   <h1>画布工作台 · 入口</h1>
   <div class="meta">${esc(state.task)} · ${esc(state.revision ?? "")} · 更新 ${esc(state.updatedOn ?? "")} · 离线自包含</div>
+  <nav id="sec-toc" class="sec-toc" aria-label="区块目录"></nav>
   <div class="grid">
     <a class="card" href="canvas-workbench.html"><h2>门径画布（实时门径）</h2><p>六阶段四泳道流水线：门状态/证据嵌入/搜索/缩放/回放——由 workflow-diagram 壳渲染</p></a>
     <a class="card" href="chain-canvas-workbench.html"><h2>需求解析链路</h2><p>原始口语 → 解析摘要 → 理解验证 → 六步决策抽屉——黑盒步骤自动标黄</p></a>
@@ -653,6 +659,25 @@ function wallSort(by) {
 }
 
 wsRestore();
+
+// 区块锚点目录（增量 75，学循环 103 翻车词系轮）：长证据页的导航——运行时
+// 从 h2.sec 生成锚点（区块增减自动跟随，无第二份清单可漂移）；sticky 吸顶
+// 栏 + reduced-motion 下平滑滚动自动降级（CSS media 接管）。
+const SEC_NAMES = { "审计报告": "sec-audit", "对抗验证回执": "sec-adversarial", "门径状态": "sec-gates", "任务管控": "sec-mission", "产物墙": "sec-wall", "反例记录": "sec-regressions", "能力接入登记": "sec-capabilities", "知识库": "sec-kb", "链路注册表": "sec-chains", "品味特质": "sec-taste" };
+(function buildToc() {
+  const nav = document.getElementById('sec-toc');
+  if (!nav) return;
+  document.querySelectorAll('h2.sec').forEach((h) => {
+    const name = (h.textContent || '').trim().split('（')[0].trim();
+    if (!name) return;
+    const id = SEC_NAMES[name] ?? ('sec-' + encodeURIComponent(name));
+    if (!h.id) h.id = id;
+    const a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = name;
+    nav.appendChild(a);
+  });
+})();
 // 生成式微艺术：极低密度漂移粒子（纯装饰，aria-hidden）。降动效时画一帧静态构图后停止，
 // 构图与文字对比度不随动画变化（粒子仅落在画布层，文字有自己的面板底色）。
 (function ambientArt() {

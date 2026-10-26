@@ -153,7 +153,9 @@ for (const page of dataOnly ? [] : pages) {
   // Keyboard: tab through the page, record focusable sequence.
   const total = await p.evaluate(() => document.querySelectorAll("summary, a[href], button").length);
   const seen = [];
-  for (let k = 0; k < Math.min(total + 4, 30); k++) {
+  // 上限 64（增量 75 类修复）：旧上限 30 曾在页面增长后静默截断 Tab 序列
+  // ——"tabbed 30 / total 49"里 19 项从未被走过，"全可达"成了未验证宣称。
+  for (let k = 0; k < Math.min(total + 8, 64); k++) {
     await p.keyboard.press("Tab");
     const cur = await p.evaluate(() => {
       const el = document.activeElement;

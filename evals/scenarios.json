@@ -3936,5 +3936,37 @@
    "Rendering 60+ links as focusables and churning the keyboard receipt",
    "Hiding the section when the index file is absent"
   ]
+ },
+ {
+  "id": "figma-product-line-expansion-agent-productized",
+  "request": "When a design-platform giant productizes an agent as a standalone product alongside a burst of new lines, update the layered map's giant-tier reading: the fourth layer's perimeter now has both a small-vendor mechanism sprout (pre-touch preview) and a giant product-level bet — the differentiation sentence (they stop at preview, we continue to receipts) stays valid and becomes more necessary; record the new product lines even when their pages are unreachable, classified by what the footer matrix alone can prove.",
+  "context": "Round-108 Figma recheck: figma.com/figmake/ 404s while the footer matrix reveals Figma Weave/Motion/Specs/Sites/Buzz (NEW/BETA) plus 'Figma agent' as a standalone product — roughly double the line count since the first check 19 days earlier.",
+  "passCriteria": [
+   "Matrix quoted from the reachable surface (404 page footer) with line names and stages",
+   "Agent productization classified as giant-tier fourth-layer-adjacent, needs_validation on capability form",
+   "Route breakage and network transient recorded as separate facts",
+   "Fourth-layer counter maintained with the neighbor escalation noted"
+  ],
+  "failConditions": [
+   "Guessing the agent's capabilities from its name",
+   "Treating the 404 as proof the product is discontinued",
+   "Skipping the record because the main page was unreachable"
+  ]
+ },
+ {
+  "id": "broken-route-honest-recording",
+  "request": "When an official footer link resolves to a 404 route, record the two-layer breakage separately (link target broken, retry hit a network transient), never guess path variants after the first failure, harvest whatever the reachable surface proves (a 404 page footer is still first-hand evidence), and schedule the reach from a logged-in state or site map rather than iterating guessed URLs.",
+  "context": "Round-108: the 'Figma Make' footer link pointed to figma.com/figmake/ which returned Page Not Found; the 404 page itself carried the full product matrix that anchored the round's findings.",
+  "passCriteria": [
+   "Broken link and network transient recorded as distinct facts",
+   "No path-variant guessing after the first 404",
+   "Reachable-surface evidence harvested (footer matrix)",
+   "A concrete non-guessing reach plan recorded for the next round"
+  ],
+  "failConditions": [
+   "Iterating guessed URL slugs against a broken route",
+   "Dropping the object because the canonical page 404'd",
+   "Fabricating the product page content from memory"
+  ]
  }
 ]

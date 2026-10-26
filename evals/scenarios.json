@@ -3808,5 +3808,37 @@
    "Explaining away tabbed>total instead of reporting the raw pair",
    "Raising the cap only for the page that visibly failed"
   ]
+ },
+ {
+  "id": "design-md-three-source-convergence",
+  "request": "When a convergence signal reaches three independent sources (a design tool's official input format, an English-region methodology video, an anti-slop skill's vocabulary), upgrade its status from industry-signal to定型 (three-source-settled), and restate both directions of the mapping: vendors use the markdown contract as generation input intent, your gate-D contract is acceptance-side evidence — the settled signal validates the discipline, not a feature to copy.",
+  "context": "Round-104 YouTube sweep: top result 'Your AI UI Looks Generic… This Fixes It (DESIGN.md)' (39K views) joins MasterGo's design.md input format (round 95) and hallmark's Anti-AI-slop framing (round 97) as the third independent source.",
+  "passCriteria": [
+   "All three sources cited with dates and surfaces",
+   "Both directions (input intent vs acceptance evidence) restated",
+   "Status upgraded explicitly with the word three-source-settled",
+   "No pivot toward shipping a design.md input format"
+  ],
+  "failConditions": [
+   "Counting two related sources as three",
+   "Shipping an input-format feature because the market validated the discipline",
+   "Omitting the direction distinction when citing the convergence"
+  ]
+ },
+ {
+  "id": "coverage-gap-unchecked-shipped-page",
+  "request": "When a shipped, distributed page is found missing from the acceptance checklist, treat it as a coverage-gap regression: first-run the real checker on it before any fix (let it expose actual defects, not assumed ones), fix what it finds, add the page to the default list, and record the gap history — an unchecked page is not a passing page, it is an unexamined one.",
+  "context": "Round-104: canvas-workbench.html was first in the showcase distribution list but absent from canvas:check defaults; its first check exposed three real defects (white-on-accent chips at 2.2:1, favicon 404 polluting the console gate, absent from the artifact wall) — all fixed, then the page entered the default list and the wall as artifact #5.",
+  "passCriteria": [
+   "Real checker run before fixes; defects enumerated from its receipt",
+   "Fixes verified by receipt numbers (contrast below=0, console errors=0)",
+   "Page added to the default checklist and to the artifact wall with six dims",
+   "Coverage-gap history recorded as a regression-class lesson"
+  ],
+  "failConditions": [
+   "Adding the page to the checklist before fixing what it exposes",
+   "Assuming the page was fine because it rendered",
+   "Leaving the wall count and the checker list inconsistent"
+  ]
  }
 ]

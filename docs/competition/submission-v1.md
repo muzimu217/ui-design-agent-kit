@@ -68,7 +68,7 @@ Installed  ≠  Configured  ≠  Connected  ≠  Tool-callable  ≠  Visually Ve
 仓库内置的画布工作台不是营销页，而是**从仓库自身 JSON 数据计算出来的**证据面板：
 
 - **产物墙**：每件产物带六维实测徽章（桌面/移动/键盘/对比度/降动效/控制台）、版本、来源（AI 直出 / AI+人工）、构建时缩略图快照
-- **反例墙**：本项目自己的真实缺陷，只增不删（当前 6 条，全部已修复，`已删除：0`）
+- **反例墙**：本项目自己的真实缺陷，只增不删（当前 7 条，全部已修复，`已删除：0`）
 - **知识库**：12 张机制卡，按构成/运动/秩序三层归档，每张带可编码参数
 - **能力登记**：11 项外部能力按四问契约登记（谁产出/边界/验收口径/证据），4 项已接入
 
@@ -128,11 +128,11 @@ Apache-2.0；`npm ci --ignore-scripts && npm run verify && npm test` 三步复�
 | --- | --- | --- |
 | 自动化测试 | 131 项全绿 | `npm test` |
 | 静态校验 | 0 错误 0 警告 | `npm run verify` |
-| 评测场景语料 | 228 条 | `evals/scenarios.json` |
+| 评测场景语料 | 230 条 | `evals/scenarios.json` |
 | 知识库机制卡 | 12 张（构成 4 / 运动 4 / 秩序 4） | `docs/knowledge-base/index.json` |
 | 能力登记 | 11 项（4 已接入 / 6 评估中 / 1 不接入） | `canvas/capabilities.json` |
-| 产物墙 | 4 件，六维实测入墙 | `canvas/artifacts.json` |
-| 反例墙 | 6 条，全部已修复，已删除 0 | `canvas/regressions.json` |
+| 产物墙 | 5 件，六维实测入墙 | `canvas/artifacts.json` |
+| 反例墙 | 7 条，全部已修复，已删除 0 | `canvas/regressions.json` |
 | 接入宿主 | 13 家 | `README.md` |
 | 迭代记录 | 249 条 | `docs/iteration-log.md` |
 

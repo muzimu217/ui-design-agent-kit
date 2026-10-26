@@ -184,6 +184,47 @@
    "changeSummary": "v1.0 首版（展示/三步/六道门/能力/知识库/品味/条款，数字从工作台 JSON 计算）→ v2.0 单笔描边循环动画（reduced-motion 停帧）+ 入产物墙 → v2.1 知识库表场景化别名 chip（与工作台同 aria 契约）+ 修复 520px 横向溢出 115px（.step pre 最小内容宽+kb 表 min-content，reg-004）+ check 新增 aliasGuard/aliasCoverage/overflowGuard 三守卫 → v2.2 三张宽表包 .table-wrap 容器内滚（reg-005：360/390/414px 能力表 min-content 413px 撑破）；overflowGuard 2→17 宽度",
    "origin": "ai-draft+human-revision",
    "originNote": "页面由代理编写；定位句式借鉴 Framer'alongside not instead'（知识卡判读）与 10-19 用户方向裁定"
+  },
+  {
+   "id": "canvas-workbench-live",
+   "round": "2026-10-26-02",
+   "title": "实时门径画布（工作流图壳 · 增量 76 验收覆盖缺口闭环入墙）",
+   "path": "scripts/workflow-diagram/cli.mjs → output/canvas-workbench.html（离线自包含，含内联产物）",
+   "viewUrl": "canvas-workbench.html",
+   "sixDim": {
+    "desktop": "Chrome headless 1280 直拍通过（11.3 万字节非空白，任务态渲染）",
+    "mobile": "520px Chrome headless 直拍通过（无横向裁切，17 宽度守卫 5 页全过）",
+    "keyboard": "playwright Tab 序列实测：27 项 tab 停留/19 项页内可聚焦（27>19=沙箱产物 iframe 内部焦点计入 tab 序列不计入页内计数——双数字如实呈报不抹平；增量 76 首测口径）",
+    "contrast": "playwright computed-style WCAG 实测：179 项文本全过 4.5:1（低于标准 0 项；增量 76 首测 wf-chip 白字对 accent 仅 2.2:1 违例——四色 chip 统一改深字 var(--bg) 后修复，四底全 ≥5.6:1）",
+    "reducedMotion": "过渡动画 0.3s ease 且 prefers-reduced-motion 媒体查询降级（静态检查通过）",
+    "console": "playwright 实测 0 错误（增量 76 修复：无 icon 时 Chrome 自动请求 /favicon.ico 404 污染 console——data: 占位与兄弟页同款）"
+   },
+   "compare": {
+    "target": "bolt.new Bolt Agent 分档面板（Standard/Max + Speed/Intelligence/Token cost 自报矩阵）",
+    "evidence": "docs/competitive-insights/2026-10-25-bolt-recheck3/insight.md",
+    "verdict": "同为'能力状态一屏'信息架构：他们=厂商自报能力矩阵（无口径无回执），本产物=门态+实测回执的实时壳（六维数字全部机验）——能力面板与证据面板的物种分野实证",
+    "score": {
+     "rubric": "六维各 1 分：1=有本轮实测/实看证据，0=实测缺失，null=公开渠道不可观测（不计分母）；对标侧检视级别见 level，不虚记不可测维度",
+     "us": {
+      "desktop": 1,
+      "mobile": 1,
+      "keyboard": 1,
+      "contrast": 1,
+      "reducedMotion": 1,
+      "console": 1
+     },
+     "them": {
+      "desktop": 1,
+      "mobile": null,
+      "keyboard": null,
+      "contrast": null,
+      "reducedMotion": null,
+      "console": null
+     },
+     "level": "unverified-partial",
+     "themNote": "对标侧为公开营销页实看：仅桌面呈现可观测，其余维度无公开可验证证据，记 null 不虚记"
+    }
+   }
   }
  ]
 }

@@ -15,7 +15,10 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const pages = process.argv.slice(2).length
   ? process.argv.slice(2)
-  : ["output/chain-canvas-workbench.html", "output/canvas-index.html", "output/mini-dashboard.html", "output/site.html"];
+  : ["output/canvas-workbench.html", "output/chain-canvas-workbench.html", "output/canvas-index.html", "output/mini-dashboard.html", "output/site.html"];
+  // canvas-workbench.html 于增量 76 入列：此前分发在列（showcase 第一位）却
+  // 不在验收清单——首测即抓三缺陷（wf-chip 白字 2.2:1/favicon 404 console
+  // 错/未入墙），覆盖缺口类回归记录 reg-007。
 
 let chromium;
 try {

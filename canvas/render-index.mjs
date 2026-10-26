@@ -319,6 +319,18 @@ async function main() {
   const activeStages = stageEntries.filter(([, s]) => s.status === "active").map(([id]) => id);
   const gatedStages = stageEntries.filter(([, s]) => s.status === "gated").map(([id]) => id);
   const fullyVerified = artifacts.artifacts.filter((a) => sixKeys.filter((k) => /通过|实测|直拍|可达|全过/.test(String((a.sixDim ?? {})[k] ?? ""))).length === 6).length;
+  // 证据路径链接化（增量 74）："证据面板"最后一米——.sev 里的仓库相对路径
+  // 转可点链接（新窗口打开，不劫持工作台）。仅识别白名单前缀，其余文字保持
+  // 原文；链接色 #8ab4ff 对面板 #141420 实测 8.7:1（68 轮 UA 默认蓝教训：
+  // 未设色链接用 #0000EE 会真违例）。
+  function linkifyEvidence(text) {
+    const parts = String(text).split(/(docs\/[\w\-./]+|canvas\/[\w\-./]+|evals\/[\w\-./]+|scripts\/[\w\-./]+|output\/[\w\-./]+)/g);
+    return parts.map((part) =>
+      /^(docs|canvas|evals|scripts|output)\//.test(part)
+        ? `<a href="/${esc(part)}" target="_blank" rel="noopener">${esc(part)}</a>`
+        : esc(part)
+    ).join("");
+  }
   // 门径 tab 化（增量 70，阶段 4 首候选）：阶段卡带 data-stage 供过滤；
   // evidence 字段此前从未渲染（增量 52 死数据缺陷类）——本轮随 tab 化一并
   // 浮出：阶段卡补证据行，"该阶段的依据是什么"点开可见。
@@ -328,7 +340,7 @@ async function main() {
       return `<details class="stage" style="--c:${color}" data-stage="${esc(id)}"${s.status === "active" ? " open" : ""}>
         <summary><span class="sid">${esc(id)}</span><span class="sst" style="color:${color}">${esc(s.status)}</span></summary>
         <div class="snote">${esc(s.note ?? "")}</div>
-        ${(s.evidence ?? "").trim() ? `<div class="sev">${esc(s.evidence)}</div>` : ""}
+        ${(s.evidence ?? "").trim() ? `<div class="sev">${linkifyEvidence(s.evidence)}</div>` : ""}
       </details>`;
     })
     .join("\n");
@@ -369,6 +381,7 @@ async function main() {
   .sst { font-size:12px; }
   .snote { color:var(--dim); font-size:12px; }
   .sev { color:var(--dim); font-size:11.5px; margin-top:6px; padding-top:6px; border-top:1px dashed var(--line); overflow-wrap:anywhere; }
+  .sev a { color:#8ab4ff; text-decoration:none; } /* 对面板 8.7:1；UA 默认蓝在深底真违例（68 轮教训） */
   h2.sec { font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--dim); margin:22px 0 10px; }
   details.art { background:var(--panel); border:1px solid var(--line); border-radius:10px; margin-bottom:10px; }
   // 图标/条目微动效 0.5s 三段式（知识卡 icon-motion-500ms）：badge hover 时 0.5s 内完成抬起-高亮-回稳，降动效直接高亮无位移。

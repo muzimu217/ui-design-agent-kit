@@ -3744,5 +3744,37 @@
    "Treating one tutorial title as proof of sustained awareness",
    "Omitting the noise/entertainment entries from the sample record"
   ]
+ },
+ {
+  "id": "bilibili-comment-layer-machine-hostile",
+  "request": "When a planned signal-sampling channel proves machine-hostile (shadow-DOM lazy-load plus headless gating), record the attempt with both strategies and their zero-hit results at a weaker inspection level (attempted-failed-partial), extract the channel's usable form from the failure (what each layer can and cannot yield), and never fabricate comment content — the failure mode being known is itself reviewable evidence.",
+  "context": "Round-102: bilibili comment sampling failed with two strategies (.reply-content legacy selector and shadow-piercing bili-comment-renderer, both 0 hits) while an accidental finding — a failure-vocabulary video ranking first for the product word — validated the round-101 calibration direction.",
+  "passCriteria": [
+   "Both strategies and their zero-hit outcomes recorded with selectors named",
+   "Inspection level downgraded honestly (attempted-failed-partial)",
+   "Channel's usable form concluded (titles for volume, failure vocabulary for pain, human review for comments)",
+   "Accidental findings recorded without being overclaimed"
+  ],
+  "failConditions": [
+   "Paraphrasing imagined comments as sampled data",
+   "Retrying the same selector after a 0-hit result",
+   "Dropping the calibration plan because one channel is hostile"
+  ]
+ },
+ {
+  "id": "evidence-path-linkification",
+  "request": "When an evidence panel shows repository-relative paths as plain text, closing the last mile means turning whitelisted-path prefixes into working links (new tab, rel=noopener, link color verified against the panel background), and the verification must include an actual HTTP fetch of the first link — a link whose target 404s is a claim, not evidence access.",
+  "context": "Round-102 increment: stage-evidence paths in the gate panels became anchors (#8ab4ff on panel = 8.7:1), each link verified in DOM (href/text/target/rel) and the first fetched with HTTP 200.",
+  "passCriteria": [
+   "Whitelist prefixes only; non-path text stays escaped plain text",
+   "Link color contrast verified against the actual panel background (UA default blue rejected)",
+   "DOM verification includes href, accessible text, target, and rel",
+   "First link fetched over HTTP with 200 before claiming reachability"
+  ],
+  "failConditions": [
+   "Links whose targets are not served (404 on first fetch)",
+   "Unstyled links inheriting UA default blue on dark panels",
+   "Escaping failures from naive string interpolation of paths"
+  ]
  }
 ]

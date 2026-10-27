@@ -4128,5 +4128,37 @@
    "Retrying the same blocked domains within the round",
    "Skipping the round's learning loop because the first target failed"
   ]
+ },
+ {
+  "id": "pixso-mcp-entry-two-day-diffusion",
+  "request": "When a capability (MCP entry point) appears in a second same-category vendor within 48 hours of the first observation, reclassify it from vendor feature to category standard-in-formation, re-measure the density spectrum instead of defending the prior snapshot, and note that supply-side standardization does not change consumption-side discipline (your MCP gate stays closed by default).",
+  "context": "Round-114 Pixso recheck (3 days after round 94): homepage now carries a '配置 MCP' primary entry and 'AI 设计平台' in the title — the round-110 spectrum row 'Pixso = AI subordinate' is stale after 2 days; MasterGo got MCP bidirectional write (round 95), Pixso entry (round 114).",
+  "passCriteria": [
+   "Two-day diffusion interval stated with both dated observations",
+   "Spectrum corrected to a dynamic panel, 'settled' wording withdrawn",
+   "Consumption-side MCP gate unchanged despite supply-side standardization",
+   "Third vendor (js.design) marked as the remaining unknown"
+  ],
+  "failConditions": [
+   "Defending the 2-day-old spectrum snapshot",
+   "Opening optional MCP services because vendors standardized them",
+   "Treating an entry point as evidence of bidirectional capability"
+  ]
+ },
+ {
+  "id": "dual-a11y-instrument-cleanup",
+  "request": "When two similarly-named a11y instruments coexist, verify each still launches in the current environment, repair broken launch paths with the established channel-fallback pattern, document the division of labor (local build gate vs live-surface trend sweep) in the onboarding instrument list, and record the live sweep's current counts — an instrument that cannot launch is a silent gap, and two instruments without a stated division of labor is confusion debt.",
+  "context": "Round-114: a11y:sweep (live surface agent.kcos.club, 10 pages, light/dark, baseline diff) failed to launch on drifted bundled-chromium expectations; repaired with channel:'chrome' fallback; current sweep shows critical/serious/moderate all 0 (down from serious 14 at the 9-27 baseline) — documented in onboarding next to canvas:check.",
+  "passCriteria": [
+   "Broken launch repaired with the established fallback pattern",
+   "Live sweep executed and current counts recorded",
+   "Division of labor (build gate vs trend sweep) documented in onboarding",
+   "Historical baseline trend noted (serious 14 → 0)"
+  ],
+  "failConditions": [
+   "Leaving a broken instrument unfixed because 'the other one works'",
+   "Merging the two instruments without stating why",
+   "Recording the sweep without running it first"
+  ]
  }
 ]

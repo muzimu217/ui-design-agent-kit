@@ -4256,5 +4256,37 @@
    "Re-vendoring or re-pinning in response to the number",
    "Treating the research subset as representative without caveat"
   ]
+ },
+ {
+  "id": "usage-command-verification-all-green",
+  "request": "When verifying a usage document's command examples, check every referenced npm script and file path against package.json and the filesystem in one pass (existence and name equality), record the result as a dated all-green or per-item mismatch table, and prefer a zero-defect verification record over skipping the check because 'the doc was recently fine' — usage docs rot through the commands they cite, not through their prose.",
+  "context": "Round-118 usage.md verification: 5 npm scripts (prompt:build/diagram/diagram:check/lint:detail/visual:check) plus scripts/uak-init.mjs all verified 6/6 present and name-identical; no edits required.",
+  "passCriteria": [
+   "Every referenced command and path checked against live sources",
+   "Result recorded as a dated 6/6 table (or per-item fix list)",
+   "Check performed even with no prior suspicion",
+   "usage.md scope (invocation examples, not policy) preserved during any fix"
+  ],
+  "failConditions": [
+   "Sampling two commands and generalizing to all",
+   "Recording 'looks fine' without per-item existence checks",
+   "Fixing a mismatch without re-running the full table"
+  ]
+ },
+ {
+  "id": "zero-defect-verification-recording",
+  "request": "When a verification finds zero defects, record the zero result with the same care as a defect list — the dated all-green record is what makes the next auditor trust the surface without re-checking, and it distinguishes 'verified clean' from 'never checked' (the coverage-gap class from reg-007).",
+  "context": "Round-118: usage.md verified 6/6 with zero edits required; the no-change verification recorded in the iteration log alongside the per-item table, explicitly distinct from the reg-007 unchecked-page class.",
+  "passCriteria": [
+   "Zero-defect result recorded with date and method",
+   "Explicitly distinguished from 'never checked' (reg-007 class)",
+   "No-change decision stated so absence of diff is traceable",
+   "Next verification date or trigger noted if applicable"
+  ],
+  "failConditions": [
+   "Treating 'no diff needed' as no output for the round",
+   "Conflating verified-clean with unchecked",
+   "Losing the verification record in commit squashing"
+  ]
  }
 ]

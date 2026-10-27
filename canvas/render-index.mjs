@@ -48,7 +48,7 @@ async function main() {
     ? `<h2 class="sec">审计报告（聚合机验 · <span class="badge" aria-label="聚合审计终态 ${esc(audit.run_status === "complete" ? "完整" : "未完整 + 确切原因已披露")}">${esc(audit.run_status)}</span> · ${audit.counts?.confirmed ?? 0}/${audit.counts?.total ?? 0} confirmed）</h2>
        <p class="cap-intro">聚合多项机验为一份机器可读发现报告（计数以 findings 行为准，output/audit-report.json）；终态只有 complete 与 incomplete+确切原因 两种——adopted 自 cloudflare/security-audit-skill（学循环 89）。复核命令 <code>npm run audit:report</code>。</p>
        ${auditFilterBar}
-       <div class="audit-rows">${(audit.findings ?? []).map((f) => `<div class="audit-row" data-domain="${esc(f.domain ?? "")}"><span class="badge" aria-label="发现 ${esc(f.id)} 判定 ${f.status === "confirmed" ? "已确认" : "待验证"}">${f.status === "confirmed" ? "✓" : "?"} ${esc(f.status)}</span><span class="audit-id">${esc(f.id)}</span><span class="audit-ev">${esc(String(f.evidence)).slice(0, 120)}</span></div>`).join("")}</div>
+       <div class="audit-rows">${(audit.findings ?? []).map((f) => `<div class="audit-row" data-domain="${esc(f.domain ?? "")}"><span class="badge" aria-label="发现 ${esc(f.id)} 判定 ${f.status === "confirmed" ? "已确认" : "待验证"}">${f.status === "confirmed" ? "✓" : "?"} ${esc(f.status)}</span><span class="audit-id">${esc(f.id)}</span><span class="audit-ev" title="${esc(String(f.evidence))}">${esc(String(f.evidence)).slice(0, 200)}</span></div>`).join("")}</div>
        <p class="wall-legend">报告头：${esc(audit.head ?? "?")}${audit.workingTreeDirty ? " · 工作区有未提交改动（如实记录）" : " · 工作区干净"} · 生成于 ${esc(String(audit.generatedAt ?? "").slice(0, 19))}${audit.run_status === "incomplete" ? ` · 原因：${esc(audit.incomplete_reason ?? "")}` : ""}</p>`
     : "";
 
@@ -66,7 +66,7 @@ async function main() {
       const r = JSON.parse(await readFile(path.join(ROOT, "output", `${inst.id}.json`), "utf8"));
       const detail = r.verdict ?? r.incomplete_reason ?? JSON.stringify(r.totals ?? {});
       const st = r.run_status === "complete" ? "complete ✓" : `? ${r.run_status ?? "unknown"}`;
-      adversarialRows.push(`<div class="audit-row"><span class="badge" aria-label="对抗回执 ${esc(inst.id)} 终态 ${r.run_status === "complete" ? "完整" : "未完整+原因已披露"}">${esc(st)}</span><span class="audit-id">${esc(inst.id)}</span><span class="audit-ev">${esc(String(detail)).slice(0, 140)}</span></div>`);
+      adversarialRows.push(`<div class="audit-row"><span class="badge" aria-label="对抗回执 ${esc(inst.id)} 终态 ${r.run_status === "complete" ? "完整" : "未完整+原因已披露"}">${esc(st)}</span><span class="audit-id">${esc(inst.id)}</span><span class="audit-ev" title="${esc(String(detail))}">${esc(String(detail)).slice(0, 200)}</span></div>`);
     } catch {
       adversarialRows.push(`<div class="audit-row"><span class="badge" aria-label="对抗回执 ${esc(inst.id)} 未运行">? 未运行</span><span class="audit-id">${esc(inst.id)}</span><span class="audit-ev">回执缺失——本地仪器未在本机执行（npm run ${esc(inst.npm)} 后重建画布）</span></div>`);
     }
@@ -84,7 +84,7 @@ async function main() {
     reconcile = JSON.parse(await readFile(path.join(ROOT, "output", "wall-reconcile.json"), "utf8"));
   } catch { /* 未运行时不渲染明细 */ }
   const reconcileRows = reconcile
-    ? (reconcile.findings ?? []).map((c) => `<div class="audit-row"><span class="badge" aria-label="对账 ${esc(c.id)}.${esc(c.dim ?? "")} 判定 ${c.status === "confirmed" ? "已确认" : "待验证"}">${c.status === "confirmed" ? "✓" : "?"} ${esc(c.status)}</span><span class="audit-id">${esc(c.id)}.${esc(c.dim ?? "")}</span><span class="audit-ev">${esc(String(c.detail ?? "")).slice(0, 140)}</span></div>`).join("")
+    ? (reconcile.findings ?? []).map((c) => `<div class="audit-row"><span class="badge" aria-label="对账 ${esc(c.id)}.${esc(c.dim ?? "")} 判定 ${c.status === "confirmed" ? "已确认" : "待验证"}">${c.status === "confirmed" ? "✓" : "?"} ${esc(c.status)}</span><span class="audit-id">${esc(c.id)}.${esc(c.dim ?? "")}</span><span class="audit-ev" title="${esc(String(c.detail ?? ""))}">${esc(String(c.detail ?? "")).slice(0, 200)}</span></div>`).join("")
     : `<div class="audit-row"><span class="badge" aria-label="断言对账未运行">? 未运行</span><span class="audit-id">wall-reconcile</span><span class="audit-ev">回执缺失——本地仪器未在本机执行（node scripts/wall-reconcile.mjs 后重建画布）</span></div>`;
   const reconcileSection = `<h2 class="sec">断言对账回执（claims vs receipts · <span class="badge" aria-label="对账终态 ${reconcile ? esc(reconcile.run_status === "complete" ? "完整" : "未完整") : "未运行"}">${reconcile ? esc(reconcile.run_status ?? "?") : "未运行"}${reconcile?.counts ? ` · ${reconcile.counts?.confirmed ?? 0}/${reconcile.counts?.total ?? 0} confirmed` : ""}</span>）</h2>
      <p class="cap-intro">产物墙六维散文断言逐条对账真实检查器回执（node scripts/wall-reconcile.mjs）：断言数字不在回执中→needs_validation+确切差异——修正=重测+如实枚举，不是改回执。回执落 output/wall-reconcile.json；本地仪器不入 CI 路线。</p>

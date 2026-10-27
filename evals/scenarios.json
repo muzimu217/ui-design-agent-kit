@@ -4000,5 +4000,37 @@
    "Rewriting the verdict without dating the evolution",
    "Weakening the receipts claim because neighbors appeared at the preview layer"
   ]
+ },
+ {
+  "id": "ai-narrative-density-spectrum",
+  "request": "When tracking same-category platforms over repeated visits, chart AI-narrative density as a spectrum (zero-AI homepage → AI-as-subordinate → AI-as-four-capabilities) correlated with platform-bet strength, and place your own product honestly on it: an AI-workflow product whose AI is the subject but gated is a fourth stance absent from the spectrum — the spectrum is descriptive, not a ranking to climb.",
+  "context": "Round-110 js.design recheck: zero AI claims on the homepage (reaffirming round 91's AI-ebbing reading), against Base44's AI-agents top category and MasterGo's four AI capabilities — three domestic/regional platforms, three densities.",
+  "passCriteria": [
+   "Densities quoted per platform with dated visits",
+   "Correlation with platform-bet strength stated as observation",
+   "Own stance named as a fourth态 with the gating qualifier",
+   "No repositioning pressure acted upon"
+  ],
+  "failConditions": [
+   "Reading low AI density as weakness to avoid",
+   "Padding AI copy to match competitors' density",
+   "Collapsing the spectrum into a leaderboard"
+  ]
+ },
+ {
+  "id": "export-side-interoperability-completeness",
+  "request": "When scoring anti-lockin behavior, require the export side to be a concrete action (an actual file format you can walk out with), not import alone: import-only is lockin dressed as openness; import+export is interoperability. Apply the same test to your own artifacts — offline rebuild is the export action, and it must stay demonstrable, not asserted.",
+  "context": "Round-110: js.design advertises Figma/Sketch/XD import AND Sketch export ('进得来出得去') plus six-platform coverage — the export verb is what completes the interoperability claim.",
+  "passCriteria": [
+   "Import and export sides scored separately",
+   "Own export action named concretely (offline rebuild / exportable artifacts)",
+   "Six-platform coverage noted as distribution, not interoperability",
+   "Anti-lockin family reading extended, not reset"
+  ],
+  "failConditions": [
+   "Crediting import-only pages as interoperable",
+   "Asserting kit exportability without the standing rebuild receipts",
+   "Counting platform breadth as lockin escape"
+  ]
  }
 ]

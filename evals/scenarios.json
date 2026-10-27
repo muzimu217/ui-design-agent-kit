@@ -4064,5 +4064,37 @@
    "Leaving blocked channels unannotated in the pool",
    "Treating a login wall as a transient failure"
   ]
+ },
+ {
+  "id": "coze-delegation-extreme-form",
+  "request": "When a platform markets full-delegation as its headline (agent takes over with your materials and tools, authorized to your real machines and cloud phones), record it as the extreme pole of the delegation spectrum against which the gating position defines itself — the supply-side largest sample of the over-delegation pain — without moralizing about it or softening the kit's own gate stops.",
+  "context": "Round-112 coze.cn first check: '工作交给扣子，创造不必等待', 'AI 同事' staffing narrative, 100M+ agents working, device/cloud-phone execution layer, and demo dialogues performing delivery and review with no verifiable receipt anywhere.",
+  "passCriteria": [
+   "Headline delegation claims quoted verbatim",
+   "Execution-boundary expansion (desktop/cloud/cloud-phone) recorded as a user-control concession",
+   "Performed delivery distinguished from receipts (nothing verifiable on the page)",
+   "Kit position restated as the opposite pole without moral language"
+  ],
+  "failConditions": [
+   "Softening gate stops to compete on delegation convenience",
+   "Treating performed demo reviews as evidence of review capability",
+   "Omitting the device-control concession from the record"
+  ]
+ },
+ {
+  "id": "trust-anchor-morphology-four-forms",
+  "request": "When cataloguing how AI products build trust without verification, maintain the anchor-morphology table (enterprise walls / star counts / agent-count figures / receipts) as a descriptive taxonomy — receipts are the third kind of anchor that no visited product uses yet — and never adopt a scale anchor yourself; your anchor is machine-checkable and that is the differentiator, not a deficiency of scale.",
+  "context": "Round-112: four anchor forms observed across visits — bolt's 20-enterprise wall, MasterGo's 100+ enterprises, claude-mem's 103k stars, Coze's 100M+ working agents — versus the kit's reconciliation receipts as the receipts-form anchor.",
+  "passCriteria": [
+   "Anchor forms enumerated with sources and dates",
+   "Receipts-form named as the kit's anchor and currently unique among visited products",
+   "No scale anchor adopted under competitive pressure",
+   "Taxonomy kept descriptive (no ranking of anchor quality asserted as fact)"
+  ],
+  "failConditions": [
+   "Adopting user-count or agent-count figures in kit marketing",
+   "Asserting receipts are 'better' as fact rather than as method difference",
+   "Dropping an anchor form from the table after one visit"
+  ]
  }
 ]

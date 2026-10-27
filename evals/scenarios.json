@@ -4032,5 +4032,37 @@
    "Asserting kit exportability without the standing rebuild receipts",
    "Counting platform breadth as lockin escape"
   ]
+ },
+ {
+  "id": "figma-ai-workflows-org-unit",
+  "request": "When a platform giant groups its AI products under a dedicated org-unit label (a footer section named 'AI workflows'), record it as organizational evidence that the AI line has its own编制 beyond product count — grouping is a resource-allocation declaration — while keeping product-capability claims behind login walls classified needs_validation rather than inferred from the group name.",
+  "context": "Round-111: the Figma 404 page footer shows three groups — 'Design and explore / Build and ship products / AI workflows' — placing agent/Make/Weave in a dedicated AI grouping, corroborating rounds 106/108's neighbor escalation at the org level.",
+  "passCriteria": [
+   "Group structure quoted verbatim as organizational evidence",
+   "Product capabilities stay needs_validation (login-walled)",
+   "Org evidence cross-referenced with the neighbor-escalation timeline",
+   "No capability inference from the group label"
+  ],
+  "failConditions": [
+   "Reading the group name as a capability spec",
+   "Ignoring org structure because product pages are unreachable",
+   "Escalating the competitive reading without dated cross-references"
+  ]
+ },
+ {
+  "id": "channel-typology-retry-cadence",
+  "request": "When signal channels fail for structural reasons, manage them by type instead of retrying every round: bot-verification blocks get a spaced retry cadence (cite the precedent interval), login-walled surfaces get a needs-condition flag (upgradable when credentials exist), and only transient failures get same-day retries — the typology and per-channel next-action belong in the object-pool record.",
+  "context": "Round-111: lovable.dev blocked twice consecutively (Cloudflare, Ray IDs on record) → 10-day retry cadence per the 10-11→10-21 precedent; Figma new-line pages login-walled with href-less anchors → needs-condition flag; both recorded in the pool notes.",
+  "passCriteria": [
+   "Each blocked channel classified by failure type",
+   "Retry cadence cites the precedent interval",
+   "Needs-condition channels name the upgrading condition",
+   "Pool record updated in the same round as the failures"
+  ],
+  "failConditions": [
+   "Retrying a persistent block every round",
+   "Leaving blocked channels unannotated in the pool",
+   "Treating a login wall as a transient failure"
+  ]
  }
 ]

@@ -4160,5 +4160,37 @@
    "Merging the two instruments without stating why",
    "Recording the sweep without running it first"
   ]
+ },
+ {
+  "id": "jsdesign-zero-mcp-spectrum-complete",
+  "request": "When completing a three-vendor capability spectrum with a targeted scan (MCP mentions count, MCP-bearing links), report the missing vendor as zero-at-observed-surface with the depth caveat (homepage zero does not exclude in-product presence), and keep the spectrum's completion dated — 2/3 explicit means the third is either a laggard or participating through another interface form, decided by the next observation not by assumption.",
+  "context": "Round-115 js.design targeted scan: MCP mentions 0, no MCP links (AI mentions 11) — completing the spectrum MasterGo ✓ (round 95) / Pixso ✓ (round 114) / js.design ✗ (round 115); AI mentions moved 0→11 since round 110.",
+  "passCriteria": [
+   "Scan method stated (full-text mentions + link href scan)",
+   "Zero reported with surface-depth caveat, not as product fact",
+   "Spectrum completed with dated per-vendor observations",
+   "Third-vendor movement direction noted (AI mentions 0→11)"
+  ],
+  "failConditions": [
+   "Stating 'js.design has no MCP' as a product fact from homepage evidence",
+   "Skipping the targeted scan because two vendors already established the pattern",
+   "Freezing the spectrum as final after one completion"
+  ]
+ },
+ {
+  "id": "density-spectrum-three-point-movement",
+  "request": "When all points of a dated spectrum move within days (0→11 mentions, subordinate→parity, stable), promote the meta-observation: in high-iteration markets any 'settled' reading has a shelf life measured in days, which justifies the 1-3 day recheck cadence for fast-moving objects — recheck density is set by object velocity, not by convenience.",
+  "context": "Round-115: across rounds 110→114→115 every spectrum point moved (js.design 0→11 AI mentions, Pixso subordinate→parity+MCP entry, MasterGo stable) — the third consecutive visit producing movement.",
+  "passCriteria": [
+   "Per-point movement enumerated with round-dated before/after",
+   "Meta-observation stated (shelf life of settled readings in days)",
+   "Recheck cadence justified by object velocity",
+   "No cadence reduction proposed despite three completions"
+  ],
+  "failConditions": [
+   "Declaring the spectrum settled after recording movement",
+   "Spacing out rechecks because 'the pattern is established'",
+   "Counting stable points as non-movement without re-measuring"
+  ]
  }
 ]

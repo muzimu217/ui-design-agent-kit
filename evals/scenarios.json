@@ -4192,5 +4192,37 @@
    "Spacing out rechecks because 'the pattern is established'",
    "Counting stable points as non-movement without re-measuring"
   ]
+ },
+ {
+  "id": "stable-zero-second-reading",
+  "request": "When a targeted observation returns zero for the first time, schedule one confirmation reading after a meaningful interval before upgrading the finding: two consistent zeros confirm a stable state (sampling-noise hypothesis retired), after which the observation point is downgraded from dedicated-round to ride-along —盯守密度跟随变化概率，两次一致即降频。",
+  "context": "Round-116: js.design second reading (31h after round 115) returned MCP=0 / AI=11, identical to the first — the spectrum's third point (✗) upgraded from pending to confirmed-stable.",
+  "passCriteria": [
+   "Second reading taken after a stated interval with identical method",
+   "Zero-to-zero consistency stated as state confirmation, not assumption",
+   "Observation point downgraded to ride-along after confirmation",
+   "Spectrum completion date unchanged (first reading remains the datum)"
+  ],
+  "failConditions": [
+   "Upgrading ✗ to confirmed from a single reading",
+   "Keeping a dedicated-round observation after two consistent zeros",
+   "Changing the scan method between readings"
+  ]
+ },
+ {
+  "id": "usage-scope-instrument-exclusion",
+  "request": "When syncing command documentation, first classify each command's audience: product-user invocation examples (usage.md) and developer instruments (package.json scripts, onboarding instrument list) are different surfaces — a command's absence from usage.md is correct when its audience is the maintainer, and the classification decision itself should be recorded rather than silently skipping the sync.",
+  "context": "Round-116 usage.md check: adversarial/references-index/wall-reconcile/canvas:check/a11y commands absent — correctly, since usage.md serves product users while these serve the dev line; the judgment recorded instead of a blind sync.",
+  "passCriteria": [
+   "Audience classification made explicit before syncing",
+   "Developer instruments documented in onboarding (their surface), not usage.md",
+   "The no-change decision recorded as a decision",
+   "usage.md scope statement (invocation examples, not policy) preserved"
+  ],
+  "failConditions": [
+   "Blindly adding all npm scripts to usage.md",
+   "Leaving a user-facing command undocumented on its proper surface",
+   "Skipping the check without recording why no change was made"
+  ]
  }
 ]

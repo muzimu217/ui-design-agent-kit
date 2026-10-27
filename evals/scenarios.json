@@ -4096,5 +4096,37 @@
    "Asserting receipts are 'better' as fact rather than as method difference",
    "Dropping an anchor form from the table after one visit"
   ]
+ },
+ {
+  "id": "audit-skill-lifecycle-full-observation",
+  "request": "When a trend-signal verdict has been revised across visits (spike → sustained → full lifecycle), let the latest observation complete the timeline and restate the verdict as a lifecycle description (first-seen → peak → decay ≈ one week) rather than defending the earlier reading — decay of heat is not failure of the product (total stars persist), and the operational upgrade is recording future signals in three phases instead of predicting persistence.",
+  "context": "Round-113: security-audit-skill fell out of the top 12 four days after peaking at #1, completing a four-observation lifecycle (10-22 first seen → 10-22/23 #1 → 10-25 #10 + highest daily gain → 10-27 out of list); total stars persist at 46.5k.",
+  "passCriteria": [
+   "All four observations dated and the lifecycle duration stated",
+   "Earlier verdicts acknowledged as valid-at-the-time, not rewritten",
+   "Decay distinguished from product failure (total stars persist)",
+   "Three-phase recording adopted for future signals"
+  ],
+  "failConditions": [
+   "Defending 'sustained presence' against the new data point",
+   "Reading the rank decay as the product dying",
+   "Deleting the earlier observations as superseded"
+  ]
+ },
+ {
+  "id": "pixso-channel-block-pivot",
+  "request": "When both domains of a target refuse connections (ERR_CONNECTION_CLOSED on .cn and .com simultaneously, coinciding with unrelated TLS failures to other hosts), attribute the block to line-level jitter rather than the target, record both attempts, pivot to a channel that is due (the 48h trending window), and keep the blocked object scheduled — connection-refused evidence gathered during a jitter window says nothing about the target's availability on a healthy line.",
+  "context": "Round-113: pixso.cn and pixso.com both closed connections during the same window that github.com pushes had intermittently failed SSL — the round pivoted to the due trending recheck and kept Pixso scheduled.",
+  "passCriteria": [
+   "Both attempts recorded with error strings",
+   "Block attributed to line jitter via the coinciding-host-failure correlation",
+   "Pivot target justified by due date (48h window)",
+   "Blocked object remains scheduled, not dropped"
+  ],
+  "failConditions": [
+   "Concluding Pixso is down from jitter-window evidence",
+   "Retrying the same blocked domains within the round",
+   "Skipping the round's learning loop because the first target failed"
+  ]
  }
 ]

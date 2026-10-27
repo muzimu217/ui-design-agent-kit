@@ -4224,5 +4224,37 @@
    "Leaving a user-facing command undocumented on its proper surface",
    "Skipping the check without recording why no change was made"
   ]
+ },
+ {
+  "id": "skillspector-install-side-gate-giant-form",
+  "request": "When a giant ships an install-side security gate for the same artifact category your workflow governs, update the fourth-layer reading to three sub-directions (alignment previews, quality receipts, install security), classify each neighbor by sub-direction, and when the neighbor's instrument could scan your own artifacts, file a conditional card for the scan (dependency introduction needs a ruling) instead of either installing immediately or dismissing it.",
+  "context": "Round-117 NVIDIA SkillSpector: security scanner for agent skills (71 patterns across 17 categories incl. MCP tool poisoning, two-stage static+LLM analysis, 0-100 scoring, fail-closed bounds, baseline suppression, Verified Skills signing pipeline, Pi extension); 22.7k stars, Apache-2.0.",
+  "passCriteria": [
+   "Sub-direction taxonomy stated (alignment/quality-receipts/install-security)",
+   "Kit's supply-chain pinning named as the primitive form of the same question",
+   "Scan card filed with ruling-required reason (dependency introduction)",
+   "First-quantified base rate recorded (26.1% vulnerable / 5.2% malicious of 31,132)"
+  ],
+  "failConditions": [
+   "Installing the scanner without a ruling because 'it's just a dev tool'",
+   "Dismissing it as irrelevant because kit skills are self-written",
+   "Counting install-security as occupying the quality-receipts sub-direction"
+  ]
+ },
+ {
+  "id": "skill-ecosystem-security-base-rate",
+  "request": "When a security vendor publishes a quantified base rate for the ecosystem you depend on (percentage of third-party artifacts vulnerable or malicious), record the numbers with the subset size and treat them as the first quantitative grounding of your supply-chain discipline — your pinning+notice+dual-source checks predate the number, and the number justifies keeping them rather than triggering panic changes.",
+  "context": "Round-117: 26.1% of 31,132 analyzed skills contain vulnerabilities, 5.2% likely malicious (NVIDIA SkillSpector research subset); the kit's 20 pinned third-party skills carry 40-hex revisions and NOTICE files per sources.lock.json.",
+  "passCriteria": [
+   "Base rate quoted with subset size and source",
+   "Existing supply-chain checks mapped to the risk categories",
+   "No panic change to the pinning scheme; conditional scan card filed instead",
+   "Base rate noted as vendor-research subset, not the whole ecosystem"
+  ],
+  "failConditions": [
+   "Quoting the percentages without the subset size",
+   "Re-vendoring or re-pinning in response to the number",
+   "Treating the research subset as representative without caveat"
+  ]
  }
 ]

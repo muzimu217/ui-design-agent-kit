@@ -4352,5 +4352,37 @@
    "Collapsing the spectrum into 'all the same'",
    "Missing the new dimension after five instances"
   ]
+ },
+ {
+  "id": "suppression-audit-trail-reason-and-retention",
+  "request": "When designing suppression/baseline mechanics for an instrument, require three properties observed in the external reference: every suppression carries an auditable reason, suppressed items never count toward scores but are retained machine-readably for audit, and re-scans surface only new findings — and note where your own design already exceeds the reference (retention-by-never-delete vs retention-by-marker).",
+  "context": "Round-121 SUPPRESSION.md: per-suppression reason required, suppressed findings excluded from score but retained in SARIF with external-suppression markers and machine-readable JSON lists, incremental re-scans surface only new findings.",
+  "passCriteria": [
+   "Three properties enumerated from the reference",
+   "Own design compared property-by-property (kit never-delete is the stronger retention form)",
+   "Reason-field granularity difference acknowledged without forcing adoption",
+   "Reference recorded at verified-partial (doc read, not installed)"
+  ],
+  "failConditions": [
+   "Adopting reason fields where the kit's round-dated narrative already serves",
+   "Weakening never-delete to marker-based to match the reference",
+   "Treating the doc read as an installed capability"
+  ]
+ },
+ {
+  "id": "partial-coverage-no-laundering-cross-validated",
+  "request": "When an external instrument independently implements the same rule your own regressions discovered (incomplete scans may emit baselines but retain their incomplete status — coverage gaps are never cleared by suppression), record it as cross-validation of the rule, alongside the self-reference exclusion both teams built (their scope exclusion, your selfExcluded declaration) — two independent solutions to one self-reference problem are mutual proof.",
+  "context": "Round-121: 'a successful but incomplete scan… retains its incomplete status and recommendation even if every observed finding is suppressed', and a baseline stored inside the scan target is treated as an explicit scope exclusion — matching the kit's reg-007 coverage-gap class and reg-002 manifest self-reference fix.",
+  "passCriteria": [
+   "Incomplete-status retention quoted verbatim",
+   "Cross-validation mapped to the kit's own regression IDs",
+   "Self-reference double-solution recorded as mutual proof",
+   "Write-path fail-closed details noted as finer-grained than kit needs"
+  ],
+  "failConditions": [
+   "Copying the write-path details without a matching risk surface",
+   "Reading cross-validation as a reason to stop independent checks",
+   "Modifying append-only regression entries to add the cross-reference"
+  ]
  }
 ]

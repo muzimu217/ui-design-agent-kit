@@ -4544,5 +4544,37 @@
    "Treating it as purely cosmetic",
    "Losing the candidate after the ticket resolves"
   ]
+ },
+ {
+  "id": "skill-writing-craft-six-point-isomorphism",
+  "request": "When a high-star single skill independently exhibits the same writing craft as your own skill references (batch intake, numbered skeleton templates, routing tables, counter-example pairs, explicit conflict priority, companion-skill cross-links), record the six-point isomorphism as cross-team verification of skill-writing craft — and correct any earlier reading that attributed the star count purely to topic heat: heat is topic × craft, both factors.",
+  "context": "Round-130 landing-page-design SKILL.md deep read: batch intake with one-line assumption declaration, numbered page-skeleton template, four-layout routing table, ❌/✅ specificity pairs, dual conflict priority (file wins over framework defaults; user wins over rules), companion-skill division of labor — six points isomorphic to the kit's SKILL.md craft.",
+  "passCriteria": [
+   "Six craft points enumerated with quotes",
+   "Earlier heat-only reading corrected with the dual-factor statement",
+   "Quality-receipts vacancy maintained (craft ≠ verifiable receipts)",
+   "Conflict-priority form compared to kit's own dual priority"
+  ],
+  "failConditions": [
+   "Defending the heat-only reading after reading the body",
+   "Copying the landing-page domain content",
+   "Counting craft isomorphism as receipts coverage"
+  ]
+ },
+ {
+  "id": "readme-vs-skillmd-inspection-depth",
+  "request": "When inspecting a single-skill repository, default the inspection depth to the SKILL.md body, not the README: the README is the marketing surface and underestimates content depth (the first pass read marketing only and judged supply shallow), while the skill file is the product surface where writing craft actually lives — record the depth-calibration in the pool notes for future single-skill inspections.",
+  "context": "Round-130: the first pass (round 125) read the README and judged 'one skill, shallow supply'; the SKILL.md body revealed full part-A strategy craft — README underestimation corrected by going one file deeper.",
+  "passCriteria": [
+   "Depth calibration recorded (README marketing vs SKILL.md product)",
+   "First-pass underestimation corrected explicitly",
+   "Method note persisted for future single-skill inspections",
+   "No supply-shallow claim repeated without body-level evidence"
+  ],
+  "failConditions": [
+   "Judging skill content depth from README alone",
+   "Skipping the body because the star count told the story",
+   "Leaving the method correction unrecorded"
+  ]
  }
 ]

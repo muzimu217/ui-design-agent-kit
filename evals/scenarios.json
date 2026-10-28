@@ -4512,5 +4512,37 @@
    "Ignoring it because the kit already verifies links differently",
    "Editing acceptance references without the scheduled ticket"
   ]
+ },
+ {
+  "id": "tells-ticket-crossreference-disposition",
+  "request": "When executing a comparison ticket filed from a counterpart's tells list, do the per-item cross-reference against your own existing rules before adding anything — items already covered get archived as covered, items with existing mechanical coverage get archived as covered-by-instrument, and only genuinely cross-domain items become new candidates filed to their proper reference domain — the coarse 'N unique items' from filing time is a hypothesis the per-item table must test.",
+  "context": "Round-127: hallmark's 8 tells cross-referenced against typography-standards — 3 already covered (items 8/9/10), 1 covered by instrument (hero-misses-screen = overflowGuard's 17-width sweep), 4 cross-domain candidates filed to their proper domains (layout/content, design-cliché, functional-honesty) instead of padding the typography list.",
+  "passCriteria": [
+   "Per-item table produced before any list edit",
+   "Coarse filing-time counts corrected by the table (6-8 unique → 4 cross-domain)",
+   "Cross-domain items filed to their proper reference domains",
+   "Mechanical-lint candidates registered for later scheduling, not dropped"
+  ],
+  "failConditions": [
+   "Padding the typography list with cross-domain tells",
+   "Leaving the coarse count uncorrected in the record",
+   "Dropping candidates that belong to other reference domains"
+  ]
+ },
+ {
+  "id": "form-false-success-lint-candidate",
+  "request": "When a counterpart catalogs 'a form that says thanks without sending anything' as a machine-made tell, register the functional-honesty lint candidate (form success message without a submit handler) as a mechanically checkable acceptance candidate — the UI-layer form of a false verification claim is detectable, and detection belongs on the scheduled list even before implementation.",
+  "context": "Round-127 disposition: form-false-success filed as a functional-honesty lint candidate — the same territory as the kit's honest-verification real-link checks, implementable as a mechanical detector.",
+  "passCriteria": [
+   "Candidate registered with its mechanical detection shape",
+   "Connection to existing honest-verification territory stated",
+   "Filed to the acceptance/critique domain, not the typography list",
+   "Scheduling left explicit (candidate, not implemented)"
+  ],
+  "failConditions": [
+   "Implementing the detector mid-round without scheduling",
+   "Treating it as purely cosmetic",
+   "Losing the candidate after the ticket resolves"
+  ]
  }
 ]

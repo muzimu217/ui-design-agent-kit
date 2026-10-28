@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { scanLine, scanText, checkTagBalance } from "../scripts/detail-lint.mjs";
+import { scanLine, scanText, checkTagBalance, checkFormFalseSuccess } from "../scripts/detail-lint.mjs";
 
 // Pure-function coverage for the R060-01 detail lint (detail-constants rules
 // 10 and 11) plus the R288 anti-hallucination rules (negative margins, HTML
@@ -83,4 +83,32 @@ test("scanText reports file, line numbers, and stable keys", () => {
   assert.equal(findings[0].line, 2);
   assert.equal(findings[0].rule, "transition-all");
   assert.match(findings[0].key, /^demo\/x\/src\/a\.css:transition-all:/);
+});
+
+// 增量 128（学循环 127 tells 工单落地）：表单假提交检测——form 块含成功
+// 文案但无任何提交机制（submit/action/onsubmit/fetch）。三态夹具：假提交
+// 报、有 action 不报、纯搜索框不报。
+test("checkFormFalseSuccess flags success copy without a submit mechanism", () => {
+  const bad = `<form>
+  <input name="email" placeholder="邮箱">
+  <button>提交</button>
+  <p class="ok">感谢您的提交！我们会尽快联系您。</p>
+</form>`;
+  const findings = checkFormFalseSuccess(bad, "bad.html");
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].rule, "form-false-success");
+});
+
+test("checkFormFalseSuccess clears forms with a real submit mechanism", () => {
+  const good = `<form action="/api/subscribe" method="post">
+  <input name="email" placeholder="邮箱">
+  <button type="submit">订阅</button>
+  <p class="ok">感谢您的订阅！</p>
+</form>`;
+  assert.deepEqual(checkFormFalseSuccess(good, "good.html"), []);
+});
+
+test("checkFormFalseSuccess ignores forms without success copy", () => {
+  const search = `<form role="search"><input placeholder="搜索"><button>搜</button></form>`;
+  assert.deepEqual(checkFormFalseSuccess(search, "search.html"), []);
 });

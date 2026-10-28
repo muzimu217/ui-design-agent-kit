@@ -83,6 +83,32 @@ export function checkTagBalance(text, file) {
   return findings;
 }
 
+// 规则 E（增量 128，学循环 127 tells 工单落地）：.html 的表单假提交——
+// form 块内含成功文案（谢谢/感谢/已提交/success/thanks）但块内无任何提交
+// 机制（submit 按钮、action、onsubmit、fetch/axios/XHR）。对 hallmark
+// "a form that says thanks without sending anything" tell 的机械 lint 化。
+// 保守设计：只看 form 开闭标签之间的原文；无成功文案的表单（搜索框等）
+// 不报。advisory 基线策略与全文件规则相同。
+const SUCCESS_COPY = /(谢谢|感谢|已提交|已发送|提交成功|thanks|thank you|successfully (?:sent|submitted))/i;
+const SUBMIT_MECHANISM = /type=["']submit["']|onsubmit|action=|fetch\(|axios|XMLHttpRequest|FormData/;
+
+export function checkFormFalseSuccess(text, file) {
+  const findings = [];
+  const stripped = text
+    .replace(/<!--[\s\S]*?-->/g, (m) => " ".repeat(m.length))
+    .replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, (m) => (m.includes("<form") || m.includes("submit") ? m : " ".repeat(m.length)));
+  const formRe = /<form\b[^>]*>[\s\S]*?<\/form>/gi;
+  let match;
+  while ((match = formRe.exec(stripped)) !== null) {
+    const block = match[0];
+    if (!SUCCESS_COPY.test(block)) continue;
+    if (SUBMIT_MECHANISM.test(block)) continue;
+    const lineNo = stripped.slice(0, match.index).split(/\r?\n/).length;
+    findings.push({ file, line: lineNo, rule: "form-false-success", detail: "form 含成功文案但无提交机制（submit/action/onsubmit/fetch）" });
+  }
+  return findings;
+}
+
 export function scanText(text, file) {
   const findings = [];
   let inBlockComment = false;
@@ -113,6 +139,9 @@ export function scanText(text, file) {
   });
   if (file.endsWith(".html")) {
     for (const finding of checkTagBalance(text, file)) {
+      findings.push({ ...finding, key: `${file}:${finding.rule}:${finding.detail}` });
+    }
+    for (const finding of checkFormFalseSuccess(text, file)) {
       findings.push({ ...finding, key: `${file}:${finding.rule}:${finding.detail}` });
     }
   }

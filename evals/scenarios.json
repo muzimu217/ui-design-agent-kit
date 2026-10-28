@@ -4480,5 +4480,37 @@
    "Reading lighter repos' attribution as superior restraint",
    "Missing that the license did not require the credit"
   ]
+ },
+ {
+  "id": "hallmark-gate-tiers-severity-isomorphism",
+  "request": "When a same-domain skill's gate tiers map one-to-one onto your severity triage (never-ship floor ≈ P0 blocking; overrulable-with-recorded-reason reflex gates ≈ P1 with trail; non-blocking finish checks ≈ P2), record the isomorphism as market validation of the structure — and mine the counterpart for tells your own lists lack, filing additions as scheduled content work rather than immediate edits.",
+  "context": "Round-126 hallmark: three gate tiers (Floor never ships / Reflex gates overridable on the record / Finish checks non-blocking) map to the kit's P0/P1/P2 triage; its eight anti-slop tells include six-plus absent from the kit's typography-standards list (eyebrow proliferation, tracked-capital labels, single-coloured headline word, empty frames, photo-only pages, form false-success).",
+  "passCriteria": [
+   "Tier mapping stated one-to-one with quotes",
+   "Isomorphism recorded as structure validation",
+   "Missing tells filed as a scheduled content ticket (not immediate edit)",
+   "Differentiation restated (single-domain skill vs complete workflow)"
+  ],
+  "failConditions": [
+   "Immediately editing style references mid-round",
+   "Claiming hallmark copied the kit or vice versa",
+   "Ignoring the functional-honesty tell (form false success)"
+  ]
+ },
+ {
+  "id": "form-false-success-as-tell",
+  "request": "When a form that reports success without sending anything is catalogued as a machine-made tell, connect it to the functional-honesty dimension: cosmetic success without a real wire is the UI-layer form of a false verification claim, and lint rules can catch it mechanically — the connection belongs in acceptance references, filed for scheduled adoption.",
+  "context": "Round-126: hallmark's tell list includes 'a form that says thanks without sending anything' — the same territory as the kit's honest-verification (real-link verification) but implemented as a mechanical lint check.",
+  "passCriteria": [
+   "The tell connected to functional-honesty territory",
+   "Mechanical lintability noted as the implementation form",
+   "Filed for scheduled reference adoption (ticket, not immediate edit)",
+   "Kit's real-link verification cited as the existing deeper form"
+  ],
+  "failConditions": [
+   "Treating the tell as cosmetic only",
+   "Ignoring it because the kit already verifies links differently",
+   "Editing acceptance references without the scheduled ticket"
+  ]
  }
 ]

@@ -200,7 +200,7 @@ npm run prompt:build:lean  # 重建精简导出（契约/动效/验收/品味四
 
 | 指标 | 当前值 | 达标线 |
 | --- | --- | --- |
-| 评测场景数 | 270（doc-drift 测试锁口径，quality-monitor 本行已入守卫；95-121 轮各两条（121 轮=suppression-audit-trail-reason-and-retention/partial-coverage-no-laundering-cross-validated），画布场景累计 +191） | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 | | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 |
+| 评测场景数 | 272（doc-drift 测试锁口径，quality-monitor 本行已入守卫；95-121 轮各两条（121 轮=suppression-audit-trail-reason-and-retention/partial-coverage-no-laundering-cross-validated），画布场景累计 +191） | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 | | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 |
 | verify 错误数 | 0 | 0 |
 | 测试通过数 | 124/124（doc-drift 守护：与 tests/*.test.mjs 静态 test() 计数一致，加测试须同笔更新本行；2026-10-24 增量 67 对比度负自测 +1 后由 122 更新，2026-10-25 增量 68 a11y 负自测 +1 后由 123 更新；全量含 showcase/tests 9 项=133，README/identity 口径）| 全过 |
 | 已装 skill 锁定率 | 20/23 锁定；未锁 3 = ui-design-agent、remotion-video-agent、promotion-playbook（三者本 kit 自有，无需 pin）；上游第三方 20/20 全锁定（含 anatomy 2026-10-16 钉版；2026-09-30 本地化后口径 25→22，10-16 anatomy 入册 22→23） | 上游第三方 skill 100% 锁定 |

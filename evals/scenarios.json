@@ -4448,5 +4448,37 @@
    "Reading platform entry as a reason to restructure kit assets",
    "Counting a new entrant as an established seat"
   ]
+ },
+ {
+  "id": "single-skill-demand-heatsignal",
+  "request": "When a single-skill repository earns five-digit stars, record it as a demand-side heat signal for the category (topic热度 not quality): supply-depth versus recognition ratio is the informative part, and the quality-receipts sub-direction remains unoccupied within the skill ecosystem itself — heat proves the topic, not the artifact.",
+  "context": "Round-125: elayadesign/ai-design-skills at 10.7k stars contains exactly one skill ('More on the way') — the shallowest supply among visited design-skill repos yet five-digit recognition; the category spectrum completes as single-skill (10.7k) / collection (39.9k) / design language (91.3k).",
+  "passCriteria": [
+   "Supply-depth versus recognition ratio stated explicitly",
+   "Three-layer category spectrum completed with all three repos",
+   "Heat interpreted as topic demand, not artifact quality",
+   "Quality-receipts vacancy extended into the skill ecosystem reading"
+  ],
+  "failConditions": [
+   "Reading the star count as quality evidence",
+   "Treating one skill as a collection",
+   "Counting the vacancy as filled by popularity"
+  ]
+ },
+ {
+  "id": "notice-attribution-ecosystem-norm",
+  "request": "When even a fast-growing lightweight repository self-declares adaptation sources (upstream skill, license, pointer into its own SKILL.md), confirm that NOTICE/adaptations discipline is an ecosystem norm rather than over-engineering — and note the form difference (prose credit vs pinned revision + NOTICE file) as a depth choice matching each project's supply-chain exposure.",
+  "context": "Round-125: ai-design-skills credits Leonxlnx/taste-skill (MIT) with details at the end of its SKILL.md, under an MIT no-attribution-needed license — attribution given beyond license requirement.",
+  "passCriteria": [
+   "Ecosystem-norm confirmation stated with the quote",
+   "Form difference (prose credit vs pinned NOTICE) recorded as depth choice",
+   "Kit's heavier form justified by its third-party pinning exposure",
+   "No change to kit NOTICE practice proposed"
+  ],
+  "failConditions": [
+   "Weakening kit NOTICE practice to match lighter repos",
+   "Reading lighter repos' attribution as superior restraint",
+   "Missing that the license did not require the credit"
+  ]
  }
 ]

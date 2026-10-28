@@ -4320,5 +4320,37 @@
    "Treating the fourth instance as the other team copying",
    "Weakening the workflow claim because components are common"
   ]
+ },
+ {
+  "id": "opencode-capability-request-least-privilege",
+  "request": "When an instrument declares its full capability list (target reads, remote fetches, report writes, external paths, subprocess) as a single pre-invocation request where denial stops the subprocess before it starts, and never places credentials inside a permission request while redacting them from model-visible output, record it as the least-privilege invocation form of the confirmation boundary — and map your own gate chain onto the same declaration-approval-refusal structure when justifying your workflow's granularity.",
+  "context": "Round-120 OPENCODE_EXTENSION.md: capability request naming all five capability classes per invocation; provider credentials configured via environment and always redacted from model-visible output; unit-tested helpers with zero new dependencies.",
+  "passCriteria": [
+   "Capability list quoted with all classes enumerated",
+   "Deny-before-subprocess semantics recorded precisely",
+   "Credential-permission separation and output redaction noted",
+   "Kit gate chain mapped as declaration-approval-refusal at stage granularity"
+  ],
+  "failConditions": [
+   "Confusing per-item confirmation with capability-list request",
+   "Overlooking the credential redaction design",
+   "Adopting the extension's copy-based install into the kit's pinned distribution"
+  ]
+ },
+ {
+  "id": "confirmation-granularity-spectrum",
+  "request": "When the same fail-closed confirmation boundary appears at different granularities (per-workflow-stage gates, per-item confirmation, per-invocation capability lists), record a granularity spectrum: direction converges (fail-closed), granularity adapts to host capability — and note that your own stage-level gating is the finest observed granularity, an observation not a superiority claim.",
+  "context": "Round-120: five convergence instances of confirmation boundaries now observed — kit six-gate chain (stage level, finest), Pi extension (per-item), OpenCode (per-invocation capability list) — direction identical, granularity host-adapted.",
+  "passCriteria": [
+   "Spectrum enumerated with all observed granularities",
+   "Direction-vs-granularity distinction kept explicit",
+   "Finest-granularity observation stated without superiority framing",
+   "New observation dimension (granularity) added to the instrument log"
+  ],
+  "failConditions": [
+   "Claiming finer granularity as strictly better",
+   "Collapsing the spectrum into 'all the same'",
+   "Missing the new dimension after five instances"
+  ]
  }
 ]

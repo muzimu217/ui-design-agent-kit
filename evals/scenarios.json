@@ -4288,5 +4288,37 @@
    "Conflating verified-clean with unchecked",
    "Losing the verification record in commit squashing"
   ]
+ },
+ {
+  "id": "skillspector-pi-extension-confirmation-boundary",
+  "request": "When reading an instrument's host-integration doc, extract its confirmation-boundary design as a first-class finding (what runs without confirmation, what requires it, what is flatly rejected and why) and compare it to your own gate design — shared boundary patterns across independent teams are convergence evidence, and the comparison should sharpen your own boundary statement rather than trigger feature adoption.",
+  "context": "Round-119 SkillSpector PI_EXTENSION.md: in-workdir inputs run without a prompt; remote targets and external paths require confirmation; redirect aliases show resolved destinations; Print/JSON sessions that cannot show a dialog are rejected outright; symlinked local paths refused; YARA include directives disabled (self-contained rules only); static scan capped at 120s and LLM at 630s, fixed against env overrides.",
+  "passCriteria": [
+   "Boundary rules enumerated verbatim with the fail-closed classification",
+   "Comparison to own gate design stated (external-input confirmation, unverifiable-channel refusal)",
+   "Fixed-against-override caps noted as a discipline match",
+   "Host-integration value recorded for the user's own ecosystem without installing"
+  ],
+  "failConditions": [
+   "Treating the boundary list as incidental install instructions",
+   "Adopting the tool into the host without a ruling",
+   "Missing the reject-when-unconfirmable pattern"
+  ]
+ },
+ {
+  "id": "convergence-fourth-instance-composition-novelty",
+  "request": "When independent teams converge on the same pattern for a fourth time, promote the meta-reading: these patterns are era-common sense, not any single team's invention — the differentiator is composing them into a complete workflow. Restate your own novelty claim at the composition level, and stop counting convergence as a threat or as originality.",
+  "context": "Round-119: fourth convergence instance — negative self-tests, baseline suppression, confirmation boundaries, and three-phase recording now all observed across NVIDIA SkillSpector and the kit, independently developed.",
+  "passCriteria": [
+   "Four instances enumerated with sources",
+   "Novelty claim restated at composition level (assembling the common sense into a complete workflow)",
+   "Convergence recorded as evidence the patterns are correct, not as competition",
+   "No single-pattern originality asserted"
+  ],
+  "failConditions": [
+   "Claiming any single pattern as unique invention",
+   "Treating the fourth instance as the other team copying",
+   "Weakening the workflow claim because components are common"
+  ]
  }
 ]

@@ -4384,5 +4384,37 @@
    "Reading cross-validation as a reason to stop independent checks",
    "Modifying append-only regression entries to add the cross-reference"
   ]
+ },
+ {
+  "id": "thinkrail-spec-first-same-change-verification",
+  "request": "When a giant productizes spec-first development with a same-change rule (a change moving a boundary, contract, or decision updates the spec in the same change), recognize it as cross-team verification of your own evolution-sync discipline (doc-drift guards, same-pen lists) — and compare enforcement mechanisms honestly: their spec_* agent tools let the agent maintain specs, your guards make non-sync fail red; both are valid, and the difference (agent-maintained vs guard-enforced) is the observation, not a to-do.",
+  "context": "Round-123 JetBrains thinkrail: 'a SPEC.md sits beside every module, and a change that moves a boundary, contract, or decision updates the spec in the same change' — matching the kit's same-pen discipline (doc-drift locked counts, evolution-sync rules from round 109) at product-philosophy level.",
+  "passCriteria": [
+   "Same-change rule quoted verbatim",
+   "Cross-team verification stated for the evolution-sync discipline",
+   "Enforcement difference recorded (agent tools vs red-guard) without forcing adoption",
+   "Spec-graph tooling noted as observation, not a feature request"
+  ],
+  "failConditions": [
+   "Building a spec-graph toolchain because a giant has one",
+   "Claiming the kit invented spec-first",
+   "Ignoring the difference in enforcement mechanism"
+  ]
+ },
+ {
+  "id": "pi-ecosystem-npm-distribution-second-instance",
+  "request": "When a second pi-ecosystem project distributes its tools as installable pi npm packages, confirm the distribution-form evolution (local-path install → npm packages) and record the pattern for the user's own pi-family project as an observation only — the kit does not ship pi packages, and the user's own project decisions belong to the user.",
+  "context": "Round-123: thinkrail publishes pi install npm:@thinkrail/pi-ask-user-question and npm:@thinkrail/pi-visualize; SkillSpector's Pi extension (round 119) used a local-path install — two instances establishing the npm distribution form.",
+  "passCriteria": [
+   "Both instances cited with install forms",
+   "Distribution-form evolution stated (local path → npm)",
+   "User's own project decisions explicitly left to the user",
+   "Kit's non-participation in pi package distribution stated as scope, not lack"
+  ],
+  "failConditions": [
+   "Publishing kit tooling as pi packages without a ruling",
+   "Advising the user's PI-Desktop without marking it as their decision",
+   "Treating two instances as a mature standard"
+  ]
  }
 ]

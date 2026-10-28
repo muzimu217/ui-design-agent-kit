@@ -4416,5 +4416,37 @@
    "Advising the user's PI-Desktop without marking it as their decision",
    "Treating two instances as a mature standard"
   ]
+ },
+ {
+  "id": "threephase-recording-first-application",
+  "request": "When applying a three-phase signal recording (rising/peak/decay), treat phase as a state machine: 'peak not yet reached' is a legal reading — rank position alone does not tell the phase, only the sequence of dated readings does; and never rush a signal into the decay phase to close the record.",
+  "context": "Round-124: thinkrail second/third readings (#8→#3→#1, 4.5k, still rising) — the three-phase method from round 113 applied for the first time; SkillSpector concurrently completed a fast decay (#7→out of list in 2 days), contrasting with audit-skill's ~1-week cycle.",
+  "passCriteria": [
+   "Phase named per signal with the dated reading sequence",
+   "Rising phase recorded without predicting the peak",
+   "Fast-decay sample recorded with a lifecycle comparison",
+   "Tracking rows persisted in the object-pool record"
+  ],
+  "failConditions": [
+   "Declaring the peak from a single high reading",
+   "Closing the tracking before the decay phase is observed",
+   "Dropping the contrasting lifecycle sample"
+  ]
+ },
+ {
+  "id": "skill-infra-platform-entry-phase",
+  "request": "When platform-level actions (official skills repositories, security scanners, agentic IDEs) appear in an ecosystem within days of each other, distinguish the two layers — content-layer headification (quality discourse skills) from infrastructure-layer entry (platforms building skills infrastructure) — and place your own assets between them honestly: self-authored content plus pinned upstreams sits between the layers without requiring movement to either.",
+  "context": "Round-124: three design-skill seats on the trending list (new entrant ai-design-skills at #2 plus the two stars) and Expo's official skills repository entering — platform actions now from three vendors (NVIDIA scanner, JetBrains IDE, Expo repository) within three days.",
+  "passCriteria": [
+   "Two layers distinguished with per-layer evidence",
+   "Platform-entry count and vendors enumerated with dates",
+   "Kit's position between layers stated without movement pressure",
+   "New entrants recorded separately from the established seats"
+  ],
+  "failConditions": [
+   "Mixing content-layer and infrastructure-layer evidence",
+   "Reading platform entry as a reason to restructure kit assets",
+   "Counting a new entrant as an established seat"
+  ]
  }
 ]

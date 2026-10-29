@@ -4832,5 +4832,37 @@
    "Removing content hastily to make room",
    "Ignoring the watch status"
   ]
+ },
+ {
+  "id": "trending-intraday-non-reading-second-instance",
+  "request": "When a trending daily reading taken within the same UTC day as a prior reading returns substantially identical data, confirm the non-reading pattern as a reusable calibration (second instance) and set the reading interval to 24h permanently — intraday readings have zero information increment for a daily-refresh list.",
+  "context": "Round-141: trending top 12 nearly identical to the reading from ~5 hours ago (thinkrail #4/6.0k, all seats unchanged) — confirming the round 139 finding that intraday readings are non-informative.",
+  "passCriteria": [
+   "Non-reading confirmed as second instance",
+   "Reading interval set to 24h permanently",
+   "Prior readings not duplicated as new data",
+   "Round pivoted to productive work"
+  ],
+  "failConditions": [
+   "Reading the list again within the same UTC day",
+   "Treating minimal star movement as meaningful",
+   "Rehashing the same observations as new findings"
+  ]
+ },
+ {
+  "id": "thinkrail-peak-phase-three-reading-confirm",
+  "request": "When a tracked signal shows three consecutive readings in the peak phase (#4 rank with strong daily velocity), confirm the phase transition from rising to peak as stable — the signal is no longer climbing but maintains strong velocity — and note that the decay phase remains unobserved.",
+  "context": "Round-141: thinkrail confirmed at #4 (6.0k, +1,116/day) for the third consecutive reading in peak phase — the state machine transition from rising to peak is now stable, not a transient.",
+  "passCriteria": [
+   "Three consecutive peak-phase readings recorded with dates",
+   "Phase transition (rising → peak) confirmed as stable",
+   "Decay phase explicitly marked as unobserved",
+   "Velocity persistence without rank improvement noted"
+  ],
+  "failConditions": [
+   "Calling it a decay while velocity is strong",
+   "Returning to the rising phase reading",
+   "Omitting the three-reading confirmation"
+  ]
  }
 ]

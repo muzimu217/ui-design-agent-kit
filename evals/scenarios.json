@@ -4768,5 +4768,37 @@
    "Assuming impeccable's stability transfers to hallmark",
    "Stopping per-repo tracking because the category is hot"
   ]
+ },
+ {
+  "id": "usage-architecture-alignment-all-green",
+  "request": "When auditing documentation alignment, check usage.md command references against package.json (existence + name equality) and architecture.md for outdated tool references in one pass — architecture is the permanent-invariants surface and should never reference increment-specific tools by name, so its cleanliness is confirmed by the absence of tool mentions rather than by their presence.",
+  "context": "Round-139: usage.md's 5 npm commands + uak-init.mjs all verified 6/6; architecture.md has zero references to increment-specific instruments (a11y-sweep, detail-lint, adversarial-*, wall-reconcile, gen-references-index) — correct separation of permanent architecture from increment-level evolution.",
+  "passCriteria": [
+   "usage.md commands checked against package.json (existence + name equality)",
+   "architecture.md checked for outdated increment-specific references",
+   "Architecture cleanliness confirmed by absence (not by presence)",
+   "Documentation layer separation (architecture/usage/learn-loop/iteration-log) validated"
+  ],
+  "failConditions": [
+   "Finding increment-specific tool names in architecture.md",
+   "Fixing a reference without first confirming it's actually broken",
+   "Mixing architecture-level and increment-level content in one surface"
+  ]
+ },
+ {
+  "id": "trending-intraday-non-reading",
+  "request": "When a trending daily reading returns data identical to a reading from <6 hours ago, record it as a non-reading (the daily list hasn't refreshed within the same UTC day), calibrate the optimal reading interval to 24h (after the UTC day boundary), and pivot to productive work rather than rehashing identical observations.",
+  "context": "Round-139: trending top 12 nearly identical to the reading from ~5 hours ago (thinkrail #4/5.8k, all seats unchanged, daily increments barely moved) — intraday readings have zero information increment.",
+  "passCriteria": [
+   "Non-reading identified by verbatim comparison",
+   "Optimal reading interval calibrated to 24h",
+   "Round pivoted to productive work (usage/architecture audit)",
+   "Prior readings not duplicated as new data"
+  ],
+  "failConditions": [
+   "Recording identical data as a new reading",
+   "Interpreting minimal star movement as meaningful change",
+   "Idling instead of pivoting to productive work"
+  ]
  }
 ]

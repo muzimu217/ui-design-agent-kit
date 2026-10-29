@@ -388,7 +388,7 @@ built artifact, 63.8 kB gzipped.
 co-design loop that built the system, by a single human adjudicator; scenarios
 were authored with the system's behavior in view; and five executed scenarios
 is a small sample of the 60-scenario corpus (release snapshot; 72 scenarios,
-16 executed as of 2026-09-26; 286 scenarios, 71 executed as of 2026-10-29). We therefore present the rubric
+16 executed as of 2026-09-26; 290 scenarios, 71 executed as of 2026-10-29). We therefore present the rubric
 and the evidence trail — every score links to its screenshots, contrast logs,
 and regression records — as the primary artifact, and the scores as
 instruments of iteration, not as benchmark results.

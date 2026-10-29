@@ -4800,5 +4800,69 @@
    "Interpreting minimal star movement as meaningful change",
    "Idling instead of pivoting to productive work"
   ]
+ },
+ {
+  "id": "pin-drift-tracking-26-day-update",
+  "request": "When tracking pinned upstream drift over multiple check-ins, record each data point (HEAD sha, date, stars) and note the trend direction — the drift data serves the re-vendor ruling by quantifying both the divergence and the upstream's continued activity, helping the user make an informed decision about whether the new commits justify a re-vendor batch.",
+  "context": "Round-137: impeccable drift updated from 22 days (round 117) to 26 days (HEAD 02523aec, 10-29); stars at 95.0k and upstream still pushing daily — the trend is consistent but the decision remains with the user.",
+  "passCriteria": [
+   "Both data points (previous and current) cited with shas and dates",
+   "Trend direction stated (drift widening) without urgency framing",
+   "Kit-side status noted (no blocking, pinned version functional)",
+   "Decision explicitly deferred to user"
+  ],
+  "failConditions": [
+   "Re-vendoring without a ruling",
+   "Framing the drift as a crisis",
+   "Skipping the data point because 'nothing changed'"
+  ]
+ },
+ {
+  "id": "skillmd-line-limit-watch-599-of-600",
+  "request": "When a file with a hard line limit (e.g. SKILL.md 600-line budget) reaches within 1 line of the limit, record the watch status explicitly and note the mitigation strategy (move stable details to references/) so the next contributor knows the headroom situation before adding content — hitting the limit silently and then trimming under pressure produces worse results than planning the transition.",
+  "context": "Round-137: SKILL.md measured at 599/600 lines — the next addition will breach the limit; quality-monitor already documents the mitigation (move stable details to references/)",
+  "passCriteria": [
+   "Current count vs limit recorded (599/600)",
+   "Mitigation strategy referenced (details to references/)",
+   "Watch status visible to the next contributor",
+   "No content added without acknowledging the headroom situation"
+  ],
+  "failConditions": [
+   "Adding content past the limit without planning",
+   "Removing content hastily to make room",
+   "Ignoring the watch status"
+  ]
+ },
+ {
+  "id": "pin-drift-tracking-26-day-update",
+  "request": "When tracking pinned upstream drift over multiple check-ins, record each data point (HEAD sha, date, stars) and note the trend direction — the drift data serves the re-vendor ruling by quantifying both the divergence and the upstream's continued activity, helping the user make an informed decision about whether the new commits justify a re-vendor batch.",
+  "context": "Round-137: impeccable drift updated from 22 days (round 117) to 26 days (HEAD 02523aec, 10-29); stars at 95.0k and upstream still pushing daily — the trend is consistent but the decision remains with the user.",
+  "passCriteria": [
+   "Both data points (previous and current) cited with shas and dates",
+   "Trend direction stated (drift widening) without urgency framing",
+   "Kit-side status noted (no blocking, pinned version functional)",
+   "Decision explicitly deferred to user"
+  ],
+  "failConditions": [
+   "Re-vendoring without a ruling",
+   "Framing the drift as a crisis",
+   "Skipping the data point because 'nothing changed'"
+  ]
+ },
+ {
+  "id": "skillmd-line-limit-watch-599-of-600",
+  "request": "When a file with a hard line limit (e.g. SKILL.md 600-line budget) reaches within 1 line of the limit, record the watch status explicitly and note the mitigation strategy (move stable details to references/) so the next contributor knows the headroom situation before adding content — hitting the limit silently and then trimming under pressure produces worse results than planning the transition.",
+  "context": "Round-137: SKILL.md measured at 599/600 lines — the next addition will breach the limit; quality-monitor already documents the mitigation (move stable details to references/)",
+  "passCriteria": [
+   "Current count vs limit recorded (599/600)",
+   "Mitigation strategy referenced (details to references/)",
+   "Watch status visible to the next contributor",
+   "No content added without acknowledging the headroom situation"
+  ],
+  "failConditions": [
+   "Adding content past the limit without planning",
+   "Removing content hastily to make room",
+   "Ignoring the watch status"
+  ]
  }
 ]

@@ -4608,5 +4608,37 @@
    "Merging new entrant and incumbent velocities into one number",
    "Dropping the tracking after two readings"
   ]
+ },
+ {
+  "id": "marketing-equals-product-self-evidence",
+  "request": "When a product's marketing site IS a product-built artifact (the site itself is a workspace on the product, rendering the README), record the marketing-equals-product form as a distinct fourth-layer-adjacent evidence shape: stronger than black-box claims (publicly verifiable via the open repo), weaker than quantified receipts (no six-dim measurements) — placed between Configured and Tool-callable on the evidence ladder, and never counted as receipts coverage.",
+  "context": "Round-132 thinkrail.ai: the homepage renders the GitHub README with workspace/website git metadata visible — the site is built with the product it markets; marketing copy is a subset of the product README with no exaggerated deltas.",
+  "passCriteria": [
+   "Self-evidence form named and placed on the evidence ladder",
+   "Marketing-copy-is-README-subset verified by side-by-side",
+   "Distinction from receipts maintained (no quantified dims)",
+   "Positioning updated without conceding the receipts-layer vacancy"
+  ],
+  "failConditions": [
+   "Counting self-evidence as receipts coverage",
+   "Missing the workspace metadata that proves the site is product-built",
+   "Treating the form as a reason to build a marketing site"
+  ]
+ },
+ {
+  "id": "worktree-philosophy-one-liner",
+  "request": "When a vendor compresses an isolation philosophy into a one-liner ('Agents deserve worktrees, not your working tree'), record it as marketing-grade confirmation of a mechanism already documented at product level — the one-liner is quotable for narrative but adds no mechanism beyond the earlier README reading; avoid double-counting it as a new finding.",
+  "context": "Round-132: 'Agents deserve worktrees, not your working tree' on the thinkrail homepage — confirming the worktree isolation mechanism documented at product level in round 123's README reading.",
+  "passCriteria": [
+   "One-liner quoted and linked to the earlier mechanism reading",
+   "Double-counting avoided (marketing confirmation, not new mechanism)",
+   "Kit boundary parallel noted without adopting the framing",
+   "Tracking-table note that the vendor's surfaces are now both covered"
+  ],
+  "failConditions": [
+   "Logging the one-liner as a new mechanism",
+   "Re-reading the README as fresh evidence",
+   "Adopting the slogan framing into kit copy"
+  ]
  }
 ]

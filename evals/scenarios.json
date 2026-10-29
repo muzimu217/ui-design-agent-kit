@@ -4576,5 +4576,37 @@
    "Skipping the body because the star count told the story",
    "Leaving the method correction unrecorded"
   ]
+ },
+ {
+  "id": "extended-rising-phase-vendor-backing-hypothesis",
+  "request": "When a tracked signal's rising phase extends beyond the reference lifecycle (four days and still #1, against a no-backing tool's one-week full cycle), record the extended rising as an observation and form the backing hypothesis (vendor endorsement may lengthen the rising phase) explicitly as a hypothesis with n=3 variance — never promote it to a conclusion, and keep the state machine reading (still rising, no peak call).",
+  "context": "Round-131: thinkrail third reading still #1 at 5.0k (+1,068/day) after four days of rising — JetBrains-backed, versus audit-skill (no backing, ~1 week full cycle) and SkillSpector (NVIDIA-backed, 2-day fast decay).",
+  "passCriteria": [
+   "Third dated reading recorded without a peak call",
+   "Backing hypothesis stated with n=3 variance caveat",
+   "State machine reading maintained (rising phase, extended)",
+   "Contrasting lifecycles kept in the comparison table"
+  ],
+  "failConditions": [
+   "Declaring the peak or decay from continued strength",
+   "Promoting the backing hypothesis to a conclusion",
+   "Collapsing the three signals into one average lifecycle"
+  ]
+ },
+ {
+  "id": "category-seat-holding-three-days",
+  "request": "When category seats hold their positions with accelerating star velocity for three-plus consecutive days (a new entrant accelerating into the second seat), record the category as having a sustained heat period rather than a single-day pulse — and note the acceleration of the new entrant separately from the incumbents' velocity.",
+  "context": "Round-131: ai-design-skills #2 (11.1k, +2,139/day, accelerating from +1,395), hallmark #6 (+2,110), impeccable #7 (+1,472) — all three design-skill seats holding with strong velocity for the third consecutive day.",
+  "passCriteria": [
+   "Seat-holding duration stated (three-plus days)",
+   "New entrant's acceleration recorded separately from incumbents",
+   "Category heat period distinguished from single-repo cycles",
+   "Readings dated and sourced to the same surface"
+  ],
+  "failConditions": [
+   "Calling the category peaked while seats accelerate",
+   "Merging new entrant and incumbent velocities into one number",
+   "Dropping the tracking after two readings"
+  ]
  }
 ]

@@ -4672,5 +4672,37 @@
    "Missing the routing isomorphism by focusing on domain content",
    "Claiming the kit invented entry routing"
   ]
+ },
+ {
+  "id": "full-consistency-audit-five-surfaces",
+  "request": "After multiple rounds of partial count syncs, run a full-consistency audit comparing all five surfaces (goal/eval-report/paper/quality-monitor/submission) against the live JSON count, plus the test-count trio (README/identity/quality-monitor) against actual test() enumeration, plus instrument outputs — one command, all surfaces, all-green or per-item fix list.",
+  "context": "Round-135: after rounds 122-128 each synced only the surfaces they touched, the five surfaces drifted into mixed states; the full audit found all five at 282 and all test counts at 136/127/127 — consistent, but only because previous doc-drift guards caught each drift as it happened.",
+  "passCriteria": [
+   "All five corpus citations checked against live JSON in one pass",
+   "Test-count trio checked against actual test() enumeration",
+   "Instrument outputs spot-checked (a11y baseline, references index, detail-lint)",
+   "Audit method recorded as reusable ride-along tool"
+  ],
+  "failConditions": [
+   "Checking only the surfaces that previously failed",
+   "Trusting previous syncs without re-measuring",
+   "Fixing a surface without re-running the full audit"
+  ]
+ },
+ {
+  "id": "trending-utc-refresh-timing",
+  "request": "When reading GitHub trending daily, calibrate the refresh timing: the daily list resets on UTC day boundaries, so a reading taken before the UTC day completes returns the previous day's data verbatim — a non-reading. Record the timing constraint and defer the reading until at least 2 hours after the UTC day switch.",
+  "context": "Round-135: a 00:01 local-time reading returned data identical to the previous evening's (thinkrail #1 5.4k, all seats unchanged) — the UTC day had not yet rolled over; the reading was discarded as non-informative.",
+  "passCriteria": [
+   "Non-reading identified by verbatim comparison with prior data",
+   "Timing constraint recorded (UTC day boundary + buffer)",
+   "Round pivoted to a productive alternative rather than idling",
+   "Prior readings not duplicated as new data"
+  ],
+  "failConditions": [
+   "Recording identical data as a new reading",
+   "Interpreting the stale list as stability evidence",
+   "Waiting idle instead of pivoting to productive work"
+  ]
  }
 ]

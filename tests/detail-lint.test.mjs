@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { scanLine, scanText, checkTagBalance, checkFormFalseSuccess } from "../scripts/detail-lint.mjs";
+import { scanLine, scanText, checkTagBalance, checkFormFalseSuccess, checkEmptyFrames } from "../scripts/detail-lint.mjs";
 
 // Pure-function coverage for the R060-01 detail lint (detail-constants rules
 // 10 and 11) plus the R288 anti-hallucination rules (negative margins, HTML
@@ -111,4 +111,24 @@ test("checkFormFalseSuccess clears forms with a real submit mechanism", () => {
 test("checkFormFalseSuccess ignores forms without success copy", () => {
   const search = `<form role="search"><input placeholder="搜索"><button>搜</button></form>`;
   assert.deepEqual(checkFormFalseSuccess(search, "search.html"), []);
+});
+
+// 增量 137（学循环 127 tells 工单第二项落地）：空框架检测——section 有
+// heading 但无实质内容子元素。三态夹具：空框架报、有内容不报、含图片
+// 有视觉内容不报。
+test("checkEmptyFrames flags heading-only sections without substantive content", () => {
+  const empty = `<section><h2>Our Features</h2></section>`;
+  const findings = checkEmptyFrames(empty, "empty.html");
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].rule, "empty-frames");
+});
+
+test("checkEmptyFrames clears sections with substantive content", () => {
+  const hasContent = `<section><h2>Features</h2><p>Real content about features that is long enough to count.</p></section>`;
+  assert.deepEqual(checkEmptyFrames(hasContent, "content.html"), []);
+});
+
+test("checkEmptyFrames clears sections with visual content (img)", () => {
+  const withImg = `<section><h2>Gallery</h2><img src="photo.jpg" alt="gallery"></section>`;
+  assert.deepEqual(checkEmptyFrames(withImg, "img.html"), []);
 });

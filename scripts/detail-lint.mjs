@@ -109,6 +109,41 @@ export function checkFormFalseSuccess(text, file) {
   return findings;
 }
 
+// 规则 F（增量 137，学循环 127 tells 工单第二项落地）：.html 的空框架——
+// section/article 内有 heading 但无实质内容子元素（无 p/li/table/img/video/
+// canvas/iframe/文本 ≥ 20 字符）。对 hallmark "a page of empty frames" tell
+// 的机械 lint 化。保守设计：仅检查 section/article 直接子级，嵌入组件
+// （web component/框架渲染占位）不误报。advisory 基线策略同全文件规则。
+const CONTENT_TAGS = new Set(["p", "li", "table", "img", "video", "canvas", "iframe", "pre", "code", "blockquote", "ul", "ol", "dl", "button", "input", "textarea", "select", "svg"]);
+
+export function checkEmptyFrames(text, file) {
+  const findings = [];
+  const stripped = text
+    .replace(/<!--[^\S\r\n]*?[\s\S]*?-->/g, "")
+    .replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, "");
+  const sectionRe = /<(section|article)\b[^>]*>[\s\S]*?<\/(section|article)>/gi;
+  let match;
+  while ((match = sectionRe.exec(stripped)) !== null) {
+    const block = match[0];
+    const hasHeading = /<h[1-6]\b/.test(block);
+    if (!hasHeading) continue;
+    // 收集块内直接子元素标签
+    const childTags = new Set();
+    const childRe = /<([a-zA-Z][a-zA-Z0-9-]*)\b[^>]*>/g;
+    let cm;
+    const inner = block.replace(/^<[^>]*>/, "").replace(/<\/[^>]*>$/, "");
+    while ((cm = childRe.exec(inner)) !== null) childTags.add(cm[1].toLowerCase());
+    const hasContent = [...childTags].some((t) => CONTENT_TAGS.has(t));
+    const textLen = inner.replace(/<[^>]*>/g, "").trim().length;
+    if (!hasContent && textLen < 20) {
+      const lineNo = stripped.slice(0, match.index).split(/\r?\n/).length;
+      const tag = match[0].match(/^<(\w+)/)?.[1] ?? "section";
+      findings.push({ file, line: lineNo, rule: "empty-frames", detail: `<${tag}> 有 heading 但无实质内容子元素（空框架）` });
+    }
+  }
+  return findings;
+}
+
 export function scanText(text, file) {
   const findings = [];
   let inBlockComment = false;
@@ -142,6 +177,9 @@ export function scanText(text, file) {
       findings.push({ ...finding, key: `${file}:${finding.rule}:${finding.detail}` });
     }
     for (const finding of checkFormFalseSuccess(text, file)) {
+      findings.push({ ...finding, key: `${file}:${finding.rule}:${finding.detail}` });
+    }
+    for (const finding of checkEmptyFrames(text, file)) {
       findings.push({ ...finding, key: `${file}:${finding.rule}:${finding.detail}` });
     }
   }

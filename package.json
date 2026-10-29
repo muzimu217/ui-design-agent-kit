@@ -44,6 +44,7 @@
     "adversarial:check": "node scripts/adversarial-append-only.mjs",
     "adversarial:contrast": "node scripts/adversarial-contrast.mjs",
     "adversarial:a11y": "node scripts/adversarial-a11y.mjs",
+    "wall-reconcile": "node scripts/wall-reconcile.mjs",
     "references:index": "node scripts/gen-references-index.mjs",
     "canvas:export": "node canvas/export-canvas.mjs"
   },

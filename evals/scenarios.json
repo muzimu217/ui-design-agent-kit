@@ -4640,5 +4640,37 @@
    "Re-reading the README as fresh evidence",
    "Adopting the slogan framing into kit copy"
   ]
+ },
+ {
+  "id": "framework-native-skills-third-form",
+  "request": "When a framework team ships its own official skills repository (not a third-party collection, not a scanner, not an IDE — the framework's own deliverable), record it as the third form of skills-infrastructure layer (scanner / IDE / framework-native content) and note the maturity signal: skills have graduated from community practice to official framework deliverable, with multi-marketplace distribution and a universal CLI covering 12+ agents.",
+  "context": "Round-134 expo/skills: 'Official AI agent skills from the Expo team' with three install channels (Claude Code marketplace, Codex marketplace, skills CLI covering Cursor/OpenCode/Copilot/Windsurf/Gemini/Cline/AMP/Factory Droid/Antigravity/Kiro).",
+  "passCriteria": [
+   "Third form distinguished from scanner and IDE forms",
+   "Three distribution channels enumerated with agent coverage",
+   "Graduation from community practice to framework deliverable stated",
+   "Kit's single-repo self-authored form compared without competition framing"
+  ],
+  "failConditions": [
+   "Collapsing the three forms into one 'skills infrastructure' bucket",
+   "Missing the official-team authorship as the distinguishing feature",
+   "Reading the CLI coverage as a kit distribution requirement"
+  ]
+ },
+ {
+  "id": "entry-skill-routing-isomorphism",
+  "request": "When a skills repository ships a 'Start Here' entry skill that routes vague requests to specific skills (the entry point when the user hasn't named a tool), record it as cross-team isomorphism of the entry-routing pattern — the kit's SKILL.md router and the repository's overview skill solve the same dispatch problem at different scales, and the pattern joining the cross-team consensus list is the finding.",
+  "context": "Round-134: expo-overview is the entry point 'when a request is vague or the user hasn't named a specific Expo tool', routing to specific Expo skills — matching the kit's SKILL.md routing pattern.",
+  "passCriteria": [
+   "Entry-skill routing quoted as the isomorphism point",
+   "Scale difference noted (single-repo router vs kit's 23-skill orchestrator)",
+   "Cross-team consensus list extended with this instance",
+   "No adoption pressure from the isomorphism alone"
+  ],
+  "failConditions": [
+   "Treating the overview skill as a kit competitor",
+   "Missing the routing isomorphism by focusing on domain content",
+   "Claiming the kit invented entry routing"
+  ]
  }
 ]

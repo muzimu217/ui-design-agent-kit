@@ -22,7 +22,7 @@ abstract: |
   records every decision the user still owes, with decay rules for stale items
   and batch adjudication. Behavior is pinned by a 60-scenario evaluation
   corpus at the release snapshot (72 scenarios, 18 executed as of
-  2026-09-23; 286 scenarios, 71 executed as of 2026-10-29); five scenarios had been executed over ten recorded rounds
+  2026-09-23; 288 scenarios, 71 executed as of 2026-10-29); five scenarios had been executed over ten recorded rounds
   under a
   deterministic 0--2 rubric with fail-zeroing, and a separate eight-dimension
   style review shows that a functionally perfect dashboard initially scored

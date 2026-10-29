@@ -4736,5 +4736,37 @@
    "Deleting a valid negative-case scenario",
    "Treating all short requests as quality defects"
   ]
+ },
+ {
+  "id": "thinkrail-peak-phase-transition",
+  "request": "When a tracked signal transitions from rising phase to peak phase (rank drops but daily velocity stays strong), record the phase transition precisely — the state machine gains a confirmed peak after the rising phase, and the decay phase remains unobserved. Peak is not decay: velocity persistence with rank rotation is a different state from velocity collapse.",
+  "context": "Round-134/135: thinkrail fourth reading #4 (5.6k, +1,116/day) after three consecutive rising readings (#8→#3→#1→#4, 1.3k→5.6k over four days) — rank rotation with velocity persistence = peak plateau, not decay.",
+  "passCriteria": [
+   "Phase transition named precisely (rising → peak)",
+   "Rank-vs-velocity distinction maintained",
+   "Decay phase explicitly marked as unobserved",
+   "State machine reading preserved without collapsing phases"
+  ],
+  "failConditions": [
+   "Reading the rank drop as the start of decay",
+   "Skipping phase labels and just listing ranks",
+   "Predicting the decay date without evidence"
+  ]
+ },
+ {
+  "id": "hallmark-fast-rotation-vs-impeccable-stability",
+  "request": "When two same-category repos show different rotation patterns (one drops out of the list, another holds position with accelerating velocity), record the divergence as evidence that category heat is distributed unevenly across individual repos — category-level persistence does not guarantee repo-level persistence, and each repo needs its own tracking row.",
+  "context": "Round-134: hallmark dropped out of the top 12 while impeccable held #3 with +2,881/day — both design-skill repos but different rotation patterns.",
+  "passCriteria": [
+   "Divergence recorded with both repos' readings",
+   "Category-level vs repo-level distinction maintained",
+   "Per-repo tracking rows justified by the divergence",
+   "No single-repo lifecycle generalized to the category"
+  ],
+  "failConditions": [
+   "Generalizing one repo's decay to the category",
+   "Assuming impeccable's stability transfers to hallmark",
+   "Stopping per-repo tracking because the category is hot"
+  ]
  }
 ]

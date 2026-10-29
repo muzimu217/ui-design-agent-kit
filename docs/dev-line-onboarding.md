@@ -22,7 +22,7 @@
 ## 当前状态（2026-10-27）
 
 - **分支纪律（用户 2026-10-05 裁定）**：main 已解冻——交互会话（用户在场）可直接提交推送 main；**无人值守自动会话只在 `dev/auto` 分支工作并维持一个 dev/auto→main 开放 PR**（PR#10，2026-10-27 时 26 commits），绝不直推 main、绝不 force-push
-- **验证**：`npm ci --ignore-scripts` + `npm run verify`（0 错 0 警，内含聚合审计须 complete）+ `npm test` 133/133（2026-10-27 口径，以 npm test 实际输出为准）
+- **验证**：`npm ci --ignore-scripts` + `npm run verify`（0 错 0 警，内含聚合审计须 complete）+ `npm test` 139/139（2026-10-29 口径，以 npm test 实际输出为准）
 - **仪器清单（日常命令）**：`npm run canvas:build`（五页重建+审计聚合+引用索引+**对账自动化**）→ `npm run canvas:check`（5 页六维+axe 不可用性检查）→ `npm run wall-reconcile`（断言对账）→ `npm run adversarial:contrast` / `adversarial:a11y` / `adversarial:check`（对抗家族，本地仪器**不入 CI**——3ced712 教训）→ `npm run audit:report`（8 项 finding 聚合）→ `npm run a11y:sweep`（**线上发布面** agent.kcos.club 10 页明暗双主题 axe 基线差分——观测期不进 CI，与 canvas:check 的关系=线上趋势巡检 vs 本地构建门禁双仪器；2026-10-27 现状 critical/serious/moderate 全 0）→ `npm run submission:check`（参赛文档数字对账）；改计数必同笔：goal/eval-report/paper/submission/quality-monitor（doc-drift 守卫锁定，漏改即红）
 - **研究线**：独立仓在 `~/Documents/Projects/uak-research`（GitHub `muzimu217/uak-research`，私有；2026-10-06 由 `~/dev` 迁入备份区，原路径已删）；本仓不做任何研究工作，`research/` 已于 10-03 迁出
 - **新机工具链**：Node 26/npm 11（Homebrew）；视频剪辑链路=ffmpeg-full + Python 3.12 venv（统一进 `~/.zshenv`——注意常规 brew ffmpeg **不带** libass/drawtext 字幕滤镜）；Playwright 用系统 Chrome（`channel:"chrome"`，bundled chromium 未下载，必要时传 executablePath 指向 ms-playwright 缓存）
@@ -51,4 +51,5 @@
 - v1（2026-10-03）：研究线分离当日定稿。
 - v2（2026-10-06）：当前状态刷新——main 解冻后分支纪律（dev/auto+PR）、新机工具链、video-edit 路由接入、双线定时任务；硬纪律 #1 同步用户 2026-10-05 裁定。
 - v3（2026-10-08）：测试口径补 10-08 复跑标注（123/123，以实际输出为准）；开工先读新增 `docs/agent-security-baseline.md`（D1-02）。
+- v5（2026-10-29）：测试口径刷新 133→139（增量 128 form-false-success 检测器 +3 夹具 + 127 轮对照处置场景 +2 后由 133 更新）；近期动态补至 10-29（增量 128-137：信号追踪表结构化/空框架检测器/表单假提交检测器/tells 工单执行）。
 - v4（2026-10-27）：20 天时效同步——验证口径 133/133、仪器清单节新增（对抗三件套/对账自动化/索引/参赛对账及 doc-drift 同笔清单）、近期动态补至 10-27（v0.4.0/参赛/第 5 产物/第四层邻居演进/排程项）、Playwright 系统 Chrome 备注。

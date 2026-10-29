@@ -4704,5 +4704,37 @@
    "Interpreting the stale list as stability evidence",
    "Waiting idle instead of pivoting to productive work"
   ]
+ },
+ {
+  "id": "corpus-structural-quality-audit",
+  "request": "When the eval corpus grows rapidly through many incremental additions, run a full-structure audit checking every scenario for five-field completeness (id uniqueness, request depth, context depth, passCriteria ≥ 3, failConditions ≥ 2) — rapid expansion is the exact condition under which count-pressured entries with weak assertions slip through.",
+  "context": "Round-136: 284 scenarios audited after +22 in four days; 283 structurally complete, 1 false positive (a negative-case scenario with intentionally short request — the design simulates a user request that should be rejected without a locked plan).",
+  "passCriteria": [
+   "All scenarios checked in one pass with five-field criteria",
+   "False positives distinguished from actual defects (by-design short request)",
+   "ID uniqueness confirmed across the full corpus",
+   "Audit method recorded as reusable ride-along tool"
+  ],
+  "failConditions": [
+   "Sampling only recent additions instead of auditing the full corpus",
+   "Fixing the false positive without recognizing it as by-design",
+   "Skipping the audit because the count is large"
+  ]
+ },
+ {
+  "id": "negative-case-short-request-by-design",
+  "request": "When a quality audit flags a scenario's short request, check whether the brevity is by-design (a negative-case scenario simulating a user request that should be rejected — short because the user didn't provide context) before treating it as a defect; by-design brevity is a design feature, not a quality gap.",
+  "context": "Round-136: execute-requires-plan-lock's request is 29 chars because it simulates a user asking to execute without a locked plan — the short request is the test condition.",
+  "passCriteria": [
+   "By-design brevity recognized before flagging as defect",
+   "Scenario's negative-case purpose stated",
+   "No change made to the intentional short request",
+   "Audit tool updated to whitelist by-design short requests"
+  ],
+  "failConditions": [
+   "Lengthening a by-design short request to pass an audit",
+   "Deleting a valid negative-case scenario",
+   "Treating all short requests as quality defects"
+  ]
  }
 ]

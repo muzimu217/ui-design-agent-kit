@@ -4896,5 +4896,37 @@
    "Using only one domain's expression without noting the other",
    "Missing the timezone context entirely"
   ]
+ },
+ {
+  "id": "multi-signal-tracking-panorama",
+  "request": "When tracking multiple signals across multiple readings, maintain per-signal tracking rows (not category averages) so that individual lifecycle differences are visible — six signals with four readings revealed that each signal has its own lifecycle (rising/peak/decay at different rates), which would be invisible in a category-level average.",
+  "context": "Round-144: six tracked signals with four readings revealed distinct lifecycles — thinkrail (peak plateau 3 readings), impeccable (accelerating), ai-design-skills (steady), claude-mem (long-tail), expo (fast decay 2 days), SkillSpector (fast decay 2 days).",
+  "passCriteria": [
+   "Per-signal tracking rows maintained (not category averages)",
+   "Individual lifecycle differences visible and recorded",
+   "State machine phase labeled per signal",
+   "Category-level reading noted as insufficient for per-repo analysis"
+  ],
+  "failConditions": [
+   "Collapsing per-signal data into a category average",
+   "Dropping a signal's tracking row because it's 'less interesting'",
+   "Missing lifecycle differences by looking at category totals"
+  ]
+ },
+ {
+  "id": "tool-vs-content-lifecycle-divergence",
+  "request": "When tool/infrastructure repos (scanners, IDEs, frameworks) show shorter trending lifecycles (~2 days) than content repos (design skills, methodologies showing 3+ day persistence), record the divergence as a lifecycle pattern hypothesis with n=2 per category — the pattern suggests that content repos have longer heat cycles because the topic (design quality) has ongoing discourse while tools are evaluated and adopted/abandoned faster.",
+  "context": "Round-144: SkillSpector and expo both showed ~2-day trending lifecycles (tool/infrastructure), while impeccable and ai-design-skills showed 3+ day persistence (content/skill) — supporting the hypothesis that content heat cycles are longer.",
+  "passCriteria": [
+   "Both categories (tool and content) cited with specific repos and durations",
+   "Hypothesis labeled as hypothesis with n=2 caveat",
+   "Kit's position noted (content-adjacent, expected longer cycles)",
+   "No lifecycle conclusion drawn from insufficient data"
+  ],
+  "failConditions": [
+   "Stating the lifecycle difference as established fact from n=2",
+   "Recommending kit strategy changes based on n=2 lifecycle data",
+   "Omitting the caveat about sample size"
+  ]
  }
 ]

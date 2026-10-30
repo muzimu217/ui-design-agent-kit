@@ -153,9 +153,18 @@ two-step chain, not a defect (verified 2026-10-10 tool sweep).
 ## Detail lint
 
 `npm run lint:detail` statically scans `demo/*/src` and `showcase/products/src`
-for the mechanically checkable detail-constants rules: no `transition: all`
-(rule 10) and the `will-change` whitelist — transform, opacity, filter only
-(rule 11). The first run records existing hits as the baseline in
+for mechanically checkable rules:
+
+- no `transition: all` (rule 10)
+- `will-change` whitelist — transform, opacity, filter only (rule 11)
+- negative margins (CSS declarations and Tailwind-style negative utilities)
+- unbalanced HTML tags (unclosed or mismatched elements)
+- form false success — a form containing success copy (thanks/submitted) but
+  lacking any submit mechanism (type=submit, action, onsubmit, fetch) (增量 128)
+- empty frames — a section or article with a heading but no substantive
+  content children (p, li, table, img, video, etc.) (增量 137)
+
+The first run records existing hits as the baseline in
 `output/detail-lint-report/baseline.json`; later runs fail only on new hits
 (`--update-baseline` re-records deliberately). Advisory before a release, not
 a CI gate.

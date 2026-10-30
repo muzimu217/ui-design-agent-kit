@@ -4864,5 +4864,37 @@
    "Returning to the rising phase reading",
    "Omitting the three-reading confirmation"
   ]
+ },
+ {
+  "id": "motiff-window-closing-imminent-record",
+  "request": "When a discontinued product's data-export window is within 24 hours of closing, record the penultimate checkpoint from both regional domains — the banner text should be verbatim identical to prior recordings (confirming zero changes), and the capability marketing sharing the screen with the death banner should be quantified as a new duration record for the frozen-marketing phenomenon.",
+  "context": "Round-142: motiff.com 'until October 31, 2026' and miaoduo.com '11 月 1 日前' — 24 hours before the deadline; frozen marketing duration now 33 days (since round 90 first recorded the death banner).",
+  "passCriteria": [
+   "Both domains' banner text quoted verbatim and compared to prior recordings",
+   "Zero-change duration quantified (33 days)",
+   "Capability marketing coexistence with death banner noted",
+   "Final post-deletion checkpoint explicitly scheduled"
+  ],
+  "failConditions": [
+   "Treating the penultimate record as sufficient without scheduling the final check",
+   "Omitting the dual-domain timezone comparison",
+   "Interpreting the static banner as changed without verbatim comparison"
+  ]
+ },
+ {
+  "id": "cross-domain-timezone-expression-not-contradiction",
+  "request": "When two regional domains of the same discontinued product express the same deadline with a one-day difference (October 31 vs November 1), recognize this as a timezone expression difference, not a contradictory fact — and record both expressions side by side with the note that they describe the same deadline moment.",
+  "context": "Round-142: motiff.com says 'until October 31, 2026' and miaoduo.com says '11 月 1 日前' — a one-day difference due to timezone conventions (UTC vs UTC+8), not a factual disagreement.",
+  "passCriteria": [
+   "Both expressions quoted side by side",
+   "Timezone difference explicitly named as the cause",
+   "Same-deadline conclusion stated with the reasoning",
+   "Both domains checked in the same session for comparability"
+  ],
+  "failConditions": [
+   "Reporting the one-day difference as a factual discrepancy",
+   "Using only one domain's expression without noting the other",
+   "Missing the timezone context entirely"
+  ]
  }
 ]

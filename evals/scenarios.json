@@ -4960,5 +4960,37 @@
    "Documenting an instrument that doesn't exist as an npm script",
    "Omitting the CI-locked vs local-instrument distinction"
   ]
+ },
+ {
+  "id": "quality-audit-incremental-coverage",
+  "request": "When running a full-corpus quality audit, follow up with incremental audits covering only the newly added scenarios — the audit coverage must track the expansion rate, not just the initial baseline — and confirm that the rapid expansion period (22 scenarios in 4 days) maintained the same quality standard as the pre-expansion corpus.",
+  "context": "Round-146: incremental audit of 16 scenarios added during rounds 128-137 — all structurally complete with zero defects, confirming that the rapid expansion maintained quality standards.",
+  "passCriteria": [
+   "Incremental audit covers exactly the post-baseline additions",
+   "Five-field criteria applied consistently with the full audit",
+   "Zero-defect result confirmed (or defects fixed)",
+   "Coverage tracking stated (full audit + incremental = complete)"
+  ],
+  "failConditions": [
+   "Skipping the incremental audit because the full audit passed",
+   "Using different quality criteria for new vs old scenarios",
+   "Not tracking which additions are covered by which audit"
+  ]
+ },
+ {
+  "id": "rapid-expansion-quality-sustain",
+  "request": "When a corpus expands rapidly (22 scenarios in 4 days through incremental additions), verify that the expansion rate did not degrade quality — rapid expansion with consistent quality demonstrates that the per-round +2 scenarios pattern with complete assertions is sustainable, not just fast.",
+  "context": "Round-146: 22 scenarios added over 10 dev-line rounds (122-131), each round contributing exactly 2 scenarios with full five-field assertions — zero quality degradation detected across the expansion period.",
+  "passCriteria": [
+   "Expansion rate quantified (scenarios per round)",
+   "Quality consistency verified across the expansion period",
+   "Per-round pattern (+2/round) confirmed sustainable",
+   "No quality-completeness tradeoff detected"
+  ],
+  "failConditions": [
+   "Finding quality degradation during the expansion period",
+   "Continuing rapid expansion after quality degradation detected",
+   "Confusing expansion speed with quality"
+  ]
  }
 ]

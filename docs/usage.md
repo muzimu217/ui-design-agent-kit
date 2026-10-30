@@ -150,6 +150,16 @@ instruction sources, but it reads a generated artifact: run `npm run diagram`
 (build) first. On a fresh clone the check alone fails with ENOENT — this is a
 two-step chain, not a defect (verified 2026-10-10 tool sweep).
 
+## Wall reconcile (build-time, automated)
+
+`npm run wall-reconcile` compares the artifact wall's six-dimension prose
+assertions against the live measurement receipt from `canvas:check` — each
+claim's numbers must match the receipt numbers. Mismatches produce
+needs_validation with the exact claimed vs measured values; the fix is
+re-measurement plus honest re-enumeration, not editing the receipt. This is
+run automatically as part of `npm run canvas:build`. It can also be run
+standalone to verify the current wall without rebuilding.
+
 ## Detail lint
 
 `npm run lint:detail` statically scans `demo/*/src` and `showcase/products/src`

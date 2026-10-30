@@ -4928,5 +4928,37 @@
    "Recommending kit strategy changes based on n=2 lifecycle data",
    "Omitting the caveat about sample size"
   ]
+ },
+ {
+  "id": "impeccable-drift-27-day-tracking-update",
+  "request": "When tracking pinned upstream drift, update the tracking table with each new data point (HEAD sha, date, stars) and note the trend direction — consistent drift widening plus sustained category heat strengthens the case for re-vendor but the decision remains with the user (dependency introduction requires a ruling).",
+  "context": "Round-137/139: impeccable drift tracked from 22 days (HEAD 02523aec, 10-29) to 27 days (HEAD df3a4abe, 10-30); stars at 96.3k; upstream still pushing daily.",
+  "passCriteria": [
+   "Previous and current data points cited with shas and dates",
+   "Trend direction (drift widening) stated",
+   "Category heat context included (trending #3, 96.3k)",
+   "Decision explicitly deferred to user"
+  ],
+  "failConditions": [
+   "Re-vendoring without a ruling",
+   "Framing the drift as urgent",
+   "Skipping the data update because the trend is known"
+  ]
+ },
+ {
+  "id": "onboarding-instrument-list-currency",
+  "request": "When new instruments are added to the workflow, verify that the onboarding document's instrument list covers them — an instrument that exists as an npm script but is absent from the onboarding instrument list is a discoverability gap that prevents new contributors from finding and using it.",
+  "context": "Round-137/139: lint:detail (six rules) and references:index added to the onboarding instrument chain after form-false-success and empty-frames detectors were implemented — the instrument list now covers the full chain from canvas:build through audit:report.",
+  "passCriteria": [
+   "All npm scripts with .mjs entry points documented in the instrument list",
+   "Each instrument's scope and CI status described (local vs CI-locked)",
+   "Chain order reflects the actual build/verification sequence",
+   "No orphaned scripts that exist but are never referenced"
+  ],
+  "failConditions": [
+   "Adding an npm script without documenting it in the onboarding",
+   "Documenting an instrument that doesn't exist as an npm script",
+   "Omitting the CI-locked vs local-instrument distinction"
+  ]
  }
 ]

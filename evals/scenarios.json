@@ -3328,5 +3328,1797 @@
    "Abandoning current roadmap to chase the category",
    "Star counts adopted as success metrics"
   ]
+ },
+ {
+  "id": "terminal-state-contract",
+  "request": "A validation run has exactly two legal terminal states: (a) all artifacts written and every validator passing, or (b) run_status 'incomplete' recorded with its exact reason disclosed in the report — never a silent partial run; crashes must surface as failed invocations, not truncated reports.",
+  "context": "cloudflare/security-audit-skill's contract: 'Do not end the run before one of exactly two terminal states... Never stop mid-phase.'",
+  "passCriteria": [
+   "Run ends only in complete or incomplete-with-reason",
+   "Incomplete reason names the exact missing fact",
+   "The report is written even when incomplete",
+   "Exit code distinguishes complete (0) from incomplete (1)"
+  ],
+  "failConditions": [
+   "Partial reports presented as finished",
+   "Crash swallowed into a 'passed' result",
+   "Incomplete without a stated reason"
+  ]
+ },
+ {
+  "id": "needs-validation-verdict-discipline",
+  "request": "A checked-but-unresolved item carries the verdict needs_validation with the exact missing fact and no severity — it is not a low-confidence pass, not a failure, and must not be graded beyond what was observed; unobserved and observed-but-blocked are distinct states.",
+  "context": "cloudflare's three-verdict model: confirmed has a complete source trace; needs_validation names the exact unresolved fact and carries no severity.",
+  "passCriteria": [
+   "Three-state verdicts: confirmed / needs_validation / (rejected or fail)",
+   "needs_validation carries the exact missing fact",
+   "No severity/grade assigned to needs_validation items",
+   "Aggregates report counts per verdict, not a single boolean"
+  ],
+  "failConditions": [
+   "Binary pass/fail collapsing observed-but-blocked into unobserved",
+   "Grading a needs_validation item anyway",
+   "Vague 'unknown' without the exact missing fact"
+  ]
+ },
+ {
+  "id": "survival-position-cloud-lock-in",
+  "request": "Track the survival position of generation-only cloud tools: when a tracked tool announces discontinuation with a data-export window, record the closure timeline, update the market landscape (remove from living-competitor charts), and read the export window as evidence that cloud lock-in is the vulnerability — our own artifacts must stay exportable and rebuildable offline.",
+  "context": "Motiff (international) discontinued with export until Oct 31, following its Chinese counterpart's closure recorded 2026-10-11; the whole product line is dead.",
+  "passCriteria": [
+   "Closure recorded with dates and screenshot at first observation",
+   "Landscape chart updated (tool removed from living competitors)",
+   "Export-window pattern named as the lock-in tell",
+   "Our offline-export story verified rather than merely claimed"
+  ],
+  "failConditions": [
+   "Dead tool left in living-competitor comparisons",
+   "Local-first claimed without an actual export/rebuild path",
+   "Schadenfreude framing instead of survival-position analysis"
+  ]
+ },
+ {
+  "id": "measure-it-claim-needs-published-methodology",
+  "request": "A 'we measure it' marketing claim counts as fourth-layer periphery only when a published, reproducible methodology exists; scoring text without receipts, samples, or criteria never earns observation credit and is recorded as unobservable (null), not as a competitor in the verification layer.",
+  "context": "A dying product's homepage said 'We don't just call it the best. We measure it' with 24/7 testing and expert review — no methodology, samples, or receipts anywhere.",
+  "passCriteria": [
+   "Claim recorded with its exact wording and location",
+   "Methodology/receipts checked and marked unobservable when absent",
+   "Verification-layer occupancy unchanged (claim ≠ occupant)",
+   "The contrast with our machine-readable receipts stated in the insight"
+  ],
+  "failConditions": [
+   "Counting marketing measurement text as fourth-layer occupancy",
+   "Quoting the claim as evidence the layer is contested",
+   "Skipping the check because the product is dying"
+  ]
+ },
+ {
+  "id": "survivor-anti-lockin-behaviors",
+  "request": "After a tracked competitor dies from cloud lock-in, recheck the survivors for anti-lock-in behaviors (export interoperability, offline saving, private deployment) and record whether those behaviors are new adaptations or standing strategy; position our own offline-rebuild guarantee against them without claiming parity of scope.",
+  "context": "16 days after Motiff's closure, survivor js.design's homepage prominently features import/export ('进得来出得去'), offline file saving, and private-deployment consulting — while its AI-generation positioning receded to a secondary section.",
+  "passCriteria": [
+   "Survivor behaviors enumerated with homepage evidence",
+   "Contrast drawn with the dead tool's lock-in failure mode",
+   "Our offline guarantee described by its actual mechanism (export reconciliation, rebuild-from-source)",
+   "AI-narrative recession noted as a market signal"
+  ],
+  "failConditions": [
+   "Survival lessons drawn without homepage-level evidence",
+   "Claiming our guarantee exceeds its actual mechanism",
+   "Ignoring the death that motivated the recheck"
+  ]
+ },
+ {
+  "id": "renderable-evidence-contract-verified",
+  "request": "A video composition with a machine-checked timeline contract must also prove renderability: probe stills from the actual renderer at key scenes, verified for dimensions, non-degenerate size, and luma band — contract checks alone leave the composition at Installed, not Visually Verified; probe frames are evidence, never a video deliverable.",
+  "context": "UakIntro60 had timeline + sfx contracts but had never emitted a frame; a 6-frame probe (including the three.js scene) confirmed 1920×1080, 0.6-1.5MB, YAVG 27-39 per frame.",
+  "passCriteria": [
+   "Still rendered per key scene family including the heaviest (3D) scene",
+   "Each frame verified: exact dimensions, byte-size floor, luma band",
+   "Receipt written with explicit run_status and terminal-state contract",
+   "Probe frames labeled as evidence, full render still gated on user approval"
+  ],
+  "failConditions": [
+   "Contract checks cited as proof the video renders",
+   "Blank or wrong-dimension frames counted as verified",
+   "Probe stills shipped as if they were the deliverable video"
+  ]
+ },
+ {
+  "id": "absorbed-product-capability-tracking",
+  "request": "When a tracked standalone product is absorbed into a parent platform (URL dies, capability survives as a feature), record the absorption — update the host-integration list and object pool to the new name and surface, judge survival by capability continuity rather than product-name mortality, and re-verify any integration instructions still point at a live surface.",
+  "context": "github.com/copilot/workspace 404s; Copilot Workspace's spec→plan→implement form was absorbed into the desktop app's unified 'Manage agent-driven work' workspace.",
+  "passCriteria": [
+   "Dead URL recorded by direct test, not assumption",
+   "Object pool and host list renamed to the living surface",
+   "Survival judged on capability continuity",
+   "Absorption contrasted with outright closure (Motiff)"
+  ],
+  "failConditions": [
+   "Integration docs still naming the dead product URL",
+   "Counting absorption as closure",
+   "Pool entry silently dropped without a disposition"
+  ]
+ },
+ {
+  "id": "mission-control-form-vs-species",
+  "request": "When a major platform ships a mission-control surface for managing agent-driven work, compare form against species: their panel manages agent progress and usage quota, ours separates execution state from evidence state with per-artifact receipts — same information architecture does not mean same product, and the difference must be stated with the exact vocabulary of each side.",
+  "context": "Copilot's desktop workspace manages multi-agent tasks from one place; our canvas workbench separates 执行态 from 证据态 with evidence counts per artifact.",
+  "passCriteria": [
+   "Both sides' exact framing quoted",
+   "Form similarity acknowledged explicitly",
+   "Species difference (what the panel is FOR) argued with specifics",
+   "Fourth-layer occupancy assessment updated (governance vocabulary ≠ evidence receipts)"
+  ],
+  "failConditions": [
+   "Claiming the platform copied or validated us without the species argument",
+   "Ignoring the form overlap entirely",
+   "Treating governance vocabulary as verification-layer occupancy"
+  ]
+ },
+ {
+  "id": "sustained-presence-vs-spike",
+  "request": "A trending/category signal must be re-observed after a cooldown before it upgrades from spike to trend: single-day #1 can be a news pulse, while repeated top presence with continued daily growth across 48h+ is category-formation evidence; interval re-observation, not memory, is the upgrade path.",
+  "context": "cloudflare/security-audit-skill stayed #1 across 48h (36.9k→42.4k stars, +2716/day) — upgrading the earlier 'window is shrinking' inference to an observation.",
+  "passCriteria": [
+   "Cooldown re-observation performed with delta numbers",
+   "Spike vs trend distinction explicitly drawn",
+   "Prior inference re-graded (inference → observation)",
+   "New family members recorded, not just the original signal"
+  ],
+  "failConditions": [
+   "Single observation treated as trend",
+   "Re-observation skipped because 'we already know'",
+   "Deltas asserted without numbers"
+  ]
+ },
+ {
+  "id": "append-only-historical-proof",
+  "request": "An append-only claim (nothing ever deleted) must be provable from history, not just current shape: diff every historical version's entry-id set against the next, verify no id ever disappears, flag post-hoc edits of existing entries as needs_validation, and check the working tree against HEAD so uncommitted deletions surface — a claim that cannot be refuted from evidence is a claim that was never tested.",
+  "context": "The regressions wall claimed 只增不删; the adversarial script tried to disprove it via git history (3 versions, 5 entries, zero deletions, zero mutations) — refutation failed, claim survives.",
+  "passCriteria": [
+   "Every historical version examined, not just HEAD",
+   "Id disappearance anywhere in history = refutation",
+   "Post-hoc edits flagged as needs_validation with entry names",
+   "Working tree compared against HEAD (uncommitted deletions surface)"
+  ],
+  "failConditions": [
+   "Current-file shape check cited as append-only proof",
+   "History read failures silently swallowed into 'complete'",
+   "Uncommitted deletions invisible to the verifier"
+  ]
+ },
+ {
+  "id": "survivor-behavior-convergence",
+  "request": "After a market death, survivor rechecks must test for behavioral convergence: do multiple survivors independently converge on anti-lock-in behaviors (interoperability, offline saving, private deployment, version history)? Convergence across brands upgrades a single observation into a market pattern; our own offline-rebuild position is plotted at the far end of that spectrum.",
+  "context": "After Motiff's closure, both js.design (91) and Pixso (94) prominently feature export interoperability, history/version recovery, and deployment options — the same anti-lock-in family across brands.",
+  "passCriteria": [
+   "Each survivor's behaviors evidenced from its own homepage",
+   "Cross-brand convergence named as a pattern, not coincidence",
+   "Our position located on the spectrum with its actual mechanism",
+   "Landscape chart updated per survivor"
+  ],
+  "failConditions": [
+   "Single-survivor behavior generalized without a second data point",
+   "Survivors treated as identical (differences flattened)",
+   "Our advantage claimed beyond its mechanism"
+  ]
+ },
+ {
+  "id": "six-dim-claims-receipt-reconciliation",
+  "request": "The artifact wall's six-dim prose asserts measured numbers (items checked, focusables reachable); those claims must be reconciled against the live measurement receipt on every audit run — a claim whose number no longer matches the receipt is stale memory presented as verification, and the fix is re-measurement plus honest re-enumeration, not editing the receipt.",
+  "context": "wall-reconcile caught canvas-index-hub's keyboard claim stuck at 增量 28's '11 项' while the live receipt measured 12/15 focusables (the page gained the audit section since).",
+  "passCriteria": [
+   "Live receipt generated by the real checker at reconcile time",
+   "Every numeric claim in the prose checked against receipt numbers",
+   "Mismatch → needs_validation with exact claimed vs measured values",
+   "Fix = re-measure and honestly re-enumerate (no fabrication)"
+  ],
+  "failConditions": [
+   "Editing the receipt to match stale prose",
+   "Prose counts asserted without a reconciliation pass",
+   "Composition details invented when the enumeration is uncertain"
+  ]
+ },
+ {
+  "id": "mastergo-mcp-writeback-tool-as-resource",
+  "request": "When a design tool exposes an MCP server that lets coding agents write back to the canvas (create layers, modify properties, adjust layout), treat the tool as an agent-addressable resource rather than a competitor surface: record the capability with its exact bidirectional scope, and note that official marketing for such integrations describes intent, not a verified tool-call — the kit's evidence ladder (Installed ≠ Configured ≠ Connected ≠ Tool-callable ≠ Visually Verified) applies to external products too.",
+  "context": "Round-95 MasterGo recheck: the AI page's fourth capability is MCP protocol support ('break the read-only limit, bidirectional interaction', explicitly naming Cursor/Codex), captured first-hand from the rendered page; no tool-call was attempted.",
+  "passCriteria": [
+   "Capability recorded at the level actually observed (official page text, not tool-call)",
+   "Bidirectional scope stated exactly (layer create / property modify / layout adjust)",
+   "No severity or capability graded beyond the observed level",
+   "Kit position unchanged: gating workflow stays complementary (agent writes need acceptance, not just access)"
+  ],
+  "failConditions": [
+   "Recording the MCP integration as verified or tool-callable",
+   "Treating a survivor's write-back API as a reason to drop acceptance gates",
+   "Conflating vendor names (MasterGo/蓝湖 vs Motiff/幽澜)"
+  ]
+ },
+ {
+  "id": "design-md-input-contract-convergence",
+  "request": "When a generation product accepts a markdown design contract (design.md) as an input format alongside natural language and reference images, recognize it as industry convergence toward design-as-contract and position your own contract artifact by direction: their markdown describes what to generate before generation; your contract locks what was generated and how it is accepted after — the two are complementary ends of one pipeline, not competing features.",
+  "context": "Round-95 MasterGo AI 快搭 lists 'natural language / reference image / design.md' as peer input formats on the official AI page; the kit's gate D delivers a design contract as the acceptance-side artifact.",
+  "passCriteria": [
+   "Convergence recorded with the exact input-format list observed",
+   "Direction distinction stated (input-side intent vs acceptance-side evidence)",
+   "No redesign of the kit's contract to mimic the vendor's format",
+   "Independent-engine verification stance preserved (vendor self-checks noted as self-scoped)"
+  ],
+  "failConditions": [
+   "Declaring the kit's contract obsolete because vendors accept design.md",
+   "Copying the vendor's input format into the kit without a gate decision",
+   "Treating vendor-side 'generation with check & repair' as independent verification"
+  ]
+ },
+ {
+  "id": "miaoduo-entity-icp-anchor-frozen-marketing",
+  "request": "When a competitor brand appears active in ads while the same brand is recorded as discontinued, resolve entity attribution with first-hand page evidence before updating any landscape chart: the shutdown banner matching the official timeline anchors the site's identity, the ICP filing entity anchors its legal operator, and everything past that (corporate-registry relations) stays needs_validation — while the frozen marketing page itself (pricing, migration promises, performance claims) counts as claims that lost executability, not as product evidence.",
+  "context": "Round-96 miaoduo.com visit: the top banner text matches the recorded 07-31 shutdown / 11-01 deletion timeline exactly, footer ICP reads 北京看云软件有限公司, and pricing/MCP/Figma-migration copy still renders in operational tone — the third frozen-marketing-page instance.",
+  "passCriteria": [
+   "Entity attribution cites the exact banner text and ICP entity as first-hand evidence",
+   "Landscape chart updated without grading the unverified corporate-registry relation",
+   "Frozen marketing claims recorded as non-evidence (no baseline, no executable promise)",
+   "MCP-path comparison across dead/surviving tools kept at mechanism level"
+  ],
+  "failConditions": [
+   "Treating the still-rendered pricing table as evidence of an operating product",
+   "Filling the corporate-registry gap with assumption instead of needs_validation",
+   "Erasing the prior brand-conflation correction instead of closing it with evidence"
+  ]
+ },
+ {
+  "id": "axe-wcag-a11y-adversarial-extension",
+  "request": "When extending self-scoped accessibility checks with an independent engine, gate on serious/critical WCAG A/AA violations only, record moderate findings and axe-incomplete nodes honestly without gating, prove the engine with a negative self-test before trusting a zero-violation result, and keep the scanner a local instrument — never wired into CI-locked aggregation that cannot launch a browser or build pages.",
+  "context": "Round-96 adversarial-a11y: axe wcag2a+wcag2aa over the four canvas pages found 0 serious/critical violations (86 axe-incomplete nodes recorded); the self-test's first run caught a real fixture bug — an unstyled <a> uses the UA default blue and genuinely fails contrast, so the 'false positive' was the engine being right.",
+  "passCriteria": [
+   "Gate semantics explicit (serious/critical fail; moderate = recorded hints)",
+   "Negative self-test proves both catch and clear before any real scan is trusted",
+   "Fixture surprises recorded as engine-correct findings, not suppressed",
+   "Scanner stays outside CI-locked aggregation per the 3ced712 lesson"
+  ],
+  "failConditions": [
+   "Gating on best-practice noise (landmark/region) as if it were WCAG failure",
+   "Trusting a zero-violation scan whose engine was never negatively tested",
+   "Wiring browser-dependent scans into CI-locked reports"
+  ]
+ },
+ {
+  "id": "audit-skill-sustained-presence-third-recheck",
+  "request": "When re-testing a 'sustained presence vs spike' verdict about a trending signal, pre-commit the re-test moment and read rank and star-velocity separately: a rank drop with the highest daily gain in the field confirms sustained heat (rank rotation is normal), while a rank drop with collapsing velocity would confirm the spike reading — never let rank position alone decide the verdict.",
+  "context": "Round-97 trending recheck: cloudflare/security-audit-skill at #10 with +2,874 stars today (highest of all 11 rows), after two consecutive #1 days on 10-22/10-23 — the third independent observation for the sustained-presence reading.",
+  "passCriteria": [
+   "Re-test interval declared against the pre-committed moment (2 days after round 93)",
+   "Rank and daily star velocity read as separate variables",
+   "Verdict names the observation count (third), not just the latest snapshot",
+   "Adjacent category rows (design/security/SEO skills) recorded for category-depth evidence"
+  ],
+  "failConditions": [
+   "Declaring the spike dead because rank slipped from #1 to #10",
+   "Treating a single snapshot as a re-test without citing the prior readings",
+   "Silently dropping the category-structure observation"
+  ]
+ },
+ {
+  "id": "upstream-drift-pin-freshness-recording",
+  "request": "When a pinned upstream skill shows drift (HEAD moved, new releases) after market popularity hits it, separate freshness maintenance from content upgrade: refresh the lock's checkedOn date and record the drift facts immediately, but leave re-vendoring to a user-ruled batch — a popular upstream raises re-sync pressure, and pressure is exactly when the no-tree-change-without-ruling discipline matters most.",
+  "context": "Round-97: uak-visual-critique pinned at e103efe7 (upstream 4.5.0, re-vendored 10-03) while upstream HEAD reached 3671d50f (10-25) plus an engine release on 10-23 — 22 days of drift, checkedOn stale at 10-04, upstream now trending at 87k stars.",
+  "passCriteria": [
+   "Drift facts recorded with exact shas and dates (pinned vs HEAD, release tags)",
+   "checkedOn refreshed as routine freshness maintenance",
+   "Re-vendor decision deferred with the ruling precedent cited (R285-01 batch)",
+   "No silent content change to the installed skill"
+  ],
+  "failConditions": [
+   "Re-vendoring upstream HEAD into the kit without a batch ruling",
+   "Leaving checkedOn stale after observing the drift",
+   "Framing the popularity spike as a reason to skip the ruling chain"
+  ]
+ },
+ {
+  "id": "stage-evidence-dead-data-closure",
+  "request": "When a state schema carries a field (e.g. per-stage evidence paths) that the renderer never outputs, treat it as the dead-data defect class: surfacing it is not cosmetic — the interactive rework (tabs/filter) is the moment to close it, and the closure must be verifiable in the DOM (evidence line rendered per stage), not just claimed in the schema.",
+  "context": "Round-98 gate-path tabbing: canvas-workbench.state.json stages carried status/note/evidence, but the renderer output only status and note — evidence paths were stored since the state's creation and never surfaced; the tab rework rendered .sev lines and a live click test confirmed the evidence text appears when a stage is selected.",
+  "passCriteria": [
+   "Stored-but-unrendered field identified before adding new interactive layers",
+   "Evidence line rendered per stage and confirmed by a DOM-level interaction test",
+   "Filter interaction keeps the data one click away (select stage → see its evidence)",
+   "Schema, render, and receipt stay consistent (no second source of truth)"
+  ],
+  "failConditions": [
+   "Adding tabs/filter chrome while the underlying field stays unrendered",
+   "Claiming evidence surfacing without a DOM-level confirmation",
+   "Rendering evidence outside the aria/contrast guard coverage"
+  ]
+ },
+ {
+  "id": "flex-wrap-vs-shrink-overflow",
+  "request": "When a button/filter bar relies on flex-shrink to fit narrow viewports, recognize it as deferred overflow: shrinking works until the item count grows past the shrink floor, then the bar overflows by a few pixels at the smallest width — the class fix is flex-wrap:wrap (items wrap instead of squeezing), and the guard that catches it must sweep real device widths, not snapshots at one size.",
+  "context": "Round-98: adding 7 stage-filter buttons to a .wall-filter bar without flex-wrap made the status span overflow 4px at 320px only (17-width guard caught it); the earlier 5-button wall bar had been silently held together by shrink.",
+  "passCriteria": [
+   "Overflow attributed to the missing wrap, not to the newest button's text",
+   "Fix applied at the container class level (both filter bars benefit)",
+   "17-width sweep re-run green after the fix",
+   "The near-miss history (shrink-held bar) recorded so the pattern is searchable"
+  ],
+  "failConditions": [
+   "Fixing by shortening the new button labels instead of enabling wrap",
+   "Adjusting only the 320px case while other widths still rely on shrink",
+   "Removing the wide-sweep guard because 'it passes now'"
+  ]
+ },
+ {
+  "id": "d14-blackbox-claim-longevity",
+  "request": "When re-checking a competitor's unverifiable quality claim (e.g. 'automatically tests, N% fewer errors'), record the claim's longevity as data in itself: an unchanged black-box claim after two weeks means verification-free marketing is a stable strategy, not an oversight — the absence of a methodology is the finding, and the correct response is keeping your own receipts machine-checkable, not waiting for them to publish theirs.",
+  "context": "Round-99 bolt.new recheck: the '98% fewer errors — automatically tests' claim stands verbatim 14 days after D14 was raised, still with no methodology, no receipt samples, no reproducible criteria.",
+  "passCriteria": [
+   "Claim quoted verbatim with the days-since-first-seen interval",
+   "Absence recorded as a stable-state finding (three absences: methodology/receipts/criteria)",
+   "No capability inference drawn from the unverified percentage",
+   "Fourth-layer vacancy counter updated (29 consecutive rounds without a live counterpart)"
+  ],
+  "failConditions": [
+   "Treating claim persistence as evidence of the claim's truth",
+   "Predicting the competitor will publish methodology (unfalsifiable forecast)",
+   "Dropping the counter because 'everyone knows it's marketing'"
+  ]
+ },
+ {
+  "id": "agent-tiering-self-reported-metrics",
+  "request": "When an agent product tiers its capability by subscription (Standard/Max) with a Speed/Intelligence/Cost matrix, read it as a market signal that agent quality has become priceable — while noting every matrix cell is vendor-self-reported with no third-party verification; your differentiating surface stays independently measurable receipts, not a competing self-reported matrix.",
+  "context": "Round-99 bolt.new: Bolt Agent Standard/Max tiers with Speed/Intelligence/Token cost ratings, plus explicit model-routing as a feature; all cells are self-reported.",
+  "passCriteria": [
+   "Tiering recorded as a market-pricing signal, separate from capability truth",
+   "Matrix cells labeled vendor-self-reported (null for observability in comparisons)",
+   "Kit positioning unchanged: receipts over ratings",
+   "Model-routing noted as non-conflicting with a supervision-layer product"
+  ],
+  "failConditions": [
+   "Building a competing self-reported capability matrix",
+   "Treating tier names as evidence of capability differences",
+   "Copying subscription-tier vocabulary into the kit's free local tooling"
+  ]
+ },
+ {
+  "id": "local-first-as-positioning-word",
+  "request": "When a commercial competitor promotes local-first as its headline positioning (not just a technical attribute), recognize the three-step validation chain of your own survival-position judgment: derived from a death case (cloud lock-in), converged across survivors (interoperability/history/private deployment), finally adopted as a competitor's main headline — and hold your own implementation bar higher than the wording: local-first must mean machine-checkable receipts and offline rebuild, not merely files on disk.",
+  "context": "Round-100 Onlook recheck: homepage headline reads 'free, local-first editor' where earlier visits showed open-source-editor positioning; the kit's local-first judgment originated from the Motiff shutdown analysis (round 90) and converged across survivor rechecks (rounds 91/94/95).",
+  "passCriteria": [
+   "Positioning change quoted verbatim with prior-visit contrast",
+   "Three-step chain named (death case → survivor convergence → competitor adoption)",
+   "Own implementation bar stated above positioning wording",
+   "Category-creation tactics (e.g. 'Visual Engineers') recorded as not-to-copy with reasons"
+  ],
+  "failConditions": [
+   "Treating a competitor's headline as validation of your mechanism without your own receipts",
+   "Dropping the local-first discipline because 'everyone says it now'",
+   "Copying category-creation vocabulary without a funding-narrative need"
+  ]
+ },
+ {
+  "id": "workspace-state-user-machine-persistence",
+  "request": "When persisting user UI state on a static local page, store it in the user's localStorage (not a server, not a config file the tool owns), wrap every read/write in try/catch with silent degradation to session-only state (storage unavailability is an environment fact, not an error), and verify end-to-end: write on selection, restore on reload, write-back on reset — a persistence feature without the reload test is a claim, not a receipt.",
+  "context": "Round-100 workbench state persistence: stage/audit/wall tab selections saved under one key, restored on load, degrade gracefully in file:// or private mode; verified by a live write→reload→restore→reset cycle.",
+  "passCriteria": [
+   "State stored on the user's machine only (no network, no owned config)",
+   "All storage access degrades explicitly on failure",
+   "Reload restore verified at DOM level (filters active, badge text correct)",
+   "Keyboard/contrast/overflow receipts unchanged (no new focusable surface)"
+  ],
+  "failConditions": [
+   "Persisting state server-side or claiming persistence without the reload test",
+   "Letting storage errors surface as UI breakage in restricted environments",
+   "Adding focusable chrome as a side effect of a persistence feature"
+  ]
+ },
+ {
+  "id": "bilibili-painpoint-comment-layer",
+  "request": "When sampling video-platform demand signals by a pain-point keyword, record the supply mismatch honestly: title-layer results return capability marketing (one-click/free/nanny-level) while pain-point narration lives in comment layers that are not samplable at title level — calibrate the next sweep's entry point (comments/danmaku or failure-vocabulary keywords) instead of over-reading marketing titles as demand evidence.",
+  "context": "Round-101 bilibili sweep: searching 'AI 生成页面 痛点' by publish date returned a 1.7M-view one-click-prototype video and capability tutorials; pain-point vocabulary appeared in no title.",
+  "passCriteria": [
+   "Supply mismatch recorded (keyword vs returned content type)",
+   "View counts quoted as demand-volume evidence with the marketing caveat",
+   "Next-sweep calibration proposed (comment layer or failure vocabulary)",
+   "Kit positioning contrast maintained (pre-generation gating vs post-generation demand)"
+  ],
+  "failConditions": [
+   "Reading marketing titles as pain-point evidence",
+   "Claiming comment-layer sentiment without sampling it",
+   "Ignoring the noise entries in the result set"
+  ]
+ },
+ {
+  "id": "skill-ecosystem-mass-market-terminology",
+  "request": "When 'Skill' appears as a product word in mass-market tutorial titles (video platforms), record it as evidence that the agent-skill ecosystem has crossed into general-user awareness — a tailwind for skill-heavy assets — while keeping the positioning boundary: selling workflow supervision with embedded skills is a different product from selling a single quality skill, and the difference must survive contact with mass-market framing.",
+  "context": "Round-101: a bilibili title 'UI UX Pro Max Skill' (19k views) puts the word Skill in mass-market design-quality content, corroborating the trending-side category verticalization (round 97 hallmark/impeccable).",
+  "passCriteria": [
+   "Mass-market terminology adoption cited with view counts as awareness evidence",
+   "Cross-platform corroboration noted (trending side + video side)",
+   "Positioning boundary stated (workflow supervision ≠ single quality skill)",
+   "No pivot of the kit toward single-skill marketing"
+  ],
+  "failConditions": [
+   "Reframing the kit as a single quality skill to ride the mass-market word",
+   "Treating one tutorial title as proof of sustained awareness",
+   "Omitting the noise/entertainment entries from the sample record"
+  ]
+ },
+ {
+  "id": "bilibili-comment-layer-machine-hostile",
+  "request": "When a planned signal-sampling channel proves machine-hostile (shadow-DOM lazy-load plus headless gating), record the attempt with both strategies and their zero-hit results at a weaker inspection level (attempted-failed-partial), extract the channel's usable form from the failure (what each layer can and cannot yield), and never fabricate comment content — the failure mode being known is itself reviewable evidence.",
+  "context": "Round-102: bilibili comment sampling failed with two strategies (.reply-content legacy selector and shadow-piercing bili-comment-renderer, both 0 hits) while an accidental finding — a failure-vocabulary video ranking first for the product word — validated the round-101 calibration direction.",
+  "passCriteria": [
+   "Both strategies and their zero-hit outcomes recorded with selectors named",
+   "Inspection level downgraded honestly (attempted-failed-partial)",
+   "Channel's usable form concluded (titles for volume, failure vocabulary for pain, human review for comments)",
+   "Accidental findings recorded without being overclaimed"
+  ],
+  "failConditions": [
+   "Paraphrasing imagined comments as sampled data",
+   "Retrying the same selector after a 0-hit result",
+   "Dropping the calibration plan because one channel is hostile"
+  ]
+ },
+ {
+  "id": "evidence-path-linkification",
+  "request": "When an evidence panel shows repository-relative paths as plain text, closing the last mile means turning whitelisted-path prefixes into working links (new tab, rel=noopener, link color verified against the panel background), and the verification must include an actual HTTP fetch of the first link — a link whose target 404s is a claim, not evidence access.",
+  "context": "Round-102 increment: stage-evidence paths in the gate panels became anchors (#8ab4ff on panel = 8.7:1), each link verified in DOM (href/text/target/rel) and the first fetched with HTTP 200.",
+  "passCriteria": [
+   "Whitelist prefixes only; non-path text stays escaped plain text",
+   "Link color contrast verified against the actual panel background (UA default blue rejected)",
+   "DOM verification includes href, accessible text, target, and rel",
+   "First link fetched over HTTP with 200 before claiming reachability"
+  ],
+  "failConditions": [
+   "Links whose targets are not served (404 on first fetch)",
+   "Unstyled links inheriting UA default blue on dark panels",
+   "Escaping failures from naive string interpolation of paths"
+  ]
+ },
+ {
+  "id": "bilibili-platform-governance-pain",
+  "request": "When sampling demand signals, watch for governance-layer pain (generated content being detected and throttled by platforms, users reverse-engineering 'de-AI-flavor'): it is a structural cost of the pure-generation route that grows with adoption, and your evidence-first receipts are a structural answer — record the mapping without turning it into marketing or into detection-evasion assistance.",
+  "context": "Round-103 bilibili fail-word sweep: 'reduce AI concentration / bypass AI detection' videos at 333k and 18k views, plus 'taming AI' narrative at 373k — tool-resistance as entertainment and platform-throttling as pain.",
+  "passCriteria": [
+   "Governance pain recorded as a new dimension with view counts",
+   "Structural mapping stated (evidence receipts answer quality anxiety) without marketing copy",
+   "Refusal line held: no detection-evasion assistance",
+   "Channel second validation recorded (fail-word vocabulary at 300k+ scale)"
+  ],
+  "failConditions": [
+   "Marketing the kit as 'undetectable AI' or similar",
+   "Providing de-AI-flavor techniques in any form",
+   "Missing the governance dimension because it is outside the UI domain"
+  ]
+ },
+ {
+  "id": "tab-cap-silent-truncation",
+  "request": "When a keyboard-reachability checker caps its Tab loop (for runtime reasons), that cap silently converts 'reachable' into 'reached within N steps' — once the page grows past the cap, the surplus is asserted reachable without being walked. The class fix is raising the cap to full coverage and re-measuring everything; every past claim made under the cap gets restated with the honest full-sweep numbers, including any tabbed>total anomalies reported as-is.",
+  "context": "Round-103: adding an 11-link section TOC pushed canvas-index to 49 focusables while tabbed stayed pinned at the old cap of 30 — six items had never been walked; raising the cap to 64 measured 43/49 (and site 20/14, a tabbed>total anomaly reported without smoothing).",
+  "passCriteria": [
+   "Cap raised before any new 'fully reachable' claim on a grown page",
+   "Past capped claims restated with full-sweep numbers and the cap history noted",
+   "Anomalies (tabbed > total) surfaced verbatim, not smoothed",
+   "Guard sweep re-run green across all pages after the change"
+  ],
+  "failConditions": [
+   "Claiming full reachability while a step cap truncates the walk",
+   "Explaining away tabbed>total instead of reporting the raw pair",
+   "Raising the cap only for the page that visibly failed"
+  ]
+ },
+ {
+  "id": "design-md-three-source-convergence",
+  "request": "When a convergence signal reaches three independent sources (a design tool's official input format, an English-region methodology video, an anti-slop skill's vocabulary), upgrade its status from industry-signal to定型 (three-source-settled), and restate both directions of the mapping: vendors use the markdown contract as generation input intent, your gate-D contract is acceptance-side evidence — the settled signal validates the discipline, not a feature to copy.",
+  "context": "Round-104 YouTube sweep: top result 'Your AI UI Looks Generic… This Fixes It (DESIGN.md)' (39K views) joins MasterGo's design.md input format (round 95) and hallmark's Anti-AI-slop framing (round 97) as the third independent source.",
+  "passCriteria": [
+   "All three sources cited with dates and surfaces",
+   "Both directions (input intent vs acceptance evidence) restated",
+   "Status upgraded explicitly with the word three-source-settled",
+   "No pivot toward shipping a design.md input format"
+  ],
+  "failConditions": [
+   "Counting two related sources as three",
+   "Shipping an input-format feature because the market validated the discipline",
+   "Omitting the direction distinction when citing the convergence"
+  ]
+ },
+ {
+  "id": "coverage-gap-unchecked-shipped-page",
+  "request": "When a shipped, distributed page is found missing from the acceptance checklist, treat it as a coverage-gap regression: first-run the real checker on it before any fix (let it expose actual defects, not assumed ones), fix what it finds, add the page to the default list, and record the gap history — an unchecked page is not a passing page, it is an unexamined one.",
+  "context": "Round-104: canvas-workbench.html was first in the showcase distribution list but absent from canvas:check defaults; its first check exposed three real defects (white-on-accent chips at 2.2:1, favicon 404 polluting the console gate, absent from the artifact wall) — all fixed, then the page entered the default list and the wall as artifact #5.",
+  "passCriteria": [
+   "Real checker run before fixes; defects enumerated from its receipt",
+   "Fixes verified by receipt numbers (contrast below=0, console errors=0)",
+   "Page added to the default checklist and to the artifact wall with six dims",
+   "Coverage-gap history recorded as a regression-class lesson"
+  ],
+  "failConditions": [
+   "Adding the page to the checklist before fixing what it exposes",
+   "Assuming the page was fine because it rendered",
+   "Leaving the wall count and the checker list inconsistent"
+  ]
+ },
+ {
+  "id": "goflygen-complementary-layer-recheck",
+  "request": "When re-checking a same-problem-different-layer product (a code-level framework constraining AI generation vs your workflow-level gating), verify survival and claim stability, and restate the complementarity rather than drifting into competition framing — two layers constraining the same pain from different altitudes are mutual market validation, and the layered-case pairing (framework-level type safety + instruction-level gating) is usable as a dual-case narrative without adopting either layer's stack or pricing.",
+  "context": "Round-105 GoFlyGen recheck after 17 days: alive at v3.0.0, all three first-check claims verbatim intact (framework constrains AI generation / AI-adaptation as an architecture dimension / strongly-typed zero-magic), pricing model unchanged.",
+  "passCriteria": [
+   "Survival and claim stability quoted against the dated first check",
+   "Complementarity restated without competition framing",
+   "Dual-layer case pairing noted for narrative use",
+   "Fourth-layer vacancy counter maintained"
+  ],
+  "failConditions": [
+   "Reframing a complementary layer as a competitor after its growth",
+   "Copying pricing vocabulary or stack",
+   "Dropping the recheck because 'nothing will have changed'"
+  ]
+ },
+ {
+  "id": "tabbed-total-iframe-focus-attribution",
+  "request": "When a keyboard receipt reports a tabbed>total pair, attribute the delta before wording anything as anomalous: embedded content (video shadow controls, natively-focusable SVG nodes, sandboxed iframes) legitimately contributes focus stops that a static selector count cannot see — the two numbers are different rulers (focus-cycle length vs static selector matches), and the honest receipt names both rulers and the embedded-focus root cause instead of smoothing the pair.",
+  "context": "Round-105 joint investigation: site.html's 20/14 traced to 7 focus stops inside video shadow controls; canvas-workbench's 27/19 traced to SVG diagram nodes entering the tab order 30 times (a completeness feature, not a defect). Raising the walk cap changed nothing — the walk ends when focus returns to body.",
+  "passCriteria": [
+   "Root cause proven by an attributed focus walk, not assumed",
+   "Both rulers named in the receipt (cycle length vs static count)",
+   "Embedded-focus stops recorded as completeness where they aid reachability",
+   "Annotated claims reconcile against live receipts"
+  ],
+  "failConditions": [
+   "Calling the pair an anomaly after attribution proves embedded focus",
+   "Suppressing embedded focusables to force the numbers to match",
+   "Raising walk caps as a fix when the cap was never binding"
+  ]
+ },
+ {
+  "id": "pre-touch-preview-gate-germination",
+  "request": "When a generation tool ships pre-touch preview (AI shows options before modifying anything), recognize it as the closest-yet germination of gating on the generation side — mechanism-level pre-alignment rather than black-box measurement claims — and sharpen the differentiation one step further: they stop at preview, we continue to receipts. Update the fourth-layer competitive reading from 'vacancy' to 'vacancy with first mechanism-level neighbor' without conceding the evidence layer.",
+  "context": "Round-106 Base44 recheck: 'AI shows previews before it touches anything' on the homepage redesign feature, 16 days after the first check recorded none of this; the fourth layer had 34 consecutive rounds without a live counterpart but now has a mechanism-level neighbor.",
+  "passCriteria": [
+   "Quote the preview mechanism verbatim and classify it as pre-alignment, not verification",
+   "Competitive reading updated (neighbor exists) while the receipts layer stays uncontested",
+   "Differentiation sharpened to preview-vs-receipts explicitly",
+   "Agent-delegation narrative counted across vendors for the supply-side pattern"
+  ],
+  "failConditions": [
+   "Dismissing pre-touch preview as 'just marketing' after classifying earlier claims that way",
+   "Claiming the kit is still unopposed at the alignment layer",
+   "Adopting preview-without-receipts as sufficient"
+  ]
+ },
+ {
+  "id": "honest-pivot-on-channel-block",
+  "request": "When a signal channel is blocked by bot verification mid-round, record the block with its Ray-ID-class evidence, pivot to a pre-declared alternate from the object pool in the same round, and note the block history on the object's record — a blocked channel is a scheduling fact, not a failed inspection, and the pivot must be to an object with a real check-due date, not a convenient one.",
+  "context": "Round-106: lovable.dev fifth check hit a Cloudflare verification page (same class as its 10-11 block that eventually cleared on the fourth retry); the round pivoted to Base44 (last checked 10-10, the only unchecked member of the western layer map) rather than an already-recent object.",
+  "passCriteria": [
+   "Block recorded with the verification-page evidence and block history",
+   "Pivot target justified by check-due date, not recency convenience",
+   "Original object remains scheduled with its retry cadence",
+   "Round still delivers all three KPIs despite the pivot"
+  ],
+  "failConditions": [
+   "Counting the blocked page as inspected",
+   "Pivoting to an object checked days ago",
+   "Dropping the blocked object from the pool instead of annotating it"
+  ]
+ },
+ {
+  "id": "indexed-card-trigger-condition-honored",
+  "request": "When a deferred card (立卡) carries an explicit numeric trigger condition (e.g. adopt retrieval indexing when knowledge files exceed 40), check the counter on every revisit and start the work the moment the condition is met — a card with a measurable trigger is a conditional promise, not a wishlist entry, and honoring it (or recording why the condition no longer applies) is the whole discipline.",
+  "context": "Round-107 claude-mem recheck: the round-17 card deferred three-layer retrieval until knowledge files exceeded 40; the count now measures 61 references files across skills — trigger met, first layer (build-time index) shipped the same round.",
+  "passCriteria": [
+   "Trigger counter re-measured with the current number vs the promised threshold",
+   "Work started scoped to the first layer, not the whole deferred system",
+   "Later layers remain conditional on actual retrieval pain",
+   "Card status updated from deferred to partially-honored with the count cited"
+  ],
+  "failConditions": [
+   "Leaving the card deferred after its trigger condition is met",
+   "Shipping all three layers at once because the trigger fired",
+   "Inventing a new threshold because the original felt inconvenient"
+  ]
+ },
+ {
+  "id": "references-index-first-layer",
+  "request": "When implementing an index layer for a growing knowledge corpus, generate it at build time from the file tree (not hand-maintained), self-verify the count against a fresh enumeration in the same run (a missing file is dead data, an extra one is an enumerator gap), render the human layer as a static zero-focusable catalog (retrieval via in-page find, details via the repository), and surface absence as 'not generated' rather than hiding it.",
+  "context": "Round-104's stage-evidence linkification covers detail access; round-107 adds layer one: output/references-index.json with 61 entries, rendered as per-skill catalog lines on the workbench with zero new focusables.",
+  "passCriteria": [
+   "Index generated at build time and wired into the build chain",
+   "Count self-verified against fresh enumeration in the same run",
+   "Human layer static and complete (no truncation, no new focusables)",
+   "Missing-index state renders as an explicit prompt, not a hidden section"
+  ],
+  "failConditions": [
+   "Hand-maintaining an index that drifts from the file tree",
+   "Rendering 60+ links as focusables and churning the keyboard receipt",
+   "Hiding the section when the index file is absent"
+  ]
+ },
+ {
+  "id": "figma-product-line-expansion-agent-productized",
+  "request": "When a design-platform giant productizes an agent as a standalone product alongside a burst of new lines, update the layered map's giant-tier reading: the fourth layer's perimeter now has both a small-vendor mechanism sprout (pre-touch preview) and a giant product-level bet — the differentiation sentence (they stop at preview, we continue to receipts) stays valid and becomes more necessary; record the new product lines even when their pages are unreachable, classified by what the footer matrix alone can prove.",
+  "context": "Round-108 Figma recheck: figma.com/figmake/ 404s while the footer matrix reveals Figma Weave/Motion/Specs/Sites/Buzz (NEW/BETA) plus 'Figma agent' as a standalone product — roughly double the line count since the first check 19 days earlier.",
+  "passCriteria": [
+   "Matrix quoted from the reachable surface (404 page footer) with line names and stages",
+   "Agent productization classified as giant-tier fourth-layer-adjacent, needs_validation on capability form",
+   "Route breakage and network transient recorded as separate facts",
+   "Fourth-layer counter maintained with the neighbor escalation noted"
+  ],
+  "failConditions": [
+   "Guessing the agent's capabilities from its name",
+   "Treating the 404 as proof the product is discontinued",
+   "Skipping the record because the main page was unreachable"
+  ]
+ },
+ {
+  "id": "broken-route-honest-recording",
+  "request": "When an official footer link resolves to a 404 route, record the two-layer breakage separately (link target broken, retry hit a network transient), never guess path variants after the first failure, harvest whatever the reachable surface proves (a 404 page footer is still first-hand evidence), and schedule the reach from a logged-in state or site map rather than iterating guessed URLs.",
+  "context": "Round-108: the 'Figma Make' footer link pointed to figma.com/figmake/ which returned Page Not Found; the 404 page itself carried the full product matrix that anchored the round's findings.",
+  "passCriteria": [
+   "Broken link and network transient recorded as distinct facts",
+   "No path-variant guessing after the first 404",
+   "Reachable-surface evidence harvested (footer matrix)",
+   "A concrete non-guessing reach plan recorded for the next round"
+  ],
+  "failConditions": [
+   "Iterating guessed URL slugs against a broken route",
+   "Dropping the object because the canonical page 404'd",
+   "Fabricating the product page content from memory"
+  ]
+ },
+ {
+  "id": "death-timeline-window-penultimate-record",
+  "request": "When recording a discontinued product with a data-export window, treat the window as a process with dated checkpoints (notice → shutdown → export deadline → data deletion) and log the penultimate checkpoint from both regional domains first-hand — timezone expression differences of one day across domains describe the same deadline and must be noted as expression, not contradiction; schedule the final checkpoint (post-deletion form) explicitly.",
+  "context": "Round-109: motiff.com still shows 'until October 31, 2026' and miaoduo.com '11 月 1 日前' five days before the deadline, wording unchanged since rounds 90/96; capability marketing still shares the screen with the death banner on day 26.",
+  "passCriteria": [
+   "Both domains' banner text quoted verbatim with the timezone note",
+   "Prior checkpoints cross-referenced (rounds 90/96/102) forming a complete dated chain",
+   "Frozen-marketing duration quantified (26 days unchanged)",
+   "Final post-deletion checkpoint scheduled with both possible outcomes named"
+  ],
+  "failConditions": [
+   "Treating the one-day wording difference as contradictory facts",
+   "Skipping the penultimate record because the final one is 'more interesting'",
+   "Assuming deletion will happen on time without scheduling the verification"
+  ]
+ },
+ {
+  "id": "narrative-sync-after-verdict-evolution",
+  "request": "When a headline verdict evolves (e.g. 'layer long vacant' → 'vacancy with first mechanism-level neighbor'), sweep every narrative surface that cites the old wording — competition submissions and papers included — and restate it with the dated evolution; a stale headline in a submission document is the same defect as a stale number, and the update must name what changed and when rather than silently rewriting history.",
+  "context": "Round-109: the submission's '验证纪律层长期空置' rested on 89 rounds of checks; rounds 106/108 added a mechanism-level neighbor (pre-touch preview) and a giant productized agent — the paragraph now cites 109 rounds and states the receipts layer remains uncontested.",
+  "passCriteria": [
+   "Every surface citing the old verdict found and updated in one pass",
+   "Evolution stated with round numbers, not silently replaced",
+   "The stable core of the verdict (receipts layer uncontested) kept prominent",
+   "Round count in the narrative updated to current"
+  ],
+  "failConditions": [
+   "Updating only the JSON/eval layer while submission prose stays stale",
+   "Rewriting the verdict without dating the evolution",
+   "Weakening the receipts claim because neighbors appeared at the preview layer"
+  ]
+ },
+ {
+  "id": "ai-narrative-density-spectrum",
+  "request": "When tracking same-category platforms over repeated visits, chart AI-narrative density as a spectrum (zero-AI homepage → AI-as-subordinate → AI-as-four-capabilities) correlated with platform-bet strength, and place your own product honestly on it: an AI-workflow product whose AI is the subject but gated is a fourth stance absent from the spectrum — the spectrum is descriptive, not a ranking to climb.",
+  "context": "Round-110 js.design recheck: zero AI claims on the homepage (reaffirming round 91's AI-ebbing reading), against Base44's AI-agents top category and MasterGo's four AI capabilities — three domestic/regional platforms, three densities.",
+  "passCriteria": [
+   "Densities quoted per platform with dated visits",
+   "Correlation with platform-bet strength stated as observation",
+   "Own stance named as a fourth态 with the gating qualifier",
+   "No repositioning pressure acted upon"
+  ],
+  "failConditions": [
+   "Reading low AI density as weakness to avoid",
+   "Padding AI copy to match competitors' density",
+   "Collapsing the spectrum into a leaderboard"
+  ]
+ },
+ {
+  "id": "export-side-interoperability-completeness",
+  "request": "When scoring anti-lockin behavior, require the export side to be a concrete action (an actual file format you can walk out with), not import alone: import-only is lockin dressed as openness; import+export is interoperability. Apply the same test to your own artifacts — offline rebuild is the export action, and it must stay demonstrable, not asserted.",
+  "context": "Round-110: js.design advertises Figma/Sketch/XD import AND Sketch export ('进得来出得去') plus six-platform coverage — the export verb is what completes the interoperability claim.",
+  "passCriteria": [
+   "Import and export sides scored separately",
+   "Own export action named concretely (offline rebuild / exportable artifacts)",
+   "Six-platform coverage noted as distribution, not interoperability",
+   "Anti-lockin family reading extended, not reset"
+  ],
+  "failConditions": [
+   "Crediting import-only pages as interoperable",
+   "Asserting kit exportability without the standing rebuild receipts",
+   "Counting platform breadth as lockin escape"
+  ]
+ },
+ {
+  "id": "figma-ai-workflows-org-unit",
+  "request": "When a platform giant groups its AI products under a dedicated org-unit label (a footer section named 'AI workflows'), record it as organizational evidence that the AI line has its own编制 beyond product count — grouping is a resource-allocation declaration — while keeping product-capability claims behind login walls classified needs_validation rather than inferred from the group name.",
+  "context": "Round-111: the Figma 404 page footer shows three groups — 'Design and explore / Build and ship products / AI workflows' — placing agent/Make/Weave in a dedicated AI grouping, corroborating rounds 106/108's neighbor escalation at the org level.",
+  "passCriteria": [
+   "Group structure quoted verbatim as organizational evidence",
+   "Product capabilities stay needs_validation (login-walled)",
+   "Org evidence cross-referenced with the neighbor-escalation timeline",
+   "No capability inference from the group label"
+  ],
+  "failConditions": [
+   "Reading the group name as a capability spec",
+   "Ignoring org structure because product pages are unreachable",
+   "Escalating the competitive reading without dated cross-references"
+  ]
+ },
+ {
+  "id": "channel-typology-retry-cadence",
+  "request": "When signal channels fail for structural reasons, manage them by type instead of retrying every round: bot-verification blocks get a spaced retry cadence (cite the precedent interval), login-walled surfaces get a needs-condition flag (upgradable when credentials exist), and only transient failures get same-day retries — the typology and per-channel next-action belong in the object-pool record.",
+  "context": "Round-111: lovable.dev blocked twice consecutively (Cloudflare, Ray IDs on record) → 10-day retry cadence per the 10-11→10-21 precedent; Figma new-line pages login-walled with href-less anchors → needs-condition flag; both recorded in the pool notes.",
+  "passCriteria": [
+   "Each blocked channel classified by failure type",
+   "Retry cadence cites the precedent interval",
+   "Needs-condition channels name the upgrading condition",
+   "Pool record updated in the same round as the failures"
+  ],
+  "failConditions": [
+   "Retrying a persistent block every round",
+   "Leaving blocked channels unannotated in the pool",
+   "Treating a login wall as a transient failure"
+  ]
+ },
+ {
+  "id": "coze-delegation-extreme-form",
+  "request": "When a platform markets full-delegation as its headline (agent takes over with your materials and tools, authorized to your real machines and cloud phones), record it as the extreme pole of the delegation spectrum against which the gating position defines itself — the supply-side largest sample of the over-delegation pain — without moralizing about it or softening the kit's own gate stops.",
+  "context": "Round-112 coze.cn first check: '工作交给扣子，创造不必等待', 'AI 同事' staffing narrative, 100M+ agents working, device/cloud-phone execution layer, and demo dialogues performing delivery and review with no verifiable receipt anywhere.",
+  "passCriteria": [
+   "Headline delegation claims quoted verbatim",
+   "Execution-boundary expansion (desktop/cloud/cloud-phone) recorded as a user-control concession",
+   "Performed delivery distinguished from receipts (nothing verifiable on the page)",
+   "Kit position restated as the opposite pole without moral language"
+  ],
+  "failConditions": [
+   "Softening gate stops to compete on delegation convenience",
+   "Treating performed demo reviews as evidence of review capability",
+   "Omitting the device-control concession from the record"
+  ]
+ },
+ {
+  "id": "trust-anchor-morphology-four-forms",
+  "request": "When cataloguing how AI products build trust without verification, maintain the anchor-morphology table (enterprise walls / star counts / agent-count figures / receipts) as a descriptive taxonomy — receipts are the third kind of anchor that no visited product uses yet — and never adopt a scale anchor yourself; your anchor is machine-checkable and that is the differentiator, not a deficiency of scale.",
+  "context": "Round-112: four anchor forms observed across visits — bolt's 20-enterprise wall, MasterGo's 100+ enterprises, claude-mem's 103k stars, Coze's 100M+ working agents — versus the kit's reconciliation receipts as the receipts-form anchor.",
+  "passCriteria": [
+   "Anchor forms enumerated with sources and dates",
+   "Receipts-form named as the kit's anchor and currently unique among visited products",
+   "No scale anchor adopted under competitive pressure",
+   "Taxonomy kept descriptive (no ranking of anchor quality asserted as fact)"
+  ],
+  "failConditions": [
+   "Adopting user-count or agent-count figures in kit marketing",
+   "Asserting receipts are 'better' as fact rather than as method difference",
+   "Dropping an anchor form from the table after one visit"
+  ]
+ },
+ {
+  "id": "audit-skill-lifecycle-full-observation",
+  "request": "When a trend-signal verdict has been revised across visits (spike → sustained → full lifecycle), let the latest observation complete the timeline and restate the verdict as a lifecycle description (first-seen → peak → decay ≈ one week) rather than defending the earlier reading — decay of heat is not failure of the product (total stars persist), and the operational upgrade is recording future signals in three phases instead of predicting persistence.",
+  "context": "Round-113: security-audit-skill fell out of the top 12 four days after peaking at #1, completing a four-observation lifecycle (10-22 first seen → 10-22/23 #1 → 10-25 #10 + highest daily gain → 10-27 out of list); total stars persist at 46.5k.",
+  "passCriteria": [
+   "All four observations dated and the lifecycle duration stated",
+   "Earlier verdicts acknowledged as valid-at-the-time, not rewritten",
+   "Decay distinguished from product failure (total stars persist)",
+   "Three-phase recording adopted for future signals"
+  ],
+  "failConditions": [
+   "Defending 'sustained presence' against the new data point",
+   "Reading the rank decay as the product dying",
+   "Deleting the earlier observations as superseded"
+  ]
+ },
+ {
+  "id": "pixso-channel-block-pivot",
+  "request": "When both domains of a target refuse connections (ERR_CONNECTION_CLOSED on .cn and .com simultaneously, coinciding with unrelated TLS failures to other hosts), attribute the block to line-level jitter rather than the target, record both attempts, pivot to a channel that is due (the 48h trending window), and keep the blocked object scheduled — connection-refused evidence gathered during a jitter window says nothing about the target's availability on a healthy line.",
+  "context": "Round-113: pixso.cn and pixso.com both closed connections during the same window that github.com pushes had intermittently failed SSL — the round pivoted to the due trending recheck and kept Pixso scheduled.",
+  "passCriteria": [
+   "Both attempts recorded with error strings",
+   "Block attributed to line jitter via the coinciding-host-failure correlation",
+   "Pivot target justified by due date (48h window)",
+   "Blocked object remains scheduled, not dropped"
+  ],
+  "failConditions": [
+   "Concluding Pixso is down from jitter-window evidence",
+   "Retrying the same blocked domains within the round",
+   "Skipping the round's learning loop because the first target failed"
+  ]
+ },
+ {
+  "id": "pixso-mcp-entry-two-day-diffusion",
+  "request": "When a capability (MCP entry point) appears in a second same-category vendor within 48 hours of the first observation, reclassify it from vendor feature to category standard-in-formation, re-measure the density spectrum instead of defending the prior snapshot, and note that supply-side standardization does not change consumption-side discipline (your MCP gate stays closed by default).",
+  "context": "Round-114 Pixso recheck (3 days after round 94): homepage now carries a '配置 MCP' primary entry and 'AI 设计平台' in the title — the round-110 spectrum row 'Pixso = AI subordinate' is stale after 2 days; MasterGo got MCP bidirectional write (round 95), Pixso entry (round 114).",
+  "passCriteria": [
+   "Two-day diffusion interval stated with both dated observations",
+   "Spectrum corrected to a dynamic panel, 'settled' wording withdrawn",
+   "Consumption-side MCP gate unchanged despite supply-side standardization",
+   "Third vendor (js.design) marked as the remaining unknown"
+  ],
+  "failConditions": [
+   "Defending the 2-day-old spectrum snapshot",
+   "Opening optional MCP services because vendors standardized them",
+   "Treating an entry point as evidence of bidirectional capability"
+  ]
+ },
+ {
+  "id": "dual-a11y-instrument-cleanup",
+  "request": "When two similarly-named a11y instruments coexist, verify each still launches in the current environment, repair broken launch paths with the established channel-fallback pattern, document the division of labor (local build gate vs live-surface trend sweep) in the onboarding instrument list, and record the live sweep's current counts — an instrument that cannot launch is a silent gap, and two instruments without a stated division of labor is confusion debt.",
+  "context": "Round-114: a11y:sweep (live surface agent.kcos.club, 10 pages, light/dark, baseline diff) failed to launch on drifted bundled-chromium expectations; repaired with channel:'chrome' fallback; current sweep shows critical/serious/moderate all 0 (down from serious 14 at the 9-27 baseline) — documented in onboarding next to canvas:check.",
+  "passCriteria": [
+   "Broken launch repaired with the established fallback pattern",
+   "Live sweep executed and current counts recorded",
+   "Division of labor (build gate vs trend sweep) documented in onboarding",
+   "Historical baseline trend noted (serious 14 → 0)"
+  ],
+  "failConditions": [
+   "Leaving a broken instrument unfixed because 'the other one works'",
+   "Merging the two instruments without stating why",
+   "Recording the sweep without running it first"
+  ]
+ },
+ {
+  "id": "jsdesign-zero-mcp-spectrum-complete",
+  "request": "When completing a three-vendor capability spectrum with a targeted scan (MCP mentions count, MCP-bearing links), report the missing vendor as zero-at-observed-surface with the depth caveat (homepage zero does not exclude in-product presence), and keep the spectrum's completion dated — 2/3 explicit means the third is either a laggard or participating through another interface form, decided by the next observation not by assumption.",
+  "context": "Round-115 js.design targeted scan: MCP mentions 0, no MCP links (AI mentions 11) — completing the spectrum MasterGo ✓ (round 95) / Pixso ✓ (round 114) / js.design ✗ (round 115); AI mentions moved 0→11 since round 110.",
+  "passCriteria": [
+   "Scan method stated (full-text mentions + link href scan)",
+   "Zero reported with surface-depth caveat, not as product fact",
+   "Spectrum completed with dated per-vendor observations",
+   "Third-vendor movement direction noted (AI mentions 0→11)"
+  ],
+  "failConditions": [
+   "Stating 'js.design has no MCP' as a product fact from homepage evidence",
+   "Skipping the targeted scan because two vendors already established the pattern",
+   "Freezing the spectrum as final after one completion"
+  ]
+ },
+ {
+  "id": "density-spectrum-three-point-movement",
+  "request": "When all points of a dated spectrum move within days (0→11 mentions, subordinate→parity, stable), promote the meta-observation: in high-iteration markets any 'settled' reading has a shelf life measured in days, which justifies the 1-3 day recheck cadence for fast-moving objects — recheck density is set by object velocity, not by convenience.",
+  "context": "Round-115: across rounds 110→114→115 every spectrum point moved (js.design 0→11 AI mentions, Pixso subordinate→parity+MCP entry, MasterGo stable) — the third consecutive visit producing movement.",
+  "passCriteria": [
+   "Per-point movement enumerated with round-dated before/after",
+   "Meta-observation stated (shelf life of settled readings in days)",
+   "Recheck cadence justified by object velocity",
+   "No cadence reduction proposed despite three completions"
+  ],
+  "failConditions": [
+   "Declaring the spectrum settled after recording movement",
+   "Spacing out rechecks because 'the pattern is established'",
+   "Counting stable points as non-movement without re-measuring"
+  ]
+ },
+ {
+  "id": "stable-zero-second-reading",
+  "request": "When a targeted observation returns zero for the first time, schedule one confirmation reading after a meaningful interval before upgrading the finding: two consistent zeros confirm a stable state (sampling-noise hypothesis retired), after which the observation point is downgraded from dedicated-round to ride-along —盯守密度跟随变化概率，两次一致即降频。",
+  "context": "Round-116: js.design second reading (31h after round 115) returned MCP=0 / AI=11, identical to the first — the spectrum's third point (✗) upgraded from pending to confirmed-stable.",
+  "passCriteria": [
+   "Second reading taken after a stated interval with identical method",
+   "Zero-to-zero consistency stated as state confirmation, not assumption",
+   "Observation point downgraded to ride-along after confirmation",
+   "Spectrum completion date unchanged (first reading remains the datum)"
+  ],
+  "failConditions": [
+   "Upgrading ✗ to confirmed from a single reading",
+   "Keeping a dedicated-round observation after two consistent zeros",
+   "Changing the scan method between readings"
+  ]
+ },
+ {
+  "id": "usage-scope-instrument-exclusion",
+  "request": "When syncing command documentation, first classify each command's audience: product-user invocation examples (usage.md) and developer instruments (package.json scripts, onboarding instrument list) are different surfaces — a command's absence from usage.md is correct when its audience is the maintainer, and the classification decision itself should be recorded rather than silently skipping the sync.",
+  "context": "Round-116 usage.md check: adversarial/references-index/wall-reconcile/canvas:check/a11y commands absent — correctly, since usage.md serves product users while these serve the dev line; the judgment recorded instead of a blind sync.",
+  "passCriteria": [
+   "Audience classification made explicit before syncing",
+   "Developer instruments documented in onboarding (their surface), not usage.md",
+   "The no-change decision recorded as a decision",
+   "usage.md scope statement (invocation examples, not policy) preserved"
+  ],
+  "failConditions": [
+   "Blindly adding all npm scripts to usage.md",
+   "Leaving a user-facing command undocumented on its proper surface",
+   "Skipping the check without recording why no change was made"
+  ]
+ },
+ {
+  "id": "skillspector-install-side-gate-giant-form",
+  "request": "When a giant ships an install-side security gate for the same artifact category your workflow governs, update the fourth-layer reading to three sub-directions (alignment previews, quality receipts, install security), classify each neighbor by sub-direction, and when the neighbor's instrument could scan your own artifacts, file a conditional card for the scan (dependency introduction needs a ruling) instead of either installing immediately or dismissing it.",
+  "context": "Round-117 NVIDIA SkillSpector: security scanner for agent skills (71 patterns across 17 categories incl. MCP tool poisoning, two-stage static+LLM analysis, 0-100 scoring, fail-closed bounds, baseline suppression, Verified Skills signing pipeline, Pi extension); 22.7k stars, Apache-2.0.",
+  "passCriteria": [
+   "Sub-direction taxonomy stated (alignment/quality-receipts/install-security)",
+   "Kit's supply-chain pinning named as the primitive form of the same question",
+   "Scan card filed with ruling-required reason (dependency introduction)",
+   "First-quantified base rate recorded (26.1% vulnerable / 5.2% malicious of 31,132)"
+  ],
+  "failConditions": [
+   "Installing the scanner without a ruling because 'it's just a dev tool'",
+   "Dismissing it as irrelevant because kit skills are self-written",
+   "Counting install-security as occupying the quality-receipts sub-direction"
+  ]
+ },
+ {
+  "id": "skill-ecosystem-security-base-rate",
+  "request": "When a security vendor publishes a quantified base rate for the ecosystem you depend on (percentage of third-party artifacts vulnerable or malicious), record the numbers with the subset size and treat them as the first quantitative grounding of your supply-chain discipline — your pinning+notice+dual-source checks predate the number, and the number justifies keeping them rather than triggering panic changes.",
+  "context": "Round-117: 26.1% of 31,132 analyzed skills contain vulnerabilities, 5.2% likely malicious (NVIDIA SkillSpector research subset); the kit's 20 pinned third-party skills carry 40-hex revisions and NOTICE files per sources.lock.json.",
+  "passCriteria": [
+   "Base rate quoted with subset size and source",
+   "Existing supply-chain checks mapped to the risk categories",
+   "No panic change to the pinning scheme; conditional scan card filed instead",
+   "Base rate noted as vendor-research subset, not the whole ecosystem"
+  ],
+  "failConditions": [
+   "Quoting the percentages without the subset size",
+   "Re-vendoring or re-pinning in response to the number",
+   "Treating the research subset as representative without caveat"
+  ]
+ },
+ {
+  "id": "usage-command-verification-all-green",
+  "request": "When verifying a usage document's command examples, check every referenced npm script and file path against package.json and the filesystem in one pass (existence and name equality), record the result as a dated all-green or per-item mismatch table, and prefer a zero-defect verification record over skipping the check because 'the doc was recently fine' — usage docs rot through the commands they cite, not through their prose.",
+  "context": "Round-118 usage.md verification: 5 npm scripts (prompt:build/diagram/diagram:check/lint:detail/visual:check) plus scripts/uak-init.mjs all verified 6/6 present and name-identical; no edits required.",
+  "passCriteria": [
+   "Every referenced command and path checked against live sources",
+   "Result recorded as a dated 6/6 table (or per-item fix list)",
+   "Check performed even with no prior suspicion",
+   "usage.md scope (invocation examples, not policy) preserved during any fix"
+  ],
+  "failConditions": [
+   "Sampling two commands and generalizing to all",
+   "Recording 'looks fine' without per-item existence checks",
+   "Fixing a mismatch without re-running the full table"
+  ]
+ },
+ {
+  "id": "zero-defect-verification-recording",
+  "request": "When a verification finds zero defects, record the zero result with the same care as a defect list — the dated all-green record is what makes the next auditor trust the surface without re-checking, and it distinguishes 'verified clean' from 'never checked' (the coverage-gap class from reg-007).",
+  "context": "Round-118: usage.md verified 6/6 with zero edits required; the no-change verification recorded in the iteration log alongside the per-item table, explicitly distinct from the reg-007 unchecked-page class.",
+  "passCriteria": [
+   "Zero-defect result recorded with date and method",
+   "Explicitly distinguished from 'never checked' (reg-007 class)",
+   "No-change decision stated so absence of diff is traceable",
+   "Next verification date or trigger noted if applicable"
+  ],
+  "failConditions": [
+   "Treating 'no diff needed' as no output for the round",
+   "Conflating verified-clean with unchecked",
+   "Losing the verification record in commit squashing"
+  ]
+ },
+ {
+  "id": "skillspector-pi-extension-confirmation-boundary",
+  "request": "When reading an instrument's host-integration doc, extract its confirmation-boundary design as a first-class finding (what runs without confirmation, what requires it, what is flatly rejected and why) and compare it to your own gate design — shared boundary patterns across independent teams are convergence evidence, and the comparison should sharpen your own boundary statement rather than trigger feature adoption.",
+  "context": "Round-119 SkillSpector PI_EXTENSION.md: in-workdir inputs run without a prompt; remote targets and external paths require confirmation; redirect aliases show resolved destinations; Print/JSON sessions that cannot show a dialog are rejected outright; symlinked local paths refused; YARA include directives disabled (self-contained rules only); static scan capped at 120s and LLM at 630s, fixed against env overrides.",
+  "passCriteria": [
+   "Boundary rules enumerated verbatim with the fail-closed classification",
+   "Comparison to own gate design stated (external-input confirmation, unverifiable-channel refusal)",
+   "Fixed-against-override caps noted as a discipline match",
+   "Host-integration value recorded for the user's own ecosystem without installing"
+  ],
+  "failConditions": [
+   "Treating the boundary list as incidental install instructions",
+   "Adopting the tool into the host without a ruling",
+   "Missing the reject-when-unconfirmable pattern"
+  ]
+ },
+ {
+  "id": "convergence-fourth-instance-composition-novelty",
+  "request": "When independent teams converge on the same pattern for a fourth time, promote the meta-reading: these patterns are era-common sense, not any single team's invention — the differentiator is composing them into a complete workflow. Restate your own novelty claim at the composition level, and stop counting convergence as a threat or as originality.",
+  "context": "Round-119: fourth convergence instance — negative self-tests, baseline suppression, confirmation boundaries, and three-phase recording now all observed across NVIDIA SkillSpector and the kit, independently developed.",
+  "passCriteria": [
+   "Four instances enumerated with sources",
+   "Novelty claim restated at composition level (assembling the common sense into a complete workflow)",
+   "Convergence recorded as evidence the patterns are correct, not as competition",
+   "No single-pattern originality asserted"
+  ],
+  "failConditions": [
+   "Claiming any single pattern as unique invention",
+   "Treating the fourth instance as the other team copying",
+   "Weakening the workflow claim because components are common"
+  ]
+ },
+ {
+  "id": "opencode-capability-request-least-privilege",
+  "request": "When an instrument declares its full capability list (target reads, remote fetches, report writes, external paths, subprocess) as a single pre-invocation request where denial stops the subprocess before it starts, and never places credentials inside a permission request while redacting them from model-visible output, record it as the least-privilege invocation form of the confirmation boundary — and map your own gate chain onto the same declaration-approval-refusal structure when justifying your workflow's granularity.",
+  "context": "Round-120 OPENCODE_EXTENSION.md: capability request naming all five capability classes per invocation; provider credentials configured via environment and always redacted from model-visible output; unit-tested helpers with zero new dependencies.",
+  "passCriteria": [
+   "Capability list quoted with all classes enumerated",
+   "Deny-before-subprocess semantics recorded precisely",
+   "Credential-permission separation and output redaction noted",
+   "Kit gate chain mapped as declaration-approval-refusal at stage granularity"
+  ],
+  "failConditions": [
+   "Confusing per-item confirmation with capability-list request",
+   "Overlooking the credential redaction design",
+   "Adopting the extension's copy-based install into the kit's pinned distribution"
+  ]
+ },
+ {
+  "id": "confirmation-granularity-spectrum",
+  "request": "When the same fail-closed confirmation boundary appears at different granularities (per-workflow-stage gates, per-item confirmation, per-invocation capability lists), record a granularity spectrum: direction converges (fail-closed), granularity adapts to host capability — and note that your own stage-level gating is the finest observed granularity, an observation not a superiority claim.",
+  "context": "Round-120: five convergence instances of confirmation boundaries now observed — kit six-gate chain (stage level, finest), Pi extension (per-item), OpenCode (per-invocation capability list) — direction identical, granularity host-adapted.",
+  "passCriteria": [
+   "Spectrum enumerated with all observed granularities",
+   "Direction-vs-granularity distinction kept explicit",
+   "Finest-granularity observation stated without superiority framing",
+   "New observation dimension (granularity) added to the instrument log"
+  ],
+  "failConditions": [
+   "Claiming finer granularity as strictly better",
+   "Collapsing the spectrum into 'all the same'",
+   "Missing the new dimension after five instances"
+  ]
+ },
+ {
+  "id": "suppression-audit-trail-reason-and-retention",
+  "request": "When designing suppression/baseline mechanics for an instrument, require three properties observed in the external reference: every suppression carries an auditable reason, suppressed items never count toward scores but are retained machine-readably for audit, and re-scans surface only new findings — and note where your own design already exceeds the reference (retention-by-never-delete vs retention-by-marker).",
+  "context": "Round-121 SUPPRESSION.md: per-suppression reason required, suppressed findings excluded from score but retained in SARIF with external-suppression markers and machine-readable JSON lists, incremental re-scans surface only new findings.",
+  "passCriteria": [
+   "Three properties enumerated from the reference",
+   "Own design compared property-by-property (kit never-delete is the stronger retention form)",
+   "Reason-field granularity difference acknowledged without forcing adoption",
+   "Reference recorded at verified-partial (doc read, not installed)"
+  ],
+  "failConditions": [
+   "Adopting reason fields where the kit's round-dated narrative already serves",
+   "Weakening never-delete to marker-based to match the reference",
+   "Treating the doc read as an installed capability"
+  ]
+ },
+ {
+  "id": "partial-coverage-no-laundering-cross-validated",
+  "request": "When an external instrument independently implements the same rule your own regressions discovered (incomplete scans may emit baselines but retain their incomplete status — coverage gaps are never cleared by suppression), record it as cross-validation of the rule, alongside the self-reference exclusion both teams built (their scope exclusion, your selfExcluded declaration) — two independent solutions to one self-reference problem are mutual proof.",
+  "context": "Round-121: 'a successful but incomplete scan… retains its incomplete status and recommendation even if every observed finding is suppressed', and a baseline stored inside the scan target is treated as an explicit scope exclusion — matching the kit's reg-007 coverage-gap class and reg-002 manifest self-reference fix.",
+  "passCriteria": [
+   "Incomplete-status retention quoted verbatim",
+   "Cross-validation mapped to the kit's own regression IDs",
+   "Self-reference double-solution recorded as mutual proof",
+   "Write-path fail-closed details noted as finer-grained than kit needs"
+  ],
+  "failConditions": [
+   "Copying the write-path details without a matching risk surface",
+   "Reading cross-validation as a reason to stop independent checks",
+   "Modifying append-only regression entries to add the cross-reference"
+  ]
+ },
+ {
+  "id": "thinkrail-spec-first-same-change-verification",
+  "request": "When a giant productizes spec-first development with a same-change rule (a change moving a boundary, contract, or decision updates the spec in the same change), recognize it as cross-team verification of your own evolution-sync discipline (doc-drift guards, same-pen lists) — and compare enforcement mechanisms honestly: their spec_* agent tools let the agent maintain specs, your guards make non-sync fail red; both are valid, and the difference (agent-maintained vs guard-enforced) is the observation, not a to-do.",
+  "context": "Round-123 JetBrains thinkrail: 'a SPEC.md sits beside every module, and a change that moves a boundary, contract, or decision updates the spec in the same change' — matching the kit's same-pen discipline (doc-drift locked counts, evolution-sync rules from round 109) at product-philosophy level.",
+  "passCriteria": [
+   "Same-change rule quoted verbatim",
+   "Cross-team verification stated for the evolution-sync discipline",
+   "Enforcement difference recorded (agent tools vs red-guard) without forcing adoption",
+   "Spec-graph tooling noted as observation, not a feature request"
+  ],
+  "failConditions": [
+   "Building a spec-graph toolchain because a giant has one",
+   "Claiming the kit invented spec-first",
+   "Ignoring the difference in enforcement mechanism"
+  ]
+ },
+ {
+  "id": "pi-ecosystem-npm-distribution-second-instance",
+  "request": "When a second pi-ecosystem project distributes its tools as installable pi npm packages, confirm the distribution-form evolution (local-path install → npm packages) and record the pattern for the user's own pi-family project as an observation only — the kit does not ship pi packages, and the user's own project decisions belong to the user.",
+  "context": "Round-123: thinkrail publishes pi install npm:@thinkrail/pi-ask-user-question and npm:@thinkrail/pi-visualize; SkillSpector's Pi extension (round 119) used a local-path install — two instances establishing the npm distribution form.",
+  "passCriteria": [
+   "Both instances cited with install forms",
+   "Distribution-form evolution stated (local path → npm)",
+   "User's own project decisions explicitly left to the user",
+   "Kit's non-participation in pi package distribution stated as scope, not lack"
+  ],
+  "failConditions": [
+   "Publishing kit tooling as pi packages without a ruling",
+   "Advising the user's PI-Desktop without marking it as their decision",
+   "Treating two instances as a mature standard"
+  ]
+ },
+ {
+  "id": "threephase-recording-first-application",
+  "request": "When applying a three-phase signal recording (rising/peak/decay), treat phase as a state machine: 'peak not yet reached' is a legal reading — rank position alone does not tell the phase, only the sequence of dated readings does; and never rush a signal into the decay phase to close the record.",
+  "context": "Round-124: thinkrail second/third readings (#8→#3→#1, 4.5k, still rising) — the three-phase method from round 113 applied for the first time; SkillSpector concurrently completed a fast decay (#7→out of list in 2 days), contrasting with audit-skill's ~1-week cycle.",
+  "passCriteria": [
+   "Phase named per signal with the dated reading sequence",
+   "Rising phase recorded without predicting the peak",
+   "Fast-decay sample recorded with a lifecycle comparison",
+   "Tracking rows persisted in the object-pool record"
+  ],
+  "failConditions": [
+   "Declaring the peak from a single high reading",
+   "Closing the tracking before the decay phase is observed",
+   "Dropping the contrasting lifecycle sample"
+  ]
+ },
+ {
+  "id": "skill-infra-platform-entry-phase",
+  "request": "When platform-level actions (official skills repositories, security scanners, agentic IDEs) appear in an ecosystem within days of each other, distinguish the two layers — content-layer headification (quality discourse skills) from infrastructure-layer entry (platforms building skills infrastructure) — and place your own assets between them honestly: self-authored content plus pinned upstreams sits between the layers without requiring movement to either.",
+  "context": "Round-124: three design-skill seats on the trending list (new entrant ai-design-skills at #2 plus the two stars) and Expo's official skills repository entering — platform actions now from three vendors (NVIDIA scanner, JetBrains IDE, Expo repository) within three days.",
+  "passCriteria": [
+   "Two layers distinguished with per-layer evidence",
+   "Platform-entry count and vendors enumerated with dates",
+   "Kit's position between layers stated without movement pressure",
+   "New entrants recorded separately from the established seats"
+  ],
+  "failConditions": [
+   "Mixing content-layer and infrastructure-layer evidence",
+   "Reading platform entry as a reason to restructure kit assets",
+   "Counting a new entrant as an established seat"
+  ]
+ },
+ {
+  "id": "single-skill-demand-heatsignal",
+  "request": "When a single-skill repository earns five-digit stars, record it as a demand-side heat signal for the category (topic热度 not quality): supply-depth versus recognition ratio is the informative part, and the quality-receipts sub-direction remains unoccupied within the skill ecosystem itself — heat proves the topic, not the artifact.",
+  "context": "Round-125: elayadesign/ai-design-skills at 10.7k stars contains exactly one skill ('More on the way') — the shallowest supply among visited design-skill repos yet five-digit recognition; the category spectrum completes as single-skill (10.7k) / collection (39.9k) / design language (91.3k).",
+  "passCriteria": [
+   "Supply-depth versus recognition ratio stated explicitly",
+   "Three-layer category spectrum completed with all three repos",
+   "Heat interpreted as topic demand, not artifact quality",
+   "Quality-receipts vacancy extended into the skill ecosystem reading"
+  ],
+  "failConditions": [
+   "Reading the star count as quality evidence",
+   "Treating one skill as a collection",
+   "Counting the vacancy as filled by popularity"
+  ]
+ },
+ {
+  "id": "notice-attribution-ecosystem-norm",
+  "request": "When even a fast-growing lightweight repository self-declares adaptation sources (upstream skill, license, pointer into its own SKILL.md), confirm that NOTICE/adaptations discipline is an ecosystem norm rather than over-engineering — and note the form difference (prose credit vs pinned revision + NOTICE file) as a depth choice matching each project's supply-chain exposure.",
+  "context": "Round-125: ai-design-skills credits Leonxlnx/taste-skill (MIT) with details at the end of its SKILL.md, under an MIT no-attribution-needed license — attribution given beyond license requirement.",
+  "passCriteria": [
+   "Ecosystem-norm confirmation stated with the quote",
+   "Form difference (prose credit vs pinned NOTICE) recorded as depth choice",
+   "Kit's heavier form justified by its third-party pinning exposure",
+   "No change to kit NOTICE practice proposed"
+  ],
+  "failConditions": [
+   "Weakening kit NOTICE practice to match lighter repos",
+   "Reading lighter repos' attribution as superior restraint",
+   "Missing that the license did not require the credit"
+  ]
+ },
+ {
+  "id": "hallmark-gate-tiers-severity-isomorphism",
+  "request": "When a same-domain skill's gate tiers map one-to-one onto your severity triage (never-ship floor ≈ P0 blocking; overrulable-with-recorded-reason reflex gates ≈ P1 with trail; non-blocking finish checks ≈ P2), record the isomorphism as market validation of the structure — and mine the counterpart for tells your own lists lack, filing additions as scheduled content work rather than immediate edits.",
+  "context": "Round-126 hallmark: three gate tiers (Floor never ships / Reflex gates overridable on the record / Finish checks non-blocking) map to the kit's P0/P1/P2 triage; its eight anti-slop tells include six-plus absent from the kit's typography-standards list (eyebrow proliferation, tracked-capital labels, single-coloured headline word, empty frames, photo-only pages, form false-success).",
+  "passCriteria": [
+   "Tier mapping stated one-to-one with quotes",
+   "Isomorphism recorded as structure validation",
+   "Missing tells filed as a scheduled content ticket (not immediate edit)",
+   "Differentiation restated (single-domain skill vs complete workflow)"
+  ],
+  "failConditions": [
+   "Immediately editing style references mid-round",
+   "Claiming hallmark copied the kit or vice versa",
+   "Ignoring the functional-honesty tell (form false success)"
+  ]
+ },
+ {
+  "id": "form-false-success-as-tell",
+  "request": "When a form that reports success without sending anything is catalogued as a machine-made tell, connect it to the functional-honesty dimension: cosmetic success without a real wire is the UI-layer form of a false verification claim, and lint rules can catch it mechanically — the connection belongs in acceptance references, filed for scheduled adoption.",
+  "context": "Round-126: hallmark's tell list includes 'a form that says thanks without sending anything' — the same territory as the kit's honest-verification (real-link verification) but implemented as a mechanical lint check.",
+  "passCriteria": [
+   "The tell connected to functional-honesty territory",
+   "Mechanical lintability noted as the implementation form",
+   "Filed for scheduled reference adoption (ticket, not immediate edit)",
+   "Kit's real-link verification cited as the existing deeper form"
+  ],
+  "failConditions": [
+   "Treating the tell as cosmetic only",
+   "Ignoring it because the kit already verifies links differently",
+   "Editing acceptance references without the scheduled ticket"
+  ]
+ },
+ {
+  "id": "tells-ticket-crossreference-disposition",
+  "request": "When executing a comparison ticket filed from a counterpart's tells list, do the per-item cross-reference against your own existing rules before adding anything — items already covered get archived as covered, items with existing mechanical coverage get archived as covered-by-instrument, and only genuinely cross-domain items become new candidates filed to their proper reference domain — the coarse 'N unique items' from filing time is a hypothesis the per-item table must test.",
+  "context": "Round-127: hallmark's 8 tells cross-referenced against typography-standards — 3 already covered (items 8/9/10), 1 covered by instrument (hero-misses-screen = overflowGuard's 17-width sweep), 4 cross-domain candidates filed to their proper domains (layout/content, design-cliché, functional-honesty) instead of padding the typography list.",
+  "passCriteria": [
+   "Per-item table produced before any list edit",
+   "Coarse filing-time counts corrected by the table (6-8 unique → 4 cross-domain)",
+   "Cross-domain items filed to their proper reference domains",
+   "Mechanical-lint candidates registered for later scheduling, not dropped"
+  ],
+  "failConditions": [
+   "Padding the typography list with cross-domain tells",
+   "Leaving the coarse count uncorrected in the record",
+   "Dropping candidates that belong to other reference domains"
+  ]
+ },
+ {
+  "id": "form-false-success-lint-candidate",
+  "request": "When a counterpart catalogs 'a form that says thanks without sending anything' as a machine-made tell, register the functional-honesty lint candidate (form success message without a submit handler) as a mechanically checkable acceptance candidate — the UI-layer form of a false verification claim is detectable, and detection belongs on the scheduled list even before implementation.",
+  "context": "Round-127 disposition: form-false-success filed as a functional-honesty lint candidate — the same territory as the kit's honest-verification real-link checks, implementable as a mechanical detector.",
+  "passCriteria": [
+   "Candidate registered with its mechanical detection shape",
+   "Connection to existing honest-verification territory stated",
+   "Filed to the acceptance/critique domain, not the typography list",
+   "Scheduling left explicit (candidate, not implemented)"
+  ],
+  "failConditions": [
+   "Implementing the detector mid-round without scheduling",
+   "Treating it as purely cosmetic",
+   "Losing the candidate after the ticket resolves"
+  ]
+ },
+ {
+  "id": "skill-writing-craft-six-point-isomorphism",
+  "request": "When a high-star single skill independently exhibits the same writing craft as your own skill references (batch intake, numbered skeleton templates, routing tables, counter-example pairs, explicit conflict priority, companion-skill cross-links), record the six-point isomorphism as cross-team verification of skill-writing craft — and correct any earlier reading that attributed the star count purely to topic heat: heat is topic × craft, both factors.",
+  "context": "Round-130 landing-page-design SKILL.md deep read: batch intake with one-line assumption declaration, numbered page-skeleton template, four-layout routing table, ❌/✅ specificity pairs, dual conflict priority (file wins over framework defaults; user wins over rules), companion-skill division of labor — six points isomorphic to the kit's SKILL.md craft.",
+  "passCriteria": [
+   "Six craft points enumerated with quotes",
+   "Earlier heat-only reading corrected with the dual-factor statement",
+   "Quality-receipts vacancy maintained (craft ≠ verifiable receipts)",
+   "Conflict-priority form compared to kit's own dual priority"
+  ],
+  "failConditions": [
+   "Defending the heat-only reading after reading the body",
+   "Copying the landing-page domain content",
+   "Counting craft isomorphism as receipts coverage"
+  ]
+ },
+ {
+  "id": "readme-vs-skillmd-inspection-depth",
+  "request": "When inspecting a single-skill repository, default the inspection depth to the SKILL.md body, not the README: the README is the marketing surface and underestimates content depth (the first pass read marketing only and judged supply shallow), while the skill file is the product surface where writing craft actually lives — record the depth-calibration in the pool notes for future single-skill inspections.",
+  "context": "Round-130: the first pass (round 125) read the README and judged 'one skill, shallow supply'; the SKILL.md body revealed full part-A strategy craft — README underestimation corrected by going one file deeper.",
+  "passCriteria": [
+   "Depth calibration recorded (README marketing vs SKILL.md product)",
+   "First-pass underestimation corrected explicitly",
+   "Method note persisted for future single-skill inspections",
+   "No supply-shallow claim repeated without body-level evidence"
+  ],
+  "failConditions": [
+   "Judging skill content depth from README alone",
+   "Skipping the body because the star count told the story",
+   "Leaving the method correction unrecorded"
+  ]
+ },
+ {
+  "id": "extended-rising-phase-vendor-backing-hypothesis",
+  "request": "When a tracked signal's rising phase extends beyond the reference lifecycle (four days and still #1, against a no-backing tool's one-week full cycle), record the extended rising as an observation and form the backing hypothesis (vendor endorsement may lengthen the rising phase) explicitly as a hypothesis with n=3 variance — never promote it to a conclusion, and keep the state machine reading (still rising, no peak call).",
+  "context": "Round-131: thinkrail third reading still #1 at 5.0k (+1,068/day) after four days of rising — JetBrains-backed, versus audit-skill (no backing, ~1 week full cycle) and SkillSpector (NVIDIA-backed, 2-day fast decay).",
+  "passCriteria": [
+   "Third dated reading recorded without a peak call",
+   "Backing hypothesis stated with n=3 variance caveat",
+   "State machine reading maintained (rising phase, extended)",
+   "Contrasting lifecycles kept in the comparison table"
+  ],
+  "failConditions": [
+   "Declaring the peak or decay from continued strength",
+   "Promoting the backing hypothesis to a conclusion",
+   "Collapsing the three signals into one average lifecycle"
+  ]
+ },
+ {
+  "id": "category-seat-holding-three-days",
+  "request": "When category seats hold their positions with accelerating star velocity for three-plus consecutive days (a new entrant accelerating into the second seat), record the category as having a sustained heat period rather than a single-day pulse — and note the acceleration of the new entrant separately from the incumbents' velocity.",
+  "context": "Round-131: ai-design-skills #2 (11.1k, +2,139/day, accelerating from +1,395), hallmark #6 (+2,110), impeccable #7 (+1,472) — all three design-skill seats holding with strong velocity for the third consecutive day.",
+  "passCriteria": [
+   "Seat-holding duration stated (three-plus days)",
+   "New entrant's acceleration recorded separately from incumbents",
+   "Category heat period distinguished from single-repo cycles",
+   "Readings dated and sourced to the same surface"
+  ],
+  "failConditions": [
+   "Calling the category peaked while seats accelerate",
+   "Merging new entrant and incumbent velocities into one number",
+   "Dropping the tracking after two readings"
+  ]
+ },
+ {
+  "id": "marketing-equals-product-self-evidence",
+  "request": "When a product's marketing site IS a product-built artifact (the site itself is a workspace on the product, rendering the README), record the marketing-equals-product form as a distinct fourth-layer-adjacent evidence shape: stronger than black-box claims (publicly verifiable via the open repo), weaker than quantified receipts (no six-dim measurements) — placed between Configured and Tool-callable on the evidence ladder, and never counted as receipts coverage.",
+  "context": "Round-132 thinkrail.ai: the homepage renders the GitHub README with workspace/website git metadata visible — the site is built with the product it markets; marketing copy is a subset of the product README with no exaggerated deltas.",
+  "passCriteria": [
+   "Self-evidence form named and placed on the evidence ladder",
+   "Marketing-copy-is-README-subset verified by side-by-side",
+   "Distinction from receipts maintained (no quantified dims)",
+   "Positioning updated without conceding the receipts-layer vacancy"
+  ],
+  "failConditions": [
+   "Counting self-evidence as receipts coverage",
+   "Missing the workspace metadata that proves the site is product-built",
+   "Treating the form as a reason to build a marketing site"
+  ]
+ },
+ {
+  "id": "worktree-philosophy-one-liner",
+  "request": "When a vendor compresses an isolation philosophy into a one-liner ('Agents deserve worktrees, not your working tree'), record it as marketing-grade confirmation of a mechanism already documented at product level — the one-liner is quotable for narrative but adds no mechanism beyond the earlier README reading; avoid double-counting it as a new finding.",
+  "context": "Round-132: 'Agents deserve worktrees, not your working tree' on the thinkrail homepage — confirming the worktree isolation mechanism documented at product level in round 123's README reading.",
+  "passCriteria": [
+   "One-liner quoted and linked to the earlier mechanism reading",
+   "Double-counting avoided (marketing confirmation, not new mechanism)",
+   "Kit boundary parallel noted without adopting the framing",
+   "Tracking-table note that the vendor's surfaces are now both covered"
+  ],
+  "failConditions": [
+   "Logging the one-liner as a new mechanism",
+   "Re-reading the README as fresh evidence",
+   "Adopting the slogan framing into kit copy"
+  ]
+ },
+ {
+  "id": "framework-native-skills-third-form",
+  "request": "When a framework team ships its own official skills repository (not a third-party collection, not a scanner, not an IDE — the framework's own deliverable), record it as the third form of skills-infrastructure layer (scanner / IDE / framework-native content) and note the maturity signal: skills have graduated from community practice to official framework deliverable, with multi-marketplace distribution and a universal CLI covering 12+ agents.",
+  "context": "Round-134 expo/skills: 'Official AI agent skills from the Expo team' with three install channels (Claude Code marketplace, Codex marketplace, skills CLI covering Cursor/OpenCode/Copilot/Windsurf/Gemini/Cline/AMP/Factory Droid/Antigravity/Kiro).",
+  "passCriteria": [
+   "Third form distinguished from scanner and IDE forms",
+   "Three distribution channels enumerated with agent coverage",
+   "Graduation from community practice to framework deliverable stated",
+   "Kit's single-repo self-authored form compared without competition framing"
+  ],
+  "failConditions": [
+   "Collapsing the three forms into one 'skills infrastructure' bucket",
+   "Missing the official-team authorship as the distinguishing feature",
+   "Reading the CLI coverage as a kit distribution requirement"
+  ]
+ },
+ {
+  "id": "entry-skill-routing-isomorphism",
+  "request": "When a skills repository ships a 'Start Here' entry skill that routes vague requests to specific skills (the entry point when the user hasn't named a tool), record it as cross-team isomorphism of the entry-routing pattern — the kit's SKILL.md router and the repository's overview skill solve the same dispatch problem at different scales, and the pattern joining the cross-team consensus list is the finding.",
+  "context": "Round-134: expo-overview is the entry point 'when a request is vague or the user hasn't named a specific Expo tool', routing to specific Expo skills — matching the kit's SKILL.md routing pattern.",
+  "passCriteria": [
+   "Entry-skill routing quoted as the isomorphism point",
+   "Scale difference noted (single-repo router vs kit's 23-skill orchestrator)",
+   "Cross-team consensus list extended with this instance",
+   "No adoption pressure from the isomorphism alone"
+  ],
+  "failConditions": [
+   "Treating the overview skill as a kit competitor",
+   "Missing the routing isomorphism by focusing on domain content",
+   "Claiming the kit invented entry routing"
+  ]
+ },
+ {
+  "id": "full-consistency-audit-five-surfaces",
+  "request": "After multiple rounds of partial count syncs, run a full-consistency audit comparing all five surfaces (goal/eval-report/paper/quality-monitor/submission) against the live JSON count, plus the test-count trio (README/identity/quality-monitor) against actual test() enumeration, plus instrument outputs — one command, all surfaces, all-green or per-item fix list.",
+  "context": "Round-135: after rounds 122-128 each synced only the surfaces they touched, the five surfaces drifted into mixed states; the full audit found all five at 282 and all test counts at 136/127/127 — consistent, but only because previous doc-drift guards caught each drift as it happened.",
+  "passCriteria": [
+   "All five corpus citations checked against live JSON in one pass",
+   "Test-count trio checked against actual test() enumeration",
+   "Instrument outputs spot-checked (a11y baseline, references index, detail-lint)",
+   "Audit method recorded as reusable ride-along tool"
+  ],
+  "failConditions": [
+   "Checking only the surfaces that previously failed",
+   "Trusting previous syncs without re-measuring",
+   "Fixing a surface without re-running the full audit"
+  ]
+ },
+ {
+  "id": "trending-utc-refresh-timing",
+  "request": "When reading GitHub trending daily, calibrate the refresh timing: the daily list resets on UTC day boundaries, so a reading taken before the UTC day completes returns the previous day's data verbatim — a non-reading. Record the timing constraint and defer the reading until at least 2 hours after the UTC day switch.",
+  "context": "Round-135: a 00:01 local-time reading returned data identical to the previous evening's (thinkrail #1 5.4k, all seats unchanged) — the UTC day had not yet rolled over; the reading was discarded as non-informative.",
+  "passCriteria": [
+   "Non-reading identified by verbatim comparison with prior data",
+   "Timing constraint recorded (UTC day boundary + buffer)",
+   "Round pivoted to a productive alternative rather than idling",
+   "Prior readings not duplicated as new data"
+  ],
+  "failConditions": [
+   "Recording identical data as a new reading",
+   "Interpreting the stale list as stability evidence",
+   "Waiting idle instead of pivoting to productive work"
+  ]
+ },
+ {
+  "id": "corpus-structural-quality-audit",
+  "request": "When the eval corpus grows rapidly through many incremental additions, run a full-structure audit checking every scenario for five-field completeness (id uniqueness, request depth, context depth, passCriteria ≥ 3, failConditions ≥ 2) — rapid expansion is the exact condition under which count-pressured entries with weak assertions slip through.",
+  "context": "Round-136: 284 scenarios audited after +22 in four days; 283 structurally complete, 1 false positive (a negative-case scenario with intentionally short request — the design simulates a user request that should be rejected without a locked plan).",
+  "passCriteria": [
+   "All scenarios checked in one pass with five-field criteria",
+   "False positives distinguished from actual defects (by-design short request)",
+   "ID uniqueness confirmed across the full corpus",
+   "Audit method recorded as reusable ride-along tool"
+  ],
+  "failConditions": [
+   "Sampling only recent additions instead of auditing the full corpus",
+   "Fixing the false positive without recognizing it as by-design",
+   "Skipping the audit because the count is large"
+  ]
+ },
+ {
+  "id": "negative-case-short-request-by-design",
+  "request": "When a quality audit flags a scenario's short request, check whether the brevity is by-design (a negative-case scenario simulating a user request that should be rejected — short because the user didn't provide context) before treating it as a defect; by-design brevity is a design feature, not a quality gap.",
+  "context": "Round-136: execute-requires-plan-lock's request is 29 chars because it simulates a user asking to execute without a locked plan — the short request is the test condition.",
+  "passCriteria": [
+   "By-design brevity recognized before flagging as defect",
+   "Scenario's negative-case purpose stated",
+   "No change made to the intentional short request",
+   "Audit tool updated to whitelist by-design short requests"
+  ],
+  "failConditions": [
+   "Lengthening a by-design short request to pass an audit",
+   "Deleting a valid negative-case scenario",
+   "Treating all short requests as quality defects"
+  ]
+ },
+ {
+  "id": "thinkrail-peak-phase-transition",
+  "request": "When a tracked signal transitions from rising phase to peak phase (rank drops but daily velocity stays strong), record the phase transition precisely — the state machine gains a confirmed peak after the rising phase, and the decay phase remains unobserved. Peak is not decay: velocity persistence with rank rotation is a different state from velocity collapse.",
+  "context": "Round-134/135: thinkrail fourth reading #4 (5.6k, +1,116/day) after three consecutive rising readings (#8→#3→#1→#4, 1.3k→5.6k over four days) — rank rotation with velocity persistence = peak plateau, not decay.",
+  "passCriteria": [
+   "Phase transition named precisely (rising → peak)",
+   "Rank-vs-velocity distinction maintained",
+   "Decay phase explicitly marked as unobserved",
+   "State machine reading preserved without collapsing phases"
+  ],
+  "failConditions": [
+   "Reading the rank drop as the start of decay",
+   "Skipping phase labels and just listing ranks",
+   "Predicting the decay date without evidence"
+  ]
+ },
+ {
+  "id": "hallmark-fast-rotation-vs-impeccable-stability",
+  "request": "When two same-category repos show different rotation patterns (one drops out of the list, another holds position with accelerating velocity), record the divergence as evidence that category heat is distributed unevenly across individual repos — category-level persistence does not guarantee repo-level persistence, and each repo needs its own tracking row.",
+  "context": "Round-134: hallmark dropped out of the top 12 while impeccable held #3 with +2,881/day — both design-skill repos but different rotation patterns.",
+  "passCriteria": [
+   "Divergence recorded with both repos' readings",
+   "Category-level vs repo-level distinction maintained",
+   "Per-repo tracking rows justified by the divergence",
+   "No single-repo lifecycle generalized to the category"
+  ],
+  "failConditions": [
+   "Generalizing one repo's decay to the category",
+   "Assuming impeccable's stability transfers to hallmark",
+   "Stopping per-repo tracking because the category is hot"
+  ]
+ },
+ {
+  "id": "usage-architecture-alignment-all-green",
+  "request": "When auditing documentation alignment, check usage.md command references against package.json (existence + name equality) and architecture.md for outdated tool references in one pass — architecture is the permanent-invariants surface and should never reference increment-specific tools by name, so its cleanliness is confirmed by the absence of tool mentions rather than by their presence.",
+  "context": "Round-139: usage.md's 5 npm commands + uak-init.mjs all verified 6/6; architecture.md has zero references to increment-specific instruments (a11y-sweep, detail-lint, adversarial-*, wall-reconcile, gen-references-index) — correct separation of permanent architecture from increment-level evolution.",
+  "passCriteria": [
+   "usage.md commands checked against package.json (existence + name equality)",
+   "architecture.md checked for outdated increment-specific references",
+   "Architecture cleanliness confirmed by absence (not by presence)",
+   "Documentation layer separation (architecture/usage/learn-loop/iteration-log) validated"
+  ],
+  "failConditions": [
+   "Finding increment-specific tool names in architecture.md",
+   "Fixing a reference without first confirming it's actually broken",
+   "Mixing architecture-level and increment-level content in one surface"
+  ]
+ },
+ {
+  "id": "trending-intraday-non-reading",
+  "request": "When a trending daily reading returns data identical to a reading from <6 hours ago, record it as a non-reading (the daily list hasn't refreshed within the same UTC day), calibrate the optimal reading interval to 24h (after the UTC day boundary), and pivot to productive work rather than rehashing identical observations.",
+  "context": "Round-139: trending top 12 nearly identical to the reading from ~5 hours ago (thinkrail #4/5.8k, all seats unchanged, daily increments barely moved) — intraday readings have zero information increment.",
+  "passCriteria": [
+   "Non-reading identified by verbatim comparison",
+   "Optimal reading interval calibrated to 24h",
+   "Round pivoted to productive work (usage/architecture audit)",
+   "Prior readings not duplicated as new data"
+  ],
+  "failConditions": [
+   "Recording identical data as a new reading",
+   "Interpreting minimal star movement as meaningful change",
+   "Idling instead of pivoting to productive work"
+  ]
+ },
+ {
+  "id": "pin-drift-tracking-26-day-update",
+  "request": "When tracking pinned upstream drift over multiple check-ins, record each data point (HEAD sha, date, stars) and note the trend direction — the drift data serves the re-vendor ruling by quantifying both the divergence and the upstream's continued activity, helping the user make an informed decision about whether the new commits justify a re-vendor batch.",
+  "context": "Round-137: impeccable drift updated from 22 days (round 117) to 26 days (HEAD 02523aec, 10-29); stars at 95.0k and upstream still pushing daily — the trend is consistent but the decision remains with the user.",
+  "passCriteria": [
+   "Both data points (previous and current) cited with shas and dates",
+   "Trend direction stated (drift widening) without urgency framing",
+   "Kit-side status noted (no blocking, pinned version functional)",
+   "Decision explicitly deferred to user"
+  ],
+  "failConditions": [
+   "Re-vendoring without a ruling",
+   "Framing the drift as a crisis",
+   "Skipping the data point because 'nothing changed'"
+  ]
+ },
+ {
+  "id": "skillmd-line-limit-watch-599-of-600",
+  "request": "When a file with a hard line limit (e.g. SKILL.md 600-line budget) reaches within 1 line of the limit, record the watch status explicitly and note the mitigation strategy (move stable details to references/) so the next contributor knows the headroom situation before adding content — hitting the limit silently and then trimming under pressure produces worse results than planning the transition.",
+  "context": "Round-137: SKILL.md measured at 599/600 lines — the next addition will breach the limit; quality-monitor already documents the mitigation (move stable details to references/)",
+  "passCriteria": [
+   "Current count vs limit recorded (599/600)",
+   "Mitigation strategy referenced (details to references/)",
+   "Watch status visible to the next contributor",
+   "No content added without acknowledging the headroom situation"
+  ],
+  "failConditions": [
+   "Adding content past the limit without planning",
+   "Removing content hastily to make room",
+   "Ignoring the watch status"
+  ]
+ },
+ {
+  "id": "trending-intraday-non-reading-second-instance",
+  "request": "When a trending daily reading taken within the same UTC day as a prior reading returns substantially identical data, confirm the non-reading pattern as a reusable calibration (second instance) and set the reading interval to 24h permanently — intraday readings have zero information increment for a daily-refresh list.",
+  "context": "Round-141: trending top 12 nearly identical to the reading from ~5 hours ago (thinkrail #4/6.0k, all seats unchanged) — confirming the round 139 finding that intraday readings are non-informative.",
+  "passCriteria": [
+   "Non-reading confirmed as second instance",
+   "Reading interval set to 24h permanently",
+   "Prior readings not duplicated as new data",
+   "Round pivoted to productive work"
+  ],
+  "failConditions": [
+   "Reading the list again within the same UTC day",
+   "Treating minimal star movement as meaningful",
+   "Rehashing the same observations as new findings"
+  ]
+ },
+ {
+  "id": "thinkrail-peak-phase-three-reading-confirm",
+  "request": "When a tracked signal shows three consecutive readings in the peak phase (#4 rank with strong daily velocity), confirm the phase transition from rising to peak as stable — the signal is no longer climbing but maintains strong velocity — and note that the decay phase remains unobserved.",
+  "context": "Round-141: thinkrail confirmed at #4 (6.0k, +1,116/day) for the third consecutive reading in peak phase — the state machine transition from rising to peak is now stable, not a transient.",
+  "passCriteria": [
+   "Three consecutive peak-phase readings recorded with dates",
+   "Phase transition (rising → peak) confirmed as stable",
+   "Decay phase explicitly marked as unobserved",
+   "Velocity persistence without rank improvement noted"
+  ],
+  "failConditions": [
+   "Calling it a decay while velocity is strong",
+   "Returning to the rising phase reading",
+   "Omitting the three-reading confirmation"
+  ]
+ },
+ {
+  "id": "motiff-window-closing-imminent-record",
+  "request": "When a discontinued product's data-export window is within 24 hours of closing, record the penultimate checkpoint from both regional domains — the banner text should be verbatim identical to prior recordings (confirming zero changes), and the capability marketing sharing the screen with the death banner should be quantified as a new duration record for the frozen-marketing phenomenon.",
+  "context": "Round-142: motiff.com 'until October 31, 2026' and miaoduo.com '11 月 1 日前' — 24 hours before the deadline; frozen marketing duration now 33 days (since round 90 first recorded the death banner).",
+  "passCriteria": [
+   "Both domains' banner text quoted verbatim and compared to prior recordings",
+   "Zero-change duration quantified (33 days)",
+   "Capability marketing coexistence with death banner noted",
+   "Final post-deletion checkpoint explicitly scheduled"
+  ],
+  "failConditions": [
+   "Treating the penultimate record as sufficient without scheduling the final check",
+   "Omitting the dual-domain timezone comparison",
+   "Interpreting the static banner as changed without verbatim comparison"
+  ]
+ },
+ {
+  "id": "cross-domain-timezone-expression-not-contradiction",
+  "request": "When two regional domains of the same discontinued product express the same deadline with a one-day difference (October 31 vs November 1), recognize this as a timezone expression difference, not a contradictory fact — and record both expressions side by side with the note that they describe the same deadline moment.",
+  "context": "Round-142: motiff.com says 'until October 31, 2026' and miaoduo.com says '11 月 1 日前' — a one-day difference due to timezone conventions (UTC vs UTC+8), not a factual disagreement.",
+  "passCriteria": [
+   "Both expressions quoted side by side",
+   "Timezone difference explicitly named as the cause",
+   "Same-deadline conclusion stated with the reasoning",
+   "Both domains checked in the same session for comparability"
+  ],
+  "failConditions": [
+   "Reporting the one-day difference as a factual discrepancy",
+   "Using only one domain's expression without noting the other",
+   "Missing the timezone context entirely"
+  ]
+ },
+ {
+  "id": "multi-signal-tracking-panorama",
+  "request": "When tracking multiple signals across multiple readings, maintain per-signal tracking rows (not category averages) so that individual lifecycle differences are visible — six signals with four readings revealed that each signal has its own lifecycle (rising/peak/decay at different rates), which would be invisible in a category-level average.",
+  "context": "Round-144: six tracked signals with four readings revealed distinct lifecycles — thinkrail (peak plateau 3 readings), impeccable (accelerating), ai-design-skills (steady), claude-mem (long-tail), expo (fast decay 2 days), SkillSpector (fast decay 2 days).",
+  "passCriteria": [
+   "Per-signal tracking rows maintained (not category averages)",
+   "Individual lifecycle differences visible and recorded",
+   "State machine phase labeled per signal",
+   "Category-level reading noted as insufficient for per-repo analysis"
+  ],
+  "failConditions": [
+   "Collapsing per-signal data into a category average",
+   "Dropping a signal's tracking row because it's 'less interesting'",
+   "Missing lifecycle differences by looking at category totals"
+  ]
+ },
+ {
+  "id": "tool-vs-content-lifecycle-divergence",
+  "request": "When tool/infrastructure repos (scanners, IDEs, frameworks) show shorter trending lifecycles (~2 days) than content repos (design skills, methodologies showing 3+ day persistence), record the divergence as a lifecycle pattern hypothesis with n=2 per category — the pattern suggests that content repos have longer heat cycles because the topic (design quality) has ongoing discourse while tools are evaluated and adopted/abandoned faster.",
+  "context": "Round-144: SkillSpector and expo both showed ~2-day trending lifecycles (tool/infrastructure), while impeccable and ai-design-skills showed 3+ day persistence (content/skill) — supporting the hypothesis that content heat cycles are longer.",
+  "passCriteria": [
+   "Both categories (tool and content) cited with specific repos and durations",
+   "Hypothesis labeled as hypothesis with n=2 caveat",
+   "Kit's position noted (content-adjacent, expected longer cycles)",
+   "No lifecycle conclusion drawn from insufficient data"
+  ],
+  "failConditions": [
+   "Stating the lifecycle difference as established fact from n=2",
+   "Recommending kit strategy changes based on n=2 lifecycle data",
+   "Omitting the caveat about sample size"
+  ]
+ },
+ {
+  "id": "impeccable-drift-27-day-tracking-update",
+  "request": "When tracking pinned upstream drift, update the tracking table with each new data point (HEAD sha, date, stars) and note the trend direction — consistent drift widening plus sustained category heat strengthens the case for re-vendor but the decision remains with the user (dependency introduction requires a ruling).",
+  "context": "Round-137/139: impeccable drift tracked from 22 days (HEAD 02523aec, 10-29) to 27 days (HEAD df3a4abe, 10-30); stars at 96.3k; upstream still pushing daily.",
+  "passCriteria": [
+   "Previous and current data points cited with shas and dates",
+   "Trend direction (drift widening) stated",
+   "Category heat context included (trending #3, 96.3k)",
+   "Decision explicitly deferred to user"
+  ],
+  "failConditions": [
+   "Re-vendoring without a ruling",
+   "Framing the drift as urgent",
+   "Skipping the data update because the trend is known"
+  ]
+ },
+ {
+  "id": "onboarding-instrument-list-currency",
+  "request": "When new instruments are added to the workflow, verify that the onboarding document's instrument list covers them — an instrument that exists as an npm script but is absent from the onboarding instrument list is a discoverability gap that prevents new contributors from finding and using it.",
+  "context": "Round-137/139: lint:detail (six rules) and references:index added to the onboarding instrument chain after form-false-success and empty-frames detectors were implemented — the instrument list now covers the full chain from canvas:build through audit:report.",
+  "passCriteria": [
+   "All npm scripts with .mjs entry points documented in the instrument list",
+   "Each instrument's scope and CI status described (local vs CI-locked)",
+   "Chain order reflects the actual build/verification sequence",
+   "No orphaned scripts that exist but are never referenced"
+  ],
+  "failConditions": [
+   "Adding an npm script without documenting it in the onboarding",
+   "Documenting an instrument that doesn't exist as an npm script",
+   "Omitting the CI-locked vs local-instrument distinction"
+  ]
+ },
+ {
+  "id": "quality-audit-incremental-coverage",
+  "request": "When running a full-corpus quality audit, follow up with incremental audits covering only the newly added scenarios — the audit coverage must track the expansion rate, not just the initial baseline — and confirm that the rapid expansion period (22 scenarios in 4 days) maintained the same quality standard as the pre-expansion corpus.",
+  "context": "Round-146: incremental audit of 16 scenarios added during rounds 128-137 — all structurally complete with zero defects, confirming that the rapid expansion maintained quality standards.",
+  "passCriteria": [
+   "Incremental audit covers exactly the post-baseline additions",
+   "Five-field criteria applied consistently with the full audit",
+   "Zero-defect result confirmed (or defects fixed)",
+   "Coverage tracking stated (full audit + incremental = complete)"
+  ],
+  "failConditions": [
+   "Skipping the incremental audit because the full audit passed",
+   "Using different quality criteria for new vs old scenarios",
+   "Not tracking which additions are covered by which audit"
+  ]
+ },
+ {
+  "id": "rapid-expansion-quality-sustain",
+  "request": "When a corpus expands rapidly (22 scenarios in 4 days through incremental additions), verify that the expansion rate did not degrade quality — rapid expansion with consistent quality demonstrates that the per-round +2 scenarios pattern with complete assertions is sustainable, not just fast.",
+  "context": "Round-146: 22 scenarios added over 10 dev-line rounds (122-131), each round contributing exactly 2 scenarios with full five-field assertions — zero quality degradation detected across the expansion period.",
+  "passCriteria": [
+   "Expansion rate quantified (scenarios per round)",
+   "Quality consistency verified across the expansion period",
+   "Per-round pattern (+2/round) confirmed sustainable",
+   "No quality-completeness tradeoff detected"
+  ],
+  "failConditions": [
+   "Finding quality degradation during the expansion period",
+   "Continuing rapid expansion after quality degradation detected",
+   "Confusing expansion speed with quality"
+  ]
+ },
+ {
+  "id": "network-block-attempted-failed-partial",
+  "request": "When a scheduled external check is blocked by network-level failures (connection refused, SSL errors) rather than target-level failures (404, DNS), record it as attempted-failed-partial with the network evidence (error strings from both target and control), schedule the retry rather than declaring the target dead, and distinguish between network-level and target-level failures.",
+  "context": "Round-145: Motiff/miaoduo 关窗终验 attempt blocked by ERR_CONNECTION_CLOSED on both domains AND the control group (github.com), confirming network-level jitter rather than target-level unavailability.",
+  "passCriteria": [
+   "Both target and control group error evidence recorded",
+   "Network-level vs target-level failure distinction explicit",
+   "Retry scheduled rather than cancelled",
+   "No conclusion drawn about target availability from network evidence"
+  ],
+  "failConditions": [
+   "Declaring the target offline based on network errors",
+   "Skipping the control group check",
+   "Cancelling the scheduled终验 instead of deferring"
+  ]
+ },
+ {
+  "id": "control-group-network-diagnosis",
+  "request": "When diagnosing whether a connectivity failure is network-level or target-level, test a known-good control target in the same session — if the control also fails, the issue is network-level; if the control succeeds, the issue is target-level. This prevents misattributing network jitter to target unavailability.",
+  "context": "Round-145: github.com as control target also failed ERR_CONNECTION_CLOSED in the same session as the Motiff/miaoduo failures — confirming network-level jitter rather than target-level unavailability.",
+  "passCriteria": [
+   "Control target tested in the same session/network context",
+   "Control result compared with target result",
+   "Diagnosis stated with the evidence from both",
+   "Method noted as transferable from hypothesis testing to network diagnostics"
+  ],
+  "failConditions": [
+   "Testing only the target without a control",
+   "Concluding target-level failure from network-level evidence",
+   "Retrying indefinitely during a confirmed network-level outage"
+  ]
+ },
+ {
+  "id": "thinkrail-full-lifecycle-observed",
+  "request": "When a tracked signal completes a full lifecycle (rising → peak → decay) across multiple dated readings, record the complete lifecycle as a methodology milestone — the state machine model is validated by a complete observation cycle, not just inferred from partial data — and note the total duration for comparison with other signals' lifecycles.",
+  "context": "Round-147: thinkrail completed a full lifecycle in ~5 days (10-26 first seen #8 → 10-27 #3 rising → 10-28 #1 peak → 10-29 #4 → 10-31 #12 decay) — the first signal in the tracking table to complete all three phases.",
+  "passCriteria": [
+   "All three phases recorded with dates and readings",
+   "Total lifecycle duration stated (~5 days)",
+   "State machine model confirmed by complete observation",
+   "Comparison with other signal lifecycles noted (audit-skill ~1 week)"
+  ],
+  "failConditions": [
+   "Declaring the lifecycle complete without observing all three phases",
+   "Generalizing the ~5-day duration to all signals",
+   "Omitting the methodology milestone significance"
+  ]
+ },
+ {
+  "id": "design-skill-category-rotation-anthropics-skills-entry",
+  "request": "When a category's trending seats rotate rapidly (three design-skill seats dropping out within days) while new entrants from different domains appear (Anthropic official, TypeScript educator, game studios), record the rotation as evidence that trending list membership is inherently volatile and that individual repo tracking (not category assumptions) is the correct granularity — and note the ecosystem-level signal (Anthropic entering the skills space officially) separately from the rotation pattern.",
+  "context": "Round-147: design-skill three seats (impeccable/hallmark/ai-design-skills) reduced to one (impeccable #3 still strong), while new entrants anthropics/skills (#11, 185k), mattpocock/skills (#8, 307k), and expo/skills (#6, decaying) appeared in the same reading.",
+  "passCriteria": [
+   "Category rotation recorded with before/after seat comparison",
+   "Anthropic official entry noted as ecosystem-level signal",
+   "Per-repo granularity maintained (not category assumption)",
+   "impeccable's persistence distinguished from others' rotation"
+  ],
+  "failConditions": [
+   "Treating all skill repos as having the same trajectory",
+   "Missing the Anthropic official entry as an ecosystem signal",
+   "Predicting category collapse from individual repo rotation"
+  ]
+ },
+ {
+  "id": "death-timeline-multi-timepoint-consistency",
+  "request": "When recording a competitor's shutdown across multiple visits (first notice, mid-window confirmation, final-day verification), require that each time point's quoted banner text and timeline entries match the earliest record verbatim — consistency across 3+ time points (2026-10-11 notice page, 2026-10-24 last-day-prior record, 2026-10-31 final-day page) is the completeness evidence for a death timeline, and any wording drift must be recorded as a change, not silently normalized.",
+  "context": "Round-148 final-day verification: miaoduo.com shutdown notice timeline table (05-13 notice + registration/renewal closed, 07-31 service stopped with export available, 11-01 export channel closes and remaining data permanently deleted) matched the round-90/96/109 records verbatim at the fourth time point; the page body carried an independent restatement (complete export before 2026-11-01, data permanently cleared and unrecoverable afterwards).",
+  "passCriteria": [
+   "Timeline entries quoted verbatim and compared against at least two earlier round records",
+   "Fourth time point consistency stated explicitly (four-point endorsement)",
+   "Independent in-page restatement of the deadline noted as corroboration",
+   "Any wording drift between time points recorded as an event rather than normalized"
+  ],
+  "failConditions": [
+   "Paraphrasing the timeline instead of verbatim quotes",
+   "Claiming consistency without citing the earlier records being compared",
+   "Treating a single time point as sufficient completeness evidence"
+  ]
+ },
+ {
+  "id": "final-day-channel-liveness-verified",
+  "request": "When a shutdown's final day arrives and prior attempts were network-blocked (attempted-failed-partial), retry the scheduled verification and record channel liveness with real evidence: the export entry link still present on the frozen marketing page, the export path's actual redirect behavior (to a functional login with account requirement), and honestly mark what cannot be tested without credentials (the export action itself) instead of inferring it.",
+  "context": "Round-148: miaoduo.com homepage 立即导出 link live (→/export-files), /export-files 302-redirected to a functional login page (?referer=%2Fexport-files) with password and SSO entry points; the login-page banner carried a variant text (no new registrations) distinct from the homepage banner (export deadline reminder) — a last-day language split between existing users and newcomers.",
+  "passCriteria": [
+   "Final-day retry executed after network recovery, closing the earlier attempted-failed-partial loop",
+   "Export entry link and redirect target recorded from live navigation (not inference)",
+   "Login-required limitation stated explicitly with the untested action named",
+   "Banner language variants (existing-user reminder vs newcomer block) recorded as an observation"
+  ],
+  "failConditions": [
+   "Reporting the channel as closed or open without following the actual redirect",
+   "Claiming export functionality was verified without account credentials",
+   "Discarding the earlier blocked attempts instead of closing their loop"
+  ]
+ },
+ {
+  "id": "lifecycle-segment-boundary-two-readings",
+  "request": "When tracking an external signal's lifecycle (rising/peak/decay), never declare a segment boundary from a single reading — a boundary claim (peak reached, decay started, fallen out) requires at least two consecutive readings confirming the new state, and when a repo previously read as long-tail decay returns to a top seat, reclassify it as wave-like presence rather than forcing it into a single-peak model.",
+  "context": "Round-149 fifth trending read (24h+ interval): thinkrail fell out of the top 12 after a rising segment (3 readings), #1 peak reading and a three-reading peak plateau — a complete lifecycle closed across ~8 days including a major-vendor backing hypothesis that showed no lifespan extension; claude-mem previously read as long-tail returned to #1 (107,302 stars, +1,723/day), forcing the wave-like reclassification.",
+  "passCriteria": [
+   "Every segment boundary in the record cites the >=2 readings that confirm it",
+   "Complete lifecycle closed with first-seen/peak/fall-out dates and total presence duration",
+   "Vendor-backing hypothesis evaluated against the lifespan evidence (not assumed)",
+   "Long-tail reclassification to wave-like presence recorded with the return reading"
+  ],
+  "failConditions": [
+   "Declaring decay or peak from one reading",
+   "Forcing a returning repo into the previous single-peak model",
+   "Extending a lifecycle claim beyond the observed readings"
+  ]
+ },
+ {
+  "id": "freshness-stamp-receipt-anchored",
+  "request": "When an artifact wall displays a verification-freshness date (verifiedAt), anchor the claim to the reconciliation receipt run date: a stamp older than the latest receipt is a freeze-distortion precursor and fails reconciliation until re-verified or converted to the explicit placeholder; a stamp ahead of the receipt fails as forged freshness; an absent stamp is the honest placeholder and must not be penalized.",
+  "context": "Round-149: wall-reconcile gained a stamp phase — receiptDate becomes the only anchor for verifiedAt claims; the five stamped artifacts (2026-10-31) reconcile fresh, and the guard mechanizes the round-148 warning that dated rows would decay into frozen marketing if not rolled forward with receipts.",
+  "passCriteria": [
+   "Stale stamp produces needs_validation with the exact dates in the finding detail",
+   "Future-dated stamp fails as forged freshness rather than passing",
+   "Missing stamp stays a confirmed honest placeholder (no fabricated date, no penalty)",
+   "The stamp phase runs inside the same receipt pass as the six-dim reconciliation"
+  ],
+  "failConditions": [
+   "Letting a dated row persist unchanged across receipt runs",
+   "Rendering a date not backed by a same-day receipt",
+   "Treating the placeholder as a verification claim"
+  ]
  }
 ]

@@ -177,7 +177,7 @@ npm run prompt:build:lean  # 重建精简导出（契约/动效/验收/品味四
 **每次改动后（语义层，2 分钟）**
 
 - [ ] 改动的环节仍在本报告第二节映射表内，或映射表已同步
-- [ ] SKILL.md 未超 600 行瘦身边线；超线时把稳定细节下沉 references/，正文只留路由与触发条件（kit.test 有机械兜底）
+- [ ] SKILL.md 未超 600 行瘦身边线（**2026-10-29 现状：599/600，贴线**——下一增入即破限，增改前优先把稳定细节下沉 references/）（kit.test 有机械兜底）
 - [ ] 三个设计品味技能（uak-design-system/uak-visual-critique/uak-design-thinking）+ jiejoe-design 按 tool-routing 互斥触发表路由，单次最多跑一个（2026-09-30 baoyu-design 移除；Emil 三技能合并为 uak-design-thinking；impeccable 改名 uak-visual-critique）
 - [ ] 新停门事项已登记 `docs/gates.md`，已裁决事项已回填（不删除行）
 - [ ] 验收记录含确认门痕迹：方向稿门/素材选择门/成品验收门至少列出通过情况
@@ -200,9 +200,9 @@ npm run prompt:build:lean  # 重建精简导出（契约/动效/验收/品味四
 
 | 指标 | 当前值 | 达标线 |
 | --- | --- | --- |
-| 评测场景数 | 198（doc-drift 测试锁口径，quality-monitor 本行已入守卫；2026-10-21 墙缩略图与审计品类两条（wall-thumbnails-build-time-snapshots/audit-skill-category-signal），画布场景累计 +125） | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 | | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 |
+| 评测场景数 | 310（doc-drift 测试锁口径，quality-monitor 本行已入守卫；95-121 轮各两条（121 轮=suppression-audit-trail-reason-and-retention/partial-coverage-no-laundering-cross-validated），画布场景累计 +191；148 轮关窗终验两条 death-timeline-multi-timepoint-consistency/final-day-channel-liveness-verified；149 轮保鲜守卫两条 lifecycle-segment-boundary-two-readings/freshness-stamp-receipt-anchored） | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 | | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 |
 | verify 错误数 | 0 | 0 |
-| 测试通过数 | 122/122（doc-drift 守护：与 tests/*.test.mjs 静态 test() 计数一致，加测试须同笔更新本行；2026-10-08 uak-init +8 后由 114 更新）| 全过 |
+| 测试通过数 | 137/137（doc-drift 守护：与 tests/*.test.mjs 静态 test() 计数一致，加测试须同笔更新本行；2026-10-25 增量 68 a11y 负自测 +1 后由 123 更新，2026-10-28 增量 88 表单假提交检测夹具 +4 后由 123 更新至 127，2026-10-31 增量 148 产物墙时效戳夹具 +3 后由 130 更新至 133、增量 149 保鲜守卫夹具 +4 后由 133 更新至 137；全量含 showcase/tests 9 项=146，README/identity 口径） | 全过 |
 | 已装 skill 锁定率 | 20/23 锁定；未锁 3 = ui-design-agent、remotion-video-agent、promotion-playbook（三者本 kit 自有，无需 pin）；上游第三方 20/20 全锁定（含 anatomy 2026-10-16 钉版；2026-09-30 本地化后口径 25→22，10-16 anatomy 入册 22→23） | 上游第三方 skill 100% 锁定 |
 | 素材库检查日期 | 灵感库 2026-09-21（案例样板批次 13 站 curl+浏览器实拍入册）/ 预清组件源表 2026-09-07 | 每次抽查后更新 |
 

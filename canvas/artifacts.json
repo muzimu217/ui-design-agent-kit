@@ -11,7 +11,7 @@
     "desktop": "Chrome headless 1280×2400 直拍通过（37 万字节非空白）",
     "mobile": "520px 直拍通过（Chrome headless Mac 最小窗宽下限；真实 390px 依赖 viewport meta+防御 CSS）",
     "keyboard": "playwright Tab 序列实测：11 项 tab 停留全可达（6 summary+3 条展开抽屉内 basis 链接+2 页脚互链；另 2 条 basis 链接在闭合抽屉内展开后可达，检测器计数 13——增量 21 复测口径）",
-    "contrast": "playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项）",
+    "contrast": "playwright computed-style WCAG 实测：84 项文本全过 4.5:1（低于标准 0 项）；axe-core 独立引擎对抗重测 0 违例（增量 67）",
     "reducedMotion": "过渡仅 border-color 且包 no-preference 媒体查询（静态检查通过）",
     "console": "playwright 实测 0 错误（修复 favicon 404：内联 data-URI）"
    },
@@ -45,7 +45,9 @@
    "version": 6,
    "changeSummary": "v1.0 首版链路页 → v1.1 防御 CSS+520px 实测 → v1.2 六维全实测+favicon 修复 → v1.3 页脚互链门径画布/工作台入口（键盘 9→11）→ v1.4 对比评分结构化（六维并排表+检视级别入墙）→ v1.5 产物墙条目 viewUrl 可点击（同目录相对链接，导出包内成立；借鉴 Wegic 自定义模板的'从观看到起点'）",
    "origin": "ai-draft+human-revision",
-   "originNote": "渲染器与版式由代理编写，经多轮人工验收意见修订（页脚互链/防御 CSS/比对视图）"
+   "originNote": "渲染器与版式由代理编写，经多轮人工验收意见修订（页脚互链/防御 CSS/比对视图）",
+   "verifiedAt": "2026-10-31",
+   "verifiedAtNote": "wall-reconcile 全过（contrast+keyboard 两维实测 10/10 confirmed，回执 output/wall-reconcile.json 可复现）"
   },
   {
    "id": "canvas-index-hub",
@@ -55,8 +57,8 @@
    "sixDim": {
     "desktop": "Chrome headless 1280 直拍通过（15.8 万字节非空白，增量 29 艺术画面复拍）",
     "mobile": "520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）",
-    "keyboard": "playwright Tab 序列实测：11 项 tab 停留全可达（3 卡片链接+1 链路行+4 过滤排序按钮+3 墙条目 summary——增量 28 枚举修正；2 条 viewUrl 在闭合折叠体内展开后可达，检测器合计 13）",
-    "contrast": "playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项，增量 29 复测——生成式背景为独立装饰层，文字在面板底色上）",
+    "keyboard": "playwright Tab 序列实测：46 项 tab 停留/53 项静态可聚焦（全量枚举：锚点目录 13 链接（含增量 79 references 索引区入目录）+两过滤栏 17 按钮+门径 10（6 抽屉 summary+4 证据链接）+产物墙 9+3 卡片链接+1 已确认态锚点；Tab 检测上限 96；增量 79 复测口径；对账器 wall-reconcile 常测）",
+    "contrast": "playwright computed-style WCAG 实测：200 项文本全过 4.5:1（低于标准 0 项，采样触 200 上限如实记 truncated；增量 29 复测——生成式背景为独立装饰层，文字在面板底色上；增量 67 axe-core 独立引擎对抗重测 0 违例并抓出 pending/紫文本真违例已修）",
     "reducedMotion": "生成式背景在 prefers-reduced-motion 下画一帧静态构图后停止（media query 监听切换即停帧）；静态检查通过",
     "console": "playwright 实测 0 错误（favicon data-URI 修复后）"
    },
@@ -90,7 +92,9 @@
    "version": 8,
    "changeSummary": "v1.0 三卡入口+门径 pills+产物墙 → … → v1.6 墙扩至三条（mini 看板入墙）+键盘组成枚举修正 → v1.7 艺术画面落地（生成式微艺术背景+降动效静态帧+产物墙空态插画与微文案——用户 10-19 方向裁定'更好的艺术画面'首个增量）",
    "origin": "ai-draft+human-revision",
-   "originNote": "入口页由代理编写，经用户门 A 方向确认与多轮增量修订（mission control/任务注册表/版本徽章）"
+   "originNote": "入口页由代理编写，经用户门 A 方向确认与多轮增量修订（mission control/任务注册表/版本徽章）",
+   "verifiedAt": "2026-10-31",
+   "verifiedAtNote": "wall-reconcile 全过（contrast+keyboard 两维实测 10/10 confirmed，回执 output/wall-reconcile.json 可复现）"
   },
   {
    "id": "mini-dashboard",
@@ -102,7 +106,7 @@
     "desktop": "Chrome headless 1280 直拍通过（9.3 万字节非空白）",
     "mobile": "520px Chrome headless 直拍通过（7.8 万字节；备注列 560px 下防御性折叠为四列，无横向裁切）",
     "keyboard": "playwright Tab 序列实测：0 项可聚焦（纯静态数据页无交互件——如实记 0/0，非缺失）",
-    "contrast": "playwright computed-style WCAG 实测：4 项抽样全过 4.5:1（低于标准 0 项，含 muted 表头/脚注/备注）",
+    "contrast": "playwright computed-style WCAG 实测：42 项文本全过 4.5:1（低于标准 0 项，含 muted 表头/脚注/备注；增量 67 axe-core 独立引擎对抗重测 0 违例）",
     "reducedMotion": "无过渡动画（静态检查通过）",
     "console": "playwright 实测 0 错误"
    },
@@ -137,7 +141,9 @@
    "changeSummary": "v1.0 首版：六阶段×门态×证据数快照（dark-dense-table-muted-text 语料的参考实现——密度来自行高与列节奏，muted 文本仍过 4.5:1）→ v1.1 motion-force 三段式入场（stagger 33ms/cubic-bezier(.2,0,0,1)/首屏一次，降动效全行立现）+ 门态上色语义化 + 微循环预览（stroke-loop.webm/gif 本地相对引用）",
    "previewLoop": "stroke-loop.webm",
    "origin": "ai-draft+human-revision",
-   "originNote": "生成器与版式由代理编写，数据为 state.json 快照（人工口径校对：证据数=留痕条数而非进度）"
+   "originNote": "生成器与版式由代理编写，数据为 state.json 快照（人工口径校对：证据数=留痕条数而非进度）",
+   "verifiedAt": "2026-10-31",
+   "verifiedAtNote": "wall-reconcile 全过（contrast+keyboard 两维实测 10/10 confirmed，回执 output/wall-reconcile.json 可复现）"
   },
   {
    "id": "product-site",
@@ -148,8 +154,8 @@
    "sixDim": {
     "desktop": "Chrome headless 1280 直拍通过；scrollWidth=1280 无横向溢出（17 宽度扫描 320→1920 全 clean，增量 55 实测）",
     "mobile": "320/360/375/390/414/480/520px 七档全无横向溢出（scrollWidth=clientWidth，增量 55 实测）；宽表在容器内横向滚动、内容不裁切；390px 依赖 viewport meta+防御 CSS",
-    "keyboard": "playwright Tab 序列实测：14 项可聚焦全可达（导航锚点 8+CTA 2+介绍片链接+页脚 3；alias chip 为非交互 span 不占焦点，增量 54 复测）",
-    "contrast": "playwright computed-style WCAG 实测：34 项文本全过 4.5:1（低于标准 0 项，增量 54 复测含视频区）",
+    "keyboard": "playwright Tab 序列实测：20 步焦点循环/14 项静态可聚焦（双尺子口径：差值 6=video 元素内部 shadow 控件焦点位（增量 77 取证实锤：Tab 20 步中 7 步停在 video 控件），如实呈报不抹平——增量 75 复测口径+77 根因注）",
+    "contrast": "playwright computed-style WCAG 实测：200 项文本全过 4.5:1（低于标准 0 项，采样触 200 上限如实记 truncated；增量 54 复测含视频区；增量 67 axe-core 独立引擎对抗重测 0 违例）",
     "reducedMotion": "描边循环动画在 prefers-reduced-motion 下停帧显示完整路径（dashoffset=0），静态检查通过",
     "console": "playwright 实测 0 错误"
    },
@@ -183,7 +189,52 @@
    "version": 3,
    "changeSummary": "v1.0 首版（展示/三步/六道门/能力/知识库/品味/条款，数字从工作台 JSON 计算）→ v2.0 单笔描边循环动画（reduced-motion 停帧）+ 入产物墙 → v2.1 知识库表场景化别名 chip（与工作台同 aria 契约）+ 修复 520px 横向溢出 115px（.step pre 最小内容宽+kb 表 min-content，reg-004）+ check 新增 aliasGuard/aliasCoverage/overflowGuard 三守卫 → v2.2 三张宽表包 .table-wrap 容器内滚（reg-005：360/390/414px 能力表 min-content 413px 撑破）；overflowGuard 2→17 宽度",
    "origin": "ai-draft+human-revision",
-   "originNote": "页面由代理编写；定位句式借鉴 Framer'alongside not instead'（知识卡判读）与 10-19 用户方向裁定"
+   "originNote": "页面由代理编写；定位句式借鉴 Framer'alongside not instead'（知识卡判读）与 10-19 用户方向裁定",
+   "verifiedAt": "2026-10-31",
+   "verifiedAtNote": "wall-reconcile 全过（contrast+keyboard 两维实测 10/10 confirmed，回执 output/wall-reconcile.json 可复现）"
+  },
+  {
+   "id": "canvas-workbench-live",
+   "round": "2026-10-26-02",
+   "title": "实时门径画布（工作流图壳 · 增量 76 验收覆盖缺口闭环入墙）",
+   "path": "scripts/workflow-diagram/cli.mjs → output/canvas-workbench.html（离线自包含，含内联产物）",
+   "viewUrl": "canvas-workbench.html",
+   "sixDim": {
+    "desktop": "Chrome headless 1280 直拍通过（11.3 万字节非空白，任务态渲染）",
+    "mobile": "520px Chrome headless 直拍通过（无横向裁切，17 宽度守卫 5 页全过）",
+    "keyboard": "playwright Tab 序列实测：27 步焦点循环/19 项静态可聚焦（双尺子口径：tabbed=循环回到 body 前的步数含 SVG 流程图节点可聚焦（增量 77 取证实锤：g 节点 30 次进 tab 序列=键盘可达性完整性，非异常）；focusableTotal=summary/a/button 静态计数——增量 76 首测口径+77 根因注）",
+    "contrast": "playwright computed-style WCAG 实测：179 项文本全过 4.5:1（低于标准 0 项；增量 76 首测 wf-chip 白字对 accent 仅 2.2:1 违例——四色 chip 统一改深字 var(--bg) 后修复，四底全 ≥5.6:1）",
+    "reducedMotion": "过渡动画 0.3s ease 且 prefers-reduced-motion 媒体查询降级（静态检查通过）",
+    "console": "playwright 实测 0 错误（增量 76 修复：无 icon 时 Chrome 自动请求 /favicon.ico 404 污染 console——data: 占位与兄弟页同款）"
+   },
+   "compare": {
+    "target": "bolt.new Bolt Agent 分档面板（Standard/Max + Speed/Intelligence/Token cost 自报矩阵）",
+    "evidence": "docs/competitive-insights/2026-10-25-bolt-recheck3/insight.md",
+    "verdict": "同为'能力状态一屏'信息架构：他们=厂商自报能力矩阵（无口径无回执），本产物=门态+实测回执的实时壳（六维数字全部机验）——能力面板与证据面板的物种分野实证",
+    "score": {
+     "rubric": "六维各 1 分：1=有本轮实测/实看证据，0=实测缺失，null=公开渠道不可观测（不计分母）；对标侧检视级别见 level，不虚记不可测维度",
+     "us": {
+      "desktop": 1,
+      "mobile": 1,
+      "keyboard": 1,
+      "contrast": 1,
+      "reducedMotion": 1,
+      "console": 1
+     },
+     "them": {
+      "desktop": 1,
+      "mobile": null,
+      "keyboard": null,
+      "contrast": null,
+      "reducedMotion": null,
+      "console": null
+     },
+     "level": "unverified-partial",
+     "themNote": "对标侧为公开营销页实看：仅桌面呈现可观测，其余维度无公开可验证证据，记 null 不虚记"
+    }
+   },
+   "verifiedAt": "2026-10-31",
+   "verifiedAtNote": "wall-reconcile 全过（contrast+keyboard 两维实测 10/10 confirmed，回执 output/wall-reconcile.json 可复现）"
   }
  ]
 }

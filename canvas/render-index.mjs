@@ -8,12 +8,22 @@
 
 import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 function esc(s) {
   return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+// 产物墙时效戳（增量 148）：妙多定格营销教训——无日期的"已验证"观感本身就是失真。
+// verifiedAt 只允许由对账回执背书（wall-reconcile 全过当日）；缺失时显式占位，
+// 未实测不虚标也不静默（五级证据口径：未测不计入分母）。
+export function verificationRow(a) {
+  if (a?.verifiedAt) {
+    return `<div class="row"><span class="k">验证时效</span><span class="v"><span class="badge" aria-label="最近全量对账回执日期 ${esc(a.verifiedAt)}">${esc(a.verifiedAt)}</span> wall-reconcile 回执全过（output/wall-reconcile.json，可复现）；构建≠验证</span></div>`;
+  }
+  return `<div class="row"><span class="k">验证时效</span><span class="v">—（未标注验证日期：五级证据纪律，未实测不虚标、不静默缺失）</span></div>`;
 }
 
 async function main() {
@@ -26,6 +36,69 @@ async function main() {
   try {
     thumbs = new Set((await readdir(path.join(ROOT, "output", "thumbs"))).filter((f) => f.endsWith(".png")));
   } catch { /* 缩略目录不存在时不注入 */ }
+
+  // 审计报告区（增量 62）：聚合器 output/audit-report.json 上界面——
+  // "持久化要使用"：机验回执不只落盘，还要可见。缺文件不渲染区块（回退非错误）。
+  let audit = null;
+  try {
+    audit = JSON.parse(await readFile(path.join(ROOT, "output", "audit-report.json"), "utf8"));
+  } catch { /* 未生成时不渲染 */ }
+  // 审计区按域过滤（增量 71）：findings 达 8 项后检索成本出现——域 tab 复用
+  // stageFilter 模式；对抗行不带 data-domain 不入过滤范围。
+  const auditDomains = [...new Set((audit?.findings ?? []).map((f) => f.domain))].sort();
+  const auditFilterBar = auditDomains.length > 1
+    ? `<div class="wall-filter" role="group" aria-label="审计发现按域过滤">
+        <button type="button" class="wf-btn is-on" data-audit-mode="all" aria-pressed="true" aria-label="过滤审计域：全部" onclick="auditFilter('all')">全部</button>
+        ${auditDomains.map((d) => `<button type="button" class="wf-btn" data-audit-mode="${esc(d)}" aria-pressed="false" aria-label="过滤审计域：${esc(d)}" onclick="auditFilter('${esc(d)}')">${esc(d)}</button>`).join("")}
+        <span class="snote" id="audit-mode">全部</span>
+      </div>
+      <p class="snote" id="audit-empty" hidden>该域无发现（过滤结果为空）</p>`
+    : "";
+  const auditSection = audit
+    ? `<h2 class="sec">审计报告（聚合机验 · <span class="badge" aria-label="聚合审计终态 ${esc(audit.run_status === "complete" ? "完整" : "未完整 + 确切原因已披露")}">${esc(audit.run_status)}</span> · ${audit.counts?.confirmed ?? 0}/${audit.counts?.total ?? 0} confirmed）</h2>
+       <p class="cap-intro">聚合多项机验为一份机器可读发现报告（计数以 findings 行为准，output/audit-report.json）；终态只有 complete 与 incomplete+确切原因 两种——adopted 自 cloudflare/security-audit-skill（学循环 89）。复核命令 <code>npm run audit:report</code>。</p>
+       ${auditFilterBar}
+       <div class="audit-rows">${(audit.findings ?? []).map((f) => `<div class="audit-row" data-domain="${esc(f.domain ?? "")}"><span class="badge" aria-label="发现 ${esc(f.id)} 判定 ${f.status === "confirmed" ? "已确认" : "待验证"}">${f.status === "confirmed" ? "✓" : "?"} ${esc(f.status)}</span><span class="audit-id">${esc(f.id)}</span><span class="audit-ev" title="${esc(String(f.evidence))}">${esc(String(f.evidence)).slice(0, 200)}</span></div>`).join("")}</div>
+       <p class="wall-legend">报告头：${esc(audit.head ?? "?")}${audit.workingTreeDirty ? " · 工作区有未提交改动（如实记录）" : " · 工作区干净"} · 生成于 ${esc(String(audit.generatedAt ?? "").slice(0, 19))}${audit.run_status === "incomplete" ? ` · 原因：${esc(audit.incomplete_reason ?? "")}` : ""}</p>`
+    : "";
+
+  // 对抗验证回执区（增量 69）：contrast/a11y 两台独立引擎仪器的回执上界面
+  // ——审计区机验回执之后，对抗家族的证据也要可见。本地仪器（不入 CI 路线，
+  // 3ced712 教训）：缺回执渲染"未运行"而非隐藏——未运行也是状态，藏起来
+  // 才是假话。纯静态文本不加焦点元素，键盘可达回执数字保持稳定。
+  const adversarialInstruments = [
+    { id: "adversarial-contrast", npm: "adversarial:contrast" },
+    { id: "adversarial-a11y", npm: "adversarial:a11y" },
+  ];
+  const adversarialRows = [];
+  for (const inst of adversarialInstruments) {
+    try {
+      const r = JSON.parse(await readFile(path.join(ROOT, "output", `${inst.id}.json`), "utf8"));
+      const detail = r.verdict ?? r.incomplete_reason ?? JSON.stringify(r.totals ?? {});
+      const st = r.run_status === "complete" ? "complete ✓" : `? ${r.run_status ?? "unknown"}`;
+      adversarialRows.push(`<div class="audit-row"><span class="badge" aria-label="对抗回执 ${esc(inst.id)} 终态 ${r.run_status === "complete" ? "完整" : "未完整+原因已披露"}">${esc(st)}</span><span class="audit-id">${esc(inst.id)}</span><span class="audit-ev" title="${esc(String(detail))}">${esc(String(detail)).slice(0, 200)}</span></div>`);
+    } catch {
+      adversarialRows.push(`<div class="audit-row"><span class="badge" aria-label="对抗回执 ${esc(inst.id)} 未运行">? 未运行</span><span class="audit-id">${esc(inst.id)}</span><span class="audit-ev">回执缺失——本地仪器未在本机执行（npm run ${esc(inst.npm)} 后重建画布）</span></div>`);
+    }
+  }
+  const adversarialSection = `<h2 class="sec">对抗验证回执（独立引擎证伪 · <span class="badge" aria-label="对抗仪器两台，本地运行">axe-core ×2</span>）</h2>
+     <p class="cap-intro">axe-core 独立引擎试图证伪自有断言（color-contrast 单规则 / WCAG A/AA 全规则，serious+critical 门）；负自测先于真实扫描（引擎静默即测试无效）。回执落 output/adversarial-*.json；本地仪器不入 CI 路线。</p>
+     <div class="audit-rows">${adversarialRows.join("")}</div>`;
+
+  // 断言对账回执区（增量 78）：wall-reconcile（增量 66）的 claims vs receipts
+  // 对账结果上界面——66 轮曾宣称"接入 audit-report"但从未落地（105 轮 CI
+  // 修正时如实更正），本轮补上真实的接线：读 output/wall-reconcile.json 渲染，
+  // 缺回执渲染"未运行"而非隐藏。本地仪器不入 CI 路线，与对抗回执同款语义。
+  let reconcile = null;
+  try {
+    reconcile = JSON.parse(await readFile(path.join(ROOT, "output", "wall-reconcile.json"), "utf8"));
+  } catch { /* 未运行时不渲染明细 */ }
+  const reconcileRows = reconcile
+    ? (reconcile.findings ?? []).map((c) => `<div class="audit-row"><span class="badge" aria-label="对账 ${esc(c.id)}.${esc(c.dim ?? "")} 判定 ${c.status === "confirmed" ? "已确认" : "待验证"}">${c.status === "confirmed" ? "✓" : "?"} ${esc(c.status)}</span><span class="audit-id">${esc(c.id)}.${esc(c.dim ?? "")}</span><span class="audit-ev" title="${esc(String(c.detail ?? ""))}">${esc(String(c.detail ?? "")).slice(0, 200)}</span></div>`).join("")
+    : `<div class="audit-row"><span class="badge" aria-label="断言对账未运行">? 未运行</span><span class="audit-id">wall-reconcile</span><span class="audit-ev">回执缺失——本地仪器未在本机执行（node scripts/wall-reconcile.mjs 后重建画布）</span></div>`;
+  const reconcileSection = `<h2 class="sec">断言对账回执（claims vs receipts · <span class="badge" aria-label="对账终态 ${reconcile ? esc(reconcile.run_status === "complete" ? "完整" : "未完整") : "未运行"}">${reconcile ? esc(reconcile.run_status ?? "?") : "未运行"}${reconcile?.counts ? ` · ${reconcile.counts?.confirmed ?? 0}/${reconcile.counts?.total ?? 0} confirmed` : ""}</span>）</h2>
+     <p class="cap-intro">产物墙六维散文断言逐条对账真实检查器回执（node scripts/wall-reconcile.mjs）：断言数字不在回执中→needs_validation+确切差异——修正=重测+如实枚举，不是改回执。回执落 output/wall-reconcile.json；本地仪器不入 CI 路线。</p>
+     <div class="audit-rows">${reconcileRows}</div>`;
 
   // 能力接入登记表：外部生成能力按契约登记（谁产出/边界/验收/证据），
   // adopted 才可用于交付；空缺（evaluating）如实展示为"未接入"而非隐藏。
@@ -139,9 +212,35 @@ async function main() {
        <p class="cap-intro">本仓产物的真实缺陷与漏计：失败记录的传播力不低于成功案例（59 轮判读）。修复后标 resolved 并写明提交，<strong>绝不删除</strong>——反例是证据的一部分。</p>
        <div class="reg-table">${regRows}</div>`
     : "";
+  // references 索引区（增量 79，学循环 107 claude-mem 立卡兑现·索引层）：
+  // 61 个知识文件按技能分包的静态目录（零焦点件——检索靠页面内查找，详情
+  // 走仓库）；JSON 层供脚本消费（output/references-index.json，构建期生成
+  // 且自证计数无漏）。缺索引渲染"未生成"而非隐藏。
+  let refIndex = null;
+  try {
+    refIndex = JSON.parse(await readFile(path.join(ROOT, "output", "references-index.json"), "utf8"));
+  } catch { /* 未生成时不渲染明细 */ }
+  let refSection = "";
+  if (refIndex) {
+    const bySkill = {};
+    for (const e of refIndex.entries ?? []) {
+      (bySkill[e.skill] = bySkill[e.skill] ?? []).push(e);
+    }
+    const skillLines = Object.entries(bySkill)
+      .sort((a, b) => b[1].length - a[1].length)
+      .map(([skill, list]) => `<div class="ref-line"><span class="ref-skill">${esc(skill)}（${list.length}）</span><span class="ref-files">${list.map((e) => esc(e.file.replace(".agents/skills/", "").replace(/^[^/]+\/references\//, ""))).join(" · ")}</span></div>`)
+      .join("");
+    refSection = `<h2 class="sec">references 索引（知识检索第一层 · ${refIndex.count} 文件）</h2>
+       <p class="cap-intro">先索引后详情（claude-mem 三层模式第一层，增量 79 立卡兑现）：全部技能 references 文件的构建期索引，页内查找（Ctrl/Cmd+F）定位、仓库打开详情；机读层 output/references-index.json 供脚本消费，构建期自证计数与枚举一致。</p>
+       <div class="ref-list">${skillLines}</div>`;
+  } else {
+    refSection = `<h2 class="sec">references 索引（知识检索第一层）</h2>
+       <p class="cap-intro">索引未生成——node scripts/gen-references-index.mjs 后重建画布（缺索引渲染提示而非隐藏）。</p>`;
+  }
+
   const stageEntries = Object.entries(state.stages ?? {});
   const gates = state.gates ?? {};
-  const gateColor = { passed: "#34d399", gated: "#f472b6", active: "#22d3ee", blocked: "#f87171", pending: "#6b7280" };
+  const gateColor = { passed: "#34d399", gated: "#f472b6", active: "#22d3ee", blocked: "#f87171", pending: "#9ca3af" };
 
   const gatePills = Object.entries(gates)
     .map(([id, st]) => `<span class="pill" style="border-color:${gateColor[st] ?? gateColor.pending}">${esc(id)} · ${esc(st)}</span>`)
@@ -258,6 +357,7 @@ async function main() {
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>${esc(a.path)}</code>${a.viewUrl ? ` <a class="art-open" href="${esc(a.viewUrl)}">打开产物 ↗</a>` : ` <span class="art-self">— 本页自指，不设自链</span>`}</span></div>
         <div class="row"><span class="k">六维</span><span class="v">${esc(Object.entries(a.sixDim ?? {}).map(([k, v]) => `${k}: ${v}`).join("；")).slice(0, 500)}</span></div>
+        ${verificationRow(a)}
         ${compareBlock(a)}
         <div class="row"><span class="k">状态</span><span class="v">${esc(a.status ?? "")}</span></div><div class="row"><span class="k">来源</span><span class="v">${a.origin === "ai-only" ? "AI 直出（未经人工修订）" : "AI 起草 + 人工修订"}${a.originNote ? ` — ${esc(a.originNote)}` : ""}</span></div>${a.changeSummary ? `<div class="row"><span class="k">变更</span><span class="v">${esc(a.changeSummary)}</span></div>` : ""}
       </div>
@@ -271,16 +371,37 @@ async function main() {
   const activeStages = stageEntries.filter(([, s]) => s.status === "active").map(([id]) => id);
   const gatedStages = stageEntries.filter(([, s]) => s.status === "gated").map(([id]) => id);
   const fullyVerified = artifacts.artifacts.filter((a) => sixKeys.filter((k) => /通过|实测|直拍|可达|全过/.test(String((a.sixDim ?? {})[k] ?? ""))).length === 6).length;
+  // 证据路径链接化（增量 74）："证据面板"最后一米——.sev 里的仓库相对路径
+  // 转可点链接（新窗口打开，不劫持工作台）。仅识别白名单前缀，其余文字保持
+  // 原文；链接色 #8ab4ff 对面板 #141420 实测 8.7:1（68 轮 UA 默认蓝教训：
+  // 未设色链接用 #0000EE 会真违例）。
+  function linkifyEvidence(text) {
+    const parts = String(text).split(/(docs\/[\w\-./]+|canvas\/[\w\-./]+|evals\/[\w\-./]+|scripts\/[\w\-./]+|output\/[\w\-./]+)/g);
+    return parts.map((part) =>
+      /^(docs|canvas|evals|scripts|output)\//.test(part)
+        ? `<a href="/${esc(part)}" target="_blank" rel="noopener">${esc(part)}</a>`
+        : esc(part)
+    ).join("");
+  }
+  // 门径 tab 化（增量 70，阶段 4 首候选）：阶段卡带 data-stage 供过滤；
+  // evidence 字段此前从未渲染（增量 52 死数据缺陷类）——本轮随 tab 化一并
+  // 浮出：阶段卡补证据行，"该阶段的依据是什么"点开可见。
   const stageCards = stageEntries
     .map(([id, s]) => {
       const color = gateColor[s.status] ?? gateColor.pending;
-      return `<div class="stage" style="--c:${color}">
-        <div class="sid">${esc(id)}</div>
-        <div class="sst" style="color:${color}">${esc(s.status)}</div>
+      return `<details class="stage" style="--c:${color}" data-stage="${esc(id)}"${s.status === "active" ? " open" : ""}>
+        <summary><span class="sid">${esc(id)}</span><span class="sst" style="color:${color}">${esc(s.status)}</span></summary>
         <div class="snote">${esc(s.note ?? "")}</div>
-      </div>`;
+        ${(s.evidence ?? "").trim() ? `<div class="sev">${linkifyEvidence(s.evidence)}</div>` : ""}
+      </details>`;
     })
     .join("\n");
+  const stageTabs = ["all", ...stageEntries.map(([id]) => id)];
+  const stageTabBar = `<div class="wall-filter" role="group" aria-label="阶段过滤">
+    ${stageTabs.map((id) => `<button type="button" class="wf-btn${id === "all" ? " is-on" : ""}" data-stage-mode="${id}" aria-pressed="${id === "all" ? "true" : "false"}" aria-label="过滤阶段：${id === "all" ? "全部" : esc(id)}" onclick="stageFilter('${id}')">${id === "all" ? "全部" : esc(id)}</button>`).join("")}
+    <span class="snote" id="stage-mode">全部</span>
+  </div>
+  <p class="snote" id="stage-empty" hidden>该阶段无卡片（过滤结果为空）</p>`;
 
   const html = `<!doctype html>
 <html lang="zh-CN" data-theme="dark">
@@ -304,9 +425,15 @@ async function main() {
   .pill { display:inline-block; border:1px solid var(--line); border-radius:99px; padding:2px 10px; font-size:12px; margin:2px 4px 2px 0; }
   .stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:22px; }
   .stage { background:var(--panel); border:1px solid var(--line); border-top:3px solid var(--c); border-radius:10px; padding:12px; }
+  .stage summary { cursor:pointer; display:flex; justify-content:space-between; align-items:baseline; gap:8px; list-style:none; }
+  .stage summary::-webkit-details-marker { display:none; }
+  .stage summary::after { content:"▸"; color:var(--dim); font-size:11px; transition:transform .15s ease; }
+  .stage[open] summary::after { transform:rotate(90deg); }
   .sid { font-weight:600; }
-  .sst { font-size:12px; margin:2px 0 6px; }
+  .sst { font-size:12px; }
   .snote { color:var(--dim); font-size:12px; }
+  .sev { color:var(--dim); font-size:11.5px; margin-top:6px; padding-top:6px; border-top:1px dashed var(--line); overflow-wrap:anywhere; }
+  .sev a { color:#8ab4ff; text-decoration:none; } /* 对面板 8.7:1；UA 默认蓝在深底真违例（68 轮教训） */
   h2.sec { font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--dim); margin:22px 0 10px; }
   details.art { background:var(--panel); border:1px solid var(--line); border-radius:10px; margin-bottom:10px; }
   // 图标/条目微动效 0.5s 三段式（知识卡 icon-motion-500ms）：badge hover 时 0.5s 内完成抬起-高亮-回稳，降动效直接高亮无位移。
@@ -324,14 +451,30 @@ async function main() {
   .chain-row:hover { border-color:var(--accent); }
   .chain-row .t { font-weight:600; flex:1; min-width:0; overflow-wrap:anywhere; }
   .chain-row .round, .chain-row .open { color:var(--dim); font-size:12px; flex:none; }
-  .wall-filter { display:flex; gap:8px; margin-bottom:10px; }
+  .wall-filter { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; } /* wrap 为类级修复：此前靠 shrink 硬压按钮，320px 曾溢出 4px（增量 70） */
   .wf-sep { color:var(--dim); font-size:12px; margin:0 4px; }
   .wf-btn { background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:3px 12px; font:inherit; font-size:12px; color:var(--dim); cursor:pointer; }
+  #stage-mode { flex-basis:100%; } /* 状态徽标独占一行：末行挤压曾在 320px 溢出 4px（增量 70 实测） */
+  .sec-toc { position:sticky; top:0; z-index:6; display:flex; flex-wrap:wrap; gap:2px 12px; padding:8px 14px; margin:14px -14px 4px; background:rgba(10,10,15,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  .sec-toc a { color:var(--dim); text-decoration:none; font-size:12px; white-space:nowrap; }
+  .sec-toc a:hover { color:var(--text); }
+  html { scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } } /* 平滑滚动随系统降级 */
   .wf-btn.is-on { border-color:var(--accent); color:#c4b5fd; }
   .mc { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
   .mc-col { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
   .mc-col h3 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); margin:0 0 10px; }
   .mc-row { display:flex; gap:10px; margin:6px 0; min-width:0; }
+  /* 审计报告区（增量 62）：每行=判定徽章+发现 id+证据摘要；徽章沿用 .badge 以共享 aria 守卫。 */
+  .audit-rows { display:grid; gap:6px; margin-bottom:10px; }
+  .audit-row { display:flex; gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 12px; min-width:0; }
+  .ref-line { display:flex; gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin-bottom:6px; min-width:0; }
+  .ref-skill { color:#a78bfa; font-size:12px; font-family:ui-monospace,monospace; flex:none; }
+  .ref-files { color:var(--dim); font-size:11.5px; overflow-wrap:anywhere; min-width:0; }
+  .audit-row .badge { flex:none; }
+  .audit-id { font-family:ui-monospace,monospace; font-size:12px; color:#a78bfa; min-width:0; overflow-wrap:anywhere; } /* 增量 78 类修复：对账行 id 含"产物.维度"长串，flex:none 曾在 320px 溢出 28px */
+  .audit-ev { color:var(--dim); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+  @media (max-width:640px) { .audit-ev { white-space:normal; } }
   .mc-k { color:var(--dim); min-width:76px; flex:none; font-size:12px; }
   .mc-v { flex:1; min-width:0; overflow-wrap:anywhere; font-size:13px; }
   @media (max-width: 640px) { .mc { grid-template-columns:1fr; } }
@@ -345,6 +488,8 @@ async function main() {
   .src-mixed { color:#a7f3d0; border-color:#1f4d3a; }
   .ver { flex:none; color:#c4b5fd; font-size:11px; font-weight:600; }
   .badge { flex:none; background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:1px 8px; font-size:11px; color:#a7f3d0; }
+  /* 产物墙时效戳（增量 148）：墙级"构建≠验证"声明与逐件验证时效行。 */
+  .wall-stamp { color:#8b90a3; font-size:12px; margin:2px 0 10px; }
   .body { padding:0 16px 14px; font-size:13px; }
   .row { display:flex; gap:10px; margin:6px 0; min-width:0; }
   .k { color:var(--dim); min-width:48px; flex:none; }
@@ -422,6 +567,7 @@ async function main() {
 <main>
   <h1>画布工作台 · 入口</h1>
   <div class="meta">${esc(state.task)} · ${esc(state.revision ?? "")} · 更新 ${esc(state.updatedOn ?? "")} · 离线自包含</div>
+  <nav id="sec-toc" class="sec-toc" aria-label="区块目录"></nav>
   <div class="grid">
     <a class="card" href="canvas-workbench.html"><h2>门径画布（实时门径）</h2><p>六阶段四泳道流水线：门状态/证据嵌入/搜索/缩放/回放——由 workflow-diagram 壳渲染</p></a>
     <a class="card" href="chain-canvas-workbench.html"><h2>需求解析链路</h2><p>原始口语 → 解析摘要 → 理解验证 → 六步决策抽屉——黑盒步骤自动标黄</p></a>
@@ -443,15 +589,21 @@ async function main() {
     </div>
   </div>
   ${taskSection}
-  <h2 class="sec">门径状态</h2>
+  <h2 class="sec">门径状态（阶段→证据面板 · tab 过滤）</h2>
   <div>${gatePills}</div>
+  ${stageTabBar}
   <div class="stages">${stageCards}</div>
   ${chainSection}
   ${tasteSection}
   ${capSection}
   ${kbSection}
+  ${refSection}
   ${regSection}
+  ${auditSection}
+  ${adversarialSection}
+  ${reconcileSection}
   <h2 class="sec">产物墙（KPI4 · ${artifacts.artifacts.length} 件 · <span id="wall-mode">全部</span>）</h2>
+  <p class="wall-stamp" aria-label="本墙构建时间，构建不等于验证：构建成功不等于产物视觉验收">本墙构建于 ${new Date().toISOString().slice(0, 10)} · 构建≠验证（构建成功不等于产物视觉验收，五级证据口径不变；逐件验证时效见各条"验证时效"行）</p>
   <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
     <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>
     <button type="button" class="wf-btn" data-mode="full" onclick="wallFilter('full')">仅全实测（6/6）</button>
@@ -474,6 +626,65 @@ async function main() {
   </div>
 <script>
 // 六维过滤：measured 徽章 < 6 的条目在 full 模式下隐藏（纯展示切换，无网络无构建逻辑）。
+// 状态持久化（增量 72，学循环 100 Onlook local-first 定位词的界面对应物）：
+// 用户的选择存 localStorage（留在用户机器上）；读写全部 try/catch 降级——
+// file:// 或隐私模式下存储不可用是环境事实，降级为会话内状态，不假装成功。
+const WS_KEY = 'uak-workbench-state';
+function wsSave(patch) {
+  try {
+    const cur = JSON.parse(localStorage.getItem(WS_KEY) ?? '{}');
+    localStorage.setItem(WS_KEY, JSON.stringify({ ...cur, ...patch }));
+  } catch { /* 存储不可用：降级 */ }
+}
+function wsRestore() {
+  try {
+    const st = JSON.parse(localStorage.getItem(WS_KEY) ?? '{}');
+    if (st.stage) stageFilter(st.stage);
+    if (st.audit) auditFilter(st.audit);
+    if (st.wall) wallFilter(st.wall);
+    if (st.sort) wallSort(st.sort);
+  } catch { /* 无存量或损坏：默认视图 */ }
+}
+
+// 门径 tab 过滤（增量 70）：点阶段只看该阶段卡；空态必须接显隐（reg-003 类）。
+function stageFilter(stage) {
+  let visible = 0;
+  document.querySelectorAll('.stage[data-stage]').forEach((el) => {
+    const hide = stage !== 'all' && el.dataset.stage !== stage;
+    el.style.display = hide ? 'none' : '';
+    if (!hide) visible += 1;
+  });
+  document.querySelectorAll('.wf-btn[data-stage-mode]').forEach((b) => {
+    const on = b.dataset.stageMode === stage;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  document.getElementById('stage-mode').textContent = stage === 'all' ? '全部' : stage;
+  wsSave({ stage });
+  const empty = document.getElementById('stage-empty');
+  if (empty) empty.hidden = visible > 0;
+}
+
+// 审计域过滤（增量 71）：点域只看该域 findings；空态显隐接线（reg-003 类）。
+function auditFilter(domain) {
+  let visible = 0;
+  document.querySelectorAll('.audit-row[data-domain]').forEach((el) => {
+    const hide = domain !== 'all' && el.dataset.domain !== domain;
+    el.style.display = hide ? 'none' : '';
+    if (!hide) visible += 1;
+  });
+  document.querySelectorAll('.wf-btn[data-audit-mode]').forEach((b) => {
+    const on = b.dataset.auditMode === domain;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  const mode = document.getElementById('audit-mode');
+  if (mode) mode.textContent = domain === 'all' ? '全部' : domain;
+  wsSave({ audit: domain });
+  const empty = document.getElementById('audit-empty');
+  if (empty) empty.hidden = visible > 0;
+}
+
 function wallFilter(mode) {
   const full = mode === 'full';
   let visible = 0;
@@ -486,6 +697,7 @@ function wallFilter(mode) {
   });
   document.querySelectorAll('.wf-btn[data-mode]').forEach((b) => b.classList.toggle('is-on', b.dataset.mode === mode));
   document.getElementById('wall-mode').textContent = full ? '仅全实测（6/6）' : '全部';
+  wsSave({ wall: mode });
   const empty = document.getElementById('wall-empty');
   if (empty) empty.hidden = visible > 0;
 }
@@ -503,7 +715,29 @@ function wallSort(by) {
   entries.sort((a, b) => by === 'verified' ? key(b) - key(a) : (key(a) < key(b) ? 1 : -1));
   entries.forEach((d) => wall.appendChild(d));
   document.querySelectorAll('.wf-btn[data-sort]').forEach((b) => b.classList.toggle('is-on', b.dataset.sort === by));
+  wsSave({ sort: by });
 }
+
+wsRestore();
+
+// 区块锚点目录（增量 75，学循环 103 翻车词系轮）：长证据页的导航——运行时
+// 从 h2.sec 生成锚点（区块增减自动跟随，无第二份清单可漂移）；sticky 吸顶
+// 栏 + reduced-motion 下平滑滚动自动降级（CSS media 接管）。
+const SEC_NAMES = { "审计报告": "sec-audit", "对抗验证回执": "sec-adversarial", "门径状态": "sec-gates", "任务管控": "sec-mission", "产物墙": "sec-wall", "反例记录": "sec-regressions", "能力接入登记": "sec-capabilities", "知识库": "sec-kb", "链路注册表": "sec-chains", "品味特质": "sec-taste" };
+(function buildToc() {
+  const nav = document.getElementById('sec-toc');
+  if (!nav) return;
+  document.querySelectorAll('h2.sec').forEach((h) => {
+    const name = (h.textContent || '').trim().split('（')[0].trim();
+    if (!name) return;
+    const id = SEC_NAMES[name] ?? ('sec-' + encodeURIComponent(name));
+    if (!h.id) h.id = id;
+    const a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = name;
+    nav.appendChild(a);
+  });
+})();
 // 生成式微艺术：极低密度漂移粒子（纯装饰，aria-hidden）。降动效时画一帧静态构图后停止，
 // 构图与文字对比度不随动画变化（粒子仅落在画布层，文字有自己的面板底色）。
 (function ambientArt() {
@@ -551,4 +785,8 @@ function wallSort(by) {
   console.log(`canvas index rendered: ${output} (${artifacts.artifacts.length} artifacts)`);
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+// 直调守卫（增量 148）：verificationRow 导出供测试导入；仅命令行直跑本文件时执行渲染。
+const invoked = process.argv[1] ? path.resolve(process.argv[1]) : null;
+if (invoked && invoked === path.resolve(fileURLToPath(import.meta.url))) {
+  main().catch((e) => { console.error(e); process.exit(1); });
+}

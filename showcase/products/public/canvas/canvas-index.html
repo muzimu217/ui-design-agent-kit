@@ -20,9 +20,15 @@
   .pill { display:inline-block; border:1px solid var(--line); border-radius:99px; padding:2px 10px; font-size:12px; margin:2px 4px 2px 0; }
   .stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:22px; }
   .stage { background:var(--panel); border:1px solid var(--line); border-top:3px solid var(--c); border-radius:10px; padding:12px; }
+  .stage summary { cursor:pointer; display:flex; justify-content:space-between; align-items:baseline; gap:8px; list-style:none; }
+  .stage summary::-webkit-details-marker { display:none; }
+  .stage summary::after { content:"▸"; color:var(--dim); font-size:11px; transition:transform .15s ease; }
+  .stage[open] summary::after { transform:rotate(90deg); }
   .sid { font-weight:600; }
-  .sst { font-size:12px; margin:2px 0 6px; }
+  .sst { font-size:12px; }
   .snote { color:var(--dim); font-size:12px; }
+  .sev { color:var(--dim); font-size:11.5px; margin-top:6px; padding-top:6px; border-top:1px dashed var(--line); overflow-wrap:anywhere; }
+  .sev a { color:#8ab4ff; text-decoration:none; } /* 对面板 8.7:1；UA 默认蓝在深底真违例（68 轮教训） */
   h2.sec { font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--dim); margin:22px 0 10px; }
   details.art { background:var(--panel); border:1px solid var(--line); border-radius:10px; margin-bottom:10px; }
   // 图标/条目微动效 0.5s 三段式（知识卡 icon-motion-500ms）：badge hover 时 0.5s 内完成抬起-高亮-回稳，降动效直接高亮无位移。
@@ -40,14 +46,30 @@
   .chain-row:hover { border-color:var(--accent); }
   .chain-row .t { font-weight:600; flex:1; min-width:0; overflow-wrap:anywhere; }
   .chain-row .round, .chain-row .open { color:var(--dim); font-size:12px; flex:none; }
-  .wall-filter { display:flex; gap:8px; margin-bottom:10px; }
+  .wall-filter { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; } /* wrap 为类级修复：此前靠 shrink 硬压按钮，320px 曾溢出 4px（增量 70） */
   .wf-sep { color:var(--dim); font-size:12px; margin:0 4px; }
   .wf-btn { background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:3px 12px; font:inherit; font-size:12px; color:var(--dim); cursor:pointer; }
+  #stage-mode { flex-basis:100%; } /* 状态徽标独占一行：末行挤压曾在 320px 溢出 4px（增量 70 实测） */
+  .sec-toc { position:sticky; top:0; z-index:6; display:flex; flex-wrap:wrap; gap:2px 12px; padding:8px 14px; margin:14px -14px 4px; background:rgba(10,10,15,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  .sec-toc a { color:var(--dim); text-decoration:none; font-size:12px; white-space:nowrap; }
+  .sec-toc a:hover { color:var(--text); }
+  html { scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } } /* 平滑滚动随系统降级 */
   .wf-btn.is-on { border-color:var(--accent); color:#c4b5fd; }
   .mc { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
   .mc-col { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
   .mc-col h3 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); margin:0 0 10px; }
   .mc-row { display:flex; gap:10px; margin:6px 0; min-width:0; }
+  /* 审计报告区（增量 62）：每行=判定徽章+发现 id+证据摘要；徽章沿用 .badge 以共享 aria 守卫。 */
+  .audit-rows { display:grid; gap:6px; margin-bottom:10px; }
+  .audit-row { display:flex; gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 12px; min-width:0; }
+  .ref-line { display:flex; gap:10px; align-items:baseline; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin-bottom:6px; min-width:0; }
+  .ref-skill { color:#a78bfa; font-size:12px; font-family:ui-monospace,monospace; flex:none; }
+  .ref-files { color:var(--dim); font-size:11.5px; overflow-wrap:anywhere; min-width:0; }
+  .audit-row .badge { flex:none; }
+  .audit-id { font-family:ui-monospace,monospace; font-size:12px; color:#a78bfa; min-width:0; overflow-wrap:anywhere; } /* 增量 78 类修复：对账行 id 含"产物.维度"长串，flex:none 曾在 320px 溢出 28px */
+  .audit-ev { color:var(--dim); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+  @media (max-width:640px) { .audit-ev { white-space:normal; } }
   .mc-k { color:var(--dim); min-width:76px; flex:none; font-size:12px; }
   .mc-v { flex:1; min-width:0; overflow-wrap:anywhere; font-size:13px; }
   @media (max-width: 640px) { .mc { grid-template-columns:1fr; } }
@@ -61,6 +83,8 @@
   .src-mixed { color:#a7f3d0; border-color:#1f4d3a; }
   .ver { flex:none; color:#c4b5fd; font-size:11px; font-weight:600; }
   .badge { flex:none; background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:1px 8px; font-size:11px; color:#a7f3d0; }
+  /* 产物墙时效戳（增量 148）：墙级"构建≠验证"声明与逐件验证时效行。 */
+  .wall-stamp { color:#8b90a3; font-size:12px; margin:2px 0 10px; }
   .body { padding:0 16px 14px; font-size:13px; }
   .row { display:flex; gap:10px; margin:6px 0; min-width:0; }
   .k { color:var(--dim); min-width:48px; flex:none; }
@@ -138,6 +162,7 @@
 <main>
   <h1>画布工作台 · 入口</h1>
   <div class="meta">工作流画布工作台（Canvas Workbench） · P-canvas-2 · 更新 2026-10-19 · 离线自包含</div>
+  <nav id="sec-toc" class="sec-toc" aria-label="区块目录"></nav>
   <div class="grid">
     <a class="card" href="canvas-workbench.html"><h2>门径画布（实时门径）</h2><p>六阶段四泳道流水线：门状态/证据嵌入/搜索/缩放/回放——由 workflow-diagram 壳渲染</p></a>
     <a class="card" href="chain-canvas-workbench.html"><h2>需求解析链路</h2><p>原始口语 → 解析摘要 → 理解验证 → 六步决策抽屉——黑盒步骤自动标黄</p></a>
@@ -153,7 +178,7 @@
     </div>
     <div class="mc-col">
       <h3>证据态（可复核什么）</h3>
-      <div class="mc-row"><span class="mc-k">全实测产物</span><span class="mc-v">4/4（6/6 六维）</span></div>
+      <div class="mc-row"><span class="mc-k">全实测产物</span><span class="mc-v">5/5（6/6 六维）</span></div>
       <div class="mc-row"><span class="mc-k">解析链路</span><span class="mc-v">1 条 · 已确认 1</span></div>
       <div class="mc-row"><span class="mc-k">验收命令</span><span class="mc-v"><code>npm run canvas:check</code></span></div>
     </div>
@@ -164,38 +189,43 @@
         <span class="task-exec">执行：contract/build</span>
         <span class="task-ev">证据：2/6 阶段通过</span>
       </div>
-  <h2 class="sec">门径状态</h2>
-  <div><span class="pill" style="border-color:#34d399">A · passed</span><span class="pill" style="border-color:#34d399">B · passed</span><span class="pill" style="border-color:#22d3ee">C · active</span><span class="pill" style="border-color:#6b7280">D · pending</span><span class="pill" style="border-color:#6b7280">E · pending</span><span class="pill" style="border-color:#6b7280">F · pending</span></div>
-  <div class="stages"><div class="stage" style="--c:#34d399">
-        <div class="sid">brief</div>
-        <div class="sst" style="color:#34d399">passed</div>
+  <h2 class="sec">门径状态（阶段→证据面板 · tab 过滤）</h2>
+  <div><span class="pill" style="border-color:#34d399">A · passed</span><span class="pill" style="border-color:#34d399">B · passed</span><span class="pill" style="border-color:#22d3ee">C · active</span><span class="pill" style="border-color:#9ca3af">D · pending</span><span class="pill" style="border-color:#9ca3af">E · pending</span><span class="pill" style="border-color:#9ca3af">F · pending</span></div>
+  <div class="wall-filter" role="group" aria-label="阶段过滤">
+    <button type="button" class="wf-btn is-on" data-stage-mode="all" aria-pressed="true" aria-label="过滤阶段：全部" onclick="stageFilter('all')">全部</button><button type="button" class="wf-btn" data-stage-mode="brief" aria-pressed="false" aria-label="过滤阶段：brief" onclick="stageFilter('brief')">brief</button><button type="button" class="wf-btn" data-stage-mode="reference" aria-pressed="false" aria-label="过滤阶段：reference" onclick="stageFilter('reference')">reference</button><button type="button" class="wf-btn" data-stage-mode="contract" aria-pressed="false" aria-label="过滤阶段：contract" onclick="stageFilter('contract')">contract</button><button type="button" class="wf-btn" data-stage-mode="build" aria-pressed="false" aria-label="过滤阶段：build" onclick="stageFilter('build')">build</button><button type="button" class="wf-btn" data-stage-mode="verify" aria-pressed="false" aria-label="过滤阶段：verify" onclick="stageFilter('verify')">verify</button><button type="button" class="wf-btn" data-stage-mode="deliver" aria-pressed="false" aria-label="过滤阶段：deliver" onclick="stageFilter('deliver')">deliver</button>
+    <span class="snote" id="stage-mode">全部</span>
+  </div>
+  <p class="snote" id="stage-empty" hidden>该阶段无卡片（过滤结果为空）</p>
+  <div class="stages"><details class="stage" style="--c:#34d399" data-stage="brief">
+        <summary><span class="sid">brief</span><span class="sst" style="color:#34d399">passed</span></summary>
         <div class="snote">门 A 方向已获用户裁定（2026-10-19）：工作台形态升级+艺术画面明示要求+能力地平线四序列；阶段 4 新增</div>
-      </div>
-<div class="stage" style="--c:#34d399">
-        <div class="sid">reference</div>
-        <div class="sst" style="color:#34d399">passed</div>
+        <div class="sev"><a href="/docs/canvas-workbench-plan.md" target="_blank" rel="noopener">docs/canvas-workbench-plan.md</a> + <a href="/docs/identity-and-direction.md" target="_blank" rel="noopener">docs/identity-and-direction.md</a>（工作台形态与能力地平线节）</div>
+      </details>
+<details class="stage" style="--c:#34d399" data-stage="reference">
+        <summary><span class="sid">reference</span><span class="sst" style="color:#34d399">passed</span></summary>
         <div class="snote">对标已集：Onlook 画布机制/bolt 设计系统专题/v0 Agentic+设计系统（学习循环 20-26 轮），第四层定位论证完成</div>
-      </div>
-<div class="stage" style="--c:#22d3ee">
-        <div class="sid">contract</div>
-        <div class="sst" style="color:#22d3ee">active</div>
+        <div class="sev"><a href="/docs/competitive-insights/2026-10-11-onlook/insight.md" target="_blank" rel="noopener">docs/competitive-insights/2026-10-11-onlook/insight.md</a></div>
+      </details>
+<details class="stage" style="--c:#22d3ee" data-stage="contract" open>
+        <summary><span class="sid">contract</span><span class="sst" style="color:#22d3ee">active</span></summary>
         <div class="snote">门 A 已通过：按 design-contract 定画布语义 token 与动效参数（阶段 4 艺术画面升级的契约层）</div>
-      </div>
-<div class="stage" style="--c:#22d3ee">
-        <div class="sid">build</div>
-        <div class="sst" style="color:#22d3ee">active</div>
+        
+      </details>
+<details class="stage" style="--c:#22d3ee" data-stage="build" open>
+        <summary><span class="sid">build</span><span class="sst" style="color:#22d3ee">active</span></summary>
         <div class="snote">增量 1：接入真实任务状态（本文件即画布工作台自身的第一份活数据——吃狗粮）</div>
-      </div>
-<div class="stage" style="--c:#6b7280">
-        <div class="sid">verify</div>
-        <div class="sst" style="color:#6b7280">pending</div>
+        <div class="sev"><a href="/scripts/workflow-diagram/" target="_blank" rel="noopener">scripts/workflow-diagram/</a>（复用既有画布壳：自包含 HTML/相机/证据嵌入/visual 验收）</div>
+      </details>
+<details class="stage" style="--c:#9ca3af" data-stage="verify">
+        <summary><span class="sid">verify</span><span class="sst" style="color:#9ca3af">pending</span></summary>
         <div class="snote">每增量过 cli visual 无头多视口回执 + 六维验收</div>
-      </div>
-<div class="stage" style="--c:#6b7280">
-        <div class="sid">deliver</div>
-        <div class="sst" style="color:#6b7280">pending</div>
+        
+      </details>
+<details class="stage" style="--c:#9ca3af" data-stage="deliver">
+        <summary><span class="sid">deliver</span><span class="sst" style="color:#9ca3af">pending</span></summary>
         <div class="snote">产物入画布产物墙，与对标产物六维并排（KPI4）</div>
-      </div></div>
+        
+      </details></div>
   <h2 class="sec">解析链路（1 条）</h2><a class="chain-row" href="chain-canvas-workbench.html">
         <span class="badge" aria-label="解析链路确认状态：用户已比对确认">✓ 已确认</span>
         <span class="t">工作流画布工作台</span>
@@ -332,7 +362,10 @@
         <span class="kb-title">动效的灵魂是曲线：三族缓动 + 特殊曲线的可枚举族谱<span class="kb-m" aria-label="可被脚本启发式检测">可测</span></span>
         <span class="kb-meta">B 站曲线主题 Top10 交叉 · 8.0 万播放 · 参数 5 条</span>
       </div></div>
-  <h2 class="sec">反例记录（只增不删 · 5 条 · 5 已修复）</h2>
+  <h2 class="sec">references 索引（知识检索第一层 · 61 文件）</h2>
+       <p class="cap-intro">先索引后详情（claude-mem 三层模式第一层，增量 79 立卡兑现）：全部技能 references 文件的构建期索引，页内查找（Ctrl/Cmd+F）定位、仓库打开详情；机读层 output/references-index.json 供脚本消费，构建期自证计数与枚举一致。</p>
+       <div class="ref-list"><div class="ref-line"><span class="ref-skill">ui-design-agent（25）</span><span class="ref-files">acceptance.md · copy-contract.md · dark-surface-standards.md · data-dense-surfaces.md · design-contract.md · detail-constants.md · detail-critique.md · gate-protocol.md · image-to-code-fidelity.md · inspiration-library.md · material-scouting.md · motion-contract.md · plan-execute.md · product-readme.md · prototype-handover.md · source-catalog.md · spatial-media.md · stitch-mcp.md · tool-routing.md · typography-standards.md · ui-designer-thinking.md · user-taste-profile.md · video-craft.md · web3d-hud-architecture.md · workflow-visualization.md</span></div><div class="ref-line"><span class="ref-skill">remotion-best-practices（18）</span><span class="ref-files">remotion-best-practices/remotion-maps/techniques/cesium/references/3d-data-sources.md · remotion-best-practices/remotion-maps/techniques/cesium/references/3d-flyover-architecture.md · remotion-best-practices/remotion-maps/techniques/cesium/references/3d-troubleshooting.md · remotion-best-practices/remotion-maps/techniques/mapbox/references/render-stability.md · remotion-best-practices/remotion-maps/techniques/maplibre/references/render-stability.md · remotion-best-practices/remotion-maps/techniques/maptiler/references/map-data-sources.md · remotion-best-practices/remotion-maps/techniques/maptiler/references/map-explainer-architecture.md · remotion-best-practices/remotion-maps/techniques/maptiler/references/map-geo-prep.md · remotion-best-practices/remotion-maps/techniques/maptiler/references/render-stability.md · remotion-best-practices/remotion-markup/remotion-maps/techniques/cesium/references/3d-data-sources.md · remotion-best-practices/remotion-markup/remotion-maps/techniques/cesium/references/3d-flyover-architecture.md · remotion-best-practices/remotion-markup/remotion-maps/techniques/cesium/references/3d-troubleshooting.md · remotion-best-practices/remotion-markup/remotion-maps/techniques/mapbox/references/render-stability.md · remotion-best-practices/remotion-markup/remotion-maps/techniques/maplibre/references/render-stability.md · remotion-best-practices/remotion-markup/remotion-maps/techniques/maptiler/references/map-data-sources.md · remotion-best-practices/remotion-markup/remotion-maps/techniques/maptiler/references/map-explainer-architecture.md · remotion-best-practices/remotion-markup/remotion-maps/techniques/maptiler/references/map-geo-prep.md · remotion-best-practices/remotion-markup/remotion-maps/techniques/maptiler/references/render-stability.md</span></div><div class="ref-line"><span class="ref-skill">remotion-markup（9）</span><span class="ref-files">remotion-markup/remotion-maps/techniques/cesium/references/3d-data-sources.md · remotion-markup/remotion-maps/techniques/cesium/references/3d-flyover-architecture.md · remotion-markup/remotion-maps/techniques/cesium/references/3d-troubleshooting.md · remotion-markup/remotion-maps/techniques/mapbox/references/render-stability.md · remotion-markup/remotion-maps/techniques/maplibre/references/render-stability.md · remotion-markup/remotion-maps/techniques/maptiler/references/map-data-sources.md · remotion-markup/remotion-maps/techniques/maptiler/references/map-explainer-architecture.md · remotion-markup/remotion-maps/techniques/maptiler/references/map-geo-prep.md · remotion-markup/remotion-maps/techniques/maptiler/references/render-stability.md</span></div><div class="ref-line"><span class="ref-skill">promotion-playbook（3）</span><span class="ref-files">anti-patterns.md · channel-playbook.md · readme-conversion.md</span></div><div class="ref-line"><span class="ref-skill">remotion-video-agent（2）</span><span class="ref-files">three-and-web.md · workflow.md</span></div><div class="ref-line"><span class="ref-skill">uak-design-system（2）</span><span class="ref-files">pro-rules.md · quick-reference.md</span></div><div class="ref-line"><span class="ref-skill">uak-design-thinking（2）</span><span class="ref-files">library-picks.md · motion-glossary.md</span></div></div>
+  <h2 class="sec">反例记录（只增不删 · 7 条 · 7 已修复）</h2>
        <p class="cap-intro">本仓产物的真实缺陷与漏计：失败记录的传播力不低于成功案例（59 轮判读）。修复后标 resolved 并写明提交，<strong>绝不删除</strong>——反例是证据的一部分。</p>
        <div class="reg-table"><div class="reg-row">
         <span class="reg-st" style="color:#34d399;border-color:#34d399" aria-label="反例状态：已修复">已修复</span>
@@ -358,8 +391,35 @@
         <span class="reg-st" style="color:#34d399;border-color:#34d399" aria-label="反例状态：已修复">已修复</span>
         <span class="reg-body"><strong>360/390/414px 横向溢出（能力表撑破）</strong><span class="reg-what">增量 54 修了 520px 的 .step 与 kb 表，但 overflowGuard 只测 520/1280 两个宽度，恰好跳过真实手机宽度。用户复核后发现 360px 溢出 77px、390px 47px、414px 23px——元凶是四列能力接入表（min-content 413px）。</span><span class="reg-lesson">教训：响应式断言必须扫真实设备宽度带（320/360/375/390/414/768…），不能只挑两档代表性宽度；&#39;我测过两个宽度&#39;不是&#39;响应式没问题&#39;</span></span>
         <span class="reg-meta">2026-10-21 · 增量 55</span>
+      </div>
+<div class="reg-row">
+        <span class="reg-st" style="color:#34d399;border-color:#34d399" aria-label="反例状态：已修复">已修复</span>
+        <span class="reg-body"><strong>对比度采样器双盲区：白名单+40 上限漏掉 10 个真违例</strong><span class="reg-what">自有对比度采样器按选择器白名单（h1/p/.st/…）取 ≤40 个节点：.sst/.audit-id 类从不在白名单，工作台第 12 个 .st 超出上限——增量 67 用 axe-core 独立引擎对抗重测，首跑抓到 10 个真违例（pending 灰 #6b7280 3.77:1 ×6、accent 紫 #7c3aed 作正文 3.2:1 ×4），而自有断言一直宣称&#39;全过&#39;。</span><span class="reg-lesson">教训：&#39;全过&#39;宣称的覆盖面必须等于被验面全集或如实标截断；自证要配独立引擎证伪（双引擎各盲区互补：axe 抓不到白名单外的自我口径盲区，自有采样器抓不到动画时序盲区）；修色只修文本色、装饰色（边框/渐变）不受 WCAG 文本对比度约束</span></span>
+        <span class="reg-meta">2026-10-24 · 增量 67</span>
+      </div>
+<div class="reg-row">
+        <span class="reg-st" style="color:#34d399;border-color:#34d399" aria-label="反例状态：已修复">已修复</span>
+        <span class="reg-body"><strong>分发在列的页面不在验收清单（覆盖缺口类）</strong><span class="reg-what">canvas-workbench.html 在 distribute-canvas 清单第一位、随 showcase 展示，却不在 canvas:check 默认清单——面向用户的页面零验收。增量 76 首测即抓三真缺陷：wf-chip 白字对 accent 2.2:1（四色 chip 全违反）、无 icon 触发 /favicon.ico 404 污染 console 门、未入产物墙。</span><span class="reg-lesson">教训：&#39;没检查过&#39;不等于&#39;没问题&#39;：分发动作有清单、验收动作也必须有同源清单；新页面入分发清单的同一笔提交必须同时入验收清单，否则就是未检先发的覆盖缺口</span></span>
+        <span class="reg-meta">2026-10-26 · 增量 76</span>
       </div></div>
-  <h2 class="sec">产物墙（KPI4 · 4 件 · <span id="wall-mode">全部</span>）</h2>
+  <h2 class="sec">审计报告（聚合机验 · <span class="badge" aria-label="聚合审计终态 完整">complete</span> · 8/8 confirmed）</h2>
+       <p class="cap-intro">聚合多项机验为一份机器可读发现报告（计数以 findings 行为准，output/audit-report.json）；终态只有 complete 与 incomplete+确切原因 两种——adopted 自 cloudflare/security-audit-skill（学循环 89）。复核命令 <code>npm run audit:report</code>。</p>
+       <div class="wall-filter" role="group" aria-label="审计发现按域过滤">
+        <button type="button" class="wf-btn is-on" data-audit-mode="all" aria-pressed="true" aria-label="过滤审计域：全部" onclick="auditFilter('all')">全部</button>
+        <button type="button" class="wf-btn" data-audit-mode="docs" aria-pressed="false" aria-label="过滤审计域：docs" onclick="auditFilter('docs')">docs</button><button type="button" class="wf-btn" data-audit-mode="evidence" aria-pressed="false" aria-label="过滤审计域：evidence" onclick="auditFilter('evidence')">evidence</button><button type="button" class="wf-btn" data-audit-mode="knowledge" aria-pressed="false" aria-label="过滤审计域：knowledge" onclick="auditFilter('knowledge')">knowledge</button><button type="button" class="wf-btn" data-audit-mode="registry" aria-pressed="false" aria-label="过滤审计域：registry" onclick="auditFilter('registry')">registry</button><button type="button" class="wf-btn" data-audit-mode="video" aria-pressed="false" aria-label="过滤审计域：video" onclick="auditFilter('video')">video</button>
+        <span class="snote" id="audit-mode">全部</span>
+      </div>
+      <p class="snote" id="audit-empty" hidden>该域无发现（过滤结果为空）</p>
+       <div class="audit-rows"><div class="audit-row" data-domain="knowledge"><span class="badge" aria-label="发现 kb-integrity 判定 已确认">✓ confirmed</span><span class="audit-id">kb-integrity</span><span class="audit-ev" title="docs/knowledge-base/index.json: 12 cards, layers={&quot;composition&quot;:4,&quot;motion&quot;:4,&quot;order&quot;:4}">docs/knowledge-base/index.json: 12 cards, layers={&quot;composition&quot;:4,&quot;motion&quot;:4,&quot;order&quot;:4}</span></div><div class="audit-row" data-domain="registry"><span class="badge" aria-label="发现 caps-integrity 判定 已确认">✓ confirmed</span><span class="audit-id">caps-integrity</span><span class="audit-ev" title="canvas/capabilities.json: 11 entries, statuses valid=true">canvas/capabilities.json: 11 entries, statuses valid=true</span></div><div class="audit-row" data-domain="evidence"><span class="badge" aria-label="发现 regressions-append-only 判定 已确认">✓ confirmed</span><span class="audit-id">regressions-append-only</span><span class="audit-ev" title="canvas/regressions.json: 7 entries, all carry id/date/lesson=true">canvas/regressions.json: 7 entries, all carry id/date/lesson=true</span></div><div class="audit-row" data-domain="video"><span class="badge" aria-label="发现 sfx-hero 判定 已确认">✓ confirmed</span><span class="audit-id">sfx-hero</span><span class="audit-ev" title="scripts/sfx-check.mjs: 36 items, issues=[]">scripts/sfx-check.mjs: 36 items, issues=[]</span></div><div class="audit-row" data-domain="video"><span class="badge" aria-label="发现 sfx-60 判定 已确认">✓ confirmed</span><span class="audit-id">sfx-60</span><span class="audit-ev" title="scripts/sfx-check.mjs: 18 items, issues=[]">scripts/sfx-check.mjs: 18 items, issues=[]</span></div><div class="audit-row" data-domain="video"><span class="badge" aria-label="发现 timeline-60 判定 已确认">✓ confirmed</span><span class="audit-id">timeline-60</span><span class="audit-ev" title="scripts/timeline-check.mjs: 10 items, issues=[]">scripts/timeline-check.mjs: 10 items, issues=[]</span></div><div class="audit-row" data-domain="evidence"><span class="badge" aria-label="发现 regressions-history 判定 已确认">✓ confirmed</span><span class="audit-id">regressions-history</span><span class="audit-ev" title="git 全历史逐版本 id 集合对比（独立于当前形态检查的证据路径）: 5 versions / 7 entries">git 全历史逐版本 id 集合对比（独立于当前形态检查的证据路径）: 5 versions / 7 entries</span></div><div class="audit-row" data-domain="docs"><span class="badge" aria-label="发现 submission-numbers 判定 已确认">✓ confirmed</span><span class="audit-id">submission-numbers</span><span class="audit-ev" title="数字对账通过：语料 310 / 知识卡 12 / 能力 11(4+6+1) / 产物 5 / 反例 7">数字对账通过：语料 310 / 知识卡 12 / 能力 11(4+6+1) / 产物 5 / 反例 7</span></div></div>
+       <p class="wall-legend">报告头：7c542cd · 工作区有未提交改动（如实记录） · 生成于 2026-10-31T16:06:33</p>
+  <h2 class="sec">对抗验证回执（独立引擎证伪 · <span class="badge" aria-label="对抗仪器两台，本地运行">axe-core ×2</span>）</h2>
+     <p class="cap-intro">axe-core 独立引擎试图证伪自有断言（color-contrast 单规则 / WCAG A/AA 全规则，serious+critical 门）；负自测先于真实扫描（引擎静默即测试无效）。回执落 output/adversarial-*.json；本地仪器不入 CI 路线。</p>
+     <div class="audit-rows"><div class="audit-row"><span class="badge" aria-label="对抗回执 adversarial-contrast 终态 完整">complete ✓</span><span class="audit-id">adversarial-contrast</span><span class="audit-ev" title="独立引擎证伪失败：axe 在 4 页扫过 500 个文本节点，0 个 color-contrast 违例（另有 35 个 axe 无法判定节点如实记录）——自有断言经受住对抗重测">独立引擎证伪失败：axe 在 4 页扫过 500 个文本节点，0 个 color-contrast 违例（另有 35 个 axe 无法判定节点如实记录）——自有断言经受住对抗重测</span></div><div class="audit-row"><span class="badge" aria-label="对抗回执 adversarial-a11y 终态 完整">complete ✓</span><span class="audit-id">adversarial-a11y</span><span class="audit-ev" title="独立引擎 WCAG A/AA 证伪失败：4 页 0 个 serious/critical 违例（0 条 moderate 以下提示如实记录，86 个 axe 无法判定节点）">独立引擎 WCAG A/AA 证伪失败：4 页 0 个 serious/critical 违例（0 条 moderate 以下提示如实记录，86 个 axe 无法判定节点）</span></div></div>
+  <h2 class="sec">断言对账回执（claims vs receipts · <span class="badge" aria-label="对账终态 完整">complete · 15/15 confirmed</span>）</h2>
+     <p class="cap-intro">产物墙六维散文断言逐条对账真实检查器回执（node scripts/wall-reconcile.mjs）：断言数字不在回执中→needs_validation+确切差异——修正=重测+如实枚举，不是改回执。回执落 output/wall-reconcile.json；本地仪器不入 CI 路线。</p>
+     <div class="audit-rows"><div class="audit-row"><span class="badge" aria-label="对账 chain-canvas-workbench.contrast 判定 已确认">✓ confirmed</span><span class="audit-id">chain-canvas-workbench.contrast</span><span class="audit-ev" title="断言含回执数 84">断言含回执数 84</span></div><div class="audit-row"><span class="badge" aria-label="对账 chain-canvas-workbench.keyboard 判定 已确认">✓ confirmed</span><span class="audit-id">chain-canvas-workbench.keyboard</span><span class="audit-ev" title="断言含回执数 11/13">断言含回执数 11/13</span></div><div class="audit-row"><span class="badge" aria-label="对账 canvas-index-hub.contrast 判定 已确认">✓ confirmed</span><span class="audit-id">canvas-index-hub.contrast</span><span class="audit-ev" title="断言含回执数 200">断言含回执数 200</span></div><div class="audit-row"><span class="badge" aria-label="对账 canvas-index-hub.keyboard 判定 已确认">✓ confirmed</span><span class="audit-id">canvas-index-hub.keyboard</span><span class="audit-ev" title="断言含回执数 46/53">断言含回执数 46/53</span></div><div class="audit-row"><span class="badge" aria-label="对账 mini-dashboard.contrast 判定 已确认">✓ confirmed</span><span class="audit-id">mini-dashboard.contrast</span><span class="audit-ev" title="断言含回执数 42">断言含回执数 42</span></div><div class="audit-row"><span class="badge" aria-label="对账 mini-dashboard.keyboard 判定 已确认">✓ confirmed</span><span class="audit-id">mini-dashboard.keyboard</span><span class="audit-ev" title="断言含回执数 0/0">断言含回执数 0/0</span></div><div class="audit-row"><span class="badge" aria-label="对账 product-site.contrast 判定 已确认">✓ confirmed</span><span class="audit-id">product-site.contrast</span><span class="audit-ev" title="断言含回执数 200">断言含回执数 200</span></div><div class="audit-row"><span class="badge" aria-label="对账 product-site.keyboard 判定 已确认">✓ confirmed</span><span class="audit-id">product-site.keyboard</span><span class="audit-ev" title="断言含回执数 20/14">断言含回执数 20/14</span></div><div class="audit-row"><span class="badge" aria-label="对账 canvas-workbench-live.contrast 判定 已确认">✓ confirmed</span><span class="audit-id">canvas-workbench-live.contrast</span><span class="audit-ev" title="断言含回执数 179">断言含回执数 179</span></div><div class="audit-row"><span class="badge" aria-label="对账 canvas-workbench-live.keyboard 判定 已确认">✓ confirmed</span><span class="audit-id">canvas-workbench-live.keyboard</span><span class="audit-ev" title="断言含回执数 27/19">断言含回执数 27/19</span></div><div class="audit-row"><span class="badge" aria-label="对账 chain-canvas-workbench.stamp 判定 已确认">✓ confirmed</span><span class="audit-id">chain-canvas-workbench.stamp</span><span class="audit-ev" title="时效戳 2026-10-31 = 回执运行日（保鲜）">时效戳 2026-10-31 = 回执运行日（保鲜）</span></div><div class="audit-row"><span class="badge" aria-label="对账 canvas-index-hub.stamp 判定 已确认">✓ confirmed</span><span class="audit-id">canvas-index-hub.stamp</span><span class="audit-ev" title="时效戳 2026-10-31 = 回执运行日（保鲜）">时效戳 2026-10-31 = 回执运行日（保鲜）</span></div><div class="audit-row"><span class="badge" aria-label="对账 mini-dashboard.stamp 判定 已确认">✓ confirmed</span><span class="audit-id">mini-dashboard.stamp</span><span class="audit-ev" title="时效戳 2026-10-31 = 回执运行日（保鲜）">时效戳 2026-10-31 = 回执运行日（保鲜）</span></div><div class="audit-row"><span class="badge" aria-label="对账 product-site.stamp 判定 已确认">✓ confirmed</span><span class="audit-id">product-site.stamp</span><span class="audit-ev" title="时效戳 2026-10-31 = 回执运行日（保鲜）">时效戳 2026-10-31 = 回执运行日（保鲜）</span></div><div class="audit-row"><span class="badge" aria-label="对账 canvas-workbench-live.stamp 判定 已确认">✓ confirmed</span><span class="audit-id">canvas-workbench-live.stamp</span><span class="audit-ev" title="时效戳 2026-10-31 = 回执运行日（保鲜）">时效戳 2026-10-31 = 回执运行日（保鲜）</span></div></div>
+  <h2 class="sec">产物墙（KPI4 · 5 件 · <span id="wall-mode">全部</span>）</h2>
+  <p class="wall-stamp" aria-label="本墙构建时间，构建不等于验证：构建成功不等于产物视觉验收">本墙构建于 2026-10-31 · 构建≠验证（构建成功不等于产物视觉验收，五级证据口径不变；逐件验证时效见各条"验证时效"行）</p>
   <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
     <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>
     <button type="button" class="wf-btn" data-mode="full" onclick="wallFilter('full')">仅全实测（6/6）</button>
@@ -368,10 +428,28 @@
     <button type="button" class="wf-btn" data-sort="verified" onclick="wallSort('verified')">按完成度</button>
   </div>
   <p class="wall-legend" id="wall-legend">徽章口径：n/6=六维实测数（桌面/移动/键盘/对比度/降动效/控制台各 1 分）；vN=版本序号；检视级别 unverified-partial=仅公开页面检视，未公开验证的维度记 — 不虚记。</p>
-  <details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">产品官网页（公开展示/使用指南/条款入口）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v3">v3</span><span class="round">2026-10-19-20</span><img class="art-thumb" src="thumbs/product-site.png" alt="产物缩略图：产品官网页（公开展示/使用指南/条款入口）（构建时快照，非验收依据）" loading="lazy" width="84" height="53"></summary>
+  <details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">实时门径画布（工作流图壳 · 增量 76 验收覆盖缺口闭环入墙）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v?">v?</span><span class="round">2026-10-26-02</span><img class="art-thumb" src="thumbs/canvas-workbench-live.png" alt="产物缩略图：实时门径画布（工作流图壳 · 增量 76 验收覆盖缺口闭环入墙）（构建时快照，非验收依据）" loading="lazy" width="84" height="53"></summary>
+      <div class="body">
+        <div class="row"><span class="k">产物</span><span class="v"><code>scripts/workflow-diagram/cli.mjs → output/canvas-workbench.html（离线自包含，含内联产物）</code> <a class="art-open" href="canvas-workbench.html">打开产物 ↗</a></span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（11.3 万字节非空白，任务态渲染）；mobile: 520px Chrome headless 直拍通过（无横向裁切，17 宽度守卫 5 页全过）；keyboard: playwright Tab 序列实测：27 步焦点循环/19 项静态可聚焦（双尺子口径：tabbed=循环回到 body 前的步数含 SVG 流程图节点可聚焦（增量 77 取证实锤：g 节点 30 次进 tab 序列=键盘可达性完整性，非异常）；focusableTotal=summary/a/button 静态计数——增量 76 首测口径+77 根因注）；contrast: playwright computed-style WCAG 实测：179 项文本全过 4.5:1（低于标准 0 项；增量 76 首测 wf-chip 白字对 accent 仅 2.2:1 违例——四色 chip 统一改深字 var(--bg) 后修复，四底全 ≥5.6:1）；reducedMotion: 过渡动画 0.3s ease 且 prefers-reduced-mo</span></div>
+        <div class="row"><span class="k">验证时效</span><span class="v"><span class="badge" aria-label="最近全量对账回执日期 2026-10-31">2026-10-31</span> wall-reconcile 回执全过（output/wall-reconcile.json，可复现）；构建≠验证</span></div>
+        <div class="row"><span class="k">对比</span><span class="v">
+      <div class="cmp">
+        <div class="cmp-head"><span class="cmp-vs">vs bolt.new Bolt Agent 分档面板（Standard/Max + Speed/Intelligence/Token cost 自报矩阵）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level" aria-label="检视级别 unverified-partial：仅公开页面检视，未实测维度记 null">检视级别 unverified-partial</span></div>
+        <table class="cmp-table"><caption class="cmp-caption">六维并排评分：✓=有实测/实看证据，✗=实测缺失，—=不可观测不计分母</caption><thead><tr><th scope="col">维度</th><th scope="col">本产物</th><th scope="col">对标</th></tr></thead><tbody><tr><td>桌面</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-yes">✓</span></td></tr><tr><td>移动</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>键盘</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>对比度</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>降动效</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr><tr><td>控制台</td><td><span class="mk mk-yes">✓</span></td><td><span class="mk mk-na">—</span></td></tr></tbody></table>
+        <div class="cmp-note">对标侧为公开营销页实看：仅桌面呈现可观测，其余维度无公开可验证证据，记 null 不虚记</div>
+        <div class="cmp-note">同为&#39;能力状态一屏&#39;信息架构：他们=厂商自报能力矩阵（无口径无回执），本产物=门态+实测回执的实时壳（六维数字全部机验）——能力面板与证据面板的物种分野实证</div>
+        <div class="cmp-note">证据（仓内路径）：docs/competitive-insights/2026-10-25-bolt-recheck3/insight.md</div>
+      </div>
+    </span></div>
+        <div class="row"><span class="k">状态</span><span class="v"></span></div><div class="row"><span class="k">来源</span><span class="v">AI 起草 + 人工修订</span></div>
+      </div>
+    </details>
+<details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">产品官网页（公开展示/使用指南/条款入口）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v3">v3</span><span class="round">2026-10-19-20</span><img class="art-thumb" src="thumbs/product-site.png" alt="产物缩略图：产品官网页（公开展示/使用指南/条款入口）（构建时快照，非验收依据）" loading="lazy" width="84" height="53"></summary>
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-site.mjs + canvas/{artifacts,capabilities,taste-profile}.json → output/site.html（离线自包含）</code> <a class="art-open" href="site.html">打开产物 ↗</a></span></div>
-        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过；scrollWidth=1280 无横向溢出（17 宽度扫描 320→1920 全 clean，增量 55 实测）；mobile: 320/360/375/390/414/480/520px 七档全无横向溢出（scrollWidth=clientWidth，增量 55 实测）；宽表在容器内横向滚动、内容不裁切；390px 依赖 viewport meta+防御 CSS；keyboard: playwright Tab 序列实测：14 项可聚焦全可达（导航锚点 8+CTA 2+介绍片链接+页脚 3；alias chip 为非交互 span 不占焦点，增量 54 复测）；contrast: playwright computed-style WCAG 实测：34 项文本全过 4.5:1（低于标准 0 项，增量 54 复测含视频区）；reducedMotion: 描边循环动画在 prefers-reduced-motion 下停帧显示完整路径（dashoffset=0），静态检查通过；console: playwright</span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过；scrollWidth=1280 无横向溢出（17 宽度扫描 320→1920 全 clean，增量 55 实测）；mobile: 320/360/375/390/414/480/520px 七档全无横向溢出（scrollWidth=clientWidth，增量 55 实测）；宽表在容器内横向滚动、内容不裁切；390px 依赖 viewport meta+防御 CSS；keyboard: playwright Tab 序列实测：20 步焦点循环/14 项静态可聚焦（双尺子口径：差值 6=video 元素内部 shadow 控件焦点位（增量 77 取证实锤：Tab 20 步中 7 步停在 video 控件），如实呈报不抹平——增量 75 复测口径+77 根因注）；contrast: playwright computed-style WCAG 实测：200 项文本全过 4.5:1（低于标准 0 项，采样触 200 上限如实记 truncated；增量 54 复测含视频区；增量 67 axe-core 独立引擎对抗重测 </span></div>
+        <div class="row"><span class="k">验证时效</span><span class="v"><span class="badge" aria-label="最近全量对账回执日期 2026-10-31">2026-10-31</span> wall-reconcile 回执全过（output/wall-reconcile.json，可复现）；构建≠验证</span></div>
         <div class="row"><span class="k">对比</span><span class="v">
       <div class="cmp">
         <div class="cmp-head"><span class="cmp-vs">vs Framer 首屏（design agent 定位页）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level" aria-label="检视级别 unverified-partial：仅公开页面检视，未实测维度记 null">检视级别 unverified-partial</span></div>
@@ -387,7 +465,8 @@
 <details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">画布流水线指标 mini 看板（产物墙首件 mini 产物）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v2">v2</span><span class="round">2026-10-19-00</span><img class="art-thumb" src="thumbs/mini-dashboard.png" alt="产物缩略图：画布流水线指标 mini 看板（产物墙首件 mini 产物）（构建时快照，非验收依据）" loading="lazy" width="84" height="53"></summary>
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-mini-dashboard.mjs → output/mini-dashboard.html（离线自包含）</code> <a class="art-open" href="mini-dashboard.html">打开产物 ↗</a></span></div>
-        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（9.3 万字节非空白）；mobile: 520px Chrome headless 直拍通过（7.8 万字节；备注列 560px 下防御性折叠为四列，无横向裁切）；keyboard: playwright Tab 序列实测：0 项可聚焦（纯静态数据页无交互件——如实记 0/0，非缺失）；contrast: playwright computed-style WCAG 实测：4 项抽样全过 4.5:1（低于标准 0 项，含 muted 表头/脚注/备注）；reducedMotion: 无过渡动画（静态检查通过）；console: playwright 实测 0 错误</span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（9.3 万字节非空白）；mobile: 520px Chrome headless 直拍通过（7.8 万字节；备注列 560px 下防御性折叠为四列，无横向裁切）；keyboard: playwright Tab 序列实测：0 项可聚焦（纯静态数据页无交互件——如实记 0/0，非缺失）；contrast: playwright computed-style WCAG 实测：42 项文本全过 4.5:1（低于标准 0 项，含 muted 表头/脚注/备注；增量 67 axe-core 独立引擎对抗重测 0 违例）；reducedMotion: 无过渡动画（静态检查通过）；console: playwright 实测 0 错误</span></div>
+        <div class="row"><span class="k">验证时效</span><span class="v"><span class="badge" aria-label="最近全量对账回执日期 2026-10-31">2026-10-31</span> wall-reconcile 回执全过（output/wall-reconcile.json，可复现）；构建≠验证</span></div>
         <div class="row"><span class="k">对比</span><span class="v">
       <div class="cmp">
         <div class="cmp-head"><span class="cmp-vs">vs Pixso 八阶段流水线 tabs（产品规划→需求梳理→原型图→UI设计→设计系统→交互演示→交付→文件管理）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level" aria-label="检视级别 unverified-partial：仅公开页面检视，未实测维度记 null">检视级别 unverified-partial</span></div>
@@ -403,7 +482,8 @@
 <details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">画布工作台入口页（门径+链路+产物墙三合一）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v8">v8</span><span class="round">2026-10-13-08</span><img class="art-thumb" src="thumbs/canvas-index-hub.png" alt="产物缩略图：画布工作台入口页（门径+链路+产物墙三合一）（构建时快照，非验收依据）" loading="lazy" width="84" height="53"></summary>
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-index.mjs + canvas/artifacts.json + canvas-workbench.state.json → output/canvas-index.html（离线自包含）</code> <span class="art-self">— 本页自指，不设自链</span></span></div>
-        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（15.8 万字节非空白，增量 29 艺术画面复拍）；mobile: 520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）；keyboard: playwright Tab 序列实测：11 项 tab 停留全可达（3 卡片链接+1 链路行+4 过滤排序按钮+3 墙条目 summary——增量 28 枚举修正；2 条 viewUrl 在闭合折叠体内展开后可达，检测器合计 13）；contrast: playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项，增量 29 复测——生成式背景为独立装饰层，文字在面板底色上）；reducedMotion: 生成式背景在 prefers-reduced-motion 下画一帧静态构图后停止（media query 监听切换即停帧）；静态检查通过；console: playwri</span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280 直拍通过（15.8 万字节非空白，增量 29 艺术画面复拍）；mobile: 520px Chrome headless 直拍通过（auto-fit 网格竖排、pills 换行、无裁切）；390px 依赖 viewport meta+防御 CSS（同 chain 页工具下限说明）；keyboard: playwright Tab 序列实测：46 项 tab 停留/53 项静态可聚焦（全量枚举：锚点目录 13 链接（含增量 79 references 索引区入目录）+两过滤栏 17 按钮+门径 10（6 抽屉 summary+4 证据链接）+产物墙 9+3 卡片链接+1 已确认态锚点；Tab 检测上限 96；增量 79 复测口径；对账器 wall-reconcile 常测）；contrast: playwright computed-style WCAG 实测：200 项文本全过 4.5:1（低于标准 0 项，采样触 200 上限如实记 truncated；增量 29 复测——生成式背景为独立装饰层，文字在面板底色上；增量 67</span></div>
+        <div class="row"><span class="k">验证时效</span><span class="v"><span class="badge" aria-label="最近全量对账回执日期 2026-10-31">2026-10-31</span> wall-reconcile 回执全过（output/wall-reconcile.json，可复现）；构建≠验证</span></div>
         <div class="row"><span class="k">对比</span><span class="v">
       <div class="cmp">
         <div class="cmp-head"><span class="cmp-vs">vs Figma Make 首屏（prompt 框+示例 pill 模式）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level" aria-label="检视级别 unverified-partial：仅公开页面检视，未实测维度记 null">检视级别 unverified-partial</span></div>
@@ -419,7 +499,8 @@
 <details class="art"><summary><span class="badge" aria-label="六维完成度 6/6（桌面/移动/键盘/对比度/降动效/控制台各 1 分）">6/6</span><span class="t">需求解析链路页（chain 渲染器首个产物）</span><span class="src src-mixed" aria-label="来源：AI 起草加人工修订">AI+人工</span><span class="ver" aria-label="版本 v6">v6</span><span class="round">2026-10-13-00</span><img class="art-thumb" src="thumbs/chain-canvas-workbench.png" alt="产物缩略图：需求解析链路页（chain 渲染器首个产物）（构建时快照，非验收依据）" loading="lazy" width="84" height="53"></summary>
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>canvas/render-chain.mjs + canvas/chain-canvas-workbench.json → output/chain-canvas-workbench.html（离线自包含）</code> <a class="art-open" href="chain-canvas-workbench.html">打开产物 ↗</a></span></div>
-        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280×2400 直拍通过（37 万字节非空白）；mobile: 520px 直拍通过（Chrome headless Mac 最小窗宽下限；真实 390px 依赖 viewport meta+防御 CSS）；keyboard: playwright Tab 序列实测：11 项 tab 停留全可达（6 summary+3 条展开抽屉内 basis 链接+2 页脚互链；另 2 条 basis 链接在闭合抽屉内展开后可达，检测器计数 13——增量 21 复测口径）；contrast: playwright computed-style WCAG 实测：40 项文本全过 4.5:1（低于标准 0 项）；reducedMotion: 过渡仅 border-color 且包 no-preference 媒体查询（静态检查通过）；console: playwright 实测 0 错误（修复 favicon 404：内联 data-URI）</span></div>
+        <div class="row"><span class="k">六维</span><span class="v">desktop: Chrome headless 1280×2400 直拍通过（37 万字节非空白）；mobile: 520px 直拍通过（Chrome headless Mac 最小窗宽下限；真实 390px 依赖 viewport meta+防御 CSS）；keyboard: playwright Tab 序列实测：11 项 tab 停留全可达（6 summary+3 条展开抽屉内 basis 链接+2 页脚互链；另 2 条 basis 链接在闭合抽屉内展开后可达，检测器计数 13——增量 21 复测口径）；contrast: playwright computed-style WCAG 实测：84 项文本全过 4.5:1（低于标准 0 项）；axe-core 独立引擎对抗重测 0 违例（增量 67）；reducedMotion: 过渡仅 border-color 且包 no-preference 媒体查询（静态检查通过）；console: playwright 实测 0 错误（修复 favicon 404：内联 data-URI）</span></div>
+        <div class="row"><span class="k">验证时效</span><span class="v"><span class="badge" aria-label="最近全量对账回执日期 2026-10-31">2026-10-31</span> wall-reconcile 回执全过（output/wall-reconcile.json，可复现）；构建≠验证</span></div>
         <div class="row"><span class="k">对比</span><span class="v">
       <div class="cmp">
         <div class="cmp-head"><span class="cmp-vs">vs v0 Design Systems 2.0 导入 stepper（Pauses for review → approve → save → validate 四步流程页）</span><span class="cmp-sum">本产物 6/6 · 对标 1/1 可观测</span><span class="cmp-level" aria-label="检视级别 unverified-partial：仅公开页面检视，未实测维度记 null">检视级别 unverified-partial</span></div>
@@ -445,6 +526,65 @@
   </div>
 <script>
 // 六维过滤：measured 徽章 < 6 的条目在 full 模式下隐藏（纯展示切换，无网络无构建逻辑）。
+// 状态持久化（增量 72，学循环 100 Onlook local-first 定位词的界面对应物）：
+// 用户的选择存 localStorage（留在用户机器上）；读写全部 try/catch 降级——
+// file:// 或隐私模式下存储不可用是环境事实，降级为会话内状态，不假装成功。
+const WS_KEY = 'uak-workbench-state';
+function wsSave(patch) {
+  try {
+    const cur = JSON.parse(localStorage.getItem(WS_KEY) ?? '{}');
+    localStorage.setItem(WS_KEY, JSON.stringify({ ...cur, ...patch }));
+  } catch { /* 存储不可用：降级 */ }
+}
+function wsRestore() {
+  try {
+    const st = JSON.parse(localStorage.getItem(WS_KEY) ?? '{}');
+    if (st.stage) stageFilter(st.stage);
+    if (st.audit) auditFilter(st.audit);
+    if (st.wall) wallFilter(st.wall);
+    if (st.sort) wallSort(st.sort);
+  } catch { /* 无存量或损坏：默认视图 */ }
+}
+
+// 门径 tab 过滤（增量 70）：点阶段只看该阶段卡；空态必须接显隐（reg-003 类）。
+function stageFilter(stage) {
+  let visible = 0;
+  document.querySelectorAll('.stage[data-stage]').forEach((el) => {
+    const hide = stage !== 'all' && el.dataset.stage !== stage;
+    el.style.display = hide ? 'none' : '';
+    if (!hide) visible += 1;
+  });
+  document.querySelectorAll('.wf-btn[data-stage-mode]').forEach((b) => {
+    const on = b.dataset.stageMode === stage;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  document.getElementById('stage-mode').textContent = stage === 'all' ? '全部' : stage;
+  wsSave({ stage });
+  const empty = document.getElementById('stage-empty');
+  if (empty) empty.hidden = visible > 0;
+}
+
+// 审计域过滤（增量 71）：点域只看该域 findings；空态显隐接线（reg-003 类）。
+function auditFilter(domain) {
+  let visible = 0;
+  document.querySelectorAll('.audit-row[data-domain]').forEach((el) => {
+    const hide = domain !== 'all' && el.dataset.domain !== domain;
+    el.style.display = hide ? 'none' : '';
+    if (!hide) visible += 1;
+  });
+  document.querySelectorAll('.wf-btn[data-audit-mode]').forEach((b) => {
+    const on = b.dataset.auditMode === domain;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  const mode = document.getElementById('audit-mode');
+  if (mode) mode.textContent = domain === 'all' ? '全部' : domain;
+  wsSave({ audit: domain });
+  const empty = document.getElementById('audit-empty');
+  if (empty) empty.hidden = visible > 0;
+}
+
 function wallFilter(mode) {
   const full = mode === 'full';
   let visible = 0;
@@ -457,6 +597,7 @@ function wallFilter(mode) {
   });
   document.querySelectorAll('.wf-btn[data-mode]').forEach((b) => b.classList.toggle('is-on', b.dataset.mode === mode));
   document.getElementById('wall-mode').textContent = full ? '仅全实测（6/6）' : '全部';
+  wsSave({ wall: mode });
   const empty = document.getElementById('wall-empty');
   if (empty) empty.hidden = visible > 0;
 }
@@ -474,7 +615,29 @@ function wallSort(by) {
   entries.sort((a, b) => by === 'verified' ? key(b) - key(a) : (key(a) < key(b) ? 1 : -1));
   entries.forEach((d) => wall.appendChild(d));
   document.querySelectorAll('.wf-btn[data-sort]').forEach((b) => b.classList.toggle('is-on', b.dataset.sort === by));
+  wsSave({ sort: by });
 }
+
+wsRestore();
+
+// 区块锚点目录（增量 75，学循环 103 翻车词系轮）：长证据页的导航——运行时
+// 从 h2.sec 生成锚点（区块增减自动跟随，无第二份清单可漂移）；sticky 吸顶
+// 栏 + reduced-motion 下平滑滚动自动降级（CSS media 接管）。
+const SEC_NAMES = { "审计报告": "sec-audit", "对抗验证回执": "sec-adversarial", "门径状态": "sec-gates", "任务管控": "sec-mission", "产物墙": "sec-wall", "反例记录": "sec-regressions", "能力接入登记": "sec-capabilities", "知识库": "sec-kb", "链路注册表": "sec-chains", "品味特质": "sec-taste" };
+(function buildToc() {
+  const nav = document.getElementById('sec-toc');
+  if (!nav) return;
+  document.querySelectorAll('h2.sec').forEach((h) => {
+    const name = (h.textContent || '').trim().split('（')[0].trim();
+    if (!name) return;
+    const id = SEC_NAMES[name] ?? ('sec-' + encodeURIComponent(name));
+    if (!h.id) h.id = id;
+    const a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = name;
+    nav.appendChild(a);
+  });
+})();
 // 生成式微艺术：极低密度漂移粒子（纯装饰，aria-hidden）。降动效时画一帧静态构图后停止，
 // 构图与文字对比度不随动画变化（粒子仅落在画布层，文字有自己的面板底色）。
 (function ambientArt() {

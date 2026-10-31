@@ -49,7 +49,7 @@ const gates = [
 const gateRows = gates
   .map(([id, name, desc]) => {
     const st = state.gates?.[id] ?? "pending";
-    const color = { passed: "#34d399", active: "#22d3ee", gated: "#f472b6", pending: "#6b7280" }[st] ?? "#6b7280";
+    const color = { passed: "#34d399", active: "#22d3ee", gated: "#f472b6", pending: "#9ca3af" }[st] ?? "#9ca3af";
     return `<li class="gate"><span class="gid" style="border-color:${color};color:${color}">${id}</span><span class="gname">${esc(name)}</span><span class="gdesc">${esc(desc)}</span></li>`;
   })
   .join("\n");

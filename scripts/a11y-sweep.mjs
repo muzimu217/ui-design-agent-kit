@@ -42,7 +42,12 @@ const fingerprint = (violation) =>
   `${violation.id}::${violation.nodes.join("|")}`;
 
 const run = async () => {
-  const browser = await chromium.launch();
+  // 系统 Chrome 优先（增量 86 修复）：bundled chromium 版本号随 playwright
+  // 升级漂移（缓存 1223/1248 vs 期望 1243），launch 直接抛错——与
+  // check-canvas-a11y 同款回退，channel 不在再落 bundled。
+  let browser;
+  try { browser = await chromium.launch({ channel: "chrome" }); }
+  catch { browser = await chromium.launch(); }
   const results = [];
   try {
     const context = await browser.newContext();

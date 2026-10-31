@@ -83,6 +83,67 @@ export function checkTagBalance(text, file) {
   return findings;
 }
 
+// 规则 E（增量 128，学循环 127 tells 工单落地）：.html 的表单假提交——
+// form 块内含成功文案（谢谢/感谢/已提交/success/thanks）但块内无任何提交
+// 机制（submit 按钮、action、onsubmit、fetch/axios/XHR）。对 hallmark
+// "a form that says thanks without sending anything" tell 的机械 lint 化。
+// 保守设计：只看 form 开闭标签之间的原文；无成功文案的表单（搜索框等）
+// 不报。advisory 基线策略与全文件规则相同。
+const SUCCESS_COPY = /(谢谢|感谢|已提交|已发送|提交成功|thanks|thank you|successfully (?:sent|submitted))/i;
+const SUBMIT_MECHANISM = /type=["']submit["']|onsubmit|action=|fetch\(|axios|XMLHttpRequest|FormData/;
+
+export function checkFormFalseSuccess(text, file) {
+  const findings = [];
+  const stripped = text
+    .replace(/<!--[\s\S]*?-->/g, (m) => " ".repeat(m.length))
+    .replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, (m) => (m.includes("<form") || m.includes("submit") ? m : " ".repeat(m.length)));
+  const formRe = /<form\b[^>]*>[\s\S]*?<\/form>/gi;
+  let match;
+  while ((match = formRe.exec(stripped)) !== null) {
+    const block = match[0];
+    if (!SUCCESS_COPY.test(block)) continue;
+    if (SUBMIT_MECHANISM.test(block)) continue;
+    const lineNo = stripped.slice(0, match.index).split(/\r?\n/).length;
+    findings.push({ file, line: lineNo, rule: "form-false-success", detail: "form 含成功文案但无提交机制（submit/action/onsubmit/fetch）" });
+  }
+  return findings;
+}
+
+// 规则 F（增量 137，学循环 127 tells 工单第二项落地）：.html 的空框架——
+// section/article 内有 heading 但无实质内容子元素（无 p/li/table/img/video/
+// canvas/iframe/文本 ≥ 20 字符）。对 hallmark "a page of empty frames" tell
+// 的机械 lint 化。保守设计：仅检查 section/article 直接子级，嵌入组件
+// （web component/框架渲染占位）不误报。advisory 基线策略同全文件规则。
+const CONTENT_TAGS = new Set(["p", "li", "table", "img", "video", "canvas", "iframe", "pre", "code", "blockquote", "ul", "ol", "dl", "button", "input", "textarea", "select", "svg"]);
+
+export function checkEmptyFrames(text, file) {
+  const findings = [];
+  const stripped = text
+    .replace(/<!--[^\S\r\n]*?[\s\S]*?-->/g, "")
+    .replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, "");
+  const sectionRe = /<(section|article)\b[^>]*>[\s\S]*?<\/(section|article)>/gi;
+  let match;
+  while ((match = sectionRe.exec(stripped)) !== null) {
+    const block = match[0];
+    const hasHeading = /<h[1-6]\b/.test(block);
+    if (!hasHeading) continue;
+    // 收集块内直接子元素标签
+    const childTags = new Set();
+    const childRe = /<([a-zA-Z][a-zA-Z0-9-]*)\b[^>]*>/g;
+    let cm;
+    const inner = block.replace(/^<[^>]*>/, "").replace(/<\/[^>]*>$/, "");
+    while ((cm = childRe.exec(inner)) !== null) childTags.add(cm[1].toLowerCase());
+    const hasContent = [...childTags].some((t) => CONTENT_TAGS.has(t));
+    const textLen = inner.replace(/<[^>]*>/g, "").trim().length;
+    if (!hasContent && textLen < 20) {
+      const lineNo = stripped.slice(0, match.index).split(/\r?\n/).length;
+      const tag = match[0].match(/^<(\w+)/)?.[1] ?? "section";
+      findings.push({ file, line: lineNo, rule: "empty-frames", detail: `<${tag}> 有 heading 但无实质内容子元素（空框架）` });
+    }
+  }
+  return findings;
+}
+
 export function scanText(text, file) {
   const findings = [];
   let inBlockComment = false;
@@ -113,6 +174,12 @@ export function scanText(text, file) {
   });
   if (file.endsWith(".html")) {
     for (const finding of checkTagBalance(text, file)) {
+      findings.push({ ...finding, key: `${file}:${finding.rule}:${finding.detail}` });
+    }
+    for (const finding of checkFormFalseSuccess(text, file)) {
+      findings.push({ ...finding, key: `${file}:${finding.rule}:${finding.detail}` });
+    }
+    for (const finding of checkEmptyFrames(text, file)) {
       findings.push({ ...finding, key: `${file}:${finding.rule}:${finding.detail}` });
     }
   }

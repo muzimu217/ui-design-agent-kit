@@ -18,7 +18,7 @@ const STATUS_COLOR = {
   active: "#22d3ee",
   gated: "#f472b6",
   blocked: "#f87171",
-  pending: "#6b7280",
+  pending: "#9ca3af",
 };
 
 function esc(s) {

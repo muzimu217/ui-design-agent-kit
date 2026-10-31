@@ -4992,5 +4992,37 @@
    "Continuing rapid expansion after quality degradation detected",
    "Confusing expansion speed with quality"
   ]
+ },
+ {
+  "id": "network-block-attempted-failed-partial",
+  "request": "When a scheduled external check is blocked by network-level failures (connection refused, SSL errors) rather than target-level failures (404, DNS), record it as attempted-failed-partial with the network evidence (error strings from both target and control), schedule the retry rather than declaring the target dead, and distinguish between network-level and target-level failures.",
+  "context": "Round-145: Motiff/miaoduo 关窗终验 attempt blocked by ERR_CONNECTION_CLOSED on both domains AND the control group (github.com), confirming network-level jitter rather than target-level unavailability.",
+  "passCriteria": [
+   "Both target and control group error evidence recorded",
+   "Network-level vs target-level failure distinction explicit",
+   "Retry scheduled rather than cancelled",
+   "No conclusion drawn about target availability from network evidence"
+  ],
+  "failConditions": [
+   "Declaring the target offline based on network errors",
+   "Skipping the control group check",
+   "Cancelling the scheduled终验 instead of deferring"
+  ]
+ },
+ {
+  "id": "control-group-network-diagnosis",
+  "request": "When diagnosing whether a connectivity failure is network-level or target-level, test a known-good control target in the same session — if the control also fails, the issue is network-level; if the control succeeds, the issue is target-level. This prevents misattributing network jitter to target unavailability.",
+  "context": "Round-145: github.com as control target also failed ERR_CONNECTION_CLOSED in the same session as the Motiff/miaoduo failures — confirming network-level jitter rather than target-level unavailability.",
+  "passCriteria": [
+   "Control target tested in the same session/network context",
+   "Control result compared with target result",
+   "Diagnosis stated with the evidence from both",
+   "Method noted as transferable from hypothesis testing to network diagnostics"
+  ],
+  "failConditions": [
+   "Testing only the target without a control",
+   "Concluding target-level failure from network-level evidence",
+   "Retrying indefinitely during a confirmed network-level outage"
+  ]
  }
 ]

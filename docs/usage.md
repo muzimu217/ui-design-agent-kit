@@ -179,6 +179,17 @@ The first run records existing hits as the baseline in
 (`--update-baseline` re-records deliberately). Advisory before a release, not
 a CI gate.
 
+## Offline review package (release-time)
+
+`npm run canvas:export` produces a self-contained offline review package
+(`output/canvas-export/` + `.zip`) containing all five canvas pages, their
+thumbnails, a COMPARE.md summary, and a manifest with SHA-256 checksums.
+The package is designed for evidence handoff — the recipient can open the
+HTML files directly (no server needed) and verify the six-dimension
+assertions against the actual pages. `--verify-only` checks the existing
+package against the manifest without re-exporting. Increment 84 landed
+this feature; 增量 146 was the first round to document it in usage.
+
 ## Visual regression (release-time, manual)
 
 `npm run visual:check` compares the 16 full-page screenshots in

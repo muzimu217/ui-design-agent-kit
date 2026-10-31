@@ -5088,5 +5088,37 @@
    "Claiming export functionality was verified without account credentials",
    "Discarding the earlier blocked attempts instead of closing their loop"
   ]
+ },
+ {
+  "id": "lifecycle-segment-boundary-two-readings",
+  "request": "When tracking an external signal's lifecycle (rising/peak/decay), never declare a segment boundary from a single reading — a boundary claim (peak reached, decay started, fallen out) requires at least two consecutive readings confirming the new state, and when a repo previously read as long-tail decay returns to a top seat, reclassify it as wave-like presence rather than forcing it into a single-peak model.",
+  "context": "Round-149 fifth trending read (24h+ interval): thinkrail fell out of the top 12 after a rising segment (3 readings), #1 peak reading and a three-reading peak plateau — a complete lifecycle closed across ~8 days including a major-vendor backing hypothesis that showed no lifespan extension; claude-mem previously read as long-tail returned to #1 (107,302 stars, +1,723/day), forcing the wave-like reclassification.",
+  "passCriteria": [
+   "Every segment boundary in the record cites the >=2 readings that confirm it",
+   "Complete lifecycle closed with first-seen/peak/fall-out dates and total presence duration",
+   "Vendor-backing hypothesis evaluated against the lifespan evidence (not assumed)",
+   "Long-tail reclassification to wave-like presence recorded with the return reading"
+  ],
+  "failConditions": [
+   "Declaring decay or peak from one reading",
+   "Forcing a returning repo into the previous single-peak model",
+   "Extending a lifecycle claim beyond the observed readings"
+  ]
+ },
+ {
+  "id": "freshness-stamp-receipt-anchored",
+  "request": "When an artifact wall displays a verification-freshness date (verifiedAt), anchor the claim to the reconciliation receipt run date: a stamp older than the latest receipt is a freeze-distortion precursor and fails reconciliation until re-verified or converted to the explicit placeholder; a stamp ahead of the receipt fails as forged freshness; an absent stamp is the honest placeholder and must not be penalized.",
+  "context": "Round-149: wall-reconcile gained a stamp phase — receiptDate becomes the only anchor for verifiedAt claims; the five stamped artifacts (2026-10-31) reconcile fresh, and the guard mechanizes the round-148 warning that dated rows would decay into frozen marketing if not rolled forward with receipts.",
+  "passCriteria": [
+   "Stale stamp produces needs_validation with the exact dates in the finding detail",
+   "Future-dated stamp fails as forged freshness rather than passing",
+   "Missing stamp stays a confirmed honest placeholder (no fabricated date, no penalty)",
+   "The stamp phase runs inside the same receipt pass as the six-dim reconciliation"
+  ],
+  "failConditions": [
+   "Letting a dated row persist unchanged across receipt runs",
+   "Rendering a date not backed by a same-day receipt",
+   "Treating the placeholder as a verification claim"
+  ]
  }
 ]

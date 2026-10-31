@@ -45,7 +45,9 @@
    "version": 6,
    "changeSummary": "v1.0 首版链路页 → v1.1 防御 CSS+520px 实测 → v1.2 六维全实测+favicon 修复 → v1.3 页脚互链门径画布/工作台入口（键盘 9→11）→ v1.4 对比评分结构化（六维并排表+检视级别入墙）→ v1.5 产物墙条目 viewUrl 可点击（同目录相对链接，导出包内成立；借鉴 Wegic 自定义模板的'从观看到起点'）",
    "origin": "ai-draft+human-revision",
-   "originNote": "渲染器与版式由代理编写，经多轮人工验收意见修订（页脚互链/防御 CSS/比对视图）"
+   "originNote": "渲染器与版式由代理编写，经多轮人工验收意见修订（页脚互链/防御 CSS/比对视图）",
+   "verifiedAt": "2026-10-31",
+   "verifiedAtNote": "wall-reconcile 全过（contrast+keyboard 两维实测 10/10 confirmed，回执 output/wall-reconcile.json 可复现）"
   },
   {
    "id": "canvas-index-hub",
@@ -90,7 +92,9 @@
    "version": 8,
    "changeSummary": "v1.0 三卡入口+门径 pills+产物墙 → … → v1.6 墙扩至三条（mini 看板入墙）+键盘组成枚举修正 → v1.7 艺术画面落地（生成式微艺术背景+降动效静态帧+产物墙空态插画与微文案——用户 10-19 方向裁定'更好的艺术画面'首个增量）",
    "origin": "ai-draft+human-revision",
-   "originNote": "入口页由代理编写，经用户门 A 方向确认与多轮增量修订（mission control/任务注册表/版本徽章）"
+   "originNote": "入口页由代理编写，经用户门 A 方向确认与多轮增量修订（mission control/任务注册表/版本徽章）",
+   "verifiedAt": "2026-10-31",
+   "verifiedAtNote": "wall-reconcile 全过（contrast+keyboard 两维实测 10/10 confirmed，回执 output/wall-reconcile.json 可复现）"
   },
   {
    "id": "mini-dashboard",
@@ -137,7 +141,9 @@
    "changeSummary": "v1.0 首版：六阶段×门态×证据数快照（dark-dense-table-muted-text 语料的参考实现——密度来自行高与列节奏，muted 文本仍过 4.5:1）→ v1.1 motion-force 三段式入场（stagger 33ms/cubic-bezier(.2,0,0,1)/首屏一次，降动效全行立现）+ 门态上色语义化 + 微循环预览（stroke-loop.webm/gif 本地相对引用）",
    "previewLoop": "stroke-loop.webm",
    "origin": "ai-draft+human-revision",
-   "originNote": "生成器与版式由代理编写，数据为 state.json 快照（人工口径校对：证据数=留痕条数而非进度）"
+   "originNote": "生成器与版式由代理编写，数据为 state.json 快照（人工口径校对：证据数=留痕条数而非进度）",
+   "verifiedAt": "2026-10-31",
+   "verifiedAtNote": "wall-reconcile 全过（contrast+keyboard 两维实测 10/10 confirmed，回执 output/wall-reconcile.json 可复现）"
   },
   {
    "id": "product-site",
@@ -183,7 +189,9 @@
    "version": 3,
    "changeSummary": "v1.0 首版（展示/三步/六道门/能力/知识库/品味/条款，数字从工作台 JSON 计算）→ v2.0 单笔描边循环动画（reduced-motion 停帧）+ 入产物墙 → v2.1 知识库表场景化别名 chip（与工作台同 aria 契约）+ 修复 520px 横向溢出 115px（.step pre 最小内容宽+kb 表 min-content，reg-004）+ check 新增 aliasGuard/aliasCoverage/overflowGuard 三守卫 → v2.2 三张宽表包 .table-wrap 容器内滚（reg-005：360/390/414px 能力表 min-content 413px 撑破）；overflowGuard 2→17 宽度",
    "origin": "ai-draft+human-revision",
-   "originNote": "页面由代理编写；定位句式借鉴 Framer'alongside not instead'（知识卡判读）与 10-19 用户方向裁定"
+   "originNote": "页面由代理编写；定位句式借鉴 Framer'alongside not instead'（知识卡判读）与 10-19 用户方向裁定",
+   "verifiedAt": "2026-10-31",
+   "verifiedAtNote": "wall-reconcile 全过（contrast+keyboard 两维实测 10/10 confirmed，回执 output/wall-reconcile.json 可复现）"
   },
   {
    "id": "canvas-workbench-live",
@@ -224,7 +232,9 @@
      "level": "unverified-partial",
      "themNote": "对标侧为公开营销页实看：仅桌面呈现可观测，其余维度无公开可验证证据，记 null 不虚记"
     }
-   }
+   },
+   "verifiedAt": "2026-10-31",
+   "verifiedAtNote": "wall-reconcile 全过（contrast+keyboard 两维实测 10/10 confirmed，回执 output/wall-reconcile.json 可复现）"
   }
  ]
 }

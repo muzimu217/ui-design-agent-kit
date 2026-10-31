@@ -8,12 +8,22 @@
 
 import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 function esc(s) {
   return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+// 产物墙时效戳（增量 148）：妙多定格营销教训——无日期的"已验证"观感本身就是失真。
+// verifiedAt 只允许由对账回执背书（wall-reconcile 全过当日）；缺失时显式占位，
+// 未实测不虚标也不静默（五级证据口径：未测不计入分母）。
+export function verificationRow(a) {
+  if (a?.verifiedAt) {
+    return `<div class="row"><span class="k">验证时效</span><span class="v"><span class="badge" aria-label="最近全量对账回执日期 ${esc(a.verifiedAt)}">${esc(a.verifiedAt)}</span> wall-reconcile 回执全过（output/wall-reconcile.json，可复现）；构建≠验证</span></div>`;
+  }
+  return `<div class="row"><span class="k">验证时效</span><span class="v">—（未标注验证日期：五级证据纪律，未实测不虚标、不静默缺失）</span></div>`;
 }
 
 async function main() {
@@ -347,6 +357,7 @@ async function main() {
       <div class="body">
         <div class="row"><span class="k">产物</span><span class="v"><code>${esc(a.path)}</code>${a.viewUrl ? ` <a class="art-open" href="${esc(a.viewUrl)}">打开产物 ↗</a>` : ` <span class="art-self">— 本页自指，不设自链</span>`}</span></div>
         <div class="row"><span class="k">六维</span><span class="v">${esc(Object.entries(a.sixDim ?? {}).map(([k, v]) => `${k}: ${v}`).join("；")).slice(0, 500)}</span></div>
+        ${verificationRow(a)}
         ${compareBlock(a)}
         <div class="row"><span class="k">状态</span><span class="v">${esc(a.status ?? "")}</span></div><div class="row"><span class="k">来源</span><span class="v">${a.origin === "ai-only" ? "AI 直出（未经人工修订）" : "AI 起草 + 人工修订"}${a.originNote ? ` — ${esc(a.originNote)}` : ""}</span></div>${a.changeSummary ? `<div class="row"><span class="k">变更</span><span class="v">${esc(a.changeSummary)}</span></div>` : ""}
       </div>
@@ -477,6 +488,8 @@ async function main() {
   .src-mixed { color:#a7f3d0; border-color:#1f4d3a; }
   .ver { flex:none; color:#c4b5fd; font-size:11px; font-weight:600; }
   .badge { flex:none; background:#0d0d15; border:1px solid var(--line); border-radius:99px; padding:1px 8px; font-size:11px; color:#a7f3d0; }
+  /* 产物墙时效戳（增量 148）：墙级"构建≠验证"声明与逐件验证时效行。 */
+  .wall-stamp { color:#8b90a3; font-size:12px; margin:2px 0 10px; }
   .body { padding:0 16px 14px; font-size:13px; }
   .row { display:flex; gap:10px; margin:6px 0; min-width:0; }
   .k { color:var(--dim); min-width:48px; flex:none; }
@@ -590,6 +603,7 @@ async function main() {
   ${adversarialSection}
   ${reconcileSection}
   <h2 class="sec">产物墙（KPI4 · ${artifacts.artifacts.length} 件 · <span id="wall-mode">全部</span>）</h2>
+  <p class="wall-stamp" aria-label="本墙构建时间，构建不等于验证：构建成功不等于产物视觉验收">本墙构建于 ${new Date().toISOString().slice(0, 10)} · 构建≠验证（构建成功不等于产物视觉验收，五级证据口径不变；逐件验证时效见各条"验证时效"行）</p>
   <div class="wall-filter" role="group" aria-label="产物墙过滤与排序">
     <button type="button" class="wf-btn is-on" data-mode="all" onclick="wallFilter('all')">全部</button>
     <button type="button" class="wf-btn" data-mode="full" onclick="wallFilter('full')">仅全实测（6/6）</button>
@@ -771,4 +785,8 @@ const SEC_NAMES = { "审计报告": "sec-audit", "对抗验证回执": "sec-adve
   console.log(`canvas index rendered: ${output} (${artifacts.artifacts.length} artifacts)`);
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+// 直调守卫（增量 148）：verificationRow 导出供测试导入；仅命令行直跑本文件时执行渲染。
+const invoked = process.argv[1] ? path.resolve(process.argv[1]) : null;
+if (invoked && invoked === path.resolve(fileURLToPath(import.meta.url))) {
+  main().catch((e) => { console.error(e); process.exit(1); });
+}

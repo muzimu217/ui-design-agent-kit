@@ -200,9 +200,9 @@ npm run prompt:build:lean  # 重建精简导出（契约/动效/验收/品味四
 
 | 指标 | 当前值 | 达标线 |
 | --- | --- | --- |
-| 评测场景数 | 306（doc-drift 测试锁口径，quality-monitor 本行已入守卫；95-121 轮各两条（121 轮=suppression-audit-trail-reason-and-retention/partial-coverage-no-laundering-cross-validated），画布场景累计 +191） | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 | | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 |
+| 评测场景数 | 308（doc-drift 测试锁口径，quality-monitor 本行已入守卫；95-121 轮各两条（121 轮=suppression-audit-trail-reason-and-retention/partial-coverage-no-laundering-cross-validated），画布场景累计 +191；148 轮关窗终验两条 death-timeline-multi-timepoint-consistency/final-day-channel-liveness-verified） | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 | | | | | | | | | | | ≥ 每环节 1 个，共 ≥ 9 |
 | verify 错误数 | 0 | 0 |
-| 测试通过数 | 130/130（doc-drift 守护：与 tests/*.test.mjs 静态 test() 计数一致，加测试须同笔更新本行；2026-10-25 增量 68 a11y 负自测 +1 后由 123 更新，2026-10-28 增量 88 表单假提交检测夹具 +4 后由 123 更新至 127；全量含 showcase/tests 9 项=139，README/identity 口径） | 全过 |
+| 测试通过数 | 133/133（doc-drift 守护：与 tests/*.test.mjs 静态 test() 计数一致，加测试须同笔更新本行；2026-10-25 增量 68 a11y 负自测 +1 后由 123 更新，2026-10-28 增量 88 表单假提交检测夹具 +4 后由 123 更新至 127，2026-10-31 增量 148 产物墙时效戳夹具 +3 后由 130 更新至 133；全量含 showcase/tests 9 项=142，README/identity 口径） | 全过 |
 | 已装 skill 锁定率 | 20/23 锁定；未锁 3 = ui-design-agent、remotion-video-agent、promotion-playbook（三者本 kit 自有，无需 pin）；上游第三方 20/20 全锁定（含 anatomy 2026-10-16 钉版；2026-09-30 本地化后口径 25→22，10-16 anatomy 入册 22→23） | 上游第三方 skill 100% 锁定 |
 | 素材库检查日期 | 灵感库 2026-09-21（案例样板批次 13 站 curl+浏览器实拍入册）/ 预清组件源表 2026-09-07 | 每次抽查后更新 |
 

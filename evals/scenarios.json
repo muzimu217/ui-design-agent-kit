@@ -5056,5 +5056,37 @@
    "Missing the Anthropic official entry as an ecosystem signal",
    "Predicting category collapse from individual repo rotation"
   ]
+ },
+ {
+  "id": "death-timeline-multi-timepoint-consistency",
+  "request": "When recording a competitor's shutdown across multiple visits (first notice, mid-window confirmation, final-day verification), require that each time point's quoted banner text and timeline entries match the earliest record verbatim — consistency across 3+ time points (2026-10-11 notice page, 2026-10-24 last-day-prior record, 2026-10-31 final-day page) is the completeness evidence for a death timeline, and any wording drift must be recorded as a change, not silently normalized.",
+  "context": "Round-148 final-day verification: miaoduo.com shutdown notice timeline table (05-13 notice + registration/renewal closed, 07-31 service stopped with export available, 11-01 export channel closes and remaining data permanently deleted) matched the round-90/96/109 records verbatim at the fourth time point; the page body carried an independent restatement (complete export before 2026-11-01, data permanently cleared and unrecoverable afterwards).",
+  "passCriteria": [
+   "Timeline entries quoted verbatim and compared against at least two earlier round records",
+   "Fourth time point consistency stated explicitly (four-point endorsement)",
+   "Independent in-page restatement of the deadline noted as corroboration",
+   "Any wording drift between time points recorded as an event rather than normalized"
+  ],
+  "failConditions": [
+   "Paraphrasing the timeline instead of verbatim quotes",
+   "Claiming consistency without citing the earlier records being compared",
+   "Treating a single time point as sufficient completeness evidence"
+  ]
+ },
+ {
+  "id": "final-day-channel-liveness-verified",
+  "request": "When a shutdown's final day arrives and prior attempts were network-blocked (attempted-failed-partial), retry the scheduled verification and record channel liveness with real evidence: the export entry link still present on the frozen marketing page, the export path's actual redirect behavior (to a functional login with account requirement), and honestly mark what cannot be tested without credentials (the export action itself) instead of inferring it.",
+  "context": "Round-148: miaoduo.com homepage 立即导出 link live (→/export-files), /export-files 302-redirected to a functional login page (?referer=%2Fexport-files) with password and SSO entry points; the login-page banner carried a variant text (no new registrations) distinct from the homepage banner (export deadline reminder) — a last-day language split between existing users and newcomers.",
+  "passCriteria": [
+   "Final-day retry executed after network recovery, closing the earlier attempted-failed-partial loop",
+   "Export entry link and redirect target recorded from live navigation (not inference)",
+   "Login-required limitation stated explicitly with the untested action named",
+   "Banner language variants (existing-user reminder vs newcomer block) recorded as an observation"
+  ],
+  "failConditions": [
+   "Reporting the channel as closed or open without following the actual redirect",
+   "Claiming export functionality was verified without account credentials",
+   "Discarding the earlier blocked attempts instead of closing their loop"
+  ]
  }
 ]

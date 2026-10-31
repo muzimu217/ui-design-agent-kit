@@ -5024,5 +5024,37 @@
    "Concluding target-level failure from network-level evidence",
    "Retrying indefinitely during a confirmed network-level outage"
   ]
+ },
+ {
+  "id": "thinkrail-full-lifecycle-observed",
+  "request": "When a tracked signal completes a full lifecycle (rising → peak → decay) across multiple dated readings, record the complete lifecycle as a methodology milestone — the state machine model is validated by a complete observation cycle, not just inferred from partial data — and note the total duration for comparison with other signals' lifecycles.",
+  "context": "Round-147: thinkrail completed a full lifecycle in ~5 days (10-26 first seen #8 → 10-27 #3 rising → 10-28 #1 peak → 10-29 #4 → 10-31 #12 decay) — the first signal in the tracking table to complete all three phases.",
+  "passCriteria": [
+   "All three phases recorded with dates and readings",
+   "Total lifecycle duration stated (~5 days)",
+   "State machine model confirmed by complete observation",
+   "Comparison with other signal lifecycles noted (audit-skill ~1 week)"
+  ],
+  "failConditions": [
+   "Declaring the lifecycle complete without observing all three phases",
+   "Generalizing the ~5-day duration to all signals",
+   "Omitting the methodology milestone significance"
+  ]
+ },
+ {
+  "id": "design-skill-category-rotation-anthropics-skills-entry",
+  "request": "When a category's trending seats rotate rapidly (three design-skill seats dropping out within days) while new entrants from different domains appear (Anthropic official, TypeScript educator, game studios), record the rotation as evidence that trending list membership is inherently volatile and that individual repo tracking (not category assumptions) is the correct granularity — and note the ecosystem-level signal (Anthropic entering the skills space officially) separately from the rotation pattern.",
+  "context": "Round-147: design-skill three seats (impeccable/hallmark/ai-design-skills) reduced to one (impeccable #3 still strong), while new entrants anthropics/skills (#11, 185k), mattpocock/skills (#8, 307k), and expo/skills (#6, decaying) appeared in the same reading.",
+  "passCriteria": [
+   "Category rotation recorded with before/after seat comparison",
+   "Anthropic official entry noted as ecosystem-level signal",
+   "Per-repo granularity maintained (not category assumption)",
+   "impeccable's persistence distinguished from others' rotation"
+  ],
+  "failConditions": [
+   "Treating all skill repos as having the same trajectory",
+   "Missing the Anthropic official entry as an ecosystem signal",
+   "Predicting category collapse from individual repo rotation"
+  ]
  }
 ]
